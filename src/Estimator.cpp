@@ -1,8 +1,8 @@
 /* 
 
-Program PooledAlleleFrequencyEstimator.c to:
+Program Estimator.cpp:
 
-	1) input from a list of site-specific quarters from a pooled population sample;
+	1) input from a list of site-specific quartets from a pooled population sample;
 
 	2) identify the major and minor alleles, obtain the maximum-likelihood estimates of allele frequencies, and significance levels.
 
@@ -22,37 +22,28 @@ Output File: two columns of site identifiers; major allele; minor allele; major-
 
 ***** The 95% support interval can be obtained by determining the changes in the estimate of p in both directions required to reduce the log likelihood by 3.841
       although this is not currently implemented. 
-
 */
 
+#include "Estimator.hpp"
 
-#include	<stdio.h>
-#include 	<math.h>
-#include 	<sys/types.h>
-#include	<stdlib.h>
-#include	<time.h>
-#include 	<iostream>
+void estimator(const char *infile, const char *outfile)
+{
 
 /* Point to the input and output files. */
 
 FILE *instream=NULL;
 FILE *outstream=NULL;
 
-
-void estimator(const char *infile, const char *outfile)
-
-{
-
-int n[5];							/* read quartet for numbers of reads; 1 = A; 2 = C; 3 = G; 4 = T. */
+int n[5];						/* read quartet for numbers of reads; 1 = A; 2 = C; 3 = G; 4 = T. */
 
 int coverage;						/* total number of reads at the site */
 
-int nmax;							/* number of reads for the most abundant type (putative major allele) */
-int nmin;							/* number of reads for the second most abundant type (putative minor allele) */
-int ner1;							/* number of reads for the third highest ranked nucleotide */
+int nmax;						/* number of reads for the most abundant type (putative major allele) */
+int nmin;						/* number of reads for the second most abundant type (putative minor allele) */
+int ner1;						/* number of reads for the third highest ranked nucleotide */
 
 int major, minor;					/* identities of major and minor alleles */
-int third;							/* identity of the third-place nucleotide */
+int third;						/* identity of the third-place nucleotide */
 
 double pmaj;						/* fraction of putative major reads among the total of major and minor */
 
@@ -60,12 +51,14 @@ double eml, pml;					/* maximum-likelihood estimates of the error rate and major
 
 char nuc[6];						/* converts numerical to alphabetical indicator of nucleotide */
 
-double lphimaj, lphimin, lphie;		/* terms for the likelihood expression */
+char c;							/* used to peek at the next character in the file */
+
+double lphimaj, lphimin, lphie;				/* terms for the likelihood expression */
 double emltheta;
 
-double llhoodp, llhoodm;			/* log likelihoods under the assumption of polymorphism and monomorphism */
+double llhoodp, llhoodm;				/* log likelihoods under the assumption of polymorphism and monomorphism */
 
-int nerrors, nerrorsm;				/* errors inferred in the full- and reduced-model likelihood analyses */
+int nerrors, nerrorsm;					/* errors inferred in the full- and reduced-model likelihood analyses */
 
 double errorm;						/* estimated error rate in the reduced model */
 
@@ -81,8 +74,6 @@ nuc[3] = 'G';
 nuc[4] = 'T';
 nuc[5] = '*';
 
-
-
 /* Open the output and input files. */
 
 outstream = fopen(outfile, "w");
@@ -90,15 +81,18 @@ instream = fopen(infile, "r");
 if(outstream==NULL) {std::cerr << "failed to open file " << outfile << " for writing\n"; exit(0); }
 if(instream==NULL) {std::cerr << "failed to open file " << infile << " for reading\n"; exit(0); }
 
-
-
 /* Start inputting and analyzing the data line by line. */
 
-while ( fscanf(instream,"%s\t%s\t%i\t%i\t%i\t%i", id1, id2, &n[1], &n[2], &n[3], &n[4]) != EOF) {
+while (! feof (instream) ){
+
+c = fgetc (instream);
+fseek(instream, -1, SEEK_CUR);
+if (c!='>'){if (fscanf(instream,"%s\t%i\t%i\t%i\t%i", id2, &n[1], &n[2], &n[3], &n[4])==EOF) break;}
+else {if (fscanf(instream, "%s", id1)==EOF) break;};
+
+/* check for start of new scaffold*/
 
 coverage = n[1] + n[2] + n[3] + n[4];
-
-
 
 /* Identify the counts for the putative major and minor alleles.  */
 

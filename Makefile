@@ -1,6 +1,6 @@
-SUBDIRS= src docs
+SUBDIRS= src 
 
-.PHONY: subdirs $(SUBDIRS) code-docs clean
+.PHONY: subdirs $(SUBDIRS) clean
 
 subdirs: $(SUBDIRS)
 
@@ -11,9 +11,5 @@ all: src
 
 test: src
 	cd test && sh testMapGD.sh
-
-code-docs: subdirs
-	$(MAKE) -C docs code-docs
-
 clean:
 	cd src && $(MAKE) $@
