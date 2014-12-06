@@ -13,4 +13,5 @@ debug: CXXFLAGS=-g -std=c++11 -Wall -W -Og
 debug: mapdg
 
 clean:
-	rm -f *.o mapgd
+	rm -f *.o 
+	rm ../bin/mapgd
