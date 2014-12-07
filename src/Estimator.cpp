@@ -87,10 +87,15 @@ while (! feof (instream) ){
 
 c = fgetc (instream);
 fseek(instream, -1, SEEK_CUR);
-if (c!='>'){if (fscanf(instream,"%s\t%i\t%i\t%i\t%i", id2, &n[1], &n[2], &n[3], &n[4])==EOF) break;}
-else {if (fscanf(instream, "%s", id1)==EOF) break;};
 
 /* check for start of new scaffold*/
+
+if (c!='>'){if (fscanf(instream,"%s\t%i\t%i\t%i\t%i", id2, &n[1], &n[2], &n[3], &n[4])==EOF) break;}
+else {
+	if (fscanf(instream, "%s", id1)==EOF) break;
+	continue;
+	};
+
 
 coverage = n[1] + n[2] + n[3] + n[4];
 
@@ -121,8 +126,6 @@ if (n[4] > nmax) {
 	nmin = n[4]; minor = 4; }
 else if (n[4] > ner1) {
 	ner1 = n[4]; third = 4; }
-
-
 	
 /* Calculate the ML estimates of the major / minor allele frequencies and the error rate. */
 
@@ -133,11 +136,7 @@ eml = 1.5 * ( ((double) coverage) - ((double) nmax) - ((double) nmin) ) / ((doub
 pml = (pmaj * (1.0 - (2.0 * eml / 3.0))) - (eml / 3.0);
 pml = pml / (1.0 - (4.0 * eml / 3.0));
 
-
-
-
 /* Calculate the log likelihoods under: 1) the full model; and 2) the reduced model assuming no polymorphism (major-allele frequency = 1.0). */
-
 
 /* First, get the log likelihood under the full model, which assumes a polymorphism. */
 	

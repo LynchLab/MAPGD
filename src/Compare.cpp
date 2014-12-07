@@ -23,12 +23,10 @@ For more information please read
 
 */
 
-
 /* ********************************************************************************************************** */
 
 #define niters		50000		/* number of iterations of the sampling / estimation procedure */
 #define EMLMIN		0.000001	/* minimum error estimate				       */
-
 
 #include	<stdio.h>
 #include 	<math.h>
@@ -40,13 +38,12 @@ For more information please read
 
 /* Point to the output file. */
 
-FILE *output;
-FILE *input;
-
-int main(int argc, char *argv[])
-
+void compare(const char *infile1, const char *infile2, const char *outfile)
 {
 
+FILE *output;
+FILE *input1;
+FILE *input2;
 
 /* ************************************************************************************************************ */
 
@@ -113,6 +110,11 @@ double maxsearch, maxsearch1, maxsearch2;
 
 int minig, maxig, ig;					/* limits to allele frequency count used in the likelihood analysis, to streamline the computational time */
 
+int nsample;
+int n2samp;
+int coverage;
+int minfreq2;
+
 double llstat;						/* difference in the log likelihoods */
 double sig1, sig2, sig3, sig4;			/* counters for significance tests */
 
@@ -120,25 +122,26 @@ double lnfact[2010];
 
 /* Open the output file. */
 
-fopen(output,"dataout.txt", "w");
+input1=fopen(infile1, "r");
+input2=fopen(infile2, "r");
+output=fopen(outfile, "w");
 
 /* ********** Set the minor-allele frequencies for the first population at which the computations will be done. ************* */
-
+/*
 minfreq[1] = 0.0;
 
 for (nminor = 1; nminor <= 17; ++nminor) {
 	minfreq[nminor + 1] = 1.0 / pow( 10.0, ((42.0 - (2.0 * (double) nminor)) / 10.0) ); }
 
-/* Other terms that are constant over all allele frequencies. */
+// Other terms that are constant over all allele frequencies. 
 
 popsamp = 2.0 * ((double) nsample);
 n2samp = 2 * nsample;
 
-/* Loop over population samples, in each case generating an estimate of the major-allele frequency. */
-
+ Loop over population samples, in each case generating an estimate of the major-allele frequency. 
 for (nminor = 1; nminor <= 33; ++nminor) {
 
-/* Calculate the genotype frequencies according to Hardy-Weinberg for the two populations. */
+Calculate the genotype frequencies according to Hardy-Weinberg for the two populations. 
 
 majfreq = 1.0 - minfreq[nminor];
 hommaj = majfreq * majfreq;
@@ -148,12 +151,11 @@ majfreqB = 1.0 - minfreq2;
 hommajB = majfreqB * majfreqB;
 heteroB = 2.0 * majfreqB * (1.0 - majfreqB);
 
-/* Calculate the cutoff for random draws for from the population. */
-
+ Calculate the cutoff for random draws for from the population. 
 hetcut = hommaj + hetero;
 hetcutB = hommajB + heteroB;
 
-/* Set the initial counters for the statistics of the simulations equal to zero. */
+Set the initial counters for the statistics of the simulations equal to zero. */
 
 totests = 0.0;
 sig1 = 0.0;
