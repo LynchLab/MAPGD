@@ -14,4 +14,4 @@ if [ ! -f ../bin/mapgd ]; then
 fi
 
 ./bin/mapgd sam2pro $filename > infile.txt
-./bin/mapgd -i ./infile.txt -o ./outfile.txt
+./bin/mapgd ep -i ./infile.txt -o ./outfile.txt

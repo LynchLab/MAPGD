@@ -1,11 +1,11 @@
 #!/bin/bash
 filename=$1
 if [ $# = 0 ]; then 
-	echo "please enter the name of the mpileup file to be analyzed."
+	echo "please enter the name of the mpileup file to be analyzed:"
 	exit
 fi
 if [ ! -f $filename ]; then
-	echo "cannot open file" $1 
+	echo "cannot open file." $1 
 	exit
 fi
 if [ ! -f ../bin/mapgd ]; then
@@ -14,4 +14,4 @@ if [ ! -f ../bin/mapgd ]; then
 fi
 
 ./bin/mapgd sam2pro $filename > infile.txt
-./bin/mapgd -i ./infile.txt -o ./outfile.txt
+./bin/mapgd ep -i ./infile.txt -o ./outfile.txt
