@@ -18,15 +18,18 @@ If the second and third ranks are equal but lower than the major-nucleotide coun
 The input file is a plain text file consists of five tab delimited columns, one for each site: the first entry is an arbitrary identifier (e.g., and site), and the final four are integer values for the number of times an A, C, G, and T was observed at the site. 
 
 We call this file format the .pro file format. Files in this format can be generated from mpileup files using the command "mapgd proview" 
+
+Currently mapgd allows for the estimation of allele frequencies in pooled population sequence through the "ep" option and the conversion of mpileups to the ".pro" format though the proview option. We hope to add more options in the future.
+
 For example, if the sequencing center gives you a file called "reads.fastq" your entire work flow might look something like this: 
 
 <h5> a typical workflow </h5>
 	bwa aln Reference.fna reads.fastq > reads.sai
-        bwa sam Reference.fna reads.sai reads.fastq > reads.sam
-        samtools view -bS reads.sam > reads.bam
-        samtools sort reads.bam reads.sort
-        samtools index reads.sort.bam
-        samtools mpileup -q 25 -Q 25 reads.sort.bam > reads.mpileup
+	bwa sam Reference.fna reads.sai reads.fastq > reads.sam
+	samtools view -bS reads.sam > reads.bam
+	samtools sort reads.bam reads.sort
+	samtools index reads.sort.bam
+	samtools mpileup -q 25 -Q 25 reads.sort.bam > reads.mpileup
 	mapgd proview reads.pileup > reads.pro
 	mapgd ep -i reads.pro -o allelfrequencies.txt
 
