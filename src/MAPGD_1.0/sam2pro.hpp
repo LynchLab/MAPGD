@@ -7,10 +7,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include "interface.h"
-#include "stringUtil.h"
-#include "eprintf.h"
-#include "tab.h"
+#include "interface.hpp"
+#include "stringUtil.hpp"
+#include "eprintf.hpp"
+#include "tab.hpp"
 
 int sam2pro(int argc, char *argv[]);
 void runAnalysis(FILE *fp, Args *args, int *dic);

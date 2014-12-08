@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "tab.h"
+#include "tab.hpp"
 
 enum {NOMEM = -2};                                /* out of memory signal */
 

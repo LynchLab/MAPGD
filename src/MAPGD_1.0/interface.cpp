@@ -10,8 +10,8 @@
 #include <assert.h>
 #include <limits.h>
 #include <unistd.h>
-#include "interface.h"
-#include "eprintf.h"
+#include "interface.hpp"
+#include "eprintf.hpp"
 
 Args *args;
 

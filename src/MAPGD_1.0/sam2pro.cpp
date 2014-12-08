@@ -3,7 +3,7 @@
  * Author: Bernhard Haubold, haubold@evolbio.mpg.de
  * Date: Wed Jul 21 22:46:11 2010
  **************************************************/
-#include "sam2pro.h"
+#include "sam2pro.hpp"
 
 int sam2pro(int argc, char *argv[]){
 

@@ -8,11 +8,10 @@ if [ ! -f $filename ]; then
 	echo "cannot open file" $1 
 	exit
 fi
-if [ ! -f ./sam2pro ]; then
-	echo "please compile sam2pro from http://guanine.evolbio.mpg.de/mlRho/ and place the binary in this file"
-        echo "sorry for the inconvenience, this step will be uneccisary soon."
+if [ ! -f ../bin/mapgd ]; then
+	echo "mapgd cannot be found. Perhaps you haven't run make?"
 	exit
 fi
 
-./sam2pro $filename > infile.txt
-../bin/mapgd -i ./infile.txt -o ./outfile.txt
+./bin/mapgd sam2pro $filename > infile.txt
+./bin/mapgd -i ./infile.txt -o ./outfile.txt

@@ -26,7 +26,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
-#include "eprintf.h"
+#include "eprintf.hpp"
 
 /* efopen: open file and report if error */
 FILE *efopen(char *fname, char *mode){

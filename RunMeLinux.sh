@@ -8,10 +8,10 @@ if [ ! -f $filename ]; then
 	echo "cannot open file" $1 
 	exit
 fi
-if [ ! -f ../bin/sam2pro ]; then
-	echo "sam2pro cannot be found. Perhaps you haven't run make?"
+if [ ! -f ../bin/mapgd ]; then
+	echo "mapgd cannot be found. Perhaps you haven't run make?"
 	exit
 fi
 
-./sam2pro $filename > infile.txt
-../bin/mapgd -i ./infile.txt -o ./outfile.txt
+./bin/mapgd sam2pro $filename > infile.txt
+./bin/mapgd -i ./infile.txt -o ./outfile.txt

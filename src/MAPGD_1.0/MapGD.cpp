@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <cstring>
 #include "Estimator.hpp"
-#include "sam2pro.h"
+#include "sam2pro.hpp"
 
 using namespace std;
 
@@ -21,7 +21,6 @@ int main (int argc, char* argv[]){
 	if (argc<2) usage(); 
 	if (std::strcmp(argv[1], "ep")== 0) {
 		for (int optind=1; optind<argc; optind++){
-			cout << 
 			if (argv[optind][0]=='-'){
 				char c=argv[optind][1];
 				switch (c){

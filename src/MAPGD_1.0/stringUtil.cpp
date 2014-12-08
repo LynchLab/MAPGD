@@ -23,8 +23,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "stringUtil.h"
-#include "eprintf.h"
+#include "stringUtil.hpp"
+#include "eprintf.hpp"
 
 /* chomp: remove carriage return from string */
 char *chomp(char *line){
