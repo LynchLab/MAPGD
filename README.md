@@ -6,11 +6,15 @@ Copyright (C) Michael Lynch, see notice at end of README.
 
 <h3> Introduction </h3>
 
+<h5> the pe command </h5>
+
 This program uses a maximum-likelihood (ML) procedure to estimate allele-frequencies from the numbers of the four nucleotides (quartets) observed at individual genomic sites. For each site, the major and minor nucleotides are identified, their frequencies are estimated by ML, and the polymorphism is tested for statistical significance.
 
 The designated major nucleotide is simply the one with the highest rank, and the minor nucleotide is the one with the second highest rank. If the top three ranks are all equal, the site is treated as unresolvable, with both major and minor nucleotides designated in the output by a *.
 
 If the second and third ranks are equal but lower than the major-nucleotide count, the site is treated as monomorphic, with the minor nucleotide again designated by a *.
+
+This analysis allows us to distinguish between sites that may appear polymorphic because of sequencing errors and sites that are truly polymorphic.
 
 <h3> Making the Input File </h3>
 
@@ -64,10 +68,13 @@ After clicking the "Downlaod ZIP" button you will be prompted to save or open th
 
 Then type:
 
-        unzip MAPGD.zip
-        cd MAPGD-master/src
+	unzip MAPGD.zip
+	cd MAPGD-master/src
 	make
-        sudo make install
+
+The program can be installed for all users of a computer by typing:
+
+	sudo make install
 
 Scripts for both Linux and Mac users are present in the top level directory, or the program can be run by typing "mapgd ep -i FILENAME" where FILENAME is the a .pro file.
 
@@ -83,7 +90,7 @@ By default the program prints information to the file "dataout.txt" and this fil
 
 <h3> Reference </h3>
 
-Please cite the following paper when publishing results derived from this program.
+Please cite the following paper when publishing results derived from this program:
 
 Lynch, M., D. Bost, S. Wilson, T. Maruki, and S. Harrison. 2014. Population-genetic inference from pooled-sequencing data. Genome Biol. Evol. 6: 1210-1218.
 

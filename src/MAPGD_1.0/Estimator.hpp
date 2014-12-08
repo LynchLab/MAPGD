@@ -9,5 +9,6 @@
 #include 	<iostream>
 
 void estimator(const char *infile, const char *outfile);
+void local_usage(void);
 
 #endif 

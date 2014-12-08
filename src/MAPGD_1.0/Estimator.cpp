@@ -75,8 +75,8 @@ nuc[5] = '*';
 /* Open the output and input files. */
 
 outstream = fopen(outfile, "w");
-pro.open(infile, "r");
-if(outstream==NULL) {std::cerr << "failed to open file " << outfile << " for writing\n"; exit(0); }
+if (pro.open(infile, "r")==NULL) {local_usage();}
+if (outstream==NULL) {std::cerr << "failed to open file " << outfile << " for writing\n"; local_usage();}
 
 /* Start inputting and analyzing the data line by line. */
 
@@ -184,7 +184,17 @@ fprintf(outstream, "%s\t%s\t%c\t%c\t%6.5f\t%6.5f\t%6.5f\t%5d\t%10.5f\n", pro.id1
 printf("\n");
 
 exit(0);
-
 }
 
+void local_usage(){
+	const char str[] ={
+		"\nusage: mapgd ep [OPTIONS]\n\n"
+		"Purpose:\tEstimation allele frequency of pooled population data\n\n"
+		"Options: -i\t\tName of the input file [infile.txt]\n"
+		"\t -o\t\tName of the output file [outfile.txt]\n"
+		"\t -q\t\tDon't echo output to stdout\n"
+	};	
+	std::cout << str;
+	exit(0);
+};
 

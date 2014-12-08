@@ -15,9 +15,9 @@ int profile::read(void){
 	return 0;
 };
 
-void profile::open(const char* filename, const char* mode){
+profile* profile::open(const char* filename, const char* mode){
 	instream = fopen(filename, mode);
-	if(instream==NULL) {std::cerr << "failed to open file " << filename << " for reading\n"; exit(0); }
+	if(instream==NULL) {std::cerr << "failed to open file " << filename << " for reading\n"; return NULL; }
 };
 
 void sync(int proc, profile *prof){

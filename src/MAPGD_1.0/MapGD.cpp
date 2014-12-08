@@ -44,12 +44,16 @@ int main (int argc, char* argv[]){
 	else if (std::strcmp(argv[1], "proview")== 0){
 		sam2pro(argc-1, argv+1);
 	}
-	else usage();
+	else {
+		if (std::strcmp(argv[1], "-v")== 0) version();
+		if (std::strcmp(argv[1], "-h")== 0) usage();
+		usage();
+	}
 };
 
 void version(){
 	const char str[]={
-		"mapgd v1.0\n"
+		"\nmapgd v1.0\n\n"
 	};
 	cout << str;
 	exit(0);

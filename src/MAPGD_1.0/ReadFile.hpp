@@ -11,7 +11,7 @@ class  profile{
 	char id1[30];
 	char id2[30];
 	int n[5];
-	void open(const char*, const char *);
+	profile* open(const char*, const char *);
 	int read(void);
 };
 
