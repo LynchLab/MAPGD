@@ -37,7 +37,7 @@ If you wish to include additional columns for data identification, the following
 
 if (c!='>'){if (fscanf(instream,"%s\t%i\t%i\t%i\t%i", id2, &n[1], &n[2], &n[3], &n[4])==EOF) break;}
 
-The program will try to open “datain.txt” if no file is specified. For example: “mapgd ep” will attempt to open datain.txt and print the analysis to the file "dataout.txt". If you desire to analyze a different file you can type “mapgd ep -i FILENAME", where FILENAME . 
+The program will try to open “datain.txt” if no file is specified. For example: “mapgd ep” will attempt to open datain.txt and print the analysis to the file "dataout.txt". If you desire to analyze a different file you can type “mapgd ep -i FILENAME", where FILENAME is the a .pro file.
 
 <h5> Additional Programs </h5>
 
