@@ -25,16 +25,16 @@ Output File: two columns of site identifiers; major allele; minor allele; major-
 */
 
 #include "Estimator.hpp"
+#include "ReadFile.hpp" 
 
 void estimator(const char *infile, const char *outfile)
 {
+
 
 /* Point to the input and output files. */
 
 FILE *instream=NULL;
 FILE *outstream=NULL;
-
-int n[5];						/* read quartet for numbers of reads; 1 = A; 2 = C; 3 = G; 4 = T. */
 
 int coverage;						/* total number of reads at the site */
 
@@ -64,9 +64,7 @@ double errorm;						/* estimated error rate in the reduced model */
 
 double llstat;						/* difference in the log likelihoods */
 
-char id1[30];						/* identifiers for the site in the first two columns of the input file */
-char id2[30];
-
+profile pro;
 
 nuc[1] = 'A';
 nuc[2] = 'C';
@@ -77,55 +75,44 @@ nuc[5] = '*';
 /* Open the output and input files. */
 
 outstream = fopen(outfile, "w");
-instream = fopen(infile, "r");
+pro.open(infile, "r");
 if(outstream==NULL) {std::cerr << "failed to open file " << outfile << " for writing\n"; exit(0); }
-if(instream==NULL) {std::cerr << "failed to open file " << infile << " for reading\n"; exit(0); }
 
 /* Start inputting and analyzing the data line by line. */
 
-while (! feof (instream) ){
+while (! feof (pro.instream) ){
 
-c = fgetc (instream);
-fseek(instream, -1, SEEK_CUR);
-
-/* check for start of new scaffold*/
-
-if (c!='>'){if (fscanf(instream,"%s\t%i\t%i\t%i\t%i", id2, &n[1], &n[2], &n[3], &n[4])==EOF) break;}
-else {
-	if (fscanf(instream, "%s", id1)==EOF) break;
-	continue;
-	};
-
-
-coverage = n[1] + n[2] + n[3] + n[4];
+	if(pro.read()==EOF) break;
+	
+	coverage = pro.n[1] + pro.n[2] + pro.n[3] + pro.n[4];
 
 /* Identify the counts for the putative major and minor alleles.  */
 
-if (n[1] >= n[2]) {
-	nmax = n[1]; major = 1;
-	nmin = n[2]; minor = 2; } 
+if (pro.n[1] >= pro.n[2]) {
+	nmax = pro.n[1]; major = 1;
+	nmin = pro.n[2]; minor = 2; } 
 else {
-	nmax = n[2]; major = 2;
-	nmin = n[1]; minor = 1; }
+	nmax = pro.n[2]; major = 2;
+	nmin = pro.n[1]; minor = 1; }
 
-if (n[3] > nmax) {
+if (pro.n[3] > nmax) {
 	ner1 = nmin; third = minor;
 	nmin = nmax; minor = major;
-	nmax = n[3]; major = 3; } 
-else if (n[3] > nmin) {
+	nmax = pro.n[3]; major = 3; } 
+else if (pro.n[3] > nmin) {
 	ner1 = nmin; third = minor;
-	nmin = n[3]; minor = 3; }
-else {ner1 = n[3]; third = 3;}
+	nmin = pro.n[3]; minor = 3; }
+else {ner1 = pro.n[3]; third = 3;}
 
-if (n[4] > nmax) {
+if (pro.n[4] > nmax) {
 	ner1 = nmin; third = minor;
 	nmin = nmax; minor = major;
-	nmax = n[4]; major = 4;
-} else if (n[4] > nmin) {
+	nmax = pro.n[4]; major = 4;
+} else if (pro.n[4] > nmin) {
 	ner1 = nmin; third = minor;
-	nmin = n[4]; minor = 4; }
-else if (n[4] > ner1) {
-	ner1 = n[4]; third = 4; }
+	nmin = pro.n[4]; minor = 4; }
+else if (pro.n[4] > ner1) {
+	ner1 = pro.n[4]; third = 4; }
 	
 /* Calculate the ML estimates of the major / minor allele frequencies and the error rate. */
 
@@ -171,8 +158,6 @@ else {
 
 llstat = 2.0 * (llhoodp - llhoodm);
 
-
-
 /* If the top three ranks are all equal, flag as unresolvable by denoting the alleles with asterisks. */
 
 if  ( (nmax == nmin) && (nmin == ner1) ) {
@@ -190,10 +175,8 @@ if  ( (nmax > nmin) && (nmin == ner1) ) {
 	llstat = 0.0; 
 	minor = 5;}
 
-
-
-printf("%s\t%s\t%c\t%c\t%6.5f\t%6.5f\t%6.5f\t%5d\t%10.5f\n", id1 , id2 , nuc[major] , nuc[minor] , pml , (1.0 - pml) , eml , coverage, llstat); 
-fprintf(outstream, "%s\t%s\t%c\t%c\t%6.5f\t%6.5f\t%6.5f\t%5d\t%10.5f\n", id1 , id2 , nuc[major] , nuc[minor] , pml , (1.0 - pml) , eml , coverage, llstat); 
+printf("%s\t%s\t%c\t%c\t%6.5f\t%6.5f\t%6.5f\t%5d\t%10.5f\n", pro.id1 , pro.id2 , nuc[major] , nuc[minor] , pml , (1.0 - pml) , eml , coverage, llstat); 
+fprintf(outstream, "%s\t%s\t%c\t%c\t%6.5f\t%6.5f\t%6.5f\t%5d\t%10.5f\n", pro.id1 , pro.id2 , nuc[major] , nuc[minor] , pml , (1.0 - pml) , eml , coverage, llstat); 
 
 
 }					/* Ends the computations when the end of file is reached. */

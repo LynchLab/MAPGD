@@ -1,4 +1,4 @@
-SUBDIRS= src Sam2pro_0.3 
+SUBDIRS= src src/Sam2pro_0.3
 
 .PHONY: subdirs $(SUBDIRS) clean
 

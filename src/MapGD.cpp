@@ -1,7 +1,5 @@
 #include <iostream>
 #include <cstdio>
-//#include <getopt.h>
-
 #include "Estimator.hpp"
 
 using namespace std;
@@ -14,26 +12,10 @@ void version();
 void usage();
 
 int main (int argc, char**argv){
-	/*
-        static struct option long_options[] = {
-                {"version", no_argument, NULL, 'v'},
-                {"help", no_argument, NULL, 'h'},
-                {"outfile", required_argument, NULL, 'o'},
-                {"infile", required_argument, NULL, 'i'},
-                {NULL,0,NULL,0}
-        };*/
 
 	const char *infile = "infile.txt";
 	const char *outfile = "outfile.txt";
 
-	/*while (1){
-		int option_index = 0;
-		int c = getopt_long(argc, argv, "hv::oi", long_options, &option_index);
-
-		if( c == -1){
-                        break;
-                }
-*/
 	for (int optind=0; optind<argc; optind++){
 		if (argv[optind][0]=='-'){
 			char c=argv[optind][1];

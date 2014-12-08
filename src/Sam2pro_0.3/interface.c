@@ -4,6 +4,9 @@
  * Author: Bernhard Haubold, haubold@evolbio.mpg.de
  * Date: Sun Jun 20 13:12:10 2004.
  *****************************************************************/
+
+/*Minor modifications by Matt Ackerman to run under windows*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

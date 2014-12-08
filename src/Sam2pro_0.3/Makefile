@@ -7,7 +7,7 @@ SRCFILES= sam2pro.c eprintf.c interface.c tab.c stringUtil.c
 OBJFILES= sam2pro.o eprintf.o interface.o tab.o stringUtil.o
 LIBS= -lm
 
-EXECFILE= ../bin/sam2pro
+EXECFILE= ../../bin/sam2pro
 DIRECTORY= Sam2pro
 
 VERSION= 0.3

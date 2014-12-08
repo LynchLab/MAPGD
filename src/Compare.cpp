@@ -188,7 +188,16 @@ maxig = 2 * nsample;
 
 /* 1) GET THE READS FOR THE FIRST POPULATION. */
 
-	n1read = pop1.read();
+	c = fgetc (input1);
+	fseek(input1, -1, SEEK_CUR);
+
+	/* check for start of new scaffold*/
+
+	if (c!='>'){if (fscanf(instream,"%s\t%i\t%i\t%i\t%i", id1bp, &n1read[1], &n1read[2], &n1read[3], &n1read[4])==EOF) break;}
+	else {
+        	if (fscanf(instream, "%s", id1scf)==EOF) break;
+        	continue;
+        };
 
 /* 2) GENERATE THE READS FOR THE SECOND POPULATION. */
 
