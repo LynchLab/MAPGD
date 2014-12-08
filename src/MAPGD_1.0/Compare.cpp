@@ -33,6 +33,7 @@ For more information please read
 #include 	<sys/types.h>
 #include	<stdlib.h>
 #include	<time.h>
+#include 	"ReadFile.hpp"
 
 /* ********************************************************************************************************** */
 
@@ -42,8 +43,6 @@ void compare(const char *infile1, const char *infile2, const char *outfile)
 {
 
 FILE *output;
-FILE *input1;
-FILE *input2;
 
 /* ************************************************************************************************************ */
 
@@ -120,41 +119,15 @@ double sig1, sig2, sig3, sig4;			/* counters for significance tests */
 
 double lnfact[2010];
 
+profile pop1, pop2;
 /* Open the output file. */
 
-input1=fopen(infile1, "r");
-input2=fopen(infile2, "r");
+pop1.open(infile1, "r");
+pop2.open(infile2, "r");
 output=fopen(outfile, "w");
 
 /* ********** Set the minor-allele frequencies for the first population at which the computations will be done. ************* */
 /*
-minfreq[1] = 0.0;
-
-for (nminor = 1; nminor <= 17; ++nminor) {
-	minfreq[nminor + 1] = 1.0 / pow( 10.0, ((42.0 - (2.0 * (double) nminor)) / 10.0) ); }
-
-// Other terms that are constant over all allele frequencies. 
-
-popsamp = 2.0 * ((double) nsample);
-n2samp = 2 * nsample;
-
- Loop over population samples, in each case generating an estimate of the major-allele frequency. 
-for (nminor = 1; nminor <= 33; ++nminor) {
-
-Calculate the genotype frequencies according to Hardy-Weinberg for the two populations. 
-
-majfreq = 1.0 - minfreq[nminor];
-hommaj = majfreq * majfreq;
-hetero = 2.0 * majfreq * (1.0 - majfreq);
-
-majfreqB = 1.0 - minfreq2;
-hommajB = majfreqB * majfreqB;
-heteroB = 2.0 * majfreqB * (1.0 - majfreqB);
-
- Calculate the cutoff for random draws for from the population. 
-hetcut = hommaj + hetero;
-hetcutB = hommajB + heteroB;
-
 Set the initial counters for the statistics of the simulations equal to zero. */
 
 totests = 0.0;
@@ -166,20 +139,6 @@ sig4 = 0.0;
 /* Calculate the starting and ending points for the allele counts used in the likelihood function. */
 
 /*
-minsearch1 = (majfreq - (8.0 * sdsamp1)) * 2.0 * ((double) nsample);
-maxsearch1 = (majfreq + (8.0 * sdsamp1)) * 2.0 * ((double) nsample);
-minsearch2 = (minfreq2 - (8.0 * sdsamp2)) * 2.0 * ((double) nsample);
-maxsearch2 = (minfreq2 + (8.0 * sdsamp2)) * 2.0 * ((double) nsample);
-
-if (minsearch1 < minsearch2) { minsearch = minsearch1; }
-else {minsearch = minsearch2; }
-if (maxsearch1 > maxsearch2) { maxsearch = maxsearch1; }
-else {maxsearch = maxsearch2; }
-
-if (minsearch <= 0.0) { minig = 0;}
-else { minig = int(minsearch);}
-if ( minig > ((2 * nsample) - 5) ) { minig = (2 * nsample) - 5; }
-if (maxsearch >= (2.0 * ((double) nsample)) ) { maxig = 2 * nsample; }
 else { maxig = int(maxsearch); }
 */
 
@@ -187,23 +146,12 @@ minig = 0;
 maxig = 2 * nsample;
 
 /* 1) GET THE READS FOR THE FIRST POPULATION. */
-
-	c = fgetc (input1);
-	fseek(input1, -1, SEEK_CUR);
-
-	/* check for start of new scaffold*/
-
-	if (c!='>'){if (fscanf(instream,"%s\t%i\t%i\t%i\t%i", id1bp, &n1read[1], &n1read[2], &n1read[3], &n1read[4])==EOF) break;}
-	else {
-        	if (fscanf(instream, "%s", id1scf)==EOF) break;
-        	continue;
-        };
-
 /* 2) GENERATE THE READS FOR THE SECOND POPULATION. */
 
-	/* Zero the counter for the genotypes sampled from the second population. */
+	sync(pop1, pop2)
 
-	n2read = pop2.read();
+
+
 
 /* 3) GENERATE THE READ COUNTS POOLED OVER BOTH SAMPLES */
 
@@ -211,10 +159,6 @@ maxig = 2 * nsample;
 	n3read[2] = n1read[2] + n2read[2];
 	n3read[3] = n1read[3] + n2read[3];
 	n3read[4] = n1read[4] + n2read[4];
-
-//TODO set coverage correctly
-/* ? */
-//	coverage=?
 
 /* 4) IDENTIFY THE OVERALL MAJOR AND MINOR ALLELES. */ 
 

@@ -20,4 +20,14 @@ void profile::open(const char* filename, const char* mode){
 	if(instream==NULL) {std::cerr << "failed to open file " << filename << " for reading\n"; exit(0); }
 };
 
-void sync(profile*);
+void sync(int proc, profile *prof){
+	//check to see that prof is initalized;
+	
+	//If it is initalized
+//	gid1=prof[0].id1;
+//	gid2=prof[0].id2;
+
+//	for (?;?;?){
+		
+//	};
+};

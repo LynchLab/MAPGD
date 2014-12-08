@@ -3,19 +3,9 @@
  * Author: Bernhard Haubold, haubold@evolbio.mpg.de
  * Date: Wed Jul 21 22:46:11 2010
  **************************************************/
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-#include "interface.h"
-#include "stringUtil.h"
-#include "eprintf.h"
-#include "tab.h"
+#include "sam2pro.h"
 
-void runAnalysis(FILE *fp, Args *args, int *dic);
-void scanCol(char *column, int *dic, int *count, char consensus, char *number);
-
-int main(int argc, char *argv[]){
+int sam2pro(int argc, char *argv[]){
 
   Args *args;
   char *version;
@@ -23,7 +13,7 @@ int main(int argc, char *argv[]){
   int i;
   int dic[256];
 
-  version = "0.3";
+  version = "0.6";
   setprogname2("sam2pro");
   args = getArgs(argc, argv);
 
@@ -53,7 +43,7 @@ int main(int argc, char *argv[]){
   free(args);
   free(progname());
   return 0;
-}
+};
 
 void runAnalysis(FILE *fp, Args *args, int *dic){
   int count[4];
@@ -76,7 +66,8 @@ void runAnalysis(FILE *fp, Args *args, int *dic){
     if(strcmp(name,tabField(0)) != 0){
       name[0] = '\0';
       name = strdup2(tabField(0));
-      printf(">%s\n",name);
+      if(args->c == 5)
+	printf(">%s\n",name);
     }
     consensus = tabField(2)[0];
     column = tabField(4);
@@ -85,6 +76,8 @@ void runAnalysis(FILE *fp, Args *args, int *dic){
     for(i=0;i<4;i++)
       s += count[i];
     if(s >= args->m){
+      if(args->c == 6)
+	printf("%s\t",name);
       printf("%s",tabField(1));
       for(i=0;i<4;i++)
 	printf("\t%d",count[i]);

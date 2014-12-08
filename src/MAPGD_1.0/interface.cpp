@@ -4,9 +4,6 @@
  * Author: Bernhard Haubold, haubold@evolbio.mpg.de
  * Date: Sun Jun 20 13:12:10 2004.
  *****************************************************************/
-
-/*Minor modifications by Matt Ackerman to run under windows*/
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -20,11 +17,12 @@ Args *args;
 
 Args *getArgs(int argc, char *argv[]){
   char c;
-  char *optString = "hm:d:";
+  char *optString = "hm:d:c:";
 
   args = (Args *)emalloc(sizeof(Args));
   args->m = DEFAULT_M;
   args->d = DEFAULT_D;
+  args->c = 0;
   args->h = 0;
   args->e = 0;
 
@@ -33,6 +31,13 @@ Args *getArgs(int argc, char *argv[]){
     switch(c){
     case 'm':                           /* minimum coverage */
       args->m = atoi(optarg);
+      break;
+    case 'c':                           /* number of columns in output */
+      args->c = atoi(optarg);
+      if(args->c != 5 && args->c != 6){
+	printf("ERROR: please specify 5 or 6 column output\n");
+	args->e = 1;
+      }
       break;
     case 'd':
       args->d = optarg;
@@ -50,6 +55,10 @@ Args *getArgs(int argc, char *argv[]){
   }
   args->inputFiles = argv + optind;
   args->numInputFiles = argc - optind;
+  if(args->c == 0){
+    printf("ERROR: please specify the desired number of output columns using the \ty{-c} option\n");
+    args->e = 1;
+  }
   return args;
 }
 
@@ -59,6 +68,7 @@ void printUsage(char *version){
   printf("purpose: convert sam output to profiles\n");
   printf("usage: sam2pro [inputFile(s)]\n");
   printf("options:\n");
+  printf("\t-c <NUM> number of columns in output: 5|6]\n");
   printf("\t[-m <NUM> minimum coverage; default: NUM=%d]\n",DEFAULT_M);
   printf("\t[-d <CHAR> tab delineator; default: CHAR=%s]\n",DEFAULT_D);
   printf("\t[-h print this help message and exit]\n");

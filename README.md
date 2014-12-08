@@ -1,6 +1,6 @@
 MapGD version 1.
 
-<h1> To download this program click the "Download ZIP" button to your right -> </h1>
+<h3> To download this program click the "Download ZIP" button to your right -> </h3>
 
 Copyright (C) Michael Lynch, see notice at end of README. At this time some of this document has been typed w/o Michael Lynch's review or approval. All typo's and inanities should be assigned to Matthew Ackerman until Michael Lynch has had time to review changes to this document. 
 

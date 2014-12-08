@@ -7,7 +7,6 @@
 #define DEFAULT_M 4    /* minimum coverage */
 #define DEFAULT_D "\t" /* tab delineator */
 
-
 /* define argument container */
 typedef struct args{
   char h;   /* help message? */
@@ -15,6 +14,7 @@ typedef struct args{
   char *d;  /* tab delineator */
   char **inputFiles;
   int m;    /* minimum coverage */
+  int c;    /* number of columns */
   int numInputFiles;
 } Args;
 

@@ -1,15 +1,15 @@
-CXXFLAGS= -g -std=c++11 -Wall -W -O3
+SUBDIRS= MAPGD_1.0 
 
-mapdg: Estimator.o MapGD.o ReadFile.o 
-	$(CXX) $^ $(CXXFLAGS) -o ../bin/mapgd
-.PHONY: test
-test:
-	../scripts/RunMeLinux.sh ../test/test.pileup
+.PHONY: subdirs $(SUBDIRS) clean
 
-.PHONY: debug
-debug: CXXFLAGS=-g -std=c++11 -Wall -W -Og 
-debug: mapdg
+subdirs: $(SUBDIRS)
 
+$(SUBDIRS):
+	$(MAKE) -C $@
+
+all: src
+
+test: src
+	cd test && sh testMapGD.sh
 clean:
-	rm -f *.o 
-	rm ../bin/*
+	cd src && $(MAKE) $@
