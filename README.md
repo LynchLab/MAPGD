@@ -55,7 +55,7 @@ To download samtools please visit http://www.htslib.org/
 
 <h5> For windows users </h5>
 
-After clicking the "Downlaod ZIP" button you will be prompted to save or open the file MAPGD-master.zip. Extract this file to the directory of your choice, which should create the new directory "MAPGD-master". Open this directory in windows explorer (either by ?) and click on the file "RunMeWin.bat". You will then be prompted to enter the name of the file you wish to analyze. . . . 
+After clicking the "Downlaod ZIP" button you will be prompted to save or open the file MAPGD-master.zip. Extract this file to the directory of your choice, which should create the new directory "MAPGD-master". Open this directory in windows explorer and click on the file "RunMeWin-32.bat" if you have a 32 bit version of windows or the "RunMeWind-64.bat" if you have a 64 bit verions of windows. If you don't know what version of windows you have, then just try clicking on both. You will be prompted to enter the name of the file you wish to analyze. You can type "test\test.pileup" to analyze test data. To analyze your own data, just drag and drop the file into MAPGD-master folder, click on the RunMeWin-32.bat or RunMeWin-64.bat and type the filename of the file you would like to analyze. Output will be saved to the file output.txt.   
 
 mapgd can also be run from the command prompt, which can be accessed pressing the Windows logo key and r key simultaneously then typing "cmd" into menu which appears.
 
