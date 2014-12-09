@@ -21,10 +21,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA.
  *****************************************************************************/
 #include <stdio.h>
-extern FILE *efopen(char *fname, char *mode); 
+extern FILE *efopen(char *fname, char const *mode); 
 extern void eprintf(char *, ...);
-extern char *estrdup (char *);
+extern char *estrdup (char const *);
 extern void *emalloc(size_t);
 extern void *erealloc(void *, size_t);
 extern char *progname(void);
-extern void setprogname2(char *);
+extern void setprogname2(char const *);

@@ -94,7 +94,7 @@ Args *getArgs(int argc, char *argv[]){
 }
 
 
-void printUsage(char *version){
+void printUsage(char const *version){
   printf("sam2pro version %s written by Bernhard Haubold\n", version);
   printf("purpose: convert sam output to profiles\n");
   printf("usage: sam2pro [inputFile(s)]\n");

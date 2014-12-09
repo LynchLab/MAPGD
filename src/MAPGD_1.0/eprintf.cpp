@@ -29,7 +29,7 @@
 #include "eprintf.hpp"
 
 /* efopen: open file and report if error */
-FILE *efopen(char *fname, char *mode){
+FILE *efopen(char *fname, char const *mode){
   FILE *fp;
 
   if((fp = fopen(fname, mode)) == NULL)
@@ -56,7 +56,7 @@ void eprintf(char *fmt, ...){
 }
 
 /* estrdup: duplicate a string, report if error */
-char *estrdup(char *s){
+char *estrdup(char const *s){
   char *t;
   
   t = (char *)malloc(strlen(s)+1);
@@ -88,7 +88,7 @@ void *erealloc(void *p, size_t n){
 static char *name = NULL; /* program name for messages */
 
 /* setprogram: set stored name of program */
-void setprogname2(char *str){
+void setprogname2(char const *str){
   name = estrdup(str);
 }
 

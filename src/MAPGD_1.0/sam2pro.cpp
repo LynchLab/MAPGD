@@ -8,13 +8,13 @@
 int sam2pro(int argc, char *argv[]){
 
   Args *args;
-  char *version;
+  char const *version="0.6";
+  setprogname2("mapgd sam2pro");
+ 
   FILE *fp;
   int i;
   int dic[256];
 
-  version = "0.6";
-  setprogname2("sam2pro");
   args = getArgs(argc, argv);
 
   for(i=0;i<256;i++)

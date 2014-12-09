@@ -19,4 +19,4 @@ typedef struct args{
 } Args;
 
 Args *getArgs(int argc, char *argv[]);
-void printUsage(char *version);
+void printUsage(char const *version);
