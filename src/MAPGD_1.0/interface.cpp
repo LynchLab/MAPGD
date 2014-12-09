@@ -9,9 +9,40 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
-#include <unistd.h>
+#include <iostream>
+
 #include "interface.hpp"
 #include "eprintf.hpp"
+
+extern char *optarg;
+extern int optind, opterr, optopt;
+
+/* @Breif : A reimplementation of the unix getopt command for compatibility.
+*  It probably doesn't follow all the standards yet and will no doubt break things.
+*/
+
+char getopt(int argc, char *argv[], char*optString){
+	char *opt=optString;
+
+	if (optind<argc){
+		if (argv[optind][0]=='-'){
+			optopt=argv[optind][1];
+			while(*opt!=0){
+				if (optopt==*opt){
+					if ( *(opt+1)==':') if (optind<argc-1) optarg=argv[optind+1];
+					optind+=2;
+					return *opt;
+				};
+				opt++;
+			};
+			optind+=1;
+			return '?';
+		};
+		return -1;
+	};
+	return -1;
+};
+
 
 Args *args;
 
@@ -35,7 +66,7 @@ Args *getArgs(int argc, char *argv[]){
     case 'c':                           /* number of columns in output */
       args->c = atoi(optarg);
       if(args->c != 5 && args->c != 6){
-	printf("ERROR: please specify 5 or 6 column output\n");
+	std::cerr << "ERROR: please specify 5 or 6 column output\n";
 	args->e = 1;
       }
       break;
@@ -47,7 +78,7 @@ Args *getArgs(int argc, char *argv[]){
       args->h = 1;
       break;
     default:
-      printf("# unknown argument: %c\n",c);
+      std::cerr << "# unknown argument:" << c << std::endl;
       args->e = 1;
       return args;
     }
@@ -56,7 +87,7 @@ Args *getArgs(int argc, char *argv[]){
   args->inputFiles = argv + optind;
   args->numInputFiles = argc - optind;
   if(args->c == 0){
-    printf("ERROR: please specify the desired number of output columns using the \ty{-c} option\n");
+    std::cerr << "ERROR: please specify the desired number of output columns using the \ty{-c} option" << std::endl;
     args->e = 1;
   }
   return args;

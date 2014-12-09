@@ -119,11 +119,11 @@ double sig1, sig2, sig3, sig4;			/* counters for significance tests */
 
 double lnfact[2010];
 
-profile pop1, pop2;
+profile pop[2];
 /* Open the output file. */
 
-pop1.open(infile1, "r");
-pop2.open(infile2, "r");
+pop[0].open(infile1, "r");
+pop[1].open(infile2, "r");
 output=fopen(outfile, "w");
 
 /* ********** Set the minor-allele frequencies for the first population at which the computations will be done. ************* */
@@ -148,10 +148,7 @@ maxig = 2 * nsample;
 /* 1) GET THE READS FOR THE FIRST POPULATION. */
 /* 2) GENERATE THE READS FOR THE SECOND POPULATION. */
 
-	sync(pop1, pop2)
-
-
-
+	sync(2, pop)
 
 /* 3) GENERATE THE READ COUNTS POOLED OVER BOTH SAMPLES */
 
