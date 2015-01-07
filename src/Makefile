@@ -1,4 +1,4 @@
-SUBDIRS= MAPGD_1.0 
+SUBDIRS= MAPGD_2.0 
 
 .PHONY: subdirs $(SUBDIRS) clean
 

@@ -6,15 +6,17 @@ Copyright (C) Michael Lynch, see notice at end of README.
 
 <h3> Introduction </h3>
 
-<h5> the pe command </h5>
+<h5> the ep and cp commands </h5>
 
-This program uses a maximum-likelihood (ML) procedure to estimate allele-frequencies from the numbers of the four nucleotides (quartets) observed at individual genomic sites. For each site, the major and minor nucleotides are identified, their frequencies are estimated by ML, and the polymorphism is tested for statistical significance.
+These commands use a maximum-likelihood (ML) procedure to estimate allele-frequencies from the numbers of the four nucleotides (quartets) observed at individual genomic sites. For each site, the major and minor nucleotides are identified, their frequencies are estimated by ML.
+
+The ep command estimates whether a site is significantly polymorphic within a population; The cp command estimates whether the frequency of major alleles at a site differ between two sample population.
 
 The designated major nucleotide is simply the one with the highest rank, and the minor nucleotide is the one with the second highest rank. If the top three ranks are all equal, the site is treated as unresolvable, with both major and minor nucleotides designated in the output by a *.
 
 If the second and third ranks are equal but lower than the major-nucleotide count, the site is treated as monomorphic, with the minor nucleotide again designated by a *.
 
-This analysis allows us to distinguish between sites that may appear polymorphic because of sequencing errors and sites that are truly polymorphic.
+The ep command is useful to distinguish between sites that may appear polymorphic because of sequencing errors and sites that are truly polymorphic, and the cp command is useful to determine whether sampeling and sequencing errors can explain differences in estimates of allele frequencies, or whether allele frequencies differ between population samples.
 
 <h3> Making the Input File </h3>
 
@@ -23,19 +25,29 @@ The input file is a plain text file consists of five tab delimited columns, one 
 
 We call this file format the .pro file format. Files in this format can be generated from mpileup files using the command "mapgd proview" 
 
-Currently mapgd allows for the estimation of allele frequencies in pooled population sequence through the "ep" option and the conversion of mpileups to the ".pro" format though the proview option. We hope to add more options in the future.
+Currently mapgd allows for the estimation of allele frequencies in pooled population sequence through the "ep" command, the comparison of allele frequencies between two populations with the "cp" command, and the conversion of mpileups to the ".pro" format though the proview command. We hope to add more commands in the future.
 
-For example, if the sequencing center gives you a file called "reads.fastq" your entire work flow might look something like this: 
+For example, if the sequencing center gives you two files called "population1.fastq" and "population1.fastq" your entire work flow might look something like this: 
 
 <h5> a typical workflow </h5>
-	bwa aln Reference.fna reads.fastq > reads.sai
-	bwa sam Reference.fna reads.sai reads.fastq > reads.sam
-	samtools view -bS reads.sam > reads.bam
-	samtools sort reads.bam reads.sort
-	samtools index reads.sort.bam
-	samtools mpileup -q 25 -Q 25 reads.sort.bam > reads.mpileup
-	mapgd proview reads.pileup > reads.pro
-	mapgd ep -i reads.pro -o allelfrequencies.txt
+	bwa aln Reference.fna population1.fastq > population1.sai
+	bwa sam Reference.fna population1.sai population1.fastq > reads.sam
+	samtools view -bS population1.sam > population1.bam
+	samtools sort population1.bam population1.sort
+	samtools index population1.sort.bam
+
+	bwa aln Reference.fna population2.fastq > population2.sai
+	bwa sam Reference.fna population2.sai population2.fastq > population2.sam
+	samtools view -bS population2.sam > population2.bam
+	samtools sort population2.bam population2.sort
+	samtools index population2.sort.bam
+
+	samtools mpileup -q 25 -Q 25 population1.sort.bam population2.sort.bam > metapopulation.mpileup
+	mapgd proview metapopulation.pileup > metapopulation.pro
+
+	mapgd ep -i metapopulation.pro -p 1 -0 population1_allelfrequencies.txt
+	mapgd ep -i metapopulation.pro -p 2 -o population2_allelfrequencies.txt
+	mapgd cp -i metapopulation.pro -p 1 2 -o allelfrequency_comparison.txt
 
 If you wish to include additional columns for data identification, the following line must be edited in the file ReadFile.cpp:
 
@@ -78,9 +90,19 @@ The program can be installed for all users of a computer by typing:
 
 Scripts for both Linux and Mac users are present in the top level directory, or the program can be run by typing "mapgd ep -i FILENAME" where FILENAME is the a .pro file.
 
-<h3> Output file </h3>
+<h3> The output of ep </h3>
 
 Columns 1 and 2 are site identifiers; 3 and 4 designate major and minor nucleotides; 5,6 are the major- and minor-nucleotide frequencies; 7 is the estimated error rate; 8 is the total coverage at the site; 9 is the likelihood-ratio test statistic for polymorphism. Output columns are tab delimited.
+
+Under the assumption of a chi-square distribution for the test statistic with one degree of freedom, significance at the 0.05, 0.01, 0.001 levels requires that the likelihood-ratio test statistic exceed 3.841, 6.635, and 10.827, respectively. 
+
+In principle, the 95% support interval can be obtained by determining the changes in the estimate of the minor allele frequency in both directions required to reduce the log likelihood by the appropriate chi-square value (e.g., 3.841) although this is not currently implemented. 
+
+By default the program prints information to the file "dataout.txt" and this file will appear in the same location as the program. If an alternative file name is desired simply type if "mapgd -o FILENAME" where FILENAME is the name of your output file.
+
+<h3> The output of cp </h3>
+
+Columns 1 and 2 are site identifiers; 3 and 4 designate major and minor nucleotides; 5,6 are the major nucleotide frequencies in population 1 and 2 respectively; 7 is the estimated error rate; 8 and 9 are  the total coverage at the site in populations 1 and 2 respectively; and 10 is the likelihood-ratio test statistic for polymorphism. Output columns are tab delimited.
 
 Under the assumption of a chi-square distribution for the test statistic with one degree of freedom, significance at the 0.05, 0.01, 0.001 levels requires that the likelihood-ratio test statistic exceed 3.841, 6.635, and 10.827, respectively. 
 

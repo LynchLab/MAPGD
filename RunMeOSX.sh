@@ -5,13 +5,14 @@ if [ $# = 0 ]; then
 	exit
 fi
 if [ ! -f $filename ]; then
-	echo "cannot open file" $1 
+	echo "cannot open file." $1 
 	exit
 fi
-if [ ! -f ../bin/mapgd ]; then
+if [ ! -f ./bin/mapgd ]; then
 	echo "mapgd cannot be found. Perhaps you haven't run make?"
 	exit
 fi
 
-./bin/mapgd sam2pro $filename > infile.txt
-./bin/mapgd ep -i ./infile.txt -o ./outfile.txt
+./bin/mapgd proview -i $filename > infile.txt
+./bin/mapgd ep -i ./infile.txt -p 1 > outfile.txt
+echo "mapgd executed correctly, results in outfile.txt."
