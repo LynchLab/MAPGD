@@ -14,5 +14,5 @@ if [ ! -f ./bin/mapgd ]; then
 fi
 
 ./bin/mapgd proview -i $filename > infile.txt
-./bin/mapgd ep -i ./infile.txt -p 1 > outfile.txt
+./bin/mapgd cp -i ./infile.txt -p 1 2 > outfile.txt
 echo "mapgd executed correctly, results in outfile.txt."

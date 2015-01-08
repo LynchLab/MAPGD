@@ -37,7 +37,7 @@ int proview(int argc, char *argv[])
 	env.optional_arg('i',"input",	&infile,	&arg_setstr, 	"an error occured", "sets the input file (default stdin)");
 	env.optional_arg('o',"output",	&outfile,	&arg_setstr, 	"an error occured", "sets the output file (default stdout)");
 	env.optional_arg('t',"trim",	&args.pvalue,	&arg_setdouble,	"an error occured", "skip printing lines where an allele occurs primarly in one direction, \n\t\tgive that the p-value < the number provided");
-	env.optional_arg('n',"notrim",	&args.notrim,	&arg_setint,	"an error occured", "disable trimming");
+	env.flag(	'n',"notrim",	&args.notrim,	&flag_set,	"an error occured", "disable trimming");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 

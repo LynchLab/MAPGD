@@ -48,7 +48,7 @@ int estimatePooled(int argc, char *argv[])
 
 	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file", "sets the input file for the program (default 'datain.txt')");
 	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file", "sets the output file for the program (default 'dataout.txt')");
-	env.optional_arg('p',"output", 	&p,		&arg_setint, 	"an error occured while setting p", "the population to analize");
+	env.optional_arg('p',"population", &p,		&arg_setint, 	"an error occured while setting p", "the population to analyze.");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 	env.flag(	'V',"verbose", 	&verbose,	&flag_set, 	"an error occured", "prints more information while the command is running");
@@ -64,8 +64,9 @@ int estimatePooled(int argc, char *argv[])
 	out=&std::cout;
 	profile pro;
 
-	if (infile.size()!=0) {if (pro.open(infile.c_str(), 'r')==NULL) {printUsage(env);} }
-	else pro.open('r');
+	//if (infile.size()!=0) {if (pro.open(infile.c_str(), 'r')==NULL) {printUsage(env);} }
+	//else 
+	pro.open('r');
 
 	int coverage;						/* total number of reads at the site */
 
@@ -198,9 +199,9 @@ int estimatePooled(int argc, char *argv[])
 				llstat=0.0;
 			}
 			if (!fliped)
-				*out <<  pml  << '\t' << eml  << '\t' <<  coverage << '\t' <<  llstat << '\t'; 
+				*out << std::fixed << std::setprecision(7) << pml  << '\t' << eml  << '\t' <<  coverage << '\t' <<  llstat << '\t'; 
 			else
-				*out <<  (1.0-pml) << '\t' << eml  << '\t' <<  coverage << '\t' <<  llstat << '\t'; 
+				*out << std::fixed << std::setprecision(7) << (1.0-pml) << '\t' << eml  << '\t' <<  coverage << '\t' <<  llstat << '\t'; 
 
 		}
 		*out << std::endl;

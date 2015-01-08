@@ -182,7 +182,6 @@ class env_t{
 			std::cout << (*rarg)->opt << " is set.\n";
 			++rarg;
 		};
-		std::cout << "COOL!\n";
 		return true;
 	};
 	void close(void);

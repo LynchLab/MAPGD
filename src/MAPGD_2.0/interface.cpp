@@ -84,6 +84,7 @@ int arg_setdouble(int argc, char **argv, void *parm)
 
 int flag_set(void *parm)
 {
+	*(bool *)(parm)=!(*(bool *)(parm));
 	return 0;
 }
 
@@ -147,7 +148,7 @@ int parsargs(int argc, char *argv[], env_t env)
 								if (*optopt==flag->opt){
 									flag->func(flag->parm);
 									optopt++;
-									arg->set=true;
+									//arg->set=true;
 									break;
 								};
 								++flag;

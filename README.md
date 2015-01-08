@@ -1,4 +1,4 @@
-MAPGD version 1.0
+MAPGD version 2.0
 
 <h5> To download this program click the "Download ZIP" button to the upper right -> </h5>
 

@@ -28,6 +28,7 @@ int comparePooled(int argc, char *argv[])
 	std::string outfile="dataout.txt";
 
 	env_t env;
+	bool sane=false;
 
 	int t=0;
 	int s=0;
@@ -42,18 +43,21 @@ int comparePooled(int argc, char *argv[])
 	env.optional_arg('m',"min", &t, &arg_setint, "please provide an interger", "sets minimum");
 	env.optional_arg('M',"MAX", &s, &arg_setint, "please provide an interger", "sets maximum");
 
-	env.optional_arg('c',"comp", &pop, &arg_set2int, "please provide two intergers", "choose two populations to compare");
+	env.optional_arg('p',"population", &pop, &arg_set2int, "please provide two intergers", "choose two populations to compare");
 
 //	env.optional_arg('m',"mgd", &sitefile, &arg_setstr, "please provide a valid mgd file", "a file that provides likelihood of polymorphism in each population.");
 
-	env.optional_arg('i',"in", &infile, &arg_setstr, "please provide a valid inpuit file", "specifies input file (default stdin)");
-	env.optional_arg('o',"out", &outfile, &arg_setstr, "please provide a valid name and location for output", "specifies output file (default stdout) ");
+	env.optional_arg('i',"in", &infile, &arg_setstr, "please provide a valid inpuit file", "specifies input file (default datain.txt)");
+	env.optional_arg('o',"out", &outfile, &arg_setstr, "please provide a valid name and location for output", "specifies output file (default stdout.txt) ");
 
 	env.flag('h',"help", &env, &flag_help, "an error occured while displaying the help mesaage", "prints this message");
+	env.flag('s',"sane", &sane, &flag_set, "takes no argument", "set default in/out to the stdin and stdout.");
 	env.flag('v',"version", &env, &flag_version, "an error occured while displaying the version mesaage", "prints the program version");
 
 	if ( parsargs(argc, argv, env) ) printUsage(env);
 	if ( !env.required_set() ) printUsage(env);
+
+	if ( sane ) { infile=""; outfile=""; }
 	
 	lnfactinit();
 
@@ -63,8 +67,16 @@ int comparePooled(int argc, char *argv[])
 
 	/* Open the input file. */
 
+	std::cout << infile.size() << std::endl;
 	if (infile.size()!=0) {if (pro.open(infile.c_str(), 'r')==NULL) {printUsage(env);} }
 	else pro.open('r');
+/*
+	if (outfile.size()!=0) {
+		outFile.open(outfile, 'w');
+		if (!outFile) printUsage(env);
+		out=&outFile;
+	}*/
+
 
 	/* Open the input file. */
 
@@ -82,24 +94,23 @@ int comparePooled(int argc, char *argv[])
 	double emltheta;
 
 	double lnterm;
-	double lnpml, ln1pml;
+	float_t lnpml, ln1pml;
 
-	double exphimaj[20001];					/* terms used in the likelihood test statistic */
-	double exphimin[20001];
+	float_t exphimaj[20001];					/* terms used in the likelihood test statistic */
+	float_t exphimin[20001];
 
-	double lhoodP1, lhoodS1;				/* likelihoods of the data in population 1 under the assumptions of pooled or distinct allele frequencies */
-	double lhoodP2, lhoodS2;				/* likelihoods of the data in population 2 under the assumptions of pooled or distinct allele frequencies */
+	float_t lhoodP1, lhoodS1;				/* likelihoods of the data in population 1 under the assumptions of pooled or distinct allele frequencies */
+	float_t lhoodP2, lhoodS2;				/* likelihoods of the data in population 2 under the assumptions of pooled or distinct allele frequencies */
 
-	double llhoodP, llhoodS;				/* log likelihoods under the models of homogeneity and heterogeneity of allele frequencies */ 
+	float_t llhoodP, llhoodS;				/* log likelihoods under the models of homogeneity and heterogeneity of allele frequencies */ 
 
-	int minig, maxig, ig;					/* limits to allele frequency count used in the likelihood analysis, to streamline the computational time */
+	count_t minig, maxig, ig;					/* limits to allele frequency count used in the likelihood analysis, to streamline the computational time */
 
-	int coverage;
+	count_t coverage;
 
 	double llstat;						/* difference in the log likelihoods */
-	double sig1, sig2, sig3, sig4;				/* counters for significance tests */
 
-	int a=pop[0], b=pop[1];
+	count_t a=pop[0]-1, b=pop[1]-1;
 
 	/* Precalculate the binomial terms for the full likelihood. */
 
@@ -110,8 +121,6 @@ int comparePooled(int argc, char *argv[])
 	while (pro.read()!=EOF ){
 
 		/* 1) GET THE READS FOR ALL POPULATIONS, AND SET THE METAPOPULATION TO A AND B. */
-
-		pro.read();
 
 		pro.maskall();
 		pro.unmask(a);
@@ -137,7 +146,7 @@ int comparePooled(int argc, char *argv[])
 		pml = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
 		pml = pml / (1.0 - (4.0 * eml / 3.0) );
 		emltheta = 1.0 - (4.0 * eml / 3.0);
-	
+
 		if (pml >= 1.0) { pml = 0.999999999; }
 
 //		std::cout << EMLMIN << ", " << coverage << ", " << pro.getcount(0) << ", " << pro.getcount(1) << std::endl;	
@@ -245,9 +254,10 @@ int comparePooled(int argc, char *argv[])
 	/* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
 
 	llstat = 2.0 * (llhoodS - llhoodP);
-
+	out->width(14);
+	out->fill('x');
 	/* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
-	*out << std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) <<'\t' << pml << '\t' << pmlA << '\t' << pmlB << '\t' << eml << '\t'<< pro.getcoverage(a) << '\t' << pro.getcoverage(b) << '\t' << llstat << std::endl;
+	*out << std::fixed  <<std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) <<'\t' << pml << '\t' << pmlA << '\t' << pmlB << '\t' << eml << '\t'<< pro.getcoverage(a) << '\t' << pro.getcoverage(b) << '\t' << llstat << std::endl;
 	}
 exit(0);
 

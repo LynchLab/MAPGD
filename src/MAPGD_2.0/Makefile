@@ -16,7 +16,7 @@ debug: mapdg
 install: mapdg
 	install -m 0755 ../../bin/mapgd $(prefix)/bin
 .PHONY: install
-
+	
 clean:
 	rm -f *.o
 	rm ../../bin/*

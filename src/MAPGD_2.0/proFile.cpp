@@ -191,10 +191,14 @@ count_t profile::getcount(count_t c)
 
 count_t profile::getcoverage(count_t s)
 {
-	return site_.sample[s].base[0]+
-		site_.sample[s].base[1]+
-		site_.sample[s].base[2]+
-		site_.sample[s].base[3];
+	if (s<samples_)	return site_.sample[s].base[0]+
+				site_.sample[s].base[1]+
+				site_.sample[s].base[2]+
+				site_.sample[s].base[3];
+	else {
+		std::cerr << "Attempted to access a population that doesn't exist. Exiting." << std::endl;
+		exit(0);
+	};
 };
 
 count_t profile::getcoverage()

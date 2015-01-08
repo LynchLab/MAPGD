@@ -6,6 +6,7 @@
 #include 	<sys/types.h>
 #include	<stdlib.h>
 #include 	<iostream>
+#include 	<iomanip>
 #include 	"interface.h" 
 #include 	"proFile.h" 
 

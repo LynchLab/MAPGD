@@ -30,7 +30,7 @@ struct Args{
 	int min;
 	int c;
 	char delim;
-	int notrim;
+	bool notrim;
 };
 
 int proview(int argc, char *argv[]);
