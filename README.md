@@ -43,9 +43,9 @@ For example, if the sequencing center gives you two files called "population1.fa
 	samtools index population2.sort.bam
 
 	samtools mpileup -q 25 -Q 25 population1.sort.bam population2.sort.bam > metapopulation.mpileup
-	mapgd proview metapopulation.pileup > metapopulation.pro
+	mapgd proview -i metapopulation.pileup > metapopulation.pro
 
-	mapgd ep -i metapopulation.pro -p 1 -0 population1_allelfrequencies.txt
+	mapgd ep -i metapopulation.pro -p 1 -o population1_allelfrequencies.txt
 	mapgd ep -i metapopulation.pro -p 2 -o population2_allelfrequencies.txt
 	mapgd cp -i metapopulation.pro -p 1 2 -o allelfrequency_comparison.txt
 
