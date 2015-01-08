@@ -3,8 +3,8 @@
 #include 	<iostream>
 
 #define EMLMIN	0.00001
+/*
 #define LNFMAX	10000
-
 float_t lnf[LNFMAX];
 
 void lnfactinit(void){
@@ -20,7 +20,14 @@ float_t lnfact(count_t x){
 		return  fx * log( fx - 1.0) + log(pow(2.0 * M_PI * fx, 0.5 )  ); 
 	} 
 
-}
+}*/
+
+float_t multidist (float_t A, float_t B, float_t N, float_t a, float_t e){
+	float_t pa=log( a*(1.-e)+e/3.*(1-a) );
+	float_t pb=log( (1.-a)*(1.-e)+e/3.*a );
+	float_t pe=log( 2.*e/3. );
+	return pa*A+pb*B+pe*(N-A-B);
+};
 
 int comparePooled(int argc, char *argv[])
 {
@@ -59,7 +66,7 @@ int comparePooled(int argc, char *argv[])
 
 	if ( sane ) { infile=""; outfile=""; }
 	
-	lnfactinit();
+	//lnfactinit();
 
 	std::ostream *out;
 	out=&std::cout;
@@ -89,22 +96,9 @@ int comparePooled(int argc, char *argv[])
 	double eml, pml;					/* maximum-likelihood estimates of the error rate and major-allele frequency */
 	double pmlA, pmlB;
 
-	double totests;						/* sums to use in estimating mean and standard deviation of the estimates over all runs */
-
-	double emltheta;
-
-	double lnterm;
-	float_t lnpml, ln1pml;
-
-	float_t exphimaj[20001];					/* terms used in the likelihood test statistic */
-	float_t exphimin[20001];
-
 	float_t lhoodP1, lhoodS1;				/* likelihoods of the data in population 1 under the assumptions of pooled or distinct allele frequencies */
 	float_t lhoodP2, lhoodS2;				/* likelihoods of the data in population 2 under the assumptions of pooled or distinct allele frequencies */
-
 	float_t llhoodP, llhoodS;				/* log likelihoods under the models of homogeneity and heterogeneity of allele frequencies */ 
-
-	count_t minig, maxig, ig;					/* limits to allele frequency count used in the likelihood analysis, to streamline the computational time */
 
 	count_t coverage;
 
@@ -127,8 +121,6 @@ int comparePooled(int argc, char *argv[])
 		pro.unmask(b);
 
 		coverage=pro.getcoverage();
-		minig = 0;
-		maxig=coverage;
 
 		/* 4) IDENTIFY THE OVERALL MAJOR AND MINOR ALLELES. */ 
 
@@ -145,54 +137,16 @@ int comparePooled(int argc, char *argv[])
 			if (eml == 0.0) { eml = EMLMIN;}
 		pml = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
 		pml = pml / (1.0 - (4.0 * eml / 3.0) );
-		emltheta = 1.0 - (4.0 * eml / 3.0);
 
 		if (pml >= 1.0) { pml = 0.999999999; }
 
-//		std::cout << EMLMIN << ", " << coverage << ", " << pro.getcount(0) << ", " << pro.getcount(1) << std::endl;	
-//		std::cout << pmaj << ", :: " << eml << ", " << pml << ", " << emltheta << std::endl;
-	
 		/* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 			
 		/* Calculate the component for the first population. */
 
-		count_t coverageA=pro.getcoverage(a);
-		count_t coverageB=pro.getcoverage(b);
-
-		lhoodP1 = 0.0;
-		
-		for (ig = minig; ig <= coverageA; ++ig) {
-			exphimaj[ig] = log(((((double) ig) / coverageA) * emltheta) + (eml / 3.0));
-			exphimin[ig] = log(1.0 - eml - ((((double) ig) / coverageA) * emltheta)); }
-
-		if ( (pml *(1.0-pml)) > 0.0) {
-		
-			lnpml = log(pml);
-			ln1pml = log(1.0 - pml);
-
-			for (ig = minig; ig <= coverageA; ++ig) {
-				lnterm = lnfact(coverageA) - lnfact(ig) - lnfact(coverageA-ig) + (((double) ig) * lnpml) + (((double) (coverageA-ig)) * ln1pml)
-					+ (((double) pro.getcount(a,0)) * exphimaj[ig]) +  (((double) pro.getcount(a,1)) * exphimin[ig]); 
-				lhoodP1 = lhoodP1 + exp(lnterm); }
-		}
-		
-		for (ig = minig; ig <= coverageB; ++ig) {
-			exphimaj[ig] = log(((((double) ig) / coverageB) * emltheta) + (eml / 3.0));
-			exphimin[ig] = log(1.0 - eml - ((((double) ig) / coverageB) * emltheta)); }
-
-		/* Calculate the component for the second population. */
-
-		lhoodP2 = 0.0;
-		if ( (pml *(1.0-pml)) > 0.0) {
-			for (ig = minig; ig <= coverageB; ++ig) {
-				lnterm = lnfact(coverageB) - lnfact(ig) - lnfact(coverageB-ig) + (((double) ig) * lnpml) + (((double) (coverageB-ig)) * ln1pml)
-					+ (((double) pro.getcount(b,0)) * exphimaj[ig]) +  (((double) pro.getcount(b,1)) * exphimin[ig]); 
-				lhoodP2 = lhoodP2 + exp(lnterm); }
-		}
-		
-		if ( (pml *(1.0-pml)) <= 0.0) {
-			llhoodP = 0.0;}
-		else { llhoodP = log(lhoodP1) + log(lhoodP2); }
+		lhoodP1=multidist(pro.getcount(a, 0), pro.getcount(a, 1), pro.getcoverage(a), pml, eml); 
+		lhoodP2=multidist(pro.getcount(b, 0), pro.getcount(b, 1), pro.getcoverage(b), pml, eml); 
+		llhoodP = lhoodP1+ lhoodP2;
 
 		/* 6) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF POPULATION SUBDIVISION. */ 
 
@@ -207,60 +161,16 @@ int comparePooled(int argc, char *argv[])
 		if (pmlA >= 1.0) { pmlA = 0.999999999; }
 		if (pmlB >= 1.0) { pmlB = 0.999999999; }
 		
-		//*out << pmlA << ", " << pmlB << std::endl;
-
-		/* Calculate the component for the first population. */
-
-		lhoodS1 = 0.0;
-		lnpml = log(pmlA);
-		ln1pml = log(1.0 - pmlA);
-
-		for (ig = minig; ig <= coverageA; ++ig) {
-			exphimaj[ig] = log(((((double) ig) / coverageA) * emltheta) + (eml / 3.0));
-			exphimin[ig] = log(1.0 - eml - ((((double) ig) / coverageA) * emltheta)); }
-	
-		if (  ( (pmlA * (1.0 - pmlA) ) != 0.0)  ) {
-			for (ig = minig; ig <= coverageA; ++ig) {
-				//*out << "lhood:" << lhoodS1 << std::endl;
-				lnterm = lnfact(coverageA) - lnfact(ig) - lnfact(coverageA-ig) + ( ( (double) ig) * lnpml) + ( ( (double) (coverageA-ig)) * ln1pml)
-					+ ( ((double) pro.getcount(a,0)) * exphimaj[ig]) +  (((double) pro.getcount(a,1)) * exphimin[ig]); 
-				lhoodS1 = lhoodS1 + exp(lnterm); } } 
-				//*out << "done:" << lhoodS1 << std::endl;
+		lhoodS1 = multidist(pro.getcount(a, 0), pro.getcount(a, 1), pro.getcoverage(a), pmlA, eml); 
+		lhoodS2 = multidist(pro.getcount(b, 0), pro.getcount(b, 1), pro.getcoverage(b), pmlB, eml); 
+		llhoodS = lhoodS1+lhoodS2;
 		
-		/* Calculate the component for the second population. */
+		/* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
 
-		lhoodS2 = 0.0;
-		lnpml = log(pmlB);
-		ln1pml = log(1.0 - pmlB);
-
-		for (ig = minig; ig <= coverageB; ++ig) {
-			exphimaj[ig] = log(((((double) ig) / coverageB) * emltheta) + (eml / 3.0));
-			exphimin[ig] = log(1.0 - eml - ((((double) ig) / coverageB) * emltheta)); }
-		
-		if ( ( (pmlB * (1.0 - pmlB) ) != 0.0) ) { 
-			for (ig = minig; ig <= coverageB; ++ig) {
-				//*out << "lhood:" << lhoodS2 << std::endl;
-				lnterm = lnfact(coverageB) - lnfact(ig) - lnfact(coverageB-ig) + (((double) ig) * lnpml) + (((double) (coverageB-ig)) * ln1pml)
-					+ ( ((double) pro.getcount(b,0)) * exphimaj[ig]) +  (((double) pro.getcount(b,1)) * exphimin[ig]); 
-				lhoodS2 = lhoodS2 + exp(lnterm); } }
-
-		if ( ( (lhoodS1 * lhoodS2) == 0.0) ) {
-			llhoodS = 0.0;
-		} else { 
-			llhoodS = log(lhoodS1) + log(lhoodS2);
-		} 
-
-		
-	/* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
-
-	llstat = 2.0 * (llhoodS - llhoodP);
-	out->width(14);
-	out->fill('x');
-	/* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
-	*out << std::fixed  <<std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) <<'\t' << pml << '\t' << pmlA << '\t' << pmlB << '\t' << eml << '\t'<< pro.getcoverage(a) << '\t' << pro.getcoverage(b) << '\t' << llstat << std::endl;
+		llstat = fabs(2.0 * (llhoodS - llhoodP) );
+		/* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
+		*out << std::fixed  <<std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) <<'\t' << pml << '\t' << pmlA << '\t' << pmlB << '\t' << eml << '\t'<< pro.getcoverage(a) << '\t' << pro.getcoverage(b) << '\t' << llstat << std::endl;
 	}
-exit(0);
-
-
+	exit(0);
 	std::cout << t << std::endl;
 };
