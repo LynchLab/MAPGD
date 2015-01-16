@@ -11,6 +11,9 @@
 #include <algorithm>
 #include "streamtools.h"
 
+#define NONE	0
+#define PEAK	1
+
 typedef unsigned int count_t;
 typedef char name_t;
 typedef struct quartet {
@@ -34,6 +37,7 @@ private:
 	count_t sorted_[5];				// a vector to store the calls from reads
 	static const std::string names_;		// the names of the bases ACGTN.
 	bool *masked_;					// an array to determin which populations to use for group calculations.	
+	bool donothing_;
 
 	std::istream *in;				// all data is read from in.
 	std::ostream *out;				// all data is writen is writen to out.
@@ -47,7 +51,8 @@ public:
 	profile* open(const char);			//The function that opens a profile.
 	bool is_open(void);				//returns true if profile is open, false otherwise.
 
-	int read(void);					//reads a line from the instream. Returns 0 on success, EOF on EOF.
+	int read();					//reads a line from the instream. Returns 0 on success, EOF on EOF.
+	int read(int);					//reads a line from the instream. Returns 0 on success, EOF on EOF.
 	int write(void);				//reads a line from the instream. Returns 0 on success, EOF on EOF.
 	int seek(void);					//reads a line from the instream. Returns 0 on success, EOF on EOF.
 
@@ -60,7 +65,7 @@ public:
 	std::string getids(void);			//
 	count_t getcoverage(count_t);			//
 	count_t getcoverage(void);			//
-	count_t samplesize(void);			//
+	count_t size(void);			//
 	void maskall(void);				//
 	void unmask(count_t);				//
 	void mask(count_t);				//

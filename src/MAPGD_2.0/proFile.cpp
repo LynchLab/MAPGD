@@ -7,6 +7,11 @@
 const std::string profile::names_ ="ACGT*";
 
 int profile::read(void){
+	return profile::read(NONE);
+};
+
+int profile::read(int arg){
+	if (donothing_) {donothing_=false; return 0;};
 	std::string line;
 	sorted_[0]=0;
 	sorted_[1]=1;
@@ -21,9 +26,11 @@ int profile::read(void){
 			if (line[0]!='>'){
 				fields=split(line, delim);
 				site_.id1=fields[0];
-				samples_=(fields.size()-1)/4;
-				if (masked_!=NULL) {delete masked_; masked_=new bool[samples_];}
-				else masked_=new bool[samples_];
+				if (fields.size()-1/4!=samples_){
+					if (masked_!=NULL) delete masked_; 
+					samples_=(fields.size()-1)/4;
+					masked_=new bool[samples_];
+				};
 				while (site_.sample.size()<samples_) site_.sample.push_back(quartet_t() );
 				for (unsigned int x=0; x<samples_; ++x){
 					site_.sample[x].base[0]=atoi(fields[1+x*4].c_str() );
@@ -32,9 +39,9 @@ int profile::read(void){
 					site_.sample[x].base[3]=atoi(fields[4+x*4].c_str() );
 				};
 			} else {
-				line.erase(line.begin() );
+				line.erase(line.begin());
 				site_.id0=line;
-				read();
+				read(arg);
 			}
 		} else if (columns_==6){
 			fields=split(line, delim);
@@ -49,6 +56,7 @@ int profile::read(void){
 				site_.sample[x].base[3]=atoi(fields[5+x*4].c_str() );
 			};
 		}
+		if (arg==PEAK) donothing_=true;
 		return 0;
 	}
 	return EOF;
@@ -64,7 +72,6 @@ profile* profile::open(const char* filename, const char mode){
 	sorted_[3]=3;
 	sorted_[4]=4;
 	open_=false;
-	masked_=NULL;
 
 	switch ( mode ) {
 		case 'r':
@@ -89,7 +96,10 @@ profile* profile::open(const char* filename, const char mode){
 	
 	}
 	columns_=5;
+	samples_=0;
 	open_=true;
+	masked_=NULL;
+	donothing_=false;
 	return this;
 }
 
@@ -100,9 +110,7 @@ profile* profile::open(char mode)
 	sorted_[2]=2;
 	sorted_[3]=3;
 	sorted_[4]=4;
-	columns_=5;
 	open_=false;
-	masked_=NULL;
 	
 	switch ( mode ) {
 		case 'r':
@@ -117,7 +125,10 @@ profile* profile::open(char mode)
 	
 	};
 	columns_=5;
+	samples_=0;
+	masked_=NULL;
 	open_=true;
+	donothing_=false;
 	return this;
 }
 /** @brief closes a .pro file and unsets members.
@@ -227,7 +238,7 @@ std::string profile::getids(void)
 	return str;
 };
 
-count_t profile::samplesize(void){
+count_t profile::size(void){
 	return samples_;
 };
 

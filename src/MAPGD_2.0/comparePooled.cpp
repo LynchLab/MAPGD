@@ -1,33 +1,8 @@
 #include 	"interface.h"
 #include 	"comparePooled.h"
+#include 	"pooledLikelihood.h"
 #include 	<iostream>
 
-#define EMLMIN	0.00001
-/*
-#define LNFMAX	10000
-float_t lnf[LNFMAX];
-
-void lnfactinit(void){
-	lnf[0]=0;
-	for (int x=1; x<LNFMAX; ++x) lnf[x]=lnf[x-1]+log(x);
-}
-
-float_t lnfact(count_t x){
-
-	if (x<LNFMAX) return lnf[x];
-	else{
-		float_t fx=x;
-		return  fx * log( fx - 1.0) + log(pow(2.0 * M_PI * fx, 0.5 )  ); 
-	} 
-
-}*/
-
-float_t multidist (float_t A, float_t B, float_t N, float_t a, float_t e){
-	float_t pa=log( a*(1.-e)+e/3.*(1-a) );
-	float_t pb=log( (1.-a)*(1.-e)+e/3.*a );
-	float_t pe=log( 2.*e/3. );
-	return pa*A+pb*B+pe*(N-A-B);
-};
 
 int comparePooled(int argc, char *argv[])
 {
@@ -35,28 +10,32 @@ int comparePooled(int argc, char *argv[])
 	std::string outfile="dataout.txt";
 
 	env_t env;
-	bool sane=false;
+	bool sane=false, allpop=false;
 
 	int t=0;
 	int s=0;
-	int pop[2];
+	double a=0.0;
+	double EMLMIN=0.0001;
+
+	std::vector <int> pop;
 
 	env.setname("mapgd cp");
 	env.setver("1.0");
 	env.setauthor("Micheal Lynch");
 
-	env.setdescription("compares allele frequencies between pooled population genomic data");
+	env.setdescription("compares allele frequencies between pooled population genomic data.");
 
-	env.optional_arg('m',"min", &t, &arg_setint, "please provide an interger", "sets minimum");
+	env.optional_arg('m',"minerror", &EMLMIN, &arg_setdouble, "please provide an interger", "sets minimum");
 	env.optional_arg('M',"MAX", &s, &arg_setint, "please provide an interger", "sets maximum");
 
-	env.optional_arg('p',"population", &pop, &arg_set2int, "please provide two intergers", "choose two populations to compare");
+	env.optional_arg('p',"populations", &pop, &arg_setvectorint, "please provide a list of comma seperated integers", "choose populations to compare. Populations should be specified by comma seperated\nintigers (e.g. 1,2,3) and cannot contain spaces (e.g. 1, 2, 3 is bad). A range can\nbe specified by using a hyphen (e.g. 1-10 for populations 1 through 10) and hypenated\nranges can be strung together (e.g. 1-10,15-16) so long as ranges do not overlap.");
 
-//	env.optional_arg('m',"mgd", &sitefile, &arg_setstr, "please provide a valid mgd file", "a file that provides likelihood of polymorphism in each population.");
+	env.optional_arg('a',"alpha", &a, &arg_setdouble, "please provide a float", "only print sites where at least one population differes from the meta population mean with a p-value less than alpha.");
 
 	env.optional_arg('i',"in", &infile, &arg_setstr, "please provide a valid inpuit file", "specifies input file (default datain.txt)");
 	env.optional_arg('o',"out", &outfile, &arg_setstr, "please provide a valid name and location for output", "specifies output file (default stdout.txt) ");
 
+	env.flag('P',"allpopulations", &allpop, &flag_set, " ?? ", "compates all populations");
 	env.flag('h',"help", &env, &flag_help, "an error occured while displaying the help mesaage", "prints this message");
 	env.flag('s',"sane", &sane, &flag_set, "takes no argument", "set default in/out to the stdin and stdout.");
 	env.flag('v',"version", &env, &flag_version, "an error occured while displaying the version mesaage", "prints the program version");
@@ -66,111 +45,117 @@ int comparePooled(int argc, char *argv[])
 
 	if ( sane ) { infile=""; outfile=""; }
 	
-	//lnfactinit();
 
 	std::ostream *out;
+	std::ofstream outFile;
 	out=&std::cout;
 	profile pro;
 
 	/* Open the input file. */
 
-	std::cout << infile.size() << std::endl;
 	if (infile.size()!=0) {if (pro.open(infile.c_str(), 'r')==NULL) {printUsage(env);} }
 	else pro.open('r');
-/*
+
+	/* Open the output file. */
 	if (outfile.size()!=0) {
-		outFile.open(outfile, 'w');
+		outFile.open(outfile, std::ofstream::out);
 		if (!outFile) printUsage(env);
 		out=&outFile;
-	}*/
+	}
 
-
-	/* Open the input file. */
-
-
+	*out << "A!!" << a << std::endl;
 	/* ************************************************************************************************************ */
 
-	double pmaj;						/* fraction of putative major reads among the total of major and minor */
-	double pmajA, pmajB;
+	float_t pmaj;						/* fraction of putative major reads among the total of major and minor */
+	float_t eml, pml, *pmlP;				/* maximum-likelihood estimates of the error rate and major-allele frequency */
 
-	double eml, pml;					/* maximum-likelihood estimates of the error rate and major-allele frequency */
-	double pmlA, pmlB;
+	float_t *llhoodP, *llhoodS;				/* log likelihoods under the models of homogeneity and heterogeneity of allele frequencies */ 
+	float_t llhoodPS, llhoodSS;				/* log likelihoods under the models of homogeneity and heterogeneity of allele frequencies */ 
 
-	float_t lhoodP1, lhoodS1;				/* likelihoods of the data in population 1 under the assumptions of pooled or distinct allele frequencies */
-	float_t lhoodP2, lhoodS2;				/* likelihoods of the data in population 2 under the assumptions of pooled or distinct allele frequencies */
-	float_t llhoodP, llhoodS;				/* log likelihoods under the models of homogeneity and heterogeneity of allele frequencies */ 
-
-	count_t coverage;
-
-	double llstat;						/* difference in the log likelihoods */
-
-	count_t a=pop[0]-1, b=pop[1]-1;
-
-	/* Precalculate the binomial terms for the full likelihood. */
-
+	float_t *llstat;					/* difference in the log likelihoods */
+	float_t maxll;						/* difference in the log likelihoods */
 	
-	/* ********** Set the minor-allele frequencies for the first population at which the computations will be done. ************* */
-	/* *alculate the starting and ending points for the allele counts used in the likelihood function. */
+	pro.read(PEAK);
+	pro.maskall();
 
+	if ( allpop ) { 
+		pop.clear();
+		for (int x=0; x<pro.size(); ++x) pop.push_back(x);
+	};
+
+	for (int x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
+
+	llhoodP=new float_t[pop.size()];
+	llhoodS=new float_t[pop.size()];
+	pmlP=new float_t[pop.size()];
+	llstat=new float_t[pop.size()];
+
+	/* 1) GET THE READS FOR ALL POPULATIONS, AND SET THE METAPOPULATION TO A AND B. */
+	*out << "#id1\tid2\tmajor\tminor\t";
+	for (int x=0; x<pop.size(); ++x) *out << "Freq\tdll\t";
+	*out << "FreqMETA\tERROR" << std::endl;
 	while (pro.read()!=EOF ){
 
-		/* 1) GET THE READS FOR ALL POPULATIONS, AND SET THE METAPOPULATION TO A AND B. */
-
-		pro.maskall();
-		pro.unmask(a);
-		pro.unmask(b);
-
-		coverage=pro.getcoverage();
-
-		/* 4) IDENTIFY THE OVERALL MAJOR AND MINOR ALLELES. */ 
-
-		/* Identify the counts for the Putative major and minor alleles	for the pooled pair of populations. */ 
+		/* 2) Identify the counts for the Putative major and minor alleles in the metapopulation. */ 
 
 		pro.sort();
 
-		/* 5) CALCULATE THE LIKELIHOOD OF THE JOINTLY POOLED POPULATIONS. */
+		/* 3) CALCULATE THE LIKELIHOOD OF THE POOLED POPULATION DATA. */
 	
 		/* Calculate the ML estimates of the major pooled allele frequency and the error rate. */
 
 		pmaj = (float_t) pro.getcount(0) / (float_t) ( pro.getcount(1) + pro.getcount(0) );
-		eml = 1.5 *(float_t) ( coverage - pro.getcount(0) - pro.getcount(1) ) / ( (float_t) coverage );
-			if (eml == 0.0) { eml = EMLMIN;}
+		eml = 1.5 *(float_t) ( pro.getcoverage() - pro.getcount(0) - pro.getcount(1) ) / ( (float_t) pro.getcoverage() );
+			if (eml < EMLMIN) { eml = EMLMIN;}
 		pml = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
 		pml = pml / (1.0 - (4.0 * eml / 3.0) );
 
-		if (pml >= 1.0) { pml = 0.999999999; }
-
+		if (pml > 1.0) { pml = 1.0; }
+		if (pml < 0.0) { pml = 0.0; }
+ 
 		/* Calculate the likelihoods under the reduced model assuming no variation between populations. */
-			
-		/* Calculate the component for the first population. */
 
-		lhoodP1=multidist(pro.getcount(a, 0), pro.getcount(a, 1), pro.getcoverage(a), pml, eml); 
-		lhoodP2=multidist(pro.getcount(b, 0), pro.getcount(b, 1), pro.getcoverage(b), pml, eml); 
-		llhoodP = lhoodP1+ lhoodP2;
+		for (int x=0; x<pop.size(); ++x) llhoodP[x]=multidist(pro.getcount(pop[x], 0), pro.getcount(pop[x], 1), pro.getcoverage(pop[x]), pml, eml); 
 
-		/* 6) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF POPULATION SUBDIVISION. */ 
+		/* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF POPULATION SUBDIVISION. */ 
 
-		pmajA = ((double) pro.getcount(a,0)) / ( ((double) pro.getcount(a,0)) + ((double) pro.getcount(a,1)) );
-		pmajB = ((double) pro.getcount(b,0)) / ( ((double) pro.getcount(b,0)) + ((double) pro.getcount(b,1)) );
-	
-		pmlA = (pmajA * (1.0 - (2.0 * eml / 3.0))) - (eml / 3.0);
-		pmlA = pmlA / (1.0 - (4.0 * eml / 3.0));
-		pmlB = (pmajB * (1.0 - (2.0 * eml / 3.0))) - (eml / 3.0);
-		pmlB = pmlB / (1.0 - (4.0 * eml / 3.0)); 
-
-		if (pmlA >= 1.0) { pmlA = 0.999999999; }
-		if (pmlB >= 1.0) { pmlB = 0.999999999; }
-		
-		lhoodS1 = multidist(pro.getcount(a, 0), pro.getcount(a, 1), pro.getcoverage(a), pmlA, eml); 
-		lhoodS2 = multidist(pro.getcount(b, 0), pro.getcount(b, 1), pro.getcoverage(b), pmlB, eml); 
-		llhoodS = lhoodS1+lhoodS2;
+		for (int x=0; x<pop.size(); ++x) {
+			pmaj = (float_t) pro.getcount(pop[x],0) / (float_t) ( pro.getcount(pop[x],1) + pro.getcount(pop[x],0) );
+			pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
+			pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
+			if (pmlP[x] > 1.0) { pmlP[x] = 1.0; }
+			if (pmlP[x] < 0.0) { pmlP[x] = 0.0; }
+			llhoodS[x]=multidist(pro.getcount(pop[x], 0), pro.getcount(pop[x], 1), pro.getcoverage(pop[x]), pmlP[x], eml); 
+		};
 		
 		/* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
-
-		llstat = fabs(2.0 * (llhoodS - llhoodP) );
-		/* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
-		*out << std::fixed  <<std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) <<'\t' << pml << '\t' << pmlA << '\t' << pmlB << '\t' << eml << '\t'<< pro.getcoverage(a) << '\t' << pro.getcoverage(b) << '\t' << llstat << std::endl;
+	
+		maxll=0;
+		for (int x=0; x<pop.size(); ++x){
+			llhoodSS=0;
+			llhoodPS=0;
+			for (int y=0; y<pop.size(); ++y){
+				llhoodSS+=llhoodS[y];
+				if (x!=y) llhoodPS+=llhoodS[y];
+				else llhoodPS+=llhoodP[y];
+			};
+			llstat[x] = fabs(2.0 * (llhoodSS - llhoodPS) );
+			if (llstat[x]>maxll) maxll=llstat[x];
+		};
+		if (maxll>=a){
+			*out << std::fixed << std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) << '\t';
+			for (int x=0; x<pop.size(); ++x){
+				if ( pro.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t';
+				else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t';
+			};
+			/* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
+			*out << pml << '\t' << eml << std::endl;
+		};
 	}
+	delete llhoodP;
+	delete llhoodS;
+	delete llstat;
+	delete pmlP;
 	exit(0);
 	std::cout << t << std::endl;
 };

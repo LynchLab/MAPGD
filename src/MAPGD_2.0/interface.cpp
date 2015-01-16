@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <iostream>
 #include "interface.h"
+#include <vector>
 #include <list>
 
 
@@ -27,6 +28,21 @@ bool isint(char *c)
 }
 
 /* a set of functions to use the arguemnts passed by the user to set program variables */
+int arg_setvectorint(int argc, char **argv, void *parm)
+{
+	int n=1;
+	int done=0;
+	if (argc>1){
+		while (isint(argv[n] ) ){
+			( (std::vector <int> *)(parm) )->push_back(atoi(argv[n]) );
+			++done;
+			++n;
+			if (n==argc) break;
+		}
+		 return 1+done;
+	} exit(1);
+}
+
 int arg_setint(int argc, char **argv, void *parm)
 {
 	if (argc>1){
