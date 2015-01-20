@@ -55,7 +55,6 @@ int estimatePooled(int argc, char *argv[])
 	env.optional_arg('p',"populations", &pop, &arg_setvectorint, "please provide a list of integers", "choose populations to compare");
 	env.optional_arg('m',"minerror", &EMLMIN, &arg_setdouble, "please provide a float", "minimum error rate.");
 	env.optional_arg('a',"alpha", &a, &arg_setdouble, "please provide a float", "alpha.");
-	env.flag('P',"allpopulations", &allpop, &flag_set, " ?? ", "compates all populations");
 	env.flag('s',"sane", &sane, &flag_set, "takes no argument", "set default in/out to the stdin and stdout.");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
@@ -93,7 +92,7 @@ int estimatePooled(int argc, char *argv[])
 	pro.read(PEAK);
 	pro.maskall();
 
-	if ( allpop ) { 
+	if ( pop.size()==0 ) { 
 		pop.clear();
 		for (int x=0; x<pro.size(); ++x) pop.push_back(x);
 	};
@@ -159,7 +158,7 @@ int estimatePooled(int argc, char *argv[])
                                 else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t';
                         };
                         /* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
-                        *out << '\t' << eml << std::endl;
+                        *out << pro.getcoverage() << '\t' << eml << std::endl;
                 };
 
 	}

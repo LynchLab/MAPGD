@@ -26,7 +26,8 @@ int profile::read(int arg){
 			if (line[0]!='>'){
 				fields=split(line, delim);
 				site_.id1=fields[0];
-				if (fields.size()-1/4!=samples_){
+				if ( (fields.size()-1)/4!=samples_){
+					std::cerr << "changing samples\n";
 					if (masked_!=NULL) delete masked_; 
 					samples_=(fields.size()-1)/4;
 					masked_=new bool[samples_];

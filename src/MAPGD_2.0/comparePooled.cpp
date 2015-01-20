@@ -35,7 +35,7 @@ int comparePooled(int argc, char *argv[])
 	env.optional_arg('i',"in", &infile, &arg_setstr, "please provide a valid inpuit file", "specifies input file (default datain.txt)");
 	env.optional_arg('o',"out", &outfile, &arg_setstr, "please provide a valid name and location for output", "specifies output file (default stdout.txt) ");
 
-	env.flag('P',"allpopulations", &allpop, &flag_set, " ?? ", "compates all populations");
+//	env.flag('P',"allpopulations", &allpop, &flag_set, " ?? ", "compates all populations");
 	env.flag('h',"help", &env, &flag_help, "an error occured while displaying the help mesaage", "prints this message");
 	env.flag('s',"sane", &sane, &flag_set, "takes no argument", "set default in/out to the stdin and stdout.");
 	env.flag('v',"version", &env, &flag_version, "an error occured while displaying the version mesaage", "prints the program version");
@@ -63,7 +63,6 @@ int comparePooled(int argc, char *argv[])
 		out=&outFile;
 	}
 
-	*out << "A!!" << a << std::endl;
 	/* ************************************************************************************************************ */
 
 	float_t pmaj;						/* fraction of putative major reads among the total of major and minor */
@@ -78,7 +77,9 @@ int comparePooled(int argc, char *argv[])
 	pro.read(PEAK);
 	pro.maskall();
 
-	if ( allpop ) { 
+	
+
+	if ( pop.size()==0 ) { 
 		pop.clear();
 		for (int x=0; x<pro.size(); ++x) pop.push_back(x);
 	};
@@ -140,7 +141,8 @@ int comparePooled(int argc, char *argv[])
 				else llhoodPS+=llhoodP[y];
 			};
 			llstat[x] = fabs(2.0 * (llhoodSS - llhoodPS) );
-			if (llstat[x]>maxll) maxll=llstat[x];
+			maxll+=llstat[x];
+//			if (llstat[x]>maxll) maxll=llstat[x];
 		};
 		if (maxll>=a){
 			*out << std::fixed << std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) << '\t';
