@@ -34,7 +34,7 @@ int arg_setvectorint(int argc, char **argv, void *parm)
 	int done=0;
 	if (argc>1){
 		while (isint(argv[n] ) ){
-			( (std::vector <int> *)(parm) )->push_back(atoi(argv[n]) );
+			( (std::vector <int> *)(parm) )->push_back(atoi(argv[n])-1 );
 			++done;
 			++n;
 			if (n==argc) break;
