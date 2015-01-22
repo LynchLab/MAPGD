@@ -36,7 +36,6 @@ int estimatePooled(int argc, char *argv[])
 	bool verbose=false;
 	bool quite=false;
 	bool sane=false;
-	bool allpop=false;
 	double EMLMIN=0.001;
 	double a=0.00;
 
@@ -67,8 +66,8 @@ int estimatePooled(int argc, char *argv[])
 
 	if ( sane ) {infile=""; outfile="";}
 
-	FILE *outstream=NULL;
 	std::ostream *out;
+	std::ofstream outFile;
 	out=&std::cout;
 	profile pro;
 
@@ -82,8 +81,9 @@ int estimatePooled(int argc, char *argv[])
 	/* Open the output and input files. */
 
 	if (outfile.size()!=0) {
-		outstream = fopen(outfile.c_str(), "w");
-		if (pro.open(infile.c_str(), 'r')==NULL) {printUsage(env);} 
+		outFile.open(outfile, std::ofstream::out);
+		if (!outFile) printUsage(env);
+		out=&outFile;
 	};
 
 	*out << "#id1\t\tid2\tmajor\tminor\tpml\teml\tcov\tllstat" << std::endl;
@@ -94,7 +94,7 @@ int estimatePooled(int argc, char *argv[])
 
 	if ( pop.size()==0 ) { 
 		pop.clear();
-		for (int x=0; x<pro.size(); ++x) pop.push_back(x);
+		for (count_t x=0; x<pro.size(); ++x) pop.push_back(x);
 	};
 
 	for (count_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);

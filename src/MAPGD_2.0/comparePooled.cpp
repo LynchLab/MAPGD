@@ -77,8 +77,6 @@ int comparePooled(int argc, char *argv[])
 	pro.read(PEAK);
 	pro.maskall();
 
-	
-
 	if ( pop.size()==0 ) { 
 		pop.clear();
 		for (int x=0; x<pro.size(); ++x) pop.push_back(x);

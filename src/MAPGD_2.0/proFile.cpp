@@ -27,7 +27,6 @@ int profile::read(int arg){
 				fields=split(line, delim);
 				site_.id1=fields[0];
 				if ( (fields.size()-1)/4!=samples_){
-					std::cerr << "changing samples\n";
 					if (masked_!=NULL) delete masked_; 
 					samples_=(fields.size()-1)/4;
 					masked_=new bool[samples_];
@@ -76,17 +75,17 @@ profile* profile::open(const char* filename, const char mode){
 
 	switch ( mode ) {
 		case 'r':
-			inFile.open(filename, std::ifstream::in);
-			if (!inFile){
-				std::cerr << "cannot open " << filename << " for reading." << std::endl;				
+			inFile.open(filename, std::fstream::in);
+			if (!inFile.is_open() ){
+				std::cerr << "cannot open " << filename << " for reading (1)." << std::endl;				
 				exit(0);
 			};
 			in=&inFile;
 			break;
 		case 'w':
 			outFile.open(filename, std::ofstream::out);
-			if (!outFile){
-				std::cerr << "cannot open " << filename << " for reading." << std::endl;				
+			if (!outFile.is_open() ){
+				std::cerr << "cannot open " << filename << " for writing." << std::endl;				
 				exit(0);
 			};
 			out=&outFile;

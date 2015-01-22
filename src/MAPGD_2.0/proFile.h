@@ -41,7 +41,7 @@ private:
 
 	std::istream *in;				// all data is read from in.
 	std::ostream *out;				// all data is writen is writen to out.
-	std::ifstream inFile;				// the file to read data from (if not stdin).
+	std::fstream inFile;				// the file to read data from (if not stdin).
 	std::ofstream outFile;				// the file to write data to (if not stdout).
 
 public:
