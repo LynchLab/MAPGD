@@ -100,7 +100,7 @@ int calcInd(int argc, char *argv[])
 	//pro.seek(loc);
 	pro.sort();
 
-	mle.ll=ll(pro, mle, MIN);				//Sets the site.ll to the log likelihood of the best fit (ll). 
+	mle.ll=loglikelihood(pro, mle, MIN);				//Sets the site.ll to the log likelihood of the best fit (ll). 
 		
         /* Now print everything to the *out stream, which could be a file or the stdout. */
 	//if (llPOLY>a){

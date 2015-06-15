@@ -20,7 +20,7 @@ int main (int argc, char* argv[])
 {
 	env_t env;
 	env.setname("mapgd");
-	env.setver("2.0");
+	env.setver("2.1");
 	env.setauthor("Matthew Ackerman, Takahiro Maruki, Bernard Haubold and Mike Lynch");
 	env.setdescription("A program for maximum-likelihood analysis of population genomic data");
 

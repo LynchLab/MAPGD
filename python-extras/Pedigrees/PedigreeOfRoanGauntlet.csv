@@ -1,0 +1,11 @@
+RG,LordRaglan,,,M
+RG,Mistletoe,LordRaglan,,F
+RG,Mimulus,ChampOE,Mistletoe,F
+RG,ChampOE,,,M
+RG,DuchesOG,LordRaglan,,F
+RG,TheCzar,LordRaglan,,M
+RG,GrandDuke,ChampOE,DuchesOG,M
+RG,RoyalDuke,GrandDuke,Mimulus,M
+RG,Carmine,TheCzar,,F
+RG,PrincessRoyal,ChampOE,Carmine,F
+RG,RoanGauntlet,RoyalDuke,PrincessRoyal,M

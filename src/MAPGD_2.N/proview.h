@@ -20,11 +20,8 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-//#include <boost/math/special_functions/gamma.hpp>
-
 
 #define SQRT2	1.41421356237
-
 
 struct Args{
 	float_t pvalue;

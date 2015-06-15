@@ -34,7 +34,6 @@ int estimateInd(int argc, char *argv[])
 
 	bool verbose=false;
 	bool quite=false;
-	bool sane=false;
 	bool noheader=false;
 	float_t EMLMIN=0.001;
 	count_t MIN=4;
@@ -49,26 +48,29 @@ int estimateInd(int argc, char *argv[])
 	std::vector <int> ind;
 
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
+	infile=""; outfile=""; 
 
 	env_t env;
 	env.setname("mapgd ei");
-	env.setver("2.0");
+	env.setver("2.1");
 	env.setauthor("Takahiro Maruki and Matthew Ackerman");
 	env.setdescription("Uses a maximum likelihood approach to estimate population genomic statistics from an individually 'labeled' population.");
 
 	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "sets the input file for the program (default 'datain.txt').");
 	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file.", "sets the output file for the program (default 'dataout.txt').");
-	env.optional_arg('p',"pro_out", &outfilepro,	&arg_setstr, 	"an error occured while setting the name of the output file.", "sets a file to print cleansed pro file (default none).");
+	env.optional_arg('p',"out-pro", &outfilepro,	&arg_setstr, 	"an error occured while setting the name of the output file.", "sets the output file for the program (default 'dataout.txt').");
 	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "Choose individuals to use in estimate.\n\t\t\t\t Should be a comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualts to ALL).");
 	env.optional_arg('m',"minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
 	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage of sites to be estimated (defualt 4).");
 	env.optional_arg('a',"alpha", 	&a, 		&arg_setfloat_t, "please provide a float.", "cut-off value for printing polymorphic sites (default 0.0).");
-	env.optional_arg('g',"gof", 	&maxgof,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
+	env.optional_arg('g',"goodfit", &maxgof,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
 	env.optional_arg('N',"number", 	&maxpitch,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "Number of sites to skip before analysis begins (default 0).");
 	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "Maximum number of sites to be analyzed (default All sites)");
+
+	env.flag(	'H',"", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
+
 	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
-	env.flag(	's', "sane", 	&sane, 		&flag_set, 	"takes no argument", "set default in/out to the stdin and stdout.");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
@@ -77,23 +79,19 @@ int estimateInd(int argc, char *argv[])
 	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
 
-
-	if ( sane ) {infile=""; outfile="";}	//Sets the infile and outfile names to be empty. Will probably be default in 
-						//future versions.
-
-	std::ostream *out;		//declare the stream will will write to.
-	std::ofstream outFile;		//declare the file we MAY write to.
-	out=&std::cout;			//set the outstream to the std:cout by default.
-
 	profile pro, pro_out;		//profile is a fairly complete class that lets us read and write from pro files, 
 					//which are files containing set of read 'quartets' that specify the number of 
 					//A,C,G and T read at some specific location in a genome. See proFile.h for more info.
+
+	//gcfile out;
+	std::ostream *out=&std::cout;
+	std::ofstream outFile;
 
 	allele_stat mle, hwe, mono;	//allele_stat is a basic structure that containes all the summary statistics for
 					//an allele. It gets passed around a lot, and a may turn it into a class that has
 					//some basic read and write methods.
 
-	mle.gof=0; mle.efc=0; mle.MM=0; mle.Mm=0; mle.mm=0; //Initialize a bunch of summary statics as 0. 
+	mle.gof=0; mle.efc=0; mle.MM=0; mle.Mm=0; mle.mm=0; 	 //Initialize a bunch of summary statics as 0. 
 								 //This should be moved over to the constructor of allele_stat 
 								 //(when that constructor is writen). I'm a little concerned that
 								 //allele_stat has gotten too bloated, but . . . 
@@ -105,15 +103,16 @@ int estimateInd(int argc, char *argv[])
 	}
 	else pro.open('r');					//Iff no filename has been set for infile, open profile from stdin.
 
-
-	if (outfile.size()!=0) {				//Same sort of stuff for the outfile. 
+	if (outfile.size()!=0) {
 		outFile.open(outfile, std::ofstream::out);
-		if (!outFile.is_open()){
-			std::cerr << "Cannot open file " << outfile << ". This file may already exist, or you may be trying to write to ro location.";
-			printUsage(env);
-		};
+		if (!outFile) printUsage(env);
 		out=&outFile;
 	};
+
+	//else out.open('w', CSV);				//Iff no filename has been set for outfile, pgdfile prints to stdout.
+
+	//Set up file?
+	//out.setheader(); << "id1\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpolyll\tHWEll\tgof\teff_chrom\tN\tN_excluded\tmodel_ll" << std::endl;
 
 	if (outfilepro.size()!=0) {				//Same sort of stuff for the outfile. 
 		pro_out.open(outfilepro.c_str(), 'w');
@@ -144,45 +143,42 @@ int estimateInd(int argc, char *argv[])
 									//we have excluded from the analysis.
 	for (int x=0; x<skip; ++x) pro.read(SKIP);
 
-	float_t lls[4];
-	std::vector <std::pair <count_t, float_t> >sorted;
-
 	while (pro.read()!=EOF ){					//reads the next line of the pro file. pro.read() retuerns 0
 									//on success, EOF when end of file reached. (switch to ==0?)
-		memset(lls, 0, sizeof(float_t)*4);
 		mle.N=0;
 
-		//for (count_t x=0; 
-		initparams(pro, mle, MIN, EMLMIN,0);// ++x){	//Generates an initial guess.
-		maxll(pro, mle, MIN, 10000, 96);		 
+		initparams(pro, mle, MIN, EMLMIN,0);
+		maximizegrid(pro, mle, MIN, 10000, 96);		 
 									//If >90% of reads agree, then assume a homozygote,
-		//}							//otherwise, assume heterozygote.
+									//otherwise, assume heterozygote.
+//		std::cout << "!!" << mle.freq << "::" << mle.MM << ", " << mle.Mm << ", " << mle.mm << std::endl;
 
 		tgof=mle.gof;						//find the highest likelihood parameters. 
 		texc=pro.maskedcount();
 
 		if (maxpitch!=0)					//If we are allowed to trim individuals that don't fit the model, then
-		excluded=maxll(pro, mle, MIN, maxgof, maxpitch+texc);	//trim so clones and re-fit the model.
+		excluded=maximizegrid(pro, mle, MIN, maxgof, maxpitch+texc);	//trim so clones and re-fit the model.
 									
 		excluded=pro.maskedcount();				//count the number of clones excluded. 
 
                 /* CALCULATE THE LIKELIHOODS */
 
-		mle.ll=ll(pro, mle, MIN);				//Sets the site.ll to the log likelihood of the best fit (ll). 
+		mle.ll=loglikelihood(pro, mle, MIN);				//Sets the site.ll to the log likelihood of the best fit (ll). 
 		mono=mle; mono.MM=1.0; mono.Mm=0.; mono.mm=0.;		//Copies site to mono, then sets mono to a monomophic site 
 									//(i.e. sets the genotypic frequencies Mm and mm to 0.
 		mono.error=mle.null_error;				//Sets the error rate of mono to the null error rate.
 
 		mono.freq=1.;
 		mono.f=0.;
-                mono.ll=ll(pro, mono, MIN);				//Calculates the log likelihood of the mono fit.
+                mono.ll=loglikelihood(pro, mono, MIN);				//Calculates the log likelihood of the mono fit.
 		if (mono.ll>mle.ll){
 			mle=mono;
-			maxll(pro, mle, MIN, maxgof, maxpitch);
+			maximizegrid(pro, mle, MIN, maxgof, maxpitch);
 		};
 		mono.ll=(mle.ll-mono.ll)*2.;
 	
 		if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
+//			std::cout << "SWAPPING!\n";
 			std::swap(mle.major, mle.minor);
 			std::swap(mle.MM, mle.mm);
 			mle.freq=1.-mle.freq;
@@ -190,6 +186,7 @@ int estimateInd(int argc, char *argv[])
 			
 		}
 		else if (mle.freq==0.5){
+//			std::cout << "SWAPPING!\n";
 			if (rand() % 2){				//If the major and minor allele frequencies are identical, 
 				std::swap(mle.major, mle.minor);	//flip a coin to determine the major and minor allele.
 				std::swap(mle.MM, mle.mm);
@@ -201,20 +198,21 @@ int estimateInd(int argc, char *argv[])
 		hwe=mle; hwe.MM=pow(mle.freq, 2);			//Similar set up to mono, but now assuming 
 		hwe.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
 		hwe.mm=pow(1.-mle.freq, 2);
-		hwe.ll=(mle.ll-ll(pro, hwe, MIN))*2;
+		hwe.ll=(mle.ll-loglikelihood(pro, hwe, MIN))*2;
 		
 		
                 /* Now print everything to the *out stream, which could be a file or the stdout. */
 		//TODO move this over into a formated file.
 		//if (mono.ll>=a){
-		if (mle.N>0){
-			*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << pro.getname(mle.major) << '\t' << pro.getname_gt(mle.minor) << '\t' << pro.getcoverage() << '\t' << mle.freq <<'\t' << 1.-mle.freq << '\t' << mle.error << '\t';
-			*out << std::fixed << std::setprecision(6) << mle.null_error <<'\t' << mle.f << '\t' << mle.MM << '\t' << mle.Mm <<'\t' << mle.mm << '\t' << mle.freq*(1.-mle.freq)*2 << '\t' << mono.ll << '\t' << hwe.ll << '\t' << tgof << '\t' << mle.efc << '\t' << mle.N << '\t' << excluded-texc << '\t' << -2*mle.ll << '\n';
-		}
-		else{
-			*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << '*' << '\t' << '*' << '\t' << pro.getcoverage() << '\t' << '*' <<'\t' << '*' << '\t' << '*' << '\t';
-			*out << std::fixed << std::setprecision(6) << '*' <<'\t' << '*' << '\t' << '*' << '\t' << '*' <<'\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << 0 << '\t' << 0 << '\t' << 0 << '\t' << '*' << '\n';
-		}
+			if (mle.N>0){
+				*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname_gt(1) << '\t' << pro.getcoverage() << '\t' << mle.freq <<'\t' << 1.-mle.freq << '\t' << mle.error << '\t';
+				*out << std::fixed << std::setprecision(6) << mle.null_error <<'\t' << mle.f << '\t' << mle.MM << '\t' << mle.Mm <<'\t' << mle.mm << '\t' << mle.freq*(1.-mle.freq)*2 << '\t' << mono.ll << '\t' << hwe.ll << '\t' << tgof << '\t' << mle.efc << '\t' << mle.N << '\t' << excluded-texc << '\t' << -2*mle.ll << '\n';
+			}
+			else{
+				*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << '*' << '\t' << '*' << '\t' << pro.getcoverage() << '\t' << '*' <<'\t' << '*' << '\t' << '*' << '\t';
+				*out << std::fixed << std::setprecision(6) << '*' <<'\t' << '*' << '\t' << '*' << '\t' << '*' <<'\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << 0 << '\t' << 0 << '\t' << 0 << '\t' << '*' << '\n';
+			}
+		//}
 
 		pro_out.copy(pro);
 		if (tgof<-maxgof) pro_out.maskall(); 
@@ -225,7 +223,7 @@ int estimateInd(int argc, char *argv[])
 		read++;
 	}
 	pro.close();					//Close the pro file/stream.
-	if (outFile.is_open()) outFile.close();		//Closes the outFile iff outFile is open.
+//	if (outFile.is_open()) outFile.close();		//Closes the outFile iff outFile is open.
 	if (pro_out.is_open()) pro_out.close();		//Closes the outFile iff outFile is open.
 	exit(0);					//Since everything worked, return 0!.
 }

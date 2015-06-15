@@ -11,6 +11,7 @@
 #include "proFile.h" 
 #include "indLikelihood.h"
 #include "Likelihood.h"
+//#include "pgdFile.h"
 
 int estimateInd(int, char **);
 allele_stat_t estimate(quartet_t);

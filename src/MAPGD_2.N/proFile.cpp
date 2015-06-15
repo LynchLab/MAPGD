@@ -125,6 +125,8 @@ int profile::readheader(void){
 	};
 	std::string line;
 	std::vector <std::string> column, args, arg;
+
+
 	bool notdone_=true, reading_pr=false, reading_id=false;
 	while(notdone_){
 		//"VN" version number
@@ -371,7 +373,6 @@ profile* profile::open(const char* filename, const char mode){
 	switch ( mode ) {
 		case 'r':
 			inFile.open(filename, std::fstream::in);
-			//inFile.open(filename, std::fstream::in, std::ios::binary);
 			if (!inFile.is_open() ){
 				std::cerr << "cannot open " << filename << " for reading (1)." << std::endl;				
 				exit(0);
@@ -384,7 +385,6 @@ profile* profile::open(const char* filename, const char mode){
 			break;
 		case 'w':
 			outFile.open(filename, std::ofstream::out);
-			//outFile.open(filename, std::ofstream::out, std::ios::binary);
 			if (!outFile.is_open() ){
 				std::cerr << "cannot open " << filename << " for writing." << std::endl;				
 				exit(0);
@@ -408,7 +408,7 @@ profile* profile::open(char mode)
 	sorted_[3]=3;
 	sorted_[4]=4;
 	open_=false;
-	
+
 	switch ( mode ) {
 		case 'r':
 			in=&std::cin;
@@ -624,16 +624,6 @@ void profile::set_delim_column(const char &del)
 	delim_column=del;
 }	
 
-
-/*count_t major(const quartet_t a)
-{
-	?
-	return 
-};
-count_t minor(const quartet_t b){
-	?
-	return 
-};*/
 count_t count(const quartet_t c){
 	return c.base[0]+c.base[1]+c.base[2]+c.base[3];
 }
