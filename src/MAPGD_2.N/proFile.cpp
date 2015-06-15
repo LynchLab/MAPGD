@@ -126,6 +126,8 @@ int profile::readheader(void){
 	std::string line;
 	std::vector <std::string> column, args, arg;
 
+	delim_column='\t';
+	delim_quartet='/';
 
 	bool notdone_=true, reading_pr=false, reading_id=false;
 	while(notdone_){

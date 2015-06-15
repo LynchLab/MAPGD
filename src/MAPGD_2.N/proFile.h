@@ -74,8 +74,8 @@ class  profile{
 
 private:
 	bool open_;					// indicates whether the profile opened succesfully
-	char delim_column='\t';				// the delimiter which seperates columns
-	char delim_quartet='/';				// the delimiter that seperates counts in a quartet
+	char delim_column;				// the delimiter which seperates columns
+	char delim_quartet;				// the delimiter that seperates counts in a quartet
 
 	unsigned int columns_;				// 5|6|7|more?
 	unsigned int samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
