@@ -10,6 +10,7 @@
 **/
 
 const std::string profile::names_ ="ACGT*";
+const count_t profile::defaultorder[5] = {0,1,2,3,4};
 
 site_t::site_t(void){};
 site_t::site_t(count_t size){
@@ -77,7 +78,7 @@ int profile::writeheader(void){
 	std::vector <std::string> column;
 	bool notdone_=true;
 	while(notdone_){
-		*out << "@PR" << delim_column << "VN:" << VER << delim_column <<"CN:" << columns_ << delim_column << "SN:" << samples_ << std::endl;
+		*out << "@PR" << delim_column << "VN:" << VER << delim_column <<"CN:" << columns_ << delim_column << "SN:" << samples_ << "MD:" << binary_ <<std::endl;
 		*out << "@ID";
 		for (unsigned int x=0; x<column_names.size(); ++x)
 			*out << delim_column << column_names[x];
@@ -103,6 +104,7 @@ int profile::copyheader(profile const &pro){
 #define H_COL	4
 #define H_ERR	5
 #define H_SAM	6
+#define H_MOD	7
 
 int hash(std::string str){
 	if (str=="@PR") return H_PARAM;
@@ -110,6 +112,7 @@ int hash(std::string str){
 	if (str=="VN") return H_VER;
 	if (str=="CN") return H_COL;
 	if (str=="SN") return H_SAM;
+	if (str=="MD") return H_MOD;
 	else return H_ERR;
 };
 
@@ -128,6 +131,7 @@ int profile::readheader(void){
 
 	delim_column='\t';
 	delim_quartet='/';
+	binary_=false;
 
 	bool notdone_=true, reading_pr=false, reading_id=false;
 	while(notdone_){
@@ -160,6 +164,9 @@ int profile::readheader(void){
 						case H_SAM:
 							samples_=atoi(arg[1].c_str() );
 							setsamples(samples_);
+							break;
+						case H_MOD:
+							binary_=atoi(arg[1].c_str() );
 							break;
 						case H_ID:
 							column_names.clear();
@@ -195,11 +202,39 @@ int profile::read(){
 	read(0);	
 };
 
-
 int profile::read(int arg){
+	if(binary_) readb(arg);
+	else readt(arg);
+}
+
+int profile::readb(int arg){
+	memcpy(sorted_, defaultorder, 5*sizeof(count_t) );
+	if(arg==SKIP) return 0;
+	/*
+	switch (columns_){
+		case 6:
+			in->read (site_.id0, sizeof(count_t) );
+			in->read (site_.id1, sizeof(count_t) );
+			for (unsigned int x=0; x<samples_; ++x) in->read (site_.sample[x].base, 4*sizeof(count_t) );
+		break;
+		case 7:
+			in->read (site_.id0, sizeof(count_t) );
+			in->read (site_.id1, sizeof(count_t) );
+			in->read (site_.extra_ids[0], sizeof(count_t) );
+			for (unsigned int x=0; x<samples_; ++x) in->read (site_.sample[x].base, 4*sizeof(count_t) );
+		break;
+		default:
+			std::cerr << "Error in binary file formating. "<< std::endl;
+			exit(0);
+		break;	
+	};*/
+	return 0;
+};
+
+int profile::readt(int arg){
 	std::string line;
 	//The order of nucleotides read from a quartet file. Replace this with a memcopy of a constant.
-	sorted_[0]=0; sorted_[1]=1; sorted_[2]=2; sorted_[3]=3; sorted_[4]=4;
+	memcpy(sorted_, defaultorder, 5*sizeof(count_t) );
 
 	std::vector <std::string> column, quartet;
 	if (in==NULL){
@@ -267,7 +302,6 @@ int profile::read(int arg){
 			site_.extra_ids[0]=column[2];
 			for (unsigned int x=0; x<samples_; ++x){
 				quartet=split(column[x+3], delim_quartet);
-				//std::cout << column[x+3] << ", " << quartet[0] << "/" << quartet[1] << "/" << quartet[2] << "/" << quartet[3] << std::endl;
 				site_.sample[x].base[0]=atoi(quartet[0].c_str() );
 				site_.sample[x].base[1]=atoi(quartet[1].c_str() );
 				site_.sample[x].base[2]=atoi(quartet[2].c_str() );
@@ -363,11 +397,8 @@ int profile::write(const site_t &thissite){
   * @returns a pointer to the profile
 **/
 profile* profile::open(const char* filename, const char mode){
-	sorted_[0]=0;
-	sorted_[1]=1;
-	sorted_[2]=2;
-	sorted_[3]=3;
-	sorted_[4]=4;
+
+	memcpy(sorted_, defaultorder, 5*sizeof(count_t) );
 	open_=false;
 	in=NULL;
 	out=NULL;
@@ -629,3 +660,7 @@ void profile::set_delim_column(const char &del)
 count_t count(const quartet_t c){
 	return c.base[0]+c.base[1]+c.base[2]+c.base[3];
 }
+	
+void static merge(std::list <profile *>){
+	
+};

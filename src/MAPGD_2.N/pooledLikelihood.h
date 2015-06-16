@@ -6,5 +6,6 @@
 
 void polymorphicmodel(allele_stat const &, float_t *);
 void monomorphicmodel(allele_stat const &, float_t *);
+void fixedmorphicmodel(allele_stat const &, float_t *);
 
 #endif

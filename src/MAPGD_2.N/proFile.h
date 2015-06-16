@@ -72,21 +72,36 @@ public:
 
 class  profile{
 
+//private variables should be initialized by reading the header...
 private:
 	bool open_;					// indicates whether the profile opened succesfully
+
+
 	char delim_column;				// the delimiter which seperates columns
 	char delim_quartet;				// the delimiter that seperates counts in a quartet
-
 	unsigned int columns_;				// 5|6|7|more?
 	unsigned int samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
+	count_t size_;					// the number of lines in the sample. 0 if unkown.
+
 	double sig_;					// were alleles thrown out if the allele only occurred in reads from one direction?
 	site_t site_;					// a vector to store the calls from reads
 	count_t sorted_[5];				// an array to sort reads.
 
 	bool read_;					// file mode flag;
 	bool write_;					// file mode flag;
+	bool binary_;					// file mode flag;
 
-	static const std::string names_;		// the names of the bases : ACGTN.
+	int readt(int);					//...
+	int readb(int);					//...
+
+	int writet();					//...
+	int writeb();					//...
+
+	int writet(site_t const &);			//...
+	int writeb(site_t const &);			//...
+
+	static const std::string names_;		// ACGTN
+	static const count_t defaultorder[5];		// 01234 
 
 	bool donothing_;				// a flag to indicate that nothing should be read for infile stream when read is called 
 	std::vector <std::string> column_names;		// the names of all the columns in the profile.
@@ -111,8 +126,10 @@ public:
 	int readheader();				//reads the header of a profile. All profiles from v 2.0 and later should have headers.
 							//Returns 0 on success, EOF on EOF (should never happen), and a failure code on faliure?.
 	int read(int);					//peaks at a line in the instream. Returns 0 on success, EOF on EOF.
+
 	int write();					//writes a line to the outstream. Returns 0 on success, EOF on EOF.
 	int write(site_t const &);			//writes a line to the outstream. Returns 0 on success, EOF on EOF.
+
 	int writeheader();				//reads the header of a profile. All profiles from v 2.0 and later should have headers.
 
 	int seek(const std::streampos);//TODO: Implement.		//goes to line N of the instream. Returns 0 on success, EOF on EOF. 

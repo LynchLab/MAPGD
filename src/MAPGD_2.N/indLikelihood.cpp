@@ -430,7 +430,6 @@ count_t maximizegrid (profile &pro, allele_stat &a, count_t const &MIN, float_t 
 		iP=0;
 		iQ=0;
 		iH=0;
-//		std::cout << a.MM << ", " << a.Mm << ", " <<  a.mm <<std::endl;
 		if (P_>0){
 			a.MM=float_t(P_-1)/float_t(N_);
 			a.Mm=float_t(H_)/float_t(N_);
@@ -491,6 +490,7 @@ count_t maximizegrid (profile &pro, allele_stat &a, count_t const &MIN, float_t 
 
 	if (a.freq!=0. && a.freq!=1.) a.f=1-float_t(H_)/float_t(N_)/(2.*(1.-a.freq)*a.freq);
 	else a.f=0;
+
 	a.gof=gof(pro, a, MIN, maxgof);
 
 	excluded=pro.maskedcount();

@@ -28,6 +28,20 @@ bool isint(const char *c)
 	while (*c !=0 && std::isdigit(*c)) ++c;
 	return (*c==0 && c!=s);
 }
+/*@Brief : sets a vector of strings from a string*/
+int arg_setvectorstr(int argc, char **argv, void *parm)
+{
+	int n=1;
+	int done=0;
+	std::vector <std::string> *v=(std::vector <std::string> *)(parm);
+	if (argc>1){
+		std::vector<std::string> elems;
+		while (true) v->push_back(0) ;
+		return 0;
+	} 
+	std::cerr << "arg_setvectorstr: error parsing " << argv[1] << std::endl;
+	exit(1);
+}
 
 /*@Breif : sets a vector of ints from a string. */
 int arg_setvectorint(int argc, char **argv, void *parm)

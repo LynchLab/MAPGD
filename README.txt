@@ -1,8 +1,16 @@
-﻿MAPGD version 2.1
+﻿MAPGD version 2.2
 
 <h5> To download this program click the "Download ZIP" button to the upper right -> </h5>
 
 Copyright (C) Michael Lynch, see notice at end of README. 
+<h3> Contents </h3>
+Intoduction
+Important changes from 2.0
+Basic commands
+File formats
+Python Extras
+Pedigrees
+High Performance Computing
 
 <h3> Introduction </h3>
 
@@ -30,9 +38,14 @@ If the second and third ranks are equal but lower than the major-nucleotide coun
 
 The ep and ei commands are useful to distinguish between sites that may appear polymorphic because of sequencing errors and sites that are truly polymorphic, and the cp command is useful to determine whether sampling and sequencing errors can explain differences in estimates of allele frequencies, or whether allele frequencies differ between population samples.
 
+<h3> Python Extras </h3>
+
 <h5> mapgdutils.py </h5>
 
 The command mapgdutils.py is utility for the analysis of the relatedness of a pair of individuals. It can be run by first converting the output of the ei command into a gcf file, and then running the command “mapgdutils.py relatedness” on this output. It . . . 
+
+<h3> Pedigrees </h3>
+<h3> High Performance Computing </h3>
 
 <h3> Making the Input File </h3>
 
@@ -163,7 +176,7 @@ By default the program prints information to the file "dataout.txt" and this fil
 
 <h3> Reference </h3>
 
-Please cite the following paper when publishing results derived from this program:
+Please cite the following paper (once it is written) when publishing results derived from this program:
 
 Ackerman, M., T. Maruki, and M. Lynch. 201?. MapGD : A program for the maximum likelihood analysis of population-genomic data. ?.
 

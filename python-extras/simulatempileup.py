@@ -1,4 +1,5 @@
 #I honestly have no idea what this script is intended to show. I guess that proview doesn't crash?
+#!/bin/python
 import random
 import math
 import numpy

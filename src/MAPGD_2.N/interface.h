@@ -13,6 +13,7 @@
 //TODO: this is just here for debuging.
 #include <iostream>
 
+int arg_setvectorstr(int, char **, void *);
 int arg_setvectorint(int, char **, void *);
 int arg_setint(int, char **, void *);
 int arg_set2int(int, char **, void *);

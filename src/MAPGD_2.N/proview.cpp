@@ -37,7 +37,8 @@ int proview(int argc, char *argv[])
 	env.optional_arg('q',"qdel",	&args.qdel,	&arg_setchar, 	"an error occured", "sets the quartet delimiter (default tab)");
 	env.optional_arg('d',"cdel",	&args.cdel,	&arg_setchar, 	"an error occured", "sets the column delimiter (default tab)");
 	env.optional_arg('c',"coulmn",	&args.c, 	&arg_setint, 	"an error occured", "sets the number of column in the output (default 6)");
-	env.optional_arg('i',"input",	&infile,	&arg_setstr, 	"an error occured", "sets the input file (default stdin)");
+	env.optional_arg('i',"input",	&infile,	&arg_setvectorstr,
+									"an error occured", "sets the input file (default stdin). If multiple input files given, the default behavior is to merge the files.");
 	env.optional_arg('o',"output",	&outfile,	&arg_setstr, 	"an error occured", "sets the output file (default stdout)");
 	env.optional_arg('t',"trim",	&args.pvalue,	&arg_setfloat_t,	"an error occured", "skip printing lines where an allele occurs primarly in one direction, \n\t\tgive that the p-value < the number provided");
 	env.flag(	'n',"notrim",	&args.notrim,	&flag_set,	"an error occured", "disable trimming");
@@ -70,7 +71,7 @@ int proview(int argc, char *argv[])
 	std::istream *in;
 	in=&std::cin;
 
-	if (not (args.pro) ){	
+	if (not (args.pro) ){
 		if (infile.size()!=0) {
 			inFile.open(infile, std::ifstream::in);
 			if (!inFile) {printUsage(env);} 

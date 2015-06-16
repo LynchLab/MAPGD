@@ -30,13 +30,13 @@ int estimatePooled(int argc, char *argv[])
 {
 
 	/* variables that can be set from the command line */
-	std::string infile="datain.txt";
-	std::string outfile="dataout.txt";
+	std::string infile="";
+	std::string outfile="";
 
 	bool verbose=false;
 	bool quite=false;
 	bool sane=false;
-	float_t EMLMIN=0.001;
+	float_t EMLMIN=0.00;
 	float_t a=0.00;
 
 	std::vector <int> pop;
@@ -54,7 +54,6 @@ int estimatePooled(int argc, char *argv[])
 	env.optional_arg('p',"populations", &pop, &arg_setvectorint, "please provide a list of integers", "choose populations to compare");
 	env.optional_arg('m',"minerror", &EMLMIN, &arg_setfloat_t, "please provide a float", "minimum error rate.");
 	env.optional_arg('a',"alpha", &a, &arg_setfloat_t, "please provide a float", "alpha.");
-	env.flag('s',"sane", &sane, &flag_set, "takes no argument", "set default in/out to the stdin and stdout.");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 	env.flag(	'V',"verbose", 	&verbose,	&flag_set, 	"an error occured", "prints more information while the command is running");
@@ -64,7 +63,6 @@ int estimatePooled(int argc, char *argv[])
 	if ( parsargs(argc, argv, env) ) printUsage(env);
 	/* Point to the input and output files. */
 
-	if ( sane ) {infile=""; outfile="";}
 
 	std::ostream *out;
 	std::ofstream outFile;
@@ -86,10 +84,6 @@ int estimatePooled(int argc, char *argv[])
 		out=&outFile;
 	};
 
-	*out << "id1\t\tid2\tmajor\tminor\t";
-	for (int x=0; x<pop.size(); ++x) *out << "Freq_P\tll_poly\tll_fixed\tcov\t";
-	*out << "Error" << std::endl;
-	/* Start inputting and analyzing the data line by line. */
 
 	pro.maskall();
 
@@ -100,6 +94,10 @@ int estimatePooled(int argc, char *argv[])
 
 	for (count_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
 
+	*out << "id1\t\tid2\tmajor\tminor\t";
+	for (int x=0; x<pop.size(); ++x) *out << "Freq_P\tll_poly\tll_fixed\tcov\t";
+	*out << "\tTotcov\tError" << std::endl;
+	/* Start inputting and analyzing the data line by line. */
 	/* The profile format can contain quartets for many populations and these populations need to be
 	 * iterated across.
 	 */
@@ -120,29 +118,42 @@ int estimatePooled(int argc, char *argv[])
 		/* Calculate the ML estimates of the major / minor allele frequencies and the error rate. */
                 pro.sort();
 
+		site.major=pro.getindex(0);
+		site.minor=pro.getindex(1);
+
                 /* 3) CALCULATE THE LIKELIHOOD OF THE POOLED POPULATION DATA. */
 
                 /* Calculate the ML estimates of the major pooled allele frequency and the error rate. */
 		popN=pro.getcoverage();
 
-                enull = (float_t) ( popN - pro.getcount(0) ) / ( (float_t) popN );
-		eml= (float_t) (pro.getcoverage()-pro.getcount(0)-pro.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
+                site.error= (float_t) ( popN - pro.getcount(0) ) / ( (float_t) popN );
+
+		if (site.error<EMLMIN) site.error=EMLMIN;
+
+		multi.set(&monomorphicmodel, site);
+
+                for (int x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(pro.getquartet(pop[x]) );
+
+		site.error= (float_t) (pro.getcoverage()-pro.getcount(0)-pro.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
+
+		if (site.error<EMLMIN) site.error=EMLMIN;
 
                 /* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 
-		multi.set(&monomorphicmodel, site);
-                for (int x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(pro.getquartet(pop[x]) );
+		multi.set(&fixedmorphicmodel, site);
+                for (int x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(pro.getquartet(pop[x]) );
 
-                /* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF POPULATION SUBDIVISION. */
+                /* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF monomorphism */
 
                 for (int x=0; x<pop.size(); ++x) {
-                        pmaj = (float_t) pro.getcount(pop[x],0) / (float_t) ( pro.getcount(pop[x],1) + pro.getcount(pop[x],0) );
+                        pmaj = (float_t) pro.getcount(pop[x],0) / (float_t) ( pro.getcount(pop[x], 1) + pro.getcount(pop[x],0) );
+			
                         pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
                         pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
 			if (pmlP[x]<0) pmlP[x]=0.;
 			if (pmlP[x]>1) pmlP[x]=1.;
 
-			//TODO ERROR!
+			site.freq=pmlP[x];
 			multi.set(&polymorphicmodel, site);
                         llhoodP[x]=multi.lnprob(pro.getquartet(pop[x]) );
                 };
@@ -171,13 +182,13 @@ int estimatePooled(int argc, char *argv[])
                 };
 
                 if (maxll>=a){
-                        *out << std::fixed << std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) << '\t';
+                        *out << std::fixed << std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname_gt(1) << '\t';
                         for (int x=0; x<pop.size(); ++x){
                                 if ( pro.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t' << 0.0 << '\t' << 0.0 << '\t';
                                 else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t' << llstatc[x]<< '\t' << pro.getcoverage(pop[x]) <<'\t';
                         };
                         /* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
-                        *out << pro.getcoverage() << '\t' << eml << std::endl;
+                        *out << pro.getcoverage() << '\t' << site.error << std::endl;
                 };
 
 	}

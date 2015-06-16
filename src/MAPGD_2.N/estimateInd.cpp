@@ -23,6 +23,9 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 
 /*@breif: Estimates a number of summary statistics from short read sequences.*/ 
 
+//estimate
+//print
+
 int estimateInd(int argc, char *argv[])
 {
 
@@ -67,9 +70,6 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('N',"number", 	&maxpitch,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "Number of sites to skip before analysis begins (default 0).");
 	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "Maximum number of sites to be analyzed (default All sites)");
-
-	env.flag(	'H',"", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
-
 	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
@@ -142,28 +142,49 @@ int estimateInd(int argc, char *argv[])
 	count_t excluded, texc, read=0;					//A varaiable for keeping track of the number of clones
 									//we have excluded from the analysis.
 	for (int x=0; x<skip; ++x) pro.read(SKIP);
+	
 
+	std::chrono::time_point <std::chrono::system_clock> then, now;
+	std::chrono::duration <double> runtime;
+	then=std::chrono::system_clock::now();				//Right now it is then, but it will be now later. . .
+	float_t secleft;
+
+	count_t nextprint=1000;
 	while (pro.read()!=EOF ){					//reads the next line of the pro file. pro.read() retuerns 0
 									//on success, EOF when end of file reached. (switch to ==0?)
+
+		if ( pro.size()!=0 && outFile.is_open() && !quite && read>nextprint){
+			now=std::chrono::system_clock::now();
+			runtime=now-then;
+			secleft=read/runtime.count();
+			//I should probably use std::put_time here, but it is not implemented in some recent versions of GCC, so I will hold off 
+			//until later. 
+  			std::cout << "Lines per second: " << secleft << std::endl;
+			nextprint=read+1000;
+		}
+
+		//estimate(line from profile, );
+		//print();
+	
+		
+		
 		mle.N=0;
 
-		initparams(pro, mle, MIN, EMLMIN,0);
-		maximizegrid(pro, mle, MIN, 10000, 96);		 
-									//If >90% of reads agree, then assume a homozygote,
-									//otherwise, assume heterozygote.
-//		std::cout << "!!" << mle.freq << "::" << mle.MM << ", " << mle.Mm << ", " << mle.mm << std::endl;
-
-		tgof=mle.gof;						//find the highest likelihood parameters. 
 		texc=pro.maskedcount();
 
-		if (maxpitch!=0)					//If we are allowed to trim individuals that don't fit the model, then
+		initparams(pro, mle, MIN, EMLMIN,0);
+									//If >90% of reads agree, then assume a homozygote,
+									//otherwise, assume heterozygote.
+
 		excluded=maximizegrid(pro, mle, MIN, maxgof, maxpitch+texc);	//trim so clones and re-fit the model.
+
+		tgof=mle.gof; 
 									
 		excluded=pro.maskedcount();				//count the number of clones excluded. 
 
-                /* CALCULATE THE LIKELIHOODS */
+                // CALCULATE THE LIKELIHOODS 
 
-		mle.ll=loglikelihood(pro, mle, MIN);				//Sets the site.ll to the log likelihood of the best fit (ll). 
+		mle.ll=loglikelihood(pro, mle, MIN);			//Sets the site.ll to the log likelihood of the best fit (ll). 
 		mono=mle; mono.MM=1.0; mono.Mm=0.; mono.mm=0.;		//Copies site to mono, then sets mono to a monomophic site 
 									//(i.e. sets the genotypic frequencies Mm and mm to 0.
 		mono.error=mle.null_error;				//Sets the error rate of mono to the null error rate.
@@ -178,7 +199,6 @@ int estimateInd(int argc, char *argv[])
 		mono.ll=(mle.ll-mono.ll)*2.;
 	
 		if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
-//			std::cout << "SWAPPING!\n";
 			std::swap(mle.major, mle.minor);
 			std::swap(mle.MM, mle.mm);
 			mle.freq=1.-mle.freq;
@@ -186,7 +206,6 @@ int estimateInd(int argc, char *argv[])
 			
 		}
 		else if (mle.freq==0.5){
-//			std::cout << "SWAPPING!\n";
 			if (rand() % 2){				//If the major and minor allele frequencies are identical, 
 				std::swap(mle.major, mle.minor);	//flip a coin to determine the major and minor allele.
 				std::swap(mle.MM, mle.mm);
@@ -195,13 +214,13 @@ int estimateInd(int argc, char *argv[])
 			};
 		};
 
-		hwe=mle; hwe.MM=pow(mle.freq, 2);			//Similar set up to mono, but now assuming 
+		hwe=mle; 
+		hwe.MM=pow(mle.freq, 2);				//Similar set up to mono, but now assuming 
 		hwe.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
-		hwe.mm=pow(1.-mle.freq, 2);
-		hwe.ll=(mle.ll-loglikelihood(pro, hwe, MIN))*2;
+		hwe.mm=pow(1.-mle.freq, 2);				//?
+		hwe.ll=(mle.ll-loglikelihood(pro, hwe, MIN))*2;		//?
 		
-		
-                /* Now print everything to the *out stream, which could be a file or the stdout. */
+                // Now print everything to the *out stream, which could be a file or the stdout. 
 		//TODO move this over into a formated file.
 		//if (mono.ll>=a){
 			if (mle.N>0){
@@ -223,7 +242,7 @@ int estimateInd(int argc, char *argv[])
 		read++;
 	}
 	pro.close();					//Close the pro file/stream.
-//	if (outFile.is_open()) outFile.close();		//Closes the outFile iff outFile is open.
-	if (pro_out.is_open()) pro_out.close();		//Closes the outFile iff outFile is open.
+	if (outFile.is_open()) outFile.close();		//Closes outFile iff outFile is open.
+	if (pro_out.is_open()) pro_out.close();		//Closes pro_out iff pro_out is open.
 	exit(0);					//Since everything worked, return 0!.
 }
