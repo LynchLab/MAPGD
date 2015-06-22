@@ -32,12 +32,14 @@ bool isint(const char *c)
 int arg_setvectorstr(int argc, char **argv, void *parm)
 {
 	int n=1;
-	int done=0;
 	std::vector <std::string> *v=(std::vector <std::string> *)(parm);
-	if (argc>1){
-		std::vector<std::string> elems;
-		while (true) v->push_back(0) ;
-		return 0;
+	while (n<argc){
+	//	std::cout << "n\n";
+		if (argv[n][0]=='-') return n;
+	//	std::cout << "pusshing " << argv[n] << std::endl;
+		v->push_back(argv[n]);
+		if ( n+1==argc) return n+1;
+		++n;
 	} 
 	std::cerr << "arg_setvectorstr: error parsing " << argv[1] << std::endl;
 	exit(1);
@@ -189,6 +191,7 @@ int parsargs(int argc, char *argv[], env_t env)
 					while(arg!=arg_end){
 						if (*optopt==arg->opt){
 							optind+=arg->func(argc-optind, argv+optind, arg->parm);
+							//std::cout << optind << "::" << argc << '\n';
 							arg->set=true;
 							break;
 						} ++arg;

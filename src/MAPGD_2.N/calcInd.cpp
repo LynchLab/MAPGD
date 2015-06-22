@@ -78,11 +78,11 @@ int calcInd(int argc, char *argv[])
 
 	
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
-		if (pro.open(infile.c_str(), 'r')==NULL) {	//try to open a profile of that name.
+		if (pro.open(infile.c_str(), "r")==NULL) {	//try to open a profile of that name.
 			printUsage(env);			//Print help message on failure.
 		} 
 	}
-	else pro.open('r');					//Iff no filename has been set for infile, open profile from stdin.
+	else pro.open("r");					//Iff no filename has been set for infile, open profile from stdin.
 
 	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
 	*out << "#id1\tid2\tref\tmajor\tminor\tpopN\tM\tm\terror\tnull_error\th\tpolyll\tHWEll\tgof\tefN\tN_excluded" << std::endl;

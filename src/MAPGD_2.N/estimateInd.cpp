@@ -31,8 +31,8 @@ int estimateInd(int argc, char *argv[])
 
 	/* All the variables that can be set from the command line */
 
-	std::string infile="datain.txt";
-	std::string outfile="dataout.txt";
+	std::string infile="";
+	std::string outfile="";
 	std::string outfilepro;
 
 	bool verbose=false;
@@ -95,13 +95,14 @@ int estimateInd(int argc, char *argv[])
 								 //This should be moved over to the constructor of allele_stat 
 								 //(when that constructor is writen). I'm a little concerned that
 								 //allele_stat has gotten too bloated, but . . . 
+	int line=0;
 
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
-		if (pro.open(infile.c_str(), 'r')==NULL) {	//try to open a profile of that name.
+		if (pro.open(infile.c_str(), "r")==NULL) {	//try to open a profile of that name.
 			printUsage(env);			//Print help message on failure.
 		} 
 	}
-	else pro.open('r');					//Iff no filename has been set for infile, open profile from stdin.
+	else pro.open("r");					//Iff no filename has been set for infile, open profile from stdin.
 
 	if (outfile.size()!=0) {
 		outFile.open(outfile, std::ofstream::out);
@@ -115,7 +116,7 @@ int estimateInd(int argc, char *argv[])
 	//out.setheader(); << "id1\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpolyll\tHWEll\tgof\teff_chrom\tN\tN_excluded\tmodel_ll" << std::endl;
 
 	if (outfilepro.size()!=0) {				//Same sort of stuff for the outfile. 
-		pro_out.open(outfilepro.c_str(), 'w');
+		pro_out.open(outfilepro.c_str(), "w");
 		if (!pro_out.is_open()){
 			std::cerr << "Cannot open file " << outfilepro << ". This file may already exist, or you may be trying to write to ro location.";
 			printUsage(env);
@@ -149,7 +150,7 @@ int estimateInd(int argc, char *argv[])
 	then=std::chrono::system_clock::now();				//Right now it is then, but it will be now later. . .
 	float_t secleft;
 
-	count_t nextprint=1000;
+	count_t nextprint=95;
 	while (pro.read()!=EOF ){					//reads the next line of the pro file. pro.read() retuerns 0
 									//on success, EOF when end of file reached. (switch to ==0?)
 
@@ -165,8 +166,6 @@ int estimateInd(int argc, char *argv[])
 
 		//estimate(line from profile, );
 		//print();
-	
-		
 		
 		mle.N=0;
 
@@ -194,7 +193,7 @@ int estimateInd(int argc, char *argv[])
                 mono.ll=loglikelihood(pro, mono, MIN);				//Calculates the log likelihood of the mono fit.
 		if (mono.ll>mle.ll){
 			mle=mono;
-			maximizegrid(pro, mle, MIN, maxgof, maxpitch);
+			maximizegrid(pro, mle, MIN, maxgof, maxpitch+texc);
 		};
 		mono.ll=(mle.ll-mono.ll)*2.;
 	
@@ -222,7 +221,7 @@ int estimateInd(int argc, char *argv[])
 		
                 // Now print everything to the *out stream, which could be a file or the stdout. 
 		//TODO move this over into a formated file.
-		//if (mono.ll>=a){
+		if (mono.ll>=a){
 			if (mle.N>0){
 				*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname_gt(1) << '\t' << pro.getcoverage() << '\t' << mle.freq <<'\t' << 1.-mle.freq << '\t' << mle.error << '\t';
 				*out << std::fixed << std::setprecision(6) << mle.null_error <<'\t' << mle.f << '\t' << mle.MM << '\t' << mle.Mm <<'\t' << mle.mm << '\t' << mle.freq*(1.-mle.freq)*2 << '\t' << mono.ll << '\t' << hwe.ll << '\t' << tgof << '\t' << mle.efc << '\t' << mle.N << '\t' << excluded-texc << '\t' << -2*mle.ll << '\n';
@@ -231,11 +230,13 @@ int estimateInd(int argc, char *argv[])
 				*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << '*' << '\t' << '*' << '\t' << pro.getcoverage() << '\t' << '*' <<'\t' << '*' << '\t' << '*' << '\t';
 				*out << std::fixed << std::setprecision(6) << '*' <<'\t' << '*' << '\t' << '*' << '\t' << '*' <<'\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << 0 << '\t' << 0 << '\t' << 0 << '\t' << '*' << '\n';
 			}
-		//}
+		}
 
-		pro_out.copy(pro);
-		if (tgof<-maxgof) pro_out.maskall(); 
-		pro_out.write();
+		if (pro_out.is_open() ){
+			pro_out.copy(pro);
+			if (tgof<-maxgof) pro_out.maskall(); 
+			pro_out.write();
+		};
 
 		for (count_t x=0; x<ind.size(); ++x) pro.unmask(ind[x]);	//Turn on the ability to read data from all clones in 
 		if (read==stop) break;

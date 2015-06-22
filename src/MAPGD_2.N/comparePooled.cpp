@@ -6,11 +6,11 @@
 
 int comparePooled(int argc, char *argv[])
 {
-	std::string infile="datain.txt";
-	std::string outfile="dataout.txt";
+	std::string infile="";
+	std::string outfile="";
 
 	env_t env;
-	bool sane=false, allpop=false;
+	bool allpop=false;
 
 	int t=0;
 	int s=0;
@@ -37,14 +37,10 @@ int comparePooled(int argc, char *argv[])
 
 //	env.flag('P',"allpopulations", &allpop, &flag_set, " ?? ", "compates all populations");
 	env.flag('h',"help", &env, &flag_help, "an error occured while displaying the help mesaage", "prints this message");
-	env.flag('s',"sane", &sane, &flag_set, "takes no argument", "set default in/out to the stdin and stdout.");
 	env.flag('v',"version", &env, &flag_version, "an error occured while displaying the version mesaage", "prints the program version");
 
 	if ( parsargs(argc, argv, env) ) printUsage(env);
 	if ( !env.required_set() ) printUsage(env);
-
-	if ( sane ) { infile=""; outfile=""; }
-	
 
 	std::ostream *out;
 	std::ofstream outFile;
@@ -54,8 +50,8 @@ int comparePooled(int argc, char *argv[])
 
 	/* Open the input file. */
 
-	if (infile.size()!=0) {if (pro.open(infile.c_str(), 'r')==NULL) {printUsage(env);} }
-	else pro.open('r');
+	if (infile.size()!=0) {if (pro.open(infile.c_str(), "r")==NULL) {printUsage(env);} }
+	else pro.open("r");
 
 	/* Open the output file. */
 	if (outfile.size()!=0) {
@@ -153,7 +149,7 @@ int comparePooled(int argc, char *argv[])
 			};
 			llstat[x] = fabs(2.0 * (llhoodSS - llhoodPS) );
 			maxll+=llstat[x];
-//			if (llstat[x]>maxll) maxll=llstat[x];
+			if (llstat[x]>maxll) maxll=llstat[x];
 		};
 		if (maxll>=a){
 			*out << std::fixed << std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname(1) << '\t';

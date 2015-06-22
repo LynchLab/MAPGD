@@ -10,19 +10,90 @@
 **/
 
 const std::string profile::names_ ="ACGT*";
+
 const count_t profile::defaultorder[5] = {0,1,2,3,4};
 
 site_t::site_t(void){};
+
 site_t::site_t(count_t size){
 	sample.assign(size, quartet() );
-};
+}
 
 site_t & site_t::operator =(const site_t& arg){
-	
         sample=arg.sample; 	
-        id0=arg.id0, id1=arg.id1;  
-        extra_ids=arg.extra_ids;   
-};
+        id0=arg.id0;
+	id1=arg.id1;  
+        extraid=arg.extraid;   
+}
+
+const std::string profile::decodeid0(const count_t &id){
+	return header_.decodeid0(id);
+}
+const std::string profile_header::decodeid0(const count_t &id){
+	if (lastid0==id) return lastid0_str;
+	id==lastid0; 
+	lastid0_str=id0[id];
+	return lastid0_str;
+}
+
+int profile::setsamples(count_t samples){
+	return header_.setsamples(samples);
+}			
+
+
+int profile::setcolumns(count_t a){
+	return header_.setcolumns(a);
+}
+const std::string profile::decodeid1(const uint64_t &id){
+	return header_.decodeid1(id);
+}
+const std::string profile_header::decodeid1(const uint64_t &id){
+	return std::to_string(id);
+}
+
+const std::string profile::decodeextraid(const count_t &id, const count_t &a) {
+	return header_.decodeextraid(id, a);
+}
+const std::string profile_header::decodeextraid(const count_t &id, const count_t &a) {
+	return decodechar[id];
+}
+
+const count_t profile::encodeid0(const std::string &id){
+	return header_.encodeid0(id);
+}
+
+const count_t profile_header::encodeid0(const std::string &id){
+	if (lastid0_str==id) return lastid0;
+	lastid0_str=id;
+	std::map<std::string, count_t>::iterator search = id0_str.find(id);
+	if(search != id0_str.end()) {
+		lastid0=search->second;
+		return lastid0;
+	}
+	else {
+		control=(control|NEWID0);
+		count_t emplace=id0_str.size();
+		id0_str[id]=emplace;
+		id0.push_back(id);
+		lastid0=emplace;
+		return lastid0;
+	}
+}
+
+const uint64_t profile::encodeid1(const std::string &id){
+	return header_.encodeid1(id);
+}
+
+const uint64_t profile_header::encodeid1(const std::string &id){
+	return atoi(id.c_str() );
+}
+
+const count_t profile::encodeextraid(const char &id, const count_t &a){
+	return header_.encodeextraid(id, a);
+}
+const count_t profile_header::encodeextraid(const char &id, const count_t &a){
+	return encodechar[id];
+}
 
 int profile::seek(std::streampos pos) {
 	/*if (column==5 || in==NULL){
@@ -30,41 +101,117 @@ int profile::seek(std::streampos pos) {
 	};*/
 	in->seekg(pos);
 	read();
-	return 0;
+	return NONE;
 }
 
-int profile::setsamples(count_t samples) {
-	samples_=samples;
+int profile_header::setsamples(const count_t &samples) {
+	*samples_=samples;
 	column_names.clear();
-	if (columns_==6 or columns_==7) column_names.push_back("scaffold");
+	if (*columns_==6 or *columns_==7) column_names.push_back("scaffold");
 	column_names.push_back("pos");
-	if (columns_==7) column_names.push_back("ref");
+	if (*columns_==7) column_names.push_back("ref");
 
-	for (unsigned int x=0; x<samples_; ++x){
+	for (unsigned int x=0; x<*samples_; ++x){
 		column_names.push_back("sample_"+std::to_string( (unsigned long long int)(x+1) ) );
-		site_.sample.push_back(quartet_t() );
+		site_->sample.push_back(quartet_t() );
 	};
 	return NONE;
 }
 
-int profile::setcolumns(count_t x) {
-	if (column_names.size()==0) setsamples(0);
-	if (columns_==5 and x==6){column_names.insert(column_names.begin(), "scaffold");}
-	if (columns_==5 and x==7){column_names.insert(column_names.begin(), "scaffold"); column_names.insert(column_names.begin()+2, "ref");}
-	if (columns_==6 and x==5){column_names.erase(column_names.begin() );}
-	if (columns_==6 and x==7){column_names.insert(column_names.begin()+2, "ref");}
-	if (columns_==7 and x==5){column_names.erase(column_names.begin() ); column_names.erase(column_names.begin()+1);}
-	if (columns_==7 and x==6){column_names.erase(column_names.begin()+2);}
-	columns_=x;
+
+int profile::copyheader(const profile &pro){
+	header_=pro.header_;
 	return NONE;
 }
 
-int profile::setcolumn_name(count_t x, std::string str) {
+int profile_header::setcolumns(const count_t &x) {
+	if (column_names.size()==0) setsamples(0);
+	if (*columns_==5 and x==6){column_names.insert(column_names.begin(), "scaffold");}
+	if (*columns_==5 and x==7){column_names.insert(column_names.begin(), "scaffold"); column_names.insert(column_names.begin()+2, "ref");}
+	if (*columns_==6 and x==5){column_names.erase(column_names.begin() );}
+	if (*columns_==6 and x==7){column_names.insert(column_names.begin()+2, "ref");}
+	if (*columns_==7 and x==5){column_names.erase(column_names.begin() ); column_names.erase(column_names.begin()+1);}
+	if (*columns_==7 and x==6){column_names.erase(column_names.begin()+2);}
+	*columns_=x;
+	return NONE;
+}
+
+const std::string profile::getsample_name(const count_t &a) const{
+	switch (columns_){
+		case 5:
+			return header_.getcolumn_name(a+1);
+		break;
+		case 6:
+			return header_.getcolumn_name(a+2);
+		break;
+		case 7:
+			return header_.getcolumn_name(a+3);
+		break;
+	};
+};
+
+int profile::setsample_name(const count_t &a, const std::string &str){
+	switch (columns_){
+		case 5:
+			header_.setcolumn_name(a+1, str);
+		break;
+		case 6:
+			header_.setcolumn_name(a+2, str);
+		break;
+		case 7:
+			header_.setcolumn_name(a+3, str);
+		break;
+	};
+}
+
+const std::string profile_header::getcolumn_name(const count_t &x) const{
+	return column_names[x];
+};
+
+int profile_header::setcolumn_name(const count_t &x, const std::string &str) {
 	column_names[x]=str;
 	return NONE;
 }
 
-int profile::writeheader(void){
+profile_header::profile_header(){}
+
+void profile_header::init(profile *pro){
+	sig_=&pro->sig_;			// were alleles thrown out if the allele only occurred in reads from one direction?
+	read_=&pro->read_;			// file mode flag;
+	write_=&pro->write_;			// file mode flag;
+	binary_=&pro->binary_;			// file mode flag;
+	mpileup_=&pro->mpileup_;
+	noheader_=&pro->noheader_;
+	delim_column=&pro->delim_column;	// the delimiter which seperates columns
+	delim_quartet=&pro->delim_quartet;	// the delimiter that seperates counts in a quartet
+	columns_=&pro->columns_;		// 5|6|7|more?
+	samples_=&pro->samples_;		// the number of samples (i.e. different individuals or populations) in the profile.
+	site_=&pro->site_;			// the number of samples (i.e. different individuals or populations) in the profile.
+	
+	for (int x=0; x<256; x++) encodechar[x]=5;
+	for (int x=0; x<256; x++) decodechar[x]='N';
+
+	encodechar['A']=0;
+	encodechar['a']=0;
+	encodechar['C']=1;
+	encodechar['c']=1;
+	encodechar['G']=2;
+	encodechar['g']=2;
+	encodechar['T']=3;
+	encodechar['t']=3;
+
+	decodechar[0]='A';
+	decodechar[1]='C';
+	decodechar[2]='G';
+	decodechar[3]='T';
+	decodechar[4]='N';
+}
+
+profile_header::profile_header(profile *pro){
+	init(pro);
+}
+
+int profile_header::writeheader(std::ostream *out){
 	if (out==NULL){
 		std::cerr << "attempted writeheader when no outstream was open." << std::endl;
 		exit(UNEXPECTED);
@@ -78,23 +225,52 @@ int profile::writeheader(void){
 	std::vector <std::string> column;
 	bool notdone_=true;
 	while(notdone_){
-		*out << "@PR" << delim_column << "VN:" << VER << delim_column <<"CN:" << columns_ << delim_column << "SN:" << samples_ << "MD:" << binary_ <<std::endl;
+		*out << "@PR" << *delim_column << "VN:" << VER << *delim_column << "CN:" << *columns_ << *delim_column << "SN:" << *samples_ << *delim_column<< "MD:" << *binary_ <<std::endl;
 		*out << "@ID";
 		for (unsigned int x=0; x<column_names.size(); ++x)
-			*out << delim_column << column_names[x];
+			*out << *delim_column << column_names[x];
 		*out << std::endl;
 		notdone_=false;
 	}
 	return NONE;
 }
 
-int profile::copyheader(profile const &pro){
-	columns_=pro.columns_;
-	setsamples(pro.samples_);
-	for (unsigned int x=0; x<pro.column_names.size(); ++x){
-		column_names[x]=pro.column_names[x];
+int profile_header::writetailer(std::ostream *out){
+	if (out==NULL){
+		std::cerr << "attempted writetailer when no outstream was open." << std::endl;
+		exit(UNEXPECTED);
 	};
+	std::string line;
+	std::vector <std::string> column;
+	bool notdone_=true;
+	while(notdone_){
+//		*out << "@SIZE:" << pro->getlinenumber() << std::endl;
+//		*out << "@?:" << "?" << std::endl;
+		notdone_=false;
+	}
+	return NONE;
+}
+
+profile_header & profile_header::operator =(const profile_header& arg){
+        //*sig_=*arg.sig;                             // were alleles thrown out if the allele only occurred in reads from one direction?
+
+        *delim_column=*arg.delim_column;                             // the delimiter which seperates columns
+        *delim_quartet=*arg.delim_quartet;                            // the delimiter that seperates counts in a quartet
+        *columns_=*arg.columns_;                         // 5|6|7|more?
+        site_t *site_;                                  // a vector to store the calls from reads
+        *samples_=*arg.samples_;                         // the number of samples (i.e. different individuals or populations) in the profile.
+
+	*columns_=*arg.columns_;
+	setsamples(*samples_);
+	column_names.clear();
+
+	for (unsigned int x=0; x<arg.column_names.size(); ++x){
+		column_names.push_back(arg.column_names[x]);
+	};
+	//TODO Need to copy over maps and what not too!!	
+
 };
+
 
 //TODO FIX THIS, IT'S UGLY.
 
@@ -117,6 +293,16 @@ int hash(std::string str){
 };
 
 int profile::readheader(void){
+	header_.readheader(in);
+}
+
+int profile::writeheader(void)
+{
+	header_.writeheader(out);
+}
+
+int profile_header::readheader(std::istream *in)
+{
 	//Headers should contain the following feilds:
 	//The version number of proview used to create the file,
 	//The number of columns in the file
@@ -129,25 +315,44 @@ int profile::readheader(void){
 	std::string line;
 	std::vector <std::string> column, args, arg;
 
-	delim_column='\t';
-	delim_quartet='/';
-	binary_=false;
+	control=0;
 
 	bool notdone_=true, reading_pr=false, reading_id=false;
+
 	while(notdone_){
 		//"VN" version number
 		//"@IDs" Names of fields.
 		if (std::getline(*in, line)!=NULL){
-			if (line[0]=='s'){
-				std::cerr << "Depricated header format. Please construct pro files with the \'mapgd proview \' command." << std::endl;
-				column=split(line, delim_column);
-				columns_=7;
-				setsamples(column.size()-3);
-				for (unsigned int x=0; x<column.size(); ++x) column_names[x]=column[x];
-				notdone_=false;
-			}
-			else if (line[0]=='@'){
-				args=split(line, delim_column);
+			if ( line[0]!='@' || *noheader_ ){
+				if ( *noheader_ ) { 
+					column=split(line, *delim_column);
+					switch (*columns_){
+						case 5:
+							setsamples(column.size()-1);
+						break;
+						case 6:
+							setsamples(column.size()-2);
+						break;
+						case 7:
+							site_->extraid.push_back(0);
+							setsamples(column.size()-3);
+						break;
+					};
+					for (unsigned int x=0; x<column.size(); ++x) column_names[x]=column[x];
+					notdone_=false;
+				}
+				else {
+					*mpileup_=true;
+					column=split(line, *delim_column);
+					*samples_=(column.size()-3)/3;
+					setsamples(*samples_);
+					in->putback('\n');
+					site_->extraid.push_back(0);
+					for (std::string::reverse_iterator rit=line.rbegin(); rit!=line.rend(); ++rit) in->putback(*rit);
+					notdone_=false;
+				}
+			} else {
+				args=split(line, *delim_column);
 				if (args.size()==0) return BADHEADER;
 				for(std::vector<std::string>::iterator argit = args.begin(); argit != args.end(); ++argit){
 					arg=split(*argit, ':');
@@ -159,14 +364,15 @@ int profile::readheader(void){
 						case H_VER:
 							break;
 						case H_COL:
-							columns_=atoi(arg[1].c_str() );
+							*columns_=atoi(arg[1].c_str() );
+							if (*columns_==7) site_->extraid.push_back(0);
 							break;
 						case H_SAM:
-							samples_=atoi(arg[1].c_str() );
-							setsamples(samples_);
+							*samples_=atoi(arg[1].c_str() );
+							setsamples(*samples_);
 							break;
 						case H_MOD:
-							binary_=atoi(arg[1].c_str() );
+							*binary_=atoi(arg[1].c_str() );
 							break;
 						case H_ID:
 							column_names.clear();
@@ -180,63 +386,131 @@ int profile::readheader(void){
 								std::cerr << "Warning: unexpected field encountered in header (" << *argit << "). File may not have opened correctly. Try removing this field and running the program again." << std::endl;
 								return BADHEADER;
 							}
+						break;
 					}
 				}
-			}
-			else{
-				std::cerr << "Warning: File lacks header, assuming a five column format produced by the stand-alone program sam2pro. In the future please use mapgd proview to generate pro files." << std::endl;
-				columns_=5;
-				setsamples(1);
-				delim_quartet='\t';
-				column_names[0]="ref";
-				column_names[1]="bp";
-				column_names[2]="sample0";
-				return BADHEADER;
-			};
-		};
+			} 
+		} else {
+			std::cerr << "Error: encountred unexpected EOF. Is the file empty?" << std::endl;
+			return BADHEADER;
+		}; 
 	}
 	return NONE;
 }
 
-int profile::read(){
-	read(0);	
-};
+int profile::read()
+{
+	return read(0);
+}
 
-int profile::read(int arg){
-	if(binary_) readb(arg);
-	else readt(arg);
+int profile::read(int arg)
+{
+	if(binary_) { 
+		return readb(arg);
+	} else {
+		if (mpileup_) return readm(arg);
+		else return readt(arg);
+	};
+}
+
+int profile::readm(int arg) 
+{
+	std::string line;
+	memcpy(sorted_, defaultorder, 5*sizeof(count_t) );
+	std::vector <std::string> column, quartet;
+
+	if( std::getline(*in, line)!=NULL){
+		column = split(line, delim_column);
+		if(column.size() < 5){
+			std::cerr << "WARNING[proFile.cpp]: Skipping line " << getlinenumber() << " with only " << column.size() << " fields." << std::endl;
+			return 0;
+		}
+		std::vector <quartet_t>::iterator it=begin();
+		std::vector <quartet_t>::iterator it_end=end();
+	
+		std::vector <std::string>::iterator column_it=column.begin();	
+		
+		site_.id0=encodeid0(column[0]);
+		site_.id1=encodeid1(column[1]);
+		site_.extraid[0]=encodeextraid(column[2][0], 0);
+	
+		column_it+=4;
+		while (it!=it_end){
+    			memset(it->base, 0, sizeof(count_t)*5 );
+			scan(*column_it, *it);
+			column_it+=3;
+			++it;
+		}
+		return 0;
+		
+	} else return EOF;
+	return UNEXPECTED;
+}
+
+void inline profile::scan(const std::string &str, quartet_t &q)
+{
+	count_t j;
+	std::string number;
+	std::string::const_iterator it=str.begin();
+	std::string::const_iterator end=str.end();
+	while (it!=end) {
+		if (*it == '^') {it+=2; continue;}
+		if (*it == '$' || *it=='*') {it++; continue;}
+		else if (*it == '+' || *it == '-') {
+			number = "";
+			while(isdigit(*it) ) {number.push_back(*it); it++;}
+ 			for(j=0; j<atoi(number.c_str() )-1; ++j) it++;
+			continue;
+    		} else if(*it == ',' || *it=='.') {
+			q.base[site_.extraid[0] ]++;
+		} else {
+			q.base[header_.encodeextraid( (count_t)*it, 0) ]++;
+		}
+		it++;
+	}
 }
 
 int profile::readb(int arg){
 	memcpy(sorted_, defaultorder, 5*sizeof(count_t) );
-	if(arg==SKIP) return 0;
-	/*
+	if(arg==SKIP) {
+		//?		
+		return 0;
+	}
+	in->read((char *)&(header_.control), sizeof(char) );
+	if ( (header_.control)&NEWID0){
+		std::string str;
+		std::getline(*in, str);
+		encodeid0(str);
+	}
 	switch (columns_){
+		case 5:
 		case 6:
-			in->read (site_.id0, sizeof(count_t) );
-			in->read (site_.id1, sizeof(count_t) );
-			for (unsigned int x=0; x<samples_; ++x) in->read (site_.sample[x].base, 4*sizeof(count_t) );
+			in->read ( (char *)&site_.id0, sizeof(count_t) );
+			in->read ( (char *)&site_.id1, sizeof(uint64_t) );
+			for (unsigned int x=0; x<samples_; ++x) in->read ( (char *)site_.sample[x].base, 4*sizeof(count_t) );
 		break;
 		case 7:
-			in->read (site_.id0, sizeof(count_t) );
-			in->read (site_.id1, sizeof(count_t) );
-			in->read (site_.extra_ids[0], sizeof(count_t) );
-			for (unsigned int x=0; x<samples_; ++x) in->read (site_.sample[x].base, 4*sizeof(count_t) );
+			in->read ( (char *)&site_.id0, sizeof(count_t) );
+			in->read ( (char *)&site_.id1, sizeof(uint64_t) );
+			in->read ( (char *)&site_.extraid[0], sizeof(count_t) );
+			for (unsigned int x=0; x<samples_; ++x) in->read ( (char *)site_.sample[x].base, 4*sizeof(count_t) );
 		break;
 		default:
 			std::cerr << "Error in binary file formating. "<< std::endl;
 			exit(0);
 		break;	
-	};*/
-	return 0;
+	}
+//	std::cout << "line :" << site_.id1 << " read "<< 4*sizeof(count_t)*samples_+sizeof(count_t)+sizeof(uint64_t) << " bytes." << in->tellg() << std::endl;
+	if (in->eof() ) return EOF;
+	else return 0;
 };
 
 int profile::readt(int arg){
-	std::string line;
 	//The order of nucleotides read from a quartet file. Replace this with a memcopy of a constant.
+	std::string line;
 	memcpy(sorted_, defaultorder, 5*sizeof(count_t) );
-
 	std::vector <std::string> column, quartet;
+
 	if (in==NULL){
 		std::cerr << "attempted read when no instream was open." << std::endl;
 		exit(UNEXPECTED);
@@ -244,50 +518,54 @@ int profile::readt(int arg){
 
 	if (std::getline(*in, line)!=NULL){
 		if (arg==SKIP) return 0;
+		switch (columns_){
 		//READ A PRO FILE
-		if (columns_==5){
+			case 5:
 			/* check for start of new scaffold*/
-			if (line[0]!='>'){
-				column=split(line, delim_column);
-				if ( (column.size()-1)!=samples_){
-					std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
-					std::cerr << column.size() << " fields found." << std::endl;
-					std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
-					exit(0);
-					return EOF;
+				if (line[0]!='>'){
+					column=split(line, delim_column);
+					if ( (column.size()-1) != samples_){
+						std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
+						std::cerr << column.size() << " fields found." << std::endl;
+						std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
+						exit(0);
+						return EOF;
+					}
+					site_.id1=encodeid1(column[0]);
+					for (unsigned int x=0; x< samples_; ++x){
+						quartet=split(column[x+1], delim_quartet );
+						site_.sample[x].base[0]=atoi(quartet[0].c_str() );
+						site_.sample[x].base[1]=atoi(quartet[1].c_str() );
+						site_.sample[x].base[2]=atoi(quartet[2].c_str() );
+						site_.sample[x].base[3]=atoi(quartet[3].c_str() );
+					};
+				} else {
+					line.erase(line.begin());
+					site_.id0=encodeid0(line);
+					read(arg);
 				}
-				site_.id1=column[0];
-				for (unsigned int x=0; x<samples_; ++x){
-					quartet=split(column[x+1], delim_quartet);
-					site_.sample[x].base[0]=atoi(quartet[0].c_str() );
-					site_.sample[x].base[1]=atoi(quartet[1].c_str() );
-					site_.sample[x].base[2]=atoi(quartet[2].c_str() );
-					site_.sample[x].base[3]=atoi(quartet[3].c_str() );
-				};
-			} else {
-				line.erase(line.begin());
-				site_.id0=line;
-				read(arg);
-			}
-		} else if (columns_==6){
+				
+			break;
+			case 6:
 			column=split(line, delim_column);
-			if ( (column.size()-2)!=samples_){
+			if ( (column.size()-2) != samples_){
 				std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
 				std::cerr << column.size() << " fields found." << std::endl;
 				std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
 				exit(0);
 				return EOF;
 			};
-			site_.id0=column[0];
-			site_.id1=column[1];
-			for (unsigned int x=0; x<samples_; ++x){
+			site_.id0=encodeid0(column[0]);
+			site_.id1=encodeid1(column[1]);
+			for (unsigned int x=0; x < samples_; ++x){
 				quartet=split(column[x+2], delim_quartet);
 				site_.sample[x].base[0]=atoi(quartet[0].c_str() );
 				site_.sample[x].base[1]=atoi(quartet[1].c_str() );
 				site_.sample[x].base[2]=atoi(quartet[2].c_str() );
 				site_.sample[x].base[3]=atoi(quartet[3].c_str() );
 			};
-		} else if (columns_==7){
+			break;
+			case 7:
 			column=split(line, delim_column);
 			if ( (column.size()-3)!=samples_){
 				std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
@@ -296,42 +574,75 @@ int profile::readt(int arg){
 				exit(0);
 				return EOF;
 			};
-			site_.id0=column[0];
-			site_.id1=column[1];
-			if (site_.extra_ids.size()==0) site_.extra_ids.push_back("");
-			site_.extra_ids[0]=column[2];
+			site_.id0=encodeid0(column[0]);
+			site_.id1=encodeid1(column[1]);
+			site_.extraid[0]=encodeextraid(column[2][0], 0);
 			for (unsigned int x=0; x<samples_; ++x){
 				quartet=split(column[x+3], delim_quartet);
 				site_.sample[x].base[0]=atoi(quartet[0].c_str() );
 				site_.sample[x].base[1]=atoi(quartet[1].c_str() );
 				site_.sample[x].base[2]=atoi(quartet[2].c_str() );
 				site_.sample[x].base[3]=atoi(quartet[3].c_str() );
-			};
+			}
+			break;
 		}
 		return 0;
 	}
 	return EOF;
-};
+}
 
 int profile::copy(const profile &pro){
 	site_=pro.site_;
-};
+	return 0;
+}
 
 int profile::write(void){
-	write(site_);
-};
+	if (binary_) return writeb(site_);
+	else return write(site_);
+}
+
+int profile::writeb (const site_t &thissite){
+	if (out==NULL){
+		std::cerr << "attempted write when no outstream was open." << std::endl;
+		exit(UNEXPECTED);
+	}
+	out->write((char *)&(header_.control), sizeof(char) );
+	if ( (header_.control)&NEWID0) *out << decodeid0(site_.id0) << std::endl;
+        switch (columns_){
+                case 5:
+                case 6:
+                        out->write((char *)&site_.id0, sizeof(count_t) );
+			out->write((char *)&site_.id1, sizeof(uint64_t) );
+			for (unsigned int x=0; x<samples_; ++x) out->write((char *)site_.sample[x].base, 4*sizeof(count_t) );
+                break;
+                case 7:
+                        out->write((char *)&site_.id0, sizeof(count_t) );
+			out->write((char *)&site_.id1, sizeof(uint64_t) );
+			out->write((char *)site_.extraid[0], sizeof(count_t) );
+			for (unsigned int x=0; x<samples_; ++x) out->write((char *)site_.sample[x].base, 4*sizeof(count_t) );
+                break;
+                default:
+                        std::cerr << "Error in binary file formating. "<< std::endl;
+                        exit(0);
+                break;
+        }
+	(header_.control)=0;
+//	std::cout << "line :" << site_.id1 << " wrote "<< 4*sizeof(count_t)*samples_+sizeof(count_t)+sizeof(uint64_t) << " bytes." << out->tellp() << std::endl;
+        return 0;
+}
 
 int profile::write(const site_t &thissite){
 	if (out==NULL){
 		std::cerr << "attempted write when no outstream was open." << std::endl;
 		exit(UNEXPECTED);
 	};
-	if (columns_==5){
+	switch (columns_){
+	case 5:
 		if (thissite.id0!=site_.id0){
-			*out << '>' << thissite.id0 << std::endl;
+			*out << '>' << decodeid0(thissite.id0) << std::endl;
 		};
-		*out << thissite.id1;
-		for (unsigned int x=0; x<samples_; ++x){
+		*out << decodeid1(thissite.id1);
+		for (unsigned int x=0; x < samples_; ++x){
 			if (thissite.sample[x].masked){
 				*out << delim_column;
 				*out << 0 << delim_quartet;
@@ -349,9 +660,10 @@ int profile::write(const site_t &thissite){
 		};
 		*out << std::endl;
 		site_=thissite;
-	} else if (columns_==6){
-		*out << thissite.id0 << delim_column << thissite.id1;
-		for (unsigned int x=0; x<samples_; ++x){
+	break;
+	case 6:
+		*out << decodeid0(thissite.id0) << delim_column << decodeid1(thissite.id1);
+		for (unsigned int x=0; x < samples_; ++x){
 			if (thissite.sample[x].masked){
 				*out << delim_column;
 				*out << 0 << delim_quartet;
@@ -369,9 +681,10 @@ int profile::write(const site_t &thissite){
 		};
 		*out << std::endl;	
 		site_=thissite;
-	} else if (columns_==7){
-		*out << thissite.id0 << delim_column << thissite.id1 << delim_column << thissite.extra_ids[0];
-		for (unsigned int x=0; x<samples_; ++x){
+	break;
+	case 7: 
+		*out << decodeid0(thissite.id0) << delim_column << decodeid1(thissite.id1) << delim_column << decodeextraid(thissite.extraid[0], 0);
+		for (unsigned int x=0; x < samples_; ++x){
 			if (thissite.sample[x].masked){
 				*out << delim_column;
 				*out << 0 << delim_quartet;
@@ -389,51 +702,59 @@ int profile::write(const site_t &thissite){
 		};
 		*out << std::endl;	
 		site_=thissite;
-	} else return UNEXPECTED;
+	break;
+	default:
+		return UNEXPECTED;
+	break;
+	}
 	return 0;
 };
 
 /** @brief opens a .pro file in the modes "r" or "w".
   * @returns a pointer to the profile
 **/
-profile* profile::open(const char* filename, const char mode){
+profile* profile::open(const char* filename, const char *mode){
 
 	memcpy(sorted_, defaultorder, 5*sizeof(count_t) );
 	open_=false;
 	in=NULL;
 	out=NULL;
 
-	switch ( mode ) {
-		case 'r':
-			inFile.open(filename, std::fstream::in);
-			if (!inFile.is_open() ){
-				std::cerr << "cannot open " << filename << " for reading (1)." << std::endl;				
-				exit(0);
-			};
-			in=&inFile;
-			if (readheader()==BADHEADER){
-				std::cerr << "cannot read header on " << filename << " (1). " << std::endl;				
-				std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;				
-			};
-			break;
-		case 'w':
-			outFile.open(filename, std::ofstream::out);
-			if (!outFile.is_open() ){
-				std::cerr << "cannot open " << filename << " for writing." << std::endl;				
-				exit(0);
-			};
-			out=&outFile;
-			break;
-		default :
-			std::cerr << "unkown filemode " << std::endl;
+	if ( mode=="r" ){
+		inFile.open(filename, std::fstream::in);
+		if (!inFile.is_open() ){
+			std::cerr << "cannot open " << filename << " for reading (1)." << std::endl;				
 			exit(0);
-	
+		};
+		in=&inFile;
+		if (readheader()==BADHEADER){
+			std::cerr << "cannot read header on " << filename << " (1). " << std::endl;				
+			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;				
+		};
+	} else if (mode=="w"){
+		outFile.open(filename, std::ofstream::out);
+		if (!outFile.is_open() ){
+			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
+			exit(0);
+		};
+		out=&outFile;
+	} else if (mode=="wb"){
+		outFile.open(filename, std::ofstream::out);
+		if (!outFile.is_open() ){
+			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
+			exit(0);
+		};
+		out=&outFile;
+		binary_=true;
+	} else	{
+		std::cerr << "unkown filemode " << std::endl;
+		exit(0);
 	}
 	open_=true;
 	return this;
 }
 
-profile* profile::open(char mode)
+profile* profile::open(const char *mode)
 {
 	sorted_[0]=0;
 	sorted_[1]=1;
@@ -442,37 +763,59 @@ profile* profile::open(char mode)
 	sorted_[4]=4;
 	open_=false;
 
-	switch ( mode ) {
-		case 'r':
-			in=&std::cin;
-			if (readheader()==BADHEADER){
-				std::cerr << "cannot find header in stdin (2). " << std::endl;				
-				std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;				
-			}
-			break;
-		case 'w':
-			columns_=7;
-			out=&std::cout;
-			break;
-		default :
-			std::cerr << "unkown filemode " << std::endl;
-			exit(0);
-	
+	if (mode=="r"){
+		in=&std::cin;
+		if (readheader()==BADHEADER){
+			std::cerr << "cannot find header in stdin (2). " << std::endl;				
+			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;				
+		}
+		read_=true;
+	} else if (mode=="w") {
+		out=&std::cout;
+		write_=true;
+	} else if (mode=="wb") {
+		out=&std::cout;
+		binary_=true;
+		write_=true;
+	} else{
+		std::cerr << "unkown filemode " << std::endl;
+		exit(0);
 	};
-
 	open_=true;
 	donothing_=false;
 	return this;
 }
+
 /** @brief closes a .pro file and unsets members.
   * @no return value
 **/
+
 void profile::close(void){
+	if (write_){
+		header_.writetailer(out);
+		if (outFile.is_open() ) outFile.close();
+	}
+	if(read_) if (inFile.is_open() ) inFile.close();
+	read_=false;
+	write_=false;
 	open_=false;
 };
 
 profile::profile(){
 	open_=false;
+	read_=false;
+	write_=false;
+	binary_=false;
+	mpileup_=false;
+	noheader_=false;
+
+	samples_=0;
+	columns_=5;
+	delim_column='\t';
+	delim_quartet='/';
+
+	
+	header_.init(this);
 };
 
 bool profile::is_open(void) const{
@@ -542,7 +885,7 @@ count_t profile::getcount(count_t c) const
 
 count_t profile::getcoverage(count_t s) const
 {
-	if (s<samples_)	return site_.sample[s].base[0]+
+	if (s<samples_) return site_.sample[s].base[0]+
 				site_.sample[s].base[1]+
 				site_.sample[s].base[2]+
 				site_.sample[s].base[3];
@@ -588,11 +931,11 @@ name_t profile::getname_gt(count_t c) const
 	return '*';
 };
 
-std::string profile::getids(void) const
+std::string profile::getids(void)
 {
-	std::string str=site_.id0+'\t'+site_.id1;
-	for (unsigned int x=0; x<site_.extra_ids.size(); ++x){
-		str+='\t'+site_.extra_ids[x];
+	std::string str=decodeid0(site_.id0)+'\t'+decodeid1(site_.id1);
+	for (unsigned int x=0; x<site_.extraid.size(); ++x){
+		str+='\t'+decodeextraid(site_.extraid[x], x);
 	};
 	return str;
 };
@@ -657,10 +1000,36 @@ void profile::set_delim_column(const char &del)
 	delim_column=del;
 }	
 
+void profile::setbasecount(const count_t &x, const count_t &y, const count_t &z){
+	site_.sample[x].base[y]=z;
+}
 count_t count(const quartet_t c){
 	return c.base[0]+c.base[1]+c.base[2]+c.base[3];
+}
+
+const count_t profile::getlinenumber(void) const{
+	return 0;
+}
+
+const count_t profile::getid0(void) const{return site_.id0;}
+const uint64_t profile::getid1(void) const{return site_.id1;}
+void profile::setid0(const count_t &id0) {site_.id0=id0;}
+void profile::setid1(const uint64_t &id1) {site_.id1=id1;}
+
+const count_t profile::getextraid(const count_t &x) const {
+	if (site_.extraid.size()>x) return site_.extraid[x];
+	else return -1;
+}
+
+void profile::setextraid(const count_t &eid, const count_t &x) {
+	if (site_.extraid.size()>x) {
+		site_.extraid[x]=eid;
+	} else {
+		while (site_.extraid.size()<=x ) site_.extraid.push_back(-1);
+		site_.extraid[x]=eid;
+	}
 }
 	
 void static merge(std::list <profile *>){
 	
-};
+}

@@ -1,4 +1,4 @@
-MAPGD version 2.1
+MAPGD version 2.2
 
 <h5> To download this program click the "Download ZIP" button to the upper right -> </h5>
 
@@ -58,8 +58,7 @@ For example, if the sequencing center gives you two files called "population1.fa
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam > metapopulation.mpileup
 	mapgd proview -i metapopulation.pileup > metapopulation.pro
 
-	mapgd ep -i metapopulation.pro -p 1 -o population1_allelfrequencies.txt
-	mapgd ep -i metapopulation.pro -p 2 -o population2_allelfrequencies.txt
+	mapgd ep -i metapopulation.pro -p 1,2 -o allelfrequency_estimates.txt
 	mapgd cp -i metapopulation.pro -p 1,2 -o allelfrequency_comparison.txt
 
 
@@ -78,6 +77,7 @@ Alternatevely, you may not desire to create .mpileup or .pro files, in which cas
         samtools sort population2.bam population2.sort
         samtools index population2.sort.bam
 
+        samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam > metapopulation.mpileup | mapgd proview | mapgd ep -p 1,2 > allelefrequency_estimates.txt
         samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam > metapopulation.mpileup | mapgd proview | mapgd cp -p 1,2 > allelefrequency_comparison.txt
 
 <h5> Additional Programs </h5>
@@ -120,8 +120,8 @@ Scripts for both Linux and Mac users are present in the top level directory, or 
 <h3> The output of ep </h3>
 
 Columns 1 and 2 are site identifiers (ID1 and ID2); 3 and 4 designate major and minor nucleotides (major and minor); 
-For each population in the sample four columns are printed : a major allele frequency (freq_P), test statistic for polymorphism (ll_poly), test statistic for fixed for the minor allele (ll_fixed), and coverage;
-The final coloumn is the maximum likelihood estimate of the error rate (Error).
+For each population in the sample four columns are printed : a major allele frequency (freq_P), test statistic for polymorphism (ll_poly), test statistic for fixed for the minor allele (ll_fixed), and coverage (cov);
+The final two coloumns are the total coverage (totcov) and the maximum likelihood estimate of the error rate (Error).
 
 Under the assumption of a chi-square distribution for the test statistic with one degree of freedom, significance at the 0.05, 0.01, 0.001 levels requires that the likelihood-ratio test statistic exceed 3.841, 6.635, and 10.827, respectively. 
 
@@ -136,13 +136,12 @@ For each population two columns are printed : The maximum likelihood estimate of
 
 The final two columns are the major allele frequency in the metapopulation (meta_P) and the maximum likelihood estimate of the error rate (Error). Output columns are tab delimited.
 
-By default the program prints information to the file "dataout.txt" and this file will appear in the same location as the program. If an alternative file name is desired simply type if "mapgd -o FILENAME" where FILENAME is the name of your output file.
+By default the program reads information from the stdin and prints information to stdout. File names can be specifide using "mapgd -o FILENAME" where FILENAME is the name of your output file.
 
 <h3> The output of ei </h3>
 
 Columns 1 and 2 are site identifiers (ID1 and ID2); 3 and 4 designate major and minor nucleotides (major and minor); 
-For each population in the sample four columns are printed : a major allele frequency (freq_P), test statistic for polymorphism (ll_poly), test statistic for fixed for the minor allele (ll_fixed), and coverage;
-The final coloumn is the maximum likelihood estimate of the error rate (Error).
+A number of other columns exist [TODO : WRITE DESCRIPTION HERE]
 
 Under the assumption of a chi-square distribution for the test statistic with one degree of freedom, significance at the 0.05, 0.01, 0.001 levels requires that the likelihood-ratio test statistic exceed 3.841, 6.635, and 10.827, respectively. 
 

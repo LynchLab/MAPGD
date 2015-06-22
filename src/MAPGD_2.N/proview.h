@@ -26,15 +26,13 @@
 struct Args{
 	float_t pvalue;
 	int min;
-	int c;
-	char qdel, cdel;
-	bool notrim;
-	bool noheader;
 	bool pro;
+	bool binary;
 };
 
 int proview(int argc, char *argv[]);
-void runAnalysis(int *dic, Args, std::istream*, profile &);
-void scanCol(std::string column, int *dic, count_t *count, char consensus);
+void readheader(int *dic, Args, std::istream*, profile &);
+int readline(int *dic, Args, std::istream*, profile &);
+void scanCol(const std::string &, const int *, quartet_t &, const char &);
 
 #endif

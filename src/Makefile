@@ -7,9 +7,14 @@ subdirs: $(SUBDIRS)
 $(SUBDIRS):
 	$(MAKE) -C $@
 
-all: src
+all: subdirs
+	
+test: all
+	cd test && bash test.sh
 
-test: src
-	cd test && sh testMapGD.sh
+install: all
+	install -m 0755 ../bin/mapgd $(prefix)/bin
+.PHONY: install
+
 clean:
 	cd src && $(MAKE) $@

@@ -52,13 +52,13 @@ The command mapgdutils.py is utility for the analysis of the relatedness of a pa
 <h5> the proview command </h5>
 A number of .pro File formats are accepted by mapgd.
 
-The most basic input file is a plain text file consists of five tab delimited columns, one for each site: the first entry is an arbitrary identifier (e.g., and site), and the final four are integer values for the number of times an A, C, G, and T was observed at the site. 
+The most basic input file is a plain text file consists of three tab delimited columns : The first column is an arbitrary string which identifier a genomic region (e.g., a scaffold), the second column is an intiger number specifying the location of a site on that scaffold, and the final column contains four integer values seperated by '/'s representing the number of times an A, C, G, and T was observed at the site. The string-integer pair must be unique.  
 
-We call this file format the .pro file format. Files in this format can be generated from mpileup files using the command "mapgd proview -c 5" 
+We call this file format the .pro file format. Files in this format can be generated from mpileup files (that have been made without the -s and -O options) using the command "mapgd proview" 
 
-If more than one bam file was used in the construction of the mpileup file, then these files will each appear as four additional columns in the .pro File. If multiple .pro Files are constructed from multiple mpileup files, these files can be merged for future analysis using the “mapgd merge” command. 
+If more than one bam file was used in the construction of the mpileup file, then these files will each appear as additional columns in the .pro File. If multiple .pro files are constructed from multiple mpileup files, these files can be merged for analysis simply by specifying them all as inputs for the proview command (“mapgd proview -i *.mpileup”). 
 
-Currently mapgd allows for the estimation of allele frequencies in individually labeled and pooled population sequence through the “ei” and "ep" command respectively, the comparison of allele frequencies between two populations with the "cp" command, and the conversion of mpileups to the ".pro" format though the proview command. We hope to add more commands in the future.
+Currently mapgd allows for the estimation of allele frequencies in individually labeled and pooled population sequence through the “ei” and "ep" command respectively, the comparison of allele frequencies between two populations with the "cp" command,  the conversion of mpileups to the ".pro" format though the proview command, and the estimatation of seven components of pair-wise relatedness through the "rel" command.
 
 For example, if the sequencing center gives you two files called "population1.fastq" and "population1.fastq" your entire work flow might look something like this: 
 

@@ -69,8 +69,8 @@ int estimatePooled(int argc, char *argv[])
 	out=&std::cout;
 	profile pro;
 
-	if (infile.size()!=0) {if (pro.open(infile.c_str(), 'r')==NULL) {printUsage(env);} }
-	else pro.open('r');
+	if (infile.size()!=0) {if (pro.open(infile.c_str(), "r")==NULL) {printUsage(env);} }
+	else pro.open("r");
 
 	float_t pmaj, maxll;						/* fraction of putative major reads among the total of major and minor */
 	float_t popN, eml, enull, llhoodMS, llhoodPS, llhoodFS;		/* maximum-likelihood estimates of the error rate, null error rate, and major-allele frequency */
