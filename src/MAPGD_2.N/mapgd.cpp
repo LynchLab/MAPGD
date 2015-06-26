@@ -21,8 +21,8 @@ int main (int argc, char* argv[])
 	env_t env;
 	env.setname("mapgd");
 	env.setver("2.1");
-	env.setauthor("Matthew Ackerman, Takahiro Maruki, Bernard Haubold and Mike Lynch");
-	env.setdescription("A program for maximum-likelihood analysis of population genomic data");
+	env.setauthor("Matthew Ackerman, Bernard Haubold, Michael Lynch, and Takahiro Maruki.");
+	env.setdescription("A program for maximum-likelihood analysis of population genomic data.\n Please direction questions to matthew.s.ackerman@gmail.com");
 
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");

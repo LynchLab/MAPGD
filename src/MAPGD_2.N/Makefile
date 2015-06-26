@@ -2,7 +2,7 @@
 CXXFLAGS= -g -std=c++0x -O3 -Wno-write-strings
 prefix=/usr/local
 
-mapdg: mapgd.o interface.o proview.o proFile.o estimatePooled.o comparePooled.o streamtools.o pooledLikelihood.o estimateInd.o indLikelihood.o Likelihood.o calcInd.o 
+mapdg: mapgd.o interface.o proview.o proFile.o estimatePooled.o comparePooled.o streamtools.o pooledLikelihood.o estimateInd.o indLikelihood.o Likelihood.o calcInd.o  
 	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd
 
 .PHONY: test

@@ -13,5 +13,5 @@
 
 int estimatePooled(int, char **);
 
-allele_stat_t estimate(quartet_t);
+allele_stat estimate(quartet_t);
 #endif 

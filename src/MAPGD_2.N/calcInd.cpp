@@ -100,11 +100,11 @@ int calcInd(int argc, char *argv[])
 	//pro.seek(loc);
 	pro.sort();
 
-	mle.ll=loglikelihood(pro, mle, MIN);				//Sets the site.ll to the log likelihood of the best fit (ll). 
+	mle.ll=loglikelihood(pro.getsite(), mle, MIN);				//Sets the site.ll to the log likelihood of the best fit (ll). 
 		
         /* Now print everything to the *out stream, which could be a file or the stdout. */
 	//if (llPOLY>a){
-	*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname_gt(1) << '\t' << '\t' << mle.ll << std::endl << '\t';
+//	*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << pro.site_.getname(0) << '\t' << pro.site_.getname_gt(1) << '\t' << '\t' << mle.ll << std::endl << '\t';
 	pro.close();					//Close the pro file/stream.
 	exit(0);					//Since everything worked, return 0!.
 }

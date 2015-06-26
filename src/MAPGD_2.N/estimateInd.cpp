@@ -24,7 +24,69 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 /*@breif: Estimates a number of summary statistics from short read sequences.*/ 
 
 //estimate
-//print
+allele_stat estimate (site_t &site, count_t MIN, count_t EMLMIN, count_t MAXGOF, count_t MAXPITCH){
+
+
+
+	allele_stat mle, temp;					//allele_stat is a basic structure that containes all the summary statistics for
+								//an allele. It gets passed around a lot, and a may turn it into a class that has
+								//some basic read and write methods.
+
+	mle.gof=0; mle.efc=0; mle.MM=0; mle.Mm=0; mle.mm=0; 	 //Initialize a bunch of summary statics as 0. 
+								 //This should be moved over to the constructor of allele_stat 
+								 //(when that constructor is writen). I'm a little concerned that
+								 //allele_stat has gotten too bloated, but . . . 
+	mle.N=0;
+
+	count_t texc=site.maskedcount();
+
+	initparams(site, mle, MIN, EMLMIN,0);			//If >90% of reads agree, then assume a homozygote,
+								//otherwise, assume heterozygote.
+	maximizegrid(site, mle, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+
+	float_t tgof=mle.gof; 
+									
+	// CALCULATE THE LIKELIHOODS 
+
+	mle.ll=loglikelihood(site, mle, MIN);			//Sets the site.ll to the log likelihood of the best fit (ll). 
+
+//	std::cout << site.getcount(0) << " , " << site.getcount(1) << ", " << site.getcount(2) << ", "<< site.getcount(3) <<std::endl;
+//	std::cout << mle.ll << " | " << mle.freq << " | " << mle.error <<std::endl;
+	
+	if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
+		std::swap(mle.major, mle.minor);
+		std::swap(mle.MM, mle.mm);
+		mle.freq=1.-mle.freq;
+		site.swap(0, 1);
+		
+	}
+	else if (mle.freq==0.5){
+		if (rand() % 2){				//If the major and minor allele frequencies are identical, 
+			std::swap(mle.major, mle.minor);	//flip a coin to determine the major and minor allele.
+			std::swap(mle.MM, mle.mm);
+			mle.freq=1.-mle.freq;
+			site.swap(0, 1);
+		};
+	};
+
+	temp=mle; temp.MM=1.0; temp.Mm=0.; temp.mm=0.;		//Copies site to mono, then sets mono to a monomophic site 
+								//(i.e. sets the genotypic frequencies Mm and mm to 0.
+	temp.error=mle.null_error;				//Sets the error rate of mono to the null error rate.
+	temp.freq=1.;
+	temp.f=0.;
+	mle.monoll=loglikelihood(site, temp, MIN);			//Sets the site.ll to the log likelihood of the best fit (ll). 
+
+	if (mle.monoll>mle.ll){
+		mle.ll=mle.monoll;
+		mle.error=mle.null_error;
+	};
+	temp=mle; 
+	temp.MM=pow(mle.freq, 2);				//Similar set up to mono, but now assuming 
+	temp.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
+	temp.mm=pow(1.-mle.freq, 2);				//?
+	mle.hwell=loglikelihood(site, temp, MIN);		//?
+	return mle;
+}
 
 int estimateInd(int argc, char *argv[])
 {
@@ -39,11 +101,10 @@ int estimateInd(int argc, char *argv[])
 	bool quite=false;
 	bool noheader=false;
 	float_t EMLMIN=0.001;
-	count_t MIN=4;
-	float_t a=0.00;
-	float_t maxgof=2.00;
-	float_t	tgof=0;
-	count_t maxpitch=96;
+	count_t MIN=0;
+	float_t A=0.00;
+	float_t MAXGOF=2.00;
+	count_t MAXPITCH=96;
 
 	count_t skip=0;
 	count_t stop=-1;
@@ -51,12 +112,11 @@ int estimateInd(int argc, char *argv[])
 	std::vector <int> ind;
 
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
-	infile=""; outfile=""; 
 
 	env_t env;
 	env.setname("mapgd ei");
 	env.setver("2.1");
-	env.setauthor("Takahiro Maruki and Matthew Ackerman");
+	env.setauthor("Matthew Ackerman and Takahiro Maruki");
 	env.setdescription("Uses a maximum likelihood approach to estimate population genomic statistics from an individually 'labeled' population.");
 
 	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "sets the input file for the program (default 'datain.txt').");
@@ -65,9 +125,9 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "Choose individuals to use in estimate.\n\t\t\t\t Should be a comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualts to ALL).");
 	env.optional_arg('m',"minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
 	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage of sites to be estimated (defualt 4).");
-	env.optional_arg('a',"alpha", 	&a, 		&arg_setfloat_t, "please provide a float.", "cut-off value for printing polymorphic sites (default 0.0).");
-	env.optional_arg('g',"goodfit", &maxgof,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
-	env.optional_arg('N',"number", 	&maxpitch,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
+	env.optional_arg('a',"alpha", 	&A, 		&arg_setfloat_t, "please provide a float.", "cut-off value for printing polymorphic sites (default 0.0).");
+	env.optional_arg('g',"goodfit", &MAXGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
+	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "Number of sites to skip before analysis begins (default 0).");
 	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "Maximum number of sites to be analyzed (default All sites)");
 	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
@@ -87,14 +147,6 @@ int estimateInd(int argc, char *argv[])
 	std::ostream *out=&std::cout;
 	std::ofstream outFile;
 
-	allele_stat mle, hwe, mono;	//allele_stat is a basic structure that containes all the summary statistics for
-					//an allele. It gets passed around a lot, and a may turn it into a class that has
-					//some basic read and write methods.
-
-	mle.gof=0; mle.efc=0; mle.MM=0; mle.Mm=0; mle.mm=0; 	 //Initialize a bunch of summary statics as 0. 
-								 //This should be moved over to the constructor of allele_stat 
-								 //(when that constructor is writen). I'm a little concerned that
-								 //allele_stat has gotten too bloated, but . . . 
 	int line=0;
 
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
@@ -112,9 +164,6 @@ int estimateInd(int argc, char *argv[])
 
 	//else out.open('w', CSV);				//Iff no filename has been set for outfile, pgdfile prints to stdout.
 
-	//Set up file?
-	//out.setheader(); << "id1\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpolyll\tHWEll\tgof\teff_chrom\tN\tN_excluded\tmodel_ll" << std::endl;
-
 	if (outfilepro.size()!=0) {				//Same sort of stuff for the outfile. 
 		pro_out.open(outfilepro.c_str(), "w");
 		if (!pro_out.is_open()){
@@ -125,11 +174,10 @@ int estimateInd(int argc, char *argv[])
 		pro_out.writeheader();
 	};
 
-
 	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
 	if (not (noheader) ) *out << "id1\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpolyll\tHWEll\tgof\teff_chrom\tN\tN_excluded\tmodel_ll" << std::endl;
 
-	pro.maskall();	//Turn off the ability to read data from all clones by default. 
+	pro.maskall();							//Turn off the ability to read data from all clones by default. 
 
 	if ( ind.size()==0 ) { 						//Iff the vector ind (which should list the clones to 
 		ind.clear();						//be read from the .pro file) is empty, then 
@@ -140,21 +188,24 @@ int estimateInd(int argc, char *argv[])
 		 pro.unmask(ind[x]);					//Turn on the ability to read data from all clones in 
 	}								//the vector ind.
 
-	count_t excluded, texc, read=0;					//A varaiable for keeping track of the number of clones
+	count_t read=0;							//A varaiable for keeping track of the number of clones
 									//we have excluded from the analysis.
-	for (int x=0; x<skip; ++x) pro.read(SKIP);
+	//for (int x=0; x<skip; ++x) pro.read(SKIP);
 	
 
 	std::chrono::time_point <std::chrono::system_clock> then, now;
 	std::chrono::duration <double> runtime;
 	then=std::chrono::system_clock::now();				//Right now it is then, but it will be now later. . .
 	float_t secleft;
-
 	count_t nextprint=95;
-	while (pro.read()!=EOF ){					//reads the next line of the pro file. pro.read() retuerns 0
-									//on success, EOF when end of file reached. (switch to ==0?)
 
-		if ( pro.size()!=0 && outFile.is_open() && !quite && read>nextprint){
+	site_t site;
+	
+//	for (int x=0; x<pro.length(); ++x){
+		
+	while (pro.read(site)!=EOF ){					//reads the next line of the pro file. pro.read() retuerns 0
+									//on success, EOF when end of file reached. (switch to ==0?)
+/*		if ( pro.size()!=0 && outFile.is_open() && !quite && read>nextprint){
 			now=std::chrono::system_clock::now();
 			runtime=now-then;
 			secleft=read/runtime.count();
@@ -162,83 +213,25 @@ int estimateInd(int argc, char *argv[])
 			//until later. 
   			std::cout << "Lines per second: " << secleft << std::endl;
 			nextprint=read+1000;
-		}
-
-		//estimate(line from profile, );
-		//print();
-		
-		mle.N=0;
-
-		texc=pro.maskedcount();
-
-		initparams(pro, mle, MIN, EMLMIN,0);
-									//If >90% of reads agree, then assume a homozygote,
-									//otherwise, assume heterozygote.
-
-		excluded=maximizegrid(pro, mle, MIN, maxgof, maxpitch+texc);	//trim so clones and re-fit the model.
-
-		tgof=mle.gof; 
-									
-		excluded=pro.maskedcount();				//count the number of clones excluded. 
-
-                // CALCULATE THE LIKELIHOODS 
-
-		mle.ll=loglikelihood(pro, mle, MIN);			//Sets the site.ll to the log likelihood of the best fit (ll). 
-		mono=mle; mono.MM=1.0; mono.Mm=0.; mono.mm=0.;		//Copies site to mono, then sets mono to a monomophic site 
-									//(i.e. sets the genotypic frequencies Mm and mm to 0.
-		mono.error=mle.null_error;				//Sets the error rate of mono to the null error rate.
-
-		mono.freq=1.;
-		mono.f=0.;
-                mono.ll=loglikelihood(pro, mono, MIN);				//Calculates the log likelihood of the mono fit.
-		if (mono.ll>mle.ll){
-			mle=mono;
-			maximizegrid(pro, mle, MIN, maxgof, maxpitch+texc);
-		};
-		mono.ll=(mle.ll-mono.ll)*2.;
-	
-		if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
-			std::swap(mle.major, mle.minor);
-			std::swap(mle.MM, mle.mm);
-			mle.freq=1.-mle.freq;
-			pro.swap(0, 1);
-			
-		}
-		else if (mle.freq==0.5){
-			if (rand() % 2){				//If the major and minor allele frequencies are identical, 
-				std::swap(mle.major, mle.minor);	//flip a coin to determine the major and minor allele.
-				std::swap(mle.MM, mle.mm);
-				mle.freq=1.-mle.freq;
-				pro.swap(0, 1);
-			};
-		};
-
-		hwe=mle; 
-		hwe.MM=pow(mle.freq, 2);				//Similar set up to mono, but now assuming 
-		hwe.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
-		hwe.mm=pow(1.-mle.freq, 2);				//?
-		hwe.ll=(mle.ll-loglikelihood(pro, hwe, MIN))*2;		//?
+		}*/
+		for (count_t x=0; x<ind.size(); ++x) site.unmask(ind[x]);	//Turn on the ability to read data from all clones in 
+//		pro.read(site);
+		allele_stat mle=estimate (site, MIN, EMLMIN, MAXGOF, MAXPITCH);
 		
                 // Now print everything to the *out stream, which could be a file or the stdout. 
 		//TODO move this over into a formated file.
-		if (mono.ll>=a){
-			if (mle.N>0){
-				*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname_gt(1) << '\t' << pro.getcoverage() << '\t' << mle.freq <<'\t' << 1.-mle.freq << '\t' << mle.error << '\t';
-				*out << std::fixed << std::setprecision(6) << mle.null_error <<'\t' << mle.f << '\t' << mle.MM << '\t' << mle.Mm <<'\t' << mle.mm << '\t' << mle.freq*(1.-mle.freq)*2 << '\t' << mono.ll << '\t' << hwe.ll << '\t' << tgof << '\t' << mle.efc << '\t' << mle.N << '\t' << excluded-texc << '\t' << -2*mle.ll << '\n';
-			}
-			else{
-				*out << std::fixed << std::setprecision(6) << pro.getids() << '\t' << '*' << '\t' << '*' << '\t' << pro.getcoverage() << '\t' << '*' <<'\t' << '*' << '\t' << '*' << '\t';
-				*out << std::fixed << std::setprecision(6) << '*' <<'\t' << '*' << '\t' << '*' << '\t' << '*' <<'\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << '*' << '\t' << 0 << '\t' << 0 << '\t' << 0 << '\t' << '*' << '\n';
-			}
+//		std::cout << " HI! " << mle.N << "\t" << (mle.ll-mle.monoll)*2 << "\t" << A << std::endl;
+		if ( (mle.ll-mle.monoll)*2>=A){
+			*out << std::fixed << std::setprecision(6) << pro.getids(site) << '\t' << site.getname(0) << '\t' << site.getname_gt(1) << '\t';
+			*out << std::fixed << std::setprecision(6) << mle << std::endl;
 		}
 
 		if (pro_out.is_open() ){
 			pro_out.copy(pro);
-			if (tgof<-maxgof) pro_out.maskall(); 
+			if (mle.gof< -MAXGOF) pro_out.maskall(); 
 			pro_out.write();
 		};
 
-		for (count_t x=0; x<ind.size(); ++x) pro.unmask(ind[x]);	//Turn on the ability to read data from all clones in 
 		if (read==stop) break;
 		read++;
 	}

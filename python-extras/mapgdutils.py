@@ -9,20 +9,22 @@ parser.add_argument('proFile', metavar='proFile', type=str, nargs=1,
                    help='the name of a proFile')
 parser.add_argument('mapFile', metavar='mapFile', type=str, nargs=1,
                    help='the name of a mapFile')
-parser.add_argument('-p', metavar='--pmin', type=float, default=0.55,
+parser.add_argument('-p', metavar='--maf', type=float, default=0.0,
                    help='minimum allele frequency for analysis')
-parser.add_argument('-P', metavar='--pmax', type=float, default=0.85, 
+parser.add_argument('-P', metavar='--max-maf', type=float, default=0.5, 
                    help='maximum allele frequency for analysis')
-parser.add_argument('-z', metavar='--zmin', type=float, default=2,
+parser.add_argument('-z', metavar='--zmin', type=float, default=0.0,
                    help='minimum z-score for a site')
-parser.add_argument('-l', metavar='--minll', type=float, default=20,
-                   help='minimum ll-score for a site')
+parser.add_argument('-l', metavar='--minll', type=float, default=0.0,
+                   help='minimum ll-score for a site (analogous to minQ)')
 parser.add_argument('-c', metavar='--cmin', type=int, default=0,
                    help='minimum population coverage for analysis')
-parser.add_argument('-C', metavar='--cmax', type=int, default=10000,
+parser.add_argument('-C', metavar='--cmax', type=int, default=sys.maxint,
                    help='maximum population coverage for analysis')
 parser.add_argument('-e', metavar='--error', type=float, default=0.1, 
                    help='maximum estimated sequencing error')
+parser.add_argument('-H', metavar='--hwe', type=float, default=0.0, 
+                   help='maximum ll-score for hw diseqaulibrium')
 args = parser.parse_args()
 
 proFile=open(args.proFile[0])
@@ -81,12 +83,13 @@ for line in mapFile:
 	if float(line[best_error])<args.e:
 		if float(line[pol_llstat])>args.l:
 			if float(line[pop_coverage])>args.c and float(line[pop_coverage])<args.C:
-				if float(line[best_p])<args.P and float(line[best_p])>args.p:
+				if float(line[best_q])<args.P and float(line[best_q])>args.p:
+					print line[best_q]
 					try:
-						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], float(round(float(line[best_p])*50.0))/50.0, line[best_error]]
+						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error]]
 					except:
 						poly[line[scaffold]]={}
-						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], float(round(float(line[best_p])*50.0))/50.0, line[best_error]]
+						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error]]
 
 mapFile.close()
 

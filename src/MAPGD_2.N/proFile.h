@@ -81,21 +81,19 @@ private:
 	count_t encodechar[256];
 	std::string decodechar[256];
 
-
 	bool *sig_;					// were alleles thrown out if the allele only occurred in reads from one direction?
 	bool *read_;					// ?
 	bool *write_;					// ?
 	bool *binary_;					// ?
 	bool *mpileup_;					// ?
 	bool *noheader_;				// ?
+	uint64_t *size_;			// the number of lines in the sample. 0 if unkown.
 
 	char *delim_column;				// the delimiter that seperates columns.
 	char *delim_quartet;				// the delimiter that seperates counts in a quartet.
 	unsigned int *columns_;				// 5|6|7|?
 	site_t *site_;					// a vector to store the calls from reads.
 	unsigned int *samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
-
-
 public:
 	char control;					//a variable that controls switches in the binary read/write mode.
 	profile_header();				// does not initilize . . .
@@ -130,15 +128,40 @@ public:
 class site_t {
 private:
 public:
+	count_t sorted_[5];				// an array to allow sorted access to quartets.
 	site_t (count_t);
 	site_t ();
 	std::vector <quartet_t> sample;			//The five bases A/C/G/T/N;
+
+	count_t samples_;
 
 	count_t id0;
 	uint64_t id1;				//The ids associated with the quartet.
 	std::vector <count_t> extraid;		//extra ids associated with the quartet. (ref base identiy?).
 
 	site_t & operator=(const site_t&);	
+
+	const count_t getindex(count_t) const;		//returns the index of the alleles in order a sorted order
+	count_t getcoverage(count_t) const;		//returns coverage of population/individual N
+	count_t getcoverage(void) const;		//returns total coverage
+	count_t getcount(count_t) const;		//returns the population count.
+	count_t getcount(count_t, count_t) const;	//returns the count of individuals a's b'th allele.
+	name_t getname(count_t) const;			//returns the name [*i.e. ACG or T] of the sorted alleles.
+	name_t getname_gt(count_t) const;		//returns the name [*i.e. ACG or T] of the sorted alleles.
+	void swap(count_t, count_t);			//exchage the alleles
+	void sort(count_t);				//sort reads from most common to least common (based on poulation N).
+	void sort(void);				//sort reads from most common to least common (amoung all non-masked sites).
+	
+	count_t maskedcount(void) const;		//returns the count of the number of individuals that are masked.
+	const count_t *getquartet(count_t) const;	//returns the quartet array (unsorted)
+
+	void maskall(void);				//mask all lines
+	void unmask(count_t);				//unmask line N
+	void unmask(quartet *);				//mask line N
+	void mask(quartet *);				//mask line N
+	void mask(count_t);				//mask line N
+
+
 };
 
 class  profile{
@@ -152,7 +175,7 @@ private:
 	char delim_quartet;				// the delimiter that seperates counts in a quartet
 	unsigned int columns_;				// 5|6|7|more?
 	unsigned int samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
-	count_t size_;					// the number of lines in the sample. 0 if unkown.
+	uint64_t size_;					// the number of lines in the sample. 0 if unkown.
 	bool sig_;					// were alleles thrown out if the allele only occurred in reads from one direction?
 	bool read_;					// file is open for reading.
 	bool write_;					// file is open for writing.
@@ -165,15 +188,13 @@ private:
 
 	bool donothing_;				// a flag to indicate that nothing should be read for infile stream when read is called 
 
-	static const std::string names_;		// ACGTN
 	static const count_t defaultorder[5];		// 01234 
 
 	site_t site_;					// a structure that stores quartet information.
-	count_t sorted_[5];				// an array to allow sorted access to quartets.
 
-	int readm(int);					//read file in mpileup mode.
-	int readt(int);					//read file in text mode.
-	int readb(int);					//read file in binary mode.
+	int readm(site_t &);					//read file in mpileup mode.
+	int readt(site_t &);					//read file in text mode.
+	int readb(site_t &);					//read file in binary mode.
 
 	int writet();					//write the quartet information in memory to file in text mode.
 	int writeb();					//write the quartet information in memory to file in binary mode.
@@ -191,9 +212,10 @@ private:
 
 	friend profile_header::profile_header(profile *);//Should set up pointers etc.
 	friend void profile_header::init(profile *);	//Should set up pointers etc.
-	void inline scan(const std::string &, quartet_t &); //?
+	void inline scan(const site_t &,const std::string &, quartet_t &); //?
 public:
 	profile();					//default constructor
+	static const std::string names_;		// ACGTN
 
 	profile* open(const char *, const char *);	//The function that opens a profile (if file).
 	profile* open(const char *);			//The function that opens a profile (if stdin).
@@ -202,7 +224,7 @@ public:
 	/*basic io operation*/
 	int copy(const profile&);			//copys a line from profile
 	int read();					//reads a line from the instream. Returns 0 on success, EOF on EOF.
-	int read(int);					//peaks at a line in the instream. Returns 0 on success, EOF on EOF.
+	int read(site_t &);					//peaks at a line in the instream. Returns 0 on success, EOF on EOF.
 	int write();					//writes a line to the outstream. Returns 0 on success, EOF on EOF.
 	int write(site_t const &);			//writes a line to the outstream. Returns 0 on success, EOF on EOF.
 
@@ -243,46 +265,19 @@ public:
 
 	/*functions dealing with ?*/
 	count_t size(void) const;			//number of populations/individuals
+	uint64_t length(void) const {return size_;};	//number of lines in file
 
 	/*functions dealing with the quartets*/
-	void sort(count_t);				//sort reads from most common to least common (based on poulation N).
-	void sort(void);				//sort reads from most common to least common (amoung all non-masked sites).
 
-	void swap(count_t, count_t);			//exchage the alleles
-
-	count_t getcoverage(count_t) const;		//returns coverage of population/individual N
-	count_t getcoverage(void) const;		//returns total coverage
-	count_t getcount(count_t) const;		//returns the population count.
-	count_t getcount(count_t, count_t) const;	//returns the count of individuals a's b'th allele.
-
-	const count_t getindex(count_t) const;		//returns the index of the alleles in order a sorted order
-	const count_t *getquartet(count_t) const;	//returns the quartet array (unsorted)
-
-	name_t getname(count_t) const;			//returns the name [*i.e. ACG or T] of the sorted alleles.
-	name_t getname_gt(count_t) const;		//returns the name [*i.e. ACG or T] of the sorted alleles.
-
-	std::string getids(void); 			//
 
 	void setbasecount(const count_t &, const count_t &, const count_t &);//sets sample x, base y to z.
 
-	std::vector <quartet_t>::const_iterator begin(void) const;	//returns a pointer to the begining (unsorted)
-	std::vector <quartet_t>::const_iterator end(void) const;	//returns a pointer to the end (unsorted)
-
-	std::vector <quartet_t>::iterator begin(void);	//returns a pointer to the begining (unsorted)
-	std::vector <quartet_t>::iterator end(void);	//returns a pointer to the end (unsorted)
-
 	/*playing with the mask*/
-	count_t maskedcount(void) const;		//returns the count of the number of individuals that are masked.
-	void maskall(void);				//mask all lines
-	void unmask(count_t);				//unmask line N
-	void unmask(quartet *);				//mask line N
-	void mask(quartet *);				//mask line N
-	void mask(count_t);				//mask line N
 
 	void mpileup(void) {mpileup_=true; noheader_=true;}	// file is an mpileup. Setting this should set the noheader flag.
 	bool noheader(void) {noheader_=true;}			// file has no header
 
-	const count_t getlinenumber(void) const;
+	const uint64_t getlinenumber(void) const;
 
 	const count_t getid0(void) const;
 	const uint64_t getid1(void) const;
@@ -291,7 +286,23 @@ public:
 	void setid0(const count_t &);
 	void setid1(const uint64_t &);
 	void setextraid(const count_t &, const count_t &);
-		
+
+	std::string getids(const site_t &);
+	std::string getids(void);
+
+	void maskall(void);				//mask all lines
+	void unmask(count_t);				//unmask line N
+	void unmask(quartet *);				//mask line N
+	void mask(quartet *);				//mask line N
+	void mask(count_t);				//mask line N
+	//THESE WILL PROBABLY BE DEPRICATED
+	void sort(void);				//sort reads from most common to least common (amoung all non-masked sites).
+	site_t getsite(void) {return site_;};		//sort reads from most common to least common (amoung all non-masked sites).
+
+	std::vector <quartet_t>::iterator begin(void) {return site_.sample.begin();};	
+	std::vector <quartet_t>::iterator end(void) {return site_.sample.end();};	
+
 };
+	
 	
 #endif

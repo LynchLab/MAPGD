@@ -18,5 +18,5 @@
 //#include "pgdFile.h"
 
 int estimateInd(int, char **);
-allele_stat_t estimate(quartet_t);
+allele_stat estimate(quartet_t, count_t, count_t, count_t, count_t);
 #endif 

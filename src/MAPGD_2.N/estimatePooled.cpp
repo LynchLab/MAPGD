@@ -35,7 +35,6 @@ int estimatePooled(int argc, char *argv[])
 
 	bool verbose=false;
 	bool quite=false;
-	bool sane=false;
 	float_t EMLMIN=0.00;
 	float_t a=0.00;
 
@@ -110,43 +109,44 @@ int estimatePooled(int argc, char *argv[])
 	llstatc=new float_t[pop.size()];	//
 
 	lnmultinomial multi(4);			//a class for our probability function (which is just a multinomial distribution).
-	allele_stat site;	
+	allele_stat site;
+	site_t line;
 
-	while (pro.read()!=EOF ){
+	while (pro.read(line)!=EOF ){
 		//sorts the reads at the site from most frequenct (0) to least frequenct (3) (at metapopulation level);
 
 		/* Calculate the ML estimates of the major / minor allele frequencies and the error rate. */
-                pro.sort();
+                line.sort();
 
-		site.major=pro.getindex(0);
-		site.minor=pro.getindex(1);
+		site.major=line.getindex(0);
+		site.minor=line.getindex(1);
 
                 /* 3) CALCULATE THE LIKELIHOOD OF THE POOLED POPULATION DATA. */
 
                 /* Calculate the ML estimates of the major pooled allele frequency and the error rate. */
-		popN=pro.getcoverage();
+		popN=line.getcoverage();
 
-                site.error= (float_t) ( popN - pro.getcount(0) ) / ( (float_t) popN );
+                site.error= (float_t) ( popN - line.getcount(0) ) / ( (float_t) popN );
 
 		if (site.error<EMLMIN) site.error=EMLMIN;
 
 		multi.set(&monomorphicmodel, site);
 
-                for (int x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(pro.getquartet(pop[x]) );
+                for (int x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(line.getquartet(pop[x]) );
 
-		site.error= (float_t) (pro.getcoverage()-pro.getcount(0)-pro.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
+		site.error= (float_t) (line.getcoverage()-line.getcount(0)-line.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
 
 		if (site.error<EMLMIN) site.error=EMLMIN;
 
                 /* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 
 		multi.set(&fixedmorphicmodel, site);
-                for (int x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(pro.getquartet(pop[x]) );
+                for (int x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(line.getquartet(pop[x]) );
 
                 /* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF monomorphism */
 
                 for (int x=0; x<pop.size(); ++x) {
-                        pmaj = (float_t) pro.getcount(pop[x],0) / (float_t) ( pro.getcount(pop[x], 1) + pro.getcount(pop[x],0) );
+                        pmaj = (float_t) line.getcount(pop[x],0) / (float_t) ( line.getcount(pop[x], 1) + line.getcount(pop[x],0) );
 			
                         pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
                         pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
@@ -155,7 +155,7 @@ int estimatePooled(int argc, char *argv[])
 
 			site.freq=pmlP[x];
 			multi.set(&polymorphicmodel, site);
-                        llhoodP[x]=multi.lnprob(pro.getquartet(pop[x]) );
+                        llhoodP[x]=multi.lnprob(line.getquartet(pop[x]) );
                 };
 
                 /* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
@@ -182,13 +182,13 @@ int estimatePooled(int argc, char *argv[])
                 };
 
                 if (maxll>=a){
-                        *out << std::fixed << std::setprecision(7) << pro.getids() << '\t' << pro.getname(0) << '\t' << pro.getname_gt(1) << '\t';
+                        *out << std::fixed << std::setprecision(7) << pro.getids(line) << '\t' << line.getname(0) << '\t' << line.getname_gt(1) << '\t';
                         for (int x=0; x<pop.size(); ++x){
-                                if ( pro.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t' << 0.0 << '\t' << 0.0 << '\t';
-                                else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t' << llstatc[x]<< '\t' << pro.getcoverage(pop[x]) <<'\t';
+                                if ( line.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t' << 0.0 << '\t' << 0.0 << '\t';
+                                else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t' << llstatc[x]<< '\t' << line.getcoverage(pop[x]) <<'\t';
                         };
                         /* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
-                        *out << pro.getcoverage() << '\t' << site.error << std::endl;
+                        *out << line.getcoverage() << '\t' << site.error << std::endl;
                 };
 
 	}

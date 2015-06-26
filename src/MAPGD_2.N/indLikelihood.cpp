@@ -11,42 +11,57 @@ void MMmodelP(allele_stat const &a, float_t *l){ 	//The model used for the goodn
 						 	//[M]ajor [M]ajor.
 	float_t H=(1-a.error);
 	float_t e3=log(1-H);
+	if (H==1) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
 	l[a.major]=log(H);
+	if (H==0) l[a.major]=-FLT_MAX;
 };
 
 void mmmodelP(allele_stat const &a, float_t *l){	//Dito, assuming [m]ajor [m]inor.
 	float_t H=(a.error/3);
 	float_t e3=log(1-H);
+	if (H==1) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
 	l[a.major]=log(H);
+	if (H==0) l[a.major]=-FLT_MAX;
 };
 
 void MmmodelP(allele_stat const &a, float_t *l){ 	//[M]ajor [m]inor.
 	float_t H=(0.5*(1.-a.error)+0.5*a.error/3.);
 	float_t e3=log(1-H);
+	if (H==1) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
 	l[a.major]=log(H);
+	if (H==0) e3=-FLT_MAX;
 };
 
 void MMmodel(allele_stat const &a, float_t *l){		//These are the full probabilities used for fitting the maximum
 	float_t e3=log(a.error/3.);			//likelihood model.
+	if (a.error==0) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
 	l[a.major]=log(1.-a.error);
+	if (a.error==1.) l[a.major]=-FLT_MAX;
 };
 
 void mmmodel(allele_stat const &a, float_t *l){		//Dito.
 	float_t e3=log(a.error/3.);
+	if (a.error==0.) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
 	l[a.minor]=log(1.-a.error);
+	if (a.error==1.) l[a.minor]=-FLT_MAX;
 };
 
 void Mmmodel(allele_stat const &a, float_t *l){		//Dito.
 	float_t e3=log(a.error/3.);
+	if (a.error==0.) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
 	float_t H=log(0.5*(1.-a.error)+0.5*a.error/3.);
 	l[a.major]=H;
 	l[a.minor]=H;
+	if (a.error==1.){
+		l[a.major]=-FLT_MAX;
+		l[a.minor]=-FLT_MAX;
+	};
 };
 
 lnmultinomial lnMM(4), lnMm(4), lnmm(4), lnF(4);	//The three multinomials we will use for probability calculations.
@@ -59,12 +74,12 @@ float_t dll(profile const &pro, allele_stat const &p, count_t const &MIN){
 }
 
 /*@Breif, a function that calculats the log likelihood of a set of observations. */
-float_t loglikelihood(profile const &pro, allele_stat const &p, count_t const &MIN){
+float_t loglikelihood(site_t const &site, allele_stat const &p, count_t const &MIN){
 
 	float_t sumll=0;
 
-	std::vector <quartet_t>::const_iterator it=pro.begin();	//Lets us iterate of the quartets. 
-	std::vector <quartet_t>::const_iterator end=pro.end();	//Tells us when to stop iterating, so we don't generate a seg. fault.
+	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//Lets us iterate over the quartets. 
+	std::vector <quartet_t>::const_iterator end=site.sample.end();	//Tells us when to stop iterating, so we don't generate a seg. fault.
 
 	lnMM.set(&MMmodel, p);	//Lets initialize the multinomial distributions that will tell us the probability of  
 	lnMm.set(&Mmmodel, p);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
@@ -101,6 +116,7 @@ float_t loglikelihood(profile const &pro, allele_stat const &p, count_t const &M
 		}
 		++it;
 	}
+	if(isnan(sumll) ) sumll=-FLT_MAX;
 	return sumll;
 }
 
@@ -181,13 +197,13 @@ void EVofP (count_t N_, allele_stat const &a, float_t &E, float_t &V){
 }
 
 //THE goodness of fit calcualtion.
-float_t gof (profile &pro, allele_stat const &a, count_t const &MIN, float_t const &site_maxgof){
+float_t gof (site_t &site, allele_stat const &a, count_t const &MIN, float_t const &site_maxgof){
 	float_t Num=0., Den=0., E, V, O, thisgof, gof, clone_mingof=FLT_MAX;
 
 	count_t M_, N_, l[4];
 
-	std::vector <quartet_t>::iterator it=pro.begin(); 
-	std::vector <quartet_t>::iterator end=pro.end(); 
+	std::vector <quartet_t>::iterator it=site.sample.begin(); 
+	std::vector <quartet_t>::iterator end=site.sample.end(); 
 	quartet_t * maxgof_ptr; 
 
 	while (it!=end){
@@ -214,15 +230,15 @@ float_t gof (profile &pro, allele_stat const &a, count_t const &MIN, float_t con
 	}
 	if (Den<=0) return 0.;
 	thisgof=Num/sqrt(Den);
-	if(abs(thisgof)>site_maxgof) pro.mask(maxgof_ptr);
+	if(abs(thisgof)>site_maxgof) site.mask(maxgof_ptr);
 	return thisgof;
 }
 
 /*calculates the 'effective number of chromosomes' in a sample. This number isn't used for anything right now.*/
 
-float_t efc (profile const &pro, count_t const &MIN){
-	std::vector <quartet_t>::const_iterator it=pro.begin(); 
-	std::vector <quartet_t>::const_iterator end=pro.end(); 
+float_t efc (site_t const &site, count_t const &MIN){
+	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
+	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
 
 	float_t ec=0;
 	count_t N_;
@@ -239,12 +255,10 @@ float_t efc (profile const &pro, count_t const &MIN){
 	return ec;
 };
 
-count_t initparams_old(profile &pro, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
+count_t initparams_old(site_t &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
 
-	std::vector <quartet_t>::const_iterator it=pro.begin(); 
-	std::vector <quartet_t>::const_iterator end=pro.end(); 
-
-	it=pro.begin(); 
+	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
+	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
 
 	count_t allele_freq[4], genotype[4][4], N_=0;
 	
@@ -280,9 +294,9 @@ count_t initparams_old(profile &pro, allele_stat &a, const count_t &MIN, const f
 	a.major=sorted[0].first;
 	a.minor=sorted[M+1].first;
 
-	count_t S=pro.getcoverage();
-	count_t M_=pro.getcount(a.major);
-	count_t m_=pro.getcount(a.minor);
+	count_t S =site.getcoverage();
+	count_t M_=site.getcount(a.major);
+	count_t m_=site.getcount(a.minor);
 
 	count_t E_=S-M_-m_;
 
@@ -311,29 +325,28 @@ count_t initparams_old(profile &pro, allele_stat &a, const count_t &MIN, const f
 	a.MM=P_;
 	a.Mm=H_;
 	a.mm=Q_;
-	a.efc=efc(pro, MIN);
+	a.efc=efc(site, MIN);
 	if (M==2) return 0;
 	if (allele_freq[M+2]!=0 and allele_freq[M+1]==allele_freq[M+2]) return 1;
 	return 0;
 }
 
 //Intilaizes the parameters of the ... returns 0 on succesful excecution, returns 1 if there is am...
-count_t initparams(profile &pro, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
+count_t initparams(site_t &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
 
-	std::vector <quartet_t>::const_iterator it=pro.begin(); 
-	std::vector <quartet_t>::const_iterator end=pro.end(); 
+	std::vector <quartet_t>::iterator it=site.sample.begin(); 
+	std::vector <quartet_t>::iterator end=site.sample.end(); 
 
-	it=pro.begin(); 
-	pro.sort();
+	site.sort();
 
 	count_t N_=0;
 
+	count_t S=site.getcoverage();
 
-	count_t S=pro.getcoverage();
 	if (S==0) return 0;	
 
-	count_t M_=pro.getcount(0);
-	count_t m_=pro.getcount(1);
+	count_t M_=site.getcount(0);
+	count_t m_=site.getcount(1);
 
 	count_t E_=S-M_-m_;
 
@@ -353,10 +366,9 @@ count_t initparams(profile &pro, allele_stat &a, const count_t &MIN, const float
 		a.null_error=e_;
 	};
 
-	a.major=pro.getindex(0);
-	a.minor=pro.getindex(1);
+	a.major=site.getindex(0);
+	a.minor=site.getindex(1);
 
-//	std::cout << M_ << " (8) " << m_ << std::endl;
 	count_t MM_, Mm_, mm_;
 	M_=0;m_=0;MM_=0;Mm_=0;mm_=0;
 	while (it!=end){
@@ -364,16 +376,14 @@ count_t initparams(profile &pro, allele_stat &a, const count_t &MIN, const float
 			float_t T=float_t(count(*it));
 			if (T>MIN){
 				N_+=1.;
-//				std::cout << (*it).base[a.major] << " -- " << (*it).base[a.minor] << std::endl;
-//				std::cout << (*it).base[2] << " -- " << (*it).base[3] << std::endl;
 				if (float_t( (*it).base[a.major])/T>0.9) {M_+=2.; MM_+=1.;}
 				else if (float_t( (*it).base[a.minor])/T>0.9) {m_+=2.; mm_+=1.;}
 				else {M_+=1.; m_+=1.; Mm_+=1.;}
 			}
+			else { it->masked=true;};
 		}
 		++it;
 	}
-//	std::cout << MM_ << " |" << Mm_ << "| " << mm_ << std::endl;
 	if (N_==0) return 0;	
 	float_t P_=MM_, Q_=mm_, H_=Mm_;
 	a.N=N_;
@@ -385,7 +395,7 @@ count_t initparams(profile &pro, allele_stat &a, const count_t &MIN, const float
 	a.MM=P_;
 	a.Mm=H_;
 	a.mm=Q_;
-	a.efc=efc(pro, MIN);
+	a.efc=efc(site, MIN);
 	return 0;
 }
 
@@ -406,7 +416,7 @@ count_t initparams(profile &pro, allele_stat &a, const count_t &MIN, const float
 };*/
 
 /* Uses a grid method to maximize the likelihood equations.*/
-count_t maximizegrid (profile &pro, allele_stat &a, count_t const &MIN, float_t const &maxgof, count_t const &maxpitch){
+count_t maximizegrid (site_t &site, allele_stat &a, count_t const &MIN, float_t const &maxgof, count_t const &maxpitch){
 
 	count_t N_=a.N;
 	count_t P_=a.MM*N_;
@@ -423,7 +433,9 @@ count_t maximizegrid (profile &pro, allele_stat &a, count_t const &MIN, float_t 
 	a.Mm=float_t(H_)/float_t(N_);
 	a.mm=float_t(Q_)/float_t(N_);
 
-	maxll_=loglikelihood(pro, a, MIN);
+	maxll_=loglikelihood(site, a, MIN);
+
+//	std::cout << maxll_ << std::endl;
 
 	while (running){
 		it+=1;
@@ -435,13 +447,13 @@ count_t maximizegrid (profile &pro, allele_stat &a, count_t const &MIN, float_t 
 			a.Mm=float_t(H_)/float_t(N_);
 			a.mm=float_t(Q_+1)/float_t(N_);
 
-			PtQ=loglikelihood(pro, a, MIN);
+			PtQ=loglikelihood(site, a, MIN);
 
 			a.MM=float_t(P_-1)/float_t(N_);
 			a.Mm=float_t(H_+1)/float_t(N_);
 			a.mm=float_t(Q_)/float_t(N_);
 
-			PtH=loglikelihood(pro, a, MIN);
+			PtH=loglikelihood(site, a, MIN);
 
 			if (PtQ>PtH) { if (PtQ>maxll_) { iP=-1; iQ=1; iH=0; maxll_=PtQ;} }
 			else { if (PtH>maxll_){iP=-1;iQ=0;iH=1; maxll_=PtH;} };
@@ -451,15 +463,15 @@ count_t maximizegrid (profile &pro, allele_stat &a, count_t const &MIN, float_t 
 			a.Mm=float_t(H_)/float_t(N_);
 			a.mm=float_t(Q_-1)/float_t(N_);
 
-			QtP=loglikelihood(pro, a, MIN);
+			QtP=loglikelihood(site, a, MIN);
 
 			a.MM=float_t(P_)/float_t(N_);
 			a.Mm=float_t(H_+1)/float_t(N_);
 			a.mm=float_t(Q_-1)/float_t(N_);
 
-			QtH=loglikelihood(pro, a, MIN);
+			QtH=loglikelihood(site, a, MIN);
 
-			if (QtP>QtH) { if (QtP>maxll_) {iP=1;iQ=-1;iH=0;maxll_=QtP;} }
+			if (QtP>QtH) { if (QtP>maxll_) {iP=1;iQ=-1;iH=0; maxll_=QtP;} }
 			else { if (QtH>maxll_) {iP=0; iQ=-1; iH=1; maxll_=QtH;} };
 		}
 		if (H_>0){
@@ -467,20 +479,23 @@ count_t maximizegrid (profile &pro, allele_stat &a, count_t const &MIN, float_t 
 			a.Mm=float_t(H_-1)/float_t(N_);
 			a.mm=float_t(Q_)/float_t(N_);
 
-			HtP=loglikelihood(pro, a, MIN);
+			HtP=loglikelihood(site, a, MIN);
 
 			a.MM=float_t(P_)/float_t(N_);
 			a.Mm=float_t(H_-1)/float_t(N_);
 			a.mm=float_t(Q_+1)/float_t(N_);
 
-			HtQ=loglikelihood(pro, a, MIN);
-
+			HtQ=loglikelihood(site, a, MIN);
+			
 			if (HtP>HtQ) { if (HtP>maxll_) {iP=1; iQ=0; iH=-1; maxll_=HtP;} }
 			else { if (HtQ>maxll_) {	iP=0; iQ=1; iH=-1; maxll_=HtQ;} }
 		}
+//		std::cout << maxll_ << ", "<< PtQ << ", " << PtH << "( " << P_ << " : " << H_ << " : " << Q_ << ")" << std::endl;
 		if (iP==0 && iQ==0 && iH==0) {running=false;}
 		else { P_+=iP; Q_+=iQ; H_+=iH;}
 	}
+
+	a.coverage=site.getcoverage();
 
 	a.MM=float_t(P_)/float_t(N_);
 	a.Mm=float_t(H_)/float_t(N_);
@@ -491,13 +506,15 @@ count_t maximizegrid (profile &pro, allele_stat &a, count_t const &MIN, float_t 
 	if (a.freq!=0. && a.freq!=1.) a.f=1-float_t(H_)/float_t(N_)/(2.*(1.-a.freq)*a.freq);
 	else a.f=0;
 
-	a.gof=gof(pro, a, MIN, maxgof);
+	a.gof=gof(site, a, MIN, maxgof);
 
-	excluded=pro.maskedcount();
+	excluded=site.maskedcount();
 	
+//	std::cout << a.error << "-" << N_ << "::" << a.freq << std::endl;
+
 	if ( abs(a.gof)>maxgof) {
 		if (excluded==maxpitch) return excluded;
-		return maximizegrid(pro, a, MIN, maxgof, maxpitch);
+		return maximizegrid(site, a, MIN, maxgof, maxpitch);
 	};
 
 	return excluded;

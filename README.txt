@@ -12,9 +12,15 @@ Python Extras
 Pedigrees
 High Performance Computing
 
+
 <h3> Introduction </h3>
 
-MAPGD is a serious of programs that estimate allele frequency, heterozygosity, hardy-weinberg disequilibrium and pair-wise relatedness from population genomic data using statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data, since it provides minimum MSE unbiased estimators of ?? on low coverage ?, but other tools will converge to similar answers with less computational investment when coverage is high. We recommend the use of more traditional tools when coverage exceeds 30x. 
+MAPGD is a series of realted programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent coefficnts from population genomic data using statistically rigorous maximum likelihood approachs. It is primarily useful for the analysis of low coverage population genomic data, and provides minimum MSE unbiased estimators of these statistics on low coverage sequence. Other tools, such as vcftools give similar answers with less computational investment when coverage is high. We recommend the use of more traditional tools when coverage exceeds 30x.
+
+Why don't you use a vcf format?
+
+The vcf format encodes genotype quality scores as a 16 bit log likelihood. Most of the gain in the accuracy of SNP calling using maximum likelihood methods occurs when SNPs of low quality, typcially on GQ<25. Because vcf tools sacrifices a greate deal of precision in favor of the compact 16 bit represntation, these quality scores are of very little use in maximum likelihood calculations.
+
 
 <h5> Important changes from 2.0 </h5>
 

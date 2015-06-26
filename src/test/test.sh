@@ -23,7 +23,7 @@ fi
 
 
 
-msg="   "
+msg="    "
 
 a="proview"
 
@@ -33,24 +33,24 @@ clean
 cat test.mpileup | ../../bin/mapgd proview > proview.out 
 testa
 
-msg="-i "
+msg="-i  "
 clean
 ../../bin/mapgd proview -i test.mpileup > proview.out
 testa
 
-msg="-o "
+msg="-o  "
 clean
 ../../bin/mapgd proview -i test.mpileup -o proview.out
 testa
 
-msg="-f "
+msg="-f  "
 size=101
 clean
 cat test.mpileup-f | ../../bin/mapgd proview > proview.out &
 testa
 
-msg="-b "
-size=10001
+msg="-b  "
+size=101
 clean
 cat test.mpileup-f | ../../bin/mapgd proview -b | ../../bin/mapgd proview > proview.out 
 testa
@@ -73,29 +73,32 @@ testa
 msg="	"
 
 a="ep"
+size=100
 
 clean
-../../bin/mapgd ep -i test.mpileup -o ep.out &
+../../bin/mapgd ep -i test.mpileup-f -o ep.out &
 testa
 
 a="cp"
+size=98	#ERROR!
 
 clean
-../../bin/mapgd cp -i test.mpileup -o cp.out &
+../../bin/mapgd cp -i test.mpileup-f -o cp.out &
 testa
 
 a="ei"
+size=100
 
 msg="-p "
 
 clean
-../../bin/mapgd ei -i test.mpileup -p pro.out -o ei.out &
+../../bin/mapgd ei -i test.mpileup-f -p pro.out -o ei.out &
 testa
 
 msg="	"
 a="ei"
 clean
-../../bin/mapgd ei -i test.mpileup -o ei.out &
+../../bin/mapgd ei -i test.mpileup-f -o ei.out &
 testa
 
 msg="merge files"

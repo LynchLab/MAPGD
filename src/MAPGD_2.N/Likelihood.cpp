@@ -26,7 +26,12 @@ void lnmultinomial::set(float_t *s){
 	if (lnp!=NULL) delete lnp;
 	lnp=new float_t[_size];
 	float_t *end=s+_size, *it=s, *lit=lnp;
-	while (it!=end) {*lit=log(*it); ++lit; ++it;}
+	while (it!=end) {
+		if (*it!=0) *lit=log(*it);
+		else *lit=-FLT_MAX;
+		++lit; 
+		++it;
+	}
 };
 
 void lnmultinomial::set(float_t a, float_t b, float_t c, float_t d){
@@ -100,26 +105,96 @@ std::vector <std::pair <count_t, count_t> > sort (const count_t *a, const count_
 	return sorted;
 };
 
+allele_stat::allele_stat (void){
+	id0="";
+	id1=0;
+	null_error=-FLT_MAX;
+	error=-FLT_MAX;
+	f=0;
+	MM=1;
+	Mm=0;
+	mm=0;
+	h=0;
+	N=0;
+	monoll=0;
+	hwell=0;
+	ll=0;
+	gof=0;
+	efc=0;
+	excluded=0;
+	delim='\t';
+};
 
-/*
-allele_stat_t & allele_stat_t::operator=(const allele_stat_t& that) {
-	if (this != &that) { 
-		this.freq=that.freq;
-		this.minor=that.minor;
-		this.major=that.major;
-		this.error=that.error;
-		this.null_error=that.null_error;
-		this.coverage=that.coverage;
-		this.ll=that.ll;
+std::ostream& operator<< (std::ostream& out, const allele_stat & x) {
+//	out << x.id0 << x.delim;
+//	out << x.id1 << x.delim;
+	if (x.coverage>0){
+		out << x.coverage << x.delim;
+		out << x.freq <<  x.delim;
+		out << 1.-x.freq <<  x.delim;
+		out << x.error << x.delim;
+		out << x.null_error << x.delim;
+		out << x.f <<  x.delim;
+		out << x.MM << x.delim;
+		out << x.Mm << x.delim;
+		out << x.mm << x.delim;
+		out << x.h << x.delim;
+		out << (x.ll-x.monoll)*2 << x.delim;
+		out << (x.ll-x.hwell)*2 << x.delim;
+		out << x.gof << x.delim;
+		out << x.efc << x.delim;
+		out << x.N << x.delim;
+		out << x.excluded << x.delim;
+		out << x.ll;
+	} else {
+		out << x.coverage << x.delim;
+		out << '*' <<  x.delim;
+		out << '*' <<  x.delim;
+		out << '*' << x.delim;
+		out << '*' << x.delim;
+		out << '*' <<  x.delim;
+		out << '*' << x.delim;
+		out << '*' << x.delim;
+		out << '*' << x.delim;
+		out << '*' << x.delim;
+		out << 0 << x.delim;
+		out << 0 << x.delim;
+		out << 0 << x.delim;
+		out << 0 << x.delim;
+		out << 0 << x.delim;
+		out << 0 << x.delim;
+		out << 0;
+	};
+	return out;
+};
 
-		this.MM=that.MM;
-		this.Mm=that.Mm;
-		this.mm=that.mm;
-
-		this.N=that.N;
-		this.f=that.f;
-		this.gof=that.gof;
-		this.efc=that.efc;
+allele_stat & allele_stat::operator=(const allele_stat & x) {
+	if (this != &x) { 
+		pooled=x.pooled;
+		delim=x.delim;
+		id0=x.id0;
+		id1=x.id1;
+		excluded=x.excluded;
+		freq=x.freq;
+		minor=x.minor;		
+		major=x.major;		
+		error=x.error;
+		null_error=x.null_error;
+		coverage=x.coverage;	
+		f=x.f;
+		MM=x.MM;
+		Mm=x.Mm;
+		mm=x.mm;
+		h=x.h;
+		N=x.N;
+		monoll=x.monoll;
+		hwell=x.hwell;
+		ll=x.ll;
+		gof=x.gof;
+		efc=x.efc;
+		excluded=x.excluded;
+		delim=x.delim;
 	}
 	return *this;
-}*/
+};
+

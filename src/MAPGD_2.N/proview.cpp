@@ -160,7 +160,10 @@ int proview(int argc, char *argv[])
 				}
 			};
 		}
-		if (!read) out.setid0(out.getid0()+1);
+		if (!read){
+			out.setid0(out.getid0()+1);
+			out.setid1(0);
+		}
 		if (wrote) out.write();
 	};
 
