@@ -154,7 +154,10 @@ int estimateInd(int argc, char *argv[])
 			printUsage(env);			//Print help message on failure.
 		} 
 	}
-	else pro.open("r");					//Iff no filename has been set for infile, open profile from stdin.
+	else {
+		std::cerr << "Warning, multithreading is not availible on piped input" << std::endl;
+		 pro.open("r");					//Iff no filename has been set for infile, open profile from stdin.
+	};
 
 	if (outfile.size()!=0) {
 		outFile.open(outfile, std::ofstream::out);
@@ -191,49 +194,50 @@ int estimateInd(int argc, char *argv[])
 	count_t read=0;							//A varaiable for keeping track of the number of clones
 									//we have excluded from the analysis.
 	//for (int x=0; x<skip; ++x) pro.read(SKIP);
-	
-
-	std::chrono::time_point <std::chrono::system_clock> then, now;
-	std::chrono::duration <double> runtime;
-	then=std::chrono::system_clock::now();				//Right now it is then, but it will be now later. . .
-	float_t secleft;
-	count_t nextprint=95;
 
 	site_t site;
-	
-//	for (int x=0; x<pro.length(); ++x){
-		
-	while (pro.read(site)!=EOF ){					//reads the next line of the pro file. pro.read() retuerns 0
-									//on success, EOF when end of file reached. (switch to ==0?)
-/*		if ( pro.size()!=0 && outFile.is_open() && !quite && read>nextprint){
-			now=std::chrono::system_clock::now();
-			runtime=now-then;
-			secleft=read/runtime.count();
-			//I should probably use std::put_time here, but it is not implemented in some recent versions of GCC, so I will hold off 
-			//until later. 
-  			std::cout << "Lines per second: " << secleft << std::endl;
-			nextprint=read+1000;
-		}*/
-		for (count_t x=0; x<ind.size(); ++x) site.unmask(ind[x]);	//Turn on the ability to read data from all clones in 
-//		pro.read(site);
-		allele_stat mle=estimate (site, MIN, EMLMIN, MAXGOF, MAXPITCH);
+	if (pro.length()>0){
+		for (int x=0; x<pro.length(); ++x){
+			for (count_t x=0; x<ind.size(); ++x) site.unmask(ind[x]);	
+							//Turn on the ability to read data from all clones in 
+			pro.read(site);			//reads the next line of the pro file. pro.read() retuerns 0
+							//on success, EOF when end of file reached. (switch to ==0?)
+
+			allele_stat mle=estimate (site, MIN, EMLMIN, MAXGOF, MAXPITCH);
 		
                 // Now print everything to the *out stream, which could be a file or the stdout. 
 		//TODO move this over into a formated file.
 //		std::cout << " HI! " << mle.N << "\t" << (mle.ll-mle.monoll)*2 << "\t" << A << std::endl;
-		if ( (mle.ll-mle.monoll)*2>=A){
-			*out << std::fixed << std::setprecision(6) << pro.getids(site) << '\t' << site.getname(0) << '\t' << site.getname_gt(1) << '\t';
-			*out << std::fixed << std::setprecision(6) << mle << std::endl;
+			if ( (mle.ll-mle.monoll)*2>=A){
+				*out << std::fixed << std::setprecision(6) << pro.getids(site) << '\t' << site.getname(0) << '\t' << site.getname_gt(1) << '\t';
+				*out << std::fixed << std::setprecision(6) << mle << std::endl;
+			}
+
+			if (pro_out.is_open() ){
+				pro_out.copy(pro);
+				if (mle.gof< -MAXGOF) pro_out.maskall(); 
+				pro_out.write();
+			};
+			if (read==stop) break;
+			read++;
 		}
+	} else {
+		while (pro.read(site)!=EOF){			//reads the next line of the pro file. pro.read() retuerns 0
+			allele_stat mle=estimate (site, MIN, EMLMIN, MAXGOF, MAXPITCH);
+			if ( (mle.ll-mle.monoll)*2>=A){
+				*out << std::fixed << std::setprecision(6) << pro.getids(site) << '\t' << site.getname(0) << '\t' << site.getname_gt(1) << '\t';
+				*out << std::fixed << std::setprecision(6) << mle << std::endl;
+			}
 
-		if (pro_out.is_open() ){
-			pro_out.copy(pro);
-			if (mle.gof< -MAXGOF) pro_out.maskall(); 
-			pro_out.write();
-		};
-
-		if (read==stop) break;
-		read++;
+			if (pro_out.is_open() ){
+				pro_out.copy(pro);
+				if (mle.gof< -MAXGOF) pro_out.maskall(); 
+				pro_out.write();
+			};
+			if (read==stop) break;
+			read++;
+			for (count_t x=0; x<ind.size(); ++x) site.unmask(ind[x]);	
+		}
 	}
 	pro.close();					//Close the pro file/stream.
 	if (outFile.is_open()) outFile.close();		//Closes outFile iff outFile is open.

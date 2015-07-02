@@ -127,6 +127,7 @@ int estimatePooled(int argc, char *argv[])
 		popN=line.getcoverage();
 
                 site.error= (float_t) ( popN - line.getcount(0) ) / ( (float_t) popN );
+		site.error= (float_t) (line.getcoverage()-line.getcount(0)-line.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
 
 		if (site.error<EMLMIN) site.error=EMLMIN;
 
@@ -165,6 +166,7 @@ int estimatePooled(int argc, char *argv[])
                         llhoodMS=0;
                         llhoodPS=0;
                         llhoodFS=0;
+			/*
                         for (int y=0; y<pop.size(); ++y){
                                 llhoodMS+=llhoodM[y];
                                 if (x!=y){
@@ -175,9 +177,9 @@ int estimatePooled(int argc, char *argv[])
 					llhoodPS+=llhoodP[y];
 					llhoodFS+=llhoodF[y];
 				};
-                        };
-                        llstat[x] = fabs(2.0 * (llhoodMS - llhoodPS) );
-                        llstatc[x] = fabs(2.0 * (llhoodFS - llhoodPS) );
+                        };*/
+                        llstat[x] = (2.0 * (llhoodP[x] - llhoodM[x]) );
+                        llstatc[x] = (2.0 * (llhoodP[x] - llhoodF[x]) );
                         if (llstat[x]>maxll) maxll=llstat[x];
                 };
 

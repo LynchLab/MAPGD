@@ -136,18 +136,22 @@ int profile_header::setcolumns(const count_t &x) {
 	return NONE;
 }
 
-const std::string profile::getsample_name(const count_t &a) const{
-	switch (columns_){
+const std::string profile_header::getsample_name(const count_t &a) const{
+	switch (*columns_){
 		case 5:
-			return header_.getcolumn_name(a+1);
+			return getcolumn_name(a+1);
 		break;
 		case 6:
-			return header_.getcolumn_name(a+2);
+			return getcolumn_name(a+2);
 		break;
 		case 7:
-			return header_.getcolumn_name(a+3);
+			return getcolumn_name(a+3);
 		break;
 	};
+}
+
+const std::string profile::getsample_name(const count_t &a) const{
+	return header_.getsample_name(a);
 };
 
 int profile::setsample_name(const count_t &a, const std::string &str){
@@ -243,13 +247,12 @@ int profile_header::writetailer(std::ostream *out){
 	};
 	bool notdone_=true;
 	while(notdone_){
-		if (binary_){
-			out->write((char *)& *size_, sizeof(uint64_t) );
+		if (*binary_){
+			char e=EOBIN|control;
+			out->write((char *)&(e), sizeof(char) );
 		}
-		else{
-			*out << "@SIZE:" << *size_ << std::endl;
-		}
-//		*out << "@?:" << "?" << std::endl;
+		*out << "@LN:" << *size_ << std::endl;
+		//for (int x=0; x<*samples_; ++x) *out << "@" << getsample_name(x) << ":"<< getsample_property(0) << std::endl;
 		notdone_=false;
 	}
 	return NONE;
@@ -285,6 +288,7 @@ profile_header & profile_header::operator =(const profile_header& arg){
 #define H_ERR	5
 #define H_SAM	6
 #define H_MOD	7
+#define H_LN	8
 
 int hash(std::string str){
 	if (str=="@PR") return H_PARAM;
@@ -293,6 +297,7 @@ int hash(std::string str){
 	if (str=="CN") return H_COL;
 	if (str=="SN") return H_SAM;
 	if (str=="MD") return H_MOD;
+	if (str=="@LN") return H_LN;
 	else return H_ERR;
 };
 
@@ -393,18 +398,36 @@ int profile_header::readheader(std::istream *in)
 						break;
 					}
 				}
+				if (in!=&std::cin){
+					std::streampos S=in->tellg();
+					in->seekg(0, in->end);
+					in->clear();
+					in->unget();
+					in->unget();
+					while( (in->peek() )!='\n') {in->unget();}
+					std::getline(*in, line);
+					std::getline(*in, line);
+					args=split(line, *delim_column);
+					if (args.size()==0) return BADHEADER;
+					for(std::vector<std::string>::iterator argit = args.begin(); argit != args.end(); ++argit){
+						arg=split(*argit, ':');
+						switch(hash(arg[0]) ){
+							case H_LN:
+								*size_=atoi(arg[1].c_str() );
+							break;
+							default:
+							break;
+						}
+					}
+					in->seekg(S);
+					in->clear();
+				};
 			} 
 		} else {
 			std::cerr << "Error: encountred unexpected EOF. Is the file empty?" << std::endl;
 			return BADHEADER;
 		}; 
 	}
-	/*
-	S=in->tellg();
-	in->seekg(EOF);
-	
-	in->seekg(S);
-	*/
 	return NONE;
 }
 
@@ -494,10 +517,13 @@ void inline profile::scan(const site_t & site, const std::string &str, quartet_t
 int profile::readb(site_t &site){
 	memcpy(site.sorted_, defaultorder, 5*sizeof(count_t) );
 	in->read((char *)&(header_.control), sizeof(char) );
-	if ( (header_.control)&NEWID0){
-		std::string str;
-		std::getline(*in, str);
-		encodeid0(str);
+	if (header_.control){
+		if (header_.control&NEWID0){
+			std::string str;
+			std::getline(*in, str);
+			encodeid0(str);
+		}
+		if (header_.control&EOBIN) return EOF;
 	}
 	switch (columns_){
 		case 5:
@@ -533,6 +559,7 @@ int profile::readt(site_t &site){
 	};
 
 	if (std::getline(*in, line)!=NULL){
+		if (line[0]=='@') return EOF;
 		switch (columns_){
 		//READ A PRO FILE
 			case 5:
@@ -750,6 +777,7 @@ profile* profile::open(const char* filename, const char *mode){
 			std::cerr << "cannot read header on " << filename << " (1). " << std::endl;				
 			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;				
 		};
+		read_=true;
 	} else if (mode=="w"){
 		outFile.open(filename, std::ofstream::out);
 		if (!outFile.is_open() ){
@@ -757,6 +785,7 @@ profile* profile::open(const char* filename, const char *mode){
 			exit(0);
 		};
 		out=&outFile;
+		write_=true;
 	} else if (mode=="wb"){
 		outFile.open(filename, std::ofstream::out);
 		if (!outFile.is_open() ){
@@ -764,6 +793,7 @@ profile* profile::open(const char* filename, const char *mode){
 			exit(0);
 		};
 		out=&outFile;
+		write_=true;
 		binary_=true;
 	} else	{
 		std::cerr << "unkown filemode " << std::endl;

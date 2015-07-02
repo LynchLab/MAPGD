@@ -7,6 +7,8 @@
  * Date: Wed Jul 17 12:00:00 2015
  **************************************************/
 
+//TODO: change merging behavior to merge samples.
+
 #include "proview.h"
 
 int proview(int argc, char *argv[])
@@ -123,24 +125,37 @@ int proview(int argc, char *argv[])
 
 		
 
-
-	while(true){
+	bool go=true;
+	while(go){
+		go=false;
 		std::vector <quartet_t>::iterator it=out.begin();
 		std::vector <quartet_t>::iterator end=out.end();
 		bool read=false;
 		bool wrote=false;
 		for (int x=0; x<in.size(); x++){
-			if(out.encodeid0(in[x]->decodeid0(in[x]->getid0()))==out.getid0() ){
-				if (in[x]->getid1()==out.getid1() ){
-					if (in[x]->read()==EOF ){ goto stop; }
-				}
-				read=true;
-			};
+			if (in[x]->is_open() ){
+				if(out.encodeid0(in[x]->decodeid0(in[x]->getid0()))==out.getid0() ){
+					if (in[x]->getid1()==out.getid1() ){
+						if (in[x]->read()==EOF ){ 
+							in[x]->close();
+						}
+					}
+					read=true;
+				};
+				go=true;
+			}
+
+		}
+			
+		if (!read){
+			out.setid0(out.getid0()+1);
+			out.setid1(0);
+		} else {
+			out.setid1(out.getid1()+1);
+		}
+		for (int x=0; x<in.size(); x++){
 			std::vector <quartet_t>::iterator it_in=in[x]->begin();
 			std::vector <quartet_t>::iterator end_in=in[x]->end();	
-
-			out.setid1(out.getid1()+1);
-			
 			if (in[x]->getid1()==out.getid1() && out.encodeid0(in[x]->decodeid0(in[x]->getid0()))==out.getid0() ){
 				out.setextraid(in[x]->getextraid(0), 0);
 				//change to memcopy;
@@ -158,16 +173,11 @@ int proview(int argc, char *argv[])
 					it++;
 					it_in++;
 				}
-			};
-		}
-		if (!read){
-			out.setid0(out.getid0()+1);
-			out.setid1(0);
+			}
 		}
 		if (wrote) out.write();
 	};
 
-	stop:
 	out.close();
 	for (int x=0; x<in.size(); ++x) in[x]->close();
 

@@ -24,6 +24,8 @@
 #define SKIP		1
 
 #define NEWID0		1
+#define EOBIN		2
+
 typedef char name_t;
 class profile;
 class site_t;
@@ -95,6 +97,8 @@ private:
 	site_t *site_;					// a vector to store the calls from reads.
 	unsigned int *samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
 public:
+	const std::string getsample_property(const count_t &) const;
+	const std::string getsample_name(const count_t &) const;
 	char control;					//a variable that controls switches in the binary read/write mode.
 	profile_header();				// does not initilize . . .
 	profile_header(profile *);			// initilizes profile_header.
