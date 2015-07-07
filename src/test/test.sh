@@ -91,13 +91,13 @@ size=100
 msg="-p "
 
 clean
-timeout 5s ../../bin/mapgd ei -i test.mpileup-f -p pro.out -o ei.out
+timeout 10s ../../bin/mapgd ei -i test.mpileup-f -p pro.out -o ei.out
 testa
 
 msg="	"
 a="ei"
 clean
-timeout 5s ../../bin/mapgd ei -i test.mpileup-f -o ei.out
+timeout 10s ../../bin/mapgd ei -i test.mpileup-f -o ei.out
 testa
 
 size=10002
@@ -106,3 +106,12 @@ a="proview"
 clean
 timeout 5s ../../bin/mapgd proview -i test.mpileup test.mpileup-f > proview.out 
 testa
+
+echo "SPEED TEST"
+
+echo "one thread"
+export OMP_NUM_THREADS=1
+echo `time ../../bin/mapgd ei -i pro.out -o ei.out`
+echo "four threads"
+export OMP_NUM_THREADS=4
+echo `time ../../bin/mapgd ei -i pro.out -o ei.out`

@@ -35,41 +35,64 @@ mapFile=open(args.mapFile[0])
 
 scaffold=0
 site=1	
-#ref_nuc=2
-major_allele=2
-minor_allele=3
-pop_coverage=4
-best_p=5
-best_q=6
-best_error=7
-null_e=8
-best_f=9
-best_MM=10
-best_Mm=11
-best_mm=12
-best_h=13
-pol_llstat=14
-HWE_llstat=15
-Z_score=16
+ref_nuc=2
+major_allele=3
+minor_allele=4
+pop_coverage=5
+best_p=6
+best_q=7
+best_error=8
+null_e=9
+best_f=10
+best_MM=11
+best_Mm=12
+best_mm=13
+best_h=14
+pol_llstat=15
+HWE_llstat=16
+Z_score=17
 
 atoi={'A':0, 'C':1, 'G':2, 'T':3}
 
-def likelihoods(calls, major, minor, error, p):
-	error=0.01
-	M=calls[major]
-	m=calls[minor]
-	E=sum(calls)-M-m
-	lnc=math.log(1.0-error)
-	lnch=math.log( (1.0-error)/2.0+error/6.0) 
-	lne=math.log(error)
-	MM=lnc*M+lne*(m+E)
-	Mm=lnch*(M+m)+lne*E
-	mm=lnc*m+lne*(M+E)
-	N=math.log(0.5)*(M+m-1)
-	if M+m>1:
-		return [-MM, -Mm, -mm, sum(calls)]
-	else:
-		return [0, 0, 0, sum(calls)]
+def likelihoods_uniform(calls, major, minor, error, p):
+        error=max(0.001, error)
+        M=calls[major]
+        n=sum(calls)
+        p2=math.log(1.0-error)
+        notp2=math.log(error)
+        p1=math.log( (1.0-error)/2.0+error/6.0)
+        notp1=math.log(1-( (1.0-error)/2.0+error/6.0) )
+        p0=math.log(error/3.)
+        notp0=math.log(1-error/3.)
+
+        MM=M*p2+notp2*(n-M)+math.log(p**2)
+        Mm=M*p1+notp1*(n-M)+math.log(2*p*(1-p) )
+        mm=M*p0+notp0*(n-M)+math.log( (1-p)**2 )
+        [E1, E2, E3]=sorted([MM, Mm, mm])
+        N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
+        if n>=1:
+                return [-MM+N, -Mm+N, -mm+N, n, '|' ]
+        else:
+                return [0, 0, 0, sum(calls), '|' ]
+
+def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
+#        error=max(0.001, error)
+        M=calls[major]
+        n=sum(calls)
+        p2=math.log(1.0-error)
+        notp2=math.log(error)
+        p1=math.log( (1.0-error)/2.0+error/6.0)
+        notp1=math.log(1-( (1.0-error)/2.0+error/6.0) )
+        p0=math.log(error/3.)
+        notp0=math.log(1-error/3.)
+
+        MM=M*p2+notp2*(n-M)+math.log(pMM)
+        Mm=M*p1+notp1*(n-M)+math.log(pMm)+math.log(0.5)
+        mm=M*p0+notp0*(n-M)+math.log(pmm)
+        [E1, E2, E3]=sorted([MM, Mm, mm])
+        N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
+	return [-MM+N, -Mm+N, -mm+N, n]
+
 	
 poly={}
 for line in mapFile:
@@ -78,18 +101,15 @@ for line in mapFile:
 		continue
 	if line[pol_llstat]=="*":
 		continue
-#	print line
-#	print line[best_error], line[pol_llstat], line[pop_coverage]
-	if float(line[best_error])<args.e:
-		if float(line[pol_llstat])>args.l:
-			if float(line[pop_coverage])>args.c and float(line[pop_coverage])<args.C:
-				if float(line[best_q])<args.P and float(line[best_q])>args.p:
-					print line[best_q]
+	if float(line[best_error])<=args.e:
+		if float(line[pol_llstat])>=args.l:
+			if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
+				if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
 					try:
-						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error]]
+						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
 					except:
 						poly[line[scaffold]]={}
-						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error]]
+						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
 
 mapFile.close()
 
@@ -97,10 +117,10 @@ for line in proFile:
 	line=line.split()
 	try:
 		this=poly[line[scaffold]][line[site]]
-		out=[line[scaffold], line[site]]+this
+		out=[line[scaffold], line[site]]+this[0:4]
 		for x in range(3, len(line) ):
 			calls=map(int, line[x].split('/') )
-			out+=(likelihoods(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2])))
+			out+=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
 		print '\t'.join(map(str, out) )
 
 	except:

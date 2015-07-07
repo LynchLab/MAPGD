@@ -1,4 +1,4 @@
-SUBDIRS=MAPGD_2.N 
+SUBDIRS=stable
 
 .PHONY: subdirs $(SUBDIRS) clean
 
@@ -17,4 +17,4 @@ install: all
 .PHONY: install
 
 clean:
-	cd src && $(MAKE) $@
+	cd $(SUBDIRS) && $(MAKE) $@
