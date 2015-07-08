@@ -32,6 +32,7 @@ mapFile=open(args.mapFile[0])
 
 #0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	
 #id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
+#id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
 
 scaffold=0
 site=1	
@@ -97,10 +98,16 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
 poly={}
 for line in mapFile:
 	line=line.split()
-	if line[0]=="id1":
-		continue
-	if line[pol_llstat]=="*":
-		continue
+	try:
+		if line[0]=="id1":
+			continue
+		if line[0][0]=='@':
+			continue
+		if line[pol_llstat]=="*":
+			continue
+	except:
+		print "could not parse line ", line
+		exit(0)
 	if float(line[best_error])<=args.e:
 		if float(line[pol_llstat])>=args.l:
 			if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
@@ -115,6 +122,8 @@ mapFile.close()
 
 for line in proFile:
 	line=line.split()
+	if line[0]=="@":
+		continue
 	try:
 		this=poly[line[scaffold]][line[site]]
 		out=[line[scaffold], line[site]]+this[0:4]

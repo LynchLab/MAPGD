@@ -1,4 +1,5 @@
 #include "proFile.h"
+#define DEBUG
 
 /*Design notes: This library is probably poorly thought out. More or less everything works through the 'profile'. However, 
   It may make a whole lot more sense for the 'profile' to be a file like structure that just co-ordinates reading, writing, 
@@ -337,14 +338,23 @@ int profile_header::readheader(std::istream *in)
 
 	bool notdone_=true, reading_pr=false, reading_id=false;
 
+#ifdef DEBUG 
+	std::cerr << "attempting to read header.\n";
+#endif
+
 	while(notdone_){
 		//"VN" version number
 		//"@IDs" Names of fields.
 		if (std::getline(*in, line)!=NULL){
 			if ( line[0]!='@' || *noheader_ ){
-				if ( line[0]=='s' ) {
+#ifdef DEBUG 
+				std::cerr << "bad header format.\n";
+#endif
+				column=split(line, *delim_column);
+				if (column[1][0]=='s') {std::cerr << "assuming Takahiro type file.\n"; *noheader_=1;}
+				if ( *noheader_ ) {
+					*delim_quartet='/';
 					*columns_=7; 
-					column=split(line, *delim_column);
 					switch (*columns_){
 						case 5:
 							setsamples(column.size()-1);
@@ -362,7 +372,6 @@ int profile_header::readheader(std::istream *in)
 				}
 				else {
 					*mpileup_=true;
-					column=split(line, *delim_column);
 					*samples_=(column.size()-3)/3;
 					setsamples(*samples_);
 					in->putback('\n');
@@ -438,6 +447,9 @@ int profile_header::readheader(std::istream *in)
 			return BADHEADER;
 		}; 
 	}
+#ifdef DEBUG 
+	std::cerr << "done reading header.\n";
+#endif
 	return NONE;
 }
 
@@ -580,6 +592,7 @@ int profile::readt(site_t &site){
 						std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
 						std::cerr << column.size() << " fields found." << std::endl;
 						std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
+						std::cerr << "columns : \'" << columns_ << "\'" << std::endl;
 						exit(0);
 						return EOF;
 					}
@@ -604,6 +617,7 @@ int profile::readt(site_t &site){
 				std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
 				std::cerr << column.size() << " fields found." << std::endl;
 				std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
+				std::cerr << "columns : \'" << columns_ << "\'" << std::endl;
 				exit(0);
 				return EOF;
 			};
@@ -623,6 +637,7 @@ int profile::readt(site_t &site){
 				std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
 				std::cerr << column.size() << " fields found." << std::endl;
 				std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
+				std::cerr << "columns : \'" << columns_ << "\'" << std::endl;
 				exit(0);
 				return EOF;
 			};
