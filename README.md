@@ -206,7 +206,7 @@ Please cite the following paper (once it is written) when publishing results der
 
 Ackerman, M. S., P. Johri, K. Spitze and M. Lynch, 2015  A general statistical model for coefficients of relatedness and its application to the analysis of population-genomic data. In prep. 
 
-<h4 Copyright</h4>
+<h4>Copyright</h4>
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
