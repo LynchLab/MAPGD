@@ -1,23 +1,34 @@
-﻿<h1>MAPGD version 2.2</h1>
+﻿#MAPGD version 2.2
 
 [<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip)
 
 [(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
 
 
-<h2> Contents </h2>
-<h4> Introduction </h4>
-[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+##Contents 
+###Introduction
+####[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+
 [FAQ](https://github.com/LynchLab/MAPGD#-faq-)
+
 [Changes](https://github.com/LynchLab/MAPGD#-changes-)
+
 <h4> Basic Usage </h4>
+
 [Commands](https://github.com/LynchLab/MAPGD#-commands-)
+
 [Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
+
 [Examples](https://github.com/LynchLab/MAPGD#-examples-)
+
 [Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
+
 <h4> Misc. </h4>
+
 [Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
+
 [Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
+
 [References](https://github.com/LynchLab/MAPGD#-references-)
 
 <h3> Introduction </h3>
