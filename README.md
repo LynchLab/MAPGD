@@ -1,35 +1,21 @@
 ﻿#MAPGD version 2.2
 
-[<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip)
-
-[(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
+[<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip) [(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
 
 
 ##Contents 
-###Introduction
-####[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
-
-[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
-
-[Changes](https://github.com/LynchLab/MAPGD#-changes-)
-
-<h4> Basic Usage </h4>
-
-[Commands](https://github.com/LynchLab/MAPGD#-commands-)
-
-[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
-
-[Examples](https://github.com/LynchLab/MAPGD#-examples-)
-
-[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
-
-<h4> Misc. </h4>
-
-[Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
-
-[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
-
-[References](https://github.com/LynchLab/MAPGD#-references-)
+###[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+####[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
+####[Changes](https://github.com/LynchLab/MAPGD#-changes-)
+###Basic Usage
+####[Commands](https://github.com/LynchLab/MAPGD#-commands-)
+####[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
+####[Examples](https://github.com/LynchLab/MAPGD#-examples-)
+####[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
+###Misc.
+####[Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
+####[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
+####[References](https://github.com/LynchLab/MAPGD#-references-)
 
 <h3> Introduction </h3>
 
@@ -220,7 +206,7 @@ Please cite the following paper (once it is written) when publishing results der
 
 Ackerman, M. S., P. Johri, K. Spitze and M. Lynch, 2015  A general statistical model for coefficients of relatedness and its application to the analysis of population-genomic data. In prep. 
 
-<h3> Copyright Notice </h3>
+####Copyright
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
