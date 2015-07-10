@@ -6,7 +6,6 @@
 
 
 <h2> Contents </h2>
-<table> 
 <h4> Introduction </h4>
 [Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
 [FAQ](https://github.com/LynchLab/MAPGD#-faq-)
@@ -20,7 +19,6 @@
 [Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
 [Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
 [References](https://github.com/LynchLab/MAPGD#-references-)
-</table>
 
 <h3> Introduction </h3>
 
