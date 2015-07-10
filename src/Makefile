@@ -1,4 +1,6 @@
 SUBDIRS=stable
+VER=2.3
+NAME=mapgd
 
 .PHONY: subdirs $(SUBDIRS) clean
 
@@ -8,13 +10,17 @@ $(SUBDIRS):
 	$(MAKE) -C $@
 
 all: subdirs
+
+dist: 
+	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
 	
 test: all
 	cd test && bash test.sh
 
 install: all
-	install -m 0755 ../bin/mapgd $(prefix)/bin
+	install -m 0755 ../bin/$(NAME) $(prefix)/bin
 .PHONY: install
 
 clean:
 	cd $(SUBDIRS) && $(MAKE) $@
+	rm -f $(NAME)-*.tar.gz
