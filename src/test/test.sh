@@ -86,7 +86,7 @@ timeout 5s ../../bin/mapgd cp -i test.mpileup-f -o cp.out
 testa
 
 a="ei"
-size=100
+size=196
 
 msg="-p "
 
@@ -109,9 +109,13 @@ testa
 
 echo "SPEED TEST"
 
-echo "one thread"
 export OMP_NUM_THREADS=1
-echo `time ../../bin/mapgd ei -i pro.out -o ei.out`
-echo "four threads"
+time1=`(time ../../bin/mapgd ei -i pro.out -o ei.out) 2>&1 >/dev/null | grep real | cut -d '	' -f 2 | cut -d 'm' -f 1 ` 
 export OMP_NUM_THREADS=4
-echo `time ../../bin/mapgd ei -i pro.out -o ei.out`
+time2=`(time ../../bin/mapgd ei -i pro.out -o ei.out) 2>&1 >/dev/null | grep real | cut -d '	' -f 2 | cut -d 'm' -f 1 ` 
+if [ $(($time1)) -gt $(($time2*2)) ]; then
+echo "PASSED"
+else
+echo "FAILED"
+fi
+

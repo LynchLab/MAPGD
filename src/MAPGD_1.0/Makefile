@@ -19,4 +19,4 @@ install: mapdg
 
 clean:
 	rm -f *.o
-	rm ../../bin/*
+	rm -f ../../bin/*

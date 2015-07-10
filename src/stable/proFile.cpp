@@ -1,5 +1,4 @@
 #include "proFile.h"
-#define DEBUG
 
 /*Design notes: This library is probably poorly thought out. More or less everything works through the 'profile'. However, 
   It may make a whole lot more sense for the 'profile' to be a file like structure that just co-ordinates reading, writing, 
@@ -261,6 +260,7 @@ int profile_header::writetailer(std::ostream *out){
 		if (*binary_){
 			char e=EOBIN|control;
 			out->write((char *)&(e), sizeof(char) );
+			*out << '\n';
 		}
 		*out << "@LN:" << *size_ << std::endl;
 		notdone_=false;
@@ -351,7 +351,12 @@ int profile_header::readheader(std::istream *in)
 				std::cerr << "bad header format.\n";
 #endif
 				column=split(line, *delim_column);
-				if (column[1][0]=='s') {std::cerr << "assuming Takahiro type file.\n"; *noheader_=1;}
+				if (column[1][0]=='s') {
+#ifdef DEBUG 
+					std::cerr << "assuming Takahiro type file.\n"; 
+#endif
+					*noheader_=1;
+}
 				if ( *noheader_ ) {
 					*delim_quartet='/';
 					*columns_=7; 
