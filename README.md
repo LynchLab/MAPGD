@@ -1,32 +1,25 @@
-﻿MAPGD version 2.2
+﻿<h1>MAPGD version 2.2</h1>
 
-<h5> To download this program click the "Download ZIP" button to the upper right -> </h5>
+<h2>GET IT!</h2>[Download MAPGD.zip](https://github.com/LynchLab/MAPGD/archive/master.zip)
 
-Copyright (C) Michael Lynch, see notice at end of README. 
-
+[(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
+ 
 <h3> Contents </h3>
 
-[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+<h4> Introduction </h4>
+	[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+	[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
+	[Changes](https://github.com/LynchLab/MAPGD#-changes-)
+<h4> Basic Usage </h4>
+	[Commands](https://github.com/LynchLab/MAPGD#-commands-)
+	[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
+	[Examples](https://github.com/LynchLab/MAPGD#-examples-)
+	[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
+<h4> Misc. </h4>
+	[Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
+	[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
+	[References](https://github.com/LynchLab/MAPGD#-references-)
 
-[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
-
-[Changes](https://github.com/LynchLab/MAPGD#-changes-)
-
-[Commands](https://github.com/LynchLab/MAPGD#-commands-)
-
-[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
-
-[Examples](https://github.com/LynchLab/MAPGD#-examples-)
-
-[Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
-
-[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
-
-[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
-
-[References](https://github.com/LynchLab/MAPGD#-references-)
-
-[Copyright](https://github.com/LynchLab/MAPGD#-copyright-)
 
 <h3> Introduction </h3>
 
@@ -38,7 +31,7 @@ Why don't you use a vcf format?
 
 The vcf format encodes genotype quality scores as an 8 bit log likelihood. Most of the gain in the accuracy provided by our program occurs when the genotypes of individuals are ambiguous. Because the vcf-format sacrifices a great deal of precision in favor of the compact 8 bit representation, these quality scores are of very little use to us.
 
-That being said, we intend to implement read/writing in the vcf/bcf format as quickly as possible to increase the comparability of our program with existing tools. 
+That being said, we intend to implement read/writing in the vcf/bcf format as quickly as possible to increase the compatibility of our program with existing tools. 
 
 Why don't you provide information on indels? 
 
