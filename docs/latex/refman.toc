@@ -1,0 +1,24 @@
+\contentsline {chapter}{\numberline {1}Data Structure Index}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Data Structures}{1}{section.1.1}
+\contentsline {chapter}{\numberline {2}Data Structure Documentation}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}allele\discretionary {-}{}{}\_\discretionary {-}{}{}stat Class Reference}{3}{section.2.1}
+\contentsline {section}{\numberline {2.2}arg\discretionary {-}{}{}\_\discretionary {-}{}{}t Class Reference}{4}{section.2.2}
+\contentsline {section}{\numberline {2.3}Args Struct Reference}{4}{section.2.3}
+\contentsline {section}{\numberline {2.4}com\discretionary {-}{}{}\_\discretionary {-}{}{}t Class Reference}{4}{section.2.4}
+\contentsline {section}{\numberline {2.5}env\discretionary {-}{}{}\_\discretionary {-}{}{}t Class Reference}{5}{section.2.5}
+\contentsline {section}{\numberline {2.6}flag\discretionary {-}{}{}\_\discretionary {-}{}{}t Class Reference}{5}{section.2.6}
+\contentsline {section}{\numberline {2.7}genotype Class Reference}{6}{section.2.7}
+\contentsline {section}{\numberline {2.8}lnmultinomial Class Reference}{6}{section.2.8}
+\contentsline {section}{\numberline {2.9}mapfile Class Reference}{6}{section.2.9}
+\contentsline {section}{\numberline {2.10}mapfile\discretionary {-}{}{}\_\discretionary {-}{}{}header Class Reference}{8}{section.2.10}
+\contentsline {section}{\numberline {2.11}models Class Reference}{8}{section.2.11}
+\contentsline {section}{\numberline {2.12}profile Class Reference}{9}{section.2.12}
+\contentsline {subsection}{\numberline {2.12.1}Member Function Documentation}{10}{subsection.2.12.1}
+\contentsline {subsubsection}{\numberline {2.12.1.1}open}{10}{subsubsection.2.12.1.1}
+\contentsline {subsection}{\numberline {2.12.2}Field Documentation}{10}{subsection.2.12.2}
+\contentsline {subsubsection}{\numberline {2.12.2.1}names\discretionary {-}{}{}\_\discretionary {-}{}{}}{10}{subsubsection.2.12.2.1}
+\contentsline {section}{\numberline {2.13}profile\discretionary {-}{}{}\_\discretionary {-}{}{}header Class Reference}{10}{section.2.13}
+\contentsline {section}{\numberline {2.14}quartet Struct Reference}{11}{section.2.14}
+\contentsline {section}{\numberline {2.15}site\discretionary {-}{}{}\_\discretionary {-}{}{}t Class Reference}{11}{section.2.15}
+\contentsline {section}{\numberline {2.16}sort\discretionary {-}{}{}\_\discretionary {-}{}{}second Struct Reference}{12}{section.2.16}
+\contentsline {chapter}{Index}{13}{section*.33}

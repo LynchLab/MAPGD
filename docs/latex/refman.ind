@@ -1,0 +1,69 @@
+\begin{theindex}
+
+  \item {allele\discretionary {-}{}{}\_\discretionary {-}{}{}stat}, 
+		\hyperpage{3}
+  \item {arg\discretionary {-}{}{}\_\discretionary {-}{}{}t}, 
+		\hyperpage{4}
+  \item {Args}, \hyperpage{4}
+
+  \indexspace
+
+  \item {com\discretionary {-}{}{}\_\discretionary {-}{}{}t}, 
+		\hyperpage{4}
+
+  \indexspace
+
+  \item {env\discretionary {-}{}{}\_\discretionary {-}{}{}t}, 
+		\hyperpage{5}
+
+  \indexspace
+
+  \item {flag\discretionary {-}{}{}\_\discretionary {-}{}{}t}, 
+		\hyperpage{5}
+
+  \indexspace
+
+  \item {genotype}, \hyperpage{6}
+
+  \indexspace
+
+  \item {lnmultinomial}, \hyperpage{6}
+
+  \indexspace
+
+  \item {mapfile}, \hyperpage{6}
+  \item {mapfile\discretionary {-}{}{}\_\discretionary {-}{}{}header}, 
+		\hyperpage{8}
+  \item {models}, \hyperpage{8}
+
+  \indexspace
+
+  \item {names\discretionary {-}{}{}\_\discretionary {-}{}{}}
+    \subitem {profile}, \hyperpage{10}
+
+  \indexspace
+
+  \item {open}
+    \subitem {profile}, \hyperpage{10}
+
+  \indexspace
+
+  \item {profile}, \hyperpage{9}
+    \subitem {names\discretionary {-}{}{}\_\discretionary {-}{}{}}, 
+		\hyperpage{10}
+    \subitem {open}, \hyperpage{10}
+  \item {profile\discretionary {-}{}{}\_\discretionary {-}{}{}header}, 
+		\hyperpage{10}
+
+  \indexspace
+
+  \item {quartet}, \hyperpage{11}
+
+  \indexspace
+
+  \item {site\discretionary {-}{}{}\_\discretionary {-}{}{}t}, 
+		\hyperpage{11}
+  \item {sort\discretionary {-}{}{}\_\discretionary {-}{}{}second}, 
+		\hyperpage{12}
+
+\end{theindex}
