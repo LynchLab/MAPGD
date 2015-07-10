@@ -348,7 +348,11 @@ count_t initparams(site_t &site, allele_stat &a, const count_t &MIN, const float
 
 	count_t S=site.getcoverage();
 
-	if (S==0) return 0;	
+	if (S==0) {
+		a.major=site.getindex(0);
+		a.minor=site.getindex(1);
+		return 0;
+	}
 
 	count_t M_=site.getcount(0);
 	count_t m_=site.getcount(1);

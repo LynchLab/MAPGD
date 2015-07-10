@@ -45,7 +45,7 @@ allele_stat estimate (site_t &site, models &model, std::vector<float_t> &gofs, c
 
 	count_t texc=site.maskedcount();
 
-	initparams(site, mle, MIN, EMLMIN,0);			//If >90% of reads agree, then assume a homozygote,
+	if (initparams(site, mle, MIN, EMLMIN,0) )		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
 	maximizegrid(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 
