@@ -168,8 +168,6 @@ public:
 	void unmask(quartet *);				//mask line N
 	void mask(quartet *);				//mask line N
 	void mask(count_t);				//mask line N
-
-
 };
 
 class  profile{

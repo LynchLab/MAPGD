@@ -25,9 +25,7 @@ MAPGD is a series of related programs that estimate allele frequency, heterozygo
 
 Why don't you use a vcf format?
 
-The vcf format encodes genotype quality scores as an 8 bit log likelihood. Most of the gain in the accuracy provided by our program occurs when the genotypes of individuals are ambiguous. Because the vcf-format sacrifices a great deal of precision in favor of the compact 8 bit representation, these quality scores are of very little use to us.
-
-That being said, we intend to implement read/writing in the vcf/bcf format as quickly as possible to increase the compatibility of our program with existing tools. 
+We intend to implement read/writing in the vcf/bcf format as quickly as possible to increase the compatibility of our program with existing tools. The other output formats will be depricated as soon as vcf/bcf support is implemented.
 
 Why don't you provide information on indels? 
 
