@@ -1,25 +1,26 @@
 ﻿<h1>MAPGD version 2.2</h1>
 
-<h2>GET IT!</h2>[Download MAPGD.zip](https://github.com/LynchLab/MAPGD/archive/master.zip)
+[<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip)
 
 [(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
- 
-<h3> Contents </h3>
 
+
+<h2> Contents </h2>
+<table> 
 <h4> Introduction </h4>
-	[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
-	[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
-	[Changes](https://github.com/LynchLab/MAPGD#-changes-)
+[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
+[Changes](https://github.com/LynchLab/MAPGD#-changes-)
 <h4> Basic Usage </h4>
-	[Commands](https://github.com/LynchLab/MAPGD#-commands-)
-	[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
-	[Examples](https://github.com/LynchLab/MAPGD#-examples-)
-	[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
+[Commands](https://github.com/LynchLab/MAPGD#-commands-)
+[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
+[Examples](https://github.com/LynchLab/MAPGD#-examples-)
+[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
 <h4> Misc. </h4>
-	[Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
-	[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
-	[References](https://github.com/LynchLab/MAPGD#-references-)
-
+[Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
+[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
+[References](https://github.com/LynchLab/MAPGD#-references-)
+</table>
 
 <h3> Introduction </h3>
 
@@ -39,7 +40,7 @@ We currently do not have a likelihood model to account for errors in calling ind
 
 <h5> Changes </h5>
 
-Changes to the interface have been made to better conforming to POSIX guidelines:
+Changes to the interface have been made to better conform to [POSIX](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html) guidelines:
 The the syntax of the -p option (which specifies the populations to be analyzed) has been changed from a space delimited list to a comma delimited list. See the -h option from more information.
 
 The default behavior of the cp and ep commands bas been changed to read and write to the stdin and stdout (respectively).
