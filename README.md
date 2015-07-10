@@ -6,14 +6,21 @@ Copyright (C) Michael Lynch, see notice at end of README.
 
 <h3> Contents </h3>
 
-[Introduction](https://github.com/LynchLab/MAPGD#-Introduction-)
-[FAQ](https://github.com/LynchLab/MAPGD#-FAQ-)
-[Changes](https://github.com/LynchLab/MAPGD#-Changes-)
-[Commands](https://github.com/LynchLab/MAPGD#-Commands-)
-[Input/Output](https://github.com/LynchLab/MAPGD#-Input/Output-)
-[Python extras](https://github.com/LynchLab/MAPGD#-Python extras-)
-[Linux or Mac users](https://github.com/LynchLab/MAPGD#-Python extras-)
-[Bigred2](https://github.com/LynchLab/MAPGD#-Bigred2-)
+[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+
+[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
+
+[Changes](https://github.com/LynchLab/MAPGD#-changes-)
+
+[Commands](https://github.com/LynchLab/MAPGD#-commands-)
+
+[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
+
+[Python extras](https://github.com/LynchLab/MAPGD#-python-extras-)
+
+[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
+
+[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
 
 <h3> Introduction </h3>
 
