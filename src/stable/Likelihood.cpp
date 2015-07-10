@@ -3,32 +3,37 @@
 #include "Likelihood.h"
 #include <iostream>
 
-lnmultinomial::lnmultinomial (float_t *s, count_t size){
-	lnp_=new float_t[size];
-	float_t *end=s+size, *it=s, *lit=lnp_;
-	while (it!=end) {*lit=log(*it); ++lit; ++it;}
+lnmultinomial::lnmultinomial (float_t *s, const count_t &size){
 	size_=size;
+	lnp_=new float_t[size_];
+	float_t *end=s+size_, *it=s, *lit=lnp_;
+	while (it!=end) {*lit=log(*it); ++lit; ++it;}
 }
 
-lnmultinomial::lnmultinomial (count_t size){
+lnmultinomial::lnmultinomial (const count_t &size){
 	size_=size;
 	lnp_=new float_t[size_];
 }
 
 lnmultinomial::lnmultinomial (void){
-	size_=0;
-	lnp_=NULL;
+	size_=4;
+	lnp_=new float_t[size_];
 }
+
+lnmultinomial::~lnmultinomial (void){
+	delete [] lnp_;
+	lnfact_vector.clear();
+};
 
 
 void lnmultinomial::set(void (*fn)(allele_stat const &, float_t *), allele_stat const &s){
-	if (lnp_!=NULL) delete lnp_;
+	delete [] lnp_;
 	lnp_=new float_t[size_];
 	fn(s, lnp_);
 };
 
 void lnmultinomial::set(float_t *s){
-	if (lnp_!=NULL) delete lnp_;
+	delete [] lnp_;
 	lnp_=new float_t[size_];
 	float_t *end=s+size_, *it=s, *lit=lnp_;
 	while (it!=end) {
@@ -40,7 +45,7 @@ void lnmultinomial::set(float_t *s){
 };
 
 void lnmultinomial::set(float_t a, float_t b, float_t c, float_t d){
-	if (lnp_!=NULL) delete lnp_;
+	delete [] lnp_;
 	lnp_=new float_t[4];
 	if (a!=0) lnp_[0]=log(a);
 	else lnp_[0]=-FLT_MAX;
@@ -128,6 +133,7 @@ allele_stat::allele_stat (void){
 	efc=0;
 	excluded=0;
 	delim='\t';
+	coverage=0;
 }
 using namespace std;
 std::ostream& operator<< (std::ostream& out, const allele_stat& x) {

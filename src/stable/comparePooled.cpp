@@ -169,12 +169,11 @@ int comparePooled(int argc, char *argv[])
 			*out << pml << '\t' << eml << std::endl;
 		};
 	}
-	delete llhoodP;
-	delete llhoodS;
-	delete llstat;
-	delete pmlP;
-
-	exit(0);
+	delete [] llhoodP;
+	delete [] llhoodS;
+	delete [] llstat;
+	delete [] pmlP;
 	if (outFile.is_open()) outFile.close();
 	std::cout << t << std::endl;
+	exit(0);
 };

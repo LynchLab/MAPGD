@@ -194,6 +194,12 @@ int estimatePooled(int argc, char *argv[])
                 };
 
 	}
+        delete [] llhoodP;
+        delete [] llhoodF;
+        delete [] llhoodM;
+        delete [] pmlP;
+        delete [] llstat;
+        delete [] llstatc;
 	if (outFile.is_open()) outFile.close();
 	/* Ends the computations when the end of file is reached. */
 	exit(0);

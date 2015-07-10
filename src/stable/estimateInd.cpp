@@ -194,12 +194,11 @@ int estimateInd(int argc, char *argv[])
 
 	std::vector <float_t> sum_gofs(ind.size() );
 	std::vector <float_t> gofs_read(ind.size() );
+	models model;
+	allele_stat buffer_mle[BUFFER_SIZE]; 
+	site_t buffer_site[BUFFER_SIZE];
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
-		allele_stat buffer_mle[BUFFER_SIZE]; 
-		site_t buffer_site[BUFFER_SIZE];
-		uint32_t c, readed=0;
-		models model;
-		uint32_t length=pro.length();
+		uint32_t c=0, readed=0;
 		bool estimate_me=1;
 
 		#pragma omp parallel private(c, model, estimate_me) 
@@ -210,6 +209,7 @@ int estimateInd(int argc, char *argv[])
 				#pragma omp critical
 				{
 					c=readed;				//Turn on the ability to read data from all clones in 
+					for (count_t y=0; y<ind.size(); ++y) buffer_site[x].unmask(ind[y]);	
 					if(pro.read(buffer_site[c])!=EOF){
 						readed++;	//reads the next line of the pro file. pro.read() retuerns 0
 						estimate_me=1;

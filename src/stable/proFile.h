@@ -103,6 +103,7 @@ public:
 	char control;					//a variable that controls switches in the binary read/write mode.
 	profile_header();				// does not initilize . . .
 	profile_header(profile *);			// initilizes profile_header.
+	~profile_header(void);
 	void init(profile *);				// initilizes profile_header.
 
 	const count_t encodeid0(const std::string &);
@@ -136,6 +137,7 @@ public:
 	count_t sorted_[5];				// an array to allow sorted access to quartets.
 	site_t (count_t);
 	site_t ();
+	~site_t ();
 	std::vector <quartet_t> sample;			//The five bases A/C/G/T/N;
 
 	count_t samples_;
@@ -161,6 +163,7 @@ public:
 	const count_t *getquartet(count_t) const;	//returns the quartet array (unsorted)
 
 	void maskall(void);				//mask all lines
+	void unmaskall(void);				//mask all lines
 	void unmask(count_t);				//unmask line N
 	void unmask(quartet *);				//mask line N
 	void mask(quartet *);				//mask line N

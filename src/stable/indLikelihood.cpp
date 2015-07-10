@@ -11,11 +11,18 @@
 //I'm overloading the += operator so that I can write A+=B, because I'm lazy.
 
 models::models(void){
-	lnMM=lnmultinomial (4);
-	lnMm=lnmultinomial (4);
-	lnmm=lnmultinomial (4);
-	lnF=lnmultinomial (4);
-};
+	lnMM_=new lnmultinomial(4);
+	lnMm_=new lnmultinomial(4);
+	lnmm_=new lnmultinomial(4);
+	lnF_=new lnmultinomial(4);
+}
+
+models::~models(void){
+	delete lnMM_;
+	delete lnMm_;
+	delete lnmm_;
+	delete lnF_;
+}
 
 void MMmodelP(const allele_stat &a, float_t *l){ 	//The model used for the goodness of fit test assuming the genotype is 
 						 	//[M]ajor [M]ajor.
@@ -85,9 +92,9 @@ float_t models::loglikelihood(const site_t &site, const allele_stat &p, const co
 	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//Lets us iterate over the quartets. 
 	std::vector <quartet_t>::const_iterator end=site.sample.end();	//Tells us when to stop iterating, so we don't generate a seg. fault.
 
-	lnMM.set(&MMmodel, p);	//Lets initialize the multinomial distributions that will tell us the probability of  
-	lnMm.set(&Mmmodel, p);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
-	lnmm.set(&mmmodel, p);  //
+	lnMM_->set(&MMmodel, p);	//Lets initialize the multinomial distributions that will tell us the probability of  
+	lnMm_->set(&Mmmodel, p);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
+	lnmm_->set(&mmmodel, p);  //
 
 	float_t logMM=log(p.MM); //The frequency of the MM genotype in the sample.
 	float_t logMm=log(p.Mm); // Dito Mm.
@@ -102,9 +109,9 @@ float_t models::loglikelihood(const site_t &site, const allele_stat &p, const co
 			T=( it->base[0]+it->base[1]+it->base[2]+it->base[3] );
 			if ( T>=MIN ) {
 
-				E0=logMM+lnMM.lnprob(it->base);
-				E1=logMm+lnMm.lnprob(it->base);
-				E2=logmm+lnmm.lnprob(it->base);
+				E0=logMM+lnMM_->lnprob(it->base);
+				E1=logMm+lnMm_->lnprob(it->base);
+				E2=logmm+lnmm_->lnprob(it->base);
 
 				//We make E2 the largest (i.e. least negative) value of the three. E0 and E1 will often times be 
 				//extreamly small, and can even be negative infinity. So we are basically just ensuring that we 
@@ -127,9 +134,10 @@ float_t models::loglikelihood(const site_t &site, const allele_stat &p, const co
 /*@Breif, a function that calculats the log likelihood of a set of observations. */
 float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population, const count_t &MIN){
 
-	lnMM.set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
-	lnMm.set(&Mmmodel, population);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
-	lnmm.set(&mmmodel, population);  //
+	lnMM_->set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
+
+	lnMm_->set(&Mmmodel, population);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
+	lnmm_->set(&mmmodel, population);  //
 
 	float_t logMM=log(population.MM); //The frequency of the MM genotype in the sample.
 	float_t logMm=log(population.Mm); // Dito Mm.
@@ -137,9 +145,9 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 
 	float_t E[3];
 
-	E[0]=logMM+lnMM.lnprob(quartet.base);
-	E[1]=logMm+lnMm.lnprob(quartet.base);
-	E[2]=logmm+lnmm.lnprob(quartet.base);
+	E[0]=logMM+lnMM_->lnprob(quartet.base);
+	E[1]=logMm+lnMm_->lnprob(quartet.base);
+	E[2]=logmm+lnmm_->lnprob(quartet.base);
 
 	float_t ll;
 
@@ -162,9 +170,9 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 /*@Breif, Used for GOF, same basic idea as above. I know, if I have to write it twice I'm doing something wrong.*/
 float_t models::lnP(const count_t *base, const allele_stat &p){
 
-	lnMM.set(&MMmodelP, p);
-	lnMm.set(&MmmodelP, p);
-	lnmm.set(&mmmodelP, p);
+	lnMM_->set(&MMmodelP, p);
+	lnMm_->set(&MmmodelP, p);
+	lnmm_->set(&mmmodelP, p);
 	
 	float_t logMM=log(p.MM);
 	float_t logMm=log(p.Mm);
@@ -172,9 +180,9 @@ float_t models::lnP(const count_t *base, const allele_stat &p){
 
 	float_t E0, E1, E2, tE;
 
-	E0=logMM+lnMM.lnprob(base);
-	E1=logMm+lnMm.lnprob(base);
-	E2=logmm+lnmm.lnprob(base);
+	E0=logMM+lnMM_->lnprob(base);
+	E1=logMm+lnMm_->lnprob(base);
+	E2=logmm+lnmm_->lnprob(base);
 
 	if(E0>E2) {tE=E2; E2=E0; E0=tE;}
 	if(E1>E2) {tE=E2; E2=E1; E1=tE;}
@@ -405,7 +413,7 @@ count_t initparams(site_t &site, allele_stat &a, const count_t &MIN, const float
 	a.Mm=H_;
 	a.mm=Q_;
 	a.efc=efc(site, MIN);
-	return 0;
+	return 1;
 }
 
 

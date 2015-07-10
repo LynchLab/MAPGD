@@ -179,7 +179,7 @@ int proview(int argc, char *argv[])
 	};
 
 	out.close();
-	for (int x=0; x<in.size(); ++x) in[x]->close();
+	for (int x=0; x<in.size(); ++x) {in[x]->close(); delete in[x];}
 
 	env.close();
 	exit(0);

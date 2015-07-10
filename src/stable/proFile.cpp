@@ -13,7 +13,17 @@ const std::string profile::names_ ="ACGT*";
 
 const count_t profile::defaultorder[5] = {0,1,2,3,4};
 
-site_t::site_t(void){};
+site_t::site_t(void){
+	sample.clear();
+	samples_=0;
+	id0=0;
+	id1=0;	
+};
+
+site_t::~site_t(void){
+	if (sample.size()>0) sample.clear();
+};
+
 
 site_t::site_t(count_t size){
 	sample.assign(size, quartet() );
@@ -103,6 +113,10 @@ int profile::seek(std::streampos pos) {
 	read();
 	return NONE;
 }
+
+profile_header::~profile_header(void){
+	column_names.clear();
+};
 
 int profile_header::setsamples(const count_t &samples) {
 	*samples_=samples;
@@ -883,6 +897,9 @@ profile::profile(){
 	mpileup_=false;
 	noheader_=false;
 
+	out=NULL;
+	in=NULL;
+
 	size_=0;
 	samples_=0;
 	columns_=5;
@@ -1048,23 +1065,32 @@ void site_t::maskall(void){
 	};
 };
 
+void site_t::unmaskall(void){
+	for (unsigned int s=0; s<samples_;++s){
+		sample[s].masked=false;
+	}
+}
+
 void profile::unmask(count_t a){
-	site_.unmask(a);
-};
+	if(a<samples_) site_.unmask(a);
+}
+
 void site_t::unmask(count_t a){
-	sample[a].masked=false;
-};
+	if(a<samples_) sample[a].masked=false;
+}
 
 void profile::unmask(quartet_t *q){
 	site_.unmask(q);
-};
+}
+
 void site_t::unmask(quartet_t *q){
 	q->masked=false;
 }
 
 void profile::mask(quartet_t *q){
 	site_.mask(q);
-};
+}
+
 void site_t::mask(quartet_t *q){
 	q->masked=true;
 }
