@@ -1,5 +1,7 @@
 #format test
 
+#echo "WARNING: STATISTICAL TEST HAVE NOT YET BEEN IMPLEMENTED. TAKE RESULTS WITH A GRAIN OF SALT UNTILL I GET SIMULATIONS UP AND RUNNING."
+
 testa() 
 {
 if [ $? -ne 0 ]; then
@@ -17,12 +19,11 @@ else
 fi
 }
 
-
-tmf="test.tmf"
-lmp="test.mpileup"
-smp="test.mpileup-f"
-pro="test.pro"
-bro="test.bro"
+tmf="takahiro.txt"
+lmp="mpileup-l.txt"
+smp="mpileup-s.txt"
+pro="profile.txt"
+bro="profile.brt"
 
 formats=($lmp $pro $bro $tmf)
 
@@ -47,6 +48,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$proheader))
+echo "cat $format | $mapgd $a > $a.out"
 timeout 5s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
