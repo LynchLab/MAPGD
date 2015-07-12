@@ -155,17 +155,16 @@ int comparePooled(int argc, char *argv[])
 				else llhoodPS+=llhoodP[y];
 				};
 				llstat[x] = fabs(2.0 * (llhoodSS - llhoodPS) );
-				maxll+=llstat[x];
+				//maxll+=llstat[x];
 				if (llstat[x]>maxll) maxll=llstat[x];
 			}
 		};
-		if (maxll>=a){
+		if (std::max(maxll, float_t(0) )>=a ){
 			*out << std::fixed << std::setprecision(7) << pro.getids(line) << '\t' << line.getname(0) << '\t' << line.getname(1) << '\t';
 			for (int x=0; x<pop.size(); ++x){
 				if ( line.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t';
 				else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t';
 			};
-			/* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
 			*out << pml << '\t' << eml << std::endl;
 		};
 	}
@@ -174,6 +173,5 @@ int comparePooled(int argc, char *argv[])
 	delete [] llstat;
 	delete [] pmlP;
 	if (outFile.is_open()) outFile.close();
-	std::cout << t << std::endl;
 	exit(0);
 };

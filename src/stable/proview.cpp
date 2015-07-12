@@ -24,7 +24,8 @@ int proview(int argc, char *argv[])
 	bool noheader=false;
 	bool binary=false;
 
-	count_t c=6;
+	count_t outc=6;
+	count_t inC=0;
 
 	args.pro=false;
 	args.min=4;
@@ -42,7 +43,9 @@ int proview(int argc, char *argv[])
 	env.optional_arg('m',"minimum",	 &args.min, 	&arg_setint, 	"an error occured", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
 	env.optional_arg('q',"qdel",	&qdel,		&arg_setchar, 	"an error occured", "sets the quartet delimiter (default tab)");
 	env.optional_arg('d',"cdel",	&cdel,		&arg_setchar, 	"an error occured", "sets the column delimiter (default tab)");
-	env.optional_arg('c',"column",	&c,	 	&arg_setint, 	"an error occured", "sets the number of column in the output (default 6)");
+	env.optional_arg('c',"column",	&outc,	 	&arg_setint, 	"an error occured", "sets the number of column in the output (default 6)");
+
+	env.optional_arg('C',"incolumn",	&inC,	 	&arg_setint, 	"an error occured", "overides the default number of column assumed for the input (default )");
 	env.optional_arg('i',"input",	&infiles,	&arg_setvectorstr,
 									"an error occured", "sets the input file (default stdin). If multiple input files given, the default behavior is to merge the files.");
 	env.optional_arg('o',"output",	&outfile,	&arg_setstr, 	"an error occured", "sets the output file (default stdout)");
@@ -56,7 +59,7 @@ int proview(int argc, char *argv[])
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
 
-	if ( c!=6 && c!=5 && c!=7) {std::cerr << "columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
+	if ( outc!=6 && outc!=5 && outc!=7 ) {std::cerr << "columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
 
 	//Setting up the input/output
 
@@ -70,18 +73,18 @@ int proview(int argc, char *argv[])
 			in.push_back(new profile);
 			in[x]->open(infiles[x].c_str(), "r");
 			if (!in[x]->is_open() ) {printUsage(env); exit(0);}
-			in[x]->setcolumns(c);
-			in[x]->set_delim_column(cdel);
-			in[x]->set_delim_quartet(qdel);
+			if (inC!=0) in[x]->setcolumns(inC);
+			//in[x]->set_delim_column(cdel);
+			//in[x]->set_delim_quartet(qdel);
 			samples+=in[x]->size();
 		}
 	} else {
 		in.push_back(new profile);
 		in[0]->open("r");
 		if (!in[0]->is_open() ) {printUsage(env); exit(0);}
-		in[0]->setcolumns(c);
-		in[0]->set_delim_column(cdel);
-		in[0]->set_delim_quartet(qdel);
+		if (inC!=0) in[0]->setcolumns(inC);
+		//in[0]->set_delim_column(cdel);
+		//in[0]->set_delim_quartet(qdel);
 		samples+=in[0]->size();
 	}
 
@@ -99,7 +102,7 @@ int proview(int argc, char *argv[])
 		else out.open("w");
 	}
 
-	out.setcolumns(c);
+	out.setcolumns(outc);
 	out.setsamples(samples);
 	out.set_delim_column(cdel);
 	out.set_delim_quartet(qdel);

@@ -1,15 +1,15 @@
-o "1"
-export OMP_NUM_THREADS=1
-echo `time ../../bin/mapgd ei -i test.pro -o ei.out`
-echo "2"
+#!/bin/bash
+
+bro="test.bro"
+lmp="test.mpileup"
+long=`wc -l $lmp | cut -d ' ' -f 1`     #number of lines in the long test file
+mapgd="../../bin/mapgd"
+a="ei"
 export OMP_NUM_THREADS=2
-echo `time ../../bin/mapgd ei -i test.pro -o ei.out`
-echo "4"
-export OMP_NUM_THREADS=4
-echo `time ../../bin/mapgd ei -i test.pro -o ei.out`
-echo "8"
+time1=`(/usr/bin/time -f "%e" $mapgd ei -i $bro -o $a.out) 2>&1 > /dev/null`
 export OMP_NUM_THREADS=8
-echo `time ../../bin/mapgd ei -i test.pro -o ei.out`
-echo "16"
-export OMP_NUM_THREADS=16
-echo `time ../../bin/mapgd ei -i test.pro -o ei.out`
+time2=`(/usr/bin/time -f "%e" $mapgd ei -i $bro -o $a.out) 2>&1 > /dev/null`
+rm -f $a.out
+echo "(2) $time1 (8) $time2 ."
+d=`echo "scale=2; $long/$time2" |bc -l`
+echo "Processing ~$d lines/sec"

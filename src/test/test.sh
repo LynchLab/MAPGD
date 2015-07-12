@@ -1,8 +1,4 @@
 #format test
-clean()
-if [ -a $a.out ]; then
-	rm $a.out
-fi
 
 testa() 
 {
@@ -12,110 +8,168 @@ if [ $? -ne 0 ]; then
 fi
 if [ `wc $a.out -l | cut -d  ' ' -f 1` -eq $size ]; then
 	echo "[$a] $msg PASS"
-	clean
+	rm -f $a.out
 else
 	echo  `wc $a.out -l `
+	echo  "expected $size"
 	echo "[$a] $msg FAIL"
 	exit
 fi
 }
 
 
+tmf="test.tmf"
+lmp="test.mpileup"
+smp="test.mpileup-f"
+pro="test.pro"
+bro="test.bro"
+
+formats=($lmp $pro $bro $tmf)
+
+#??
+pop=96					#number of individuals in population
+proheader=3				#Size of pro header
+vcfheader=1				#Size of vcf header
+gcfheader=$((1+$pop))			#Size of gcf header
+short=`wc -l $smp | cut -d ' ' -f 1`	#number of lines in the short test file
+long=`wc -l $lmp | cut -d ' ' -f 1`	#number of lines in the long test file
+
+mapgd="../../bin/mapgd"
 
 msg="    "
 
+#commands 
+commands=("proview ep cp ei")  
+
 a="proview"
 
-size=10002
-
-clean
-cat test.mpileup | ../../bin/mapgd proview > proview.out 
+for format in ${formats[@]}; do
+msg="$format"
+rm -f $a.out
+size=$(($long+$proheader))
+timeout 5s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
+done
+
+a="ei"
+
+for format in ${formats[@]}; do
+msg="$format"
+rm -f $a.out
+size=$(($long+$gcfheader))
+timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
+testa
+
+done
+
+a="ep"
+
+for format in ${formats[@]}; do
+msg="$format"
+rm -f $a.out
+size=$(($long+$vcfheader))
+timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
+testa
+
+done
+
+a="cp"
+
+for format in ${formats[@]}; do
+msg="$format"
+rm -f $a.out
+size=$(($long+$vcfheader))
+timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
+testa
+
+done
+
 msg="-i  "
-clean
-timeout 5s ../../bin/mapgd proview -i test.mpileup > proview.out
+rm -f $a.out
+size=$(($short+$proheader))
+timeout 5s $mapgd proview -i $smp > $a.out
 testa
 
 msg="-o  "
-clean
-timeout 5s ../../bin/mapgd proview -i test.mpileup -o proview.out
+rm -f $a.out
+size=$(($short+$proheader))
+timeout 5s $mapgd proview -i $smp -o $a.out
 testa
 
 msg="-f  "
-size=102
-clean
-cat test.mpileup-f | ../../bin/mapgd proview > proview.out 
+size=$(($long+$proheader))
+rm -f $a.out
+timeout 5s $mapgd proview -i $lmp -o $a.out
 testa
 
 msg="-b  "
-size=102
-clean
-cat test.mpileup-f | ../../bin/mapgd proview -b | ../../bin/mapgd proview > proview.out 
+size=$(($long+$proheader))
+rm -f $a.out
+timeout 5s bash -c "$mapgd proview -i $lmp -b | $mapgd proview -o $a.out" 
 testa
 
 msg="-c 5"
-clean
-cat test.mpileup-f | ../../bin/mapgd proview -c 5 > proview.out
+size=$(($short+$proheader))
+rm -f $a.out
+timeout 5s $mapgd proview -i $smp -c 5 -o $a.out
 testa
 
 msg="-c 6"
-clean
-cat test.mpileup-f | ../../bin/mapgd proview -c 6 > proview.out 
+size=$(($short+$proheader))
+rm -f $a.out
+timeout 5s $mapgd proview -i $smp -c 6 -o $a.out
 testa
 
 msg="-c 7"
-clean
-cat test.mpileup-f | ../../bin/mapgd proview -c 7 > proview.out
+size=$(($short+$proheader))
+rm -f $a.out
+timeout 5s $mapgd proview -i $smp -c 7 > $a.out
 testa
 
 msg="	"
 
 a="ep"
-size=100
-
-clean
-timeout 5s ../../bin/mapgd ep -i test.mpileup-f -o ep.out
+size=$(($short+$vcfheader))
+rm -f $a.out
+timeout 5s $mapgd ep -i $smp -o $a.out
 testa
 
 a="cp"
-size=98	#ERROR!
-
-clean
-timeout 5s ../../bin/mapgd cp -i test.mpileup-f -o cp.out
+size=$(($short+$vcfheader))
+rm -f $a.out
+timeout 5s $mapgd cp -i $smp -o $a.out
 testa
 
 a="ei"
-size=196
-
 msg="-p "
-
-clean
-timeout 10s ../../bin/mapgd ei -i test.mpileup-f -p pro.out -o ei.out
+size=$(($short+$proheader))
+rm -f $a.out
+timeout 10s $mapgd ei -i $smp -p $a.out -o temp.out
 testa
+rm -f temp.out
 
 msg="	"
 a="ei"
-clean
-timeout 10s ../../bin/mapgd ei -i test.mpileup-f -o ei.out
+size=$(($short+$gcfheader))
+rm -f $a.out
+timeout 10s $mapgd ei -i $smp -o $a.out
 testa
 
-size=10002
 msg="merge "
 a="proview"
-clean
-timeout 5s ../../bin/mapgd proview -i test.mpileup test.mpileup-f > proview.out 
+size=$(($long+$proheader))
+rm -f $a.out
+timeout 5s $mapgd proview -i $smp $lmp > $a.out 
 testa
 
-echo "SPEED TEST"
+echo -n "SPEED TEST ... "
 
-export OMP_NUM_THREADS=1
-time1=`(time ../../bin/mapgd ei -i pro.out -o ei.out) 2>&1 >/dev/null | grep real | cut -d '	' -f 2 | cut -d 'm' -f 1 ` 
-export OMP_NUM_THREADS=4
-time2=`(time ../../bin/mapgd ei -i pro.out -o ei.out) 2>&1 >/dev/null | grep real | cut -d '	' -f 2 | cut -d 'm' -f 1 ` 
-if [ $(($time1)) -gt $(($time2*2)) ]; then
-echo "PASSED"
-else
-echo "FAILED"
-fi
-
+export OMP_NUM_THREADS=2
+time1=`(/usr/bin/time -f "%e" $mapgd ei -i $bro -o $a.out) 2>&1 > /dev/null`
+export OMP_NUM_THREADS=8
+time2=`(/usr/bin/time -f "%e" $mapgd ei -i $bro -o $a.out) 2>&1 > /dev/null`
+rm -f $a.out
+echo "(2) $time1 (8) $time2 ."
+d=`echo "scale=2; $long/$time2" |bc -l`
+echo "Processing ~$d lines/sec"

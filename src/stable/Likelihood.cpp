@@ -3,7 +3,8 @@
 #include "Likelihood.h"
 #include <iostream>
 
-lnmultinomial::lnmultinomial (float_t *s, const count_t &size){
+lnmultinomial::lnmultinomial (float_t* s, const count_t& size)
+{
 	size_=size;
 	lnp_=new float_t[size_];
 	float_t *end=s+size_, *it=s, *lit=lnp_;

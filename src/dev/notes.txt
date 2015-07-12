@@ -1,3 +1,0 @@
-TODO change function and variable naming to conform to https://google-styleguide.googlecode.com/svn/trunk/cppguide.html#Self_contained_Headers
-TODO abstract profile header?
-
