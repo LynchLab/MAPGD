@@ -7,10 +7,10 @@
  ***************************************************/ 
 
 
-#ifndef INTERFACE_H_
-#define INTERFACE_H_	1_
+#ifndef _INTERFACE_H_
+#define _INTERFACE_H_
+
 #include <list>
-//TODO: this is just here for debuging.
 #include <iostream>
 
 int arg_setvectorstr(int, char **, void *);
@@ -31,9 +31,8 @@ int arg_error(int, char **, void *);
 int flag_error(void *);
 int command_error(int, char **);
 
-/*Flag class */
+/* \breif A class that passes command line flags. It takes no arguments and chews only a single letter.*/
 class flag_t {
-	//A class for command line flags (options which take no argument) 
 	private:
 	public:
 	flag_t(){
@@ -43,7 +42,7 @@ class flag_t {
 		emsg="emsg unset";
 		umsg="umsg unset";
 	};
-	flag_t(char opt_, char* lopt_, void *parm_, int (*func_)(void *), char *emsg_, char*umsg_){
+	flag_t (char opt_, char* lopt_, void *parm_, int (*func_)(void *), char *emsg_, char*umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		func=func_;

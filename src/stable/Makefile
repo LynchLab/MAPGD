@@ -1,7 +1,7 @@
 CXXFLAGS= -g -std=c++0x -O3 -Wno-write-strings -fopenmp
 prefix=/usr/local
 
-mapdg: mapgd.o interface.o proview.o proFile.o estimatePooled.o comparePooled.o streamtools.o pooledLikelihood.o estimateInd.o indLikelihood.o Likelihood.o   
+mapdg: mapgd.o stream-tools.o interface.o proview.o estimate-pooled.o compare-pooled.o estimate-individual.o pro-file.o quartet.o locus.o likelihood.o pooled-likelihood.o individual-likelihood.o genotype.o population.o lnmultinomial.o allele_stat.o
 	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd
 
 .PHONY: debug
@@ -16,4 +16,3 @@ install: mapdg
 clean:
 	rm -f *.o
 	rm -f ../../bin/*
-

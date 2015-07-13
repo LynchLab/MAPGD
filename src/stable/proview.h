@@ -1,8 +1,6 @@
-/***** sam2pro.h **********************************
- * Description: Convert sam output to profiles.
- * Author: Bernhard Haubold, haubold@evolbio.mpg.de
- * Date: Wed Jul 21 22:46:11 2010
- **************************************************/
+/***** proview.h **********************************
+ * Description: Convert mpileup output to pro-files.
+ */
 
 #ifndef PROVIEW_H_
 #define PROVIEW_H_
@@ -13,8 +11,8 @@
 #include <string.h>
 
 #include "interface.h"
-#include "streamtools.h"
-#include "proFile.h"
+#include "stream-tools.h"
+#include "pro-file.h"
 
 #include <math.h>
 #include <vector>
