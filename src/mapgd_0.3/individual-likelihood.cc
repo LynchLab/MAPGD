@@ -85,7 +85,7 @@ float_t dll(profile const &pro, const allele_stat &p, const count_t &MIN){
 }
 
 /*@Breif, a function that calculats the log likelihood of a set of observations. */
-float_t models::loglikelihood(const site_t &site, const allele_stat &p, const count_t &MIN){
+float_t models::loglikelihood(const Locus &site, const allele_stat &p, const count_t &MIN){
 
 	float_t sumll=0;
 
@@ -209,7 +209,7 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 }
 
 //THE goodness of fit calcualtion.
-float_t gof (site_t &site, const allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &site_maxgof){
+float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &site_maxgof){
 	float_t Num=0., Den=0., E, V, O, thisgof,clone_mingof=FLT_MAX;
 	std::vector <float_t>::iterator gof=gofs.begin();
 
@@ -249,7 +249,7 @@ float_t gof (site_t &site, const allele_stat &a, models &model, std::vector <flo
 
 /*calculates the 'effective number of chromosomes' in a sample. This number isn't used for anything right now.*/
 
-float_t efc (const site_t &site, const count_t &MIN){
+float_t efc (const Locus &site, const count_t &MIN){
 	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
 
@@ -268,7 +268,7 @@ float_t efc (const site_t &site, const count_t &MIN){
 	return ec;
 };
 
-count_t initparams_old(site_t &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
+count_t initparams_old(Locus &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
 
 	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
@@ -345,7 +345,7 @@ count_t initparams_old(site_t &site, allele_stat &a, const count_t &MIN, const f
 }
 
 //Intilaizes the parameters of the ... returns 0 on succesful excecution, returns 1 if there is am...
-count_t initparams(site_t &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
+count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
 
 	std::vector <quartet_t>::iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::iterator end=site.sample.end(); 
@@ -433,7 +433,7 @@ count_t initparams(site_t &site, allele_stat &a, const count_t &MIN, const float
 };*/
 
 /* Uses a grid method to maximize the likelihood equations.*/
-count_t maximizegrid (site_t &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
+count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
 
 	count_t N_=a.N;
 	count_t P_=a.MM*N_;

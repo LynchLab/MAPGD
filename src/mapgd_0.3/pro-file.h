@@ -29,7 +29,6 @@
 #define EOBIN		2
 
 class profile;
-class site_t;
 
 class  profile_header{
 private:
@@ -57,7 +56,7 @@ private:
 	char *delim_column;				// the delimiter that seperates columns.
 	char *delim_quartet;				// the delimiter that seperates counts in a quartet.
 	unsigned int *columns_;				// 5|6|7|?
-	site_t *site_;					// a vector to store the calls from reads.
+	Locus *site_;					// a vector to store the calls from reads.
 	unsigned int *samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
 	std::vector <float_t> sample_gof_;				// the number of samples (i.e. different individuals or populations) in the profile.
 public:
@@ -118,20 +117,20 @@ private:
 
 	bool donothing_;				// a flag to indicate that nothing should be read for infile stream when read is called 
 
-	static const char defaultorder[5];		// 01234 
+	static const count_t defaultorder[5];		// 01234 
 
-	site_t site_;					// a structure that stores quartet information.
+	Locus site_;					// a structure that stores quartet information.
 
-	int readm(site_t &);					//read file in mpileup mode.
-	int readt(site_t &);					//read file in text mode.
-	int readb(site_t &);					//read file in binary mode.
+	int readm(Locus &);					//read file in mpileup mode.
+	int readt(Locus &);					//read file in text mode.
+	int readb(Locus &);					//read file in binary mode.
 
 	int writet();					//write the quartet information in memory to file in text mode.
 	int writeb();					//write the quartet information in memory to file in binary mode.
 							//pro files do not contain enough information to construct mpileup files.
 
-	int writet(site_t const &);			//write the quartet information passed to file in text mode.
-	int writeb(site_t const &);			//write the quartet information passed to file in binary mode.
+	int writet(Locus const &);			//write the quartet information passed to file in text mode.
+	int writeb(Locus const &);			//write the quartet information passed to file in binary mode.
 
 	profile_header header_;
 
@@ -142,7 +141,7 @@ private:
 
 	friend profile_header::profile_header(profile *);//Should set up pointers etc.
 	friend void profile_header::init(profile *);	//Should set up pointers etc.
-	void inline scan(const site_t &,const std::string &, quartet_t &); //?
+	void inline scan(const Locus &,const std::string &, quartet_t &); //?
 public:
 	profile();					//default constructor
 	static const std::string names_;		// ACGTN
@@ -155,9 +154,9 @@ public:
 	/*basic io operation*/
 	int copy(const profile&);			//copys a line from profile
 	int read();					//reads a line from the instream. Returns 0 on success, EOF on EOF.
-	int read(site_t &);					//peaks at a line in the instream. Returns 0 on success, EOF on EOF.
+	int read(Locus &);					//peaks at a line in the instream. Returns 0 on success, EOF on EOF.
 	int write();					//writes a line to the outstream. Returns 0 on success, EOF on EOF.
-	int write(site_t const &);			//writes a line to the outstream. Returns 0 on success, EOF on EOF.
+	int write(Locus const &);			//writes a line to the outstream. Returns 0 on success, EOF on EOF.
 
 							//Both of these functions should thow an error if the are used while streams are not open.
 	int seek(const std::streampos);			//goes to the pos streampos of the stream. Returns 0 on success, EOF on if streampos is not in the stream. 
@@ -220,7 +219,7 @@ public:
 	void setid1(const uint64_t &);
 	void setextraid(const count_t &, const count_t &);
 
-	std::string getids(const site_t &);
+	std::string getids(const Locus &);
 	std::string getids(void);
 
 	void maskall(void);				//mask all lines
@@ -230,7 +229,7 @@ public:
 	void mask(count_t);				//mask line N
 	//THESE WILL PROBABLY BE DEPRICATED
 	void sort(void);				//sort reads from most common to least common (amoung all non-masked sites).
-	site_t getsite(void) {return site_;};		//sort reads from most common to least common (amoung all non-masked sites).
+	Locus getsite(void) {return site_;};		//sort reads from most common to least common (amoung all non-masked sites).
 
 	std::vector <quartet_t>::iterator begin(void) {return site_.sample.begin();};	
 	std::vector <quartet_t>::iterator end(void) {return site_.sample.end();};	

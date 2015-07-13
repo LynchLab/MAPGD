@@ -10,5 +10,6 @@
 #include "compare-pooled.h"
 #include "estimate-pooled.h"
 #include "estimate-individual.h"
+#include "proview.h"
 
 #endif

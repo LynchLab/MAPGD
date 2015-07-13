@@ -11,6 +11,9 @@
 #include <ctime>
 #include <chrono>
 
+#include <algorithm>
+#include <functional>
+
 #include "interface.h" 
 #include "pro-file.h" 
 #include "individual-likelihood.h"

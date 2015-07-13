@@ -1,13 +1,10 @@
 #include "pro-file.h"
 
-/*! \brief For ascii decoding values of the counts in a .pro file
-*/	
-const std::string profile::names_ ="ACGT*";
-
 /*! \brief The default order of names_
-*/	
-const char profile::defaultorder[5] = {0,1,2,3,4};
 
+*/	
+static const std::string names_="ACGTN";
+const count_t profile::defaultorder[5] = {0,1,2,3,4};
 
 const std::string profile::decodeid0(const count_t &id){
 	return header_.decodeid0(id);
@@ -25,7 +22,6 @@ const std::string profile_header::decodeid0(const count_t &id){
 int profile::setsamples(count_t samples){
 	return header_.setsamples(samples);
 }			
-
 
 int profile::setcolumns(count_t a){
 	return header_.setcolumns(a);
@@ -264,7 +260,7 @@ profile_header & profile_header::operator =(const profile_header& arg){
         *delim_column=*arg.delim_column;                             // the delimiter which seperates columns
         *delim_quartet=*arg.delim_quartet;                            // the delimiter that seperates counts in a quartet
         *columns_=*arg.columns_;                         // 5|6|7|more?
-        site_t *site_;                                  // a vector to store the calls from reads
+        Locus *site_;                                  // a vector to store the calls from reads
         *samples_=*arg.samples_;                         // the number of samples (i.e. different individuals or populations) in the profile.
 
 	*columns_=*arg.columns_;
@@ -453,7 +449,7 @@ int profile::read()
 	return read(site_);
 }
 
-int profile::read(site_t &site)
+int profile::read(Locus &site)
 {
 	while (site.sample.size()<samples_) site.sample.push_back(quartet_t() );
 	while (site.extraid.size()<site_.extraid.size() ) site.extraid.push_back(0);
@@ -466,7 +462,7 @@ int profile::read(site_t &site)
 	};
 }
 
-int profile::readm(site_t &site) 
+int profile::readm(Locus &site) 
 {
 	std::string line;
 	memcpy(site.sorted_, defaultorder, 5*sizeof(count_t) );
@@ -504,7 +500,7 @@ int profile::readm(site_t &site)
 	return UNEXPECTED;
 }
 
-void inline profile::scan(const site_t & site, const std::string &str, quartet_t &q)
+void inline profile::scan(const Locus & site, const std::string &str, quartet_t &q)
 {
 	count_t j;
 	std::string number;
@@ -531,7 +527,7 @@ void inline profile::scan(const site_t & site, const std::string &str, quartet_t
 	}
 }
 
-int profile::readb(site_t &site){
+int profile::readb(Locus &site){
 	memcpy(site.sorted_, defaultorder, 5*sizeof(count_t) );
 	in->read((char *)&(header_.control), sizeof(char) );
 	if (header_.control){
@@ -564,7 +560,7 @@ int profile::readb(site_t &site){
 	else return 0;
 };
 
-int profile::readt(site_t &site){
+int profile::readt(Locus &site){
 	//The order of nucleotides read from a quartet file. Replace this with a memcopy of a constant.
 	std::string line;
 	memcpy(site.sorted_, defaultorder, 5*sizeof(count_t) );
@@ -662,12 +658,12 @@ int profile::write(void){
 	write(site_);	
 }
 
-int profile::write(const site_t &site){
+int profile::write(const Locus &site){
 	size_+=1;
 	if (binary_) return writeb(site);
 	else return writet(site);
 }
-int profile::writeb (const site_t &thissite){
+int profile::writeb (const Locus &thissite){
 	if (out==NULL){
 		std::cerr << "attempted write when no outstream was open." << std::endl;
 		exit(UNEXPECTED);
@@ -697,7 +693,7 @@ int profile::writeb (const site_t &thissite){
         return 0;
 }
 
-int profile::writet(const site_t &thissite){
+int profile::writet(const Locus &thissite){
 	if (out==NULL){
 		std::cerr << "attempted write when no outstream was open." << std::endl;
 		exit(UNEXPECTED);
@@ -892,97 +888,12 @@ bool profile::is_open(void) const{
 void profile::sort(void){
 	site_.sort();
 }
-void site_t::sort(void){
-	count_t total[5]={0};
-	for (unsigned int s=0; s<sample.size();++s){
-		if (sample[s].masked) continue;
-		total[0]+=sample[s].base[0];
-		total[1]+=sample[s].base[1];
-		total[2]+=sample[s].base[2];
-		total[3]+=sample[s].base[3];
-		total[4]+=sample[s].base[4];
-	};
-	if (total[sorted_[0]]<total[sorted_[2]])
-		std::swap(sorted_[0], sorted_[2]);
-	if (total[sorted_[1]]<total[sorted_[3]])
-		std::swap(sorted_[1], sorted_[3]);
-	if (total[sorted_[2]]<total[sorted_[3]])
-		std::swap(sorted_[2], sorted_[3]);
-	if (total[sorted_[0]]<total[sorted_[1]])
-		std::swap(sorted_[0], sorted_[1]);
-	if (total[sorted_[1]]<total[sorted_[2]])
-		std::swap(sorted_[1], sorted_[2]);
-};
 
-void site_t::sort(count_t s){
-	if (sample[s].base[sorted_[0]]<sample[s].base[sorted_[2]])
-		std::swap(sorted_[0], sorted_[2]);
-	if (sample[s].base[sorted_[1]]<sample[s].base[sorted_[3]])
-		std::swap(sorted_[1], sorted_[3]);
-	if (sample[s].base[sorted_[2]]<sample[s].base[sorted_[3]])
-		std::swap(sorted_[2], sorted_[3]);
-	if (sample[s].base[sorted_[0]]<sample[s].base[sorted_[1]])
-		std::swap(sorted_[0], sorted_[1]);
-	if (sample[s].base[sorted_[1]]<sample[s].base[sorted_[2]])
-		std::swap(sorted_[1], sorted_[2]);
-};
-void site_t::swap(count_t x, count_t y){	
-	std::swap(sorted_[x], sorted_[y]);
-};
-count_t site_t::getcount(count_t s, count_t c) const
-{
-	if (c<5) return sample[s].base[sorted_[c]];
-	else return 0;
-};
-
-const count_t * site_t::getquartet(count_t s) const
+const count_t * Locus::getquartet(count_t s) const
 {
 	return sample[s].base;
 };
 
-count_t site_t::getcount(count_t c) const
-{
-	count_t total=0;
-	if (c<5){
-		for (unsigned int s=0; s<samples_;++s){
-			if (sample[s].masked) continue;
-			total+=sample[s].base[sorted_[c]];
-		}
-		return total;
-	}
-	else return 0;
-};
-
-count_t site_t::getcoverage(count_t s) const
-{
-	if (s<samples_) return sample[s].base[0]+
-				sample[s].base[1]+
-				sample[s].base[2]+
-				sample[s].base[3];
-	else {
-		std::cerr << "Attempted to access a population that doesn't exist. Exiting." << std::endl;
-		exit(0);
-	};
-};
-
-count_t site_t::getcoverage() const
-{
-	count_t total=0;
-	for (unsigned int s=0; s<samples_;++s){
-		if (sample[s].masked) continue;
-		total+=sample[s].base[0]+
-			sample[s].base[1]+
-			sample[s].base[2]+
-			sample[s].base[3];
-	};
-	return total;
-};
-
-const count_t site_t::getindex(count_t c) const
-{
-	if (c<5) return  sorted_[c];
-	else return -1;
-};
 
 std::string profile::getids(void)
 {
@@ -993,7 +904,7 @@ std::string profile::getids(void)
 	return str;
 };
 
-std::string profile::getids(const site_t &site)
+std::string profile::getids(const Locus &site)
 {
 	std::string str=decodeid0(site.id0)+'\t'+decodeid1(site.id1);
 	for (unsigned int x=0; x<site.extraid.size(); ++x){
@@ -1042,25 +953,27 @@ void profile::set_delim_column(const char &del)
 void profile::setbasecount(const count_t &x, const count_t &y, const count_t &z){
 	site_.sample[x].base[y]=z;
 }
-count_t count(const quartet_t c){
-	return c.base[0]+c.base[1]+c.base[2]+c.base[3];
-}
 
 const uint64_t profile::getlinenumber(void) const{
 	return size_;
 }
 
 const count_t profile::getid0(void) const{return site_.id0;}
+
 const uint64_t profile::getid1(void) const{return site_.id1;}
+
 void profile::setid0(const count_t &id0) {site_.id0=id0;}
+
 void profile::setid1(const uint64_t &id1) {site_.id1=id1;}
 
-const count_t profile::getextraid(const count_t &x) const {
+const count_t profile::getextraid(const count_t &x) const 
+{
 	if (site_.extraid.size()>x) return site_.extraid[x];
 	else return -1;
 }
 
-void profile::setextraid(const count_t &eid, const count_t &x) {
+void profile::setextraid(const count_t &eid, const count_t &x)
+{
 	if (site_.extraid.size()>x) {
 		site_.extraid[x]=eid;
 	} else {
@@ -1068,7 +981,23 @@ void profile::setextraid(const count_t &eid, const count_t &x) {
 		site_.extraid[x]=eid;
 	}
 }
+
+//===WHOOPS SOMETHING IS WRONG HERE!
 	
-void static merge(std::list <profile *>){
-	
+char Locus::getname(count_t c) const
+{
+        if (c<5){
+                if (getcount(c)==0 ) return '*';
+                return  names_[sorted_[c]];
+        }
+        return '*';
+}
+
+char Locus::getname_gt(count_t c) const
+{
+        if (c<5){
+                if (getcount(c)==getcount(c+1) || getcount(c)==0 ) return '*';
+                return  names_[sorted_[c]];
+        }
+        return '*';
 }

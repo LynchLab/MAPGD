@@ -44,8 +44,8 @@ int estimatePooled(int argc, char *argv[])
 
 	env_t env;
 	env.setname("mapgd ep");
-	env.setver("2.0");
-	env.setauthor("Michael Lynch and Matthew Ackerman");
+	env.setver(VERSION);
+	env.setauthor("Matthew Ackerman and Michael Lynch");
 	env.setdescription("Uses a maximum likelihood approach to estimates allele frequencies in pooled population genomic data");
 
 	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file", "sets the input file for the program (default 'datain.txt')");
@@ -110,7 +110,7 @@ int estimatePooled(int argc, char *argv[])
 
 	lnmultinomial multi(4);			//a class for our probability function (which is just a multinomial distribution).
 	allele_stat site;
-	site_t line;
+	Locus line;
 
 	while (pro.read(line)!=EOF ){
 		//sorts the reads at the site from most frequenct (0) to least frequenct (3) (at metapopulation level);

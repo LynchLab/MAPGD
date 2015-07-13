@@ -23,13 +23,13 @@ lnmultinomial *lnMM_, *lnMm_, *lnmm_, *lnF_;	//The three multinomials we will us
 public:
 models(void);
 ~models(void);
-float_t loglikelihood(const site_t &, const allele_stat &, const count_t &);
+float_t loglikelihood(const Locus &, const allele_stat &, const count_t &);
 float_t lnP(const count_t *, const allele_stat &);
 float_t genotypelikelihood(const quartet_t &, const allele_stat &, const count_t &);
 };
 
-count_t initparams(site_t&, allele_stat&,const count_t&, const float_t&, const count_t &);
-count_t maximizegrid(site_t&, allele_stat&, models&, std::vector <float_t>&, const count_t&, const float_t&, const count_t&);
-float_t loglikelihood(const site_t&, const allele_stat&, models&, const count_t&);
+count_t initparams(Locus&, allele_stat&,const count_t&, const float_t&, const count_t &);
+count_t maximizegrid(Locus&, allele_stat&, models&, std::vector <float_t>&, const count_t&, const float_t&, const count_t&);
+float_t loglikelihood(const Locus&, const allele_stat&, models&, const count_t&);
 
 #endif

@@ -1,7 +1,6 @@
 //General Likelihood functions
 
 #include "likelihood.h"
-#include <iostream>
 
 /* \breif creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .	
  */

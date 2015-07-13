@@ -21,7 +21,7 @@ int comparePooled(int argc, char *argv[])
 
 	env.setname("mapgd cp");
 	env.setver("1.0");
-	env.setauthor("Micheal Lynch");
+	env.setauthor("Matthew Ackerman and Micheal Lynch");
 
 	env.setdescription("compares allele frequencies between pooled population genomic data.");
 
@@ -93,7 +93,7 @@ int comparePooled(int argc, char *argv[])
 	for (int x=0; x<pop.size(); ++x) *out << "Freq\tdll\t";
 	*out << "FreqMETA\tERROR" << std::endl;
 
-	site_t line;	
+	Locus line;	
 	while (pro.read(line)!=EOF ){
 		for (int x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
 		for (int x=0; x<pop.size(); ++x) line.unmask(pop[x]);
@@ -155,11 +155,10 @@ int comparePooled(int argc, char *argv[])
 				else llhoodPS+=llhoodP[y];
 				};
 				llstat[x] = fabs(2.0 * (llhoodSS - llhoodPS) );
-				maxll+=llstat[x];
 				if (llstat[x]>maxll) maxll=llstat[x];
 			}
 		};
-		if (maxll>=a){
+		if (std::max(maxll, float_t(0) )>=a){
 			*out << std::fixed << std::setprecision(7) << pro.getids(line) << '\t' << line.getname(0) << '\t' << line.getname(1) << '\t';
 			for (int x=0; x<pop.size(); ++x){
 				if ( line.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t';
@@ -174,6 +173,5 @@ int comparePooled(int argc, char *argv[])
 	delete [] llstat;
 	delete [] pmlP;
 	if (outFile.is_open()) outFile.close();
-	std::cout << t << std::endl;
 	exit(0);
 };

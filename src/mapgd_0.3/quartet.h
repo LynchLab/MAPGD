@@ -2,6 +2,7 @@
 #define QUARTET_H_
 
 #include "typedef.h"
+#include <cstring> 
 
 typedef struct quartet {
 	count_t base[5];
@@ -34,10 +35,9 @@ typedef struct quartet {
 } quartet_t;
 
 /* \breif returns the */
-count_t major(const quartet_t);
-count_t minor(const quartet_t);
-count_t error1(const quartet_t);
-count_t error2(const quartet_t);
-count_t count(const quartet_t);
-
+count_t major(const quartet_t&);
+count_t minor(const quartet_t&);
+count_t error1(const quartet_t&);
+count_t error2(const quartet_t&);
+count_t count(const quartet_t&);
 #endif

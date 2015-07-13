@@ -10,10 +10,12 @@
 #include <vector>
 #include <cfloat>
 #include <algorithm>
+#include <iostream>
 
 /* \breif information that should be passed to vcf files.
  */
 
+//* This is pathalogical. Working to kill it.*/
 class allele_stat { 
 private:
 public:
@@ -69,20 +71,6 @@ public:
 	float_t lnprob_approx(const count_t*);		//returns the probabiltiy of the multinomial distribution . . .
 	float_t lnfact(const count_t&);			//returns the log factorial of the count type numbers in the array
 	float_t lnmultinomcoef(const count_t*);		//returns the log factorial of the count type numbers in the array
-};
-
-
-/* \breif genotypic likelihoods. Arbitrary ploidy
- */
-class genotype {
-private:
-	uint8_t ploidy_;
-	float_t *probabilities_;
-public:
-	genotype (uint8_t ploidy){
-		ploidy_=ploidy;
-		probabilities_=new float_t ();
-	};
 };
 
 std::vector <std::pair <count_t, float_t> > sort (const float_t *, const count_t &);

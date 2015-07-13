@@ -22,16 +22,10 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 #include "estimate-individual.h"
 #define BUFFER_SIZE 5000 
 
-#include <algorithm>
-#include <functional>
-
 /*@breif: Estimates a number of summary statistics from short read sequences.*/ 
 
 //estimate
-allele_stat estimate (site_t &site, models &model, std::vector<float_t> &gofs, count_t MIN, count_t EMLMIN, count_t MAXGOF, count_t MAXPITCH){
-
-
-	
+allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, count_t MIN, count_t EMLMIN, count_t MAXGOF, count_t MAXPITCH){
 
 	allele_stat mle, temp;					//allele_stat is a basic structure that containes all the summary statistics for
 								//an allele. It gets passed around a lot, and a may turn it into a class that has
@@ -44,7 +38,7 @@ allele_stat estimate (site_t &site, models &model, std::vector<float_t> &gofs, c
 	mle.N=0;
 
 	count_t texc=site.maskedcount();
-
+	
 	if (initparams(site, mle, MIN, EMLMIN,0) )		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
 	maximizegrid(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
@@ -196,7 +190,7 @@ int estimateInd(int argc, char *argv[])
 	std::vector <float_t> gofs_read(ind.size() );
 	models model;
 	allele_stat buffer_mle[BUFFER_SIZE]; 
-	site_t buffer_site[BUFFER_SIZE];
+	Locus buffer_site[BUFFER_SIZE];
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
 		uint32_t c=0, readed=0;
 		bool estimate_me=1;
