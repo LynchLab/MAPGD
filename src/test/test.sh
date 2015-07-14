@@ -49,7 +49,7 @@ msg="$format"
 rm -f $a.out
 size=$(($long+$proheader))
 echo "cat $format | $mapgd $a > $a.out"
-timeout 5s bash -c "cat $format | $mapgd $a > $a.out"
+timeout 20s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
 done
@@ -60,7 +60,8 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$gcfheader))
-timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
+echo "cat $format | $mapgd $a > $a.out"
+timeout 30s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
 done

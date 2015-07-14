@@ -94,21 +94,18 @@ float_t lnmultinomial::lnprob_approx(const count_t *s)
 	return ret;
 }
 
-/*string hash(count_t a){
-	char *h=char *(&a);
-	return *h+*(h+1);
-};*/
-
 float_t lnmultinomial::lnmultinomcoef(const count_t *s){
 	return lnfact(s[0]+s[1]+s[2]+s[3])-lnfact(s[0])-lnfact(s[1])-lnfact(s[2])-lnfact(s[3]);
 }
 
-//**NOT MULTITHREAD SAFE!!!!!!!!**/
 float_t lnmultinomial::lnfact(const count_t &s){
-//**NOT MULTITHREAD SAFE!!!!!!!!**/
-	if (lnfact_vector.size()==0) {lnfact_vector.push_back(log(1) ); lnfact_vector.push_back(log(1) );}
-	for (int x=lnfact_vector.size(); x<=s; x++) lnfact_vector.push_back(lnfact_vector[x-1]+log(x) ); 
+	#pragma omp critical
+	{
+		if (lnfact_vector.size()==0) {lnfact_vector.push_back(log(1) ); lnfact_vector.push_back(log(1) );}
+		for (int x=lnfact_vector.size(); x<=s; x++) lnfact_vector.push_back(lnfact_vector[x-1]+log(x) ); 
+	}
 	return lnfact_vector[s];
+
 }
 
 struct sort_second {

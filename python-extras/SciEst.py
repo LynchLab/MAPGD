@@ -81,12 +81,12 @@ model=FullModel
 
 for x in range(0, size):
 	for y in range(x+1, size):
-#		x=int(sys.argv[2])
-#		y=int(sys.argv[3])
+		x=int(sys.argv[2])
+		y=int(sys.argv[3])
 		rml.read(sys.argv[1], x, y)
 		params=rml.estimate()
 #		print params
-#		params=[0.,0.0,0.0,0.25,0.0,0.0,0.0,0.0]
+#		params=[0.,0.0,0.0,0.25,0.0,0.0,0.0,0.25]
 		results = minimize(model, params, method='SLSQP')
 		fit=np.copy(results.x).tolist() 
 		dlls=getdll(model, np.copy(results.x) )
@@ -102,4 +102,4 @@ for x in range(0, size):
 		out.append('{:.4f}'.format(null_ll) )
 		out.append('{:.4f}'.format(fit_ll) )
 		print ", ".join(out)
-	quit()
+		quit()

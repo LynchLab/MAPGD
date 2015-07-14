@@ -143,7 +143,10 @@ const std::string profile_header::getsample_name(const count_t &a) const{
 		case 7:
 			return getcolumn_name(a+3);
 		break;
+		default:
+		break;
 	};
+	return NULL;
 }
 
 const std::string profile::getsample_name(const count_t &a) const{
@@ -153,15 +156,16 @@ const std::string profile::getsample_name(const count_t &a) const{
 int profile::setsample_name(const count_t &a, const std::string &str){
 	switch (columns_){
 		case 5:
-			header_.setcolumn_name(a+1, str);
+			return header_.setcolumn_name(a+1, str);
 		break;
 		case 6:
-			header_.setcolumn_name(a+2, str);
+			return header_.setcolumn_name(a+2, str);
 		break;
 		case 7:
-			header_.setcolumn_name(a+3, str);
+			return header_.setcolumn_name(a+3, str);
 		break;
 	};
+	return BADHEADER;
 }
 
 const std::string profile_header::getcolumn_name(const count_t &x) const{
@@ -272,7 +276,7 @@ profile_header & profile_header::operator =(const profile_header& arg){
 		column_names.push_back(arg.column_names[x]);
 	};
 	//TODO Need to copy over maps and what not too!!	
-
+	return *this;
 };
 
 
@@ -299,12 +303,12 @@ int hash(std::string str){
 };
 
 int profile::readheader(void){
-	header_.readheader(in);
+	return header_.readheader(in);
 }
 
 int profile::writeheader(void)
 {
-	header_.writeheader(out);
+	return header_.writeheader(out);
 }
 
 int profile_header::readheader(std::istream *in)
@@ -655,7 +659,7 @@ int profile::copy(const profile &pro){
 }
 
 int profile::write(void){
-	write(site_);	
+	return write(site_);	
 }
 
 int profile::write(const Locus &site){
@@ -921,6 +925,10 @@ count_t profile::size(void) const
 
 void profile::maskall(void){
 	site_.maskall();
+};
+
+count_t profile::maskedcount(void){
+	return site_.maskedcount();
 };
 
 

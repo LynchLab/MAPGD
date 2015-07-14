@@ -24,6 +24,7 @@ Locus & Locus::operator =(const Locus& arg){
         id0=arg.id0;
 	id1=arg.id1;  
         extraid=arg.extraid;   
+	return *this;
 }
 
 void Locus::unmask(quartet_t *q){

@@ -4,6 +4,7 @@
  */
 #include "quartet.h"
 #include "typedef.h"
+#include "binomial.h"
 #include <string>
 
 class genotype {
@@ -11,12 +12,17 @@ class genotype {
 private:
 	std::string name_;
 	uint8_t ploidy_;
-	quartet_t *labeled_sequence_;
 	float_t *probabilities_;
+	binomial bin;
 public:
 	genotype (uint8_t ploidy){
 		ploidy_=ploidy;
-		probabilities_=new float_t ();
+		bin=binomial(0.5);
+		probabilities_=new float_t [bin.binomial_coef(uint32_t(ploidy), uint32_t(2) )];
+	};
+
+	~genotype (){
+		delete [] probabilities_;
 	};
 };
 #endif

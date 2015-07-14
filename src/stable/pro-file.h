@@ -209,7 +209,7 @@ public:
 	/*playing with the mask*/
 
 	void mpileup(void) {mpileup_=true; noheader_=true;}	// file is an mpileup. Setting this should set the noheader flag.
-	bool noheader(void) {noheader_=true;}			// file has no header
+	void noheader(void) {noheader_=true;}			// file has no header
 
 	const uint64_t getlinenumber(void) const;
 
@@ -224,6 +224,7 @@ public:
 	std::string getids(const Locus &);
 	std::string getids(void);
 
+	count_t maskedcount(void);			//mask all lines
 	void maskall(void);				//mask all lines
 	void unmask(count_t);				//unmask line N
 	void unmask(quartet *);				//mask line N

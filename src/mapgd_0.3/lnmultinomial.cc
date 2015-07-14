@@ -99,7 +99,10 @@ float_t lnmultinomial::lnprob_approx(const count_t *s)
 	return *h+*(h+1);
 };*/
 
+
+//**NOT MULTITHREAD SAFE!!!!!!!!**/
 float_t lnmultinomial::lnmultinomcoef(const count_t *s){
+//**NOT MULTITHREAD SAFE!!!!!!!!**/
 	return lnfact(s[0]+s[1]+s[2]+s[3])-lnfact(s[0])-lnfact(s[1])-lnfact(s[2])-lnfact(s[3]);
 }
 

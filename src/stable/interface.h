@@ -152,23 +152,23 @@ class env_t{
 		description="Unknown purpose";
 	};
 
-	void optional_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
+	void optional_arg (char opt_, char *lopt_, void *parm_, int (*func_)(int, char **, void *), char *emsg_, char *umsg_)
 	{
 		args.push_back(arg_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 	};
 
-	void required_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
+	void required_arg (char opt_, char *lopt_, void *parm_, int (*func_)(int, char **, void *), char *emsg_, char *umsg_)
 	{
 		args.push_back(arg_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 		required_args.push_back(&args.back());
 	};
 
-	void command (char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_)
+	void command (char opt_, char *lopt_, int (*func_)(int, char **), char *emsg_, char *umsg_)
 	{
 		commands.push_back(com_t(opt_, lopt_, func_, emsg_, umsg_) );
 	};
 
-	void flag (char opt_, char* lopt_, void * parm_, int (*func_)(void *), char *emsg_, char*umsg_)
+	void flag (char opt_, char *lopt_, void *parm_, int (*func_)(void *), char *emsg_, char *umsg_)
 	{
 		flags.push_back(flag_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 	};

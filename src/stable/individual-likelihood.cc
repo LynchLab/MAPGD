@@ -81,11 +81,12 @@ void Mmmodel(const allele_stat &a, float_t *l){		//Dito.
 	};
 };
 
-float_t dll(profile const &pro, const allele_stat &p, const count_t &MIN){
+float_t dll(profile const &pro, const allele_stat &p, const count_t &minimum_coverage){
+	return 0.0;
 }
 
 /*@Breif, a function that calculats the log likelihood of a set of observations. */
-float_t models::loglikelihood(const Locus &site, const allele_stat &p, const count_t &MIN){
+float_t models::loglikelihood(const Locus &site, const allele_stat &p, const count_t &minimum_coverage){
 
 	float_t sumll=0;
 
@@ -107,7 +108,7 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 	while(it!=end){
 		if (!it->masked){
 			T=( it->base[0]+it->base[1]+it->base[2]+it->base[3] );
-			if ( T>=MIN ) {
+			if ( T>=minimum_coverage ) {
 
 				E0=logMM+lnMM_->lnprob(it->base);
 				E1=logMm+lnMm_->lnprob(it->base);
@@ -132,7 +133,7 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 }
 
 /*@Breif, a function that calculats the log likelihood of a set of observations. */
-float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population, const count_t &MIN){
+float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population, const count_t &minimum_coverage){
 
 	lnMM_->set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
 
@@ -165,6 +166,7 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 	E[0]-=ll;
 	E[1]-=ll;
 	E[2]-=ll;
+	return 0.0;
 }
 
 /*@Breif, Used for GOF, same basic idea as above. I know, if I have to write it twice I'm doing something wrong.*/
@@ -209,7 +211,7 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 }
 
 //THE goodness of fit calcualtion.
-float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &site_maxgof){
+float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t minimum_coverage, const float_t maximum_gof){
 	float_t Num=0., Den=0., E, V, O, thisgof,clone_mingof=FLT_MAX;
 	std::vector <float_t>::iterator gof=gofs.begin();
 
@@ -222,7 +224,7 @@ float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <floa
 	while (it!=end){
 		if (!it->masked){
 			N_=float_t(count(*it));
-			if ( N_>MIN ){
+			if ( N_>minimum_coverage ){
 				memset(l, 0, sizeof(count_t)*4);
 				M_=(*it).base[a.major];
 				l[a.major]=M_;
@@ -243,13 +245,13 @@ float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <floa
 	}
 	if (Den<=0) return 0.;
 	thisgof=Num/sqrt(Den);
-	if(abs(thisgof)>site_maxgof) site.mask(maxgof_ptr);
+	if(abs(thisgof)>maximum_gof) site.mask(maxgof_ptr);
 	return thisgof;
 }
 
 /*calculates the 'effective number of chromosomes' in a sample. This number isn't used for anything right now.*/
 
-float_t efc (const Locus &site, const count_t &MIN){
+float_t efc (const Locus &site, const count_t &minimum_coverage){
 	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
 
@@ -259,7 +261,7 @@ float_t efc (const Locus &site, const count_t &MIN){
 	while (it!=end){
 		if (!it->masked){
 			N_=count(*it);
-			if ( N_>MIN ){
+			if ( N_>minimum_coverage ){
 				ec+=2-2*pow(0.5, N_);
 			}
 		}
@@ -268,7 +270,8 @@ float_t efc (const Locus &site, const count_t &MIN){
 	return ec;
 };
 
-count_t initparams_old(Locus &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
+/*
+count_t initparams_old(Locus &site, allele_stat &a, const args &arg){
 
 	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
@@ -285,7 +288,7 @@ count_t initparams_old(Locus &site, allele_stat &a, const count_t &MIN, const fl
 	while (it!=end){
 		if (!it->masked){
 			float_t T=float_t(count(*it));
-			if (T>MIN){
+			if (T>arg.minimum_coverage){
 				N_+=1.;
 				for (count_t x=0; x<4; ++x){
 					if (float_t( (*it).base[x])/T>0.9) {allele_freq[x]+=2.; genotype[x][x]+=1.;}
@@ -315,7 +318,7 @@ count_t initparams_old(Locus &site, allele_stat &a, const count_t &MIN, const fl
 
 	float_t e_;
 
-	if (minerr>0){
+	if (arg.minimum_error>0){
 		e_= float_t(E_)/float_t(S);
 		a.error=3.*e_/2.;
 		e_=float_t(E_+m_)/float_t(S);
@@ -338,14 +341,14 @@ count_t initparams_old(Locus &site, allele_stat &a, const count_t &MIN, const fl
 	a.MM=P_;
 	a.Mm=H_;
 	a.mm=Q_;
-	a.efc=efc(site, MIN);
+	a.efc=efc(site, arg.minimum_coverage);
 	if (M==2) return 0;
 	if (allele_freq[M+2]!=0 and allele_freq[M+1]==allele_freq[M+2]) return 1;
 	return 0;
-}
+}*/
 
 //Intilaizes the parameters of the ... returns 0 on succesful excecution, returns 1 if there is am...
-count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
+count_t initparams(Locus &site, allele_stat &a, const args &arg){
 
 	std::vector <quartet_t>::iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::iterator end=site.sample.end(); 
@@ -369,14 +372,17 @@ count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_
 
 	float_t e_;
 
-	if (minerr>0){
-		e_= float_t(E_)/float_t(S);
+	if (arg.minimum_error>0){
+		if (arg.bayes) e_= float_t(E_+1)/float_t(S+2);
+		else e_= float_t(E_)/float_t(S);
 		a.error=3.*e_/2.;
 		e_=float_t(E_+m_)/float_t(S);
 		a.null_error=e_;
-		if (a.error<minerr) a.error=minerr;
-		if (a.null_error<minerr) a.null_error=minerr;
+		if (a.error<arg.minimum_error) a.error=arg.minimum_error;
+		if (a.null_error<arg.minimum_error) a.null_error=arg.minimum_error;
 	} else {
+		if (arg.bayes) e_= float_t(E_+1)/float_t(S+2);
+		else e_= float_t(E_)/float_t(S);
 		e_= float_t(E_)/float_t(S);
 		a.error=3.*e_/2.;
 		e_=float_t(E_+m_)/float_t(S);
@@ -391,7 +397,7 @@ count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_
 	while (it!=end){
 		if (!it->masked){
 			float_t T=float_t(count(*it));
-			if (T>MIN){
+			if (T>arg.minimum_coverage){
 				N_+=1.;
 				if (float_t( (*it).base[a.major])/T>0.9) {M_+=2.; MM_+=1.;}
 				else if (float_t( (*it).base[a.minor])/T>0.9) {m_+=2.; mm_+=1.;}
@@ -412,19 +418,19 @@ count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_
 	a.MM=P_;
 	a.Mm=H_;
 	a.mm=Q_;
-	a.efc=efc(site, MIN);
+	a.efc=efc(site, arg.minimum_coverage);
 	return 1;
 }
 
 
 /*TODO Implement!! Uses a sacant method to maximize the likelihood equations. This method has not been implemented  */
 
-/*count_t maximizesecant (profile &pro, allele_stat &a, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
+/*count_t maximizesecant (profile &pro, allele_stat &a, const count_t &arg.minimum_coverage, const float_t &arg.maxgof, const count_t &maximum_excluded){
 
 	float_t dll1[3], dll2[3], R;
-	dll(pro, a, MIN, dll1);
+	dll(pro, a, arg.minimum_coverage, dll1);
 	while (R>0){
-		dll(pro, a, MIN, dll2);
+		dll(pro, a, arg.minimum_coverage, dll2);
 		a.MM+=0;
 		a.Mm+=0;
 		a.mm+=0;
@@ -433,7 +439,7 @@ count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_
 };*/
 
 /* Uses a grid method to maximize the likelihood equations.*/
-count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
+count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const args &arg){
 
 	count_t N_=a.N;
 	count_t P_=a.MM*N_;
@@ -450,7 +456,7 @@ count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <f
 	a.Mm=float_t(H_)/float_t(N_);
 	a.mm=float_t(Q_)/float_t(N_);
 	
-	maxll_=model.loglikelihood(site, a, MIN);
+	maxll_=model.loglikelihood(site, a, arg.minimum_coverage);
 
 	while (running){
 		it+=1;
@@ -462,13 +468,13 @@ count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <f
 			a.Mm=float_t(H_)/float_t(N_);
 			a.mm=float_t(Q_+1)/float_t(N_);
 
-			PtQ=model.loglikelihood(site, a, MIN);
+			PtQ=model.loglikelihood(site, a, arg.minimum_coverage);
 
 			a.MM=float_t(P_-1)/float_t(N_);
 			a.Mm=float_t(H_+1)/float_t(N_);
 			a.mm=float_t(Q_)/float_t(N_);
 
-			PtH=model.loglikelihood(site, a, MIN);
+			PtH=model.loglikelihood(site, a, arg.minimum_coverage);
 
 			if (PtQ>PtH) { if (PtQ>maxll_) { iP=-1; iQ=1; iH=0; maxll_=PtQ;} }
 			else { if (PtH>maxll_){iP=-1;iQ=0;iH=1; maxll_=PtH;} };
@@ -478,13 +484,13 @@ count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <f
 			a.Mm=float_t(H_)/float_t(N_);
 			a.mm=float_t(Q_-1)/float_t(N_);
 
-			QtP=model.loglikelihood(site, a, MIN);
+			QtP=model.loglikelihood(site, a, arg.minimum_coverage);
 
 			a.MM=float_t(P_)/float_t(N_);
 			a.Mm=float_t(H_+1)/float_t(N_);
 			a.mm=float_t(Q_-1)/float_t(N_);
 
-			QtH=model.loglikelihood(site, a, MIN);
+			QtH=model.loglikelihood(site, a, arg.minimum_coverage);
 
 			if (QtP>QtH) { if (QtP>maxll_) {iP=1;iQ=-1;iH=0; maxll_=QtP;} }
 			else { if (QtH>maxll_) {iP=0; iQ=-1; iH=1; maxll_=QtH;} };
@@ -494,13 +500,13 @@ count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <f
 			a.Mm=float_t(H_-1)/float_t(N_);
 			a.mm=float_t(Q_)/float_t(N_);
 
-			HtP=model.loglikelihood(site, a, MIN);
+			HtP=model.loglikelihood(site, a, arg.minimum_coverage);
 
 			a.MM=float_t(P_)/float_t(N_);
 			a.Mm=float_t(H_-1)/float_t(N_);
 			a.mm=float_t(Q_+1)/float_t(N_);
 
-			HtQ=model.loglikelihood(site, a, MIN);
+			HtQ=model.loglikelihood(site, a, arg.minimum_coverage);
 			
 			if (HtP>HtQ) { if (HtP>maxll_) {iP=1; iQ=0; iH=-1; maxll_=HtP;} }
 			else { if (HtQ>maxll_) {	iP=0; iQ=1; iH=-1; maxll_=HtQ;} }
@@ -522,16 +528,16 @@ count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <f
 
 	std::vector <float_t> temp_gofs(site.sample.size());
 
-	a.gof=gof(site, a, model, temp_gofs, MIN, maxgof);
+	a.gof=gof(site, a, model, temp_gofs, arg.minimum_coverage, arg.maximum_gof);
 
 	excluded=site.maskedcount();
 	
-	if ( abs(a.gof)>maxgof) {
-		if (excluded==maxpitch){
+	if ( abs(a.gof)>arg.maximum_gof) {
+		if (excluded==arg.maximum_excluded){
 			for (int i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 			return excluded;
 		}
-		return maximizegrid(site, a, model, gofs, MIN, maxgof, maxpitch);
+		return maximizegrid(site, a, model, gofs, arg);
 	};
 	for (int i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 	return excluded;

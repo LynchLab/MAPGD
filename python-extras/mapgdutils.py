@@ -77,7 +77,7 @@ def likelihoods_uniform(calls, major, minor, error, p):
                 return [0, 0, 0, sum(calls), '|' ]
 
 def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
-#        error=max(0.001, error)
+        error=max(prior, error)
         M=calls[major]
         n=sum(calls)
         p2=math.log(1.0-error)
@@ -96,6 +96,30 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
 
 	
 poly={}
+
+E=0
+N=0
+for line in mapFile:
+	line=line.split()
+        try:
+                if line[0]=="id1":
+                        continue
+                if line[0][0]=='@':
+                        continue
+                if line[pol_llstat]=="*":
+                        continue
+                if line[best_error]=="*":
+                        continue
+        except:
+		print "could not parse line ", line
+		exit(0)
+	E+=float(line[best_error])
+	N+=1
+
+prior=(E/N)
+
+mapFile.seek(0)
+
 for line in mapFile:
 	line=line.split()
 	try:
@@ -104,6 +128,8 @@ for line in mapFile:
 		if line[0][0]=='@':
 			continue
 		if line[pol_llstat]=="*":
+			continue
+		if line[best_error]=="*":
 			continue
 	except:
 		print "could not parse line ", line
@@ -135,3 +161,4 @@ for line in proFile:
 	except:
 		C=0
 proFile.close()
+

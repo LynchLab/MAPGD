@@ -19,7 +19,9 @@
 #include "individual-likelihood.h"
 #include "likelihood.h"
 
+
+
 int estimateInd(int, char **);
-allele_stat estimate(quartet_t, count_t, count_t, count_t, count_t);
+allele_stat estimate(quartet_t, models &, std::vector<float_t> &, const args &);
 
 #endif 
