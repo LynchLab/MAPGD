@@ -211,8 +211,8 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 }
 
 //THE goodness of fit calcualtion.
-float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t minimum_coverage, const float_t maximum_gof){
-	float_t Num=0., Den=0., E, V, O, thisgof,clone_mingof=FLT_MAX;
+float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &minimum_coverage, const float_t &maximum_gof){
+	float_t Num=0., Den=0., E, V, O, thisgof, clone_mingof=FLT_MAX;
 	std::vector <float_t>::iterator gof=gofs.begin();
 
 	count_t M_, N_, l[4];
@@ -245,7 +245,7 @@ float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <floa
 	}
 	if (Den<=0) return 0.;
 	thisgof=Num/sqrt(Den);
-	if(abs(thisgof)>maximum_gof) site.mask(maxgof_ptr);
+	if(thisgof < -maximum_gof) site.mask(maxgof_ptr);
 	return thisgof;
 }
 
@@ -448,6 +448,7 @@ count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <f
 	count_t iP, iQ, iH;
 	float_t PtQ, PtH, QtP, QtH, HtP, HtQ, maxll_;
 	count_t it=0;
+
 	count_t excluded=0;
 
 	bool running=true;
@@ -530,10 +531,10 @@ count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <f
 
 	a.gof=gof(site, a, model, temp_gofs, arg.minimum_coverage, arg.maximum_gof);
 
-	excluded=site.maskedcount();
+	excluded=site.maskedcount()-a.excluded;
 	
-	if ( abs(a.gof)>arg.maximum_gof) {
-		if (excluded==arg.maximum_excluded){
+	if ( a.gof< -arg.maximum_gof) {
+		if (excluded>=arg.maximum_excluded){
 			for (int i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 			return excluded;
 		}

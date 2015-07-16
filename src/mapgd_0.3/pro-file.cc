@@ -14,7 +14,7 @@ const std::string profile::decodeid0(const count_t &id){
 */	
 const std::string profile_header::decodeid0(const count_t &id){
 	if (lastid0==id) return lastid0_str;
-	id==lastid0; 
+	lastid0=id; 
 	lastid0_str=id0[id];
 	return lastid0_str;
 }
@@ -74,7 +74,7 @@ const count_t profile::encodeextraid(const char &id, const count_t &a){
 	return header_.encodeextraid(id, a);
 }
 const count_t profile_header::encodeextraid(const char &id, const count_t &a){
-	return encodechar[id];
+	return encodechar[uint8_t(id)];
 }
 
 int profile::seek(std::streampos pos) {
@@ -161,7 +161,11 @@ int profile::setsample_name(const count_t &a, const std::string &str){
 		case 7:
 			header_.setcolumn_name(a+3, str);
 		break;
+		default:
+			return BADHEADER;
+		break;
 	};
+	return BADHEADER;
 }
 
 const std::string profile_header::getcolumn_name(const count_t &x) const{
@@ -271,8 +275,7 @@ profile_header & profile_header::operator =(const profile_header& arg){
 	for (unsigned int x=0; x<arg.column_names.size(); ++x){
 		column_names.push_back(arg.column_names[x]);
 	};
-	//TODO Need to copy over maps and what not too!!	
-
+	return *this;
 };
 
 

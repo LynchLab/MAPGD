@@ -35,13 +35,16 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								 //This should be moved over to the constructor of allele_stat 
 								 //(when that constructor is writen). I'm a little concerned that
 								 //allele_stat has gotten too bloated, but . . . 
-	mle.N=0;
 
+	count_t te;//;=site.maskedcount();
 	
-	if (initparams(site, mle, arg) )		//If >90% of reads agree, then assume a homozygote,
-								//otherwise, assume heterozygote.
-	maximizegrid(site, mle, model, gofs, arg);		//trim bad clones and re-fit the model.
-
+	if (initparams(site, mle, arg) ){
+		//If >90% of reads agree, then assume a homozygote,
+		mle.excluded=site.maskedcount();
+						//otherwise, assume heterozygote.
+		mle.excluded=maximizegrid(site, mle, model, gofs, arg);		//trim bad clones and re-fit the model.
+	}
+	mle.excluded-=arg.base_excluded;
 	float_t tgof=mle.gof; 
 									
 	// CALCULATE THE LIKELIHOODS 
@@ -178,18 +181,17 @@ int estimateInd(int argc, char *argv[])
 		 pro.unmask(ind[x]);					//Turn on the ability to read data from all clones in 
 	}								//the vector ind.
 	
-	arg.base_excluded=pro.maskedcount();
 
 	std::vector <float_t> sum_gofs(ind.size() );
 	std::vector <float_t> gofs_read(ind.size() );
 	allele_stat buffer_mle[BUFFER_SIZE]; 
 	Locus buffer_site[BUFFER_SIZE];
+	models model;
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
 		uint32_t c=0, readed=0;
 		bool estimate_me=1;
-		#pragma omp parallel private(c, estimate_me) 
+		#pragma omp parallel private(c, model, estimate_me) 
 		{
-			models model;
 			#pragma omp for
 			for (uint32_t x=0; x<BUFFER_SIZE; ++x){
 				#pragma omp critical
@@ -219,6 +221,7 @@ int estimateInd(int argc, char *argv[])
 			//TODO move this over into a formated file.
 			//?
 			if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=arg.alpha){
+				//buffer_mle[x].excluded=buffer_site[x].maskedcount()-arg.base_excluded;
 				*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
 				*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
 			}

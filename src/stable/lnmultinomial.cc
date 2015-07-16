@@ -99,7 +99,6 @@ float_t lnmultinomial::lnmultinomcoef(const count_t *s){
 }
 
 float_t lnmultinomial::lnfact(const count_t &s){
-	#pragma omp critical
 	{
 		if (lnfact_vector.size()==0) {lnfact_vector.push_back(log(1) ); lnfact_vector.push_back(log(1) );}
 		for (int x=lnfact_vector.size(); x<=s; x++) lnfact_vector.push_back(lnfact_vector[x-1]+log(x) ); 

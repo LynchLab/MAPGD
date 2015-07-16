@@ -20,7 +20,9 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 */
 
 #include "estimate-individual.h"
+
 #define BUFFER_SIZE 5000 
+#define PRAGMA
 
 /*@breif: Estimates a number of summary statistics from short read sequences.*/ 
 
@@ -39,12 +41,16 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 
 	count_t texc=site.maskedcount();
 	
-	if (initparams(site, mle, MIN, EMLMIN,0) )		//If >90% of reads agree, then assume a homozygote,
+	if (init_params(site, mle, MIN, EMLMIN,0) ){		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
-	maximizegrid(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+	if (mle.error!=0){
+		maximize_grid(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+//		maximize_newton(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+	}
+	else
+		maximize_analytical(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+	}
 
-	float_t tgof=mle.gof; 
-									
 	// CALCULATE THE LIKELIHOODS 
 
 	mle.ll=model.loglikelihood(site, mle, MIN);		//Sets the site.ll to the log likelihood of the best fit (ll). 
@@ -142,8 +148,6 @@ int estimateInd(int argc, char *argv[])
 	std::ostream *out=&std::cout;
 	std::ofstream outFile;
 
-	int line=0;
-
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
 		if (pro.open(infile.c_str(), "r")==NULL) {	//try to open a profile of that name.
 			printUsage(env);			//Print help message on failure.
@@ -193,16 +197,20 @@ int estimateInd(int argc, char *argv[])
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
 		uint32_t c=0, readed=0;
 		bool estimate_me=1;
-
-//		#pragma omp parallel private(c, model, estimate_me) 
+		#ifdef PRAGMA
+		#pragma omp parallel private(c, model, estimate_me) 
+		#endif
 		{
-
-//			#pragma omp for
+			#ifdef PRAGMA
+			#pragma omp for
+			#endif
 			for (uint32_t x=0; x<BUFFER_SIZE; ++x){
-//				#pragma omp critical
+				#ifdef PRAGMA
+				#pragma omp critical
+				#endif
 				{
 					c=readed;				//Turn on the ability to read data from all clones in 
-					for (count_t y=0; y<ind.size(); ++y) buffer_site[x].unmask(ind[y]);	
+					for (size_t y=0; y<ind.size(); ++y) buffer_site[x].unmask(ind[y]);	
 					if(pro.read(buffer_site[c])!=EOF){
 						readed++;	//reads the next line of the pro file. pro.read() retuerns 0
 						estimate_me=1;
@@ -212,8 +220,12 @@ int estimateInd(int argc, char *argv[])
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
 					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MAXGOF, MAXPITCH);
-//					#pragma omp critical
-					for (int i=0; i<sum_gofs.size(); i++){
+					*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[c]) << '\t' << buffer_site[c].getname(0) << '\t' << buffer_site[c].getname_gt(1) << '\t';
+					*out << std::fixed << std::setprecision(6) << buffer_mle[c] << std::endl;
+					#ifdef PRAGMA
+					#pragma omp critical
+					#endif
+					for (size_t i=0; i<sum_gofs.size(); i++){
 						sum_gofs[i]+=gofs[i];
 						if (gofs[i]!=0) gofs_read[i]++;
 					}
@@ -237,7 +249,7 @@ int estimateInd(int argc, char *argv[])
 		}
 		if (readed!=BUFFER_SIZE){break;}
 	}
-	for (count_t x=0; x<ind.size(); ++x)  *out << "@" << pro.getsample_name(x) << ":" << sum_gofs[x]/sqrt(float_t(gofs_read[x])) << std::endl;
+	for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.getsample_name(x) << ":" << sum_gofs[x]/sqrt(float_t(gofs_read[x])) << std::endl;
 	pro.close();
 	if (outFile.is_open()) outFile.close();		//Closes outFile iff outFile is open.
 	if (pro_out.is_open()) pro_out.close();		//Closes pro_out iff pro_out is open.

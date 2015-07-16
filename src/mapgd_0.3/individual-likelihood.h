@@ -3,8 +3,10 @@
 
 #include <math.h>
 
+#include "hypergeometric_pFq.h"
 #include "lnmultinomial.h"
 #include "allele_stat.h"
+#include "newton-method-theta.h"
 
 #include "pro-file.h"
 #include <iomanip>      // std::setprecision
@@ -31,8 +33,10 @@ float_t lnP(const count_t *, const allele_stat &);
 float_t genotypelikelihood(const quartet_t &, const allele_stat &, const count_t &);
 };
 
-count_t initparams(Locus&, allele_stat&,const count_t&, const float_t&, const count_t &);
-count_t maximizegrid(Locus&, allele_stat&, models&, std::vector <float_t>&, const count_t&, const float_t&, const count_t&);
+count_t init_params(Locus&, allele_stat&,const count_t&, const float_t&, const count_t &);
+count_t maximize_analytical(Locus&, allele_stat&, models&, std::vector <float_t>&, const count_t&, const float_t&, const count_t&);
+count_t maximize_grid      (Locus&, allele_stat&, models&, std::vector <float_t>&, const count_t&, const float_t&, const count_t&);
+count_t maximize_newton    (Locus&, allele_stat&, models&, std::vector <float_t>&, const count_t&, const float_t&, const count_t&);
 float_t loglikelihood(const Locus&, const allele_stat&, models&, const count_t&);
 
 #endif

@@ -81,10 +81,7 @@ void Mmmodel(const allele_stat &a, float_t *l){		//Dito.
 	};
 };
 
-float_t dll(profile const &pro, const allele_stat &p, const count_t &MIN){
-}
-
-/*@Breif, a function that calculats the log likelihood of a set of observations. */
+/*! \Breif, a function that calculats the log likelihood of a set of observations. */
 float_t models::loglikelihood(const Locus &site, const allele_stat &p, const count_t &MIN){
 
 	float_t sumll=0;
@@ -93,14 +90,14 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 	std::vector <quartet_t>::const_iterator end=site.sample.end();	//Tells us when to stop iterating, so we don't generate a seg. fault.
 
 	lnMM_->set(&MMmodel, p);	//Lets initialize the multinomial distributions that will tell us the probability of  
-	lnMm_->set(&Mmmodel, p);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
-	lnmm_->set(&mmmodel, p);  //
+	lnMm_->set(&Mmmodel, p);	//observing a particular quartet given that the individual has the MM, Mm or mm genotype.
+	lnmm_->set(&mmmodel, p);	//
 
-	float_t logMM=log(p.MM); //The frequency of the MM genotype in the sample.
-	float_t logMm=log(p.Mm); // Dito Mm.
-	float_t logmm=log(p.mm); // Diot mm.
+	float_t logMM=log(p.MM);	//The frequency of the MM genotype in the sample.
+	float_t logMm=log(p.Mm);	// Dito Mm.
+	float_t logmm=log(p.mm);	// Diot mm.
 
-	float_t E0, E1, E2; //These are some variables to breifly store a portion of our likelihood calculation
+	float_t E0, E1, E2;		//These are some variables to breifly store a portion of our likelihood calculation
 
 	count_t T;
 
@@ -131,7 +128,7 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 	return sumll;
 }
 
-/*@Breif, a function that calculats the log likelihood of a set of observations. */
+/*! \Breif, a function that calculats the log likelihood of a set of observations. */
 float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population, const count_t &MIN){
 
 	lnMM_->set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
@@ -197,7 +194,20 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 	count_t l[4];
 	float_t tP;
 	E=0; V=0;
-	for (int x=0; x<N_+1; ++x){
+
+	//E=Sum[(Binomial[N, x]^2 p^(2 x) (1 - p)^(2 (N - x)))/N, {x, 0, N}]
+	//E=((-1 + p)^(2 N) H2F1[-N, -N, 1, p^2/(p-)^2])/N
+	//V=(E^2-2*(1-p)^(2*N)*E*H2F1[-N, -N, 1, p^2/(p-1)^2 ]+(1-p)^(3*N)*H2F1PFQ[{-N, -N, -N}, {1, 1}, p^3/(p-1)^3 ] )/N
+	
+	float_t A[3]={-N_, -N_, -N_};
+	float_t B[2]={1., 1.};
+	float_t p=
+	std::cout << "---===---\n";
+	E=(pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2)])/N_;
+	std::cout << (pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2)])/N_ << '\n';
+	std::cout << (pow(E, 2)-pow(2*(1-p), 2*N)*E*pFq::_2F1( -N_, -N_, 1., pow(p, 2)/pow(p-1, 2) )+pow(1-p, 3*N)*pFq::_3F2(A, B, pow(p, 3)/pow(p-1, 3) ) )/N_ << '\n';
+	E=0;
+	for (size_t x=0; x<N_+1; ++x){
 		memset(l, 0, sizeof(count_t)*4);
 		l[a.major]=x;
 		l[a.minor]=N_-x;
@@ -206,6 +216,8 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 		V+=exp(tP)*pow(tP, 2);
 	}
 	V-=pow(E, 2);
+	std::cout << E << '\n';
+	std::cout << V << '\n';
 }
 
 //THE goodness of fit calcualtion.
@@ -217,6 +229,7 @@ float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <floa
 
 	std::vector <quartet_t>::iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::iterator end=site.sample.end(); 
+
 	quartet_t * maxgof_ptr; 
 
 	while (it!=end){
@@ -227,7 +240,9 @@ float_t gof (Locus &site, const allele_stat &a, models &model, std::vector <floa
 				M_=(*it).base[a.major];
 				l[a.major]=M_;
 				l[a.minor]=N_-M_;
+				//
 				EVofP(N_, a, model, E, V);
+				//
 				O=model.lnP(l, a);
 				Num+=O-E;
 				Den+=V;
@@ -268,84 +283,8 @@ float_t efc (const Locus &site, const count_t &MIN){
 	return ec;
 };
 
-count_t initparams_old(Locus &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
-
-	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
-	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
-
-	count_t allele_freq[4], genotype[4][4], N_=0;
-	
-	memset(allele_freq,0, 4*sizeof(count_t) );
-
-	memset(genotype,0, 4*sizeof(count_t) );
-	memset(genotype+1,0, 4*sizeof(count_t) );
-	memset(genotype+2,0, 4*sizeof(count_t) );
-	memset(genotype+3,0, 4*sizeof(count_t) );
-
-	while (it!=end){
-		if (!it->masked){
-			float_t T=float_t(count(*it));
-			if (T>MIN){
-				N_+=1.;
-				for (count_t x=0; x<4; ++x){
-					if (float_t( (*it).base[x])/T>0.9) {allele_freq[x]+=2.; genotype[x][x]+=1.;}
-					for (count_t y=x+1; y<4; ++y){
-						if (float_t( (*it).base[y])/T<0.9)
-						if (float_t( (*it).base[x])/T<0.9)
-						if (float_t( (*it).base[y]+(*it).base[x])/T>0.9 ) {allele_freq[x]+=1.; allele_freq[y]+=1.; genotype[x][y]+=1.;}
-					};
-				};
-			}
-		}
-		++it;
-	}
-
-	if (N_==0) return 0;	
-	
-	std::vector <std::pair <count_t, count_t> > sorted=sort(allele_freq, 4);	
-
-	a.major=sorted[0].first;
-	a.minor=sorted[M+1].first;
-
-	count_t S =site.getcoverage();
-	count_t M_=site.getcount(a.major);
-	count_t m_=site.getcount(a.minor);
-
-	count_t E_=S-M_-m_;
-
-	float_t e_;
-
-	if (minerr>0){
-		e_= float_t(E_)/float_t(S);
-		a.error=3.*e_/2.;
-		e_=float_t(E_+m_)/float_t(S);
-		a.null_error=e_;
-		if (a.error<minerr) a.error=minerr;
-		if (a.null_error<minerr) a.null_error=minerr;
-	} else {
-		e_= float_t(E_)/float_t(S);
-		a.error=3.*e_/2.;
-		e_=float_t(E_+m_)/float_t(S);
-		a.null_error=e_;
-	};
-	float_t P_=genotype[a.major][a.major], Q_=genotype[a.minor][a.minor], H_=genotype[a.major][a.minor]+genotype[a.minor][a.major];
-	a.N=N_;
-	N_=P_+Q_+H_;
-	P_/=N_;
-	Q_/=N_;
-	H_/=N_;
-	a.freq=P_+H_/2;
-	a.MM=P_;
-	a.Mm=H_;
-	a.mm=Q_;
-	a.efc=efc(site, MIN);
-	if (M==2) return 0;
-	if (allele_freq[M+2]!=0 and allele_freq[M+1]==allele_freq[M+2]) return 1;
-	return 0;
-}
-
 //Intilaizes the parameters of the ... returns 0 on succesful excecution, returns 1 if there is am...
-count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
+count_t init_params(Locus &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
 
 	std::vector <quartet_t>::iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::iterator end=site.sample.end(); 
@@ -385,6 +324,8 @@ count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_
 
 	a.major=site.getindex(0);
 	a.minor=site.getindex(1);
+	a.e1=site.getindex(2);
+	a.e2=site.getindex(3);
 
 	count_t MM_, Mm_, mm_;
 	M_=0;m_=0;MM_=0;Mm_=0;mm_=0;
@@ -417,23 +358,123 @@ count_t initparams(Locus &site, allele_stat &a, const count_t &MIN, const float_
 }
 
 
-/*TODO Implement!! Uses a sacant method to maximize the likelihood equations. This method has not been implemented  */
+count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
 
-/*count_t maximizesecant (profile &pro, allele_stat &a, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
+	float_t J[3][3];		//The Jacobian/Hessian.
+        float_t iJ[3][3]; 		//Inverse of the Jacobian/Hessian.
+	float_t R[3]={100,100,100};	//The 'residual'. Th
 
-	float_t dll1[3], dll2[3], R;
-	dll(pro, a, MIN, dll1);
-	while (R>0){
-		dll(pro, a, MIN, dll2);
-		a.MM+=0;
-		a.Mm+=0;
-		a.mm+=0;
-		R=0;
+        float_t det, lim;
+
+	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//Lets us iterate over the quartets. 
+	std::vector <quartet_t>::const_iterator end=site.sample.end();	 
+
+	count_t iter=0;			//counts the number of iterations to let us know if we have a failure to converge.
+
+        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || isnan(R[0]) || isnan(R[1]) || isnan(R[2]) ) && iter<100){
+
+		++iter;
+ 
+		memset(J[0], 0, sizeof(float_t)*3);
+		memset(J[1], 0, sizeof(float_t)*3);
+		memset(J[2], 0, sizeof(float_t)*3);
+		memset(R, 0, sizeof(float_t)*3);
+
+		it=site.sample.begin();	 
+
+		while (it!=end ){
+
+			J[0][0]+=J00(*it, a); J[0][1]+=J01(*it, a); J[0][2]+=J02(*it, a);
+			J[1][0]+=J10(*it, a); J[1][1]+=J11(*it, a); J[1][2]+=J12(*it, a);
+			J[2][0]+=J20(*it, a); J[2][1]+=J21(*it, a); J[2][2]+=J22(*it, a);
+
+                        R[0]+=H0(*it, a);
+                        R[1]+=H1(*it, a);
+                        R[2]+=H2(*it, a);
+
+                        ++it;
+                };
+/*		Check my matrix algebra.
+		
+		std::cout << "==\n";
+
+		J[0][0]=0; J[0][1]=3; J[0][2]=6;
+		J[1][0]=1; J[1][1]=4; J[1][2]=7;
+		J[2][0]=1; J[2][1]=5; J[2][2]=8;
+						*/
+
+		//FIRST ROW 
+		iJ[0][0]= (J[1][1]*J[2][2]-J[2][1]*J[1][2]); 
+		iJ[0][1]=-(J[0][1]*J[2][2]-J[0][2]*J[2][1]); 
+		iJ[0][2]= (J[0][1]*J[1][2]-J[0][2]*J[1][1]);
+
+		//SECOND ROW 
+		iJ[1][0]=-(J[1][0]*J[2][2]-J[1][2]*J[2][0]); 
+		iJ[1][1]= (J[0][0]*J[2][2]-J[0][2]*J[2][0]); 
+		iJ[1][2]=-(J[0][0]*J[1][2]-J[0][2]*J[1][0]);
+
+		//THIRD ROW
+                iJ[2][0]= (J[1][0]*J[2][1]-J[1][1]*J[2][0]); 
+		iJ[2][1]=-(J[0][0]*J[2][1]-J[0][1]*J[2][0]); 
+		iJ[2][2]= (J[0][0]*J[1][1]-J[0][1]*J[1][0]);
+
+		//THE DETERMINENT
+		det=J[0][0]*iJ[0][0]+J[0][1]*iJ[1][0]+J[0][2]*iJ[2][0];
+
+		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
+		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;
+		iJ[2][0]/=det; iJ[2][1]/=det; iJ[2][2]/=det;
+
+                R[0]=(R[0]*iJ[0][0]+R[1]*iJ[0][1]+R[2]*iJ[0][2]);
+                R[1]=(R[0]*iJ[1][0]+R[1]*iJ[1][1]+R[2]*iJ[1][2]);
+                R[2]=(R[0]*iJ[2][0]+R[1]*iJ[2][1]+R[2]*iJ[2][2]);
+	
+//	       	std::cout << "Pi=" << a.freq-R[0] << ", Epsilon=" << a.error-R[1]  << ", F=" << a.f-R[2] << ", R=" << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ": " << model.loglikelihood(site, a, MIN) << std::endl;
+
+		//BONDS CHECKING.
+		if (a.freq-R[0]>1.0) a.freq=1-(1-a.freq)/2.;
+                else if (a.freq-R[0]<0) a.freq/=2.0;
+		else a.freq-=R[0];
+
+		if (a.error-R[1]>0.25) a.error=0.25-(0.25-a.error)/2.;
+                else if (a.error-R[1]<0) a.error/=2.0;
+		else a.error-=R[1];
+
+		lim=-pow( (1-a.freq), 2)/(a.freq*(1-a.freq) );
+		if (a.f-R[2]>1.0) a.f=1-(1-a.f)/2.;
+                else if (a.f-R[2]<lim) a.f=lim+(lim-a.f)/2.;
+		else a.f-=R[2];
+//	       	std::cout << "Pi=" << a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ": " << model.loglikelihood(site, a, MIN) << std::endl;
+        };
+
+        a.MM=pow(a.freq,2)+a.f*(a.freq*(1-a.freq) );
+        a.Mm=2*(1-a.f)*(a.freq*(1-a.freq) );
+        a.mm=pow(1-a.freq,2)+a.f*(a.freq*(1-a.freq) );
+	a.coverage=site.getcoverage();
+
+	count_t excluded=0;
+
+	excluded=site.maskedcount();
+	std::vector <float_t> temp_gofs(site.sample.size());
+	a.gof=gof(site, a, model, temp_gofs, MIN, maxgof);
+	if (iter==100) {
+		std::cerr << "Failure to maximize " << a << "\n";
+		init_params(site, a, MIN, 0, 0);
+		return maximize_grid(site, a, model, gofs, MIN, maxgof, maxpitch);
+	}
+	if ( abs(a.gof)>maxgof) {
+		if (excluded==maxpitch){
+			for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
+			return excluded;
+		}
+		return maximize_newton(site, a, model, gofs, MIN, maxgof, maxpitch);
 	};
-};*/
+	for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
+	return excluded;
+}
 
 /* Uses a grid method to maximize the likelihood equations.*/
-count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
+count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
 
 	count_t N_=a.N;
 	count_t P_=a.MM*N_;
@@ -521,18 +562,33 @@ count_t maximizegrid (Locus &site, allele_stat &a, models &model, std::vector <f
 	else a.f=0;
 
 	std::vector <float_t> temp_gofs(site.sample.size());
-
 	a.gof=gof(site, a, model, temp_gofs, MIN, maxgof);
 
 	excluded=site.maskedcount();
 	
 	if ( abs(a.gof)>maxgof) {
 		if (excluded==maxpitch){
-			for (int i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
+			for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 			return excluded;
 		}
-		return maximizegrid(site, a, model, gofs, MIN, maxgof, maxpitch);
+		return maximize_grid(site, a, model, gofs, MIN, maxgof, maxpitch);
 	};
-	for (int i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
+	for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 	return excluded;
+}
+
+count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
+
+	a.coverage=site.getcoverage();
+
+	a.MM=1.0;
+	a.Mm=0.0;
+	a.mm=0.0;
+
+	a.freq=1.0;
+	a.f=0;//nan();
+
+	//std::vector <float_t> temp_gofs(site.sample.size());
+	a.gof=0;//gof(site, a, model, temp_gofs, MIN, maxgof);
+	return 0;
 }

@@ -198,7 +198,7 @@ public:
 	const std::string decodeextraid(const count_t &, const count_t &);
 
 	/*functions dealing with ?*/
-	count_t size(void) const;			//number of populations/individuals
+	size_t size(void) const;			//number of populations/individuals
 	uint64_t length(void) const {return size_;};	//number of lines in file
 
 	/*functions dealing with the quartets*/
@@ -209,7 +209,7 @@ public:
 	/*playing with the mask*/
 
 	void mpileup(void) {mpileup_=true; noheader_=true;}	// file is an mpileup. Setting this should set the noheader flag.
-	bool noheader(void) {noheader_=true;}			// file has no header
+	void noheader(void) {noheader_=true;}			// file has no header
 
 	const uint64_t getlinenumber(void) const;
 

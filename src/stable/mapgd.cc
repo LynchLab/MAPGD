@@ -37,6 +37,5 @@ int main (int argc, char* argv[])
 //	env.command(	' ',"eq", 	&estimateQuality, 		"an error occured while calling eq", "estimates error rate as a function of illumina quality score");
 
 	if ( parsargs(argc, argv, env) ) printUsage(env);
-
 	return 0;
 }

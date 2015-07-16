@@ -69,7 +69,7 @@ int proview(int argc, char *argv[])
 	count_t samples=0;
 
 	if (infiles.size()!=0){
-		for (int x=0; x<infiles.size(); x++){
+		for (size_t x=0; x<infiles.size(); x++){
 			in.push_back(new profile);
 			in[x]->open(infiles[x].c_str(), "r");
 			if (!in[x]->is_open() ) {printUsage(env); exit(0);}
@@ -111,8 +111,8 @@ int proview(int argc, char *argv[])
 
 	//change to iterator...
 
-	for (int x=0; x<in.size(); x++){		//copies the sample names from the in file(s) to out.
-		for (int y=0;y<in[x]->size(); ++y){
+	for (size_t x=0; x<in.size(); x++){		//copies the sample names from the in file(s) to out.
+		for (size_t y=0;y<in[x]->size(); ++y){
 			out.setsample_name(z, in[x]->getsample_name(y) );
 			z++;
 		}
@@ -123,7 +123,7 @@ int proview(int argc, char *argv[])
 	out.setid0(0);
 	out.setid1(0);					//set the ids of out to 0 for syncronization purposes.
 
-	for (int x=0; x<in.size(); x++) in[x]->read();	//read the first line of each file.
+	for (size_t x=0; x<in.size(); x++) in[x]->read();	//read the first line of each file.
 	//in[x]->decodeid(0)
 
 		
@@ -135,7 +135,7 @@ int proview(int argc, char *argv[])
 		std::vector <quartet_t>::iterator end=out.end();
 		bool read=false;
 		bool wrote=false;
-		for (int x=0; x<in.size(); x++){
+		for (size_t x=0; x<in.size(); x++){
 			if (in[x]->is_open() ){
 				if(out.encodeid0(in[x]->decodeid0(in[x]->getid0()))==out.getid0() ){
 					if (in[x]->getid1()==out.getid1() ){
@@ -156,7 +156,7 @@ int proview(int argc, char *argv[])
 		} else {
 			out.setid1(out.getid1()+1);
 		}
-		for (int x=0; x<in.size(); x++){
+		for (size_t x=0; x<in.size(); x++){
 			std::vector <quartet_t>::iterator it_in=in[x]->begin();
 			std::vector <quartet_t>::iterator end_in=in[x]->end();	
 			if (in[x]->getid1()==out.getid1() && out.encodeid0(in[x]->decodeid0(in[x]->getid0()))==out.getid0() ){
@@ -182,7 +182,7 @@ int proview(int argc, char *argv[])
 	};
 
 	out.close();
-	for (int x=0; x<in.size(); ++x) {in[x]->close(); delete in[x];}
+	for (size_t x=0; x<in.size(); ++x) {in[x]->close(); delete in[x];}
 
 	env.close();
 	exit(0);

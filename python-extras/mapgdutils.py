@@ -77,7 +77,7 @@ def likelihoods_uniform(calls, major, minor, error, p):
                 return [0, 0, 0, sum(calls), '|' ]
 
 def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
-        error=max(prior, error)
+        error=0.005#max(prior, error)
         M=calls[major]
         n=sum(calls)
         p2=math.log(1.0-error)

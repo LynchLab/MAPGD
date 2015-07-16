@@ -6,9 +6,7 @@ int comparePooled(int argc, char *argv[])
 	std::string outfile="";
 
 	env_t env;
-	bool allpop=false;
 
-	int t=0;
 	int s=0;
 	float_t a=0.0;
 	float_t EMLMIN=0.0001;
@@ -74,10 +72,10 @@ int comparePooled(int argc, char *argv[])
 
 	if ( pop.size()==0 ) { 
 		pop.clear();
-		for (int x=0; x<pro.size(); ++x) pop.push_back(x);
+		for (size_t x=0; x<pro.size(); ++x) pop.push_back(x);
 	};
 
-	for (int x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
+	for (size_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
 
 	llhoodP=new float_t[pop.size()];
 	llhoodS=new float_t[pop.size()];
@@ -86,14 +84,14 @@ int comparePooled(int argc, char *argv[])
 
 	/* 1) GET THE READS FOR ALL POPULATIONS, AND SET THE METAPOPULATION TO A AND B. */
 	*out << "#id1\tid2\tmajor\tminor\t";
-	for (int x=0; x<pop.size(); ++x) *out << "Freq\tdll\t";
+	for (size_t x=0; x<pop.size(); ++x) *out << "Freq\tdll\t";
 	*out << "FreqMETA\tERROR" << std::endl;
 
 	Locus line;	
 	while (pro.read(line)!=EOF ){
-		for (int x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
-		for (int x=0; x<pop.size(); ++x) line.unmask(pop[x]);
-		for (int x=0; x<pop.size(); ++x) if (line.getcoverage(x)==0) line.sample[x].masked=true;
+		for (size_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
+		for (size_t x=0; x<pop.size(); ++x) line.unmask(pop[x]);
+		for (size_t x=0; x<pop.size(); ++x) if (line.getcoverage(x)==0) line.sample[x].masked=true;
 
 		/* 2) Identify the counts for the Putative major and minor alleles in the metapopulation. */ 
 
@@ -120,11 +118,11 @@ int comparePooled(int argc, char *argv[])
 		site.major=line.getindex(0);
 		site.minor=line.getindex(1);
 		multi.set(&polymorphicmodel, site);
-		for (int x=0; x<pop.size(); ++x) llhoodP[x]=multi.lnprob(line.getquartet(pop[x]) );
+		for (size_t x=0; x<pop.size(); ++x) llhoodP[x]=multi.lnprob(line.getquartet(pop[x]) );
 
 		/* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF POPULATION SUBDIVISION. */ 
 
-		for (int x=0; x<pop.size(); ++x) {
+		for (size_t x=0; x<pop.size(); ++x) {
 			pmaj = (float_t) line.getcount(pop[x],0) / (float_t) ( line.getcount(pop[x],1) + line.getcount(pop[x],0) );
 			pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
 			pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
@@ -141,11 +139,11 @@ int comparePooled(int argc, char *argv[])
 		/* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
 	
 		maxll=0;
-		for (int x=0; x<pop.size(); ++x){
+		for (size_t x=0; x<pop.size(); ++x){
 			if (!line.sample[x].masked){
 				llhoodSS=0;
 				llhoodPS=0;
-				for (int y=0; y<pop.size(); ++y){
+				for (size_t y=0; y<pop.size(); ++y){
 					llhoodSS+=llhoodS[y];
 					if (x!=y) llhoodPS+=llhoodS[y];
 				else llhoodPS+=llhoodP[y];
@@ -156,7 +154,7 @@ int comparePooled(int argc, char *argv[])
 		};
 		if (std::max(maxll, float_t(0) )>=a){
 			*out << std::fixed << std::setprecision(7) << pro.getids(line) << '\t' << line.getname(0) << '\t' << line.getname(1) << '\t';
-			for (int x=0; x<pop.size(); ++x){
+			for (size_t x=0; x<pop.size(); ++x){
 				if ( line.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t';
 				else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t';
 			};

@@ -1,6 +1,9 @@
 #ifndef BINOMIAL_H_
 #define BINOMIAL_H_
 
+#include <vector>
+#include "typedef.h"
+
 class binomial {
 private:
 	std::vector <uint32_t> fact_vector;
@@ -13,7 +16,7 @@ public:
 	~binomial (void){ fact_vector.clear(); }	//creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
 
 	uint32_t fact(const uint32_t&) ;		//returns the probabiltiy of the multinomial distribution . . .
-	uint32_t binomial_coef(const uint32_t&, const uint32_t&);	//returns the log factorial of the count type numbers in the array
+	uint32_t binom_coef(const uint32_t&, const uint32_t&);	//returns the log factorial of the count type numbers in the array
 };
 
 #endif

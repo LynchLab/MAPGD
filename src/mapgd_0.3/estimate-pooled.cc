@@ -71,8 +71,8 @@ int estimatePooled(int argc, char *argv[])
 	if (infile.size()!=0) {if (pro.open(infile.c_str(), "r")==NULL) {printUsage(env);} }
 	else pro.open("r");
 
-	float_t pmaj, maxll;						/* fraction of putative major reads among the total of major and minor */
-	float_t popN, eml, enull, llhoodMS, llhoodPS, llhoodFS;		/* maximum-likelihood estimates of the error rate, null error rate, and major-allele frequency */
+	float_t pmaj=0, maxll=0;					/* fraction of putative major reads among the total of major and minor */
+	float_t popN=0, eml=0;						/* maximum-likelihood estimates of the error rate, null error rate, and major-allele frequency */
 	float_t *llhoodM, *llhoodP, *llhoodF, *llstat, *llstatc,*pmlP;	/* loglikelihood sums */
 
 	/* Open the output and input files. */
@@ -88,13 +88,13 @@ int estimatePooled(int argc, char *argv[])
 
 	if ( pop.size()==0 ) { 
 		pop.clear();
-		for (count_t x=0; x<pro.size(); ++x) pop.push_back(x);
+		for (size_t x=0; x<pro.size(); ++x) pop.push_back(x);
 	};
 
-	for (count_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
+	for (size_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
 
 	*out << "id1\t\tid2\tmajor\tminor\t";
-	for (int x=0; x<pop.size(); ++x) *out << "Freq_P\tll_poly\tll_fixed\tcov\t";
+	for (size_t x=0; x<pop.size(); ++x) *out << "Freq_P\tll_poly\tll_fixed\tcov\t";
 	*out << "\tTotcov\tError" << std::endl;
 	/* Start inputting and analyzing the data line by line. */
 	/* The profile format can contain quartets for many populations and these populations need to be
@@ -133,7 +133,7 @@ int estimatePooled(int argc, char *argv[])
 
 		multi.set(&monomorphicmodel, site);
 
-                for (int x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(line.getquartet(pop[x]) );
+                for (size_t x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(line.getquartet(pop[x]) );
 
 		site.error= (float_t) (line.getcoverage()-line.getcount(0)-line.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
 
@@ -142,11 +142,11 @@ int estimatePooled(int argc, char *argv[])
                 /* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 
 		multi.set(&fixedmorphicmodel, site);
-                for (int x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(line.getquartet(pop[x]) );
+                for (size_t x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(line.getquartet(pop[x]) );
 
                 /* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF monomorphism */
 
-                for (int x=0; x<pop.size(); ++x) {
+                for (size_t x=0; x<pop.size(); ++x) {
                         pmaj = (float_t) line.getcount(pop[x],0) / (float_t) ( line.getcount(pop[x], 1) + line.getcount(pop[x],0) );
 			
                         pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
@@ -162,10 +162,10 @@ int estimatePooled(int argc, char *argv[])
                 /* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
 
                 maxll=0;
-                for (int x=0; x<pop.size(); ++x){
-                        llhoodMS=0;
-                        llhoodPS=0;
-                        llhoodFS=0;
+                for (size_t x=0; x<pop.size(); ++x){
+                        //llhoodMS=0;
+                        //llhoodPS=0;
+                        //llhoodFS=0;
 			/*
                         for (int y=0; y<pop.size(); ++y){
                                 llhoodMS+=llhoodM[y];
@@ -185,7 +185,7 @@ int estimatePooled(int argc, char *argv[])
 
                 if (maxll>=a){
                         *out << std::fixed << std::setprecision(7) << pro.getids(line) << '\t' << line.getname(0) << '\t' << line.getname_gt(1) << '\t';
-                        for (int x=0; x<pop.size(); ++x){
+                        for (size_t x=0; x<pop.size(); ++x){
                                 if ( line.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t' << 0.0 << '\t' << 0.0 << '\t';
                                 else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t' << llstatc[x]<< '\t' << line.getcoverage(pop[x]) <<'\t';
                         };

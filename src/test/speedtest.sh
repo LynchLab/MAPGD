@@ -1,7 +1,6 @@
 #!/bin/bash
-
-bro="test.bro"
-lmp="test.mpileup"
+bro="profile.brt"
+lmp="mpileup-l.txt"
 long=`wc -l $lmp | cut -d ' ' -f 1`     #number of lines in the long test file
 mapgd="../../bin/mapgd"
 a="ei"

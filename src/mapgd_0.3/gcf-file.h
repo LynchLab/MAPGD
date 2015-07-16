@@ -7,6 +7,7 @@
 #include "typedef.h"
 #include "stream-tools.h"
 #include "genotype.h"
+#include "file-index.h"
 #include "gcf-file-header.h"
 
 /* \breif used to index and deindex files*/

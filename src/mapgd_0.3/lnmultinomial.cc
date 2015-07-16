@@ -77,7 +77,6 @@ float_t lnmultinomial::lnprob(const count_t *s)
 	float_t ret=0, *lit=lnp_;
 	const count_t *it=s, *end=s+size_;
 	while (it!=end) {
-		
 		ret+=(*it)*(*lit); 
 		++lit; 
 		++it;
