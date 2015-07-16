@@ -2,11 +2,10 @@
 #define TYPEDEF_H_
 
 #include <stdint.h>
-#include <cstddef>
-#include <cmath>
-
-typedef uint32_t count_t;
+#include <math.h>
 
 #define VERSION	"1.0"
+
+typedef uint32_t count_t;
 
 #endif
