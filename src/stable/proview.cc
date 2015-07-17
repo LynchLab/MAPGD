@@ -63,7 +63,12 @@ int proview(int argc, char *argv[])
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
 
-	if (bernhard) { outc=5; noheader=true; qdel='\t'; sample=1;} 
+	if (bernhard) { 
+		outc=5; 
+		noheader=true; 
+		qdel='\t'; 
+		if(sample==-1) sample=1;
+	} 
 
 	if ( outc!=6 && outc!=5 && outc!=7 ) {std::cerr << "columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
 
