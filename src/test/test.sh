@@ -113,7 +113,7 @@ timeout 5s bash -c "$mapgd proview -i $lmp -b | $mapgd proview -o $a.out"
 testa
 
 msg="-c 5"
-size=$(($short+$proheader))
+size=$(($short+$proheader+1))
 rm -f $a.out
 timeout 5s $mapgd proview -i $smp -c 5 -o $a.out
 testa

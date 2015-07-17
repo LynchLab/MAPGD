@@ -199,14 +199,14 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 	//E=((-1 + p)^(2 N) H2F1[-N, -N, 1, p^2/(p-)^2])/N
 	//V=(E^2-2*(1-p)^(2*N)*E*H2F1[-N, -N, 1, p^2/(p-1)^2 ]+(1-p)^(3*N)*H2F1PFQ[{-N, -N, -N}, {1, 1}, p^3/(p-1)^3 ] )/N
 	
-	float_t A[3]={-N_, -N_, -N_};
-	float_t B[2]={1., 1.};
-	float_t p=
-	std::cout << "---===---\n";
-	E=(pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2)])/N_;
-	std::cout << (pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2)])/N_ << '\n';
-	std::cout << (pow(E, 2)-pow(2*(1-p), 2*N)*E*pFq::_2F1( -N_, -N_, 1., pow(p, 2)/pow(p-1, 2) )+pow(1-p, 3*N)*pFq::_3F2(A, B, pow(p, 3)/pow(p-1, 3) ) )/N_ << '\n';
-	E=0;
+//	float_t A[3]={-N_, -N_, -N_};
+//	float_t B[2]={1., 1.};
+//	float_t p=
+//	std::cout << "---===---\n";
+//	E=(pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2)])/N_;
+//	std::cout << (pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2)])/N_ << '\n';
+//	std::cout << (pow(E, 2)-pow(2*(1-p), 2*N)*E*pFq::_2F1( -N_, -N_, 1., pow(p, 2)/pow(p-1, 2) )+pow(1-p, 3*N)*pFq::_3F2(A, B, pow(p, 3)/pow(p-1, 3) ) )/N_ << '\n';
+//	E=0;
 	for (size_t x=0; x<N_+1; ++x){
 		memset(l, 0, sizeof(count_t)*4);
 		l[a.major]=x;
@@ -216,8 +216,8 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 		V+=exp(tP)*pow(tP, 2);
 	}
 	V-=pow(E, 2);
-	std::cout << E << '\n';
-	std::cout << V << '\n';
+//	std::cout << E << '\n';
+//	std::cout << V << '\n';
 }
 
 //THE goodness of fit calcualtion.
@@ -586,9 +586,10 @@ count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::ve
 	a.mm=0.0;
 
 	a.freq=1.0;
-	a.f=0;//nan();
 
-	//std::vector <float_t> temp_gofs(site.sample.size());
-	a.gof=0;//gof(site, a, model, temp_gofs, MIN, maxgof);
+	//These are both undefined...
+	a.f=0;
+	a.gof=0;		
+
 	return 0;
 }

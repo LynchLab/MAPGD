@@ -18,6 +18,7 @@
 #include "pro-file.h" 
 #include "individual-likelihood.h"
 #include "likelihood.h"
+#include "genotype.h"
 
 int estimateInd(int, char **);
 allele_stat estimate(quartet_t, count_t, count_t, count_t, count_t);

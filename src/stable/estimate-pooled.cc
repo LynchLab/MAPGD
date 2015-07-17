@@ -43,7 +43,7 @@ int estimatePooled(int argc, char *argv[])
 	/* sets up the help messages and options */
 
 	env_t env;
-	env.setname("mapgd ep");
+	env.setname("mapgd estpool");
 	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman and Michael Lynch");
 	env.setdescription("Uses a maximum likelihood approach to estimates allele frequencies in pooled population genomic data");
@@ -133,7 +133,7 @@ int estimatePooled(int argc, char *argv[])
 
 		multi.set(&monomorphicmodel, site);
 
-                for (int x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(line.getquartet(pop[x]) );
+                for (int x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob( line.get_quartet(pop[x]).base );
 
 		site.error= (float_t) (line.getcoverage()-line.getcount(0)-line.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
 
@@ -142,7 +142,7 @@ int estimatePooled(int argc, char *argv[])
                 /* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 
 		multi.set(&fixedmorphicmodel, site);
-                for (int x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(line.getquartet(pop[x]) );
+                for (int x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(line.get_quartet(pop[x]).base );
 
                 /* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF monomorphism */
 
@@ -156,7 +156,7 @@ int estimatePooled(int argc, char *argv[])
 
 			site.freq=pmlP[x];
 			multi.set(&polymorphicmodel, site);
-                        llhoodP[x]=multi.lnprob(line.getquartet(pop[x]) );
+                        llhoodP[x]=multi.lnprob(line.get_quartet(pop[x]).base );
                 };
 
                 /* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */

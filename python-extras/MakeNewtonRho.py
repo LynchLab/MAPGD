@@ -4,23 +4,34 @@ from sympy.utilities.codegen import codegen
 from sympy.printing import print_ccode
 
 #The Data
-M=sympy.Symbol('M')
-m=sympy.Symbol('m')
-e2=sympy.Symbol('e1')
-e1=sympy.Symbol('e2')
+X0=sympy.Symbol("X0")
+X1=sympy.Symbol("X1")
+X2=sympy.Symbol("X2")
+Y0=sympy.Symbol("Y0")
+Y1=sympy.Symbol("Y1")
+Y2=sympy.Symbol("Y2")
+
+e=sympy.Symbol("e")
+G0=sympy.Symbol("G0")
+G1=sympy.Symbol("G1")
+G2=sympy.Symbol("G2")
 
 #The Parameters
-e=sympy.Symbol('a.error')
-h=sympy.Symbol('a.freq')
-F=sympy.Symbol('a.f')
 
 #An array of the parameters.
-params=[h,e,F]
+params=[fX, fY, r, SXY, SYX, d, D]
 
 #The three componenents of the likelihood function. H00 is homozygous for the major allele, H01 heterozygous, and H11 homozygous minor.
-H00=( h**2.+h*(1.-h)*F)*( (1.-e)**M*e**(m+e1+e2) ) 
-H01=2.*h*(1.-h)*(1.-F)*( ( (1.-2.*e/3.)/2. )**(M+m)*e**(e1+e2) ) 
-H11=( (1.-h)**2.+h*(1.-h)*F)*( (1.-e)**m*e**(M+e1+e2) ) 
+X0Y0=( G0*G0+fX ) 
+X1Y0=( G1*G0-fX ) 
+X2Y0=( G2*G0+ex ) 
+X0Y1=( G0*G1+ ) 
+X1Y1=( G1*G1+ ) 
+X2Y1=( G2*G1+ ) 
+X0Y2=( G0*G2+ ) 
+X1Y2=( G1*G2+ ) 
+X2Y2=( G2*G2+ ) 
+
 
 #The log likelihood equation
 lnL=sympy.log( H00+H01+H11 )

@@ -156,7 +156,7 @@ public:
 	/*basic io operation*/
 	int copy(const profile&);			//copys a line from profile
 	int read();					//reads a line from the instream. Returns 0 on success, EOF on EOF.
-	int read(Locus &);					//peaks at a line in the instream. Returns 0 on success, EOF on EOF.
+	int read(Locus &);				//peaks at a line in the instream. Returns 0 on success, EOF on EOF.
 	int write();					//writes a line to the outstream. Returns 0 on success, EOF on EOF.
 	int write(Locus const &);			//writes a line to the outstream. Returns 0 on success, EOF on EOF.
 
@@ -179,8 +179,9 @@ public:
 	void set_delim_column(const char&);		// the delimiter which seperates columns
 	void set_delim_quartet(const char&);		// the delimiter which seperates columns
 
-	int setsamples(count_t);			//set the number of samples in the profile (only called in write mode).
-	int setcolumns(count_t);			//set the number of columns for reading and writing.
+	void setsamples(count_t);			//set the number of samples in the profile (only called in write mode).
+	void setcolumns(count_t);			//set the number of columns for reading and writing.
+	count_t get_columns(void) {return columns_;};			//set the number of columns for reading and writing.
 
 	int setcolumn_name(const count_t&, const std::string &);
 	int setsample_name(const count_t&, const std::string &);
@@ -203,7 +204,6 @@ public:
 
 	/*functions dealing with the quartets*/
 
-
 	void setbasecount(const count_t &, const count_t &, const count_t &);//sets sample x, base y to z.
 
 	/*playing with the mask*/
@@ -213,13 +213,13 @@ public:
 
 	const uint64_t getlinenumber(void) const;
 
-	const count_t getid0(void) const;
-	const uint64_t getid1(void) const;
-	const count_t getextraid(const count_t &) const;
+	const count_t get_id0(void) const;
+	const uint64_t get_id1(void) const;
+	const count_t get_extraid(const count_t &) const;
 
-	void setid0(const count_t &);
-	void setid1(const uint64_t &);
-	void setextraid(const count_t &, const count_t &);
+	void set_id0(const count_t &);
+	void set_id1(const uint64_t &);
+	void set_extraid(const count_t &, const count_t &);
 
 	std::string getids(const Locus &);
 	std::string getids(void);
@@ -232,10 +232,14 @@ public:
 	void mask(count_t);				//mask line N
 	//THESE WILL PROBABLY BE DEPRICATED
 	void sort(void);				//sort reads from most common to least common (amoung all non-masked sites).
-	Locus getsite(void) {return site_;};		//sort reads from most common to least common (amoung all non-masked sites).
+	void header(const bool &h) {noheader_=not (h);};				//sort reads from most common to least common (amoung all non-masked sites).
+	Locus get_site(void) {return site_;};		//sort reads from most common to least common (amoung all non-masked sites).
+	void set_site(const Locus &site) {site_=site;};		//sort reads from most common to least common (amoung all non-masked sites).
 
-	std::vector <quartet_t>::iterator begin(void) {return site_.sample.begin();};	
-	std::vector <quartet_t>::iterator end(void) {return site_.sample.end();};	
+	quartet_t get_quartet(const count_t &t) {return site_.get_quartet(t);};		//sort reads from most common to least common (amoung all non-masked sites).
+
+	std::vector <quartet_t>::iterator begin(void) {return site_.begin();};	
+	std::vector <quartet_t>::iterator end(void) {return site_.end();};	
 
 };
 	

@@ -15,8 +15,8 @@ int comparePooled(int argc, char *argv[])
 
 	std::vector <int> pop;
 
-	env.setname("mapgd cp");
-	env.setver("1.0");
+	env.setname("mapgd compool");
+	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman and Micheal Lynch");
 
 	env.setdescription("compares allele frequencies between pooled population genomic data.");
@@ -31,7 +31,6 @@ int comparePooled(int argc, char *argv[])
 	env.optional_arg('i',"in", &infile, &arg_setstr, "please provide a valid inpuit file", "specifies input file (default datain.txt)");
 	env.optional_arg('o',"out", &outfile, &arg_setstr, "please provide a valid name and location for output", "specifies output file (default stdout.txt) ");
 
-//	env.flag('P',"allpopulations", &allpop, &flag_set, " ?? ", "compates all populations");
 	env.flag('h',"help", &env, &flag_help, "an error occured while displaying the help mesaage", "prints this message");
 	env.flag('v',"version", &env, &flag_version, "an error occured while displaying the version mesaage", "prints the program version");
 
@@ -120,7 +119,7 @@ int comparePooled(int argc, char *argv[])
 		site.major=line.getindex(0);
 		site.minor=line.getindex(1);
 		multi.set(&polymorphicmodel, site);
-		for (int x=0; x<pop.size(); ++x) llhoodP[x]=multi.lnprob(line.getquartet(pop[x]) );
+		for (int x=0; x<pop.size(); ++x) llhoodP[x]=multi.lnprob(line.get_quartet(pop[x]).base );
 
 		/* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF POPULATION SUBDIVISION. */ 
 
@@ -133,9 +132,9 @@ int comparePooled(int argc, char *argv[])
 
 			site.freq=pmlP[x];
 			multi.set(&polymorphicmodel, site);
-                        llhoodP[x]=multi.lnprob(line.getquartet(pop[x]) );
+                        llhoodP[x]=multi.lnprob(line.get_quartet(pop[x]).base );
 			multi.set(&monomorphicmodel, site);
-			llhoodS[x]=multi.lnprob(line.getquartet(pop[x]) ); 
+			llhoodS[x]=multi.lnprob(line.get_quartet(pop[x]).base ); 
 		};
 		
 		/* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */

@@ -1,6 +1,7 @@
 #ifndef TYPEDEF_H_
 #define TYPEDEF_H_
 
+#include <cstddef>
 #include <stdint.h>
 #include <math.h>
 

@@ -259,6 +259,10 @@ int parsargs(int argc, char *argv[], env_t env)
 			
 		};
 	};
+	if (env.commands.size()!=0){
+		std::cerr << "command required. See --help.\n";
+		return -1;
+	}
 	return 0;
 };
 
@@ -270,7 +274,7 @@ void printVersion(env_t env){
 
 void printHelp(env_t env){
 	printf("Usage: %s [OPTIONS] [COMMAND]\n\n", env.name);
-	printf("%s version %s written by %s\n", env.name, env.version, env.author);
+	printf("%s version %s written by %s\n\n", env.name, env.version, env.author);
  	printf("%s\n\n", env.description);
 
 	std::list <com_t>::iterator com=env.commands.begin();

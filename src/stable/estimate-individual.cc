@@ -106,7 +106,7 @@ int estimateInd(int argc, char *argv[])
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
 
 	env_t env;
-	env.setname("mapgd ei");
+	env.setname("mapgd estindv");
 	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman and Takahiro Maruki");
 	env.setdescription("Uses a maximum likelihood approach to estimate population genomic statistics from an individually 'labeled' population.");
@@ -121,7 +121,7 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('g',"goodfit", &arg.maximum_gof,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
 	env.optional_arg('N',"number", 	&arg.maximum_excluded,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
-	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "maximum number of sites to be analyzed (default All sites)");
+	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "maximum number of sites to be analyzed (default to all sites).");
 	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
@@ -184,9 +184,13 @@ int estimateInd(int argc, char *argv[])
 
 	std::vector <float_t> sum_gofs(ind.size() );
 	std::vector <float_t> gofs_read(ind.size() );
+
 	allele_stat buffer_mle[BUFFER_SIZE]; 
+
 	Locus buffer_site[BUFFER_SIZE];
+
 	models model;
+
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
 		uint32_t c=0, readed=0;
 		bool estimate_me=1;

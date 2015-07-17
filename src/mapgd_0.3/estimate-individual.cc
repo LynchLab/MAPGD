@@ -148,6 +148,10 @@ int estimateInd(int argc, char *argv[])
 	std::ostream *out=&std::cout;
 	std::ofstream outFile;
 
+	genotype dip(2);
+	genotype trip(3);
+	genotype tet(4);
+
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
 		if (pro.open(infile.c_str(), "r")==NULL) {	//try to open a profile of that name.
 			printUsage(env);			//Print help message on failure.
@@ -220,8 +224,8 @@ int estimateInd(int argc, char *argv[])
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
 					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MAXGOF, MAXPITCH);
-					*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[c]) << '\t' << buffer_site[c].getname(0) << '\t' << buffer_site[c].getname_gt(1) << '\t';
-					*out << std::fixed << std::setprecision(6) << buffer_mle[c] << std::endl;
+					//*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[c]) << '\t' << buffer_site[c].getname(0) << '\t' << buffer_site[c].getname_gt(1) << '\t';
+					//*out << std::fixed << std::setprecision(6) << buffer_mle[c] << std::endl;
 					#ifdef PRAGMA
 					#pragma omp critical
 					#endif
