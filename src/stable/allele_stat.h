@@ -4,6 +4,7 @@
 #include <iostream>
 #include "typedef.h"
 #include <cfloat>
+#include <iomanip>
 
 class allele_stat { 
 private:

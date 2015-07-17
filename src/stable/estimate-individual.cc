@@ -168,7 +168,7 @@ int estimateInd(int argc, char *argv[])
 	};
 
 	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
-	if (not (noheader) ) *out << "id1\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpolyll\tHWEll\tgof\teff_chrom\tN\tN_excluded\tmodel_ll" << std::endl;
+	if (not (noheader) ) *out << "id1\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpolyll\tHWEll\tgof\tefchrom\tN\tN_exc\tmodel_ll" << std::endl;
 
 	pro.maskall();							//Turn off the ability to read data from all clones by default. 
 
@@ -226,8 +226,8 @@ int estimateInd(int argc, char *argv[])
 			//?
 			if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=arg.alpha){
 				//buffer_mle[x].excluded=buffer_site[x].maskedcount()-arg.base_excluded;
-				*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
-				*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
+				*out << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
+				*out << buffer_mle[x] << std::endl;
 			}
 			if (buffer_mle[x].gof< -arg.maximum_gof) buffer_site[x].maskall(); 
 			if (pro_out.is_open() ){

@@ -360,7 +360,7 @@ int profile_header::readheader(std::istream *in)
 							setsamples(column.size()-2);
 						break;
 						case 7:
-							site_->set_extraid(0, 5);
+							site_->set_extraid(5, 0);
 							setsamples(column.size()-3);
 						break;
 					};
@@ -372,7 +372,7 @@ int profile_header::readheader(std::istream *in)
 					*samples_=(column.size()-3)/3;
 					setsamples(*samples_);
 					in->putback('\n');
-					site_->set_extraid(0, 5);
+					site_->set_extraid(5, 0);
 					*columns_=7;
 					for (std::string::reverse_iterator rit=line.rbegin(); rit!=line.rend(); ++rit) in->putback(*rit);
 					notdone_=false;
@@ -391,7 +391,7 @@ int profile_header::readheader(std::istream *in)
 							break;
 						case H_COL:
 							*columns_=atoi(arg[1].c_str() );
-							if (*columns_==7) site_->set_extraid(0, 5);
+							if (*columns_==7) site_->set_extraid(5, 0);
 							break;
 						case H_SAM:
 							*samples_=atoi(arg[1].c_str() );

@@ -27,7 +27,9 @@ using namespace std;
 
 std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 	if (x.coverage>0){
+		out << std::fixed << std::setprecision(0);
 		out << x.coverage << x.delim;
+		out << std::fixed << std::setprecision(4);
 		out << x.freq <<  x.delim;
 		out << 1.-x.freq <<  x.delim;
 		out << x.error << x.delim;
@@ -41,10 +43,13 @@ std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 		out << (x.ll-x.hwell)*2 << x.delim;
 		out << x.gof << x.delim;
 		out << x.efc << x.delim;
+		out << std::fixed << std::setprecision(0);
 		out << x.N << x.delim;
 		out << x.excluded << x.delim;
+		out << std::fixed << std::setprecision(4);
 		out << x.ll;
 	} else {
+		out << std::fixed << std::setprecision(0);
 		out << x.coverage << x.delim;
 		out << '*' <<  x.delim;
 		out << '*' <<  x.delim;
@@ -55,13 +60,16 @@ std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 		out << '*' << x.delim;
 		out << '*' << x.delim;
 		out << '*' << x.delim;
+		out << std::fixed << std::setprecision(4);
+		out << 0. << x.delim;
+		out << 0. << x.delim;
+		out << 0. << x.delim;
+		out << 0. << x.delim;
+		out << std::fixed << std::setprecision(0);
 		out << 0 << x.delim;
 		out << 0 << x.delim;
-		out << 0 << x.delim;
-		out << 0 << x.delim;
-		out << 0 << x.delim;
-		out << 0 << x.delim;
-		out << 0;
+		out << std::fixed << std::setprecision(4);
+		out << 0.;
 	};
 	return out;
 };
