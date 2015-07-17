@@ -31,7 +31,7 @@ const std::string profile::decodeid1(const uint64_t &id){
 	return header_.decodeid1(id);
 }
 const std::string profile_header::decodeid1(const uint64_t &id){
-	return std::to_string(id);
+	return std::to_string( (unsigned long long int)id );
 }
 
 const std::string profile::decodeextraid(const count_t &id, const count_t &a) {

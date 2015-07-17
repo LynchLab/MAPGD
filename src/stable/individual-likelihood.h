@@ -12,16 +12,31 @@
 
 
 struct args{
-        bool verbose=false;
-        bool quite=false;
-	bool bayes=false;
 
-        float_t minimum_error=0.001;
-        float_t alpha=0.00;
-        float_t maximum_gof=2.00;
-        uint16_t maximum_excluded=96;
-        uint16_t base_excluded=0;
-        uint16_t minimum_coverage=0;
+        bool verbose;
+        bool quite;
+	bool bayes;
+
+        float_t minimum_error;
+        float_t alpha;
+        float_t maximum_gof;
+
+        uint16_t maximum_excluded;
+        uint16_t base_excluded;
+        uint16_t minimum_coverage;
+
+	args(){
+        	verbose=false;
+        	quite=false;
+		bayes=false;
+
+        	minimum_error=0.001;
+        	alpha=0.00;
+        	maximum_gof=2.00;
+        	maximum_excluded=96;
+        	base_excluded=0;
+		minimum_coverage=3;
+	};
 };
 
 float_t *mmModel(allele_stat *);

@@ -162,6 +162,7 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 	E[0]-=ll;
 	E[1]-=ll;
 	E[2]-=ll;
+	return E[0];
 }
 
 /*@Breif, Used for GOF, same basic idea as above. I know, if I have to write it twice I'm doing something wrong.*/
@@ -196,15 +197,21 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 	E=0; V=0;
 
 	//E=Sum[(Binomial[N, x]^2 p^(2 x) (1 - p)^(2 (N - x)))/N, {x, 0, N}]
-	//E=((-1 + p)^(2 N) H2F1[-N, -N, 1, p^2/(p-)^2])/N
+	//E=((p - 1)^(2 N) H2F1[-N, -N, 1, p^2/(p-1)^2])/N
 	//V=(E^2-2*(1-p)^(2*N)*E*H2F1[-N, -N, 1, p^2/(p-1)^2 ]+(1-p)^(3*N)*H2F1PFQ[{-N, -N, -N}, {1, 1}, p^3/(p-1)^3 ] )/N
 	
 //	float_t A[3]={-N_, -N_, -N_};
 //	float_t B[2]={1., 1.};
 //	float_t p=
 //	std::cout << "---===---\n";
-//	E=(pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2)])/N_;
-//	std::cout << (pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2)])/N_ << '\n';
+//	E=(pow(p-1, 2*N_)*pFq::_2F1(-N_, -N_, 1., pow(p, 2) /pow(p-1,2) )/N_;
+	float_t H=(0.5*(1.-a.error)+0.5*a.error/3.);
+//	N_=10;
+	std::cout <<  "E " << a.error << ", " << N_ << "\n" <<
+		a.MM*pow(1.-a.error-1., 2.*N_)*pFq::_2F1(-float_t(N_), -float_t(N_), 1., pow(1-a.error, 2) /pow( (1.-a.error)-1.,2))
+		+a.mm*pow(a.error/3.-1, 2.*N_)*pFq::_2F1(-float_t(N_), -float_t(N_), 1., pow(a.error/3., 2) /pow(a.error/3.-1.,2))
+		+a.Mm*pow(H-1., 2.*N_)*pFq::_2F1(-float_t(N_), -float_t(N_), 1., pow(H, 2) /pow(H-1.,2))
+		 << '\n';
 //	std::cout << (pow(E, 2)-pow(2*(1-p), 2*N)*E*pFq::_2F1( -N_, -N_, 1., pow(p, 2)/pow(p-1, 2) )+pow(1-p, 3*N)*pFq::_3F2(A, B, pow(p, 3)/pow(p-1, 3) ) )/N_ << '\n';
 //	E=0;
 	for (size_t x=0; x<N_+1; ++x){
@@ -212,11 +219,11 @@ void EVofP (count_t N_, const allele_stat &a, models &model, float_t &E, float_t
 		l[a.major]=x;
 		l[a.minor]=N_-x;
 		tP=model.lnP(l, a);
-		E+=exp(tP)*tP;
+		E+=exp(tP)*exp(tP);
 		V+=exp(tP)*pow(tP, 2);
 	}
 	V-=pow(E, 2);
-//	std::cout << E << '\n';
+	std::cout << "O " << E << "\n\n";
 //	std::cout << V << '\n';
 }
 
