@@ -2,7 +2,7 @@
 
 #include "lnmultinomial.h"
 
-/* \breif creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .	
+/*! \breif creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .	
  */
 lnmultinomial::lnmultinomial (float_t* s, const count_t& size)
 {
@@ -12,21 +12,35 @@ lnmultinomial::lnmultinomial (float_t* s, const count_t& size)
 	while (it!=end) {*lit=log(*it); ++lit; ++it;}
 }
 
-/* \breif  . . .	
+lnmultinomial& lnmultinomial::operator=(const lnmultinomial& rhs){
+	if (this!=&rhs){
+		if (size_=rhs.size_){
+			memcpy(lnp_, rhs.lnp_, size_*sizeof(float_t) );
+		} else {
+			delete [] lnp_;
+			size_=rhs.size_;
+			lnp_=new float_t [size_];
+			memcpy(lnp_, rhs.lnp_, size_*sizeof(float_t) );
+		}
+		lnfact_vector=rhs.lnfact_vector;
+	}
+	return *this;
+};
+/*! \breif  . . .	
  */
 lnmultinomial::lnmultinomial (const count_t &size){
 	size_=size;
 	lnp_=new float_t[size_];
 }
 
-/* \breif . . .	
+/*! \breif . . .	
  */
 lnmultinomial::lnmultinomial (void){
 	size_=4;
 	lnp_=new float_t[size_];
 }
 
-/* \breif  . . .	
+/*! \breif  . . .	
  */
 lnmultinomial::~lnmultinomial (void){
 	delete [] lnp_;
@@ -34,7 +48,7 @@ lnmultinomial::~lnmultinomial (void){
 };
 
 
-/* \breif  . . .	
+/*! \breif  . . .	
  */
 void lnmultinomial::set(void (*fn)(allele_stat const &, float_t *), allele_stat const &s)
 {
@@ -43,7 +57,7 @@ void lnmultinomial::set(void (*fn)(allele_stat const &, float_t *), allele_stat 
 	fn(s, lnp_);
 }
 
-/* \breif . . .	
+/*! \breif . . .	
  */
 void lnmultinomial::set(float_t *s){
 	delete [] lnp_;

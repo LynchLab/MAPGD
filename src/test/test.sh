@@ -2,6 +2,7 @@
 
 #echo "WARNING: STATISTICAL TEST HAVE NOT YET BEEN IMPLEMENTED. TAKE RESULTS WITH A GRAIN OF SALT UNTILL I GET SIMULATIONS UP AND RUNNING."
 
+
 testa() 
 {
 if [ $? -ne 0 ]; then
@@ -9,7 +10,7 @@ if [ $? -ne 0 ]; then
 	exit
 fi
 if [ `wc $a.out -l | cut -d  ' ' -f 1` -eq $size ]; then
-	echo "[$a] $msg PASS"
+	echo " SUCCESS "
 	rm -f $a.out
 else
 	echo  `wc $a.out -l `
@@ -37,6 +38,11 @@ long=`wc -l $lmp | cut -d ' ' -f 1`	#number of lines in the long test file
 
 mapgd="../../bin/mapgd"
 
+if [ -z $mapgd ]; then 
+	echo "cannot find mapgd. Did you type 'make' in the src directory?"
+	exit
+fi
+
 msg="    "
 
 #commands 
@@ -48,7 +54,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$proheader))
-echo "cat $format | $mapgd $a > $a.out"
+echo -n "cat $format | $mapgd $a > $a.out				"
 timeout 20s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
@@ -60,7 +66,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$gcfheader))
-echo "cat $format | $mapgd $a > $a.out"
+echo -n "cat $format | $mapgd $a > $a.out				"
 timeout 30s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
@@ -72,6 +78,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$vcfheader))
+echo -n "cat $format | $mapgd $a > $a.out				"
 timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
@@ -83,6 +90,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$vcfheader))
+echo -n "cat $format | $mapgd $a > $a.out				"
 timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
@@ -91,56 +99,73 @@ done
 msg="-i  "
 rm -f $a.out
 size=$(($short+$proheader))
+echo -n "$mapgd proview -i $smp > $a.out				"
 timeout 5s $mapgd proview -i $smp > $a.out
 testa
 
 msg="-o  "
 rm -f $a.out
 size=$(($short+$proheader))
+echo -n "$mapgd proview -i $smp -o $a.out				"
 timeout 5s $mapgd proview -i $smp -o $a.out
 testa
 
 msg="-f  "
 size=$(($long+$proheader))
 rm -f $a.out
+echo -n "$mapgd proview -i $lmp -o $a.out				"
 timeout 5s $mapgd proview -i $lmp -o $a.out
 testa
 
 msg="-b  "
 size=$(($long+$proheader))
 rm -f $a.out
+echo -n "$mapgd proview -i $lmp -b | $mapgd proview -o $a.out	"
 timeout 5s bash -c "$mapgd proview -i $lmp -b | $mapgd proview -o $a.out" 
 testa
 
 msg="-c 5"
 size=$(($short+$proheader+1))
 rm -f $a.out
+echo -n "$mapgd proview -i $smp -c 5 -o $a.out				"
 timeout 5s $mapgd proview -i $smp -c 5 -o $a.out
 testa
 
 msg="-c 6"
 size=$(($short+$proheader))
 rm -f $a.out
+echo -n "$mapgd proview -i $smp -c 6 -o $a.out				"
 timeout 5s $mapgd proview -i $smp -c 6 -o $a.out
 testa
 
 msg="-c 7"
 size=$(($short+$proheader))
 rm -f $a.out
+echo -n "$mapgd proview -i $smp -c 7 -o $a.out				"
 timeout 5s $mapgd proview -i $smp -c 7 > $a.out
 testa
+
+msg="-B"
+size=$(($short+1))
+rm -f $a.out
+echo -n "$mapgd proview -i $smp -B > $a.out				"
+timeout 5s $mapgd proview -i $smp -B > $a.out
+testa
+
 
 msg="	"
 
 a="ep"
 size=$(($short+$vcfheader))
 rm -f $a.out
+echo -n "$mapgd ep -i $smp -o $a.out					"
 timeout 5s $mapgd ep -i $smp -o $a.out
 testa
 
 a="cp"
 size=$(($short+$vcfheader))
 rm -f $a.out
+echo -n "$mapgd cp -i $smp -o $a.out					"
 timeout 5s $mapgd cp -i $smp -o $a.out
 testa
 
@@ -148,6 +173,7 @@ a="ei"
 msg="-p "
 size=$(($short+$proheader))
 rm -f $a.out
+echo -n "$mapgd ei -i $smp -p $a.out -o temp.out			"
 timeout 10s $mapgd ei -i $smp -p $a.out -o temp.out
 testa
 rm -f temp.out
@@ -156,6 +182,7 @@ msg="	"
 a="ei"
 size=$(($short+$gcfheader))
 rm -f $a.out
+echo -n "$mapgd ei -i $smp -o $a.out					"
 timeout 10s $mapgd ei -i $smp -o $a.out
 testa
 
@@ -163,6 +190,7 @@ msg="merge "
 a="proview"
 size=$(($long+$proheader))
 rm -f $a.out
+echo -n "$mapgd proview -i $smp $lmp > $a.out			"
 timeout 5s $mapgd proview -i $smp $lmp > $a.out 
 testa
 

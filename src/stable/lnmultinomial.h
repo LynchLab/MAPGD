@@ -5,6 +5,7 @@
 
 #include <map>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <cfloat>
 #include <algorithm>
@@ -28,7 +29,9 @@ public:
 	lnmultinomial (float_t*, const count_t&);	//creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
 	lnmultinomial (const count_t&);			//creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
 	lnmultinomial (void);				//creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
+
 	~lnmultinomial (void);				//creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
+	lnmultinomial& operator=(const lnmultinomial& rhs);
 
 	void set (float_t*);				//creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
 	void set (float_t, float_t, float_t, float_t);	//creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .

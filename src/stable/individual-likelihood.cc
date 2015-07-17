@@ -16,6 +16,16 @@ models::models(void){
 	lnmm_=new lnmultinomial(4);
 	lnF_=new lnmultinomial(4);
 }
+	
+models& models::operator=(const models& rhs){
+	if (this!=&rhs){
+		lnMM_=rhs.lnMM_;
+		lnMm_=rhs.lnMm_;
+		lnmm_=rhs.lnmm_;
+		lnF_=rhs.lnF_;
+	}
+	return *this;
+};  
 
 models::~models(void){
 	delete lnMM_;

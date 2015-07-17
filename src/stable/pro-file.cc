@@ -38,7 +38,7 @@ const std::string profile::decodeextraid(const count_t &id, const count_t &a) {
 	return header_.decodeextraid(id, a);
 }
 const std::string profile_header::decodeextraid(const count_t &id, const count_t &a) {
-	return decodechar[id];
+	return std::string(1, decodechar[id]);
 }
 
 const count_t profile::encodeid0(const std::string &id){
@@ -261,22 +261,28 @@ int profile_header::writetailer(std::ostream *out){
 }
 
 profile_header & profile_header::operator =(const profile_header& arg){
-        //*sig_=*arg.sig;                             // were alleles thrown out if the allele only occurred in reads from one direction?
+	if (this != &arg) { 
+		*delim_column=*arg.delim_column;	// the delimiter which seperates columns
+ 		*delim_quartet=*arg.delim_quartet;	// the delimiter that seperates counts in a quartet
+		*columns_=*arg.columns_;		// 5|6|7|more?
+		*site_=*arg.site_;			// a vector to store the quartet.
+		*samples_=*arg.samples_;		// the number of samples (i.e. different individuals or populations). This needs to be left to Locus.size().
+		setsamples(*samples_);			// the right way to setsamples.
+		column_names=arg.column_names;
 
-        *delim_column=*arg.delim_column;                             // the delimiter which seperates columns
-        *delim_quartet=*arg.delim_quartet;                            // the delimiter that seperates counts in a quartet
-        *columns_=*arg.columns_;                         // 5|6|7|more?
-        Locus *site_;                                  // a vector to store the calls from reads
-        *samples_=*arg.samples_;                         // the number of samples (i.e. different individuals or populations) in the profile.
 
-	*columns_=*arg.columns_;
-	setsamples(*samples_);
-	column_names.clear();
+		id0_str=arg.id0_str;
+		id0=arg.id0;				
+		extraids=arg.extraids;			//extra ids associated with the quartet. (ref base identiy?).   
+		sample_gof_=arg.sample_gof_;		// the number of samples (i.e. different individuals or populations) in the profile.
 
-	for (unsigned int x=0; x<arg.column_names.size(); ++x){
-		column_names.push_back(arg.column_names[x]);
-	};
-	//TODO Need to copy over maps and what not too!!	
+		lastid0=-1;				//initilize to 0-1;
+	        lastid0_str="";				//initilize to "";
+
+		memcpy (encodechar,arg.encodechar, 256*sizeof(count_t) );
+		memcpy (decodechar,arg.decodechar, 256*sizeof(char) );
+	}
+
 	return *this;
 };
 

@@ -39,6 +39,7 @@ private:
 public:
 	models(void);
 	~models(void);
+	models& operator=(const models& rhs);  
 	float_t loglikelihood(const Locus &, const allele_stat &, const count_t &);
 	float_t lnP(const count_t *, const allele_stat &);
 	float_t genotypelikelihood(const quartet_t &, const allele_stat &, const count_t &);

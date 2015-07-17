@@ -43,7 +43,7 @@ private:
 	std::string lastid0_str;			//initilize to "";
 
 	count_t encodechar[256];
-	std::string decodechar[256];
+	char decodechar[256];
 
 	bool *sig_;					// were alleles thrown out if the allele only occurred in reads from one direction?
 	bool *read_;					// ?
@@ -51,14 +51,14 @@ private:
 	bool *binary_;					// ?
 	bool *mpileup_;					// ?
 	bool *noheader_;				// ?
-	uint64_t *size_;			// the number of lines in the sample. 0 if unkown.
+	uint64_t *size_;				// the number of lines in the sample. 0 if unkown.
 
 	char *delim_column;				// the delimiter that seperates columns.
 	char *delim_quartet;				// the delimiter that seperates counts in a quartet.
 	unsigned int *columns_;				// 5|6|7|?
 	Locus *site_;					// a vector to store the calls from reads.
 	unsigned int *samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
-	std::vector <float_t> sample_gof_;				// the number of samples (i.e. different individuals or populations) in the profile.
+	std::vector <float_t> sample_gof_;		// the number of samples (i.e. different individuals or populations) in the profile.
 public:
 	const float_t getsample_property(const count_t &) const;
 	const std::string getsample_name(const count_t &) const;
