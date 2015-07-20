@@ -7,10 +7,11 @@
 lnmultinomial& lnmultinomial::operator=(const lnmultinomial& rhs)
 {
 	delete lnp_;
-	size_=rhs.size;
+	size_=rhs.size_;
 	lnfact_vector=rhs.lnfact_vector;
 	lnp_=new float_t[size_];
-	memcpy(lnp_, rhs.lnp_, size(float_t)*size_);	
+	memcpy(lnp_, rhs.lnp_, sizeof(float_t)*size_);
+	return *this;	
 }
 
 /* \breif creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .	
@@ -124,8 +125,12 @@ float_t lnmultinomial::lnmultinomcoef(const count_t *s){
 		case 4:
 			return lnfact(s[0]+s[1]+s[2]+s[3])-lnfact(s[0])-lnfact(s[1])-lnfact(s[2])-lnfact(s[3]);
 			break;
+		default:
+			break;
 	}
-}
+	std::cerr << "No multinomial coefficent calculation supported for " << size_ << " at this time\n";
+	return std::numeric_limits<double>::quiet_NaN();
+ }
 
 float_t lnmultinomial::lnfact(const count_t &s){
 	if (lnfact_vector.size()==0) {lnfact_vector.push_back(log(1) ); lnfact_vector.push_back(log(1) );}

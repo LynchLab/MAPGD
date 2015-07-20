@@ -9,6 +9,7 @@
 #include <cfloat>
 #include <algorithm>
 #include <iostream>
+#include <string.h>
 
 #include "typedef.h"
 #include "allele_stat.h"

@@ -34,7 +34,8 @@ mapFile=open(args.mapFile[0])
 #id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
 #id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
 
-HET=True
+F=True
+HET=False
 GENOTYPE=False
 
 scaffold=0
@@ -165,7 +166,7 @@ for line in proFile:
 					out.append(str(x-3)+"Mm")
 					out.append(str(x-3)+"mm")
 				print "scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
-			elif(HET):
+			elif(HET or F):
 				out=[]
 				for x in range(3, len(line) ):
 					out.append(x-3)
@@ -182,6 +183,19 @@ for line in proFile:
 				M=atoi[this[0]]
 				m=atoi[this[1]]
 				out.append(float(calls[M])/(float(calls[M])+float(calls[m]) ) )
+			elif (F):
+				Mm=float(this[5])
+				mm=float(this[6])
+				MM=float(this[4])
+				p=float(this[2])
+				Mm=2*(1-p)*p*(1-f)
+				f=1-Mm/(2*(1-p)*p )
+				
+				f=1-A
+				F-1=A
+				A=F-1
+				f=1-(F-1)
+				out.append(f)
 		print '\t'.join(map(str, out) )
 
 	except:

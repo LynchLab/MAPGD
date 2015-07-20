@@ -1,4 +1,4 @@
-CXXFLAGS= -g -std=c++0x -O3 -Wall -Wno-write-strings -fopenmp
+CXXFLAGS= -g -std=c++0x -O3 -Wall -Werror=return-type -Wno-write-strings -fopenmp
 prefix=/usr/local
 
 mapdg: mapgd.o allele_stat.o binomial.o compare-pooled.o estimate-individual.o estimate-pooled.o gcf-file.o gcf-file-header.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o proview.o quartet.o stream-tools.o models.o
