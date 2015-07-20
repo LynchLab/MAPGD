@@ -133,6 +133,7 @@ class env_t{
 	void setdescription(const char *c){
 		description=c;
 	};
+
 	const char *name;				/*the name of the command*/
 	const char *version;				/*the version*/
 	const char *author;				/*author*/
@@ -152,6 +153,13 @@ class env_t{
 		description="Unknown purpose";
 	};
 
+	~env_t(){
+		flags.clear();
+		args.clear();
+		commands.clear();
+		required_args.clear();
+		required_coms.clear();
+	};
 	void optional_arg (char opt_, char *lopt_, void *parm_, int (*func_)(int, char **, void *), char *emsg_, char *umsg_)
 	{
 		args.push_back(arg_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );

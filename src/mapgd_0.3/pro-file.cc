@@ -14,30 +14,31 @@ const std::string profile::decodeid0(const count_t &id){
 */	
 const std::string profile_header::decodeid0(const count_t &id){
 	if (lastid0==id) return lastid0_str;
-	lastid0=id; 
+	id==lastid0; 
 	lastid0_str=id0[id];
 	return lastid0_str;
 }
 
-int profile::setsamples(count_t samples){
-	return header_.setsamples(samples);
+void profile::setsamples(count_t samples){
+	header_.setsamples(samples);
 }			
 
-int profile::setcolumns(count_t a){
-	return header_.setcolumns(a);
+void profile::setcolumns(count_t a){
+	header_.setcolumns(a);
 }
+
 const std::string profile::decodeid1(const uint64_t &id){
 	return header_.decodeid1(id);
 }
 const std::string profile_header::decodeid1(const uint64_t &id){
-	return std::to_string(id);
+	return std::to_string( (unsigned long long int)id );
 }
 
 const std::string profile::decodeextraid(const count_t &id, const count_t &a) {
 	return header_.decodeextraid(id, a);
 }
 const std::string profile_header::decodeextraid(const count_t &id, const count_t &a) {
-	return decodechar[id];
+	return std::string(1, decodechar[id]);
 }
 
 const count_t profile::encodeid0(const std::string &id){
@@ -74,7 +75,7 @@ const count_t profile::encodeextraid(const char &id, const count_t &a){
 	return header_.encodeextraid(id, a);
 }
 const count_t profile_header::encodeextraid(const char &id, const count_t &a){
-	return encodechar[uint8_t(id)];
+	return encodechar[id];
 }
 
 int profile::seek(std::streampos pos) {
@@ -100,9 +101,9 @@ int profile_header::setsamples(const count_t &samples) {
 
 	for (unsigned int x=0; x<*samples_; ++x){
 		column_names.push_back("sample_"+std::to_string( (unsigned long long int)(x+1) ) );
-		site_->sample.push_back(quartet_t() );
 		sample_gof_.push_back(0);				// the number of samples (i.e. different individuals or populations) in the profile.
 	};
+	site_->resize(samples);
 	return NONE;
 }
 
@@ -143,7 +144,10 @@ const std::string profile_header::getsample_name(const count_t &a) const{
 		case 7:
 			return getcolumn_name(a+3);
 		break;
+		default:
+		break;
 	};
+	return NULL;
 }
 
 const std::string profile::getsample_name(const count_t &a) const{
@@ -153,16 +157,13 @@ const std::string profile::getsample_name(const count_t &a) const{
 int profile::setsample_name(const count_t &a, const std::string &str){
 	switch (columns_){
 		case 5:
-			header_.setcolumn_name(a+1, str);
+			return header_.setcolumn_name(a+1, str);
 		break;
 		case 6:
-			header_.setcolumn_name(a+2, str);
+			return header_.setcolumn_name(a+2, str);
 		break;
 		case 7:
-			header_.setcolumn_name(a+3, str);
-		break;
-		default:
-			return BADHEADER;
+			return header_.setcolumn_name(a+3, str);
 		break;
 	};
 	return BADHEADER;
@@ -260,21 +261,28 @@ int profile_header::writetailer(std::ostream *out){
 }
 
 profile_header & profile_header::operator =(const profile_header& arg){
-        //*sig_=*arg.sig;                             // were alleles thrown out if the allele only occurred in reads from one direction?
+	if (this != &arg) { 
+		*delim_column=*arg.delim_column;	// the delimiter which seperates columns
+ 		*delim_quartet=*arg.delim_quartet;	// the delimiter that seperates counts in a quartet
+		*columns_=*arg.columns_;		// 5|6|7|more?
+		*site_=*arg.site_;			// a vector to store the quartet.
+		*samples_=*arg.samples_;		// the number of samples (i.e. different individuals or populations). This needs to be left to Locus.size().
+		setsamples(*samples_);			// the right way to setsamples.
+		column_names=arg.column_names;
 
-        *delim_column=*arg.delim_column;                             // the delimiter which seperates columns
-        *delim_quartet=*arg.delim_quartet;                            // the delimiter that seperates counts in a quartet
-        *columns_=*arg.columns_;                         // 5|6|7|more?
-        Locus *site_;                                  // a vector to store the calls from reads
-        *samples_=*arg.samples_;                         // the number of samples (i.e. different individuals or populations) in the profile.
 
-	*columns_=*arg.columns_;
-	setsamples(*samples_);
-	column_names.clear();
+		id0_str=arg.id0_str;
+		id0=arg.id0;				
+		extraids=arg.extraids;			//extra ids associated with the quartet. (ref base identiy?).   
+		sample_gof_=arg.sample_gof_;		// the number of samples (i.e. different individuals or populations) in the profile.
 
-	for (unsigned int x=0; x<arg.column_names.size(); ++x){
-		column_names.push_back(arg.column_names[x]);
-	};
+		lastid0=-1;				//initilize to 0-1;
+	        lastid0_str="";				//initilize to "";
+
+		memcpy (encodechar,arg.encodechar, 256*sizeof(count_t) );
+		memcpy (decodechar,arg.decodechar, 256*sizeof(char) );
+	}
+
 	return *this;
 };
 
@@ -302,12 +310,12 @@ int hash(std::string str){
 };
 
 int profile::readheader(void){
-	header_.readheader(in);
+	return header_.readheader(in);
 }
 
 int profile::writeheader(void)
 {
-	header_.writeheader(out);
+	return header_.writeheader(out);
 }
 
 int profile_header::readheader(std::istream *in)
@@ -358,7 +366,7 @@ int profile_header::readheader(std::istream *in)
 							setsamples(column.size()-2);
 						break;
 						case 7:
-							site_->extraid.push_back(0);
+							site_->set_extraid(5, 0);
 							setsamples(column.size()-3);
 						break;
 					};
@@ -370,7 +378,8 @@ int profile_header::readheader(std::istream *in)
 					*samples_=(column.size()-3)/3;
 					setsamples(*samples_);
 					in->putback('\n');
-					site_->extraid.push_back(0);
+					site_->set_extraid(5, 0);
+					*columns_=7;
 					for (std::string::reverse_iterator rit=line.rbegin(); rit!=line.rend(); ++rit) in->putback(*rit);
 					notdone_=false;
 				}
@@ -388,7 +397,7 @@ int profile_header::readheader(std::istream *in)
 							break;
 						case H_COL:
 							*columns_=atoi(arg[1].c_str() );
-							if (*columns_==7) site_->extraid.push_back(0);
+							if (*columns_==7) site_->set_extraid(5, 0);
 							break;
 						case H_SAM:
 							*samples_=atoi(arg[1].c_str() );
@@ -419,10 +428,10 @@ int profile_header::readheader(std::istream *in)
 					in->unget();
 					in->unget();
 					while( (in->peek() )!='\n') {in->unget();}
-					std::getline(*in, line);
-					std::getline(*in, line);
+					if (std::getline(*in, line)==NULL) { std::cerr << "Error: encountred unexpected EOF. Is the file truncated?" << std::endl; return BADHEADER;}
+					if (std::getline(*in, line)==NULL) { std::cerr << "Error: encountred unexpected EOF. Is the file truncated?" << std::endl; return BADHEADER;}
 					args=split(line, *delim_column);
-					if (args.size()==0) return BADHEADER;
+					if (args.size()==0) { std::cerr << "Line miss-formated. Is the file truncated?" << std::endl; return BADHEADER;}
 					for(std::vector<std::string>::iterator argit = args.begin(); argit != args.end(); ++argit){
 						arg=split(*argit, ':');
 						switch(hash(arg[0]) ){
@@ -487,7 +496,7 @@ int profile::readm(Locus &site)
 		site.id0=encodeid0(column[0]);
 		site.id1=encodeid1(column[1]);
 		site.extraid[0]=encodeextraid(column[2][0], 0);
-	
+
 		column_it+=4;
 		while (it!=it_end){
     			memset(it->base, 0, sizeof(count_t)*5 );
@@ -658,7 +667,7 @@ int profile::copy(const profile &pro){
 }
 
 int profile::write(void){
-	write(site_);	
+	return write(site_);	
 }
 
 int profile::write(const Locus &site){
@@ -666,6 +675,7 @@ int profile::write(const Locus &site){
 	if (binary_) return writeb(site);
 	else return writet(site);
 }
+
 int profile::writeb (const Locus &thissite){
 	if (out==NULL){
 		std::cerr << "attempted write when no outstream was open." << std::endl;
@@ -707,7 +717,7 @@ int profile::writet(const Locus &thissite){
 			*out << '>' << decodeid0(thissite.id0) << std::endl;
 		};
 		*out << decodeid1(thissite.id1);
-		for (unsigned int x=0; x < samples_; ++x){
+		for (size_t x=0; x < thissite.sample.size(); ++x){
 			if (thissite.sample[x].masked){
 				*out << delim_column;
 				*out << 0 << delim_quartet;
@@ -728,7 +738,7 @@ int profile::writet(const Locus &thissite){
 	break;
 	case 6:
 		*out << decodeid0(thissite.id0) << delim_column << decodeid1(thissite.id1);
-		for (unsigned int x=0; x < samples_; ++x){
+		for (size_t x=0; x < thissite.sample.size(); ++x){
 			if (thissite.sample[x].masked){
 				*out << delim_column;
 				*out << 0 << delim_quartet;
@@ -748,8 +758,8 @@ int profile::writet(const Locus &thissite){
 		site_=thissite;
 	break;
 	case 7: 
-		*out << decodeid0(thissite.id0) << delim_column << decodeid1(thissite.id1) << delim_column << decodeextraid(thissite.extraid[0], 0);
-		for (unsigned int x=0; x < samples_; ++x){
+		*out << decodeid0(thissite.id0) << delim_column << decodeid1(thissite.id1) << delim_column << decodeextraid(thissite.get_extraid(0), 0);
+		for (size_t x=0; x < thissite.sample.size(); ++x){
 			if (thissite.sample[x].masked){
 				*out << delim_column;
 				*out << 0 << delim_quartet;
@@ -789,19 +799,20 @@ profile* profile::open(const char* filename, const char *mode){
 		inFile.open(filename, std::fstream::in);
 		if (!inFile.is_open() ){
 			std::cerr << "cannot open " << filename << " for reading (1)." << std::endl;				
-			exit(0);
+			return this;				
 		};
 		in=&inFile;
 		if (readheader()==BADHEADER){
-			std::cerr << "cannot read header on " << filename << " (1). " << std::endl;				
-			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;				
+			std::cerr << "cannot read header on " << filename << " (1). " << std::endl;
+			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;
+			return this;				
 		};
 		read_=true;
 	} else if (mode=="w"){
 		outFile.open(filename, std::ofstream::out);
 		if (!outFile.is_open() ){
 			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
-			exit(0);
+			return this;				
 		};
 		out=&outFile;
 		write_=true;
@@ -809,14 +820,14 @@ profile* profile::open(const char* filename, const char *mode){
 		outFile.open(filename, std::ofstream::out);
 		if (!outFile.is_open() ){
 			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
-			exit(0);
+			return this;				
 		};
 		out=&outFile;
 		write_=true;
 		binary_=true;
 	} else	{
 		std::cerr << "unkown filemode " << std::endl;
-		exit(0);
+		return this;				
 	}
 	open_=true;
 	return this;
@@ -830,7 +841,8 @@ profile* profile::open(const char *mode)
 		in=&std::cin;
 		if (readheader()==BADHEADER){
 			std::cerr << "cannot find header in stdin (2). " << std::endl;				
-			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;				
+			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;			
+			return this;				
 		}
 		read_=true;
 	} else if (mode=="w") {
@@ -842,7 +854,7 @@ profile* profile::open(const char *mode)
 		write_=true;
 	} else{
 		std::cerr << "unkown filemode " << std::endl;
-		exit(0);
+		return this;				
 	};
 	open_=true;
 	donothing_=false;
@@ -855,7 +867,7 @@ profile* profile::open(const char *mode)
 
 void profile::close(void){
 	if (write_){
-		header_.writetailer(out);
+		if (not noheader_) header_.writetailer(out);
 		if (outFile.is_open() ) outFile.close();
 	}
 	if(read_) if (inFile.is_open() ) inFile.close();
@@ -878,7 +890,7 @@ profile::profile(){
 
 	size_=0;
 	samples_=0;
-	columns_=5;
+	columns_=7;
 	delim_column='\t';
 	delim_quartet='/';
 	
@@ -892,12 +904,6 @@ bool profile::is_open(void) const{
 void profile::sort(void){
 	site_.sort();
 }
-
-const count_t * Locus::getquartet(count_t s) const
-{
-	return sample[s].base;
-};
-
 
 std::string profile::getids(void)
 {
@@ -924,6 +930,10 @@ count_t profile::size(void) const
 
 void profile::maskall(void){
 	site_.maskall();
+};
+
+count_t profile::maskedcount(void){
+	return site_.maskedcount();
 };
 
 
@@ -962,28 +972,21 @@ const uint64_t profile::getlinenumber(void) const{
 	return size_;
 }
 
-const count_t profile::getid0(void) const{return site_.id0;}
+const count_t profile::get_id0(void) const{return site_.id0;}
+const uint64_t profile::get_id1(void) const{return site_.id1;}
 
-const uint64_t profile::getid1(void) const{return site_.id1;}
+void profile::set_id0(const count_t &id0) {site_.id0=id0;}
 
-void profile::setid0(const count_t &id0) {site_.id0=id0;}
+void profile::set_id1(const uint64_t &id1) {site_.id1=id1;}
 
-void profile::setid1(const uint64_t &id1) {site_.id1=id1;}
-
-const count_t profile::getextraid(const count_t &x) const 
+const count_t profile::get_extraid(const count_t &x) const 
 {
-	if (site_.extraid.size()>x) return site_.extraid[x];
-	else return -1;
+	return site_.get_extraid(x);
 }
 
-void profile::setextraid(const count_t &eid, const count_t &x)
+void profile::set_extraid(const count_t &eid, const count_t &x)
 {
-	if (site_.extraid.size()>x) {
-		site_.extraid[x]=eid;
-	} else {
-		while (site_.extraid.size()<=x ) site_.extraid.push_back(-1);
-		site_.extraid[x]=eid;
-	}
+	site_.set_extraid(eid, x);
 }
 
 //===WHOOPS SOMETHING IS WRONG HERE!

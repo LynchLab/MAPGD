@@ -3,9 +3,6 @@
 
 #include "file-index.h"
 
-typedef uint64_t id1_t;
-typedef uint16_t id0_t;
-
 /*! \breif and index file designed to help with serializiation and 
  */
 

@@ -10,6 +10,7 @@ lnmultinomial::lnmultinomial (float_t* s, const count_t& size)
 	lnp_=new float_t[size_];
 	float_t *end=s+size_, *it=s, *lit=lnp_;
 	while (it!=end) {*lit=log(*it); ++lit; ++it;}
+	lnfact_vector.clear();
 }
 
 /* \breif  . . .	
@@ -17,6 +18,7 @@ lnmultinomial::lnmultinomial (float_t* s, const count_t& size)
 lnmultinomial::lnmultinomial (const count_t &size){
 	size_=size;
 	lnp_=new float_t[size_];
+	lnfact_vector.clear();
 }
 
 /* \breif . . .	
@@ -24,6 +26,7 @@ lnmultinomial::lnmultinomial (const count_t &size){
 lnmultinomial::lnmultinomial (void){
 	size_=4;
 	lnp_=new float_t[size_];
+	lnfact_vector.clear();
 }
 
 /* \breif  . . .	
@@ -99,15 +102,21 @@ float_t lnmultinomial::lnprob_approx(const count_t *s)
 };*/
 
 
-//**NOT MULTITHREAD SAFE!!!!!!!!**/
 float_t lnmultinomial::lnmultinomcoef(const count_t *s){
-//**NOT MULTITHREAD SAFE!!!!!!!!**/
-	return lnfact(s[0]+s[1]+s[2]+s[3])-lnfact(s[0])-lnfact(s[1])-lnfact(s[2])-lnfact(s[3]);
+	switch (size_){
+		case 2:
+			return lnfact(s[0]+s[1])-lnfact(s[0])-lnfact(s[1]);
+			break;
+		case 3:
+			return lnfact(s[0]+s[1]+s[2])-lnfact(s[0])-lnfact(s[1])-lnfact(s[2]);
+			break;
+		case 4:
+			return lnfact(s[0]+s[1]+s[2]+s[3])-lnfact(s[0])-lnfact(s[1])-lnfact(s[2])-lnfact(s[3]);
+			break;
+	}
 }
 
-//**NOT MULTITHREAD SAFE!!!!!!!!**/
 float_t lnmultinomial::lnfact(const count_t &s){
-//**NOT MULTITHREAD SAFE!!!!!!!!**/
 	if (lnfact_vector.size()==0) {lnfact_vector.push_back(log(1) ); lnfact_vector.push_back(log(1) );}
 	for (int x=lnfact_vector.size(); x<=s; x++) lnfact_vector.push_back(lnfact_vector[x-1]+log(x) ); 
 	return lnfact_vector[s];

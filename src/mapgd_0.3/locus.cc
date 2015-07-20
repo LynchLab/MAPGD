@@ -24,6 +24,7 @@ Locus & Locus::operator =(const Locus& arg){
         id0=arg.id0;
 	id1=arg.id1;  
         extraid=arg.extraid;   
+	return *this;
 }
 
 void Locus::unmask(quartet_t *q){
@@ -148,4 +149,26 @@ count_t Locus::getcoverage() const
 			sample[s].base[3];
 	};
 	return total;
+}
+
+void Locus::set_quartet(const quartet_t &q, const count_t &c){
+	sample[c]=q;
+}		//sets the quartet array (unsorted)
+
+quartet_t Locus::get_quartet(const count_t &c) const {
+	return sample[c];
+}
+	
+void Locus::set_extraid(const count_t &v, const size_t &c){
+	while(extraid.size()<=c) extraid.push_back(0);
+	extraid[c]=v;
+};
+
+void Locus::resize(const size_t &c){
+	sample.resize(c);
+};
+
+count_t Locus::get_extraid(const size_t &c) const {
+	if (extraid.size()>c) return extraid[c];
+	else return 5;
 }

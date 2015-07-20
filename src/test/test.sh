@@ -54,7 +54,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$proheader))
-echo -n "cat $format | $mapgd $a > $a.out				"
+echo -n "cat $format | $mapgd $a > $a.out    			"
 timeout 20s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
@@ -66,7 +66,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$gcfheader))
-echo -n "cat $format | $mapgd $a > $a.out				"
+echo -n "cat $format | $mapgd $a > $a.out					"
 timeout 30s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
@@ -78,7 +78,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$vcfheader))
-echo -n "cat $format | $mapgd $a > $a.out				"
+echo -n "cat $format | $mapgd $a > $a.out					"
 timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
@@ -90,7 +90,7 @@ for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$vcfheader))
-echo -n "cat $format | $mapgd $a > $a.out				"
+echo -n "cat $format | $mapgd $a > $a.out					"
 timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
@@ -190,7 +190,7 @@ msg="merge "
 a="proview"
 size=$(($long+$proheader))
 rm -f $a.out
-echo -n "$mapgd proview -i $smp $lmp > $a.out			"
+echo -n "$mapgd proview -i $smp $lmp > $a.out		"
 timeout 5s $mapgd proview -i $smp $lmp > $a.out 
 testa
 
@@ -204,3 +204,10 @@ rm -f $a.out
 echo "(2) $time1 (8) $time2 ."
 d=`echo "scale=2; $long/$time2" |bc -l`
 echo "Processing ~$d lines/sec"
+echo -n "LEAK TEST ... "
+
+for comm in ${commands[@]}; do
+	valgrind --leak-check=full --show-reachable=yes --track-origins=yes --log-file="mapgd-$comm.val" ../../bin/mapgd $comm -i $bro -o > /dev/null
+done
+
+echo "done"

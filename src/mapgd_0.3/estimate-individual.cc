@@ -22,7 +22,7 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 #include "estimate-individual.h"
 
 #define BUFFER_SIZE 5000 
-//#define PRAGMA
+#define PRAGMA
 
 /*@breif: Estimates a number of summary statistics from short read sequences.*/ 
 

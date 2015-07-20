@@ -4,6 +4,7 @@
 #include <iostream>
 #include "typedef.h"
 #include <cfloat>
+#include <iomanip>
 
 class allele_stat { 
 private:
@@ -20,12 +21,8 @@ public:
 	allele_stat();		//
 
 	float_t freq;		//frequency of major allele.
-
 	count_t minor;		//idenity of minor allele.
 	count_t major;		//idenity major allele.
-	count_t e1;		//idenity of first error.
-	count_t e2;		//idenity of second error.
-
 
 	float_t error;		//ml error rate.
 

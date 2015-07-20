@@ -14,7 +14,7 @@ int comparePooled(int argc, char *argv[])
 	std::vector <int> pop;
 
 	env.setname("mapgd cp");
-	env.setver("1.0");
+	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman and Micheal Lynch");
 
 	env.setdescription("compares allele frequencies between pooled population genomic data.");
@@ -118,7 +118,7 @@ int comparePooled(int argc, char *argv[])
 		site.major=line.getindex(0);
 		site.minor=line.getindex(1);
 		multi.set(&polymorphicmodel, site);
-		for (size_t x=0; x<pop.size(); ++x) llhoodP[x]=multi.lnprob(line.getquartet(pop[x]) );
+		for (size_t x=0; x<pop.size(); ++x) llhoodP[x]=multi.lnprob(line.get_quartet(pop[x]).base );
 
 		/* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF POPULATION SUBDIVISION. */ 
 
@@ -131,9 +131,9 @@ int comparePooled(int argc, char *argv[])
 
 			site.freq=pmlP[x];
 			multi.set(&polymorphicmodel, site);
-                        llhoodP[x]=multi.lnprob(line.getquartet(pop[x]) );
+                        llhoodP[x]=multi.lnprob(line.get_quartet(pop[x]).base );
 			multi.set(&monomorphicmodel, site);
-			llhoodS[x]=multi.lnprob(line.getquartet(pop[x]) ); 
+			llhoodS[x]=multi.lnprob(line.get_quartet(pop[x]).base ); 
 		};
 		
 		/* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */

@@ -34,9 +34,7 @@ int arg_setvectorstr(int argc, char **argv, void *parm)
 	int n=1;
 	std::vector <std::string> *v=(std::vector <std::string> *)(parm);
 	while (n<argc){
-	//	std::cout << "n\n";
 		if (argv[n][0]=='-') return n;
-	//	std::cout << "pusshing " << argv[n] << std::endl;
 		v->push_back(argv[n]);
 		if ( n+1==argc) return n+1;
 		++n;
@@ -191,7 +189,6 @@ int parsargs(int argc, char *argv[], env_t env)
 					while(arg!=arg_end){
 						if (*optopt==arg->opt){
 							optind+=arg->func(argc-optind, argv+optind, arg->parm);
-							//std::cout << optind << "::" << argc << '\n';
 							arg->set=true;
 							break;
 						} ++arg;
@@ -202,7 +199,6 @@ int parsargs(int argc, char *argv[], env_t env)
 								if (*optopt==flag->opt){
 									flag->func(flag->parm);
 									optopt++;
-									//arg->set=true;
 									break;
 								};
 								++flag;
