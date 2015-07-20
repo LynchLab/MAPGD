@@ -34,6 +34,9 @@ mapFile=open(args.mapFile[0])
 #id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
 #id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
 
+HET=True
+GENOTYPE=False
+
 scaffold=0
 site=1	
 ref_nuc=2
@@ -146,16 +149,39 @@ for line in mapFile:
 
 mapFile.close()
 
+HEADER=True
+
 for line in proFile:
 	line=line.split()
-	if line[0]=="@":
+	if line[0][0]=="@":
 		continue
 	try:
+		if (HEADER):
+#			print line
+			if(GENOTYPE):
+				out=[]
+				for x in range(3, len(line) ):
+					out.append(str(x-3)+"MM")
+					out.append(str(x-3)+"Mm")
+					out.append(str(x-3)+"mm")
+				print "scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
+			elif(HET):
+				out=[]
+				for x in range(3, len(line) ):
+					out.append(x-3)
+				print "scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
+			HEADER=False
+
 		this=poly[line[scaffold]][line[site]]
 		out=[line[scaffold], line[site]]+this[0:4]
 		for x in range(3, len(line) ):
 			calls=map(int, line[x].split('/') )
-			out+=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
+			if (GENOTYPE):
+				out+=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
+			elif (HET):
+				M=atoi[this[0]]
+				m=atoi[this[1]]
+				out.append(float(calls[M])/(float(calls[M])+float(calls[m]) ) )
 		print '\t'.join(map(str, out) )
 
 	except:
