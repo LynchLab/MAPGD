@@ -2,6 +2,17 @@
 
 #include "lnmultinomial.h"
 
+/*! \breif 
+ */	
+lnmultinomial& lnmultinomial::operator=(const lnmultinomial& rhs)
+{
+	delete lnp_;
+	size_=rhs.size;
+	lnfact_vector=rhs.lnfact_vector;
+	lnp_=new float_t[size_];
+	memcpy(lnp_, rhs.lnp_, size(float_t)*size_);	
+}
+
 /* \breif creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .	
  */
 lnmultinomial::lnmultinomial (float_t* s, const count_t& size)

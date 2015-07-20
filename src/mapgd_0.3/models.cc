@@ -6,6 +6,19 @@
 
 #include "models.h"
 
+models& models::operator=(const models& rhs){
+	if (this!=&rhs){
+		lnMM_=rhs.lnMM_;
+		lnMm_=rhs.lnMm_;
+		lnmm_=rhs.lnmm_;
+
+		lnMMP_=rhs.lnMMP_;
+		lnMmP_=rhs.lnMmP_;
+		lnmmP_=rhs.lnmmP_;
+	}
+	return *this;
+};  
+
 models::models(void){
 
 	lnMM_=new lnmultinomial(4);

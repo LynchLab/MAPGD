@@ -38,6 +38,8 @@ public:
 	float_t lnprob_approx(const count_t*);		//returns the probabiltiy of the multinomial distribution . . .
 	float_t lnfact(const count_t&);			//returns the log factorial of the count type numbers in the array
 	float_t lnmultinomcoef(const count_t*);		//returns the log factorial of the count type numbers in the array
+
+	lnmultinomial& operator=(const lnmultinomial& rhs);  
 };
 
 std::vector <std::pair <count_t, float_t> > sort (const float_t *, const count_t &);

@@ -59,6 +59,8 @@ public:
 
 		return log(exp(E0_-E2_)+exp(E1_-E2_)+1.)+E2_;
 	}
+
+	models& operator=(const models& rhs);  
 };
 
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous minor.*/
