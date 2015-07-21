@@ -23,6 +23,8 @@ public:
 	Locus ();
 
 	Locus & operator=(const Locus&);	
+	Locus & operator+=(const Locus&);	
+	Locus operator+(const Locus&) const;	
 
 	const count_t getindex(count_t) const;		//returns the index of the alleles in order a sorted order
 

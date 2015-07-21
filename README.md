@@ -23,13 +23,35 @@ MAPGD is a series of related programs that estimate allele frequency, heterozygo
 
 <h5> FAQ </h5>
 
-Why don't you use a vcf format?
+1. Why don't you use a vcf format?
 
-We intend to implement read/writing in the vcf/bcf format as quickly as possible to increase the compatibility of our program with existing tools. The other output formats will be depricated as soon as vcf/bcf support is implemented.
+We intend to implement read/writing in the vcf/bcf format as quickly as possible to increase the compatibility of our program with existing tools. 
 
-Why don't you provide information on indels? 
+2. Why don't you provide information on indels? 
 
 We currently do not have a likelihood model to account for errors in calling indels, so we cannot incorporate indels into our program at this time. This is on our TODO list, but may not occur for some time.
+
+3. How long does it take to run?
+
+Typical benchmarks with 16 threads on a 2.6 GHz put us at around 18,000 sites a second for 96 simulated individuals at 10x coverage. This means that the typical invertebrate population will take around three hours to analyze on a good computer, and a vertebrate genome might take a few days. If you have managed to sequence *Paris japonica* you're looking at three months of computation time. We are not currently focused on scaling our program up for larger genomes, however, if you want to analyze something like *japonica*, let us know and we will make MPS and CUDA priorities! 
+
+4. How can I help?
+
+We have lots to do, and need plenty of help! 
+	1. Create an Issue. If you have any problems at all using this code, please click the !Issues button on the right hand menu to
+ make us aware of the problem. Whether you can't compile and run the program, or locate one of the plethora of typos in the documentation and help files, please let us know! 
+	2. Write a script to evaluate the statistical performance of a command. One of the most important task we have right now is to compare the performance of mapgd to other programs that are available and make sure that our program is as good as it can be. Whether it is comparison of computational efficiency or statistical accuracy, we need a script to assess it! 
+	3. Anything you can think of!
+
+If you can do any of these things (or anything else that you think might help), you can contribute to the project by typing:
+
+	git clone https://github.com/LynchLab/MAPGD/
+
+This will create a clone of the repository that you can play around with on your own. Then, if you can make some change that might help the project type:
+	
+	git pull origin
+
+we will review the changes you have made and see how we can integrate them into the project. 
 
 <h5> Changes </h5>
 
@@ -192,7 +214,6 @@ The program can be installed for all users of a computer by typing:
 	sudo make install
 
 Scripts for both Linux and Mac users are present in the top level directory, or the program can be run by typing "mapgd ep -i FILENAME" where FILENAME is the a .pro file.
-
 
 <h3> Bigred2 </h3>
 

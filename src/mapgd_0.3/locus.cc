@@ -19,12 +19,26 @@ Locus::Locus(count_t size){
 	id1=0;	
 }
 
-Locus & Locus::operator =(const Locus& arg){
-        sample=arg.sample; 	
-        id0=arg.id0;
-	id1=arg.id1;  
-        extraid=arg.extraid;   
+Locus & Locus::operator =(const Locus& rhs){
+        sample=rhs.sample; 	
+        id0=rhs.id0;
+	id1=rhs.id1;  
+        extraid=rhs.extraid;   
 	return *this;
+}
+
+Locus & Locus::operator+=(const Locus &rhs) {
+	if (rhs.id0==this->id0 && rhs.id1==this->id1 ){
+		sample.reserve( sample.size() + rhs.sample.size() ); // preallocate memory
+		sample.insert( sample.end(), rhs.sample.begin(), rhs.sample.end() );
+		return *this;
+	}
+	std::cerr << "operator undefined for different loci.\n"
+	return NULL;
+}
+
+const Locus Locus::operator +(const Locus& rhs) const {
+	return Locus (*this) += other;
 }
 
 void Locus::unmask(quartet_t *q){

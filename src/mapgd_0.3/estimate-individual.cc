@@ -24,6 +24,14 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 #define BUFFER_SIZE 5000 
 #define PRAGMA
 
+/*
+float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,  models &model){
+	Locus site3=site1+site2;
+	alele_stat mle3;
+	maximize_grid(site3, mle3, model, gofs, MIN, MAXGOF, MAXPITCH+texc);
+	return mle1.ll+mle2.ll-mle3.ll
+}*/
+
 /*@breif: Estimates a number of summary statistics from short read sequences.*/ 
 
 //estimate
