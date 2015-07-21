@@ -1,2 +1,0 @@
-quartet_t
-
