@@ -40,7 +40,9 @@ Typical benchmarks with 16 threads on a 2.6 GHz put us at around 18,000 sites a 
 We have lots to do, and need plenty of help! 
 
 -Create an Issue. If you have any problems at all using this code, please click the !Issues button on the right hand menu to make us aware of the problem. Whether you can't compile and run the program, or locate one of the plethora of typos in the documentation and help files, please let us know! 
+
 -Write a script to evaluate the statistical performance of a command. One of the most important task we have right now is to compare the performance of mapgd to other programs that are available and make sure that our program is as good as it can be. Whether it is comparison of computational efficiency or statistical accuracy, we need a script to assess it! 
+
 -Anything you can think of!
 
 If you can do any of these things (or anything else that you think might help), you can contribute to the project by typing:
