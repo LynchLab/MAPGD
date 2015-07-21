@@ -178,7 +178,7 @@ int estimateInd(int argc, char *argv[])
 	//else out.open('w', CSV);				//Iff no filename has been set for outfile, pgdfile prints to stdout.
 
 	if (outfilepro.size()!=0) {				//Same sort of stuff for the outfile. 
-		pro_out.open(outfilepro.c_str(), "w");
+		pro_out.open(outfilepro.c_str(), "wb");
 		if (!pro_out.is_open()){
 			std::cerr << "Cannot open file " << outfilepro << ". This file may already exist, or you may be trying to write to ro location.";
 			printUsage(env);

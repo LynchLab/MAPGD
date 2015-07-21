@@ -33,12 +33,12 @@ Locus & Locus::operator+=(const Locus &rhs) {
 		sample.insert( sample.end(), rhs.sample.begin(), rhs.sample.end() );
 		return *this;
 	}
-	std::cerr << "operator undefined for different loci.\n"
-	return NULL;
+	std::cerr << "operator undefined for different loci.\n";
+	return *this;
 }
 
 const Locus Locus::operator +(const Locus& rhs) const {
-	return Locus (*this) += other;
+	return Locus (*this) += rhs;
 }
 
 void Locus::unmask(quartet_t *q){

@@ -23,25 +23,26 @@ MAPGD is a series of related programs that estimate allele frequency, heterozygo
 
 <h5> FAQ </h5>
 
-1. Why don't you use a vcf format?
+<b> Why don't you use a vcf format? </b>
 
 We intend to implement read/writing in the vcf/bcf format as quickly as possible to increase the compatibility of our program with existing tools. 
 
-2. Why don't you provide information on indels? 
+<b> Why don't you provide information on indels? </b>
 
 We currently do not have a likelihood model to account for errors in calling indels, so we cannot incorporate indels into our program at this time. This is on our TODO list, but may not occur for some time.
 
-3. How long does it take to run?
+<b> How long does it take to run? </b>
 
 Typical benchmarks with 16 threads on a 2.6 GHz put us at around 18,000 sites a second for 96 simulated individuals at 10x coverage. This means that the typical invertebrate population will take around three hours to analyze on a good computer, and a vertebrate genome might take a few days. If you have managed to sequence *Paris japonica* you're looking at three months of computation time. We are not currently focused on scaling our program up for larger genomes, however, if you want to analyze something like *japonica*, let us know and we will make MPS and CUDA priorities! 
 
-4. How can I help?
+<b> How can I help? </b>
 
 We have lots to do, and need plenty of help! 
-	1. Create an Issue. If you have any problems at all using this code, please click the !Issues button on the right hand menu to
+
+	Create an Issue. If you have any problems at all using this code, please click the !Issues button on the right hand menu to
  make us aware of the problem. Whether you can't compile and run the program, or locate one of the plethora of typos in the documentation and help files, please let us know! 
-	2. Write a script to evaluate the statistical performance of a command. One of the most important task we have right now is to compare the performance of mapgd to other programs that are available and make sure that our program is as good as it can be. Whether it is comparison of computational efficiency or statistical accuracy, we need a script to assess it! 
-	3. Anything you can think of!
+	Write a script to evaluate the statistical performance of a command. One of the most important task we have right now is to compare the performance of mapgd to other programs that are available and make sure that our program is as good as it can be. Whether it is comparison of computational efficiency or statistical accuracy, we need a script to assess it! 
+	Anything you can think of!
 
 If you can do any of these things (or anything else that you think might help), you can contribute to the project by typing:
 
