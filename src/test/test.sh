@@ -197,9 +197,9 @@ testa
 echo -n "SPEED TEST ... "
 
 export OMP_NUM_THREADS=2
-time1=`(/usr/bin/time -f "%e" $mapgd ei -i $bro -o $a.out) 2>&1 > /dev/null`
+time1=`(/usr/bin/time -f "%e" $mapgd provewi -i $bro -b | $mapgd ei -i $bro -o $a.out) 2>&1 > /dev/null`
 export OMP_NUM_THREADS=8
-time2=`(/usr/bin/time -f "%e" $mapgd ei -i $bro -o $a.out) 2>&1 > /dev/null`
+time2=`(/usr/bin/time -f "%e" $mapgd proview -i $bro -b | $mapgd ei -i $bro -o $a.out) 2>&1 > /dev/null`
 rm -f $a.out
 echo "(2) $time1 (8) $time2 ."
 d=`echo "scale=2; $long/$time2" |bc -l`

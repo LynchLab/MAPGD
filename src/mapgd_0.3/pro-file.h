@@ -181,7 +181,7 @@ public:
 
 	void setsamples(count_t);			//set the number of samples in the profile (only called in write mode).
 	void setcolumns(count_t);			//set the number of columns for reading and writing.
-	count_t get_columns(void) {return columns_;};			//set the number of columns for reading and writing.
+	count_t get_columns(void) const {return columns_;};			//set the number of columns for reading and writing.
 
 	int setcolumn_name(const count_t&, const std::string &);
 	int setsample_name(const count_t&, const std::string &);

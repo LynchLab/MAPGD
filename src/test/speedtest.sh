@@ -36,9 +36,9 @@ d=`echo "scale=2; $long/$time2" |bc -l`
 echo "Processing ~$d lines/sec"
 
 
-time2=`(/usr/bin/time -f "%e" $mapgd proview -i $lmp $smp -b | $mapgd ei -o $a.out) 2>&1 > /dev/null`
+time2=`(/usr/bin/time -f "%e" $mapgd proview -i $bro -b | $mapgd ei ) 2>&1 > /dev/null`
 rm -f $a.out
-echo -n "piped merge mpileup file $time2 "
+echo -n "piped bro file $time2 "
 d=`echo "scale=2; $long/$time2" |bc -l`
 echo "Processing ~$d lines/sec"
 

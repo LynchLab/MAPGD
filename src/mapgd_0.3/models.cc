@@ -277,7 +277,9 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 	}
 	if (Den<=0) return 0.;
 	thisgof=Num/sqrt(Den);
-	if(thisgof<MINGOF) site.mask(maxgof_ptr);
+	if(thisgof<MINGOF){
+		site.mask(maxgof_ptr);
+	}
 	return thisgof;
 }
 

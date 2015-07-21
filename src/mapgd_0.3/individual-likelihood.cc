@@ -196,7 +196,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
 	excluded=site.maskedcount();
 	std::vector <float_t> temp_gofs(site.sample.size());
-	a.gof=model.goodness_of_fit(site, a, temp_gofs, MIN, maxgof);
+//	a.gof=model.goodness_of_fit(site, a, temp_gofs, MIN, maxgof);
 	if (iter==100) {
 		std::cerr << "Failure to maximize " << a << "\n";
 		init_params(site, a, MIN, 0, 0);
@@ -214,7 +214,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 }
 
 /* Uses a grid method to maximize the likelihood equations.*/
-count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
+count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &MINGOF, const count_t &maxpitch){
 
 	count_t N_=a.N;
 	count_t P_=a.MM*N_;
@@ -302,16 +302,16 @@ count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <
 	else a.f=0;
 
 	std::vector <float_t> temp_gofs(site.sample.size());
-	a.gof=model.goodness_of_fit(site, a, temp_gofs, MIN, maxgof);
+	a.gof=model.goodness_of_fit(site, a, temp_gofs, MIN, MINGOF);
 
 	excluded=site.maskedcount();
 	
-	if ( abs(a.gof)>maxgof) {
+	if ( a.gof<MINGOF) {
 		if (excluded==maxpitch){
 			for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 			return excluded;
 		}
-		return maximize_grid(site, a, model, gofs, MIN, maxgof, maxpitch);
+		return maximize_grid(site, a, model, gofs, MIN, MINGOF, maxpitch);
 	};
 	for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 	return excluded;

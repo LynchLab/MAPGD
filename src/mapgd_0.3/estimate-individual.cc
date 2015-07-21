@@ -35,7 +35,7 @@ float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,
 /*@breif: Estimates a number of summary statistics from short read sequences.*/ 
 
 //estimate
-allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, count_t MIN, count_t EMLMIN, count_t MAXGOF, count_t MAXPITCH){
+allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, count_t MIN, count_t EMLMIN, float_t MINGOF, count_t MAXPITCH){
 
 	allele_stat mle, temp;					//allele_stat is a basic structure that containes all the summary statistics for
 								//an allele. It gets passed around a lot, and a may turn it into a class that has
@@ -52,11 +52,11 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	if (init_params(site, mle, MIN, EMLMIN,0) ){		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
 	if (mle.error!=0){
-		maximize_grid(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		maximize_grid(site, mle, model, gofs, MIN, MINGOF*-1, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 //		maximize_newton(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
-		maximize_analytical(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		maximize_analytical(site, mle, model, gofs, MIN, MINGOF*-1, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 
 	// CALCULATE THE LIKELIHOODS 
@@ -113,7 +113,7 @@ int estimateInd(int argc, char *argv[])
 	float_t EMLMIN=0.001;
 	count_t MIN=0;
 	float_t A=0.00;
-	float_t MAXGOF=2.00;
+	float_t MINGOF=2.00;
 	count_t MAXPITCH=96;
 
 	count_t skip=0;
@@ -134,9 +134,12 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('p',"out-pro", &outfilepro,	&arg_setstr, 	"an error occured while setting the name of the output file.", "name of a 'cleaned' pro file (default none).");
 	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "the individuals to be used in estimates.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).");
 	env.optional_arg('m',"minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
+
+//	env.optional_arg('c',"columns", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "number of columsn in profile (if applicable).");
+
 	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage of sites to be estimated (defualt 4).");
 	env.optional_arg('a',"alpha", 	&A, 		&arg_setfloat_t, "please provide a float.", "cut-off value for printing polymorphic sites (default 0.0).");
-	env.optional_arg('g',"goodfit", &MAXGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
+	env.optional_arg('g',"goodfit", &MINGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
 	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
 	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "maximum number of sites to be analyzed (default All sites)");
@@ -177,14 +180,23 @@ int estimateInd(int argc, char *argv[])
 
 	//else out.open('w', CSV);				//Iff no filename has been set for outfile, pgdfile prints to stdout.
 
-	if (outfilepro.size()!=0) {				//Same sort of stuff for the outfile. 
-		pro_out.open(outfilepro.c_str(), "wb");
-		if (!pro_out.is_open()){
-			std::cerr << "Cannot open file " << outfilepro << ". This file may already exist, or you may be trying to write to ro location.";
-			printUsage(env);
-		};
-		pro_out.copyheader(pro);
-		pro_out.writeheader();
+	count_t outc=6;
+	char cdel='\t';
+	char qdel='/';
+	bool binary=false;
+	if (outfilepro.size()!=0) {				//Same sort of stuff for the outf
+		if (binary) {
+			pro_out.open(outfilepro.c_str(), "wb");
+			if (!pro_out.is_open() ) {printUsage(env); exit(0);}
+		} else {
+			pro_out.open(outfilepro.c_str(), "w");
+			if (!pro_out.is_open() ) {printUsage(env); exit(0);}
+		}
+		pro_out.setsamples(pro.size() );
+		pro_out.setcolumns(outc);
+		pro_out.set_delim_column(cdel);
+		pro_out.set_delim_quartet(qdel);
+		if (not (noheader) ) pro_out.writeheader();
 	};
 
 	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
@@ -231,7 +243,7 @@ int estimateInd(int argc, char *argv[])
 				}
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
-					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MAXGOF, MAXPITCH);
+					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
 					//*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[c]) << '\t' << buffer_site[c].getname(0) << '\t' << buffer_site[c].getname_gt(1) << '\t';
 					//*out << std::fixed << std::setprecision(6) << buffer_mle[c] << std::endl;
 					#ifdef PRAGMA
@@ -253,9 +265,9 @@ int estimateInd(int argc, char *argv[])
 				*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
 				*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
 			}
-			if (buffer_mle[x].gof< -MAXGOF) buffer_site[x].maskall(); 
+			if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
 			if (pro_out.is_open() ){
-				pro_out.copyheader(pro);
+				buffer_site[x].id0=pro_out.encodeid0(pro.decodeid0(buffer_site[x].id0) );
 				pro_out.write(buffer_site[x]);
 			}
 		}
