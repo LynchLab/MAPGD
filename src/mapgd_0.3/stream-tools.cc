@@ -7,7 +7,7 @@ std::vector<std::string> split(std::string s, char delim) {
 	std::string item;
 	while (std::getline(ss, item, delim) ) {
 		elems.push_back(item);
-		item.clear();
+	//	item.clear();
 	}
 	return elems;
 }

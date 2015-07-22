@@ -21,8 +21,8 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 
 #include "estimate-individual.h"
 
-#define BUFFER_SIZE 5000 
-#define PRAGMA
+#define BUFFER_SIZE 50 
+//#define PRAGMA
 
 /*
 float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,  models &model){
@@ -230,15 +230,17 @@ int estimateInd(int argc, char *argv[])
 				#endif
 				{
 					c=readed;				//Turn on the ability to read data from all clones in 
+					std::cout << "c" << c << std::endl;
 					if(pro.read(buffer_site[c])!=EOF){
 						readed++;	//reads the next line of the pro file. pro.read() retuerns 0
 						estimate_me=1;
 					}
 					else estimate_me=0;
 				}
+				/*
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
-					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
+					//buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
 					#ifdef PRAGMA
 					#pragma omp critical
 					#endif
@@ -246,7 +248,7 @@ int estimateInd(int argc, char *argv[])
 						sum_gofs[i]+=gofs[i];
 						if (gofs[i]!=0) gofs_read[i]++;
 					}
-				}
+				}*/
 			}
 
 		}
@@ -254,15 +256,15 @@ int estimateInd(int argc, char *argv[])
                 	// Now print everything to the *out stream, which could be a file or the stdout. 
 			//TODO move this over into a formated file.
 			//?
-			if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
-				*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
+			//if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
+			//	*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
 				*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
-			}
-			if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
-			if (pro_out.is_open() ){
+			//}
+			//if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
+			/*if (pro_out.is_open() ){
 				buffer_site[x].id0=pro_out.encodeid0(pro.decodeid0(buffer_site[x].id0) );
 				pro_out.write(buffer_site[x]);
-			}
+			}*/
 		}
 		if (readed!=BUFFER_SIZE){break;}
 	}

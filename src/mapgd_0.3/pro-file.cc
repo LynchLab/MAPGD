@@ -489,9 +489,7 @@ int profile::readm(Locus &site)
 		}
 		std::vector <quartet_t>::iterator it=site.sample.begin();
 		std::vector <quartet_t>::iterator it_end=site.sample.end();
-	
 		std::vector <std::string>::iterator column_it=column.begin();	
-		
 
 		site.id0=encodeid0(column[0]);
 		site.id1=encodeid1(column[1]);
