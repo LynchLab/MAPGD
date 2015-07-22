@@ -3,13 +3,15 @@
 
 #include "file-index.h"
 
-/*! \breif and index file designed to help with serializiation and 
+/*! \breif index file designed to help with serializiation.
  */
 
 class file_index{
 
 private:
-	std::map <std::string, count_t> id0_str_;		//
+/*! \breif A hash table to store
+ */
+	std::map <std::string, id0_t> id0_str_;		//
 	std::vector <std::string> id0_;				//
 	std::vector <id1_t> sizes_;				//
 

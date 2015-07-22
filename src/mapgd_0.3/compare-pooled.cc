@@ -89,8 +89,7 @@ int comparePooled(int argc, char *argv[])
 
 	Locus line;	
 	while (pro.read(line)!=EOF ){
-		for (size_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
-		for (size_t x=0; x<pop.size(); ++x) line.unmask(pop[x]);
+		for (size_t x=0; x<pop.size(); ++x) unmask(line.get_quartet(pop[x]));
 		for (size_t x=0; x<pop.size(); ++x) if (line.getcoverage(x)==0) line.sample[x].masked=true;
 
 		/* 2) Identify the counts for the Putative major and minor alleles in the metapopulation. */ 

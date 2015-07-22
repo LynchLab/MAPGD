@@ -7,9 +7,6 @@ Locus::Locus(void){
 	id0=0;
 	id1=0;	
 };
-/*! \breif Locus has a memory leak, but I don't know where it is comming from, so I've
- *	defined the crap out of it. Still leaking though.
- */
 
 /*! \brief Locus is initialized to id0=0, id1=0, and set to contain 0 samples.
 */	
@@ -140,7 +137,7 @@ count_t Locus::getcount(count_t c) const
 	else return 0;
 }
 
-count_t Locus::getcoverage(count_t s) const
+count_t Locus::get_coverage(count_t s) const
 {
 	if (s<sample.size() ) return sample[s].base[0]+
 				sample[s].base[1]+
@@ -152,10 +149,10 @@ count_t Locus::getcoverage(count_t s) const
 	};
 }
 
-count_t Locus::getcoverage() const
+count_t Locus::get_coverage() const
 {
 	count_t total=0;
-	for (unsigned int s=0; s<sample.size();++s){
+	for (size_t s=0; s<sample.size();++s){
 		if (sample[s].masked) continue;
 		total+=sample[s].base[0]+
 			sample[s].base[1]+
@@ -169,9 +166,14 @@ void Locus::set_quartet(const quartet_t &q, const count_t &c){
 	sample[c]=q;
 }		//sets the quartet array (unsorted)
 
-quartet_t Locus::get_quartet(const count_t &c) const {
+const quartet_t Locus::get_quartet(const count_t &c) const {
 	return sample[c];
 }
+
+quartet_t Locus::get_quartet(const count_t &c) {
+	return sample[c];
+}
+	
 	
 void Locus::set_extraid(const count_t &v, const size_t &c){
 	while(extraid.size()<=c) extraid.push_back(0);

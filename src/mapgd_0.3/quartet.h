@@ -34,10 +34,10 @@ typedef struct quartet {
 	}
 } quartet_t;
 
-/* \breif returns the */
-count_t major(const quartet_t&);
-count_t minor(const quartet_t&);
-count_t error1(const quartet_t&);
-count_t error2(const quartet_t&);
+/*! \breif returns the */
 count_t count(const quartet_t&);
+
+void mask(quartet_t&);
+void unmask(quartet_t&);
+
 #endif
