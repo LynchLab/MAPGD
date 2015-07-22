@@ -1,158 +1,158 @@
-==16024== Memcheck, a memory error detector
-==16024== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
-==16024== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
-==16024== Command: ../../bin/mapgd proview -i profile.brt -o
-==16024== Parent PID: 15706
-==16024== 
-==16024== 
-==16024== HEAP SUMMARY:
-==16024==     in use at exit: 1,276 bytes in 42 blocks
-==16024==   total heap usage: 43 allocs, 1 frees, 1,294 bytes allocated
-==16024== 
-==16024== 4 bytes in 1 blocks are still reachable in loss record 1 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x805D932: void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&) (new_allocator.h:104)
-==16024==    by 0x805CF7B: arg_setvectorstr(int, char**, void*) (vector.tcc:101)
-==16024==    by 0x805C6DE: parsargs(int, char**, env_t) (interface.cc:191)
-==16024==    by 0x806D1AF: proview(int, char**) (proview.cc:64)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 24 bytes in 1 blocks are possibly lost in loss record 2 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x4106FE3: std::string::_Rep::_S_create(unsigned int, unsigned int, std::allocator<char> const&) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
-==16024==    by 0x4108EF5: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
-==16024==    by 0x410957F: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
-==16024==    by 0x805CF67: arg_setvectorstr(int, char**, void*) (interface.cc:40)
-==16024==    by 0x805C6DE: parsargs(int, char**, env_t) (interface.cc:191)
-==16024==    by 0x806D1AF: proview(int, char**) (proview.cc:64)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 28 bytes in 1 blocks are still reachable in loss record 3 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x804B1A8: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
-==16024==    by 0x804A75B: main (interface.h:168)
-==16024== 
-==16024== 28 bytes in 1 blocks are still reachable in loss record 4 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x804B1A8: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
-==16024==    by 0x804A795: main (interface.h:168)
-==16024== 
-==16024== 28 bytes in 1 blocks are still reachable in loss record 5 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x804B1A8: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
-==16024==    by 0x804A7CF: main (interface.h:168)
-==16024== 
-==16024== 28 bytes in 1 blocks are still reachable in loss record 6 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x804B1A8: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
-==16024==    by 0x804A809: main (interface.h:168)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 7 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x804B208: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
-==16024==    by 0x804A6D3: main (interface.h:173)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 8 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x804B208: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
-==16024==    by 0x804A721: main (interface.h:173)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 9 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CA39: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 10 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CA95: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 11 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CAF1: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 12 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CB4D: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 13 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CBA9: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 14 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CC05: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 15 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CC61: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 16 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CCBD: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 17 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CD13: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 18 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CD6F: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 19 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CDCB: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 20 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CE27: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 21 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CE83: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 32 bytes in 1 blocks are still reachable in loss record 22 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CEDF: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 64 bytes in 2 blocks are still reachable in loss record 23 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x804AE6B: env_t::env_t(env_t const&) (new_allocator.h:104)
-==16024==    by 0x804A81C: main (mapgd.cc:39)
-==16024== 
-==16024== 112 bytes in 4 blocks are still reachable in loss record 24 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x804AF5B: env_t::env_t(env_t const&) (new_allocator.h:104)
-==16024==    by 0x804A81C: main (mapgd.cc:39)
-==16024== 
-==16024== 192 bytes in 6 blocks are still reachable in loss record 25 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806CF87: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== 256 bytes in 8 blocks are still reachable in loss record 26 of 26
-==16024==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==16024==    by 0x806D008: proview(int, char**) (new_allocator.h:104)
-==16024==    by 0x804A832: main (mapgd.cc:39)
-==16024== 
-==16024== LEAK SUMMARY:
-==16024==    definitely lost: 0 bytes in 0 blocks
-==16024==    indirectly lost: 0 bytes in 0 blocks
-==16024==      possibly lost: 24 bytes in 1 blocks
-==16024==    still reachable: 1,252 bytes in 41 blocks
-==16024==         suppressed: 0 bytes in 0 blocks
-==16024== 
-==16024== For counts of detected and suppressed errors, rerun with: -v
-==16024== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==27061== Memcheck, a memory error detector
+==27061== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==27061== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==27061== Command: ../../bin/mapgd proview -i profile.brt -o
+==27061== Parent PID: 26728
+==27061== 
+==27061== 
+==27061== HEAP SUMMARY:
+==27061==     in use at exit: 1,276 bytes in 42 blocks
+==27061==   total heap usage: 43 allocs, 1 frees, 1,294 bytes allocated
+==27061== 
+==27061== 4 bytes in 1 blocks are still reachable in loss record 1 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x805D902: void std::vector<std::string, std::allocator<std::string> >::_M_emplace_back_aux<std::string>(std::string&&) (new_allocator.h:104)
+==27061==    by 0x805CF4B: arg_setvectorstr(int, char**, void*) (vector.tcc:101)
+==27061==    by 0x805C6AE: parsargs(int, char**, env_t) (interface.cc:191)
+==27061==    by 0x806D0FF: proview(int, char**) (proview.cc:64)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 24 bytes in 1 blocks are possibly lost in loss record 2 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x4106FE3: std::string::_Rep::_S_create(unsigned int, unsigned int, std::allocator<char> const&) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
+==27061==    by 0x4108EF5: char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
+==27061==    by 0x410957F: std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
+==27061==    by 0x805CF37: arg_setvectorstr(int, char**, void*) (interface.cc:40)
+==27061==    by 0x805C6AE: parsargs(int, char**, env_t) (interface.cc:191)
+==27061==    by 0x806D0FF: proview(int, char**) (proview.cc:64)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 28 bytes in 1 blocks are still reachable in loss record 3 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x804B1A8: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
+==27061==    by 0x804A75B: main (interface.h:168)
+==27061== 
+==27061== 28 bytes in 1 blocks are still reachable in loss record 4 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x804B1A8: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
+==27061==    by 0x804A795: main (interface.h:168)
+==27061== 
+==27061== 28 bytes in 1 blocks are still reachable in loss record 5 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x804B1A8: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
+==27061==    by 0x804A7CF: main (interface.h:168)
+==27061== 
+==27061== 28 bytes in 1 blocks are still reachable in loss record 6 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x804B1A8: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
+==27061==    by 0x804A809: main (interface.h:168)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 7 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x804B208: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
+==27061==    by 0x804A6D3: main (interface.h:173)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 8 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x804B208: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
+==27061==    by 0x804A721: main (interface.h:173)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 9 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806C989: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 10 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806C9E5: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 11 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CA41: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 12 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CA9D: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 13 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CAF9: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 14 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CB55: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 15 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CBB1: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 16 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CC0D: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 17 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CC63: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 18 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CCBF: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 19 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CD1B: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 20 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CD77: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 21 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CDD3: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 32 bytes in 1 blocks are still reachable in loss record 22 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CE2F: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 64 bytes in 2 blocks are still reachable in loss record 23 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x804AE6B: env_t::env_t(env_t const&) (new_allocator.h:104)
+==27061==    by 0x804A81C: main (mapgd.cc:39)
+==27061== 
+==27061== 112 bytes in 4 blocks are still reachable in loss record 24 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x804AF5B: env_t::env_t(env_t const&) (new_allocator.h:104)
+==27061==    by 0x804A81C: main (mapgd.cc:39)
+==27061== 
+==27061== 192 bytes in 6 blocks are still reachable in loss record 25 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CED7: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== 256 bytes in 8 blocks are still reachable in loss record 26 of 26
+==27061==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==27061==    by 0x806CF58: proview(int, char**) (new_allocator.h:104)
+==27061==    by 0x804A832: main (mapgd.cc:39)
+==27061== 
+==27061== LEAK SUMMARY:
+==27061==    definitely lost: 0 bytes in 0 blocks
+==27061==    indirectly lost: 0 bytes in 0 blocks
+==27061==      possibly lost: 24 bytes in 1 blocks
+==27061==    still reachable: 1,252 bytes in 41 blocks
+==27061==         suppressed: 0 bytes in 0 blocks
+==27061== 
+==27061== For counts of detected and suppressed errors, rerun with: -v
+==27061== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

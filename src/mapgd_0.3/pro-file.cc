@@ -936,21 +936,6 @@ count_t profile::maskedcount(void){
 	return site_.maskedcount();
 };
 
-
-void profile::unmask(count_t a){
-	if(a<samples_) site_.unmask(a);
-}
-
-
-void profile::unmask(quartet_t *q){
-	site_.unmask(q);
-}
-
-void profile::mask(quartet_t *q){
-	site_.mask(q);
-}
-
-
 /*
 */
 
@@ -991,7 +976,7 @@ void profile::set_extraid(const count_t &eid, const count_t &x)
 
 //===WHOOPS SOMETHING IS WRONG HERE!
 	
-char Locus::getname(count_t c) const
+char Locus::getname(const count_t &c) const
 {
         if (c<5){
                 if (getcount(c)==0 ) return '*';
@@ -1000,7 +985,7 @@ char Locus::getname(count_t c) const
         return '*';
 }
 
-char Locus::getname_gt(count_t c) const
+char Locus::getname_gt(const count_t &c) const
 {
         if (c<5){
                 if (getcount(c)==getcount(c+1) || getcount(c)==0 ) return '*';

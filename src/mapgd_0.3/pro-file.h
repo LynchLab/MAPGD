@@ -226,15 +226,12 @@ public:
 
 	count_t maskedcount(void);			//mask all lines
 	void maskall(void);				//mask all lines
-	void unmask(count_t);				//unmask line N
-	void unmask(quartet *);				//mask line N
-	void mask(quartet *);				//mask line N
-	void mask(count_t);				//mask line N
+
 	//THESE WILL PROBABLY BE DEPRICATED
 	void sort(void);				//sort reads from most common to least common (amoung all non-masked sites).
 	void header(const bool &h) {noheader_=not (h);};				//sort reads from most common to least common (amoung all non-masked sites).
-	Locus get_site(void) {return site_;};		//sort reads from most common to least common (amoung all non-masked sites).
-	void set_site(const Locus &site) {site_=site;};		//sort reads from most common to least common (amoung all non-masked sites).
+	Locus & get_locus(void) {return site_;};		//sort reads from most common to least common (amoung all non-masked sites).
+	void set_locus(const Locus &site) {site_=site;};		//sort reads from most common to least common (amoung all non-masked sites).
 
 	quartet_t get_quartet(const count_t &t) {return site_.get_quartet(t);};		//sort reads from most common to least common (amoung all non-masked sites).
 

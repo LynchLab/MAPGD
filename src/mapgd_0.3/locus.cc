@@ -38,6 +38,7 @@ const Locus Locus::operator +(const Locus& rhs) const {
 	return Locus (*this) += rhs;
 }
 
+/*
 void Locus::unmask(quartet_t *q){
 	q->masked=false;
 }
@@ -48,13 +49,14 @@ void Locus::mask(quartet_t *q){
 
 void Locus::unmask(count_t a){
 	if(a<sample.size() ) sample[a].masked=false;
-}
+}*/
 
 void Locus::unmaskall(void){
 	for (unsigned int s=0; s<sample.size();++s){
 		sample[s].masked=false;
 	}
 }
+
 
 void Locus::maskall(void){
 	for (unsigned int s=0; s<sample.size();++s){
@@ -137,7 +139,7 @@ count_t Locus::getcount(count_t c) const
 	else return 0;
 }
 
-count_t Locus::get_coverage(count_t s) const
+count_t Locus::getcoverage(count_t s) const
 {
 	if (s<sample.size() ) return sample[s].base[0]+
 				sample[s].base[1]+
@@ -149,7 +151,7 @@ count_t Locus::get_coverage(count_t s) const
 	};
 }
 
-count_t Locus::get_coverage() const
+count_t Locus::getcoverage() const
 {
 	count_t total=0;
 	for (size_t s=0; s<sample.size();++s){
@@ -162,29 +164,35 @@ count_t Locus::get_coverage() const
 	return total;
 }
 
-void Locus::set_quartet(const quartet_t &q, const count_t &c){
+void Locus::set_quartet(const quartet_t &q, const count_t &c)
+{
 	sample[c]=q;
-}		//sets the quartet array (unsorted)
+}		
 
-const quartet_t Locus::get_quartet(const count_t &c) const {
+const quartet_t & Locus::get_quartet(const count_t &c) const 
+{
 	return sample[c];
 }
 
-quartet_t Locus::get_quartet(const count_t &c) {
+quartet_t & Locus::get_quartet(const count_t &c) 
+{
 	return sample[c];
 }
 	
-	
-void Locus::set_extraid(const count_t &v, const size_t &c){
-	while(extraid.size()<=c) extraid.push_back(0);
-	extraid[c]=v;
-};
 
-void Locus::resize(const size_t &c){
+void Locus::resize(const size_t &c)
+{
 	sample.resize(c);
-};
+}
 
-count_t Locus::get_extraid(const size_t &c) const {
+count_t Locus::get_extraid(const size_t &c) const 
+{
 	if (extraid.size()>c) return extraid[c];
 	else return 5;
+}
+
+void Locus::set_extraid(const count_t &v, const size_t &c)
+{
+	while(extraid.size()<=c) extraid.push_back(0);
+	extraid[c]=v;
 }

@@ -66,7 +66,7 @@ The the syntax of the -p option (which specifies the populations to be analyzed)
 
 The default behavior of the cp and ep commands bas been changed to read and write to the stdin and stdout (respectively).
 
--i and -o options will continue to function as they have previously. 
+The ability to specify input and output files with the -i and -o options may be deprecated in the near future. Because files within the program are unbuffered, reading and writing is quite slow and you will see significant gains in performance using i/o redirection. 
 
 Headers have been added to .pro files to preserve information about input files and aid with compatibility as development continues. Additionally, the last line of .pro files now list the total number of lines in the file. 
  

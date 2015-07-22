@@ -7,6 +7,7 @@
 #include "models.h"
 
 models& models::operator=(const models& rhs){
+
 	if (this!=&rhs){
 		lnMM_=rhs.lnMM_;
 		lnMm_=rhs.lnMm_;
@@ -16,30 +17,22 @@ models& models::operator=(const models& rhs){
 		lnMmP_=rhs.lnMmP_;
 		lnmmP_=rhs.lnmmP_;
 	}
+
 	return *this;
 };  
 
 models::models(void){
 
-	lnMM_=new lnmultinomial(4);
-	lnMm_=new lnmultinomial(4);
-	lnmm_=new lnmultinomial(4);
+	lnMM_=lnmultinomial(4);
+	lnMm_=lnmultinomial(4);
+	lnmm_=lnmultinomial(4);
 
-	lnMMP_=new lnmultinomial(2);
-	lnMmP_=new lnmultinomial(2);
-	lnmmP_=new lnmultinomial(2);
-
-//	lnF_=new lnmultinomial(4);	
+	lnMMP_=lnmultinomial(2);
+	lnMmP_=lnmultinomial(2);
+	lnmmP_=lnmultinomial(2);
 }
 
 models::~models(void){
-	delete lnMM_;
-	delete lnMm_;
-	delete lnmm_;
-
-	delete lnMMP_;
-	delete lnMmP_;
-	delete lnmmP_;
 }
 
 
@@ -141,9 +134,9 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//Lets us iterate over the quartets. 
 	std::vector <quartet_t>::const_iterator end=site.sample.end();	//Tells us when to stop iterating, so we don't generate a seg. fault.
 
-	lnMM_->set(&MMmodel, p);	//Lets initialize the multinomial distributions that will tell us the probability of  
-	lnMm_->set(&Mmmodel, p);	//observing a particular quartet given that the individual has the MM, Mm or mm genotype.
-	lnmm_->set(&mmmodel, p);	//
+	lnMM_.set(&MMmodel, p);	//Lets initialize the multinomial distributions that will tell us the probability of  
+	lnMm_.set(&Mmmodel, p);	//observing a particular quartet given that the individual has the MM, Mm or mm genotype.
+	lnmm_.set(&mmmodel, p);	//
 
 	float_t logMM=log(p.MM);	//The frequency of the MM genotype in the sample.
 	float_t logMm=log(p.Mm);	// Dito Mm.
@@ -158,9 +151,9 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 			T=( it->base[0]+it->base[1]+it->base[2]+it->base[3] );
 			if ( T>=MIN ) {
 
-				E0=logMM+lnMM_->lnprob(it->base);
-				E1=logMm+lnMm_->lnprob(it->base);
-				E2=logmm+lnmm_->lnprob(it->base);
+				E0=logMM+lnMM_.lnprob(it->base);
+				E1=logMm+lnMm_.lnprob(it->base);
+				E2=logmm+lnmm_.lnprob(it->base);
 
 
 				if(E0>E2){
@@ -180,9 +173,9 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 /*! \Breif DONT USE THIS!!! TODO FIX IT!. */
 float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population, const count_t &MIN){
 
-	lnMM_->set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
-	lnMm_->set(&Mmmodel, population);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
-	lnmm_->set(&mmmodel, population);  //
+	lnMM_.set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
+	lnMm_.set(&Mmmodel, population);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
+	lnmm_.set(&mmmodel, population);  //
 
 	float_t logMM=log(population.MM); //The frequency of the MM genotype in the sample.
 	float_t logMm=log(population.Mm); // Dito Mm.
@@ -190,9 +183,9 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 
 	float_t E[3];
 
-	E[0]=logMM+lnMM_->lnprob(quartet.base);
-	E[1]=logMm+lnMm_->lnprob(quartet.base);
-	E[2]=logmm+lnmm_->lnprob(quartet.base);
+	E[0]=logMM+lnMM_.lnprob(quartet.base);
+	E[1]=logMm+lnMm_.lnprob(quartet.base);
+	E[2]=logmm+lnmm_.lnprob(quartet.base);
 
 	float_t ll;
 
@@ -229,9 +222,9 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 	float_t logMm=log(allele.Mm); // Dito Mm.
 	float_t logmm=log(allele.mm); // Diot mm.
 
-	lnMMP_->set(&MMmodelP, allele);  
-	lnMmP_->set(&MmmodelP, allele); 
-	lnmmP_->set(&mmmodelP, allele); 
+	lnMMP_.set(&MMmodelP, allele);  
+	lnMmP_.set(&MmmodelP, allele); 
+	lnmmP_.set(&mmmodelP, allele); 
 
 	count_t count1[2];	//The count of the number of major alleles observed.
 
@@ -278,7 +271,7 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 	if (Den<=0) return 0.;
 	thisgof=Num/sqrt(Den);
 	if(thisgof<MINGOF){
-		site.mask(maxgof_ptr);
+		mask(*maxgof_ptr);
 	}
 	return thisgof;
 }

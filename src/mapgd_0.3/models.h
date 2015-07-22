@@ -17,11 +17,11 @@
 
 class models{
 private:
-lnmultinomial *lnMM_, *lnMm_, *lnmm_;		//The three multinomials we will use for probability calculations.
+lnmultinomial lnMM_, lnMm_, lnmm_;		//The three multinomials we will use for probability calculations.
 						//The '4' specifies the number of categories of the distribution.
 						//Since these represent the distribution of the four nucleotides 
 						//A, C, G and T, we use 4 categories.
-lnmultinomial *lnMMP_, *lnMmP_, *lnmmP_;		
+lnmultinomial lnMMP_, lnMmP_, lnmmP_;		
 
 float_t E0_, E1_, E2_;			//Values used in calculations;
 public:
@@ -46,9 +46,9 @@ public:
 
 	inline float_t lnL(const float_t &logMM, const float_t &logMm, const float &logmm, const count_t *count){
 		/*posterior = prior x likelihood */
-		E0_=logMM+lnMMP_->lnprob(count);
-		E1_=logMm+lnMmP_->lnprob(count);
-		E2_=logmm+lnmmP_->lnprob(count);
+		E0_=logMM+lnMMP_.lnprob(count);
+		E1_=logMm+lnMmP_.lnprob(count);
+		E2_=logmm+lnmmP_.lnprob(count);
 
 		if (E0_>E2_) std::swap(E2_, E0_);
 		if (E1_>E2_) std::swap(E2_, E1_);

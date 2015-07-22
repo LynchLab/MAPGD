@@ -91,7 +91,7 @@ int estimatePooled(int argc, char *argv[])
 		for (size_t x=0; x<pro.size(); ++x) pop.push_back(x);
 	};
 
-	for (size_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
+	for (size_t x=0; x<pop.size(); ++x) unmask(pro.get_locus().get_quartet(pop[x]) );
 
 	*out << "id1\t\tid2\tmajor\tminor\t";
 	for (size_t x=0; x<pop.size(); ++x) *out << "Freq_P\tll_poly\tll_fixed\tcov\t";

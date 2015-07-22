@@ -75,7 +75,7 @@ int comparePooled(int argc, char *argv[])
 		for (size_t x=0; x<pro.size(); ++x) pop.push_back(x);
 	};
 
-	for (size_t x=0; x<pop.size(); ++x) pro.unmask(pop[x]);
+	for (size_t x=0; x<pop.size(); ++x) unmask(pro.get_locus().get_quartet(x));
 
 	llhoodP=new float_t[pop.size()];
 	llhoodS=new float_t[pop.size()];

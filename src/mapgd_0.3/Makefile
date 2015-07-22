@@ -4,8 +4,16 @@ prefix=/usr/local
 mapdg: mapgd.o allele_stat.o binomial.o compare-pooled.o estimate-individual.o estimate-pooled.o gcf-file.o gcf-file-header.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o proview.o quartet.o stream-tools.o models.o
 	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd
 
-pFq: testing/pFq_test.o individual-likelihood.o testing/hypergeometric-pFq.o locus.o lnmultinomial.o allele_stat.o quartet.o
-	$(CXX) $^ $(CXXFLAGS) -o ./testing/pFq_test -l gsl -l gslcblas
+estimate: allele_stat.o binomial.o estimate-individual.o estimate-pooled.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o pooled-likelihood.o population.o pro-file.o quartet.o stream-tools.o models.o
+	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd-estimate
+
+compare: allele_stat.o binomial.o compare-pooled.o o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o quartet.o stream-tools.o models.o
+	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd-compare
+
+proview: mapgd.o allele_stat.o binomial.o compare-pooled.o estimate-individual.o estimate-pooled.o gcf-file.o gcf-file-header.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o proview.o quartet.o stream-tools.o models.o
+	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd-proview
+
+
 
 .PHONY: debug
 

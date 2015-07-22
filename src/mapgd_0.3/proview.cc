@@ -151,7 +151,7 @@ int proview(int argc, char *argv[])
 	bool read_site=false;
 	bool read_scaffold=false;
 
-	Locus site=out.get_site();
+	Locus site=out.get_locus();
 
 	while(go){
 		std::vector <quartet_t>::iterator it=site.begin();

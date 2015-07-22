@@ -43,6 +43,7 @@ public:
 
 	/**/
 	void set_quartet(const quartet_t &, const count_t &);	//sets the quartet array (unsorted)
+
 	const quartet_t & get_quartet(const count_t &) const;	
 	quartet_t & get_quartet(const count_t &);	
 
@@ -50,7 +51,7 @@ public:
 	count_t maskedcount(void) const;		//returns the count of the number of individuals that are masked.
 
 	void maskall(void);				//mask all lines
-	void unmaskall(void);				//mask all lines
+	void unmaskall(void);				//unmask all lines
 
 	char getname( const count_t &) const;
 	char getname_gt( const count_t &) const;

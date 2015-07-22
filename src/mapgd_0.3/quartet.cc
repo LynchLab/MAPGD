@@ -8,6 +8,6 @@ void unmask(quartet_t &q){
 	q.masked=false;
 }
 
-void unmask(quartet_t &q){
+void mask(quartet_t &q){
 	q.masked=true;
 }

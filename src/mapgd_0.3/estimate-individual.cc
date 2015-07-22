@@ -209,10 +209,6 @@ int estimateInd(int argc, char *argv[])
 		for (count_t x=0; x<pro.size(); ++x) ind.push_back(x);  //put every clone in the vector ind.
 	};
 
-	for (count_t x=0; x<ind.size(); ++x){
-		 pro.unmask(ind[x]);					//Turn on the ability to read data from all clones in 
-	}								//the vector ind.
-
 	std::vector <float_t> sum_gofs(ind.size() );
 	std::vector <float_t> gofs_read(ind.size() );
 	models model;
@@ -234,7 +230,6 @@ int estimateInd(int argc, char *argv[])
 				#endif
 				{
 					c=readed;				//Turn on the ability to read data from all clones in 
-					for (size_t y=0; y<ind.size(); ++y) buffer_site[x].unmask(ind[y]);	
 					if(pro.read(buffer_site[c])!=EOF){
 						readed++;	//reads the next line of the pro file. pro.read() retuerns 0
 						estimate_me=1;
@@ -244,8 +239,6 @@ int estimateInd(int argc, char *argv[])
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
 					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
-					//*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[c]) << '\t' << buffer_site[c].getname(0) << '\t' << buffer_site[c].getname_gt(1) << '\t';
-					//*out << std::fixed << std::setprecision(6) << buffer_mle[c] << std::endl;
 					#ifdef PRAGMA
 					#pragma omp critical
 					#endif
