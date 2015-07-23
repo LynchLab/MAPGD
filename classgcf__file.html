@@ -83,7 +83,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">gcf_file Class Reference</div>  </div>
 </div><!--header-->
@@ -178,6 +181,69 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_id1</b> (const ui
 <tr class="memitem:a3136bd858c2dd2dba8c8ebfee8b0bc70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3136bd858c2dd2dba8c8ebfee8b0bc70"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set_extraid</b> (const count_t &amp;, const count_t &amp;)</td></tr>
 <tr class="separator:a3136bd858c2dd2dba8c8ebfee8b0bc70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a116ea83de7a5bcade4bbb29c4beb7ffe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a116ea83de7a5bcade4bbb29c4beb7ffe"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>readt</b> (int)</td></tr>
+<tr class="separator:a116ea83de7a5bcade4bbb29c4beb7ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bb81ddb1c112ee0b6e82c69cc00e2e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0bb81ddb1c112ee0b6e82c69cc00e2e2"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>readb</b> (int)</td></tr>
+<tr class="separator:a0bb81ddb1c112ee0b6e82c69cc00e2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24f370562956eb43af26da5f0194bffb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a24f370562956eb43af26da5f0194bffb"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>writet</b> ()</td></tr>
+<tr class="separator:a24f370562956eb43af26da5f0194bffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d7b82926363bbae82d00bea32426d6a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d7b82926363bbae82d00bea32426d6a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>writeb</b> ()</td></tr>
+<tr class="separator:a3d7b82926363bbae82d00bea32426d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5b15f4e3a1d081c20902163b669e09e0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b15f4e3a1d081c20902163b669e09e0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>open_</b></td></tr>
+<tr class="separator:a5b15f4e3a1d081c20902163b669e09e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4b7be36bffd036e349d6cc81ca9ff4d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4b7be36bffd036e349d6cc81ca9ff4d"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>delim_column</b></td></tr>
+<tr class="separator:aa4b7be36bffd036e349d6cc81ca9ff4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad22bb094e4ff130249a7db3742784e7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad22bb094e4ff130249a7db3742784e7f"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>delim_genotype</b></td></tr>
+<tr class="separator:ad22bb094e4ff130249a7db3742784e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fddd19f493480e3abfa7e3cc1234916"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4fddd19f493480e3abfa7e3cc1234916"></a>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>samples_</b></td></tr>
+<tr class="separator:a4fddd19f493480e3abfa7e3cc1234916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fdc518d169c5a681eeb810d159e682a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fdc518d169c5a681eeb810d159e682a"></a>
+count_t&#160;</td><td class="memItemRight" valign="bottom"><b>size_</b></td></tr>
+<tr class="separator:a3fdc518d169c5a681eeb810d159e682a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56f1c28fd733636ffd9c0a334257f53e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a56f1c28fd733636ffd9c0a334257f53e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>read_</b></td></tr>
+<tr class="separator:a56f1c28fd733636ffd9c0a334257f53e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5856591d930f0d22783ee2eb90fd7b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab5856591d930f0d22783ee2eb90fd7b7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>write_</b></td></tr>
+<tr class="separator:ab5856591d930f0d22783ee2eb90fd7b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984e615a52180dcc294735100753e61b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a984e615a52180dcc294735100753e61b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>binary_</b></td></tr>
+<tr class="separator:a984e615a52180dcc294735100753e61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a567c99080c2d9019e0efbc218a85a5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a567c99080c2d9019e0efbc218a85a5"></a>
+<a class="el" href="classfile__index.html">file_index</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>index_</b></td></tr>
+<tr class="separator:a3a567c99080c2d9019e0efbc218a85a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0753d979864dbb02d6c529cbf40f986d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0753d979864dbb02d6c529cbf40f986d"></a>
+std::istream *&#160;</td><td class="memItemRight" valign="bottom"><b>in</b></td></tr>
+<tr class="separator:a0753d979864dbb02d6c529cbf40f986d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43f3c94d4edf2e167392a9673bf16952"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a43f3c94d4edf2e167392a9673bf16952"></a>
+std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><b>out</b></td></tr>
+<tr class="separator:a43f3c94d4edf2e167392a9673bf16952"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08bcdaedf76dc88d3f637d51619d9461"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08bcdaedf76dc88d3f637d51619d9461"></a>
+std::fstream&#160;</td><td class="memItemRight" valign="bottom"><b>inFile</b></td></tr>
+<tr class="separator:a08bcdaedf76dc88d3f637d51619d9461"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae060f28f25f7cd78837d59d58de02a1c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae060f28f25f7cd78837d59d58de02a1c"></a>
+std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><b>outFile</b></td></tr>
+<tr class="separator:ae060f28f25f7cd78837d59d58de02a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a5ebf91fab56df50e192e37c730b94382"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ebf91fab56df50e192e37c730b94382"></a>
+static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>names_</b></td></tr>
+<tr class="separator:a5ebf91fab56df50e192e37c730b94382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>mapgd_0.3/<a class="el" href="map-file_8h_source.html">map-file.h</a></li>
@@ -185,7 +251,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_extraid</b> (cons
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 07:41:22 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 23 2015 10:30:42 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

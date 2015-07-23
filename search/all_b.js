@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['open',['open',['../classprofile.html#a50ea49f3b293f621848fb2375cd1eaa6',1,'profile::open(const char *, const char *)'],['../classprofile.html#a2639e97ce5a52824c83e2071ba0fb7ee',1,'profile::open(const char *)']]],
-  ['operator_3d',['operator=',['../classfile__index.html#a175bad8f17a4fc6285903d58d45ab5fd',1,'file_index::operator=()'],['../classlnmultinomial.html#a32d91724132f83c43e79aa40535fb6a1',1,'lnmultinomial::operator=()']]]
+  ['n',['N',['../classallele__stat.html#a1b15b958fe6a07fbd77524f2a86c958a',1,'allele_stat']]],
+  ['name',['name',['../classenv__t.html#a8a4fdbcdf5773e33d4a1553bc621e1b4',1,'env_t']]],
+  ['names_5f',['names_',['../classprofile.html#a3d781f0fa1b05161fdcc623667fa66ea',1,'profile']]],
+  ['noheader',['noheader',['../classprofile.html#a0182200bc301248ace0423774d81e41f',1,'profile']]],
+  ['null_5ferror',['null_error',['../classallele__stat.html#ab23917b9abc4739489f04d054ba3b912',1,'allele_stat']]]
 ];

@@ -84,7 +84,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Data Fields</a>  </div>
+<a href="#pub-attribs">Data Fields</a> &#124;
+<a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">profile_header Class Reference</div>  </div>
 </div><!--header-->
@@ -167,6 +168,72 @@ Data Fields</h2></td></tr>
 <tr class="memitem:a9bc6c1d4a979d36d060896cd2ee4d593"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9bc6c1d4a979d36d060896cd2ee4d593"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>control</b></td></tr>
 <tr class="separator:a9bc6c1d4a979d36d060896cd2ee4d593"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ae842775c9a99d1d1d6e5bc4352ca6c03"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae842775c9a99d1d1d6e5bc4352ca6c03"></a>
+std::map&lt; std::string, count_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>id0_str</b></td></tr>
+<tr class="separator:ae842775c9a99d1d1d6e5bc4352ca6c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33f2188509a76d35d884f19dc163cfa5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33f2188509a76d35d884f19dc163cfa5"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>id0</b></td></tr>
+<tr class="separator:a33f2188509a76d35d884f19dc163cfa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60542dedeb25a6e9d80e0214978b4051"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a60542dedeb25a6e9d80e0214978b4051"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>extraids</b></td></tr>
+<tr class="separator:a60542dedeb25a6e9d80e0214978b4051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af64f7e8c7fe40d481deab3df45371266"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af64f7e8c7fe40d481deab3df45371266"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>column_names</b></td></tr>
+<tr class="separator:af64f7e8c7fe40d481deab3df45371266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c00bb498c591642aa959d6288b2fdda"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6c00bb498c591642aa959d6288b2fdda"></a>
+count_t&#160;</td><td class="memItemRight" valign="bottom"><b>lastid0</b></td></tr>
+<tr class="separator:a6c00bb498c591642aa959d6288b2fdda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94f6baf680dc21ebcd2b1485dd5ca4c1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94f6baf680dc21ebcd2b1485dd5ca4c1"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>lastid0_str</b></td></tr>
+<tr class="separator:a94f6baf680dc21ebcd2b1485dd5ca4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28657cc0f1f29f048f3a6c88d1c32504"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28657cc0f1f29f048f3a6c88d1c32504"></a>
+count_t&#160;</td><td class="memItemRight" valign="bottom"><b>encodechar</b> [256]</td></tr>
+<tr class="separator:a28657cc0f1f29f048f3a6c88d1c32504"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b40ae4050eae5e830a481d572d0ab83"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b40ae4050eae5e830a481d572d0ab83"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>decodechar</b> [256]</td></tr>
+<tr class="separator:a0b40ae4050eae5e830a481d572d0ab83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95018598e88c8b10bb5c642a3b8a5ed1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95018598e88c8b10bb5c642a3b8a5ed1"></a>
+bool *&#160;</td><td class="memItemRight" valign="bottom"><b>sig_</b></td></tr>
+<tr class="separator:a95018598e88c8b10bb5c642a3b8a5ed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a060590286b16294de924e87c5eeef4aa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a060590286b16294de924e87c5eeef4aa"></a>
+bool *&#160;</td><td class="memItemRight" valign="bottom"><b>read_</b></td></tr>
+<tr class="separator:a060590286b16294de924e87c5eeef4aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fe9969b370bfbcf369a9aef1da7f04d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6fe9969b370bfbcf369a9aef1da7f04d"></a>
+bool *&#160;</td><td class="memItemRight" valign="bottom"><b>write_</b></td></tr>
+<tr class="separator:a6fe9969b370bfbcf369a9aef1da7f04d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58548f763836786a5ddefccce5d1eef6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58548f763836786a5ddefccce5d1eef6"></a>
+bool *&#160;</td><td class="memItemRight" valign="bottom"><b>binary_</b></td></tr>
+<tr class="separator:a58548f763836786a5ddefccce5d1eef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06821330097e39fac82e777b2402c714"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06821330097e39fac82e777b2402c714"></a>
+bool *&#160;</td><td class="memItemRight" valign="bottom"><b>mpileup_</b></td></tr>
+<tr class="separator:a06821330097e39fac82e777b2402c714"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b87f795194545f57547505d61713561"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b87f795194545f57547505d61713561"></a>
+bool *&#160;</td><td class="memItemRight" valign="bottom"><b>noheader_</b></td></tr>
+<tr class="separator:a9b87f795194545f57547505d61713561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aaaa6bf2c63c594366e06c13960bd8f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7aaaa6bf2c63c594366e06c13960bd8f"></a>
+uint64_t *&#160;</td><td class="memItemRight" valign="bottom"><b>size_</b></td></tr>
+<tr class="separator:a7aaaa6bf2c63c594366e06c13960bd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80a9d82e9d2ea467b7389fd1d34ec42e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80a9d82e9d2ea467b7389fd1d34ec42e"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>delim_column</b></td></tr>
+<tr class="separator:a80a9d82e9d2ea467b7389fd1d34ec42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad32977b7b40fdd27883dffa10b50f06a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad32977b7b40fdd27883dffa10b50f06a"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>delim_quartet</b></td></tr>
+<tr class="separator:ad32977b7b40fdd27883dffa10b50f06a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a614dca41b856cc72ef0964c5f4e2e015"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a614dca41b856cc72ef0964c5f4e2e015"></a>
+unsigned int *&#160;</td><td class="memItemRight" valign="bottom"><b>columns_</b></td></tr>
+<tr class="separator:a614dca41b856cc72ef0964c5f4e2e015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe8bd2df6ef09a42928a59fd5320e995"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe8bd2df6ef09a42928a59fd5320e995"></a>
+<a class="el" href="classLocus.html">Locus</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>site_</b></td></tr>
+<tr class="separator:abe8bd2df6ef09a42928a59fd5320e995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a863f1e5890c589c2a0a0425e65c238bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a863f1e5890c589c2a0a0425e65c238bf"></a>
+unsigned int *&#160;</td><td class="memItemRight" valign="bottom"><b>samples_</b></td></tr>
+<tr class="separator:a863f1e5890c589c2a0a0425e65c238bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a573cc32efa43844c554895ec6835ebce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a573cc32efa43844c554895ec6835ebce"></a>
+std::vector&lt; float_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sample_gof_</b></td></tr>
+<tr class="separator:a573cc32efa43844c554895ec6835ebce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A class to control the varrious atributes of .pro files. A class to control the various attributes of .pro files. This class was a terrible design decision that I am now paying for. Some form of this class will likely persist, but in the future I think it will only set internal flags. </p>
@@ -177,7 +244,7 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>control</b></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 07:41:22 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 23 2015 10:30:42 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

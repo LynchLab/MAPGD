@@ -83,47 +83,66 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">genotype Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="genotype_8h_source.html">genotype.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af5ebf8bb0c53dca2400d58fabf82f445"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5ebf8bb0c53dca2400d58fabf82f445"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>genotype</b> (uint8_t ploidy)</td></tr>
+<tr class="memitem:af5ebf8bb0c53dca2400d58fabf82f445"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#af5ebf8bb0c53dca2400d58fabf82f445">genotype</a> (uint8_t ploidy)</td></tr>
 <tr class="separator:af5ebf8bb0c53dca2400d58fabf82f445"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc4accd0750aa6b5f83d992fd337705b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#afc4accd0750aa6b5f83d992fd337705b">set_probabilities</a> (const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;, const <a class="el" href="structquartet.html">quartet_t</a> &amp;,)</td></tr>
+<tr class="memitem:afc4accd0750aa6b5f83d992fd337705b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afc4accd0750aa6b5f83d992fd337705b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#afc4accd0750aa6b5f83d992fd337705b">set_probabilities</a> (const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;, const <a class="el" href="structquartet.html">quartet_t</a> &amp;,)</td></tr>
+<tr class="memdesc:afc4accd0750aa6b5f83d992fd337705b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set genotypic probabilities. Needs a likelihood function, prior genotypic probabilites, and a quartet. <br/></td></tr>
 <tr class="separator:afc4accd0750aa6b5f83d992fd337705b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38b6d54674d32091f6b8f830319fa875"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38b6d54674d32091f6b8f830319fa875"></a>
-float_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_probabilities</b> (const size_t &amp;x) const </td></tr>
+float_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#a38b6d54674d32091f6b8f830319fa875">get_probabilities</a> (const size_t &amp;x) const </td></tr>
+<tr class="memdesc:a38b6d54674d32091f6b8f830319fa875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns genotypic probabilities. <br/></td></tr>
 <tr class="separator:a38b6d54674d32091f6b8f830319fa875"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ab3d7893a970717bf92fd1ecba1ef0599"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3d7893a970717bf92fd1ecba1ef0599"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name_</b></td></tr>
+<tr class="separator:ab3d7893a970717bf92fd1ecba1ef0599"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63aa71e017f5dc138f74f2d3948b89f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63aa71e017f5dc138f74f2d3948b89f8"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>ploidy_</b></td></tr>
+<tr class="separator:a63aa71e017f5dc138f74f2d3948b89f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46f37d1d7da597efbc162a00fff77052"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46f37d1d7da597efbc162a00fff77052"></a>
+std::vector&lt; float_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>probabilities_</b></td></tr>
+<tr class="separator:a46f37d1d7da597efbc162a00fff77052"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="afc4accd0750aa6b5f83d992fd337705b"></a>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A data type to store genotypic probabilities.</p>
+<p>For members to be stored in map files they must contain only fixed width . . . Individuals can have names that appear in the column header. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="af5ebf8bb0c53dca2400d58fabf82f445"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void genotype::set_probabilities </td>
+          <td class="memname">genotype::genotype </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ploidy</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structquartet.html">quartet_t</a> &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+<p>The constructor requries the ploidy of the individual. </p>
 
 </div>
 </div>
@@ -134,7 +153,7 @@ float_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_probabilities<
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 07:41:22 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 23 2015 10:30:42 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

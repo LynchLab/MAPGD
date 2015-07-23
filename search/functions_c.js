@@ -1,17 +1,11 @@
 var searchData=
 [
-  ['seek',['seek',['../classprofile.html#ab58c25bc9a2b9f19c949f1eb3929443a',1,'profile::seek(const std::streampos)'],['../classprofile.html#aac930ebe1c76a67ffbab55905136bce2',1,'profile::seek(std::string, std::string)']]],
-  ['set_5fdelim_5fcolumn',['set_delim_column',['../classprofile.html#abe49022e667f3e893dec454511e9aa3d',1,'profile']]],
-  ['set_5fdelim_5fquartet',['set_delim_quartet',['../classprofile.html#a627ca3883b151c65a50d0e5e02b40998',1,'profile']]],
-  ['set_5flast_5fsize',['set_last_size',['../classfile__index.html#a25bd955b88e6d020b0841031d8ba3fb2',1,'file_index']]],
-  ['set_5flocus',['set_locus',['../classprofile.html#a5366b21183f3d044ead3b2e33c7f2945',1,'profile']]],
-  ['set_5fnext_5fsize',['set_next_size',['../classfile__index.html#ac0dfe7cdf5127834b03cb02b01c89269',1,'file_index']]],
-  ['set_5fprobabilities',['set_probabilities',['../classgenotype.html#afc4accd0750aa6b5f83d992fd337705b',1,'genotype']]],
-  ['set_5fsize',['set_size',['../classfile__index.html#a63aed225c5c30dafe1cfb347f29d3b9f',1,'file_index::set_size(const std::string &amp;, const id1_t &amp;)'],['../classfile__index.html#a2e49d051b8e4eb88df029440f10ee119',1,'file_index::set_size(const id0_t &amp;, const id1_t &amp;)']]],
-  ['setbasecount',['setbasecount',['../classprofile.html#aa5b384afbc0fc9d014b4b489928ef6e7',1,'profile']]],
-  ['setcolumn_5fname',['setcolumn_name',['../classprofile.html#aad49da8a92c55e53c236678a6797323f',1,'profile']]],
-  ['setcolumns',['setcolumns',['../classprofile.html#af3b7cfdb2950a22565e61470d354c9e7',1,'profile']]],
-  ['setsamples',['setsamples',['../classprofile.html#a7f2ca504635bc0e0ee4cbe7af60cefab',1,'profile']]],
-  ['size',['size',['../classprofile.html#a482d3e2870620c87347c83a6208773f1',1,'profile']]],
-  ['sort',['sort',['../classprofile.html#acedf2b55cee28e81c3c44d41ecb51eca',1,'profile']]]
+  ['read',['read',['../classprofile.html#a252b01056cdfefe54c265a6e77f9c82b',1,'profile::read()'],['../classprofile.html#a0d15c93306b2072be45fbebc9a23c0ce',1,'profile::read(Locus &amp;)']]],
+  ['read_5findex',['read_index',['../classfile__index.html#abb372d71f4ddc2a4e5be5f66105ae99d',1,'file_index']]],
+  ['readb',['readb',['../classprofile.html#a19b626b1ec987df65265d3929a1f807a',1,'profile']]],
+  ['readheader',['readheader',['../classprofile.html#a5b4058a8f0132b09130fbf586fddc39d',1,'profile']]],
+  ['readm',['readm',['../classprofile.html#aebf3fba39b3e7ac6f210a0883dd8b677',1,'profile']]],
+  ['readt',['readt',['../classprofile.html#a50997b8c7faae6108e126b0762732d1a',1,'profile']]],
+  ['required_5farg',['required_arg',['../classenv__t.html#afc6a2cf8967c4396780eccf8e9e3133c',1,'env_t']]],
+  ['required_5fset',['required_set',['../classenv__t.html#a3ffef5fa59368ad8d501ccd6ea5073f8',1,'env_t']]]
 ];

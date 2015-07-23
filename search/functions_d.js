@@ -1,7 +1,17 @@
 var searchData=
 [
-  ['write',['write',['../classprofile.html#a7dce10bed6159f785041a9b4b0099e47',1,'profile::write()'],['../classprofile.html#aefe45dcc6563bd3aabbcf6671a377a82',1,'profile::write(Locus const &amp;)']]],
-  ['write_5findex',['write_index',['../classfile__index.html#aa41050f234a3adb88f108d834c7c5ec0',1,'file_index']]],
-  ['writeheader',['writeheader',['../classprofile.html#a2a779c8acb71361916712139ed427c9b',1,'profile']]],
-  ['writetailer',['writetailer',['../classprofile.html#a3089bc418634f442ef71b930abc68edd',1,'profile']]]
+  ['seek',['seek',['../classprofile.html#ab58c25bc9a2b9f19c949f1eb3929443a',1,'profile::seek(const std::streampos)'],['../classprofile.html#aac930ebe1c76a67ffbab55905136bce2',1,'profile::seek(std::string, std::string)']]],
+  ['set_5fdelim_5fcolumn',['set_delim_column',['../classprofile.html#abe49022e667f3e893dec454511e9aa3d',1,'profile']]],
+  ['set_5fdelim_5fquartet',['set_delim_quartet',['../classprofile.html#a627ca3883b151c65a50d0e5e02b40998',1,'profile']]],
+  ['set_5flast_5fsize',['set_last_size',['../classfile__index.html#a25bd955b88e6d020b0841031d8ba3fb2',1,'file_index']]],
+  ['set_5flocus',['set_locus',['../classprofile.html#a5366b21183f3d044ead3b2e33c7f2945',1,'profile']]],
+  ['set_5fnext_5fsize',['set_next_size',['../classfile__index.html#ac0dfe7cdf5127834b03cb02b01c89269',1,'file_index']]],
+  ['set_5fprobabilities',['set_probabilities',['../classgenotype.html#afc4accd0750aa6b5f83d992fd337705b',1,'genotype']]],
+  ['set_5fsize',['set_size',['../classfile__index.html#a63aed225c5c30dafe1cfb347f29d3b9f',1,'file_index::set_size(const std::string &amp;, const id1_t &amp;)'],['../classfile__index.html#a2e49d051b8e4eb88df029440f10ee119',1,'file_index::set_size(const id0_t &amp;, const id1_t &amp;)']]],
+  ['setbasecount',['setbasecount',['../classprofile.html#aa5b384afbc0fc9d014b4b489928ef6e7',1,'profile']]],
+  ['setcolumn_5fname',['setcolumn_name',['../classprofile.html#aad49da8a92c55e53c236678a6797323f',1,'profile']]],
+  ['setcolumns',['setcolumns',['../classprofile.html#af3b7cfdb2950a22565e61470d354c9e7',1,'profile']]],
+  ['setsamples',['setsamples',['../classprofile.html#a7f2ca504635bc0e0ee4cbe7af60cefab',1,'profile']]],
+  ['size',['size',['../classprofile.html#a482d3e2870620c87347c83a6208773f1',1,'profile']]],
+  ['sort',['sort',['../classprofile.html#acedf2b55cee28e81c3c44d41ecb51eca',1,'profile']]]
 ];

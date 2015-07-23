@@ -83,7 +83,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">file_index Class Reference</div>  </div>
 </div><!--header-->
@@ -119,6 +120,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa41050f234a3adb88f108d834c7c5ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a175bad8f17a4fc6285903d58d45ab5fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classfile__index.html">file_index</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile__index.html#a175bad8f17a4fc6285903d58d45ab5fd">operator=</a> (const <a class="el" href="classfile__index.html">file_index</a> &amp;)</td></tr>
 <tr class="separator:a175bad8f17a4fc6285903d58d45ab5fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a6534d221b04ca8a8cdb12b05b87dd97b"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, id0_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile__index.html#a6534d221b04ca8a8cdb12b05b87dd97b">id0_str_</a></td></tr>
+<tr class="separator:a6534d221b04ca8a8cdb12b05b87dd97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4be855352027b35e822cecf1f92a60a0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile__index.html#a4be855352027b35e822cecf1f92a60a0">id0_</a></td></tr>
+<tr class="separator:a4be855352027b35e822cecf1f92a60a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9be03afd832c7b341c13736733495c79"><td class="memItemLeft" align="right" valign="top">std::vector&lt; id1_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile__index.html#a9be03afd832c7b341c13736733495c79">sizes_</a></td></tr>
+<tr class="separator:a9be03afd832c7b341c13736733495c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a710a18c15667280a8681bfb12cf20958"><td class="memItemLeft" align="right" valign="top">id0_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile__index.html#a710a18c15667280a8681bfb12cf20958">lastid0_</a></td></tr>
+<tr class="separator:a710a18c15667280a8681bfb12cf20958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab103d49790f5d133985366205dbea47"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classfile__index.html#aab103d49790f5d133985366205dbea47">lastid0_str_</a></td></tr>
+<tr class="separator:aab103d49790f5d133985366205dbea47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>index designed to help with serializiation. </p>
@@ -374,13 +388,119 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Field Documentation</h2>
+<a class="anchor" id="a4be855352027b35e822cecf1f92a60a0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; file_index::id0_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>the keys to the hash table id0_str_. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6534d221b04ca8a8cdb12b05b87dd97b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;std::string, id0_t&gt; file_index::id0_str_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>A hash table to store pairs of strings and the numeral associated with them. </p>
+
+</div>
+</div>
+<a class="anchor" id="a710a18c15667280a8681bfb12cf20958"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">id0_t file_index::lastid0_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>the last numberical id returned by an decodeid0 querry. Initilized to 0-1. </p>
+
+</div>
+</div>
+<a class="anchor" id="aab103d49790f5d133985366205dbea47"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string file_index::lastid0_str_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>the last string id returned by an decodeid0 querry. Initilized to "". </p>
+
+</div>
+</div>
+<a class="anchor" id="a9be03afd832c7b341c13736733495c79"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;id1_t&gt; file_index::sizes_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>the sizes of the rows in bytes. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>mapgd_0.3/<a class="el" href="file-index_8h_source.html">file-index.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 07:41:22 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 23 2015 10:30:42 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -90,7 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/***** interface.h ********************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Description: Accepts arguments, sets flags, autoformats usage, verison, and help</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * Not POSIX compliant... yet.</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * Not POSIX compliant...yet.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * Author: Matthew Ackerman</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> * Date: Mon Dec 09 12:00:00 2014.</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> * Licence: GNU General Public</span></div>
@@ -103,23 +103,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;list&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">int</span> arg_setvectorstr(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">int</span> arg_setvectorint(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">int</span> arg_setint(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">int</span> arg_set2int(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">int</span> arg_setstr(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">int</span> arg_setchar(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">int</span> arg_setfloat_t(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">int</span> arg_setc_str(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">int</span> arg_setvectorstr(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *); <span class="comment">//&lt;! Takes a reference to a vector&lt;string&gt; and will fill that vector with arguments from arg [] until a string begining with &#39;-&#39; is found.  </span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">int</span> arg_setvectorint(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *); <span class="comment">//&lt;! Takes a reference to a vector&lt;int&gt; and calls atoi() on a comma delimited list (no white space) of integers. Ranges of the form N-M are accepted. </span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">int</span> arg_setint(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);       <span class="comment">//&lt;! Takes a reference to an int and calls atoi on the field immediately following the option. Raises errors if the field is not numberic. Returns 2 on success (representing the number of fields proccessed) and -1 on failure. </span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">int</span> arg_set2int(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);      <span class="comment">//&lt;! Takes a reference to a string and sets it to the field immediately following the otpion. Returns 2 on success and -1 on failure. </span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">int</span> arg_setstr(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);       <span class="comment">//&lt;! Takes a reference to ...</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">int</span> arg_setchar(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);      <span class="comment">//&lt;! Same.</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">int</span> arg_setfloat_t(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);   <span class="comment">//&lt;! Same.</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">int</span> arg_setc_str(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);     <span class="comment">//&lt;! Same.</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">int</span> flag_set(<span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">int</span> flag_usage(<span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">int</span> flag_version(<span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">int</span> flag_help(<span class="keywordtype">void</span> *);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">int</span> flag_set(<span class="keywordtype">void</span> *);               <span class="comment">//&lt;! Sets the reference boolian to true when the option is passed from the command line.</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">int</span> flag_usage(<span class="keywordtype">void</span> *);             <span class="comment">//&lt;! Prints an automatically formated usage when called to stdout.</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">int</span> flag_version(<span class="keywordtype">void</span> *);           <span class="comment">//&lt;! Prints the version of the environment to stdout. </span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">int</span> flag_help(<span class="keywordtype">void</span> *);              <span class="comment">//&lt;! Prints an automatically formated help message to stdout.</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">int</span> arg_error(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">int</span> flag_error(<span class="keywordtype">void</span> *);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">int</span> command_error(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keywordtype">int</span> arg_error(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);        <span class="comment">//&lt;! Sets the error to be printed if a argument returns -1.</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">int</span> flag_error(<span class="keywordtype">void</span> *);             <span class="comment">//&lt;! Sets the error to be printed if a flag_set returns -1.</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">int</span> command_error(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **);        <span class="comment">//&lt;! Sets the error to be printed if a command does not return 0.</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">/* \breif A class that passes command line flags. It takes no arguments and chews only a single letter.*/</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classflag__t.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classflag__t.html">flag_t</a> {</div>
@@ -153,56 +153,56 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="classarg__t.html">arg_t</a>(){</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        opt=<span class="charliteral">&#39;?&#39;</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        lopt=<span class="stringliteral">&quot;error&quot;</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        func=&amp;arg_error;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        emsg=<span class="stringliteral">&quot;emsg unset&quot;</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        umsg=<span class="stringliteral">&quot;umsg unset&quot;</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        set=<span class="keyword">false</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classarg__t.html#adf0074f9886f987e60fc9a111a22dc23">opt</a>=<span class="charliteral">&#39;?&#39;</span>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="classarg__t.html#a558ffc8c12be9cc9b6712e23925219c0">lopt</a>=<span class="stringliteral">&quot;error&quot;</span>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <a class="code" href="classarg__t.html#a1056d3714b616261fd36049495026cc0">func</a>=&amp;arg_error;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <a class="code" href="classarg__t.html#aab8c1d692c18688ed3e01f04ca7e2ea3">emsg</a>=<span class="stringliteral">&quot;emsg unset&quot;</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <a class="code" href="classarg__t.html#a1e3b887bbd417a0339ec430878f3feac">umsg</a>=<span class="stringliteral">&quot;umsg unset&quot;</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <a class="code" href="classarg__t.html#a681d5790d7487a756d54d24d4a310611">set</a>=<span class="keyword">false</span>;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    };</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="classarg__t.html">arg_t</a>(<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">void</span> * parm_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_){</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        opt=opt_;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        lopt=lopt_;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        parm=parm_;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        func=func_;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        emsg=emsg_;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        umsg=umsg_;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        set=<span class="keyword">false</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    };</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">bool</span> set;               <span class="comment">/*flag toggles whether option has been set*/</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">char</span> opt;               <span class="comment">/*the option name*/</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">char</span> *lopt;             <span class="comment">/*the long option name*/</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">void</span> *parm;             <span class="comment">/*pointer to the parameter to be set*/</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    int (*func)(int, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);  <span class="comment">/*the function to set the parameters*/</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">char</span> *emsg;             <span class="comment">/*A short error message to display when the proper parameters aren&#39;t passed to this option*/</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordtype">char</span> *umsg;             <span class="comment">/*A short discription of this option to be displayed in the usage message*/</span> </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <a class="code" href="classarg__t.html#adf0074f9886f987e60fc9a111a22dc23">opt</a>=opt_;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classarg__t.html#a558ffc8c12be9cc9b6712e23925219c0">lopt</a>=lopt_;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <a class="code" href="classarg__t.html#a5395567b0a31949b094774ba6dc6c10d">parm</a>=parm_;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <a class="code" href="classarg__t.html#a1056d3714b616261fd36049495026cc0">func</a>=func_;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <a class="code" href="classarg__t.html#aab8c1d692c18688ed3e01f04ca7e2ea3">emsg</a>=emsg_;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="classarg__t.html#a1e3b887bbd417a0339ec430878f3feac">umsg</a>=umsg_;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="classarg__t.html#a681d5790d7487a756d54d24d4a310611">set</a>=<span class="keyword">false</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classarg__t.html#a681d5790d7487a756d54d24d4a310611">   81</a></span>&#160;    };</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classarg__t.html#a681d5790d7487a756d54d24d4a310611">set</a>;               </div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="classarg__t.html#adf0074f9886f987e60fc9a111a22dc23">   83</a></span>&#160;    <span class="keywordtype">char</span> <a class="code" href="classarg__t.html#adf0074f9886f987e60fc9a111a22dc23">opt</a>;               </div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classarg__t.html#a558ffc8c12be9cc9b6712e23925219c0">   84</a></span>&#160;    <span class="keywordtype">char</span> *<a class="code" href="classarg__t.html#a558ffc8c12be9cc9b6712e23925219c0">lopt</a>;             </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classarg__t.html#a5395567b0a31949b094774ba6dc6c10d">   85</a></span>&#160;    <span class="keywordtype">void</span> *<a class="code" href="classarg__t.html#a5395567b0a31949b094774ba6dc6c10d">parm</a>;             </div>
+<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="classarg__t.html#a1056d3714b616261fd36049495026cc0">   86</a></span>&#160;    int (*<a class="code" href="classarg__t.html#a1056d3714b616261fd36049495026cc0">func</a>)(int, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *);  </div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="classarg__t.html#aab8c1d692c18688ed3e01f04ca7e2ea3">   87</a></span>&#160;    <span class="keywordtype">char</span> *<a class="code" href="classarg__t.html#aab8c1d692c18688ed3e01f04ca7e2ea3">emsg</a>;             </div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classarg__t.html#a1e3b887bbd417a0339ec430878f3feac">   88</a></span>&#160;    <span class="keywordtype">char</span> *<a class="code" href="classarg__t.html#a1e3b887bbd417a0339ec430878f3feac">umsg</a>;             </div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;};</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
 <div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classcom__t.html">   91</a></span>&#160;<span class="keyword">class </span><a class="code" href="classcom__t.html">com_t</a> {</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="classcom__t.html">com_t</a>(){</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        opt=<span class="charliteral">&#39;?&#39;</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        lopt=<span class="stringliteral">&quot;error&quot;</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        emsg=<span class="stringliteral">&quot;emsg unset&quot;</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        func=&amp;command_error;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        umsg=<span class="stringliteral">&quot;umsg unset&quot;</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        set=<span class="keyword">false</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <a class="code" href="classcom__t.html#a221c5d1fb0f1d23299526c0efb7c131d">opt</a>=<span class="charliteral">&#39;?&#39;</span>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        <a class="code" href="classcom__t.html#a9fc395b3e6669f5370ff4c4281202a9e">lopt</a>=<span class="stringliteral">&quot;error&quot;</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="classcom__t.html#a335660c29bfa0cf5e324a3d54704f351">emsg</a>=<span class="stringliteral">&quot;emsg unset&quot;</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <a class="code" href="classcom__t.html#a04457e8446cd906b5bed24c43077979d">func</a>=&amp;command_error;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="code" href="classcom__t.html#a2c4d760c9849ab6c4fd24258ee9bd194">umsg</a>=<span class="stringliteral">&quot;umsg unset&quot;</span>;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="classcom__t.html#ae8b6c03d7ec9397c7570295b9f0162fc">set</a>=<span class="keyword">false</span>;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    };</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="classcom__t.html">com_t</a>(<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_){</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        opt=opt_;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        lopt=lopt_;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        func=func_;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        emsg=emsg_;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        umsg=umsg_;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        set=<span class="keyword">false</span>;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    };</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">bool</span> set;               <span class="comment">/*flag toggles whether option has been set*/</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">char</span> opt;               <span class="comment">/*the option name*/</span></div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">char</span> *lopt;             <span class="comment">/*the long option name*/</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    int (*func)(int, <span class="keywordtype">char</span> **);      <span class="comment">/*the function to set the parameters*/</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordtype">char</span> *emsg;             <span class="comment">/*A short error message to display when the proper parameters aren&#39;t passed to this option*/</span></div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">char</span> *umsg;             <span class="comment">/*A short error message to display when the proper parameters aren&#39;t passed to this option*/</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <a class="code" href="classcom__t.html#a221c5d1fb0f1d23299526c0efb7c131d">opt</a>=opt_;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <a class="code" href="classcom__t.html#a9fc395b3e6669f5370ff4c4281202a9e">lopt</a>=lopt_;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <a class="code" href="classcom__t.html#a04457e8446cd906b5bed24c43077979d">func</a>=func_;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <a class="code" href="classcom__t.html#a335660c29bfa0cf5e324a3d54704f351">emsg</a>=emsg_;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <a class="code" href="classcom__t.html#a2c4d760c9849ab6c4fd24258ee9bd194">umsg</a>=umsg_;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <a class="code" href="classcom__t.html#ae8b6c03d7ec9397c7570295b9f0162fc">set</a>=<span class="keyword">false</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classcom__t.html#ae8b6c03d7ec9397c7570295b9f0162fc">  109</a></span>&#160;    };</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classcom__t.html#ae8b6c03d7ec9397c7570295b9f0162fc">set</a>;               </div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="classcom__t.html#a221c5d1fb0f1d23299526c0efb7c131d">  111</a></span>&#160;    <span class="keywordtype">char</span> <a class="code" href="classcom__t.html#a221c5d1fb0f1d23299526c0efb7c131d">opt</a>;               </div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classcom__t.html#a9fc395b3e6669f5370ff4c4281202a9e">  112</a></span>&#160;    <span class="keywordtype">char</span> *<a class="code" href="classcom__t.html#a9fc395b3e6669f5370ff4c4281202a9e">lopt</a>;             </div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classcom__t.html#a04457e8446cd906b5bed24c43077979d">  113</a></span>&#160;    int (*<a class="code" href="classcom__t.html#a04457e8446cd906b5bed24c43077979d">func</a>)(int, <span class="keywordtype">char</span> **);      </div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="classcom__t.html#a335660c29bfa0cf5e324a3d54704f351">  114</a></span>&#160;    <span class="keywordtype">char</span> *<a class="code" href="classcom__t.html#a335660c29bfa0cf5e324a3d54704f351">emsg</a>;             </div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="classcom__t.html#a2c4d760c9849ab6c4fd24258ee9bd194">  115</a></span>&#160;    <span class="keywordtype">char</span> *<a class="code" href="classcom__t.html#a2c4d760c9849ab6c4fd24258ee9bd194">umsg</a>;             </div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">/*information that is displayed in usage and version*/</span></div>
@@ -211,86 +211,109 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keywordtype">void</span> setname(<span class="keyword">const</span> <span class="keywordtype">char</span> *c)</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    {</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        name=c;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <a class="code" href="classenv__t.html#a8a4fdbcdf5773e33d4a1553bc621e1b4">name</a>=c;</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    };</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">void</span> setver(<span class="keyword">const</span> <span class="keywordtype">char</span> *c)</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        version=c;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <a class="code" href="classenv__t.html#a837e459f0e0d418a976ed4e8fa6acd39">version</a>=c;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    };</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keywordtype">void</span> setauthor(<span class="keyword">const</span> <span class="keywordtype">char</span> *c){</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        author=c;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        <a class="code" href="classenv__t.html#a93b99498ee34c3e607bf2757b13443dc">author</a>=c;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    };</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">void</span> setdescription(<span class="keyword">const</span> <span class="keywordtype">char</span> *c){</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        description=c;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    };</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *name;               <span class="comment">/*the name of the command*/</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *version;                <span class="comment">/*the version*/</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *author;             <span class="comment">/*author*/</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *description;            <span class="comment">/*a breif description*/</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    std::list &lt;flag_t&gt; flags;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    std::list &lt;arg_t&gt; args;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    std::list &lt;com_t&gt; commands;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    std::list &lt;arg_t *&gt; required_args;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    std::list &lt;com_t *&gt; required_coms;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="classenv__t.html">env_t</a>(){</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        name=<span class="stringliteral">&quot;Unnammed program&quot;</span>;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        version=<span class="stringliteral">&quot;0.0&quot;</span>;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        author=<span class="stringliteral">&quot;Unkown&quot;</span>;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        description=<span class="stringliteral">&quot;Unknown purpose&quot;</span>;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    };</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">void</span> optional_arg (<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">void</span> * parm_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_)</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    {</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        args.push_back(<a class="code" href="classarg__t.html">arg_t</a>(opt_, lopt_, parm_, func_, emsg_, umsg_) );</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    };</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keywordtype">void</span> required_arg (<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">void</span> * parm_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_)</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    {</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        args.push_back(<a class="code" href="classarg__t.html">arg_t</a>(opt_, lopt_, parm_, func_, emsg_, umsg_) );</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        required_args.push_back(&amp;args.back());</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    };</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">void</span> command (<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_)</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    {</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        commands.push_back(<a class="code" href="classcom__t.html">com_t</a>(opt_, lopt_, func_, emsg_, umsg_) );</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    };</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">void</span> flag (<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">void</span> * parm_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">void</span> *), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_)</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        flags.push_back(<a class="code" href="classflag__t.html">flag_t</a>(opt_, lopt_, parm_, func_, emsg_, umsg_) );</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    };</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">bool</span> required_set (<span class="keywordtype">void</span>)</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    {</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        std::list &lt;arg_t *&gt;::iterator rarg=required_args.begin();</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        std::list &lt;arg_t *&gt;::iterator end=required_args.end();</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordflow">while</span>(rarg!=end){</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            std::cout &lt;&lt; <span class="stringliteral">&quot;HI!\n&quot;</span>;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="keywordflow">if</span>(!(*rarg)-&gt;set) {std::cerr &lt;&lt; (*rarg)-&gt;emsg &lt;&lt; std::endl; <span class="keywordflow">return</span> <span class="keyword">false</span>;}</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            std::cout &lt;&lt; (*rarg)-&gt;opt &lt;&lt; <span class="stringliteral">&quot; is set.\n&quot;</span>;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;            ++rarg;</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        };</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    };</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">void</span> close(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;};</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="keywordtype">int</span> parsargs(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[], <a class="code" href="classenv__t.html">env_t</a> env);</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keywordtype">void</span> printHelp(<a class="code" href="classenv__t.html">env_t</a> env);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="keywordtype">void</span> printVersion(<a class="code" href="classenv__t.html">env_t</a> env);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="keywordtype">void</span> printUsage(<a class="code" href="classenv__t.html">env_t</a> env);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">#endif </span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <a class="code" href="classenv__t.html#ae3578fa78fcac7714be35958427095c2">description</a>=c;</div>
+<div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="classenv__t.html#a8a4fdbcdf5773e33d4a1553bc621e1b4">  135</a></span>&#160;    };</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classenv__t.html#a8a4fdbcdf5773e33d4a1553bc621e1b4">name</a>;               </div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="classenv__t.html#a837e459f0e0d418a976ed4e8fa6acd39">  138</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classenv__t.html#a837e459f0e0d418a976ed4e8fa6acd39">version</a>;                </div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="classenv__t.html#a93b99498ee34c3e607bf2757b13443dc">  139</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classenv__t.html#a93b99498ee34c3e607bf2757b13443dc">author</a>;             </div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="classenv__t.html#ae3578fa78fcac7714be35958427095c2">  140</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="classenv__t.html#ae3578fa78fcac7714be35958427095c2">description</a>;            </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    std::list &lt;flag_t&gt; flags;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    std::list &lt;arg_t&gt; args;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    std::list &lt;com_t&gt; commands;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    std::list &lt;arg_t *&gt; required_args;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    std::list &lt;com_t *&gt; required_coms;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <a class="code" href="classenv__t.html">env_t</a>(){</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <a class="code" href="classenv__t.html#a8a4fdbcdf5773e33d4a1553bc621e1b4">name</a>=<span class="stringliteral">&quot;Unnammed program&quot;</span>;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <a class="code" href="classenv__t.html#a837e459f0e0d418a976ed4e8fa6acd39">version</a>=<span class="stringliteral">&quot;0.0&quot;</span>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <a class="code" href="classenv__t.html#a93b99498ee34c3e607bf2757b13443dc">author</a>=<span class="stringliteral">&quot;Unkown&quot;</span>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        <a class="code" href="classenv__t.html#ae3578fa78fcac7714be35958427095c2">description</a>=<span class="stringliteral">&quot;Unknown purpose&quot;</span>;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    };</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    </div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="classenv__t.html#a1a0bc45f5fab86f92ec1d9e64865c144">  157</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classenv__t.html#a1a0bc45f5fab86f92ec1d9e64865c144">optional_arg</a> (<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">void</span> * parm_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_)</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        args.push_back(<a class="code" href="classarg__t.html">arg_t</a>(opt_, lopt_, parm_, func_, emsg_, umsg_) );</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    };</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
+<div class="line"><a name="l00163"></a><span class="lineno"><a class="line" href="classenv__t.html#afc6a2cf8967c4396780eccf8e9e3133c">  163</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classenv__t.html#afc6a2cf8967c4396780eccf8e9e3133c">required_arg</a> (<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">void</span> * parm_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **, <span class="keywordtype">void</span> *), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_)</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        args.push_back(<a class="code" href="classarg__t.html">arg_t</a>(opt_, lopt_, parm_, func_, emsg_, umsg_) );</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        required_args.push_back(&amp;args.back());</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    };</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno"><a class="line" href="classenv__t.html#a9f3138b6b234353c3167e00f0d19f48d">  174</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classenv__t.html#a9f3138b6b234353c3167e00f0d19f48d">command</a> (<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">int</span>, <span class="keywordtype">char</span> **), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_)</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    {</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        commands.push_back(<a class="code" href="classcom__t.html">com_t</a>(opt_, lopt_, func_, emsg_, umsg_) );</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    };</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;</div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="classenv__t.html#a32619a9a5d586b4ec83546e7b08ca7ad">  183</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classenv__t.html#a32619a9a5d586b4ec83546e7b08ca7ad">flag</a> (<span class="keywordtype">char</span> opt_, <span class="keywordtype">char</span>* lopt_, <span class="keywordtype">void</span> * parm_, <span class="keywordtype">int</span> (*func_)(<span class="keywordtype">void</span> *), <span class="keywordtype">char</span> *emsg_, <span class="keywordtype">char</span>*umsg_)</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        flags.push_back(<a class="code" href="classflag__t.html">flag_t</a>(opt_, lopt_, parm_, func_, emsg_, umsg_) );</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    };</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
+<div class="line"><a name="l00192"></a><span class="lineno"><a class="line" href="classenv__t.html#a3ffef5fa59368ad8d501ccd6ea5073f8">  192</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classenv__t.html#a3ffef5fa59368ad8d501ccd6ea5073f8">required_set</a> (<span class="keywordtype">void</span>)</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    {</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        std::list &lt;arg_t *&gt;::iterator rarg=required_args.begin();</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        std::list &lt;arg_t *&gt;::iterator end=required_args.end();</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keywordflow">while</span>(rarg!=end){</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;            <span class="keywordflow">if</span>(!(*rarg)-&gt;set) {std::cerr &lt;&lt; (*rarg)-&gt;emsg &lt;&lt; std::endl; <span class="keywordflow">return</span> <span class="keyword">false</span>;}</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;            ++rarg;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        };</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    };</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordtype">void</span> close(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;};</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;<span class="keywordtype">int</span> parsargs(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[], <a class="code" href="classenv__t.html">env_t</a> env);</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;<span class="keywordtype">void</span> printHelp(<a class="code" href="classenv__t.html">env_t</a> env);</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;<span class="keywordtype">void</span> printVersion(<a class="code" href="classenv__t.html">env_t</a> env);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;<span class="keywordtype">void</span> printUsage(<a class="code" href="classenv__t.html">env_t</a> env);</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;<span class="preprocessor">#endif </span></div>
+<div class="ttc" id="classcom__t_html_a2c4d760c9849ab6c4fd24258ee9bd194"><div class="ttname"><a href="classcom__t.html#a2c4d760c9849ab6c4fd24258ee9bd194">com_t::umsg</a></div><div class="ttdeci">char * umsg</div><div class="ttdef"><b>Definition:</b> interface.h:115</div></div>
+<div class="ttc" id="classarg__t_html_a681d5790d7487a756d54d24d4a310611"><div class="ttname"><a href="classarg__t.html#a681d5790d7487a756d54d24d4a310611">arg_t::set</a></div><div class="ttdeci">bool set</div><div class="ttdef"><b>Definition:</b> interface.h:81</div></div>
+<div class="ttc" id="classenv__t_html_a1a0bc45f5fab86f92ec1d9e64865c144"><div class="ttname"><a href="classenv__t.html#a1a0bc45f5fab86f92ec1d9e64865c144">env_t::optional_arg</a></div><div class="ttdeci">void optional_arg(char opt_, char *lopt_, void *parm_, int(*func_)(int, char **, void *), char *emsg_, char *umsg_)</div><div class="ttdef"><b>Definition:</b> interface.h:157</div></div>
 <div class="ttc" id="classflag__t_html"><div class="ttname"><a href="classflag__t.html">flag_t</a></div><div class="ttdef"><b>Definition:</b> interface.h:35</div></div>
+<div class="ttc" id="classcom__t_html_a221c5d1fb0f1d23299526c0efb7c131d"><div class="ttname"><a href="classcom__t.html#a221c5d1fb0f1d23299526c0efb7c131d">com_t::opt</a></div><div class="ttdeci">char opt</div><div class="ttdef"><b>Definition:</b> interface.h:111</div></div>
+<div class="ttc" id="classenv__t_html_a32619a9a5d586b4ec83546e7b08ca7ad"><div class="ttname"><a href="classenv__t.html#a32619a9a5d586b4ec83546e7b08ca7ad">env_t::flag</a></div><div class="ttdeci">void flag(char opt_, char *lopt_, void *parm_, int(*func_)(void *), char *emsg_, char *umsg_)</div><div class="ttdef"><b>Definition:</b> interface.h:183</div></div>
+<div class="ttc" id="classenv__t_html_ae3578fa78fcac7714be35958427095c2"><div class="ttname"><a href="classenv__t.html#ae3578fa78fcac7714be35958427095c2">env_t::description</a></div><div class="ttdeci">const char * description</div><div class="ttdef"><b>Definition:</b> interface.h:140</div></div>
 <div class="ttc" id="classcom__t_html"><div class="ttname"><a href="classcom__t.html">com_t</a></div><div class="ttdef"><b>Definition:</b> interface.h:91</div></div>
+<div class="ttc" id="classarg__t_html_a1e3b887bbd417a0339ec430878f3feac"><div class="ttname"><a href="classarg__t.html#a1e3b887bbd417a0339ec430878f3feac">arg_t::umsg</a></div><div class="ttdeci">char * umsg</div><div class="ttdef"><b>Definition:</b> interface.h:88</div></div>
+<div class="ttc" id="classarg__t_html_a558ffc8c12be9cc9b6712e23925219c0"><div class="ttname"><a href="classarg__t.html#a558ffc8c12be9cc9b6712e23925219c0">arg_t::lopt</a></div><div class="ttdeci">char * lopt</div><div class="ttdef"><b>Definition:</b> interface.h:84</div></div>
 <div class="ttc" id="classenv__t_html"><div class="ttname"><a href="classenv__t.html">env_t</a></div><div class="ttdef"><b>Definition:</b> interface.h:119</div></div>
+<div class="ttc" id="classenv__t_html_afc6a2cf8967c4396780eccf8e9e3133c"><div class="ttname"><a href="classenv__t.html#afc6a2cf8967c4396780eccf8e9e3133c">env_t::required_arg</a></div><div class="ttdeci">void required_arg(char opt_, char *lopt_, void *parm_, int(*func_)(int, char **, void *), char *emsg_, char *umsg_)</div><div class="ttdef"><b>Definition:</b> interface.h:163</div></div>
+<div class="ttc" id="classcom__t_html_a9fc395b3e6669f5370ff4c4281202a9e"><div class="ttname"><a href="classcom__t.html#a9fc395b3e6669f5370ff4c4281202a9e">com_t::lopt</a></div><div class="ttdeci">char * lopt</div><div class="ttdef"><b>Definition:</b> interface.h:112</div></div>
+<div class="ttc" id="classarg__t_html_a1056d3714b616261fd36049495026cc0"><div class="ttname"><a href="classarg__t.html#a1056d3714b616261fd36049495026cc0">arg_t::func</a></div><div class="ttdeci">int(* func)(int, char **, void *)</div><div class="ttdef"><b>Definition:</b> interface.h:86</div></div>
+<div class="ttc" id="classcom__t_html_a04457e8446cd906b5bed24c43077979d"><div class="ttname"><a href="classcom__t.html#a04457e8446cd906b5bed24c43077979d">com_t::func</a></div><div class="ttdeci">int(* func)(int, char **)</div><div class="ttdef"><b>Definition:</b> interface.h:113</div></div>
+<div class="ttc" id="classarg__t_html_a5395567b0a31949b094774ba6dc6c10d"><div class="ttname"><a href="classarg__t.html#a5395567b0a31949b094774ba6dc6c10d">arg_t::parm</a></div><div class="ttdeci">void * parm</div><div class="ttdef"><b>Definition:</b> interface.h:85</div></div>
+<div class="ttc" id="classenv__t_html_a8a4fdbcdf5773e33d4a1553bc621e1b4"><div class="ttname"><a href="classenv__t.html#a8a4fdbcdf5773e33d4a1553bc621e1b4">env_t::name</a></div><div class="ttdeci">const char * name</div><div class="ttdef"><b>Definition:</b> interface.h:135</div></div>
+<div class="ttc" id="classenv__t_html_a93b99498ee34c3e607bf2757b13443dc"><div class="ttname"><a href="classenv__t.html#a93b99498ee34c3e607bf2757b13443dc">env_t::author</a></div><div class="ttdeci">const char * author</div><div class="ttdef"><b>Definition:</b> interface.h:139</div></div>
+<div class="ttc" id="classenv__t_html_a837e459f0e0d418a976ed4e8fa6acd39"><div class="ttname"><a href="classenv__t.html#a837e459f0e0d418a976ed4e8fa6acd39">env_t::version</a></div><div class="ttdeci">const char * version</div><div class="ttdef"><b>Definition:</b> interface.h:138</div></div>
+<div class="ttc" id="classenv__t_html_a9f3138b6b234353c3167e00f0d19f48d"><div class="ttname"><a href="classenv__t.html#a9f3138b6b234353c3167e00f0d19f48d">env_t::command</a></div><div class="ttdeci">void command(char opt_, char *lopt_, int(*func_)(int, char **), char *emsg_, char *umsg_)</div><div class="ttdef"><b>Definition:</b> interface.h:174</div></div>
+<div class="ttc" id="classarg__t_html_aab8c1d692c18688ed3e01f04ca7e2ea3"><div class="ttname"><a href="classarg__t.html#aab8c1d692c18688ed3e01f04ca7e2ea3">arg_t::emsg</a></div><div class="ttdeci">char * emsg</div><div class="ttdef"><b>Definition:</b> interface.h:87</div></div>
+<div class="ttc" id="classcom__t_html_ae8b6c03d7ec9397c7570295b9f0162fc"><div class="ttname"><a href="classcom__t.html#ae8b6c03d7ec9397c7570295b9f0162fc">com_t::set</a></div><div class="ttdeci">bool set</div><div class="ttdef"><b>Definition:</b> interface.h:109</div></div>
+<div class="ttc" id="classenv__t_html_a3ffef5fa59368ad8d501ccd6ea5073f8"><div class="ttname"><a href="classenv__t.html#a3ffef5fa59368ad8d501ccd6ea5073f8">env_t::required_set</a></div><div class="ttdeci">bool required_set(void)</div><div class="ttdef"><b>Definition:</b> interface.h:192</div></div>
 <div class="ttc" id="classarg__t_html"><div class="ttname"><a href="classarg__t.html">arg_t</a></div><div class="ttdef"><b>Definition:</b> interface.h:62</div></div>
+<div class="ttc" id="classcom__t_html_a335660c29bfa0cf5e324a3d54704f351"><div class="ttname"><a href="classcom__t.html#a335660c29bfa0cf5e324a3d54704f351">com_t::emsg</a></div><div class="ttdeci">char * emsg</div><div class="ttdef"><b>Definition:</b> interface.h:114</div></div>
+<div class="ttc" id="classarg__t_html_adf0074f9886f987e60fc9a111a22dc23"><div class="ttname"><a href="classarg__t.html#adf0074f9886f987e60fc9a111a22dc23">arg_t::opt</a></div><div class="ttdeci">char opt</div><div class="ttdef"><b>Definition:</b> interface.h:83</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 07:41:22 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 23 2015 10:30:42 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

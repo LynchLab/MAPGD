@@ -83,32 +83,59 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">binomial Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="binomial_8h_source.html">binomial.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:add79fb768a6efc4b4fb943687e34f99e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add79fb768a6efc4b4fb943687e34f99e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>binomial</b> (const float_t &amp;p)</td></tr>
 <tr class="separator:add79fb768a6efc4b4fb943687e34f99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7170ce1cabd59f898e4b619ce97ccc8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa7170ce1cabd59f898e4b619ce97ccc8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbinomial.html#aa7170ce1cabd59f898e4b619ce97ccc8">~binomial</a> (void)</td></tr>
+<tr class="memdesc:aa7170ce1cabd59f898e4b619ce97ccc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The constructor can be called with a float_t to specify the probability of success. <br/></td></tr>
+<tr class="separator:aa7170ce1cabd59f898e4b619ce97ccc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba6c2cff03e17edaa79ac38beba97df8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba6c2cff03e17edaa79ac38beba97df8"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>fact</b> (const uint32_t &amp;)</td></tr>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbinomial.html#aba6c2cff03e17edaa79ac38beba97df8">fact</a> (const uint32_t &amp;)</td></tr>
+<tr class="memdesc:aba6c2cff03e17edaa79ac38beba97df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the probabiltiy of the binomial distribution . . . <br/></td></tr>
 <tr class="separator:aba6c2cff03e17edaa79ac38beba97df8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a829c87611cdd314ef3bdac88133c0d80"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a829c87611cdd314ef3bdac88133c0d80"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>binom_coef</b> (const uint32_t &amp;, const uint32_t &amp;)</td></tr>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbinomial.html#a829c87611cdd314ef3bdac88133c0d80">binom_coef</a> (const uint32_t &amp;, const uint32_t &amp;)</td></tr>
+<tr class="memdesc:a829c87611cdd314ef3bdac88133c0d80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the binomial coefficent. <br/></td></tr>
 <tr class="separator:a829c87611cdd314ef3bdac88133c0d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a52bbbb5322a8be20b000c53a1825430f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52bbbb5322a8be20b000c53a1825430f"></a>
+std::vector&lt; uint32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">fact_vector</a></td></tr>
+<tr class="memdesc:a52bbbb5322a8be20b000c53a1825430f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vector that stores look up values for the binomial coefficent. <br/></td></tr>
+<tr class="separator:a52bbbb5322a8be20b000c53a1825430f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a536b89288f62e47096d686f077637501"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a536b89288f62e47096d686f077637501"></a>
+float_t&#160;</td><td class="memItemRight" valign="bottom"><b>p_</b></td></tr>
+<tr class="separator:a536b89288f62e47096d686f077637501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5d3a3b07fb9929b83d872d29392b8ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5d3a3b07fb9929b83d872d29392b8ed"></a>
+uint32_t *&#160;</td><td class="memItemRight" valign="bottom"><b>bp_</b></td></tr>
+<tr class="separator:af5d3a3b07fb9929b83d872d29392b8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdc55611ccc89152dd92beea6567336b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abdc55611ccc89152dd92beea6567336b"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>size_</b></td></tr>
+<tr class="separator:abdc55611ccc89152dd92beea6567336b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A class to return the binomial coefficent and binomial probabilities. NOT LOG! </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>mapgd_0.3/<a class="el" href="binomial_8h_source.html">binomial.h</a></li>
 <li>mapgd_0.3/binomial.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 07:41:22 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 23 2015 10:30:42 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
