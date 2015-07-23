@@ -1,0 +1,148 @@
+\hypertarget{classenv__t}{\section{env\-\_\-t Class Reference}
+\label{classenv__t}\index{env\-\_\-t@{env\-\_\-t}}
+}
+
+
+{\ttfamily \#include $<$interface.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classenv__t_a4a79bfddbd1a307bda6be045e3655c14}{void {\bfseries setname} (const char $\ast$c)}\label{classenv__t_a4a79bfddbd1a307bda6be045e3655c14}
+
+\item 
+\hypertarget{classenv__t_a938aa066c5816d3fff2c7ff725af7ab4}{void {\bfseries setver} (const char $\ast$c)}\label{classenv__t_a938aa066c5816d3fff2c7ff725af7ab4}
+
+\item 
+\hypertarget{classenv__t_a741fe145876764a54ee00be73ffc0b9b}{void {\bfseries setauthor} (const char $\ast$c)}\label{classenv__t_a741fe145876764a54ee00be73ffc0b9b}
+
+\item 
+\hypertarget{classenv__t_aa8248adb6bb538f9db08710cadf41c62}{void {\bfseries setdescription} (const char $\ast$c)}\label{classenv__t_aa8248adb6bb538f9db08710cadf41c62}
+
+\item 
+void \hyperlink{classenv__t_a1a0bc45f5fab86f92ec1d9e64865c144}{optional\-\_\-arg} (char opt\-\_\-, char $\ast$lopt\-\_\-, void $\ast$parm\-\_\-, int($\ast$func\-\_\-)(int, char $\ast$$\ast$, void $\ast$), char $\ast$emsg\-\_\-, char $\ast$umsg\-\_\-)
+\item 
+void \hyperlink{classenv__t_afc6a2cf8967c4396780eccf8e9e3133c}{required\-\_\-arg} (char opt\-\_\-, char $\ast$lopt\-\_\-, void $\ast$parm\-\_\-, int($\ast$func\-\_\-)(int, char $\ast$$\ast$, void $\ast$), char $\ast$emsg\-\_\-, char $\ast$umsg\-\_\-)
+\item 
+void \hyperlink{classenv__t_a9f3138b6b234353c3167e00f0d19f48d}{command} (char opt\-\_\-, char $\ast$lopt\-\_\-, int($\ast$func\-\_\-)(int, char $\ast$$\ast$), char $\ast$emsg\-\_\-, char $\ast$umsg\-\_\-)
+\item 
+void \hyperlink{classenv__t_a32619a9a5d586b4ec83546e7b08ca7ad}{flag} (char opt\-\_\-, char $\ast$lopt\-\_\-, void $\ast$parm\-\_\-, int($\ast$func\-\_\-)(void $\ast$), char $\ast$emsg\-\_\-, char $\ast$umsg\-\_\-)
+\item 
+bool \hyperlink{classenv__t_a3ffef5fa59368ad8d501ccd6ea5073f8}{required\-\_\-set} (void)
+\item 
+\hypertarget{classenv__t_a44de80882f3d78e5848e9f59290de2a9}{void {\bfseries close} (void)}\label{classenv__t_a44de80882f3d78e5848e9f59290de2a9}
+
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+const char $\ast$ \hyperlink{classenv__t_a8a4fdbcdf5773e33d4a1553bc621e1b4}{name}
+\item 
+const char $\ast$ \hyperlink{classenv__t_a837e459f0e0d418a976ed4e8fa6acd39}{version}
+\item 
+const char $\ast$ \hyperlink{classenv__t_a93b99498ee34c3e607bf2757b13443dc}{author}
+\item 
+const char $\ast$ \hyperlink{classenv__t_ae3578fa78fcac7714be35958427095c2}{description}
+\item 
+\hypertarget{classenv__t_a0b17ee1539e7a27fe0e5efb1ddf13af0}{std\-::list$<$ \hyperlink{classflag__t}{flag\-\_\-t} $>$ {\bfseries flags}}\label{classenv__t_a0b17ee1539e7a27fe0e5efb1ddf13af0}
+
+\item 
+\hypertarget{classenv__t_ae74e249d826b986f6af2f5450cd246df}{std\-::list$<$ \hyperlink{classarg__t}{arg\-\_\-t} $>$ {\bfseries args}}\label{classenv__t_ae74e249d826b986f6af2f5450cd246df}
+
+\item 
+\hypertarget{classenv__t_a26bd9c2ce445926975e57dbe831f4a39}{std\-::list$<$ \hyperlink{classcom__t}{com\-\_\-t} $>$ {\bfseries commands}}\label{classenv__t_a26bd9c2ce445926975e57dbe831f4a39}
+
+\item 
+\hypertarget{classenv__t_aa756e347b263bb995d2e1b469cccf4cd}{std\-::list$<$ \hyperlink{classarg__t}{arg\-\_\-t} $\ast$ $>$ {\bfseries required\-\_\-args}}\label{classenv__t_aa756e347b263bb995d2e1b469cccf4cd}
+
+\item 
+\hypertarget{classenv__t_a933addf499dd49e5ee6883c4960e1a44}{std\-::list$<$ \hyperlink{classcom__t}{com\-\_\-t} $\ast$ $>$ {\bfseries required\-\_\-coms}}\label{classenv__t_a933addf499dd49e5ee6883c4960e1a44}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class for handelling options and formating help, usage and version information. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classenv__t_a9f3138b6b234353c3167e00f0d19f48d}{\index{env\-\_\-t@{env\-\_\-t}!command@{command}}
+\index{command@{command}!env_t@{env\-\_\-t}}
+\subsubsection[{command}]{\setlength{\rightskip}{0pt plus 5cm}void env\-\_\-t\-::command (
+\begin{DoxyParamCaption}
+\item[{char}]{opt\-\_\-, }
+\item[{char $\ast$}]{lopt\-\_\-, }
+\item[{int($\ast$)(int, char $\ast$$\ast$)}]{func\-\_\-, }
+\item[{char $\ast$}]{emsg\-\_\-, }
+\item[{char $\ast$}]{umsg\-\_\-}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classenv__t_a9f3138b6b234353c3167e00f0d19f48d}
+adds a function to be executed that can accept argc and argv \mbox{[}\mbox{]} arguments.
+
+If a command is set, then an error is raised if no command is provided. Commands execute in order in which they are passed by the user. Commands only return an exit status, so no further processing of the argc and argv variables can be done by the environment in which a command is called. \hypertarget{classenv__t_a32619a9a5d586b4ec83546e7b08ca7ad}{\index{env\-\_\-t@{env\-\_\-t}!flag@{flag}}
+\index{flag@{flag}!env_t@{env\-\_\-t}}
+\subsubsection[{flag}]{\setlength{\rightskip}{0pt plus 5cm}void env\-\_\-t\-::flag (
+\begin{DoxyParamCaption}
+\item[{char}]{opt\-\_\-, }
+\item[{char $\ast$}]{lopt\-\_\-, }
+\item[{void $\ast$}]{parm\-\_\-, }
+\item[{int($\ast$)(void $\ast$)}]{func\-\_\-, }
+\item[{char $\ast$}]{emsg\-\_\-, }
+\item[{char $\ast$}]{umsg\-\_\-}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classenv__t_a32619a9a5d586b4ec83546e7b08ca7ad}
+adds a flag to the list of flags that can be accepted by the environment.
+
+Flags can be passed either seperately, or in a concatenated list if thier short form is used. \hypertarget{classenv__t_a1a0bc45f5fab86f92ec1d9e64865c144}{\index{env\-\_\-t@{env\-\_\-t}!optional\-\_\-arg@{optional\-\_\-arg}}
+\index{optional\-\_\-arg@{optional\-\_\-arg}!env_t@{env\-\_\-t}}
+\subsubsection[{optional\-\_\-arg}]{\setlength{\rightskip}{0pt plus 5cm}void env\-\_\-t\-::optional\-\_\-arg (
+\begin{DoxyParamCaption}
+\item[{char}]{opt\-\_\-, }
+\item[{char $\ast$}]{lopt\-\_\-, }
+\item[{void $\ast$}]{parm\-\_\-, }
+\item[{int($\ast$)(int, char $\ast$$\ast$, void $\ast$)}]{func\-\_\-, }
+\item[{char $\ast$}]{emsg\-\_\-, }
+\item[{char $\ast$}]{umsg\-\_\-}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classenv__t_a1a0bc45f5fab86f92ec1d9e64865c144}
+adds an optional argument to the list of arguments accepted by the program. \hypertarget{classenv__t_afc6a2cf8967c4396780eccf8e9e3133c}{\index{env\-\_\-t@{env\-\_\-t}!required\-\_\-arg@{required\-\_\-arg}}
+\index{required\-\_\-arg@{required\-\_\-arg}!env_t@{env\-\_\-t}}
+\subsubsection[{required\-\_\-arg}]{\setlength{\rightskip}{0pt plus 5cm}void env\-\_\-t\-::required\-\_\-arg (
+\begin{DoxyParamCaption}
+\item[{char}]{opt\-\_\-, }
+\item[{char $\ast$}]{lopt\-\_\-, }
+\item[{void $\ast$}]{parm\-\_\-, }
+\item[{int($\ast$)(int, char $\ast$$\ast$, void $\ast$)}]{func\-\_\-, }
+\item[{char $\ast$}]{emsg\-\_\-, }
+\item[{char $\ast$}]{umsg\-\_\-}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classenv__t_afc6a2cf8967c4396780eccf8e9e3133c}
+adds an required argument to the list of arguments accepted by the program. -\/1 is returned by parsargs when required arguments are not provided \hypertarget{classenv__t_a3ffef5fa59368ad8d501ccd6ea5073f8}{\index{env\-\_\-t@{env\-\_\-t}!required\-\_\-set@{required\-\_\-set}}
+\index{required\-\_\-set@{required\-\_\-set}!env_t@{env\-\_\-t}}
+\subsubsection[{required\-\_\-set}]{\setlength{\rightskip}{0pt plus 5cm}bool env\-\_\-t\-::required\-\_\-set (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classenv__t_a3ffef5fa59368ad8d501ccd6ea5073f8}
+Checks to see if all required arguments are set.
+
+Returens 1 if all required arguments are set, 0 if they are not. 
+
+\subsection{Field Documentation}
+\hypertarget{classenv__t_a93b99498ee34c3e607bf2757b13443dc}{\index{env\-\_\-t@{env\-\_\-t}!author@{author}}
+\index{author@{author}!env_t@{env\-\_\-t}}
+\subsubsection[{author}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ env\-\_\-t\-::author}}\label{classenv__t_a93b99498ee34c3e607bf2757b13443dc}
+author \hypertarget{classenv__t_ae3578fa78fcac7714be35958427095c2}{\index{env\-\_\-t@{env\-\_\-t}!description@{description}}
+\index{description@{description}!env_t@{env\-\_\-t}}
+\subsubsection[{description}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ env\-\_\-t\-::description}}\label{classenv__t_ae3578fa78fcac7714be35958427095c2}
+a breif description of the command being executed \hypertarget{classenv__t_a8a4fdbcdf5773e33d4a1553bc621e1b4}{\index{env\-\_\-t@{env\-\_\-t}!name@{name}}
+\index{name@{name}!env_t@{env\-\_\-t}}
+\subsubsection[{name}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ env\-\_\-t\-::name}}\label{classenv__t_a8a4fdbcdf5773e33d4a1553bc621e1b4}
+the name of the command \hypertarget{classenv__t_a837e459f0e0d418a976ed4e8fa6acd39}{\index{env\-\_\-t@{env\-\_\-t}!version@{version}}
+\index{version@{version}!env_t@{env\-\_\-t}}
+\subsubsection[{version}]{\setlength{\rightskip}{0pt plus 5cm}const char$\ast$ env\-\_\-t\-::version}}\label{classenv__t_a837e459f0e0d418a976ed4e8fa6acd39}
+the version 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+mapgd\-\_\-0.\-3/interface.\-h\item 
+mapgd\-\_\-0.\-3/interface.\-cc\end{DoxyCompactItemize}

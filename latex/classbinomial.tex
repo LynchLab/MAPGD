@@ -1,0 +1,46 @@
+\hypertarget{classbinomial}{\section{binomial Class Reference}
+\label{classbinomial}\index{binomial@{binomial}}
+}
+
+
+{\ttfamily \#include $<$binomial.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classbinomial_add79fb768a6efc4b4fb943687e34f99e}{{\bfseries binomial} (const float\-\_\-t \&p)}\label{classbinomial_add79fb768a6efc4b4fb943687e34f99e}
+
+\item 
+\hypertarget{classbinomial_aa7170ce1cabd59f898e4b619ce97ccc8}{\hyperlink{classbinomial_aa7170ce1cabd59f898e4b619ce97ccc8}{$\sim$binomial} (void)}\label{classbinomial_aa7170ce1cabd59f898e4b619ce97ccc8}
+
+\begin{DoxyCompactList}\small\item\em The constructor can be called with a float\-\_\-t to specify the probability of success. \end{DoxyCompactList}\item 
+\hypertarget{classbinomial_aba6c2cff03e17edaa79ac38beba97df8}{uint32\-\_\-t \hyperlink{classbinomial_aba6c2cff03e17edaa79ac38beba97df8}{fact} (const uint32\-\_\-t \&)}\label{classbinomial_aba6c2cff03e17edaa79ac38beba97df8}
+
+\begin{DoxyCompactList}\small\item\em Returns the probabiltiy of the binomial distribution . . . \end{DoxyCompactList}\item 
+\hypertarget{classbinomial_a829c87611cdd314ef3bdac88133c0d80}{uint32\-\_\-t \hyperlink{classbinomial_a829c87611cdd314ef3bdac88133c0d80}{binom\-\_\-coef} (const uint32\-\_\-t \&, const uint32\-\_\-t \&)}\label{classbinomial_a829c87611cdd314ef3bdac88133c0d80}
+
+\begin{DoxyCompactList}\small\item\em Returns the binomial coefficent. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classbinomial_a52bbbb5322a8be20b000c53a1825430f}{std\-::vector$<$ uint32\-\_\-t $>$ \hyperlink{classbinomial_a52bbbb5322a8be20b000c53a1825430f}{fact\-\_\-vector}}\label{classbinomial_a52bbbb5322a8be20b000c53a1825430f}
+
+\begin{DoxyCompactList}\small\item\em The vector that stores look up values for the binomial coefficent. \end{DoxyCompactList}\item 
+\hypertarget{classbinomial_a536b89288f62e47096d686f077637501}{float\-\_\-t {\bfseries p\-\_\-}}\label{classbinomial_a536b89288f62e47096d686f077637501}
+
+\item 
+\hypertarget{classbinomial_af5d3a3b07fb9929b83d872d29392b8ed}{uint32\-\_\-t $\ast$ {\bfseries bp\-\_\-}}\label{classbinomial_af5d3a3b07fb9929b83d872d29392b8ed}
+
+\item 
+\hypertarget{classbinomial_abdc55611ccc89152dd92beea6567336b}{uint32\-\_\-t {\bfseries size\-\_\-}}\label{classbinomial_abdc55611ccc89152dd92beea6567336b}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class to return the binomial coefficent and binomial probabilities. N\-O\-T L\-O\-G! 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+mapgd\-\_\-0.\-3/binomial.\-h\item 
+mapgd\-\_\-0.\-3/binomial.\-cc\end{DoxyCompactItemize}

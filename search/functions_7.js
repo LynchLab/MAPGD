@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['locus',['Locus',['../classLocus.html#a0bee741faae71aa0bb9d809e0b98f3c3',1,'Locus::Locus(count_t)'],['../classLocus.html#a66f73ca4df29ccd3cb96118a81ea2d38',1,'Locus::Locus()']]],
-  ['loglikelihood',['loglikelihood',['../classmodels.html#a57d9f7de3f3d021007e8700cf4a07814',1,'models']]]
+  ['read_5findex',['read_index',['../classfile__index.html#abb372d71f4ddc2a4e5be5f66105ae99d',1,'file_index']]]
 ];

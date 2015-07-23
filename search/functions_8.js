@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['maskall',['maskall',['../classprofile.html#a7750f121c26754638453f2d7cd6782d4',1,'profile']]],
-  ['maskedcount',['maskedcount',['../classprofile.html#af1587eb40e7e3c670d08324c5d95f7c3',1,'profile']]],
-  ['merge',['merge',['../classprofile.html#afcb4eaf9094258e1399ded1386caa73e',1,'profile']]],
-  ['mpileup',['mpileup',['../classprofile.html#a7866bf2ce66d55e69043d04e3105df18',1,'profile']]]
+  ['set_5flast_5fsize',['set_last_size',['../classfile__index.html#a25bd955b88e6d020b0841031d8ba3fb2',1,'file_index']]],
+  ['set_5fnext_5fsize',['set_next_size',['../classfile__index.html#ac0dfe7cdf5127834b03cb02b01c89269',1,'file_index']]],
+  ['set_5fsize',['set_size',['../classfile__index.html#a63aed225c5c30dafe1cfb347f29d3b9f',1,'file_index::set_size(const std::string &amp;, const id1_t &amp;)'],['../classfile__index.html#a2e49d051b8e4eb88df029440f10ee119',1,'file_index::set_size(const id0_t &amp;, const id1_t &amp;)']]],
+  ['setsamples',['setsamples',['../classprofile.html#a7f2ca504635bc0e0ee4cbe7af60cefab',1,'profile']]]
 ];

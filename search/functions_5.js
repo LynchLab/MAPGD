@@ -1,13 +1,5 @@
 var searchData=
 [
-  ['genotype',['genotype',['../classgenotype.html#af5ebf8bb0c53dca2400d58fabf82f445',1,'genotype']]],
-  ['genotypelikelihood',['genotypelikelihood',['../classmodels.html#a67c5d64baed8963d4306646e5e5be38d',1,'models']]],
-  ['get_5fall_5fsizes',['get_all_sizes',['../classfile__index.html#aff106a09e0c19c6bdeb0d000cf7f91bb',1,'file_index']]],
-  ['get_5fgof',['get_gof',['../classmodels.html#a58b7ede52bb34e64c0ea80cdcc81be1e',1,'models']]],
-  ['get_5flast_5fsize',['get_last_size',['../classfile__index.html#aca45135b9a979671cfa005838be47c56',1,'file_index']]],
-  ['get_5flocus',['get_locus',['../classprofile.html#ae492f3ad1b510800f48b5f5b3193727c',1,'profile']]],
-  ['get_5fnext_5fsize',['get_next_size',['../classfile__index.html#adbb1af73e0f1797f7a71d2ec7817c695',1,'file_index']]],
-  ['get_5foffset',['get_offset',['../classfile__index.html#a2ee314e1d2e8b081d58a320842790ed9',1,'file_index']]],
-  ['get_5fprobabilities',['get_probabilities',['../classgenotype.html#a38b6d54674d32091f6b8f830319fa875',1,'genotype']]],
-  ['goodness_5fof_5ffit',['goodness_of_fit',['../classmodels.html#a526bfb6a483fc01763a71dcf18f009c3',1,'models']]]
+  ['locus',['Locus',['../classLocus.html#a0bee741faae71aa0bb9d809e0b98f3c3',1,'Locus::Locus(count_t)'],['../classLocus.html#a66f73ca4df29ccd3cb96118a81ea2d38',1,'Locus::Locus()']]],
+  ['loglikelihood',['loglikelihood',['../classmodels.html#a57d9f7de3f3d021007e8700cf4a07814',1,'models']]]
 ];
