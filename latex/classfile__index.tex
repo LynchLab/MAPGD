@@ -1,0 +1,141 @@
+\hypertarget{classfile__index}{\section{file\-\_\-index Class Reference}
+\label{classfile__index}\index{file\-\_\-index@{file\-\_\-index}}
+}
+
+
+{\ttfamily \#include $<$file-\/index.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const id0\-\_\-t \& \hyperlink{classfile__index_a9bc1769c562f2fc28956fb37326d4960}{encode\-\_\-id0} (const std\-::string \&)
+\item 
+const std\-::string \& \hyperlink{classfile__index_abbd1d70fee35330f0c3e6e1d7476e0fc}{decode\-\_\-id0} (const id0\-\_\-t \&)
+\item 
+id1\-\_\-t \hyperlink{classfile__index_a2ee314e1d2e8b081d58a320842790ed9}{get\-\_\-offset} (const id0\-\_\-t \&, const id1\-\_\-t \&)
+\item 
+void \hyperlink{classfile__index_a63aed225c5c30dafe1cfb347f29d3b9f}{set\-\_\-size} (const std\-::string \&, const id1\-\_\-t \&)
+\item 
+void \hyperlink{classfile__index_a2e49d051b8e4eb88df029440f10ee119}{set\-\_\-size} (const id0\-\_\-t \&, const id1\-\_\-t \&)
+\item 
+void \hyperlink{classfile__index_a25bd955b88e6d020b0841031d8ba3fb2}{set\-\_\-last\-\_\-size} (const id1\-\_\-t \&)
+\item 
+void \hyperlink{classfile__index_ac0dfe7cdf5127834b03cb02b01c89269}{set\-\_\-next\-\_\-size} (const id1\-\_\-t \&)
+\item 
+std\-::vector$<$ id1\-\_\-t $>$ \hyperlink{classfile__index_aff106a09e0c19c6bdeb0d000cf7f91bb}{get\-\_\-all\-\_\-sizes} (void)
+\item 
+id1\-\_\-t \hyperlink{classfile__index_aca45135b9a979671cfa005838be47c56}{get\-\_\-last\-\_\-size} (void)
+\item 
+id1\-\_\-t \hyperlink{classfile__index_adbb1af73e0f1797f7a71d2ec7817c695}{get\-\_\-next\-\_\-size} (void)
+\item 
+int \hyperlink{classfile__index_abb372d71f4ddc2a4e5be5f66105ae99d}{read\-\_\-index} (std\-::istream $\ast$)
+\item 
+int \hyperlink{classfile__index_aa41050f234a3adb88f108d834c7c5ec0}{write\-\_\-index} (std\-::ostream $\ast$)
+\item 
+\hyperlink{classfile__index}{file\-\_\-index} \& \hyperlink{classfile__index_a175bad8f17a4fc6285903d58d45ab5fd}{operator=} (const \hyperlink{classfile__index}{file\-\_\-index} \&)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+index designed to help with serializiation. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classfile__index_abbd1d70fee35330f0c3e6e1d7476e0fc}{\index{file\-\_\-index@{file\-\_\-index}!decode\-\_\-id0@{decode\-\_\-id0}}
+\index{decode\-\_\-id0@{decode\-\_\-id0}!file_index@{file\-\_\-index}}
+\subsubsection[{decode\-\_\-id0}]{\setlength{\rightskip}{0pt plus 5cm}const std\-::string\& file\-\_\-index\-::decode\-\_\-id0 (
+\begin{DoxyParamCaption}
+\item[{const id0\-\_\-t \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_abbd1d70fee35330f0c3e6e1d7476e0fc}
+returns the string represented by id0's encoded by this (and only this) \hyperlink{classfile__index}{file\-\_\-index}. \hypertarget{classfile__index_a9bc1769c562f2fc28956fb37326d4960}{\index{file\-\_\-index@{file\-\_\-index}!encode\-\_\-id0@{encode\-\_\-id0}}
+\index{encode\-\_\-id0@{encode\-\_\-id0}!file_index@{file\-\_\-index}}
+\subsubsection[{encode\-\_\-id0}]{\setlength{\rightskip}{0pt plus 5cm}const id0\-\_\-t\& file\-\_\-index\-::encode\-\_\-id0 (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_a9bc1769c562f2fc28956fb37326d4960}
+returns the numerical representation of the string used to identify scaffolds. \hypertarget{classfile__index_aff106a09e0c19c6bdeb0d000cf7f91bb}{\index{file\-\_\-index@{file\-\_\-index}!get\-\_\-all\-\_\-sizes@{get\-\_\-all\-\_\-sizes}}
+\index{get\-\_\-all\-\_\-sizes@{get\-\_\-all\-\_\-sizes}!file_index@{file\-\_\-index}}
+\subsubsection[{get\-\_\-all\-\_\-sizes}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$id1\-\_\-t$>$ file\-\_\-index\-::get\-\_\-all\-\_\-sizes (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_aff106a09e0c19c6bdeb0d000cf7f91bb}
+get a vector containing the sizes of each scaffold. \hypertarget{classfile__index_aca45135b9a979671cfa005838be47c56}{\index{file\-\_\-index@{file\-\_\-index}!get\-\_\-last\-\_\-size@{get\-\_\-last\-\_\-size}}
+\index{get\-\_\-last\-\_\-size@{get\-\_\-last\-\_\-size}!file_index@{file\-\_\-index}}
+\subsubsection[{get\-\_\-last\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}id1\-\_\-t file\-\_\-index\-::get\-\_\-last\-\_\-size (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_aca45135b9a979671cfa005838be47c56}
+get the size of the last scaffold read. \hypertarget{classfile__index_adbb1af73e0f1797f7a71d2ec7817c695}{\index{file\-\_\-index@{file\-\_\-index}!get\-\_\-next\-\_\-size@{get\-\_\-next\-\_\-size}}
+\index{get\-\_\-next\-\_\-size@{get\-\_\-next\-\_\-size}!file_index@{file\-\_\-index}}
+\subsubsection[{get\-\_\-next\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}id1\-\_\-t file\-\_\-index\-::get\-\_\-next\-\_\-size (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_adbb1af73e0f1797f7a71d2ec7817c695}
+get the size of the next scaffold to be read. \hypertarget{classfile__index_a2ee314e1d2e8b081d58a320842790ed9}{\index{file\-\_\-index@{file\-\_\-index}!get\-\_\-offset@{get\-\_\-offset}}
+\index{get\-\_\-offset@{get\-\_\-offset}!file_index@{file\-\_\-index}}
+\subsubsection[{get\-\_\-offset}]{\setlength{\rightskip}{0pt plus 5cm}id1\-\_\-t file\-\_\-index\-::get\-\_\-offset (
+\begin{DoxyParamCaption}
+\item[{const id0\-\_\-t \&}]{, }
+\item[{const id1\-\_\-t \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_a2ee314e1d2e8b081d58a320842790ed9}
+returns the number of rows until a row with id0, id1. \hypertarget{classfile__index_a175bad8f17a4fc6285903d58d45ab5fd}{\index{file\-\_\-index@{file\-\_\-index}!operator=@{operator=}}
+\index{operator=@{operator=}!file_index@{file\-\_\-index}}
+\subsubsection[{operator=}]{\setlength{\rightskip}{0pt plus 5cm}{\bf file\-\_\-index}\& file\-\_\-index\-::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf file\-\_\-index} \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_a175bad8f17a4fc6285903d58d45ab5fd}
+Not implemented. Do not use. \hypertarget{classfile__index_abb372d71f4ddc2a4e5be5f66105ae99d}{\index{file\-\_\-index@{file\-\_\-index}!read\-\_\-index@{read\-\_\-index}}
+\index{read\-\_\-index@{read\-\_\-index}!file_index@{file\-\_\-index}}
+\subsubsection[{read\-\_\-index}]{\setlength{\rightskip}{0pt plus 5cm}int file\-\_\-index\-::read\-\_\-index (
+\begin{DoxyParamCaption}
+\item[{std\-::istream $\ast$}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_abb372d71f4ddc2a4e5be5f66105ae99d}
+read in a \hyperlink{classfile__index}{file\-\_\-index} (strictly text mode). \hypertarget{classfile__index_a25bd955b88e6d020b0841031d8ba3fb2}{\index{file\-\_\-index@{file\-\_\-index}!set\-\_\-last\-\_\-size@{set\-\_\-last\-\_\-size}}
+\index{set\-\_\-last\-\_\-size@{set\-\_\-last\-\_\-size}!file_index@{file\-\_\-index}}
+\subsubsection[{set\-\_\-last\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}void file\-\_\-index\-::set\-\_\-last\-\_\-size (
+\begin{DoxyParamCaption}
+\item[{const id1\-\_\-t \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_a25bd955b88e6d020b0841031d8ba3fb2}
+set the number of rows in the most resently read scaffold. \hypertarget{classfile__index_ac0dfe7cdf5127834b03cb02b01c89269}{\index{file\-\_\-index@{file\-\_\-index}!set\-\_\-next\-\_\-size@{set\-\_\-next\-\_\-size}}
+\index{set\-\_\-next\-\_\-size@{set\-\_\-next\-\_\-size}!file_index@{file\-\_\-index}}
+\subsubsection[{set\-\_\-next\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}void file\-\_\-index\-::set\-\_\-next\-\_\-size (
+\begin{DoxyParamCaption}
+\item[{const id1\-\_\-t \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_ac0dfe7cdf5127834b03cb02b01c89269}
+set the number of rows in the next scaffold to be read. \hypertarget{classfile__index_a63aed225c5c30dafe1cfb347f29d3b9f}{\index{file\-\_\-index@{file\-\_\-index}!set\-\_\-size@{set\-\_\-size}}
+\index{set\-\_\-size@{set\-\_\-size}!file_index@{file\-\_\-index}}
+\subsubsection[{set\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}void file\-\_\-index\-::set\-\_\-size (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{, }
+\item[{const id1\-\_\-t \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_a63aed225c5c30dafe1cfb347f29d3b9f}
+set the number of rows (bp) in the scaffold with string id id0. \hypertarget{classfile__index_a2e49d051b8e4eb88df029440f10ee119}{\index{file\-\_\-index@{file\-\_\-index}!set\-\_\-size@{set\-\_\-size}}
+\index{set\-\_\-size@{set\-\_\-size}!file_index@{file\-\_\-index}}
+\subsubsection[{set\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}void file\-\_\-index\-::set\-\_\-size (
+\begin{DoxyParamCaption}
+\item[{const id0\-\_\-t \&}]{, }
+\item[{const id1\-\_\-t \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_a2e49d051b8e4eb88df029440f10ee119}
+set the number of rows (bp) in the scaffold with numeric id id0. \hypertarget{classfile__index_aa41050f234a3adb88f108d834c7c5ec0}{\index{file\-\_\-index@{file\-\_\-index}!write\-\_\-index@{write\-\_\-index}}
+\index{write\-\_\-index@{write\-\_\-index}!file_index@{file\-\_\-index}}
+\subsubsection[{write\-\_\-index}]{\setlength{\rightskip}{0pt plus 5cm}int file\-\_\-index\-::write\-\_\-index (
+\begin{DoxyParamCaption}
+\item[{std\-::ostream $\ast$}]{}
+\end{DoxyParamCaption}
+)}}\label{classfile__index_aa41050f234a3adb88f108d834c7c5ec0}
+write out a \hyperlink{classfile__index}{file\-\_\-index} (strictely text mode). 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+mapgd\-\_\-0.\-3/file-\/index.\-h\end{DoxyCompactItemize}

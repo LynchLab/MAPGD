@@ -1,0 +1,89 @@
+\hypertarget{classmodels}{\section{models Class Reference}
+\label{classmodels}\index{models@{models}}
+}
+
+
+{\ttfamily \#include $<$models.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+float\-\_\-t \hyperlink{classmodels_a57d9f7de3f3d021007e8700cf4a07814}{loglikelihood} (const \hyperlink{classLocus}{Locus} \&, const \hyperlink{classallele__stat}{allele\-\_\-stat} \&, const count\-\_\-t \&)
+\item 
+float\-\_\-t \hyperlink{classmodels_a526bfb6a483fc01763a71dcf18f009c3}{goodness\-\_\-of\-\_\-fit} (\hyperlink{classLocus}{Locus} \&, const \hyperlink{classallele__stat}{allele\-\_\-stat} \&, std\-::vector$<$ float\-\_\-t $>$ \&, const count\-\_\-t \&, const float\-\_\-t \&)
+\item 
+void \hyperlink{classmodels_af1a44983f9f2a3473e0905182031fa03}{init\-\_\-gof} (const count\-\_\-t $\ast$, const \hyperlink{classallele__stat}{allele\-\_\-stat} \&)
+\item 
+float\-\_\-t \hyperlink{classmodels_a58b7ede52bb34e64c0ea80cdcc81be1e}{get\-\_\-gof} (const count\-\_\-t $\ast$, const \hyperlink{classallele__stat}{allele\-\_\-stat} \&)
+\item 
+float\-\_\-t \hyperlink{classmodels_a67c5d64baed8963d4306646e5e5be38d}{genotypelikelihood} (const \hyperlink{structquartet}{quartet\-\_\-t} \&, const \hyperlink{classallele__stat}{allele\-\_\-stat} \&, const count\-\_\-t \&)
+\item 
+\hypertarget{classmodels_a4c3e1316da574d7eab691e8dfd32c486}{float\-\_\-t {\bfseries ln\-L} (const float\-\_\-t \&log\-M\-M, const float\-\_\-t \&log\-Mm, const float \&logmm, const count\-\_\-t $\ast$count)}\label{classmodels_a4c3e1316da574d7eab691e8dfd32c486}
+
+\item 
+\hypertarget{classmodels_a33b232eed7d936124a470a2c87ffdc39}{\hyperlink{classmodels}{models} \& {\bfseries operator=} (const \hyperlink{classmodels}{models} \&rhs)}\label{classmodels_a33b232eed7d936124a470a2c87ffdc39}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+this class perfoms some likelihood calculations. It keeps some look-\/up tables that will grow as calculations are performed, and may become to large over time. T\-O\-D\-O\-: implement automatic look-\/up table purging.
+
+Currently likelihood calculations are all performed by a set of 'models' that we give to the \char`\"{}multinomial\char`\"{} class via the multinomial\-::set method. These models should be able to look at the \hyperlink{classallele__stat}{allele\-\_\-stat} structure, which contains information about the error rate at the locus and the identity of the major and minor allele, and return a set of four log probabilities of observing each particular nucleotide in a given call. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classmodels_a67c5d64baed8963d4306646e5e5be38d}{\index{models@{models}!genotypelikelihood@{genotypelikelihood}}
+\index{genotypelikelihood@{genotypelikelihood}!models@{models}}
+\subsubsection[{genotypelikelihood}]{\setlength{\rightskip}{0pt plus 5cm}float\-\_\-t models\-::genotypelikelihood (
+\begin{DoxyParamCaption}
+\item[{const {\bf quartet\-\_\-t} \&}]{quartet, }
+\item[{const {\bf allele\-\_\-stat} \&}]{population, }
+\item[{const count\-\_\-t \&}]{M\-I\-N}
+\end{DoxyParamCaption}
+)}}\label{classmodels_a67c5d64baed8963d4306646e5e5be38d}
+clalculates genotypic likelihoods. Not implement, may be depricated.
+
+D\-O\-N\-T U\-S\-E T\-H\-I\-S!!! T\-O\-D\-O F\-I\-X I\-T!. \hypertarget{classmodels_a58b7ede52bb34e64c0ea80cdcc81be1e}{\index{models@{models}!get\-\_\-gof@{get\-\_\-gof}}
+\index{get\-\_\-gof@{get\-\_\-gof}!models@{models}}
+\subsubsection[{get\-\_\-gof}]{\setlength{\rightskip}{0pt plus 5cm}float\-\_\-t models\-::get\-\_\-gof (
+\begin{DoxyParamCaption}
+\item[{const count\-\_\-t $\ast$}]{, }
+\item[{const {\bf allele\-\_\-stat} \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classmodels_a58b7ede52bb34e64c0ea80cdcc81be1e}
+returns the likelihood of a ?? goodness of fit... blah blah blah. \hypertarget{classmodels_a526bfb6a483fc01763a71dcf18f009c3}{\index{models@{models}!goodness\-\_\-of\-\_\-fit@{goodness\-\_\-of\-\_\-fit}}
+\index{goodness\-\_\-of\-\_\-fit@{goodness\-\_\-of\-\_\-fit}!models@{models}}
+\subsubsection[{goodness\-\_\-of\-\_\-fit}]{\setlength{\rightskip}{0pt plus 5cm}float\-\_\-t models\-::goodness\-\_\-of\-\_\-fit (
+\begin{DoxyParamCaption}
+\item[{{\bf Locus} \&}]{site, }
+\item[{const {\bf allele\-\_\-stat} \&}]{allele, }
+\item[{std\-::vector$<$ float\-\_\-t $>$ \&}]{gofs, }
+\item[{const count\-\_\-t \&}]{M\-I\-N, }
+\item[{const float\-\_\-t \&}]{M\-I\-N\-G\-O\-F}
+\end{DoxyParamCaption}
+)}}\label{classmodels_a526bfb6a483fc01763a71dcf18f009c3}
+gets the log likelihood of the observations at \hyperlink{classLocus}{Locus}, given \hyperlink{classallele__stat}{allele\-\_\-stat}. \hypertarget{classmodels_af1a44983f9f2a3473e0905182031fa03}{\index{models@{models}!init\-\_\-gof@{init\-\_\-gof}}
+\index{init\-\_\-gof@{init\-\_\-gof}!models@{models}}
+\subsubsection[{init\-\_\-gof}]{\setlength{\rightskip}{0pt plus 5cm}void models\-::init\-\_\-gof (
+\begin{DoxyParamCaption}
+\item[{const count\-\_\-t $\ast$}]{, }
+\item[{const {\bf allele\-\_\-stat} \&}]{}
+\end{DoxyParamCaption}
+)}}\label{classmodels_af1a44983f9f2a3473e0905182031fa03}
+initilizes the ? for goodness of fit calculations. \hypertarget{classmodels_a57d9f7de3f3d021007e8700cf4a07814}{\index{models@{models}!loglikelihood@{loglikelihood}}
+\index{loglikelihood@{loglikelihood}!models@{models}}
+\subsubsection[{loglikelihood}]{\setlength{\rightskip}{0pt plus 5cm}float\-\_\-t models\-::loglikelihood (
+\begin{DoxyParamCaption}
+\item[{const {\bf Locus} \&}]{site, }
+\item[{const {\bf allele\-\_\-stat} \&}]{p, }
+\item[{const count\-\_\-t \&}]{M\-I\-N}
+\end{DoxyParamCaption}
+)}}\label{classmodels_a57d9f7de3f3d021007e8700cf4a07814}
+gets the log likelihood of the observations at \hyperlink{classLocus}{Locus}, given \hyperlink{classallele__stat}{allele\-\_\-stat}.
+
+, a function that calculates the log likelihood of a set of observations. 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+mapgd\-\_\-0.\-3/models.\-h\item 
+mapgd\-\_\-0.\-3/models.\-cc\end{DoxyCompactItemize}
