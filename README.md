@@ -2,6 +2,7 @@
 
 [<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip) [(C) Michael Lynch](https://github.com/LynchLab/MAPGD#copyright)
 
+[<b>Visit the MAPGD homepage</b>](https://lynchlab.github.io/MAPGD/)
 
 ###Contents 
 ####[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
