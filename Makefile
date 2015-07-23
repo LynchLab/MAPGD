@@ -18,7 +18,7 @@ test: all
 	cd test && bash test.sh
 
 install: all
-	install -m 0755 ../bin/$(NAME) $(prefix)/bin
+	install -m 0755 ./bin/$(NAME) $(prefix)/bin
 .PHONY: install
 
 clean:

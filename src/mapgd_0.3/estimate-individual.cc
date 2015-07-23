@@ -21,7 +21,7 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 
 #include "estimate-individual.h"
 
-#define BUFFER_SIZE 50 
+#define BUFFER_SIZE 5 
 //#define PRAGMA
 
 /*
@@ -238,6 +238,7 @@ int estimateInd(int argc, char *argv[])
 				}
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
+					buffer_site[c].unmaskall(); 
 					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
 					#ifdef PRAGMA
 					#pragma omp critical

@@ -639,7 +639,7 @@ int profile::readt(Locus &site){
 			};
 			site.id0=encodeid0(column[0]);
 			site.id1=encodeid1(column[1]);
-			for (unsigned int x=0; x < samples_; ++x){
+			for (size_t x=0; x < samples_; ++x){
 				quartet=split(column[x+2], delim_quartet);
 				site.sample[x].base[0]=atoi(quartet[0].c_str() );
 				site.sample[x].base[1]=atoi(quartet[1].c_str() );
@@ -660,7 +660,7 @@ int profile::readt(Locus &site){
 			site.id0=encodeid0(column[0]);
 			site.id1=encodeid1(column[1]);
 			site.extraid[0]=encodeextraid(column[2][0], 0);
-			for (unsigned int x=0; x<samples_; ++x){
+			for (size_t x=0; x<samples_; ++x){
 				quartet=split(column[x+3], delim_quartet);
 				site.sample[x].base[0]=atoi(quartet[0].c_str() );
 				site.sample[x].base[1]=atoi(quartet[1].c_str() );

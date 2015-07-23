@@ -62,9 +62,9 @@ private:
 
 	char *delim_column;				// the delimiter that seperates columns.
 	char *delim_quartet;				// the delimiter that seperates counts in a quartet.
-	unsigned int *columns_;				// 5|6|7|?
+	size_t *columns_;				// 5|6|7|?
 	Locus *site_;					// a vector to store the calls from reads.
-	unsigned int *samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
+	size_t *samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
 	std::vector <float_t> sample_gof_;		// the number of samples (i.e. different individuals or populations) in the profile.
 public:
 	const float_t getsample_property(const count_t &) const;
@@ -114,7 +114,7 @@ private:
 
 	char delim_column;			// the delimiter which seperates columns
 	char delim_quartet;			// the delimiter that seperates counts in a quartet
-	unsigned int columns_;			// 5|6|7|more?
+	size_t columns_;			// 5|6|7|more?
 
 	size_t samples_;			// the number of samples (i.e. different individuals or populations) in the profile.
 	id1_t size_;				// the number of lines in the sample. 0 if unkown.
