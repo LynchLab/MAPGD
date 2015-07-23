@@ -41,12 +41,12 @@ private:
 //private variables should be initialized by reading the header...
 	std::map <std::string, count_t> id0_str;
 	std::vector <std::string> id0;
-	std::vector <std::string> extraids;		//extra ids associated with the quartet. (ref base identiy?).	
+	std::vector <std::string> extraids;		//!< extra ids associated with the quartet. (ref base identiy?).	
 
-	std::vector <std::string> column_names;		// the names of all the columns in the profile.
+	std::vector <std::string> column_names;		//!< the names of all the columns in the profile.
 	
-	count_t lastid0;				//initilize to 0-1;
-	std::string lastid0_str;			//initilize to "";
+	count_t lastid0;				//!< initilize to 0-1;
+	std::string lastid0_str;			//!< initilize to "";
 
 	count_t encodechar[256];
 	char decodechar[256];
@@ -69,11 +69,11 @@ private:
 public:
 	const float_t getsample_property(const count_t &) const;
 	const std::string getsample_name(const count_t &) const;
-	char control;					//a variable that controls switches in the binary read/write mode.
-	profile_header();				// does not initilize . . .
-	profile_header(profile *);			// initilizes profile_header.
+	char control;					//!< a variable that controls switches in the binary read/write mode.
+	profile_header();				//!< does not initilize . . .
+	profile_header(profile *);			//!< initilizes profile_header.
 	~profile_header(void);
-	void init(profile *);				// initilizes profile_header.
+	void init(profile *);				//!< initilizes profile_header.
 
 	const id0_t encodeid0(const std::string &);
 	const id1_t encodeid1(const std::string &);
@@ -83,19 +83,19 @@ public:
 	const std::string decodeid1(const id1_t&);
 	const std::string decodeextraid(const char &, const size_t &);
 
-	int readheader(std::istream *);			// reads the header of a profile. All profiles from v 2.0 and later should have headers.
-	int readtailer(std::istream *);			// reads the tailer of a profile. All profiles from v 2.0 and later should have headers.
-	int writeheader(std::ostream *);		// write the . . .
-	int writetailer(std::ostream *);		// write the . . .
+	int readheader(std::istream *);			//!< reads the header of a profile. All profiles from v 2.0 and later should have headers.
+	int readtailer(std::istream *);			//!< reads the tailer of a profile. All profiles from v 2.0 and later should have headers.
+	int writeheader(std::ostream *);		//!< write the . . .
+	int writetailer(std::ostream *);		//!< write the . . .
 
-	void set_delim_column(const char&);		// the delimiter which seperates columns
-	void set_delim_quartet(const char&);		// the delimiter which seperates columns
+	void set_delim_column(const char&);		//!< the delimiter which seperates columns
+	void set_delim_quartet(const char&);		//!< the delimiter which seperates columns
 
-	int setsamples(const count_t&);			//set the number of samples in the profile (only called in write mode).
-	int setcolumns(const count_t&);			//set the number of columns for reading and writing.
+	int setsamples(const count_t&);			//!< set the number of samples in the profile (only called in write mode).
+	int setcolumns(const count_t&);			//!< set the number of columns for reading and writing.
 	int setcolumn_name(const count_t&, const std::string&);
 	const std::string getcolumn_name(const count_t&) const;
-	profile_header & operator=(const profile_header&); //I don't think the copy makes sense. . . 
+	profile_header & operator=(const profile_header&); //!< I don't think the copy makes sense. . . 
 	
 	void clear(void);
 };
@@ -112,20 +112,20 @@ private:
 
 	/*these should all be controlled through the header_*/
 
-	char delim_column;			// the delimiter which seperates columns
-	char delim_quartet;			// the delimiter that seperates counts in a quartet
-	size_t columns_;			// 5|6|7|more?
+	char delim_column;			//!< the delimiter which seperates columns
+	char delim_quartet;			//!< the delimiter that seperates counts in a quartet
+	size_t columns_;			//!< 5|6|7|more?
 
-	size_t samples_;			// the number of samples (i.e. different individuals or populations) in the profile.
-	id1_t size_;				// the number of lines in the sample. 0 if unkown.
+	size_t samples_;			//!< the number of samples (i.e. different individuals or populations) in the profile.
+	id1_t size_;				//!< the number of lines in the sample. 0 if unkown.
 
-	bool open_;				// indicates whether the profile opened succesfully
-	bool sig_;				// were alleles thrown out if the allele only occurred in reads from one direction?
-	bool read_;				// file is open for reading.
-	bool write_;				// file is open for writing.
-	bool binary_;				// binary mode flag. Incompatable with mpileup and noheader flags.
-	bool mpileup_;				// file is an mpileup. Setting this should set the noheader flag.
-	bool noheader_;				// file has no header
+	bool open_;				//!< indicates whether the profile opened succesfully
+	bool sig_;				//!< were alleles thrown out if the allele only occurred in reads from one direction?
+	bool read_;				//!< file is open for reading.
+	bool write_;				//!< file is open for writing.
+	bool binary_;				//!< binary mode flag. Incompatable with mpileup and noheader flags.
+	bool mpileup_;				//!< file is an mpileup. Setting this should set the noheader flag.
+	bool noheader_;				//!< file has no header
 
 	/*done*/
 
@@ -232,7 +232,7 @@ public:
 	void mpileup(void) {mpileup_=true; noheader_=true;}	//!< File is an mpileup. Setting this should set the noheader flag.
 	void noheader(void) {noheader_=true;}			//!< File has no header
 
-	const size_t getlinenumber(void) const;
+	const id1_t getlinenumber(void) const;
 
 
 	std::string getids(const Locus &);

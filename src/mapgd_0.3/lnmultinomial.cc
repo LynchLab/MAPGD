@@ -134,7 +134,7 @@ float_t lnmultinomial::lnmultinomcoef(const count_t *s){
 
 float_t lnmultinomial::lnfact(const count_t &s){
 	if (lnfact_vector.size()==0) {lnfact_vector.push_back(log(1) ); lnfact_vector.push_back(log(1) );}
-	for (int x=lnfact_vector.size(); x<=s; x++) lnfact_vector.push_back(lnfact_vector[x-1]+log(x) ); 
+	for (size_t x=lnfact_vector.size(); x<=s; x++) lnfact_vector.push_back(lnfact_vector[x-1]+log(x) ); 
 	return lnfact_vector[s];
 }
 
@@ -146,14 +146,14 @@ struct sort_second {
 
 std::vector <std::pair <count_t, float_t> > sort (const float_t *a, const count_t &n){
 	std::vector <std::pair <count_t, float_t> > sorted;
-	for (int x=0; x<n; ++x) { sorted.push_back( std::pair <count_t, float_t> (x, a[x]) ); };
+	for (size_t x=0; x<n; ++x) { sorted.push_back( std::pair <count_t, float_t> (x, a[x]) ); };
 	std::sort(sorted.begin(), sorted.end(), sort_second() );
 	return sorted;
 };
 
 std::vector <std::pair <count_t, count_t> > sort (const count_t *a, const count_t &n){
 	std::vector <std::pair <count_t, count_t> > sorted;
-	for (int x=0; x<n; ++x) { sorted.push_back( std::pair <count_t, count_t> (x, a[x]) ); };
+	for (size_t x=0; x<n; ++x) { sorted.push_back( std::pair <count_t, count_t> (x, a[x]) ); };
 	std::sort(sorted.begin(), sorted.end(), sort_second() );
 	return sorted;
 }

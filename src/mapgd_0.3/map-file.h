@@ -13,63 +13,63 @@
 #include "file-index.h"
 #include "map-file-header.h"
 
-/* \breif used to index and deindex files*/
-
-	
-class  gcf_file {
+/*! \breif used for passing information around within the program.
+ *
+ */
+class  map_file {
 //private variables should be initialized by reading the header...
 private:
-	bool open_;					// indicates whether the profile opened succesfully
+	bool open_;					//!< indicates whether the profile opened succesfully
 
 	/*these should all be controlled through the header_*/
 
-	char delim_column;				// the delimiter which seperates columns
-	char delim_genotype;				// the delimiter which seperates genotypes
+	char delim_column;				//!< The delimiter which seperates columns
+	char delim_genotype;				//!< The delimiter which seperates genotypes
 
-	unsigned int samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
-	count_t size_;					// the number of lines in the sample. 0 if unkown.
+	unsigned int samples_;				//!< The number of samples (i.e. different individuals or populations) in the profile.
+	count_t size_;					//!< The number of lines in the sample. 0 if unkown.
 
-	bool read_;					// file is open for reading.
-	bool write_;					// file is open for writing.
-	bool binary_;					// binary mode flag. Incompatable with mpileup and noheader flags.
+	bool read_;					//!< File is open for reading.
+	bool write_;					//!< File is open for writing.
+	bool binary_;					//!< Binary mode flag. Incompatable with mpileup and noheader flags.
 
 	/*done*/
 
-	static const std::string names_;		// ACGTN
+	static const std::string names_;		//!< ACGTN
 
-	int readt(int);					//read file in text mode.
-	int readb(int);					//read file in binary mode.
+	int readt(int);					//!< Read file in text mode.
+	int readb(int);					//!< Read file in binary mode.
 
-	int writet();					//write stat information in memory to file in text mode.
-	int writeb();					//write stat information in memory to file in binary mode.
+	int writet();					//!< Write stat information in memory to file in text mode.
+	int writeb();					//!< Write stat information in memory to file in binary mode.
 
 	file_index *index_;
 
-	std::istream *in;				// all data is read from in.
-	std::ostream *out;				// all data is writen is writen to out.
-	std::fstream inFile;				// the file to read data from (if not stdin).
-	std::ofstream outFile;				// the file to write data to (if not stdout).
+	std::istream *in;				//!< All data is read from in.
+	std::ostream *out;				//!< All data is writen is writen to out.
+	std::fstream inFile;				//!< The file to read data from (if not stdin).
+	std::ofstream outFile;				//!< The file to write data to (if not stdout).
 public:
-	gcf_file();					//default constructor
+	gcf_file();					//!< default constructor
 
-	gcf_file* open(const char *, const char *);	//The function that opens a profile (if file).
-	gcf_file* open(const char *);			//The function that opens a profile (if stdin).
-	bool is_open(void) const;			//returns true if profile is open, false otherwise.
+	gcf_file* open(const char *, const char *);	//!< The function that opens a mapfile (if file).
+	gcf_file* open(const char *);			//!< The function that opens a mapfile (if stdin).
+	bool is_open(void) const;			//!< Returns true if profile is open, false otherwise.
 
 	/*basic io operation*/
-	int copy(const gcf_file&);			//copys a line from profile
-	int read();					//reads a line from the instream. Returns 0 on success, EOF on EOF.
-	int write();					//writes a line to the outstream. Returns 0 on success, EOF on EOF.
+	int copy(const gcf_file&);			//!< Copys a line from profile
+	int read();					//!< Reads a line from the instream. Returns 0 on success, EOF on EOF.
+	int write();					//!< Writes a line to the outstream. Returns 0 on success, EOF on EOF.
 
-	void close(void);				//close iostreams, writes tail, etc.
+	void close(void);				//!< Close iostreams, writes tail, etc.
 
 	/*functions dealing with the header*/
 
-	void set_delim_column(const char&);		// the delimiter which seperates columns
-	void set_delim_genotype(const char&);		// the delimiter which seperates columns
+	void set_delim_column(const char&);		//!< The delimiter which seperates columns
+	void set_delim_genotype(const char&);		//!< The delimiter which seperates columns
 
-	int set_samples(count_t);			//set the number of samples in the profile (only called in write mode).
-	int set_columns(count_t);			//set the number of columns for reading and writing.
+	int set_samples(count_t);			//!< Set the number of samples in the profile (only called in write mode).
+	int set_columns(count_t);			//!< Set the number of columns for reading and writing.
 
 	int set_column_name(const count_t&, const std::string &);
 	int set_sample_name(const count_t&, const std::string &);
@@ -86,9 +86,9 @@ public:
 	const std::string decode_extraid(const count_t &, const count_t &);
 
 	/*functions dealing with ?*/
-	count_t size(void) const;			//number of populations/individuals
+	count_t size(void) const;			//!< Number of populations/individuals
 
-	const count_t get_index(count_t) const;		//returns the index of the alleles in order a sorted order
+	const count_t get_index(count_t) const;		//!< Returns the index of the alleles in order a sorted order
 
 	std::string get_ids(void); 			//
 

@@ -936,7 +936,7 @@ std::string profile::getids(const Locus &site)
 	return str;
 };
 	
-count_t profile::size(void) const
+size_t profile::size(void) const
 {
 	return samples_;
 };

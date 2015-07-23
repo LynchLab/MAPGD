@@ -17,33 +17,34 @@
 
 class models{
 private:
-lnmultinomial lnMM_, lnMm_, lnmm_;		//The three multinomials we will use for probability calculations.
-						//The '4' specifies the number of categories of the distribution.
-						//Since these represent the distribution of the four nucleotides 
-						//A, C, G and T, we use 4 categories.
+lnmultinomial lnMM_, lnMm_, lnmm_;		//!< The three multinomials we will use for probability calculations.
+						// The '4' specifies the number of categories of the distribution.
+						// Since these represent the distribution of the four nucleotides 
+						// A, C, G and T, we use 4 categories.
 lnmultinomial lnMMP_, lnMmP_, lnmmP_;		
 
-float_t E0_, E1_, E2_;			//Values used in calculations;
+float_t E0_, E1_, E2_;			//!< Values used in calculations;
 public:
 
 	models(void);
 	~models(void);
 
-	/*! \breif gets the log likelihood of the observations at Locus, given allele_stat.*/
+	/*! \breif Gets the log likelihood of the observations at Locus, given allele_stat.*/
 	float_t loglikelihood(const Locus &, const allele_stat &, const count_t &);
 
-	/*! \breif gets the log likelihood of the observations at Locus, given allele_stat.*/
+	/*! \breif Gets the log likelihood of the observations at Locus, given allele_stat.*/
 	float_t goodness_of_fit (Locus &, const allele_stat &, std::vector <float_t> &, const count_t &, const float_t &);
 
-	/*! \breif initilizes the ? for goodness of fit calculations.*/
+	/*! \breif Initilizes the ? for goodness of fit calculations.*/
 	void init_gof(const count_t *, const allele_stat &);
 
-	/*! \breif returns the likelihood of a ?? goodness of fit... blah blah blah.*/
+	/*! \breif Returns the likelihood of a ?? goodness of fit... blah blah blah.*/
 	float_t get_gof(const count_t *, const allele_stat &);
 
-	/*! \breif clalculates genotypic likelihoods. Not implement, may be depricated.*/
+	/*! \breif Clalculates genotypic likelihoods. Not implement, may be depricated.*/
 	float_t genotypelikelihood(const quartet_t &, const allele_stat &, const count_t &);
 
+	/*! \breif Clalculates goodness of fit likelihoods.*/
 	inline float_t lnL(const float_t &logMM, const float_t &logMm, const float &logmm, const count_t *count){
 		/*posterior = prior x likelihood */
 		E0_=logMM+lnMMP_.lnprob(count);

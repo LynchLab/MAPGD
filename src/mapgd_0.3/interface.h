@@ -50,15 +50,18 @@ class flag_t {
 		emsg=emsg_;
 		umsg=umsg_;
 	};
-	bool set;			/*flag toggles whether option has been set*/
-	char opt;			/*the option name*/
-	char *lopt;			/*the long option name*/
-	void *parm;			/*pointer to the parameter to be set*/
-	int (*func)(void *);		/*the function to set the parameters*/
-	char *emsg;			/*A short error message to display when the proper parameters aren't passed to this option*/
-	char *umsg;			/*A short discription of this option to be displayed in the usage message*/	
+	bool set;			//!< flag toggles whether option has been set.
+	char opt;			//!< the option name.
+	char *lopt;			//!< the long option name.
+	void *parm;			//!< pointer to the parameter to be set.
+	int (*func)(void *);		//!< the function to set the parameters.
+	char *emsg;			//!< A short error message to display when the proper parameters aren't passed to this option.
+	char *umsg;			//!< A short discription of this option to be displayed in the usage message.
 };
 
+/*! \breif An argument.
+ *
+ */
 class arg_t {
 	private:
 	public:
@@ -79,15 +82,18 @@ class arg_t {
 		umsg=umsg_;
 		set=false;
 	};
-	bool set;				/*!< flag toggles whether option has been set*/
-	char opt;				/*!< the option name*/
-	char *lopt;				/*!< the long option name*/
-	void *parm;				/*!< pointer to the parameter to be set*/
-	int (*func)(int, char **, void *);	/*!< the function to set the parameters*/
-	char *emsg;				/*!< A short error message to display when the proper parameters aren't passed to this option*/
-	char *umsg;				/*!< A short description of this option to be displayed in the usage message*/	
+	bool set;				//!< flag toggles whether option has been set.
+	char opt;				//!< the option name.
+	char *lopt;				//!< the long option name.
+	void *parm;				//!< pointer to the parameter to be set.
+	int (*func)(int, char **, void *);	//!< the function to set the parameters.
+	char *emsg;				//!< A short error message to display when the proper parameters aren't passed to this option.
+	char *umsg;				//!< A short description of this option to be displayed in the usage message.
 };
 
+/*! \breif A command.
+ *
+ */
 class com_t {
 	private:
 	public:
@@ -115,7 +121,9 @@ class com_t {
 	char *umsg;				/*!< A short description of this command to be displated in the usage and help message.*/
 };
 
-/*information that is displayed in usage and version*/
+/*! \breif A class for handelling options and formating help, usage and version information.
+ *
+ */
 class env_t{
 	private:
 	public:
