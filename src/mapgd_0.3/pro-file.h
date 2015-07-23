@@ -134,6 +134,7 @@ private:
 	static const count_t defaultorder[5];	// 01234 
 
 	Locus site_;				//!< a structure that stores quartet information.
+//	Locus site_buffer[BUFFER_SIZE];		//!< a structure that stores quartet information.
 
 	int readm(Locus &);			//!< read file in mpileup mode.
 	int readt(Locus &);			//!< read file in text mode.
