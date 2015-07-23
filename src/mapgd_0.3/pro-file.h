@@ -30,6 +30,12 @@
 
 class profile;
 
+struct profile_flags{
+};
+
+
+/*! \breif A class to control the varrious atributes of .pro files.  A class to control the various attributes of .pro files. This class was a terrible design decision that I am now paying for. Some form of this class will likely persist, but in the future I think it will only set internal flags. 
+ */
 class  profile_header{
 private:
 //private variables should be initialized by reading the header...
@@ -94,94 +100,99 @@ public:
 };
 
 	
-
+/*! \breif A table to store quartet information. 
+ *	Eventually this will be a specialization to add conversion functions from mpileup, and the various .pro 
+ *	format to a more map format that will be used to read/write information within mapgd commands. 
+ *	See the design document for the map format in the docs directory. 
+ */
 class  profile{
 //private variables should be initialized by reading the header...
 private:
-	bool open_;					// indicates whether the profile opened succesfully
 
 	/*these should all be controlled through the header_*/
 
-	char delim_column;				// the delimiter which seperates columns
-	char delim_quartet;				// the delimiter that seperates counts in a quartet
-	unsigned int columns_;				// 5|6|7|more?
-	unsigned int samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
-	uint64_t size_;					// the number of lines in the sample. 0 if unkown.
-	bool sig_;					// were alleles thrown out if the allele only occurred in reads from one direction?
-	bool read_;					// file is open for reading.
-	bool write_;					// file is open for writing.
-	bool binary_;					// binary mode flag. Incompatable with mpileup and noheader flags.
-	bool mpileup_;					// file is an mpileup. Setting this should set the noheader flag.
-	bool noheader_;					// file has no header
+	char delim_column;			// the delimiter which seperates columns
+	char delim_quartet;			// the delimiter that seperates counts in a quartet
+	unsigned int columns_;			// 5|6|7|more?
+
+	size_t samples_;			// the number of samples (i.e. different individuals or populations) in the profile.
+	size_t size_;				// the number of lines in the sample. 0 if unkown.
+
+	bool open_;				// indicates whether the profile opened succesfully
+	bool sig_;				// were alleles thrown out if the allele only occurred in reads from one direction?
+	bool read_;				// file is open for reading.
+	bool write_;				// file is open for writing.
+	bool binary_;				// binary mode flag. Incompatable with mpileup and noheader flags.
+	bool mpileup_;				// file is an mpileup. Setting this should set the noheader flag.
+	bool noheader_;				// file has no header
 
 	/*done*/
 
+	bool donothing_;			// a flag to indicate that nothing should be read for infile stream when read is called 
 
-	bool donothing_;				// a flag to indicate that nothing should be read for infile stream when read is called 
+	static const count_t defaultorder[5];	// 01234 
 
-	static const count_t defaultorder[5];		// 01234 
+	Locus site_;				//!< a structure that stores quartet information.
 
-	Locus site_;					// a structure that stores quartet information.
+	int readm(Locus &);			//!< read file in mpileup mode.
+	int readt(Locus &);			//!< read file in text mode.
+	int readb(Locus &);			//!< read file in binary mode.
 
-	int readm(Locus &);					//read file in mpileup mode.
-	int readt(Locus &);					//read file in text mode.
-	int readb(Locus &);					//read file in binary mode.
+	int writet();				//!< write the quartet information in memory to file in text mode.
+	int writeb();				//!< write the quartet information in memory to file in binary mode.
+						// pro files do not contain enough information to construct mpileup files.
 
-	int writet();					//write the quartet information in memory to file in text mode.
-	int writeb();					//write the quartet information in memory to file in binary mode.
-							//pro files do not contain enough information to construct mpileup files.
-
-	int writet(Locus const &);			//write the quartet information passed to file in text mode.
-	int writeb(Locus const &);			//write the quartet information passed to file in binary mode.
+	int writet(Locus const &);		//!< write the quartet information passed to file in text mode.
+	int writeb(Locus const &);		//!< write the quartet information passed to file in binary mode.
 
 	profile_header header_;
 
-	std::istream *in;				// all data is read from in.
-	std::ostream *out;				// all data is writen is writen to out.
-	std::fstream inFile;				// the file to read data from (if not stdin).
-	std::ofstream outFile;				// the file to write data to (if not stdout).
+	std::istream *in;			//!< all data is read from in.
+	std::ostream *out;			//!< all data is writen is writen to out.
+	std::fstream inFile;			//!< the file to read data from (if not stdin).
+	std::ofstream outFile;			//!< the file to write data to (if not stdout).
 
-	friend profile_header::profile_header(profile *);//Should set up pointers etc.
-	friend void profile_header::init(profile *);	//Should set up pointers etc.
+	friend profile_header::profile_header(profile *);//!< Should set up pointers etc.
+	friend void profile_header::init(profile *);	//!< Should set up pointers etc.
 	void inline scan(const Locus &,const std::string &, quartet_t &); //?
 public:
-	profile();					//default constructor
-	static const std::string names_;		// ACGTN
+	profile();					//!< default constructor
+	static const std::string names_;		//!< ACGTN
 	const float_t getsample_property(const count_t &) const;
 
-	profile* open(const char *, const char *);	//The function that opens a profile (if file).
-	profile* open(const char *);			//The function that opens a profile (if stdin).
-	bool is_open(void) const;			//returns true if profile is open, false otherwise.
+	profile* open(const char *, const char *);	//!< The function that opens a profile (if file).
+	profile* open(const char *);			//!< The function that opens a profile (if stdin).
+	bool is_open(void) const;			//!< Returns true if profile is open, false otherwise.
 
 	/*basic io operation*/
-	int copy(const profile&);			//copys a line from profile
-	int read();					//reads a line from the instream. Returns 0 on success, EOF on EOF.
-	int read(Locus &);				//peaks at a line in the instream. Returns 0 on success, EOF on EOF.
-	int write();					//writes a line to the outstream. Returns 0 on success, EOF on EOF.
-	int write(Locus const &);			//writes a line to the outstream. Returns 0 on success, EOF on EOF.
+	int copy(const profile&);			//!< Copys a line from profile
+	int read();					//!< Reads a line from the instream. Returns 0 on success, EOF on EOF.
+	int read(Locus &);				//!< Peaks at a line in the instream. Returns 0 on success, EOF on EOF.
+	int write();					//!< Writes a line to the outstream. Returns 0 on success, EOF on EOF.
+	int write(Locus const &);			//!< Writes a line to the outstream. Returns 0 on success, EOF on EOF.
 
-							//Both of these functions should thow an error if the are used while streams are not open.
-	int seek(const std::streampos);			//goes to the pos streampos of the stream. Returns 0 on success, EOF on if streampos is not in the stream. 
-	int seek(std::string, std::string);		//goes to the line specified by the ID0 ID1 pair om the instream. Returns 0 on success, EOF if ID0 ID1 is not in the stream. 
+							//!< Both of these functions should thow an error if the are used while streams are not open.
+	int seek(const std::streampos);			//!< goes to the pos streampos of the stream. Returns 0 on success, EOF on if streampos is not in the stream. 
+	int seek(std::string, std::string);		//!< goes to the line specified by the ID0 ID1 pair om the instream. Returns 0 on success, EOF if ID0 ID1 is not in the stream. 
 
-	void close(void);				//close iostreams, writes tail, etc.
+	void close(void);				//!< close iostreams, writes tail, etc.
 
-	void static merge(std::list <profile *>);	//take multiple profile and combine them into a single profile.
+	void static merge(std::list <profile *>);	//!< take multiple profile and combine them into a single profile.
 
 	/*functions dealing with the header*/
 
-	int copyheader(const profile&);			//copys the header of a profile.
-	int readheader();				//reads the header of a profile. All profiles from v 2.0 and later should have headers.
-	int writeheader();				//writes the header of a profile. All profiles from v 2.0 and later should have headers.
+	int copyheader(const profile&);			//!< copys the header of a profile.
+	int readheader();				//!< reads the header of a profile. All profiles from v 0.2.2 and later should have headers.
+	int writeheader();				//!< Writes the header of a profile. All profiles from v 0.2.2 and later should have headers.
 	
-	int writetailer();				//writes the header of a profile. All profiles from v 2.0 and later should have headers.
+	int writetailer();				//!< Writes the header of a profile. All profiles from v 0.2.2 and later should have headers.
 
-	void set_delim_column(const char&);		// the delimiter which seperates columns
-	void set_delim_quartet(const char&);		// the delimiter which seperates columns
+	void set_delim_column(const char&);		//!< The delimiter which seperates columns
+	void set_delim_quartet(const char&);		//!< The delimiter which seperates columns
 
-	void setsamples(count_t);			//set the number of samples in the profile (only called in write mode).
-	void setcolumns(count_t);			//set the number of columns for reading and writing.
-	count_t get_columns(void) const {return columns_;};			//set the number of columns for reading and writing.
+	void setsamples(count_t);			//!< Set the number of samples in the profile (only called in write mode).
+	void setcolumns(count_t);			//!< Set the number of columns for reading and writing.
+	size_t get_columns(void) const {return columns_;};	//!< Set the number of columns for reading and writing.
 
 	int setcolumn_name(const count_t&, const std::string &);
 	int setsample_name(const count_t&, const std::string &);
@@ -190,53 +201,59 @@ public:
 
 	/*a set of functions for converting the string information read in text mode into count_t and vice versa.*/
 
-	const count_t encodeid0(const std::string &);
-	const uint64_t encodeid1(const std::string &);
-	const count_t encodeextraid(const char &, const count_t &);
+	const id0_t encodeid0(const std::string &);
+	const id1_t encodeid1(const std::string &);
+	const char encodeextraid(const char &, const count_t &);
 
-	const std::string decodeid0(const count_t &);
-	const std::string decodeid1(const uint64_t &);
-	const std::string decodeextraid(const count_t &, const count_t &);
+	const std::string decodeid0(const id0_t &);
+	const std::string decodeid1(const id1_t &);
+	const std::string decodeextraid(const char &, const size_t &);
+
+	const id0_t get_id0(void) const;
+	const id1_t get_id1(void) const;
+	const char get_extraid(const size_t &) const;
+
+	void set_id0(const id0_t &);
+	void set_id1(const id1_t &);
+	void set_extraid(const char &, const size_t &);
 
 	/*functions dealing with ?*/
-	count_t size(void) const;			//number of populations/individuals
-	uint64_t length(void) const {return size_;};	//number of lines in file
+	size_t size(void) const;			//!< Returns the number of samples/individuals in a profile.
+	size_t length(void) const {return size_;};	//!< Returns the number of rows in a profile.
 
 	/*functions dealing with the quartets*/
 
-	void setbasecount(const count_t &, const count_t &, const count_t &);//sets sample x, base y to z.
+	void setbasecount(const count_t &, const count_t &, const count_t &);	//!< Sets sample x, base y to z.
 
 	/*playing with the mask*/
 
-	void mpileup(void) {mpileup_=true; noheader_=true;}	// file is an mpileup. Setting this should set the noheader flag.
-	void noheader(void) {noheader_=true;}			// file has no header
+	void mpileup(void) {mpileup_=true; noheader_=true;}	//!< File is an mpileup. Setting this should set the noheader flag.
+	void noheader(void) {noheader_=true;}			//!< File has no header
 
-	const uint64_t getlinenumber(void) const;
+	const size_t getlinenumber(void) const;
 
-	const count_t get_id0(void) const;
-	const uint64_t get_id1(void) const;
-	const count_t get_extraid(const count_t &) const;
-
-	void set_id0(const count_t &);
-	void set_id1(const uint64_t &);
-	void set_extraid(const count_t &, const count_t &);
 
 	std::string getids(const Locus &);
+
 	std::string getids(void);
 
-	count_t maskedcount(void);			//mask all lines
-	void maskall(void);				//mask all lines
+	count_t maskedcount(void);			//!< Returns a count of the number of quartets masked at the current Locus. 
+	void maskall(void);				//!< Mask all lines at the current Locus. 
 
-	//THESE WILL PROBABLY BE DEPRICATED
-	void sort(void);				//sort reads from most common to least common (amoung all non-masked sites).
-	void header(const bool &h) {noheader_=not (h);};				//sort reads from most common to least common (amoung all non-masked sites).
-	Locus & get_locus(void) {return site_;};		//sort reads from most common to least common (amoung all non-masked sites).
-	void set_locus(const Locus &site) {site_=site;};		//sort reads from most common to least common (amoung all non-masked sites).
 
-	quartet_t get_quartet(const count_t &t) {return site_.get_quartet(t);};		//sort reads from most common to least common (amoung all non-masked sites).
+	void header(void) {noheader_=false;};		//!< If header is true pro-file will expect a file to have a header...
 
-	std::vector <quartet_t>::iterator begin(void) {return site_.begin();};	
-	std::vector <quartet_t>::iterator end(void) {return site_.end();};	
+	//locus
+
+	Locus & get_locus(void) {return site_;};	//!< Returns the current Locus.
+	void set_locus(const Locus &locus) {site_=locus;};	//!< Set the current Locus to locus.
+	void sort(void);				//!< Left sort the sum of unmaksed quartets (i.e. record 0 is the larges).
+
+	//quartet
+
+	quartet_t get_quartet(const size_t &t) {return site_.get_quartet(t);};	//!< Returns the quartet of sample t at the current locus.
+	std::vector <quartet_t>::iterator begin(void) {return site_.begin();};	//!< Returns an iterator to the quartet at the begining of the current locus.
+	std::vector <quartet_t>::iterator end(void) {return site_.end();};	//!< Returns an iterator to the quartet just past the end of the current locus. */
 
 };
 	

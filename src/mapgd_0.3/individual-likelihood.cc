@@ -161,7 +161,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		//THE DETERMINENT
 		det=J[0][0]*iJ[0][0]+J[0][1]*iJ[1][0]+J[0][2]*iJ[2][0];
 
-		std::cout << det << std::endl;
+//		std::cout << det << ", " << iter << std::endl;
 
 		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
 		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;
@@ -198,13 +198,14 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
 	excluded=site.maskedcount();
 	std::vector <float_t> temp_gofs(site.sample.size());
-//	a.gof=model.goodness_of_fit(site, a, temp_gofs, MIN, maxgof);
+	a.gof=model.goodness_of_fit(site, a, temp_gofs, MIN, maxgof);
 	if (iter==100) {
 		std::cerr << "Failure to maximize " << a << "\n";
 		init_params(site, a, MIN, 0, 0);
 		return maximize_grid(site, a, model, gofs, MIN, maxgof, maxpitch);
 	}
-	if ( abs(a.gof)>maxgof) {
+	return 0;
+	if ( a.gof<maxgof) {
 		if (excluded==maxpitch){
 			for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 			return excluded;

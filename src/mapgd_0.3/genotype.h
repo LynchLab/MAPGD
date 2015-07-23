@@ -26,8 +26,8 @@ public:
 	~genotype (){
 		probabilities_.clear();
 	};
-
-	void set_probabilities(const allele_stat &, const quartet_t &);
+	/*! \breif */
+	void set_probabilities(const allele_stat &, const quartet_t &, );
 	float_t get_probabilities(const size_t &x) const;
 };
 #endif

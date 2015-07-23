@@ -52,11 +52,11 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	if (init_params(site, mle, MIN, EMLMIN,0) ){		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
 	if (mle.error!=0){
-		maximize_grid(site, mle, model, gofs, MIN, MINGOF*-1, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-//..		maximize_newton(site, mle, model, gofs, MIN, MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
-		maximize_analytical(site, mle, model, gofs, MIN, MINGOF*-1, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		maximize_analytical(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 
 	// CALCULATE THE LIKELIHOODS 
@@ -230,7 +230,6 @@ int estimateInd(int argc, char *argv[])
 				#endif
 				{
 					c=readed;				//Turn on the ability to read data from all clones in 
-					std::cout << "c" << c << std::endl;
 					if(pro.read(buffer_site[c])!=EOF){
 						readed++;	//reads the next line of the pro file. pro.read() retuerns 0
 						estimate_me=1;
