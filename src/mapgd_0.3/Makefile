@@ -1,7 +1,7 @@
 CXXFLAGS= -g -std=c++0x -O3 -Wall -Werror=return-type -Wno-write-strings -fopenmp
 prefix=/usr/local
 
-mapdg: mapgd.o allele_stat.o binomial.o compare-pooled.o estimate-individual.o estimate-pooled.o gcf-file.o gcf-file-header.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o proview.o quartet.o stream-tools.o models.o
+mapdg: mapgd.o allele_stat.o binomial.o compare-pooled.o estimate-individual.o estimate-pooled.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o proview.o quartet.o stream-tools.o models.o
 	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd
 
 estimate: allele_stat.o binomial.o estimate-individual.o estimate-pooled.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o pooled-likelihood.o population.o pro-file.o quartet.o stream-tools.o models.o
@@ -10,7 +10,7 @@ estimate: allele_stat.o binomial.o estimate-individual.o estimate-pooled.o genot
 compare: allele_stat.o binomial.o compare-pooled.o o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o quartet.o stream-tools.o models.o
 	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd-compare
 
-proview: mapgd.o allele_stat.o binomial.o compare-pooled.o estimate-individual.o estimate-pooled.o gcf-file.o gcf-file-header.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o proview.o quartet.o stream-tools.o models.o
+proview: mapgd.o allele_stat.o binomial.o compare-pooled.o estimate-individual.o estimate-pooled.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o proview.o quartet.o stream-tools.o models.o
 	$(CXX) $^ $(CXXFLAGS) -o ../../bin/mapgd-proview
 
 

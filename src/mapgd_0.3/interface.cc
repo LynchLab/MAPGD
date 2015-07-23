@@ -257,6 +257,7 @@ int parsargs(int argc, char *argv[], env_t env)
 			
 		};
 	};
+	if (env.commands.size()!=0) return -1;
 	return 0;
 };
 
