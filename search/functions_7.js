@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['read_5findex',['read_index',['../classfile__index.html#abb372d71f4ddc2a4e5be5f66105ae99d',1,'file_index']]]
+  ['maskall',['maskall',['../classprofile.html#a7750f121c26754638453f2d7cd6782d4',1,'profile']]],
+  ['maskedcount',['maskedcount',['../classprofile.html#af1587eb40e7e3c670d08324c5d95f7c3',1,'profile']]],
+  ['merge',['merge',['../classprofile.html#afcb4eaf9094258e1399ded1386caa73e',1,'profile']]],
+  ['mpileup',['mpileup',['../classprofile.html#a7866bf2ce66d55e69043d04e3105df18',1,'profile']]]
 ];

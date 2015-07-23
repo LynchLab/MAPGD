@@ -71,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -94,13 +94,39 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af5ebf8bb0c53dca2400d58fabf82f445"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af5ebf8bb0c53dca2400d58fabf82f445"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>genotype</b> (uint8_t ploidy)</td></tr>
 <tr class="separator:af5ebf8bb0c53dca2400d58fabf82f445"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81684d812333591a9c63705732a3da2b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81684d812333591a9c63705732a3da2b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_probabilities</b> (const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;, const <a class="el" href="structquartet.html">quartet_t</a> &amp;)</td></tr>
-<tr class="separator:a81684d812333591a9c63705732a3da2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc4accd0750aa6b5f83d992fd337705b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#afc4accd0750aa6b5f83d992fd337705b">set_probabilities</a> (const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;, const <a class="el" href="structquartet.html">quartet_t</a> &amp;,)</td></tr>
+<tr class="separator:afc4accd0750aa6b5f83d992fd337705b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38b6d54674d32091f6b8f830319fa875"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38b6d54674d32091f6b8f830319fa875"></a>
 float_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_probabilities</b> (const size_t &amp;x) const </td></tr>
 <tr class="separator:a38b6d54674d32091f6b8f830319fa875"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="afc4accd0750aa6b5f83d992fd337705b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void genotype::set_probabilities </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structquartet.html">quartet_t</a> &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>mapgd_0.3/<a class="el" href="genotype_8h_source.html">genotype.h</a></li>
 <li>mapgd_0.3/genotype.cc</li>
@@ -108,7 +134,7 @@ float_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_probabilities<
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 00:39:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 23 2015 07:41:22 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

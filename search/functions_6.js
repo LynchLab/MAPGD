@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['open',['open',['../classprofile.html#a50ea49f3b293f621848fb2375cd1eaa6',1,'profile']]],
-  ['operator_3d',['operator=',['../classfile__index.html#a175bad8f17a4fc6285903d58d45ab5fd',1,'file_index::operator=()'],['../classlnmultinomial.html#a32d91724132f83c43e79aa40535fb6a1',1,'lnmultinomial::operator=()']]]
+  ['locus',['Locus',['../classLocus.html#a0bee741faae71aa0bb9d809e0b98f3c3',1,'Locus::Locus(count_t)'],['../classLocus.html#a66f73ca4df29ccd3cb96118a81ea2d38',1,'Locus::Locus()']]],
+  ['loglikelihood',['loglikelihood',['../classmodels.html#a57d9f7de3f3d021007e8700cf4a07814',1,'models']]]
 ];
