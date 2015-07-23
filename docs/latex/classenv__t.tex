@@ -1,0 +1,72 @@
+\hypertarget{classenv__t}{\section{env\-\_\-t Class Reference}
+\label{classenv__t}\index{env\-\_\-t@{env\-\_\-t}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classenv__t_a4a79bfddbd1a307bda6be045e3655c14}{void {\bfseries setname} (const char $\ast$c)}\label{classenv__t_a4a79bfddbd1a307bda6be045e3655c14}
+
+\item 
+\hypertarget{classenv__t_a938aa066c5816d3fff2c7ff725af7ab4}{void {\bfseries setver} (const char $\ast$c)}\label{classenv__t_a938aa066c5816d3fff2c7ff725af7ab4}
+
+\item 
+\hypertarget{classenv__t_a741fe145876764a54ee00be73ffc0b9b}{void {\bfseries setauthor} (const char $\ast$c)}\label{classenv__t_a741fe145876764a54ee00be73ffc0b9b}
+
+\item 
+\hypertarget{classenv__t_aa8248adb6bb538f9db08710cadf41c62}{void {\bfseries setdescription} (const char $\ast$c)}\label{classenv__t_aa8248adb6bb538f9db08710cadf41c62}
+
+\item 
+\hypertarget{classenv__t_a1a0bc45f5fab86f92ec1d9e64865c144}{void {\bfseries optional\-\_\-arg} (char opt\-\_\-, char $\ast$lopt\-\_\-, void $\ast$parm\-\_\-, int($\ast$func\-\_\-)(int, char $\ast$$\ast$, void $\ast$), char $\ast$emsg\-\_\-, char $\ast$umsg\-\_\-)}\label{classenv__t_a1a0bc45f5fab86f92ec1d9e64865c144}
+
+\item 
+\hypertarget{classenv__t_afc6a2cf8967c4396780eccf8e9e3133c}{void {\bfseries required\-\_\-arg} (char opt\-\_\-, char $\ast$lopt\-\_\-, void $\ast$parm\-\_\-, int($\ast$func\-\_\-)(int, char $\ast$$\ast$, void $\ast$), char $\ast$emsg\-\_\-, char $\ast$umsg\-\_\-)}\label{classenv__t_afc6a2cf8967c4396780eccf8e9e3133c}
+
+\item 
+\hypertarget{classenv__t_a9f3138b6b234353c3167e00f0d19f48d}{void {\bfseries command} (char opt\-\_\-, char $\ast$lopt\-\_\-, int($\ast$func\-\_\-)(int, char $\ast$$\ast$), char $\ast$emsg\-\_\-, char $\ast$umsg\-\_\-)}\label{classenv__t_a9f3138b6b234353c3167e00f0d19f48d}
+
+\item 
+\hypertarget{classenv__t_a32619a9a5d586b4ec83546e7b08ca7ad}{void {\bfseries flag} (char opt\-\_\-, char $\ast$lopt\-\_\-, void $\ast$parm\-\_\-, int($\ast$func\-\_\-)(void $\ast$), char $\ast$emsg\-\_\-, char $\ast$umsg\-\_\-)}\label{classenv__t_a32619a9a5d586b4ec83546e7b08ca7ad}
+
+\item 
+\hypertarget{classenv__t_a3ffef5fa59368ad8d501ccd6ea5073f8}{bool {\bfseries required\-\_\-set} (void)}\label{classenv__t_a3ffef5fa59368ad8d501ccd6ea5073f8}
+
+\item 
+\hypertarget{classenv__t_a44de80882f3d78e5848e9f59290de2a9}{void {\bfseries close} (void)}\label{classenv__t_a44de80882f3d78e5848e9f59290de2a9}
+
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classenv__t_a8a4fdbcdf5773e33d4a1553bc621e1b4}{const char $\ast$ {\bfseries name}}\label{classenv__t_a8a4fdbcdf5773e33d4a1553bc621e1b4}
+
+\item 
+\hypertarget{classenv__t_a837e459f0e0d418a976ed4e8fa6acd39}{const char $\ast$ {\bfseries version}}\label{classenv__t_a837e459f0e0d418a976ed4e8fa6acd39}
+
+\item 
+\hypertarget{classenv__t_a93b99498ee34c3e607bf2757b13443dc}{const char $\ast$ {\bfseries author}}\label{classenv__t_a93b99498ee34c3e607bf2757b13443dc}
+
+\item 
+\hypertarget{classenv__t_ae3578fa78fcac7714be35958427095c2}{const char $\ast$ {\bfseries description}}\label{classenv__t_ae3578fa78fcac7714be35958427095c2}
+
+\item 
+\hypertarget{classenv__t_a0b17ee1539e7a27fe0e5efb1ddf13af0}{std\-::list$<$ \hyperlink{classflag__t}{flag\-\_\-t} $>$ {\bfseries flags}}\label{classenv__t_a0b17ee1539e7a27fe0e5efb1ddf13af0}
+
+\item 
+\hypertarget{classenv__t_ae74e249d826b986f6af2f5450cd246df}{std\-::list$<$ \hyperlink{classarg__t}{arg\-\_\-t} $>$ {\bfseries args}}\label{classenv__t_ae74e249d826b986f6af2f5450cd246df}
+
+\item 
+\hypertarget{classenv__t_a26bd9c2ce445926975e57dbe831f4a39}{std\-::list$<$ \hyperlink{classcom__t}{com\-\_\-t} $>$ {\bfseries commands}}\label{classenv__t_a26bd9c2ce445926975e57dbe831f4a39}
+
+\item 
+\hypertarget{classenv__t_aa756e347b263bb995d2e1b469cccf4cd}{std\-::list$<$ \hyperlink{classarg__t}{arg\-\_\-t} $\ast$ $>$ {\bfseries required\-\_\-args}}\label{classenv__t_aa756e347b263bb995d2e1b469cccf4cd}
+
+\item 
+\hypertarget{classenv__t_a933addf499dd49e5ee6883c4960e1a44}{std\-::list$<$ \hyperlink{classcom__t}{com\-\_\-t} $\ast$ $>$ {\bfseries required\-\_\-coms}}\label{classenv__t_a933addf499dd49e5ee6883c4960e1a44}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+mapgd\-\_\-0.\-3/interface.\-h\item 
+mapgd\-\_\-0.\-3/interface.\-cc\end{DoxyCompactItemize}

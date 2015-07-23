@@ -1,3 +1,5 @@
+/* synonym for population? */
+
 #ifndef ALLELE_STAT_H
 #define ALLELE_STAT_H
 

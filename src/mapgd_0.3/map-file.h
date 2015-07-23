@@ -1,6 +1,9 @@
-//TODO, these classes need to be split apart...
-#ifndef GCF_FILE_H_
-#define GCF_FILE_H_	
+/* TODO: Implement.
+ * 
+ */
+#ifndef MAP_FILE_H_
+#define MAP_FILE_H_	
+
 #include <map>
 #include <string>
 
@@ -8,7 +11,7 @@
 #include "stream-tools.h"
 #include "genotype.h"
 #include "file-index.h"
-#include "gcf-file-header.h"
+#include "map-file-header.h"
 
 /* \breif used to index and deindex files*/
 

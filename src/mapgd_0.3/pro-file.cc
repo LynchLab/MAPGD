@@ -1,11 +1,15 @@
 #include "pro-file.h"
 
-/*! \brief The default order of names_
-
+/*! \brief The default order of names_. Together with sorted_ member of Locus this specifies the identity of a quartet.
 */	
 static const std::string names_="ACGTN";
+
+/*! \brief The default mapping of quartet to names. memcpy this to reorder the sorted_ member of Locus. 
+*/	
 const count_t profile::defaultorder[5] = {0,1,2,3,4};
 
+/*! \brief The default mapping of quartet to names.
+*/	
 const std::string profile::decodeid0(const count_t &id){
 	return header_.decodeid0(id);
 }
@@ -19,6 +23,8 @@ const std::string profile_header::decodeid0(const count_t &id){
 	return lastid0_str;
 }
 
+/*! \brief takes a numerical id and returns the string in represents.
+*/	
 void profile::setsamples(count_t samples){
 	header_.setsamples(samples);
 }			
