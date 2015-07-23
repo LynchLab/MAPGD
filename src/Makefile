@@ -13,6 +13,7 @@ all: subdirs
 
 dist: 
 	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
+	doxygen doxygen.conf
 	
 test: all
 	cd test && bash test.sh
