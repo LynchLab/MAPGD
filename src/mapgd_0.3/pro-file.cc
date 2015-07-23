@@ -557,14 +557,14 @@ int profile::readb(Locus &site){
 	switch (columns_){
 		case 5:
 		case 6:
-			in->read ( (char *)&site.id0, sizeof(count_t) );
-			in->read ( (char *)&site.id1, sizeof(uint64_t) );
+			in->read ( (char *)&site.id0, sizeof(id0_t) );
+			in->read ( (char *)&site.id1, sizeof(id1_t) );
 			for (unsigned int x=0; x<samples_; ++x) in->read ( (char *)site.sample[x].base, 4*sizeof(count_t) );
 		break;
 		case 7:
-			in->read ( (char *)&site.id0, sizeof(count_t) );
-			in->read ( (char *)&site.id1, sizeof(uint64_t) );
-			in->read ( (char *)&site.extraid[0], sizeof(count_t) );
+			in->read ( (char *)&site.id0, sizeof(id0_t) );
+			in->read ( (char *)&site.id1, sizeof(id1_t) );
+			in->read ( (char *)&site.extraid[0], sizeof(char) );
 			for (unsigned int x=0; x<samples_; ++x) in->read ( (char *)site.sample[x].base, 4*sizeof(count_t) );
 		break;
 		default:
@@ -690,14 +690,14 @@ int profile::writeb (const Locus &thissite){
         switch (columns_){
                 case 5:
                 case 6:
-                        out->write((char *)&thissite.id0, sizeof(count_t) );
-			out->write((char *)&thissite.id1, sizeof(uint64_t) );
+                        out->write((char *)&thissite.id0, sizeof(id0_t) );
+			out->write((char *)&thissite.id1, sizeof(id1_t) );
 			for (unsigned int x=0; x<samples_; ++x) out->write((char *)thissite.sample[x].base, 4*sizeof(count_t) );
                 break;
                 case 7:
-                        out->write((char *)&thissite.id0, sizeof(count_t) );
-			out->write((char *)&thissite.id1, sizeof(uint64_t) );
-			out->write((char *)thissite.extraid[0], sizeof(count_t) );
+                        out->write((char *)&thissite.id0, sizeof(id0_t) );
+			out->write((char *)&thissite.id1, sizeof(id1_t) );
+			out->write((char *)thissite.extraid[0], sizeof(char) );
 			for (unsigned int x=0; x<samples_; ++x) out->write((char *)thissite.sample[x].base, 4*sizeof(count_t) );
                 break;
                 default:

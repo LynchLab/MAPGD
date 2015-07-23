@@ -53,7 +53,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								//otherwise, assume heterozygote.
 	if (mle.error!=0){
 		maximize_grid(site, mle, model, gofs, MIN, MINGOF*-1, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-//		maximize_newton(site, mle, model, gofs, MIN, MAXGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+//..		maximize_newton(site, mle, model, gofs, MIN, MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
 		maximize_analytical(site, mle, model, gofs, MIN, MINGOF*-1, MAXPITCH+texc);	//trim bad clones and re-fit the model.
@@ -237,10 +237,9 @@ int estimateInd(int argc, char *argv[])
 					}
 					else estimate_me=0;
 				}
-				/*
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
-					//buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
+					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
 					#ifdef PRAGMA
 					#pragma omp critical
 					#endif
@@ -248,7 +247,7 @@ int estimateInd(int argc, char *argv[])
 						sum_gofs[i]+=gofs[i];
 						if (gofs[i]!=0) gofs_read[i]++;
 					}
-				}*/
+				}
 			}
 
 		}
@@ -256,10 +255,10 @@ int estimateInd(int argc, char *argv[])
                 	// Now print everything to the *out stream, which could be a file or the stdout. 
 			//TODO move this over into a formated file.
 			//?
-			//if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
-			//	*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
+			if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
+				*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
 				*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
-			//}
+			}
 			//if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
 			/*if (pro_out.is_open() ){
 				buffer_site[x].id0=pro_out.encodeid0(pro.decodeid0(buffer_site[x].id0) );

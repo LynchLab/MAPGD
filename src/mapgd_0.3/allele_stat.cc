@@ -19,7 +19,7 @@ allele_stat::allele_stat (void){
 	gof=0;
 	efc=0;
 	excluded=0;
-	delim='?';
+	delim='\t';
 	coverage=0;
 }
 
@@ -75,7 +75,7 @@ std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 };
 
 allele_stat & allele_stat::operator=(const allele_stat & x) {
-//	if (this != &x) { 
+	if (this != &x) { 
 		pooled=x.pooled;
 		delim=x.delim;
 		id0=x.id0;
@@ -99,8 +99,8 @@ allele_stat & allele_stat::operator=(const allele_stat & x) {
 		gof=x.gof;
 		efc=x.efc;
 		excluded=x.excluded;
-		delim='!';//x.delim;
-//	}
+		delim=x.delim;
+	}
 	return *this;
 };
 
