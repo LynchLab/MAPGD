@@ -53,7 +53,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								//otherwise, assume heterozygote.
 	if (mle.error!=0){
 		maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-		maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+//		maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
 		maximize_analytical(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
@@ -258,11 +258,11 @@ int estimateInd(int argc, char *argv[])
 				*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
 				*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
 			}
-			//if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
-			/*if (pro_out.is_open() ){
+			if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
+			if (pro_out.is_open() ){
 				buffer_site[x].id0=pro_out.encodeid0(pro.decodeid0(buffer_site[x].id0) );
 				pro_out.write(buffer_site[x]);
-			}*/
+			}
 		}
 		if (readed!=BUFFER_SIZE){break;}
 	}

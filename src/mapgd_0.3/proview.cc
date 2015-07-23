@@ -140,7 +140,7 @@ int proview(int argc, char *argv[])
 	}
 
 	if (!noheader) out.writeheader();		//writes a header iff noheader is not set.
-	else out.header(false);
+	else out.noheader();
 
 	out.set_id0(-1);
 	out.set_id1(-1);	//set the ids of out to -1 for syncronization purposes.

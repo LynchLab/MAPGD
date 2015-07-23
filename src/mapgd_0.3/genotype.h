@@ -30,7 +30,7 @@ public:
 
 	~genotype () { };
 
-	void set_probabilities(const allele_stat &, const quartet_t &, );	//!< Set genotypic probabilities. Needs a likelihood function, prior genotypic probabilites, and a quartet. 
+	void set_probabilities(const allele_stat &, const quartet_t &);		//!< Set genotypic probabilities. Needs a likelihood function, prior genotypic probabilites, and a quartet. 
 	float_t get_probabilities(const size_t &x) const;			//!< Returns genotypic probabilities. 
 };
 #endif

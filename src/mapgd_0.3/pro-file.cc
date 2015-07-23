@@ -5,26 +5,26 @@
 static const std::string names_="ACGTN";
 
 /*! \brief The default mapping of quartet to names. memcpy this to reorder the sorted_ member of Locus. 
-*/	
+ */	
 const count_t profile::defaultorder[5] = {0,1,2,3,4};
 
 /*! \brief The default mapping of quartet to names.
-*/	
-const std::string profile::decodeid0(const count_t &id){
+ */	
+const std::string profile::decodeid0(const id0_t &id){
 	return header_.decodeid0(id);
 }
 
 /*! \brief takes a numerical id and returns the string in represents.
-*/	
-const std::string profile_header::decodeid0(const count_t &id){
+ */	
+const std::string profile_header::decodeid0(const id0_t &id){
 	if (lastid0==id) return lastid0_str;
-	id==lastid0; 
+	lastid0=id;
 	lastid0_str=id0[id];
 	return lastid0_str;
 }
 
 /*! \brief takes a numerical id and returns the string in represents.
-*/	
+ */	
 void profile::setsamples(count_t samples){
 	header_.setsamples(samples);
 }			
@@ -33,25 +33,25 @@ void profile::setcolumns(count_t a){
 	header_.setcolumns(a);
 }
 
-const std::string profile::decodeid1(const uint64_t &id){
+const std::string profile::decodeid1(const id1_t &id){
 	return header_.decodeid1(id);
 }
-const std::string profile_header::decodeid1(const uint64_t &id){
+const std::string profile_header::decodeid1(const id1_t &id){
 	return std::to_string( (unsigned long long int)id );
 }
 
-const std::string profile::decodeextraid(const count_t &id, const count_t &a) {
+const std::string profile::decodeextraid(const char &id, const size_t &a) {
 	return header_.decodeextraid(id, a);
 }
-const std::string profile_header::decodeextraid(const count_t &id, const count_t &a) {
+const std::string profile_header::decodeextraid(const char &id, const size_t &a) {
 	return std::string(1, decodechar[id]);
 }
 
-const count_t profile::encodeid0(const std::string &id){
+const id0_t profile::encodeid0(const std::string &id){
 	return header_.encodeid0(id);
 }
 
-const count_t profile_header::encodeid0(const std::string &id){
+const id0_t profile_header::encodeid0(const std::string &id){
 	if (lastid0_str==id) return lastid0;
 	lastid0_str=id;
 	std::map<std::string, count_t>::iterator search = id0_str.find(id);
@@ -69,18 +69,18 @@ const count_t profile_header::encodeid0(const std::string &id){
 	}
 }
 
-const uint64_t profile::encodeid1(const std::string &id){
+const id1_t profile::encodeid1(const std::string &id){
 	return header_.encodeid1(id);
 }
 
-const uint64_t profile_header::encodeid1(const std::string &id){
+const id1_t profile_header::encodeid1(const std::string &id){
 	return atoi(id.c_str() );
 }
 
-const count_t profile::encodeextraid(const char &id, const count_t &a){
+const char profile::encodeextraid(const char &id, const count_t &a){
 	return header_.encodeextraid(id, a);
 }
-const count_t profile_header::encodeextraid(const char &id, const count_t &a){
+const char profile_header::encodeextraid(const char &id, const size_t &a){
 	return encodechar[id];
 }
 
@@ -349,7 +349,7 @@ int profile_header::readheader(std::istream *in)
 	while(notdone_){
 		//"VN" version number
 		//"@IDs" Names of fields.
-		if (std::getline(*in, line)!=NULL){
+		if (std::getline(*in, line) ){
 			if ( line[0]!='@' || *noheader_ ){
 #ifdef DEBUG 
 				std::cerr << "bad header format.\n";
@@ -434,10 +434,19 @@ int profile_header::readheader(std::istream *in)
 					in->unget();
 					in->unget();
 					while( (in->peek() )!='\n') {in->unget();}
-					if (std::getline(*in, line)==NULL) { std::cerr << "Error: encountred unexpected EOF. Is the file truncated?" << std::endl; return BADHEADER;}
-					if (std::getline(*in, line)==NULL) { std::cerr << "Error: encountred unexpected EOF. Is the file truncated?" << std::endl; return BADHEADER;}
+					if ( not (std::getline(*in, line) ) ) { 
+						std::cerr << "Error: encountred unexpected EOF. Is the file truncated?" << std::endl;
+						return BADHEADER; 
+					}
+					if ( not (std::getline(*in, line) ) ) { 
+						std::cerr << "Error: encountred unexpected EOF. Is the file truncated?" << std::endl; 
+						return BADHEADER; 
+					}
 					args=split(line, *delim_column);
-					if (args.size()==0) { std::cerr << "Line miss-formated. Is the file truncated?" << std::endl; return BADHEADER;}
+					if (args.size()==0) { 
+						std::cerr << "Line miss-formated. Is the file truncated?" << std::endl; 
+						return BADHEADER;
+					}
 					for(std::vector<std::string>::iterator argit = args.begin(); argit != args.end(); ++argit){
 						arg=split(*argit, ':');
 						switch(hash(arg[0]) ){
@@ -953,27 +962,42 @@ void profile::set_delim_column(const char &del)
 	delim_column=del;
 }	
 
-void profile::setbasecount(const count_t &x, const count_t &y, const count_t &z){
+void profile::setbasecount(const count_t &x, const count_t &y, const count_t &z)
+{
 	site_.sample[x].base[y]=z;
 }
 
-const uint64_t profile::getlinenumber(void) const{
+const id1_t profile::getlinenumber(void) const
+{
 	return size_;
 }
 
-const count_t profile::get_id0(void) const{return site_.id0;}
-const uint64_t profile::get_id1(void) const{return site_.id1;}
+const id0_t profile::get_id0(void) const
+{
+	return site_.id0;
+}
 
-void profile::set_id0(const count_t &id0) {site_.id0=id0;}
+const id1_t profile::get_id1(void) const 
+{
+	return site_.id1;
+}
 
-void profile::set_id1(const uint64_t &id1) {site_.id1=id1;}
+void profile::set_id0(const id0_t &id0) 
+{
+	site_.id0=id0;
+}
 
-const count_t profile::get_extraid(const count_t &x) const 
+void profile::set_id1(const id1_t &id1) 
+{
+	site_.id1=id1;
+}
+
+const char profile::get_extraid(const size_t &x) const 
 {
 	return site_.get_extraid(x);
 }
 
-void profile::set_extraid(const count_t &eid, const count_t &x)
+void profile::set_extraid(const char &eid, const size_t &x)
 {
 	site_.set_extraid(eid, x);
 }

@@ -57,7 +57,8 @@ private:
 	bool *binary_;					// ?
 	bool *mpileup_;					// ?
 	bool *noheader_;				// ?
-	uint64_t *size_;				// the number of lines in the sample. 0 if unkown.
+
+	id1_t *size_;					// the number of lines in the sample. 0 if unkown.
 
 	char *delim_column;				// the delimiter that seperates columns.
 	char *delim_quartet;				// the delimiter that seperates counts in a quartet.
@@ -74,13 +75,13 @@ public:
 	~profile_header(void);
 	void init(profile *);				// initilizes profile_header.
 
-	const count_t encodeid0(const std::string &);
-	const uint64_t encodeid1(const std::string &);
-	const count_t encodeextraid(const char &, const count_t &);
+	const id0_t encodeid0(const std::string &);
+	const id1_t encodeid1(const std::string &);
+	const char encodeextraid(const char &, const size_t &);
 
-	const std::string decodeid0(const count_t&);
-	const std::string decodeid1(const uint64_t &);
-	const std::string decodeextraid(const count_t &, const count_t &);
+	const std::string decodeid0(const id0_t&);
+	const std::string decodeid1(const id1_t&);
+	const std::string decodeextraid(const char &, const size_t &);
 
 	int readheader(std::istream *);			// reads the header of a profile. All profiles from v 2.0 and later should have headers.
 	int readtailer(std::istream *);			// reads the tailer of a profile. All profiles from v 2.0 and later should have headers.
@@ -116,7 +117,7 @@ private:
 	unsigned int columns_;			// 5|6|7|more?
 
 	size_t samples_;			// the number of samples (i.e. different individuals or populations) in the profile.
-	size_t size_;				// the number of lines in the sample. 0 if unkown.
+	id1_t size_;				// the number of lines in the sample. 0 if unkown.
 
 	bool open_;				// indicates whether the profile opened succesfully
 	bool sig_;				// were alleles thrown out if the allele only occurred in reads from one direction?
