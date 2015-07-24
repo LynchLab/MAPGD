@@ -1,0 +1,4 @@
+@PR	VN:2	CN:6	SN:4	MD:0
+@ID	scaffold	pos	smp_1	smp_2	smp_3	smp_4
+scaffold_1	1	0/2/2/0	0/2/2/0	0/2/2/0	0/2/2/0
+@LN:1
