@@ -1,5 +1,5 @@
-SUBDIRS=mapgd_0.3
-VER=0.3
+SUBDIRS=mapgd_0.3.1
+VER=0.3.1
 NAME=mapgd
 
 .PHONY: subdirs $(SUBDIRS) clean
