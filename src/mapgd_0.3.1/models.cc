@@ -216,7 +216,7 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 	std::vector <quartet_t>::iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::iterator end=site.sample.end(); 
 
-	quartet_t *maxgof_ptr; 
+	quartet_t *maxgof_ptr=&(*it); 
 
 	float_t logMM=log(allele.MM); //The frequency of the MM genotype in the sample.
 	float_t logMm=log(allele.Mm); // Dito Mm.

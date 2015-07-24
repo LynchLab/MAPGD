@@ -12,6 +12,7 @@
 
 #include <list>
 #include <iostream>
+#include "typedef.h"
 
 int arg_setvectorstr(int, char **, void *);	//<! Takes a reference to a vector<string> and will fill that vector with arguments from arg [] until a string begining with '-' is found.  
 int arg_setvectorint(int, char **, void *);	//<! Takes a reference to a vector<int> and calls atoi() on a comma delimited list (no white space) of integers. Ranges of the form N-M are accepted. 

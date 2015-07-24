@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <iostream>
 #include <string.h>
+#include <limits>	// std::numeric_limits
 
 #include "typedef.h"
 #include "allele_stat.h"

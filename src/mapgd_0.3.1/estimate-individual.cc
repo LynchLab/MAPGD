@@ -175,7 +175,7 @@ int estimateInd(int argc, char *argv[])
 	};
 
 	if (outfile.size()!=0) {
-		outFile.open(outfile, std::ofstream::out);
+		outFile.open(outfile.c_str(), std::ofstream::out);
 		if (!outFile) printUsage(env);
 		out=&outFile;
 	};

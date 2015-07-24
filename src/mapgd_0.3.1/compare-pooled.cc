@@ -50,7 +50,7 @@ int comparePooled(int argc, char *argv[])
 
 	/* Open the output file. */
 	if (outfile.size()!=0) {
-		outFile.open(outfile, std::ofstream::out);
+		outFile.open(outfile.c_str(), std::ofstream::out);
 		if (!outFile) printUsage(env);
 		out=&outFile;
 	}

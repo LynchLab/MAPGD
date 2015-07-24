@@ -78,7 +78,7 @@ int estimatePooled(int argc, char *argv[])
 	/* Open the output and input files. */
 
 	if (outfile.size()!=0) {
-		outFile.open(outfile, std::ofstream::out);
+		outFile.open(outfile.c_str(), std::ofstream::out);
 		if (!outFile) printUsage(env);
 		out=&outFile;
 	};

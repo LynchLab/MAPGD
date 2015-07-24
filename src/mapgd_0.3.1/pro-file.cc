@@ -811,7 +811,7 @@ profile* profile::open(const char* filename, const char *mode){
 	in=NULL;
 	out=NULL;
 
-	if ( mode=="r" ){
+	if ( strcmp(mode, "r") ){
 		inFile.open(filename, std::fstream::in);
 		if (!inFile.is_open() ){
 			std::cerr << "cannot open " << filename << " for reading (1)." << std::endl;				
@@ -824,7 +824,7 @@ profile* profile::open(const char* filename, const char *mode){
 			return this;				
 		};
 		read_=true;
-	} else if (mode=="w"){
+	} else if ( strcmp(mode, "w") ){
 		outFile.open(filename, std::ofstream::out);
 		if (!outFile.is_open() ){
 			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
@@ -832,7 +832,7 @@ profile* profile::open(const char* filename, const char *mode){
 		};
 		out=&outFile;
 		write_=true;
-	} else if (mode=="wb"){
+	} else if (strcmp(mode, "wb") ){
 		outFile.open(filename, std::ofstream::out);
 		if (!outFile.is_open() ){
 			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
@@ -853,7 +853,7 @@ profile* profile::open(const char *mode)
 {
 	open_=false;
 
-	if (mode=="r"){
+	if ( strcmp(mode, "r") ){
 		in=&std::cin;
 		if (readheader()==BADHEADER){
 			std::cerr << "cannot find header in stdin (2). " << std::endl;				
@@ -861,10 +861,10 @@ profile* profile::open(const char *mode)
 			return this;				
 		}
 		read_=true;
-	} else if (mode=="w") {
+	} else if ( strcmp( mode, "w") ) {
 		out=&std::cout;
 		write_=true;
-	} else if (mode=="wb") {
+	} else if ( strcmp( mode, "wb") ) {
 		out=&std::cout;
 		binary_=true;
 		write_=true;

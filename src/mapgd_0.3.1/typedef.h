@@ -6,7 +6,8 @@
 				//The program should always be able to open files after VERSION 1.0
 
 #include <cstddef>		//Included for ?
-#include <stdint.h>		//Included for ?
+#include <stdint.h>		//Included for uint32_t, uint16_t
+#include <cstdlib>		//Becuse why not?
 #include <math.h>		//Included for float_t.
 
 typedef uint32_t count_t;	//Should be used to specify deapth of coverage only. Currently used for evetything. 

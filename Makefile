@@ -1,6 +1,4 @@
 SUBDIRS=src
-VER=1.0
-NAME=mapgd
 
 .PHONY: subdirs $(SUBDIRS) clean
 
