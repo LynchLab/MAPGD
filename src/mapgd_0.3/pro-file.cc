@@ -496,12 +496,13 @@ int profile::readm(Locus &site)
 	std::vector <std::string> column, quartet;
 	
 
-	if( std::getline(*in, line)!=NULL){
+	if( std::getline(*in, line) ){
 		column = split(line, delim_column);
 		if(column.size() < 5){
 			std::cerr << "WARNING[proFile.cpp]: Skipping line " << getlinenumber() << " with only " << column.size() << " fields." << std::endl;
 			return 0;
 		}
+
 		std::vector <quartet_t>::iterator it=site.sample.begin();
 		std::vector <quartet_t>::iterator it_end=site.sample.end();
 		std::vector <std::string>::iterator column_it=column.begin();	
@@ -527,10 +528,11 @@ int profile::readm(Locus &site)
 
 void inline profile::scan(const Locus & site, const std::string &str, quartet_t &q)
 {
-	count_t j;
+	size_t skip;
 	std::string number;
 	std::string::const_iterator it=str.begin();
 	std::string::const_iterator end=str.end();
+	size_t lim=0;
 	while (it!=end) {
 		if (*it == '^') {it++; if(it==end) break; it++; continue;}
 		if (*it == '$' || *it=='*') {it++; continue;}
@@ -541,7 +543,8 @@ void inline profile::scan(const Locus & site, const std::string &str, quartet_t 
 				number.push_back(*it); 
 				it++; 
 			}
- 			for(j=0; j<atoi(number.c_str() )-1; ++j) it++;
+			lim=atoi(number.c_str() );
+ 			for(skip=0; skip<lim; ++skip) it++;
 			continue;
     		} else if(*it == ',' || *it=='.') {
 			q.base[site.extraid[0] ]++;
@@ -596,7 +599,7 @@ int profile::readt(Locus &site){
 		exit(UNEXPECTED);
 	};
 
-	if (std::getline(*in, line)!=NULL){
+	if (std::getline(*in, line) ){
 		if (line[0]=='@') return EOF;
 		switch (columns_){
 		//READ A PRO FILE

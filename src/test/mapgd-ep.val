@@ -1,137 +1,137 @@
-==18157== Memcheck, a memory error detector
-==18157== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
-==18157== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
-==18157== Command: ../../bin/mapgd ep -i profile.brt -o
-==18157== Parent PID: 17881
-==18157== 
-==18157== 
-==18157== HEAP SUMMARY:
-==18157==     in use at exit: 952 bytes in 31 blocks
-==18157==   total heap usage: 32 allocs, 1 frees, 970 bytes allocated
-==18157== 
-==18157== 24 bytes in 1 blocks are possibly lost in loss record 1 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x4106FE3: std::string::_Rep::_S_create(unsigned int, unsigned int, std::allocator<char> const&) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
-==18157==    by 0x410724A: std::string::_M_mutate(unsigned int, unsigned int, unsigned int) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
-==18157==    by 0x4107AF5: std::string::_M_replace_safe(unsigned int, unsigned int, char const*, unsigned int) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
-==18157==    by 0x4107B8E: std::string::assign(char const*, unsigned int) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
-==18157==    by 0x805BDBD: arg_setstr(int, char**, void*) (basic_string.h:1131)
-==18157==    by 0x805C06E: parsargs(int, char**, env_t) (interface.cc:191)
-==18157==    by 0x8050B0D: estimatePooled(int, char**) (estimate-pooled.cc:62)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 28 bytes in 1 blocks are still reachable in loss record 2 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AF48: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
-==18157==    by 0x804A52B: main (interface.h:176)
-==18157== 
-==18157== 28 bytes in 1 blocks are still reachable in loss record 3 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AF48: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
-==18157==    by 0x804A565: main (interface.h:176)
-==18157== 
-==18157== 28 bytes in 1 blocks are still reachable in loss record 4 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AF48: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
-==18157==    by 0x804A59F: main (interface.h:176)
-==18157== 
-==18157== 28 bytes in 1 blocks are still reachable in loss record 5 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AF48: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
-==18157==    by 0x804A5D9: main (interface.h:176)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 6 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AFA8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
-==18157==    by 0x804A4A3: main (interface.h:185)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 7 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AFA8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
-==18157==    by 0x804A4F1: main (interface.h:185)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 8 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804D398: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
-==18157==    by 0x8050832: estimatePooled(int, char**) (interface.h:159)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 9 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804D398: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
-==18157==    by 0x805088C: estimatePooled(int, char**) (interface.h:159)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 10 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804D398: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
-==18157==    by 0x80508EC: estimatePooled(int, char**) (interface.h:159)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 11 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804D398: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
-==18157==    by 0x805094C: estimatePooled(int, char**) (interface.h:159)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 12 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804D398: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
-==18157==    by 0x80509AC: estimatePooled(int, char**) (interface.h:159)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 13 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AFA8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
-==18157==    by 0x8050A01: estimatePooled(int, char**) (interface.h:185)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 14 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AFA8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
-==18157==    by 0x8050A48: estimatePooled(int, char**) (interface.h:185)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 15 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AFA8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
-==18157==    by 0x8050A95: estimatePooled(int, char**) (interface.h:185)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 32 bytes in 1 blocks are still reachable in loss record 16 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AFA8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
-==18157==    by 0x8050AE2: estimatePooled(int, char**) (interface.h:185)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 64 bytes in 2 blocks are still reachable in loss record 17 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AC0B: env_t::env_t(env_t const&) (new_allocator.h:104)
-==18157==    by 0x804A5EC: main (mapgd.cc:39)
-==18157== 
-==18157== 112 bytes in 4 blocks are still reachable in loss record 18 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804ACFB: env_t::env_t(env_t const&) (new_allocator.h:104)
-==18157==    by 0x804A5EC: main (mapgd.cc:39)
-==18157== 
-==18157== 128 bytes in 4 blocks are still reachable in loss record 19 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AC0B: env_t::env_t(env_t const&) (new_allocator.h:104)
-==18157==    by 0x8050AF4: estimatePooled(int, char**) (estimate-pooled.cc:62)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== 160 bytes in 5 blocks are still reachable in loss record 20 of 20
-==18157==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
-==18157==    by 0x804AC83: env_t::env_t(env_t const&) (new_allocator.h:104)
-==18157==    by 0x8050AF4: estimatePooled(int, char**) (estimate-pooled.cc:62)
-==18157==    by 0x804A602: main (mapgd.cc:39)
-==18157== 
-==18157== LEAK SUMMARY:
-==18157==    definitely lost: 0 bytes in 0 blocks
-==18157==    indirectly lost: 0 bytes in 0 blocks
-==18157==      possibly lost: 24 bytes in 1 blocks
-==18157==    still reachable: 928 bytes in 30 blocks
-==18157==         suppressed: 0 bytes in 0 blocks
-==18157== 
-==18157== For counts of detected and suppressed errors, rerun with: -v
-==18157== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==31012== Memcheck, a memory error detector
+==31012== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==31012== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==31012== Command: ../../bin/mapgd ep -i profile.brt -o
+==31012== Parent PID: 30683
+==31012== 
+==31012== 
+==31012== HEAP SUMMARY:
+==31012==     in use at exit: 952 bytes in 31 blocks
+==31012==   total heap usage: 32 allocs, 1 frees, 970 bytes allocated
+==31012== 
+==31012== 24 bytes in 1 blocks are possibly lost in loss record 1 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x4106FE3: std::string::_Rep::_S_create(unsigned int, unsigned int, std::allocator<char> const&) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
+==31012==    by 0x410724A: std::string::_M_mutate(unsigned int, unsigned int, unsigned int) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
+==31012==    by 0x4107AF5: std::string::_M_replace_safe(unsigned int, unsigned int, char const*, unsigned int) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
+==31012==    by 0x4107B8E: std::string::assign(char const*, unsigned int) (in /usr/lib/i386-linux-gnu/libstdc++.so.6.0.19)
+==31012==    by 0x805C15D: arg_setstr(int, char**, void*) (basic_string.h:1131)
+==31012==    by 0x805C40E: parsargs(int, char**, env_t) (interface.cc:191)
+==31012==    by 0x8050EAD: estimatePooled(int, char**) (estimate-pooled.cc:62)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 28 bytes in 1 blocks are still reachable in loss record 2 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B158: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
+==31012==    by 0x804A73B: main (interface.h:184)
+==31012== 
+==31012== 28 bytes in 1 blocks are still reachable in loss record 3 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B158: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
+==31012==    by 0x804A775: main (interface.h:184)
+==31012== 
+==31012== 28 bytes in 1 blocks are still reachable in loss record 4 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B158: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
+==31012==    by 0x804A7AF: main (interface.h:184)
+==31012== 
+==31012== 28 bytes in 1 blocks are still reachable in loss record 5 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B158: std::list<com_t, std::allocator<com_t> >::push_back(com_t&&) (new_allocator.h:104)
+==31012==    by 0x804A7E9: main (interface.h:184)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 6 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B1B8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
+==31012==    by 0x804A6B3: main (interface.h:193)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 7 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B1B8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
+==31012==    by 0x804A701: main (interface.h:193)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 8 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804D5A8: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
+==31012==    by 0x8050BD2: estimatePooled(int, char**) (interface.h:167)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 9 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804D5A8: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
+==31012==    by 0x8050C2C: estimatePooled(int, char**) (interface.h:167)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 10 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804D5A8: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
+==31012==    by 0x8050C8C: estimatePooled(int, char**) (interface.h:167)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 11 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804D5A8: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
+==31012==    by 0x8050CEC: estimatePooled(int, char**) (interface.h:167)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 12 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804D5A8: std::list<arg_t, std::allocator<arg_t> >::push_back(arg_t&&) (new_allocator.h:104)
+==31012==    by 0x8050D4C: estimatePooled(int, char**) (interface.h:167)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 13 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B1B8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
+==31012==    by 0x8050DA1: estimatePooled(int, char**) (interface.h:193)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 14 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B1B8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
+==31012==    by 0x8050DE8: estimatePooled(int, char**) (interface.h:193)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 15 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B1B8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
+==31012==    by 0x8050E35: estimatePooled(int, char**) (interface.h:193)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 32 bytes in 1 blocks are still reachable in loss record 16 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804B1B8: std::list<flag_t, std::allocator<flag_t> >::push_back(flag_t&&) (new_allocator.h:104)
+==31012==    by 0x8050E82: estimatePooled(int, char**) (interface.h:193)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 64 bytes in 2 blocks are still reachable in loss record 17 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804AE1B: env_t::env_t(env_t const&) (new_allocator.h:104)
+==31012==    by 0x804A7FC: main (mapgd.cc:39)
+==31012== 
+==31012== 112 bytes in 4 blocks are still reachable in loss record 18 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804AF0B: env_t::env_t(env_t const&) (new_allocator.h:104)
+==31012==    by 0x804A7FC: main (mapgd.cc:39)
+==31012== 
+==31012== 128 bytes in 4 blocks are still reachable in loss record 19 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804AE1B: env_t::env_t(env_t const&) (new_allocator.h:104)
+==31012==    by 0x8050E94: estimatePooled(int, char**) (estimate-pooled.cc:62)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== 160 bytes in 5 blocks are still reachable in loss record 20 of 20
+==31012==    at 0x402A6DC: operator new(unsigned int) (in /usr/lib/valgrind/vgpreload_memcheck-x86-linux.so)
+==31012==    by 0x804AE93: env_t::env_t(env_t const&) (new_allocator.h:104)
+==31012==    by 0x8050E94: estimatePooled(int, char**) (estimate-pooled.cc:62)
+==31012==    by 0x804A812: main (mapgd.cc:39)
+==31012== 
+==31012== LEAK SUMMARY:
+==31012==    definitely lost: 0 bytes in 0 blocks
+==31012==    indirectly lost: 0 bytes in 0 blocks
+==31012==      possibly lost: 24 bytes in 1 blocks
+==31012==    still reachable: 928 bytes in 30 blocks
+==31012==         suppressed: 0 bytes in 0 blocks
+==31012== 
+==31012== For counts of detected and suppressed errors, rerun with: -v
+==31012== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
