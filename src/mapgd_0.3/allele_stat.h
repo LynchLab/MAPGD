@@ -8,7 +8,8 @@
 #include <cfloat>
 #include <iomanip>
 
-/*!	\breif A class to store population specific information. May be moved over to population.
+///	A class to store population specific information. May be moved over to population.
+/** This is likely to become some form of container to handel moving data into and out of rows of map file.
  */
 class allele_stat { 
 private:
