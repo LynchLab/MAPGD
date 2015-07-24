@@ -52,8 +52,8 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	if (init_params(site, mle, MIN, EMLMIN,0) ){		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
-//		rexc=maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-		maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		rexc=maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+//		rexc=maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
