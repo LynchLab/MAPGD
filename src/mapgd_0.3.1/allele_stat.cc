@@ -28,6 +28,7 @@ using namespace std;
 std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 	if (x.coverage>0){
 		out << std::fixed << std::setprecision(0);
+//		out << std::setw(6);
 		out << x.coverage << x.delim;
 		out << std::fixed << std::setprecision(4);
 		out << x.freq <<  x.delim;

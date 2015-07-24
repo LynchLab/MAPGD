@@ -13,6 +13,11 @@
 #include "file-index.h"
 #include "map-file-header.h"
 
+//ios::beg	offset counted from the beginning of the stream
+//ios::cur	offset counted from the current position
+//ios::end	offset counted from the end of the stream
+
+
 /// The file used to pass data between mapgd commands. 
 /* A map file is a table with colulmns specified by the data types stored in the table, and row specified by a row number. 
  * It has only read/write possition, which is the row number of the row being manipulated. This may be replaced by some form of
@@ -59,13 +64,12 @@ public:
 	/** @defgroup BasicIO Basic IO Operations
 	 * @{
   	 */
-	? getline(map_file, );				//!< Reads a row from the file and advances the read one row. Returns 0 on success, EOF on EOF.
 
-	? write(,);					//!< Writes a row to the file and advances one row. Returns 0 on success, EOF on EOF.
-							//
+	seekp(id1_t);					//!< Seeks to row number 
+	seekg(id1_t);					//!< Seeks to row number 
+	tellg();					//!< 
+	tellp();					//!< 
 
-	seekg(size_t);					//!< Seeks to row number 
-	seekp(size_t);					//!< Seeks to row number 
 	/** @} */
 
 	/*functions dealing with the header*/
@@ -81,5 +85,10 @@ public:
 	const count_t get_line_number(void) const;
 
 };
+	
+map_file & read(id0_t, map_file, );			//!< Reads a row from the file and advances the read one row. Returns 0 on success, EOF on EOF.
+
+map_file & write(,);					//!< Writes a row to the file and advances one row. Returns 0 on success, EOF on EOF.
+							//
 	
 #endif

@@ -47,17 +47,19 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								 //allele_stat has gotten too bloated, but . . . 
 	mle.N=0;
 
-	count_t texc=site.maskedcount();
+	count_t texc=site.maskedcount(), rexc;
 	
 	if (init_params(site, mle, MIN, EMLMIN,0) ){		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
-		maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-//		maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+//		rexc=maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
-		maximize_analytical(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		rexc=maximize_analytical(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
+
+	mle.excluded=rexc-texc;
 
 	// CALCULATE THE LIKELIHOODS 
 
