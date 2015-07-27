@@ -43,7 +43,7 @@ Typical benchmarks with 16 threads on a 2.6 GHz put us at around 18,000 sites a 
 
 <b> Help, I can't get the program to compile. </b>
 
-MAPGD has been written using the gnu C++11 style, but I've attempted to minimize my reliance on  the newer features of the C++ in the hopes that older style's of C++ will have greater cross-platfrom compatibility. However, I have not yet made a systematic attempt to but I have compiled mapgd on :
+MAPGD has been written using the gnu C++11 style, but I've attempted to minimize my reliance on the newer features of the C++ in the hopes that older styles of C++ will have greater cross-platfrom compatibility. However, I have not yet made a systematic examination of mapgd's cross-platform copmpatibility. I have compiled mapgd on :
 	* Ubuntu Linux, 14.04
 	* Red Hat Enterprise Linux 6.x
 	* A version of the Cray Linux Environment.
