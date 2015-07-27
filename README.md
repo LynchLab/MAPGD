@@ -18,10 +18,9 @@
 #####[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
-<b> SEVERAL MAJOR LOGICAL ERRORS WERE INTRODUCED IN A RECENT VERSION OF MAPGD </b>
+<b> SEVERAL MAJOR ERRORS WERE INTRODUCED IN A RECENT VERSION OF MAPGD </b>
 
 These have been fixed in version 0.3.1, but any output from version 0.3 is suspect. 
-
 
 <h3> Introduction </h3>
 
@@ -44,10 +43,15 @@ Typical benchmarks with 16 threads on a 2.6 GHz put us at around 18,000 sites a 
 <b> Help, I can't get the program to compile. </b>
 
 MAPGD has been written using the gnu C++11 style, but I've attempted to minimize my reliance on the newer features of the C++ in the hopes that older styles of C++ will have greater cross-platfrom compatibility. However, I have not yet made a systematic examination of mapgd's cross-platform copmpatibility. I have compiled mapgd on :
-	* Ubuntu Linux, 14.04
-	* Red Hat Enterprise Linux 6.x
-	* A version of the Cray Linux Environment.
-	* OS X Yosemite.
+
+* Ubuntu Linux, 14.04
+
+* Red Hat Enterprise Linux 6.x
+
+* A version of the Cray Linux Environment.
+
+* OS X Yosemite.
+
 To compile on OS X, you need to type 'make noomp' because the default OS X does compiler does not support openmp. I sould have this fixed shortly, after which OS X users can get back to typing 'make' like eveyone else, but it may be a few weeks before that makes it to the top of the TODO list. 
  
 Version 0.1 will compile on windows 32 and 64 bit versions IIRC, but getting current versions of mapgd working on windows is near the bottom of the TODO list.
