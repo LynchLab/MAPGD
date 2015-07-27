@@ -39,6 +39,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -71,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -85,132 +87,87 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a>  </div>
+<a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">map_file Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
+<p>The file used to pass data between mapgd commands.  
+ <a href="classmap__file.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="map-file_8h_source.html">map-file.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aca4db854f13eafc3cd56d11554d5af8d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca4db854f13eafc3cd56d11554d5af8d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#aca4db854f13eafc3cd56d11554d5af8d">gcf_file</a> ()</td></tr>
-<tr class="memdesc:aca4db854f13eafc3cd56d11554d5af8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">default constructor <br/></td></tr>
-<tr class="separator:aca4db854f13eafc3cd56d11554d5af8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab724cbd44a269ae57f97d9e6bc6c248c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab724cbd44a269ae57f97d9e6bc6c248c"></a>
-<a class="el" href="classmap__file.html#aca4db854f13eafc3cd56d11554d5af8d">gcf_file</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#ab724cbd44a269ae57f97d9e6bc6c248c">open</a> (const char *, const char *)</td></tr>
-<tr class="memdesc:ab724cbd44a269ae57f97d9e6bc6c248c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that opens a mapfile (if file). <br/></td></tr>
-<tr class="separator:ab724cbd44a269ae57f97d9e6bc6c248c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bcc446fc7cf527825fbe63fc796c8e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8bcc446fc7cf527825fbe63fc796c8e6"></a>
-<a class="el" href="classmap__file.html#aca4db854f13eafc3cd56d11554d5af8d">gcf_file</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a8bcc446fc7cf527825fbe63fc796c8e6">open</a> (const char *)</td></tr>
-<tr class="memdesc:a8bcc446fc7cf527825fbe63fc796c8e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that opens a mapfile (if stdin). <br/></td></tr>
-<tr class="separator:a8bcc446fc7cf527825fbe63fc796c8e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebcd1e9cdab2fc3efa53ac7de32d6730"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aebcd1e9cdab2fc3efa53ac7de32d6730"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#aebcd1e9cdab2fc3efa53ac7de32d6730">is_open</a> (void) const </td></tr>
-<tr class="memdesc:aebcd1e9cdab2fc3efa53ac7de32d6730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if profile is open, false otherwise. <br/></td></tr>
-<tr class="separator:aebcd1e9cdab2fc3efa53ac7de32d6730"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a383b714f0c046a0fc42de12420745456"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a383b714f0c046a0fc42de12420745456"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a383b714f0c046a0fc42de12420745456">copy</a> (const <a class="el" href="classmap__file.html#aca4db854f13eafc3cd56d11554d5af8d">gcf_file</a> &amp;)</td></tr>
-<tr class="memdesc:a383b714f0c046a0fc42de12420745456"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copys a line from profile. <br/></td></tr>
-<tr class="separator:a383b714f0c046a0fc42de12420745456"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8e14efacf5201f1e11921ab3197e7d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8e14efacf5201f1e11921ab3197e7d8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#ab8e14efacf5201f1e11921ab3197e7d8">read</a> ()</td></tr>
-<tr class="memdesc:ab8e14efacf5201f1e11921ab3197e7d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a line from the instream. Returns 0 on success, EOF on EOF. <br/></td></tr>
-<tr class="separator:ab8e14efacf5201f1e11921ab3197e7d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeda25f7ec80c11621554cae62729141e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeda25f7ec80c11621554cae62729141e"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#aeda25f7ec80c11621554cae62729141e">write</a> ()</td></tr>
-<tr class="memdesc:aeda25f7ec80c11621554cae62729141e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a line to the outstream. Returns 0 on success, EOF on EOF. <br/></td></tr>
-<tr class="separator:aeda25f7ec80c11621554cae62729141e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea1bfe561fa2bc47263ffa951795b4a1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea1bfe561fa2bc47263ffa951795b4a1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#aea1bfe561fa2bc47263ffa951795b4a1">map_file</a> ()</td></tr>
+<tr class="memdesc:aea1bfe561fa2bc47263ffa951795b4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">default constructor <br/></td></tr>
+<tr class="separator:aea1bfe561fa2bc47263ffa951795b4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7572e607c0eed4ac13ed75b52dae451"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7572e607c0eed4ac13ed75b52dae451"></a>
+<a class="el" href="classmap__file.html">map_file</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#af7572e607c0eed4ac13ed75b52dae451">open</a> (const char *, const char *)</td></tr>
+<tr class="memdesc:af7572e607c0eed4ac13ed75b52dae451"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that opens a mapfile (if file). <br/></td></tr>
+<tr class="separator:af7572e607c0eed4ac13ed75b52dae451"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6cf71d85410a8ab0ba9fe6bcd514fee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af6cf71d85410a8ab0ba9fe6bcd514fee"></a>
+<a class="el" href="classmap__file.html">map_file</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#af6cf71d85410a8ab0ba9fe6bcd514fee">open</a> (const char *)</td></tr>
+<tr class="memdesc:af6cf71d85410a8ab0ba9fe6bcd514fee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that opens a mapfile (if stdin). <br/></td></tr>
+<tr class="separator:af6cf71d85410a8ab0ba9fe6bcd514fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab16be151908332859a30886fa16633dd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab16be151908332859a30886fa16633dd"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#ab16be151908332859a30886fa16633dd">close</a> (void)</td></tr>
 <tr class="memdesc:ab16be151908332859a30886fa16633dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close iostreams, writes tail, etc. <br/></td></tr>
 <tr class="separator:ab16be151908332859a30886fa16633dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebcd1e9cdab2fc3efa53ac7de32d6730"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aebcd1e9cdab2fc3efa53ac7de32d6730"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#aebcd1e9cdab2fc3efa53ac7de32d6730">is_open</a> (void) const </td></tr>
+<tr class="memdesc:aebcd1e9cdab2fc3efa53ac7de32d6730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if profile is open, false otherwise. <br/></td></tr>
+<tr class="separator:aebcd1e9cdab2fc3efa53ac7de32d6730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a351843b430cc9c8260b54ea1346b13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1a351843b430cc9c8260b54ea1346b13"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#ga1a351843b430cc9c8260b54ea1346b13">seekp</a> (id1_t)</td></tr>
+<tr class="memdesc:ga1a351843b430cc9c8260b54ea1346b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeks to row number. <br/></td></tr>
+<tr class="separator:ga1a351843b430cc9c8260b54ea1346b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9da8ee6a61db7eba608ddc34ac5c3ebc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga9da8ee6a61db7eba608ddc34ac5c3ebc"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#ga9da8ee6a61db7eba608ddc34ac5c3ebc">seekg</a> (id1_t)</td></tr>
+<tr class="memdesc:ga9da8ee6a61db7eba608ddc34ac5c3ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeks to row number. <br/></td></tr>
+<tr class="separator:ga9da8ee6a61db7eba608ddc34ac5c3ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12e7f8fac22b7eb0b442a3ae0963d3a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga12e7f8fac22b7eb0b442a3ae0963d3a8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>tellg</b> ()</td></tr>
+<tr class="separator:ga12e7f8fac22b7eb0b442a3ae0963d3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabf052ba756ff57d0471c3081f4b54a41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabf052ba756ff57d0471c3081f4b54a41"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>tellp</b> ()</td></tr>
+<tr class="separator:gabf052ba756ff57d0471c3081f4b54a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af80feb6d21d386c98e026040efa7e35b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af80feb6d21d386c98e026040efa7e35b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#af80feb6d21d386c98e026040efa7e35b">set_delim_column</a> (const char &amp;)</td></tr>
-<tr class="memdesc:af80feb6d21d386c98e026040efa7e35b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The delimiter which seperates columns. <br/></td></tr>
+<tr class="memdesc:af80feb6d21d386c98e026040efa7e35b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the delimiter that seperates columns. Only used in text mode. <br/></td></tr>
 <tr class="separator:af80feb6d21d386c98e026040efa7e35b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64d70579b05c3e7882b8adde9136da19"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64d70579b05c3e7882b8adde9136da19"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a64d70579b05c3e7882b8adde9136da19">set_delim_genotype</a> (const char &amp;)</td></tr>
-<tr class="memdesc:a64d70579b05c3e7882b8adde9136da19"><td class="mdescLeft">&#160;</td><td class="mdescRight">The delimiter which seperates columns. <br/></td></tr>
-<tr class="separator:a64d70579b05c3e7882b8adde9136da19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a5a459b41ee48e735170ff99c6f2561"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a5a459b41ee48e735170ff99c6f2561"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a3a5a459b41ee48e735170ff99c6f2561">set_samples</a> (count_t)</td></tr>
-<tr class="memdesc:a3a5a459b41ee48e735170ff99c6f2561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of samples in the profile (only called in write mode). <br/></td></tr>
-<tr class="separator:a3a5a459b41ee48e735170ff99c6f2561"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accb3bc2c0b49e2ac5e4bab66ecf2c031"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="accb3bc2c0b49e2ac5e4bab66ecf2c031"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#accb3bc2c0b49e2ac5e4bab66ecf2c031">set_columns</a> (count_t)</td></tr>
-<tr class="memdesc:accb3bc2c0b49e2ac5e4bab66ecf2c031"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the number of columns for reading and writing. <br/></td></tr>
-<tr class="separator:accb3bc2c0b49e2ac5e4bab66ecf2c031"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af978940e8a2d40b14a4b307bcc5bc2b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af978940e8a2d40b14a4b307bcc5bc2b8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>set_column_name</b> (const count_t &amp;, const std::string &amp;)</td></tr>
-<tr class="separator:af978940e8a2d40b14a4b307bcc5bc2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69d5dbe614580fc358eb6747a49fccf7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69d5dbe614580fc358eb6747a49fccf7"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>set_sample_name</b> (const count_t &amp;, const std::string &amp;)</td></tr>
-<tr class="separator:a69d5dbe614580fc358eb6747a49fccf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa771050a165bc3b4d14e7d87027a5353"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa771050a165bc3b4d14e7d87027a5353"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_sample_name</b> (const count_t &amp;) const </td></tr>
-<tr class="separator:aa771050a165bc3b4d14e7d87027a5353"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a324c76237a1041a5b9288ff40a414d0b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a324c76237a1041a5b9288ff40a414d0b"></a>
-const id0_t&#160;</td><td class="memItemRight" valign="bottom"><b>encode_id0</b> (const std::string &amp;)</td></tr>
-<tr class="separator:a324c76237a1041a5b9288ff40a414d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae24f15d3a4a1e64df88c2a39c505388c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae24f15d3a4a1e64df88c2a39c505388c"></a>
-const id1_t&#160;</td><td class="memItemRight" valign="bottom"><b>encode_id1</b> (const std::string &amp;)</td></tr>
-<tr class="separator:ae24f15d3a4a1e64df88c2a39c505388c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c3344a409f080ea3657ef39d124d7ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3c3344a409f080ea3657ef39d124d7ce"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>decode_id0</b> (const count_t &amp;)</td></tr>
-<tr class="separator:a3c3344a409f080ea3657ef39d124d7ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31155f69653c9113eb60b93364072c36"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31155f69653c9113eb60b93364072c36"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>decode_id1</b> (const uint64_t &amp;)</td></tr>
-<tr class="separator:a31155f69653c9113eb60b93364072c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1c0ba91130621d7fab3d80a80e5c168"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1c0ba91130621d7fab3d80a80e5c168"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>decode_extraid</b> (const count_t &amp;, const count_t &amp;)</td></tr>
-<tr class="separator:aa1c0ba91130621d7fab3d80a80e5c168"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90f1c7f39fdc9b0ec7f7d4b8bf21592d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a90f1c7f39fdc9b0ec7f7d4b8bf21592d"></a>
-count_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a90f1c7f39fdc9b0ec7f7d4b8bf21592d">size</a> (void) const </td></tr>
-<tr class="memdesc:a90f1c7f39fdc9b0ec7f7d4b8bf21592d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of populations/individuals. <br/></td></tr>
-<tr class="separator:a90f1c7f39fdc9b0ec7f7d4b8bf21592d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0933417cd453a5197c131148bc60a29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0933417cd453a5197c131148bc60a29"></a>
-const count_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#ac0933417cd453a5197c131148bc60a29">get_index</a> (count_t) const </td></tr>
-<tr class="memdesc:ac0933417cd453a5197c131148bc60a29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of the alleles in order a sorted order. <br/></td></tr>
-<tr class="separator:ac0933417cd453a5197c131148bc60a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7af25d19986211197328122d4e67a81e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7af25d19986211197328122d4e67a81e"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_ids</b> (void)</td></tr>
-<tr class="separator:a7af25d19986211197328122d4e67a81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45549e59d2459ba05e490b523f9ae849"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a45549e59d2459ba05e490b523f9ae849"></a>
+const char &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a45549e59d2459ba05e490b523f9ae849">get_delim_column</a> (const char &amp;) const </td></tr>
+<tr class="memdesc:a45549e59d2459ba05e490b523f9ae849"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gest the delimiter that seperates columns. Only used in text mode. <br/></td></tr>
+<tr class="separator:a45549e59d2459ba05e490b523f9ae849"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab7e4b230f8a70790dcf84c649b6a2b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab7e4b230f8a70790dcf84c649b6a2b2"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#aab7e4b230f8a70790dcf84c649b6a2b2">size</a> (void) const </td></tr>
+<tr class="memdesc:aab7e4b230f8a70790dcf84c649b6a2b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retuern the number of rows in the file. Returns 0 if unknown. <br/></td></tr>
+<tr class="separator:aab7e4b230f8a70790dcf84c649b6a2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ffe8fd41dd308c39425617e709910da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ffe8fd41dd308c39425617e709910da"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a5ffe8fd41dd308c39425617e709910da">column_size</a> (void) const </td></tr>
+<tr class="memdesc:a5ffe8fd41dd308c39425617e709910da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of columns in the file. Returns 0 if unknown. <br/></td></tr>
+<tr class="separator:a5ffe8fd41dd308c39425617e709910da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a249450a5f9e8e8598b0b746b790d9c1b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a249450a5f9e8e8598b0b746b790d9c1b"></a>
+<a class="el" href="classfile__index.html">file_index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a249450a5f9e8e8598b0b746b790d9c1b">get_index</a> (void) const </td></tr>
+<tr class="memdesc:a249450a5f9e8e8598b0b746b790d9c1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classfile__index.html">file_index</a>. <br/></td></tr>
+<tr class="separator:a249450a5f9e8e8598b0b746b790d9c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ecbe2a0487193db626625b86cbdcb15"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6ecbe2a0487193db626625b86cbdcb15"></a>
 const count_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_line_number</b> (void) const </td></tr>
 <tr class="separator:a6ecbe2a0487193db626625b86cbdcb15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a312bd91ad27f7cd1071252c9bd064fe3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a312bd91ad27f7cd1071252c9bd064fe3"></a>
-const count_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_id0</b> (void) const </td></tr>
-<tr class="separator:a312bd91ad27f7cd1071252c9bd064fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50ab51a238ec4d4bd2e97a8d227473e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a50ab51a238ec4d4bd2e97a8d227473e7"></a>
-const uint64_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_id1</b> (void) const </td></tr>
-<tr class="separator:a50ab51a238ec4d4bd2e97a8d227473e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a233e510b6acba469c5ee31f67f2c1c2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a233e510b6acba469c5ee31f67f2c1c2e"></a>
-const count_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_extraid</b> (const count_t &amp;) const </td></tr>
-<tr class="separator:a233e510b6acba469c5ee31f67f2c1c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52b864d939aa5ba683422d0abc741946"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a52b864d939aa5ba683422d0abc741946"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_id0</b> (const count_t &amp;)</td></tr>
-<tr class="separator:a52b864d939aa5ba683422d0abc741946"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61b0dac02a3db5ba628037a2aa79f38d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61b0dac02a3db5ba628037a2aa79f38d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_id1</b> (const uint64_t &amp;)</td></tr>
-<tr class="separator:a61b0dac02a3db5ba628037a2aa79f38d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a769ad6ca0043709bf535fbe4acb19e15"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a769ad6ca0043709bf535fbe4acb19e15"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_extraid</b> (const count_t &amp;, const count_t &amp;)</td></tr>
-<tr class="separator:a769ad6ca0043709bf535fbe4acb19e15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a06e683db2fe391e33462e15d8f8d4da3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06e683db2fe391e33462e15d8f8d4da3"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a06e683db2fe391e33462e15d8f8d4da3">readt</a> (int)</td></tr>
-<tr class="memdesc:a06e683db2fe391e33462e15d8f8d4da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read file in text mode. <br/></td></tr>
-<tr class="separator:a06e683db2fe391e33462e15d8f8d4da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c89de1f3e4947dc6e022180e622be20"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1c89de1f3e4947dc6e022180e622be20"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a1c89de1f3e4947dc6e022180e622be20">readb</a> (int)</td></tr>
-<tr class="memdesc:a1c89de1f3e4947dc6e022180e622be20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read file in binary mode. <br/></td></tr>
-<tr class="separator:a1c89de1f3e4947dc6e022180e622be20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9040512bd15af133fc6dbb85589db68c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9040512bd15af133fc6dbb85589db68c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a9040512bd15af133fc6dbb85589db68c">readt</a> ()</td></tr>
+<tr class="memdesc:a9040512bd15af133fc6dbb85589db68c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read file in text mode. <br/></td></tr>
+<tr class="separator:a9040512bd15af133fc6dbb85589db68c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e56936016bbd11b23c9e11199d6141"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38e56936016bbd11b23c9e11199d6141"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a38e56936016bbd11b23c9e11199d6141">readb</a> ()</td></tr>
+<tr class="memdesc:a38e56936016bbd11b23c9e11199d6141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read file in binary mode. <br/></td></tr>
+<tr class="separator:a38e56936016bbd11b23c9e11199d6141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9316beee5e9f66a73a9d2fd68ede7ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac9316beee5e9f66a73a9d2fd68ede7ef"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#ac9316beee5e9f66a73a9d2fd68ede7ef">writet</a> ()</td></tr>
 <tr class="memdesc:ac9316beee5e9f66a73a9d2fd68ede7ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write stat information in memory to file in text mode. <br/></td></tr>
@@ -226,22 +183,10 @@ Private Attributes</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a024dbf997a4128cf70a4d8255a85a4af">open_</a></td></tr>
 <tr class="memdesc:a024dbf997a4128cf70a4d8255a85a4af"><td class="mdescLeft">&#160;</td><td class="mdescRight">indicates whether the profile opened succesfully <br/></td></tr>
 <tr class="separator:a024dbf997a4128cf70a4d8255a85a4af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6afbeac2a17a8ed4223678cd59fde312"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6afbeac2a17a8ed4223678cd59fde312"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a6afbeac2a17a8ed4223678cd59fde312">delim_column</a></td></tr>
-<tr class="memdesc:a6afbeac2a17a8ed4223678cd59fde312"><td class="mdescLeft">&#160;</td><td class="mdescRight">The delimiter which seperates columns. <br/></td></tr>
-<tr class="separator:a6afbeac2a17a8ed4223678cd59fde312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0bfa72b695cbdaf58d45deef5f7c663"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0bfa72b695cbdaf58d45deef5f7c663"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#aa0bfa72b695cbdaf58d45deef5f7c663">delim_genotype</a></td></tr>
-<tr class="memdesc:aa0bfa72b695cbdaf58d45deef5f7c663"><td class="mdescLeft">&#160;</td><td class="mdescRight">The delimiter which seperates genotypes. <br/></td></tr>
-<tr class="separator:aa0bfa72b695cbdaf58d45deef5f7c663"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace093be1b4c203e4d48016959e914a74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace093be1b4c203e4d48016959e914a74"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#ace093be1b4c203e4d48016959e914a74">samples_</a></td></tr>
-<tr class="memdesc:ace093be1b4c203e4d48016959e914a74"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of samples (i.e. different individuals or populations) in the profile. <br/></td></tr>
-<tr class="separator:ace093be1b4c203e4d48016959e914a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9988833c8bc5dd8e69d946f7f594c0f3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9988833c8bc5dd8e69d946f7f594c0f3"></a>
-count_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a9988833c8bc5dd8e69d946f7f594c0f3">size_</a></td></tr>
-<tr class="memdesc:a9988833c8bc5dd8e69d946f7f594c0f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of lines in the sample. 0 if unkown. <br/></td></tr>
-<tr class="separator:a9988833c8bc5dd8e69d946f7f594c0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d706bfcd8d15f37a3eab6127cc5807e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d706bfcd8d15f37a3eab6127cc5807e"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a9d706bfcd8d15f37a3eab6127cc5807e">delim_column_</a></td></tr>
+<tr class="memdesc:a9d706bfcd8d15f37a3eab6127cc5807e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The delimiter which seperates columns. <br/></td></tr>
+<tr class="separator:a9d706bfcd8d15f37a3eab6127cc5807e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51f5f880c8b524d7305454326234ac29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51f5f880c8b524d7305454326234ac29"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a51f5f880c8b524d7305454326234ac29">read_</a></td></tr>
 <tr class="memdesc:a51f5f880c8b524d7305454326234ac29"><td class="mdescLeft">&#160;</td><td class="mdescRight">File is open for reading. <br/></td></tr>
@@ -254,42 +199,36 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a4ae2befbf4e2cd948c35a9e2c6b13702">binary_</a></td></tr>
 <tr class="memdesc:a4ae2befbf4e2cd948c35a9e2c6b13702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary mode flag. Incompatable with mpileup and noheader flags. <br/></td></tr>
 <tr class="separator:a4ae2befbf4e2cd948c35a9e2c6b13702"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06717cb05f3419f1315f70b9e48d92ed"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a06717cb05f3419f1315f70b9e48d92ed"></a>
-<a class="el" href="classfile__index.html">file_index</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>index_</b></td></tr>
-<tr class="separator:a06717cb05f3419f1315f70b9e48d92ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a916592b36b507bb1b2e4d3bb00dcf840"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a916592b36b507bb1b2e4d3bb00dcf840"></a>
-std::istream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a916592b36b507bb1b2e4d3bb00dcf840">in</a></td></tr>
-<tr class="memdesc:a916592b36b507bb1b2e4d3bb00dcf840"><td class="mdescLeft">&#160;</td><td class="mdescRight">All data is read from in. <br/></td></tr>
-<tr class="separator:a916592b36b507bb1b2e4d3bb00dcf840"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7f3fc1cd6174721d5b09ff7d68a7d08"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7f3fc1cd6174721d5b09ff7d68a7d08"></a>
-std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#ac7f3fc1cd6174721d5b09ff7d68a7d08">out</a></td></tr>
-<tr class="memdesc:ac7f3fc1cd6174721d5b09ff7d68a7d08"><td class="mdescLeft">&#160;</td><td class="mdescRight">All data is writen is writen to out. <br/></td></tr>
-<tr class="separator:ac7f3fc1cd6174721d5b09ff7d68a7d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65c33760be1a62037a1f39bcc4e1956d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65c33760be1a62037a1f39bcc4e1956d"></a>
-std::fstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a65c33760be1a62037a1f39bcc4e1956d">inFile</a></td></tr>
-<tr class="memdesc:a65c33760be1a62037a1f39bcc4e1956d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file to read data from (if not stdin). <br/></td></tr>
-<tr class="separator:a65c33760be1a62037a1f39bcc4e1956d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87a4f5e42fd571b60d89de95a2bcf273"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87a4f5e42fd571b60d89de95a2bcf273"></a>
-std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a87a4f5e42fd571b60d89de95a2bcf273">outFile</a></td></tr>
-<tr class="memdesc:a87a4f5e42fd571b60d89de95a2bcf273"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file to write data to (if not stdout). <br/></td></tr>
-<tr class="separator:a87a4f5e42fd571b60d89de95a2bcf273"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a1b7a0c4fc816b239681e7d99b435e8e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b7a0c4fc816b239681e7d99b435e8e8"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a1b7a0c4fc816b239681e7d99b435e8e8">names_</a></td></tr>
-<tr class="memdesc:a1b7a0c4fc816b239681e7d99b435e8e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">ACGTN. <br/></td></tr>
-<tr class="separator:a1b7a0c4fc816b239681e7d99b435e8e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c5d7966419834e9a42dbeac461d7b22"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c5d7966419834e9a42dbeac461d7b22"></a>
+row_index *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a8c5d7966419834e9a42dbeac461d7b22">row_index_</a></td></tr>
+<tr class="memdesc:a8c5d7966419834e9a42dbeac461d7b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">An row_index which transforms to locate rows in the file. <br/></td></tr>
+<tr class="separator:a8c5d7966419834e9a42dbeac461d7b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b00fe886b43f25c004030034e2eb91a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b00fe886b43f25c004030034e2eb91a"></a>
+std::istream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a3b00fe886b43f25c004030034e2eb91a">in_</a></td></tr>
+<tr class="memdesc:a3b00fe886b43f25c004030034e2eb91a"><td class="mdescLeft">&#160;</td><td class="mdescRight">All data is read from in. <br/></td></tr>
+<tr class="separator:a3b00fe886b43f25c004030034e2eb91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac349a1ce988108b7203f5c83ff2baaf5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac349a1ce988108b7203f5c83ff2baaf5"></a>
+std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#ac349a1ce988108b7203f5c83ff2baaf5">out_</a></td></tr>
+<tr class="memdesc:ac349a1ce988108b7203f5c83ff2baaf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">All data is writen is writen to out. <br/></td></tr>
+<tr class="separator:ac349a1ce988108b7203f5c83ff2baaf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ee3085c3c9830c48da194f53da8fe91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7ee3085c3c9830c48da194f53da8fe91"></a>
+std::fstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a7ee3085c3c9830c48da194f53da8fe91">in_file_</a></td></tr>
+<tr class="memdesc:a7ee3085c3c9830c48da194f53da8fe91"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file to read data from (if not stdin). <br/></td></tr>
+<tr class="separator:a7ee3085c3c9830c48da194f53da8fe91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a066de29fd9c532a0a76cf253f438e1b7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a066de29fd9c532a0a76cf253f438e1b7"></a>
+std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmap__file.html#a066de29fd9c532a0a76cf253f438e1b7">out_file_</a></td></tr>
+<tr class="memdesc:a066de29fd9c532a0a76cf253f438e1b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file to write data to (if not stdout). <br/></td></tr>
+<tr class="separator:a066de29fd9c532a0a76cf253f438e1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>used for passing information around within the program. </p>
+<div class="textblock"><p>The file used to pass data between mapgd commands. </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>mapgd_0.3/<a class="el" href="map-file_8h_source.html">map-file.h</a></li>
+<li>mapgd_0.3.1/<a class="el" href="map-file_8h_source.html">map-file.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 18:24:16 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 27 2015 13:17:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

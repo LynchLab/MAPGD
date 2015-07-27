@@ -39,6 +39,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -71,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -106,13 +108,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a139d96163dc596a2b3d472aca45c97c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a139d96163dc596a2b3d472aca45c97c3"></a>
 const float_t&#160;</td><td class="memItemRight" valign="bottom"><b>getsample_property</b> (const count_t &amp;) const </td></tr>
 <tr class="separator:a139d96163dc596a2b3d472aca45c97c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50ea49f3b293f621848fb2375cd1eaa6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprofile.html">profile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile.html#a50ea49f3b293f621848fb2375cd1eaa6">open</a> (const char *, const char *)</td></tr>
-<tr class="memdesc:a50ea49f3b293f621848fb2375cd1eaa6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that opens a profile (if file).  <a href="#a50ea49f3b293f621848fb2375cd1eaa6">More...</a><br/></td></tr>
-<tr class="separator:a50ea49f3b293f621848fb2375cd1eaa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2639e97ce5a52824c83e2071ba0fb7ee"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2639e97ce5a52824c83e2071ba0fb7ee"></a>
-<a class="el" href="classprofile.html">profile</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile.html#a2639e97ce5a52824c83e2071ba0fb7ee">open</a> (const char *)</td></tr>
-<tr class="memdesc:a2639e97ce5a52824c83e2071ba0fb7ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that opens a profile (if stdin). <br/></td></tr>
-<tr class="separator:a2639e97ce5a52824c83e2071ba0fb7ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a4952ccbbe277923954d36969ccc36d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile.html#a2a4952ccbbe277923954d36969ccc36d">open</a> (const char *, std::ios_base::openmode)</td></tr>
+<tr class="memdesc:a2a4952ccbbe277923954d36969ccc36d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that opens a profile (if file).  <a href="#a2a4952ccbbe277923954d36969ccc36d">More...</a><br/></td></tr>
+<tr class="separator:a2a4952ccbbe277923954d36969ccc36d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f25062784980ee3e9c48081ae815c8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7f25062784980ee3e9c48081ae815c8a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile.html#a7f25062784980ee3e9c48081ae815c8a">open</a> (std::ios_base::openmode)</td></tr>
+<tr class="memdesc:a7f25062784980ee3e9c48081ae815c8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function that opens a profile (if stdin). <br/></td></tr>
+<tr class="separator:a7f25062784980ee3e9c48081ae815c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a6e4ce6f7cca8d0e0e9c40ad855eea7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5a6e4ce6f7cca8d0e0e9c40ad855eea7"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile.html#a5a6e4ce6f7cca8d0e0e9c40ad855eea7">is_open</a> (void) const </td></tr>
 <tr class="memdesc:a5a6e4ce6f7cca8d0e0e9c40ad855eea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if profile is open, false otherwise. <br/></td></tr>
@@ -454,12 +456,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a class="anchor" id="a50ea49f3b293f621848fb2375cd1eaa6"></a>
+<a class="anchor" id="a2a4952ccbbe277923954d36969ccc36d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classprofile.html">profile</a> * profile::open </td>
+          <td class="memname">void profile::open </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>filename</em>, </td>
@@ -467,7 +469,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype">std::ios_base::openmode&#160;</td>
           <td class="paramname"><em>mode</em>&#160;</td>
         </tr>
         <tr>
@@ -480,7 +482,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>The function that opens a profile (if file). </p>
 <p>opens a .pro file in the modes "r" or "w".</p>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to the profile </dd></dl>
 
 </div>
 </div>
@@ -577,13 +578,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>mapgd_0.3/<a class="el" href="pro-file_8h_source.html">pro-file.h</a></li>
-<li>mapgd_0.3/pro-file.cc</li>
+<li>mapgd_0.3.1/<a class="el" href="pro-file_8h_source.html">pro-file.h</a></li>
+<li>mapgd_0.3.1/pro-file.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 18:24:16 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 27 2015 13:17:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

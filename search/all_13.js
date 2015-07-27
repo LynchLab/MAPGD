@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['write',['write',['../classmap__file.html#aeda25f7ec80c11621554cae62729141e',1,'map_file::write()'],['../classprofile.html#a7dce10bed6159f785041a9b4b0099e47',1,'profile::write()'],['../classprofile.html#aefe45dcc6563bd3aabbcf6671a377a82',1,'profile::write(Locus const &amp;)']]],
+  ['write',['write',['../classprofile.html#a7dce10bed6159f785041a9b4b0099e47',1,'profile::write()'],['../classprofile.html#aefe45dcc6563bd3aabbcf6671a377a82',1,'profile::write(Locus const &amp;)']]],
   ['write_5f',['write_',['../classmap__file.html#a9b8eef15e57e955a5ebcf8109e7d0822',1,'map_file::write_()'],['../classprofile.html#affb930acde8d897c2449dc46d2d159f7',1,'profile::write_()']]],
   ['write_5findex',['write_index',['../classfile__index.html#aa41050f234a3adb88f108d834c7c5ec0',1,'file_index']]],
   ['writeb',['writeb',['../classmap__file.html#ac7b89612f77a8f01de7ddba26d7ad44c',1,'map_file::writeb()'],['../classprofile.html#a9d98bbf6f9bcd8f2547674067aa3a8da',1,'profile::writeb()'],['../classprofile.html#a7d52885cad038fb7cb06f6a98b4fe3de',1,'profile::writeb(Locus const &amp;)']]],

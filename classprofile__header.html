@@ -39,6 +39,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -71,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -167,9 +169,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <tr class="memitem:a7cadad0c1745947fb34071ca2ef1bdcd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cadad0c1745947fb34071ca2ef1bdcd"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>setcolumn_name</b> (const count_t &amp;, const std::string &amp;)</td></tr>
 <tr class="separator:a7cadad0c1745947fb34071ca2ef1bdcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ea72f2fd9bdcde0a4a5d1f1e7335e64"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ea72f2fd9bdcde0a4a5d1f1e7335e64"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getcolumn_name</b> (const count_t &amp;) const </td></tr>
-<tr class="separator:a3ea72f2fd9bdcde0a4a5d1f1e7335e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99875a59dfe4b026597ea87351ec1db7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99875a59dfe4b026597ea87351ec1db7"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getcolumn_name</b> (const size_t &amp;) const </td></tr>
+<tr class="separator:a99875a59dfe4b026597ea87351ec1db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05787a0e90bb4f27d6b7b1cccecd20d3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05787a0e90bb4f27d6b7b1cccecd20d3"></a>
 <a class="el" href="classprofile__header.html">profile_header</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile__header.html#a05787a0e90bb4f27d6b7b1cccecd20d3">operator=</a> (const <a class="el" href="classprofile__header.html">profile_header</a> &amp;)</td></tr>
 <tr class="memdesc:a05787a0e90bb4f27d6b7b1cccecd20d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">I don't think the copy makes sense. . . <br/></td></tr>
@@ -258,13 +260,13 @@ std::vector&lt; float_t &gt;&#160;</td><td class="memItemRight" valign="bottom">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A class to control the varrious atributes of .pro files. A class to control the various attributes of .pro files. This class was a terrible design decision that I am now paying for. Some form of this class will likely persist, but in the future I think it will only set internal flags. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>mapgd_0.3/<a class="el" href="pro-file_8h_source.html">pro-file.h</a></li>
-<li>mapgd_0.3/pro-file.cc</li>
+<li>mapgd_0.3.1/<a class="el" href="pro-file_8h_source.html">pro-file.h</a></li>
+<li>mapgd_0.3.1/pro-file.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 18:24:16 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 27 2015 13:17:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

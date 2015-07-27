@@ -39,6 +39,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -71,7 +73,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -91,13 +93,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>A class to store population specific information. May be moved over to population.  
+ <a href="classallele__stat.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="allele__stat_8h_source.html">allele_stat.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae49a06d8ecc53bd6955f76ea1afc5a69"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae49a06d8ecc53bd6955f76ea1afc5a69"></a>
 <a class="el" href="classallele__stat.html">allele_stat</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classallele__stat.html#ae49a06d8ecc53bd6955f76ea1afc5a69">operator=</a> (const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;)</td></tr>
-<tr class="memdesc:ae49a06d8ecc53bd6955f76ea1afc5a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">use the = operator to assign <a class="el" href="classallele__stat.html">allele_stat</a>. <br/></td></tr>
+<tr class="memdesc:ae49a06d8ecc53bd6955f76ea1afc5a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">use the = operator to assign <a class="el" href="classallele__stat.html" title="A class to store population specific information. May be moved over to population. ">allele_stat</a>. <br/></td></tr>
 <tr class="separator:ae49a06d8ecc53bd6955f76ea1afc5a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -201,19 +206,20 @@ float_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 Friends</h2></td></tr>
 <tr class="memitem:a3b57c3b3704522365fb3d4901af810e9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b57c3b3704522365fb3d4901af810e9"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classallele__stat.html#a3b57c3b3704522365fb3d4901af810e9">operator&lt;&lt;</a> (std::ostream &amp;, const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;)</td></tr>
-<tr class="memdesc:a3b57c3b3704522365fb3d4901af810e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">use the &lt;&lt; operator to write <a class="el" href="classallele__stat.html">allele_stat</a>. <br/></td></tr>
+<tr class="memdesc:a3b57c3b3704522365fb3d4901af810e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">use the &lt;&lt; operator to write <a class="el" href="classallele__stat.html" title="A class to store population specific information. May be moved over to population. ">allele_stat</a>. <br/></td></tr>
 <tr class="separator:a3b57c3b3704522365fb3d4901af810e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A class to store population specific information. May be moved over to population. </p>
+<p>This is likely to become some form of container to handel moving data into and out of rows of map file. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>mapgd_0.3/<a class="el" href="allele__stat_8h_source.html">allele_stat.h</a></li>
-<li>mapgd_0.3/allele_stat.cc</li>
+<li>mapgd_0.3.1/<a class="el" href="allele__stat_8h_source.html">allele_stat.h</a></li>
+<li>mapgd_0.3.1/allele_stat.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 23 2015 18:24:16 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jul 27 2015 13:17:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
