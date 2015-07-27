@@ -48,7 +48,7 @@ MAPGD has been written using the gnu C++11 style, but I've attempted to minimize
 	* Red Hat Enterprise Linux 6.x
 	* A version of the Cray Linux Environment.
 	* OS X Yosemite.
-Version compiled on OS X may run slowly, because the default OS X does compiler does not support openmp. Making MAPDG work correctly on OS X is pretty high on out TODO list, but it is not at the top of the TODO list. 
+To compile on OS X, you need to type 'make noomp' because the default OS X does compiler does not support openmp. I sould have this fixed shortly, after which OS X users can get back to typing 'make' like eveyone else, but it may be a few weeks before that makes it to the top of the TODO list. 
  
 Version 0.1 will compile on windows 32 and 64 bit versions IIRC, but getting current versions of mapgd working on windows is near the bottom of the TODO list.
 
