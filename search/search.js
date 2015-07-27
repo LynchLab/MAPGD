@@ -7,16 +7,10 @@
 
 var indexSectionsWithContent =
 {
-  0: "abcdefgilmopqrsw",
-  1: "abcefglmpqs",
-  2: "cdegilorsw"
 };
 
 var indexSectionNames =
 {
-  0: "all",
-  1: "classes",
-  2: "functions"
 };
 
 function convertToId(search)
