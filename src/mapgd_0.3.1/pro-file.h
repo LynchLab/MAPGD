@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <map>
 #include <string>
+#include <ios>
 
 #include "typedef.h"
 #include "stream-tools.h"
@@ -162,8 +163,8 @@ public:
 	static const std::string names_;		//!< ACGTN
 	const float_t getsample_property(const count_t &) const;
 
-	profile* open(const char *, const char *);	//!< The function that opens a profile (if file).
-	profile* open(const char *);			//!< The function that opens a profile (if stdin).
+	void open(const char *, std::ios_base::openmode);	//!< The function that opens a profile (if file).
+	void open(std::ios_base::openmode);			//!< The function that opens a profile (if stdin).
 	bool is_open(void) const;			//!< Returns true if profile is open, false otherwise.
 
 	/*basic io operation*/

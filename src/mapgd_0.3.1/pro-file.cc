@@ -44,7 +44,7 @@ const std::string profile::decodeextraid(const char &id, const size_t &a) {
 	return header_.decodeextraid(id, a);
 }
 const std::string profile_header::decodeextraid(const char &id, const size_t &a) {
-	return std::string(1, decodechar[id]);
+	return std::string(1, decodechar[size_t(id)]);
 }
 
 const id0_t profile::encodeid0(const std::string &id){
@@ -81,7 +81,7 @@ const char profile::encodeextraid(const char &id, const count_t &a){
 	return header_.encodeextraid(id, a);
 }
 const char profile_header::encodeextraid(const char &id, const size_t &a){
-	return encodechar[id];
+	return encodechar[size_t(id)];
 }
 
 int profile::seek(std::streampos pos) {
@@ -175,8 +175,11 @@ int profile::setsample_name(const count_t &a, const std::string &str){
 	return BADHEADER;
 }
 
-const std::string profile_header::getcolumn_name(const count_t &x) const{
-	return column_names[x];
+const std::string profile_header::getcolumn_name(const size_t &x) const{
+	if (x<column_names.size() ) return column_names[x];
+	std::cerr << "pro-file.cc:180: Attempted to access column that does not exist.\n";
+	exit(0);
+	return "ACCESS ERROR";
 };
 
 int profile_header::setcolumn_name(const count_t &x, const std::string &str) {
@@ -549,7 +552,7 @@ void inline profile::scan(const Locus & site, const std::string &str, quartet_t 
     		} else if(*it == ',' || *it=='.') {
 			q.base[site.extraid[0] ]++;
 		} else {
-			q.base[header_.encodeextraid( (count_t)*it, 0) ]++;
+			q.base[size_t(header_.encodeextraid( (char) (*it), 0) )]++;
 		}
 		it++;
 	}
@@ -802,79 +805,59 @@ int profile::writet(const Locus &thissite){
 };
 
 /** @brief opens a .pro file in the modes "r" or "w".
-  * @returns a pointer to the profile
+  *
 **/
-profile* profile::open(const char* filename, const char *mode){
+void profile::open(const char* filename, std::ios_base::openmode mode){
 
 	memcpy(site_.sorted_, defaultorder, 5*sizeof(count_t) );
 	open_=false;
 	in=NULL;
 	out=NULL;
 
-	if ( strcmp(mode, "r") ){
-		inFile.open(filename, std::fstream::in);
+	if ( mode & std::fstream::in ){
+		inFile.open(filename, std::ifstream::in);
 		if (!inFile.is_open() ){
 			std::cerr << "cannot open " << filename << " for reading (1)." << std::endl;				
-			return this;				
+			exit(0);
 		};
 		in=&inFile;
 		if (readheader()==BADHEADER){
 			std::cerr << "cannot read header on " << filename << " (1). " << std::endl;
 			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;
-			return this;				
+			exit(0);
 		};
 		read_=true;
-	} else if ( strcmp(mode, "w") ){
+	} else if ( mode & std::fstream::out ){
 		outFile.open(filename, std::ofstream::out);
 		if (!outFile.is_open() ){
 			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
-			return this;				
+			exit(0);
 		};
 		out=&outFile;
 		write_=true;
-	} else if (strcmp(mode, "wb") ){
-		outFile.open(filename, std::ofstream::out);
-		if (!outFile.is_open() ){
-			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
-			return this;				
-		};
-		out=&outFile;
-		write_=true;
-		binary_=true;
-	} else	{
-		std::cerr << "unkown filemode " << std::endl;
-		return this;				
-	}
+	};
+	if (mode & std::fstream::binary) binary_=true;
 	open_=true;
-	return this;
 }
 
-profile* profile::open(const char *mode)
+void profile::open(std::ios_base::openmode mode)
 {
 	open_=false;
-
-	if ( strcmp(mode, "r") ){
+	if ( mode & std::fstream::in ){
 		in=&std::cin;
 		if (readheader()==BADHEADER){
 			std::cerr << "cannot find header in stdin (2). " << std::endl;				
 			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;			
-			return this;				
+			exit(0);
 		}
 		read_=true;
-	} else if ( strcmp( mode, "w") ) {
+	} else if ( mode & std::fstream::out) {
 		out=&std::cout;
 		write_=true;
-	} else if ( strcmp( mode, "wb") ) {
-		out=&std::cout;
-		binary_=true;
-		write_=true;
-	} else{
-		std::cerr << "unkown filemode " << std::endl;
-		return this;				
-	};
+	}
+	if (mode & std::fstream::binary) binary_=true;
 	open_=true;
 	donothing_=false;
-	return this;
 }
 
 /** @brief closes a .pro file and unsets members.
@@ -883,7 +866,7 @@ profile* profile::open(const char *mode)
 
 void profile::close(void){
 	if (write_){
-		if (not noheader_) header_.writetailer(out);
+		//if (not noheader_) header_.writetailer(out);
 		if (outFile.is_open() ) outFile.close();
 	}
 	if(read_) if (inFile.is_open() ) inFile.close();

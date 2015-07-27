@@ -15,7 +15,7 @@ float_t efc (const Locus &site, const count_t &MIN){
 		if (!it->masked){
 			N_=count(*it);
 			if ( N_>MIN ){
-				ec+=2-2*pow(0.5, N_);
+				ec+=2.-2.*pow(0.5, N_);
 			}
 		}
 		++it;
@@ -25,6 +25,8 @@ float_t efc (const Locus &site, const count_t &MIN){
 
 //Intilaizes the parameters of the ... returns 0 on succesful excecution, returns 1 if there is am...
 count_t init_params(Locus &site, allele_stat &a, const count_t &MIN, const float_t &minerr, const count_t &M){
+
+	a.coverage=site.getcoverage();
 
 	std::vector <quartet_t>::iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::iterator end=site.sample.end(); 
@@ -111,7 +113,9 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
 	count_t iter=0;			//counts the number of iterations to let us know if we have a failure to converge.
 
-        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || isnan(R[0]) || isnan(R[1]) || isnan(R[2]) ) && iter<100){
+	if(a.error==0) a.error=0.005;
+
+        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || isnan(R[0]) || isnan(R[1]) || isnan(R[2]) ) && iter<200){
 
 		++iter;
  
@@ -122,6 +126,8 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
 		it=site.sample.begin();	 
 
+		float_t sumlnL=0;
+
 		while (it!=end ){
 
 			J[0][0]+=J00(*it, a); J[0][1]+=J01(*it, a); J[0][2]+=J02(*it, a);
@@ -131,6 +137,8 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
                         R[0]+=H0(*it, a);
                         R[1]+=H1(*it, a);
                         R[2]+=H2(*it, a);
+			
+			sumlnL+=lnL_NR(*it, a);
 
                         ++it;
                 };
@@ -161,19 +169,21 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		//THE DETERMINENT
 		det=J[0][0]*iJ[0][0]+J[0][1]*iJ[1][0]+J[0][2]*iJ[2][0];
 
-//		std::cout << det << ", " << iter << std::endl;
 
 		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
 		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;
 		iJ[2][0]/=det; iJ[2][1]/=det; iJ[2][2]/=det;
 
+//		std::cout << R[0] << "*" << iJ[0][0] << std::endl;
+
                 R[0]=(R[0]*iJ[0][0]+R[1]*iJ[0][1]+R[2]*iJ[0][2]);
                 R[1]=(R[0]*iJ[1][0]+R[1]*iJ[1][1]+R[2]*iJ[1][2]);
                 R[2]=(R[0]*iJ[2][0]+R[1]*iJ[2][1]+R[2]*iJ[2][2]);
 	
-//	       	std::cout << "Pi=" << a.freq-R[0] << ", Epsilon=" << a.error-R[1]  << ", F=" << a.f-R[2] << ", R=" << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ": " << model.loglikelihood(site, a, MIN) << std::endl;
+	       	std::cout << iter <<" Pi= " << a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ": " << sumlnL << " : " << sizeof(float_t)  << " : "<< model.loglikelihood(site, a, MIN) << std::endl;
 
-		//BONDS CHECKING.
+		//BOUNDS CHECKS.
+		/*
 		if (a.freq-R[0]>1.0) a.freq=1-(1-a.freq)/2.;
                 else if (a.freq-R[0]<0) a.freq/=2.0;
 		else a.freq-=R[0];
@@ -185,8 +195,10 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		lim=-pow( (1-a.freq), 2)/(a.freq*(1-a.freq) );
 		if (a.f-R[2]>1.0) a.f=1-(1-a.f)/2.;
                 else if (a.f-R[2]<lim) a.f=lim+(lim-a.f)/2.;
-		else a.f-=R[2];
-//	       	std::cout << "Pi=" << a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ": " << model.loglikelihood(site, a, MIN) << std::endl;
+		else a.f-=R[2];*/
+		a.freq-=R[0];
+		a.error-=R[1];
+		a.f-=R[2];
         };
 
         a.MM=pow(a.freq,2)+a.f*(a.freq*(1-a.freq) );
@@ -199,8 +211,8 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 	excluded=site.maskedcount();
 	std::vector <float_t> temp_gofs(site.sample.size());
 	a.gof=model.goodness_of_fit(site, a, temp_gofs, MIN, maxgof);
-	if (iter==100) {
-		std::cerr << "Failure to maximize " << a << "\n";
+	if (iter==200) {
+		std::cerr << "Failure to maximize " << iter << " " << a << "\n";
 		init_params(site, a, MIN, 0, 0);
 		return maximize_grid(site, a, model, gofs, MIN, maxgof, maxpitch);
 	}
@@ -322,7 +334,6 @@ count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <
 
 count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const count_t &MIN, const float_t &maxgof, const count_t &maxpitch){
 
-	a.coverage=site.getcoverage();
 
 	a.MM=1.0;
 	a.Mm=0.0;

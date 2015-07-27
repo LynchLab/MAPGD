@@ -6,7 +6,7 @@
  */	
 lnmultinomial& lnmultinomial::operator=(const lnmultinomial& rhs)
 {
-	delete lnp_;
+	delete [] lnp_;
 	size_=rhs.size_;
 	lnfact_vector=rhs.lnfact_vector;
 	lnp_=new float_t[size_];
@@ -104,7 +104,12 @@ float_t lnmultinomial::lnprob_approx(const count_t *s)
 {
 	float_t ret=0, *lit=lnp_;
 	const count_t *it=s, *end=s+size_;
-	while (it!=end) {ret+=(*it)*(*lit); ++lit; ++it;}
+	while (it!=end) {
+//		std::cout << (*it) << " x " << *lit <<std::endl;
+		ret+=(*it)*(*lit); 
+		++lit; 
+		++it;
+	}
 	return ret;
 }
 

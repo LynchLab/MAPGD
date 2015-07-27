@@ -44,11 +44,11 @@ void MMmodelP(const allele_stat &a, float_t *l){
 		l[0]=0;
 		l[1]=-FLT_MAX;
 	} else if (a.error>=0.75) {
-		l[0]=log(0.25);
-		l[1]=log(0.75);
+		l[0]=logl(0.25);
+		l[1]=logl(0.75);
 	} else {
-		l[0]=log(1.-a.error);
-		l[1]=log(a.error);
+		l[0]=logl(1.-a.error);
+		l[1]=logl(a.error);
 	}					 	
 };
 
@@ -60,11 +60,11 @@ void mmmodelP(const allele_stat &a, float_t *l){	//Dito, assuming [m]ajor [m]ino
 		l[0]=-FLT_MAX;
 		l[1]=0;
 	} else if (a.error>=0.75) {
-		l[0]=log(0.25);
-		l[1]=log(0.75);
+		l[0]=logl(0.25);
+		l[1]=logl(0.75);
 	} else {
-		l[0]=log(a.error/3.);
-		l[1]=log(1-a.error/3.);
+		l[0]=logl(a.error/3.);
+		l[1]=logl(1-a.error/3.);
 	}					 	
 };
 
@@ -73,14 +73,14 @@ void mmmodelP(const allele_stat &a, float_t *l){	//Dito, assuming [m]ajor [m]ino
  */ 	
 void MmmodelP(const allele_stat &a, float_t *l){ 	//[M]ajor [m]inor.
 	if(a.error<=0){
-		l[0]=log(0.5);
-		l[1]=log(0.5);
+		l[0]=logl(0.5);
+		l[1]=logl(0.5);
 	} else if (a.error>=0.75) {
-		l[0]=log(0.25);
-		l[1]=log(0.75);
+		l[0]=logl(0.25);
+		l[1]=logl(0.75);
 	} else {
-		l[0]=log(0.5*(1.-a.error)+0.5*a.error/3.);
-		l[1]=log(0.5*(1.-a.error/3.)+0.5*a.error);
+		l[0]=logl(0.5*(1.-a.error)+0.5*a.error/3.);
+		l[1]=logl(0.5*(1.-a.error/3.)+0.5*a.error);
 	}					 	
 };
 
@@ -88,25 +88,28 @@ void MmmodelP(const allele_stat &a, float_t *l){ 	//[M]ajor [m]inor.
  *	(Major Major)
  */ 	
 void MMmodel(const allele_stat &a, float_t *prob){		
-	float_t e3=log(a.error/3.);		//e3 : the error rate over three. I.e. If an error occurs, it has a 1/3 chance
+	float_t e3=logl(a.error/3.);		//e3 : the error rate over three. I.e. If an error occurs, it has a 1/3 chance
 						// of going to a particular base.
-	if (a.error==0) e3=-FLT_MAX;		// If the error rate is zero we want to set 1/3 of the log of error rate 
+	if (a.error==0) e3=-FLT_MAX;		// If the error rate is zero we want to set 1/3 of the logl of error rate 
 						// to the smallest (i.e. most negative) floting point number.
+//	std::cout << "ln(e/3)" << e3 << std::endl;
 	prob[0]=e3; prob[1]=e3; 
-	prob[2]=e3; prob[3]=e3;			//set all the probabilities to the log of the error rate over three.
+	prob[2]=e3; prob[3]=e3;			//set all the probabilities to the logl of the error rate over three.
 
-	prob[a.major]=log(1.-a.error);		//set the right error rate for major and minor.
+	prob[a.major]=logl(1.-a.error);		//set the right error rate for major and minor.
 	if (a.error==1.) prob[a.major]=-FLT_MAX;
+
+//	std::cout << "ln(1-e)" << prob[a.major] << std::endl;
 };
 
 /*! \breif The probabilities used for fitting in the maximum likelihood grid search.
  *	(minor minor)
  */
 void mmmodel(const allele_stat &a, float_t *l){	
-	float_t e3=log(a.error/3.);
+	float_t e3=logl(a.error/3.);
 	if (a.error==0.) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
-	l[a.minor]=log(1.-a.error);
+	l[a.minor]=logl(1.-a.error);
 	if (a.error==1.) l[a.minor]=-FLT_MAX;
 };
 
@@ -114,10 +117,10 @@ void mmmodel(const allele_stat &a, float_t *l){
  *	(Major minor)
  */
 void Mmmodel(const allele_stat &a, float_t *l){		//Dito.
-	float_t e3=log(a.error/3.);
+	float_t e3=logl(a.error/3.);
 	if (a.error==0.) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
-	float_t H=log(0.5*(1.-a.error)+0.5*a.error/3.);
+	float_t H=logl(0.5*(1.-a.error)+0.5*a.error/3.);
 	l[a.major]=H;
 	l[a.minor]=H;
 	if (a.error==1.){
@@ -126,7 +129,7 @@ void Mmmodel(const allele_stat &a, float_t *l){		//Dito.
 	};
 };
 
-/*! \Breif, a function that calculates the log likelihood of a set of observations. */
+/*! \Breif, a function that calculates the logl likelihood of a set of observations. */
 float_t models::loglikelihood(const Locus &site, const allele_stat &p, const count_t &MIN){
 
 	float_t sumll=0;
@@ -138,9 +141,9 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 	lnMm_.set(&Mmmodel, p);	//observing a particular quartet given that the individual has the MM, Mm or mm genotype.
 	lnmm_.set(&mmmodel, p);	//
 
-	float_t logMM=log(p.MM);	//The frequency of the MM genotype in the sample.
-	float_t logMm=log(p.Mm);	// Dito Mm.
-	float_t logmm=log(p.mm);	// Diot mm.
+	float_t logMM=logl(p.MM);	//The frequency of the MM genotype in the sample.
+	float_t logMm=logl(p.Mm);	// Dito Mm.
+	float_t logmm=logl(p.mm);	// Diot mm.
 
 	float_t E0, E1, E2;		//These are some variables to breifly store a portion of our likelihood calculation
 
@@ -151,17 +154,20 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 			T=( it->base[0]+it->base[1]+it->base[2]+it->base[3] );
 			if ( T>=MIN ) {
 
-				E0=logMM+lnMM_.lnprob(it->base);
-				E1=logMm+lnMm_.lnprob(it->base);
-				E2=logmm+lnmm_.lnprob(it->base);
-
+//				std::cout << "e: " << p.error << " a.MM:" << p.MM << " a.Mm:" << p.Mm << " a.mm:" << p.mm << std::endl; 
+				E0=logMM+lnMM_.lnprob_approx(it->base);
+				E1=logMm+lnMm_.lnprob_approx(it->base);
+				E2=logmm+lnmm_.lnprob_approx(it->base);
+	
+//				std::cout << it->base[0] << ", " << it->base[1] << ", " << it->base[2] << ", " <<it->base[3] << std::endl;
+//				std::cout << E0 << ", " << E1 << ", " << E2 << std::endl;
 
 				if(E0>E2){
-					if(E0>E1) sumll+=log(exp(E1-E0)+exp(E2-E0)+1.)+E0;
-					else sumll+=log(exp(E0-E1)+exp(E2-E1)+1.)+E1;
+					if(E0>E1) sumll+=logl(expl(E1-E0)+expl(E2-E0)+1.)+E0;
+					else sumll+=logl(expl(E0-E1)+expl(E2-E1)+1.)+E1;
 				} 
-				else if(E1>E2) sumll+=log(exp(E0-E1)+exp(E2-E1)+1.)+E1;
-				else sumll+=log(exp(E0-E2)+exp(E1-E2)+1.)+E2;
+				else if(E1>E2) sumll+=logl(expl(E0-E1)+expl(E2-E1)+1.)+E1;
+				else sumll+=logl(expl(E0-E2)+expl(E1-E2)+1.)+E2;
 			}
 		}
 		++it;
@@ -177,9 +183,9 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 	lnMm_.set(&Mmmodel, population);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
 	lnmm_.set(&mmmodel, population);  //
 
-	float_t logMM=log(population.MM); //The frequency of the MM genotype in the sample.
-	float_t logMm=log(population.Mm); // Dito Mm.
-	float_t logmm=log(population.mm); // Diot mm.
+	float_t logMM=logl(population.MM); //The frequency of the MM genotype in the sample.
+	float_t logMm=logl(population.Mm); // Dito Mm.
+	float_t logmm=logl(population.mm); // Diot mm.
 
 	float_t E[3];
 
@@ -191,14 +197,14 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 
 	//We make E2 the largest (i.e. least negative) value of the three. E0 and E1 will often times be 
 	//extreamly small, and can even be negative infinity. So we are basically just ensuring that we 
-	//don't throw away a lot of precission by returning log(exp(E2) ). 
+	//don't throw away a lot of precission by returning logl(exp(E2) ). 
 
 	if(E[0]>E[2]){
-		if(E[0]>E[1]) ll=log(exp(E[1]-E[0])+exp(E[2]-E[0])+1.)+E[0];
-		else ll=log(exp(E[0]-E[1])+exp(E[2]-E[1])+1.)+E[1];
+		if(E[0]>E[1]) ll=logl(exp(E[1]-E[0])+expl(E[2]-E[0])+1.)+E[0];
+		else ll=logl(expl(E[0]-E[1])+expl(E[2]-E[1])+1.)+E[1];
 	} 
-	else if(E[1]>E[2]) ll=log(exp(E[0]-E[1])+exp(E[2]-E[1])+1.)+E[1];
-	else ll=log(exp(E[0]-E[2])+exp(E[1]-E[2])+1.)+E[2];
+	else if(E[1]>E[2]) ll=logl(exp(E[0]-E[1])+expl(E[2]-E[1])+1.)+E[1];
+	else ll=logl(expl(E[0]-E[2])+expl(E[1]-E[2])+1.)+E[2];
 	
 	E[0]-=ll;
 	E[1]-=ll;
@@ -218,9 +224,9 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 
 	quartet_t *maxgof_ptr=&(*it); 
 
-	float_t logMM=log(allele.MM); //The frequency of the MM genotype in the sample.
-	float_t logMm=log(allele.Mm); // Dito Mm.
-	float_t logmm=log(allele.mm); // Diot mm.
+	float_t logMM=logl(allele.MM); //The frequency of the MM genotype in the sample.
+	float_t logMm=logl(allele.Mm); // Dito Mm.
+	float_t logmm=logl(allele.mm); // Diot mm.
 
 	lnMMP_.set(&MMmodelP, allele);  
 	lnMmP_.set(&MmmodelP, allele); 

@@ -22,7 +22,7 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 #include "estimate-individual.h"
 
 #define BUFFER_SIZE 500
-#define PRAGMA
+//#define PRAGMA
 
 /*
 float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,  models &model){
@@ -32,9 +32,9 @@ float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,
 	return mle1.ll+mle2.ll-mle3.ll
 }*/
 
-/*@breif: Estimates a number of summary statistics from short read sequences.*/ 
-
-//estimate
+/// Estimates a number of summary statistics from short read sequences.
+/**
+ */
 allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, count_t MIN, count_t EMLMIN, float_t MINGOF, count_t MAXPITCH){
 
 	allele_stat mle, temp;					//allele_stat is a basic structure that containes all the summary statistics for
@@ -48,12 +48,13 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	mle.N=0;
 
 	count_t texc=site.maskedcount(), rexc;
+	rexc=texc;
 	
-	if (init_params(site, mle, MIN, EMLMIN,0) ){		//If >90% of reads agree, then assume a homozygote,
+	if (init_params(site, mle, MIN, EMLMIN, 0) ){		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
 		rexc=maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-//		rexc=maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		rexc=maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
@@ -166,17 +167,18 @@ int estimateInd(int argc, char *argv[])
 	genotype tet(4);
 
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
-		if (pro.open(infile.c_str(), "r")==NULL) {	//try to open a profile of that name.
+		pro.open(infile.c_str(), std::fstream::in);	
+		if (!pro.is_open() ) {				//try to open a profile of that name.
 			printUsage(env);			//Print help message on failure.
 		} 
 	}
 	else {
-		pro.open("r");					//Iff no filename has been set for infile, open profile from stdin.
+		pro.open(std::fstream::in);			//Iff no filename has been set for infile, open profile from stdin.
 	};
 
 	if (outfile.size()!=0) {
-		outFile.open(outfile.c_str(), std::ofstream::out);
-		if (!outFile) printUsage(env);
+		outFile.open(outfile.c_str(), std::fstream::out);
+		if (!outFile.is_open() ) printUsage(env);
 		out=&outFile;
 	};
 
@@ -188,10 +190,10 @@ int estimateInd(int argc, char *argv[])
 	bool binary=false;
 	if (outfilepro.size()!=0) {				//Same sort of stuff for the outf
 		if (binary) {
-			pro_out.open(outfilepro.c_str(), "wb");
+			pro_out.open(outfilepro.c_str(), std::fstream::out | std::fstream::binary);
 			if (!pro_out.is_open() ) {printUsage(env); exit(0);}
 		} else {
-			pro_out.open(outfilepro.c_str(), "w");
+			pro_out.open(outfilepro.c_str(), std::fstream::out);
 			if (!pro_out.is_open() ) {printUsage(env); exit(0);}
 		}
 		pro_out.setsamples(pro.size() );
@@ -280,7 +282,7 @@ int estimateInd(int argc, char *argv[])
 		}
 		if (readed!=BUFFER_SIZE){break;}
 	}
-	for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.getsample_name(x) << ":" << sum_gofs[x]/sqrt(float_t(gofs_read[x])) << std::endl;
+	for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.getsample_name(ind[x]) << ":" << sum_gofs[x]/sqrt(float_t(gofs_read[x])) << std::endl;
 	pro.close();
 	if (outFile.is_open()) outFile.close();		//Closes outFile iff outFile is open.
 	if (pro_out.is_open()) pro_out.close();		//Closes pro_out iff pro_out is open.

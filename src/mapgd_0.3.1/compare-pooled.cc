@@ -45,12 +45,16 @@ int comparePooled(int argc, char *argv[])
 
 	/* Open the input file. */
 
-	if (infile.size()!=0) {if (pro.open(infile.c_str(), "r")==NULL) {printUsage(env);} }
-	else pro.open("r");
+	if (infile.size()!=0) {
+		pro.open(infile.c_str(), std::fstream::in);
+		if (not (pro.is_open() ) ) printUsage(env);
+	} else {
+		pro.open(std::fstream::in);
+	}
 
 	/* Open the output file. */
 	if (outfile.size()!=0) {
-		outFile.open(outfile.c_str(), std::ofstream::out);
+		outFile.open(outfile.c_str(), std::fstream::out);
 		if (!outFile) printUsage(env);
 		out=&outFile;
 	}

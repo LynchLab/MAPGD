@@ -52,15 +52,15 @@ std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 	} else {
 		out << std::fixed << std::setprecision(0);
 		out << x.coverage << x.delim;
-		out << '*' <<  x.delim;
-		out << '*' <<  x.delim;
-		out << '*' << x.delim;
-		out << '*' << x.delim;
-		out << '*' <<  x.delim;
-		out << '*' << x.delim;
-		out << '*' << x.delim;
-		out << '*' << x.delim;
-		out << '*' << x.delim;
+		out << '.' <<  x.delim;
+		out << '.' <<  x.delim;
+		out << '.' << x.delim;
+		out << '.' << x.delim;
+		out << '.' <<  x.delim;
+		out << '.' << x.delim;
+		out << '.' << x.delim;
+		out << '.' << x.delim;
+		out << '.' << x.delim;
 		out << std::fixed << std::setprecision(4);
 		out << 0. << x.delim;
 		out << 0. << x.delim;

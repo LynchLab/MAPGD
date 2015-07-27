@@ -82,14 +82,14 @@ int proview(int argc, char *argv[])
 	if (infiles.size()!=0){
 		for (size_t x=0; x<infiles.size(); x++){
 			in.push_back(new profile);
-			in[x]->open(infiles[x].c_str(), "r");
+			in[x]->open(infiles[x].c_str(), std::fstream::in);
 			if (!in[x]->is_open() ) {printUsage(env); exit(0);}
 			if (inC!=0) in[x]->setcolumns(inC);
 			samples+=in[x]->size();
 		}
 	} else {
 		in.push_back(new profile);
-		in[0]->open("r");
+		in[0]->open(std::fstream::in);
 		if (!in[0]->is_open() ) {printUsage(env); exit(0);}
 		if (inC!=0) in[0]->setcolumns(inC);
 		samples+=in[0]->size();
@@ -98,16 +98,16 @@ int proview(int argc, char *argv[])
 
 	if (binary) {
 		if (outfile.size()!=0) {
-			out.open(outfile.c_str(), "wb");
+			out.open(outfile.c_str(), std::fstream::out | std::fstream::binary);
 			if (!out.is_open() ) {printUsage(env); exit(0);} 
 		}
-		else out.open("wb");
+		else out.open(std::fstream::out | std::fstream::binary);
 	} else {
 		if (outfile.size()!=0) {
-			out.open(outfile.c_str(), "w");
+			out.open(outfile.c_str(), std::fstream::out);
 			if (!out.is_open() ) {printUsage(env); exit(0);} 
 		}
-		else out.open("w");
+		else out.open(std::fstream::out);
 	}
 
 	out.setsamples(samples);
