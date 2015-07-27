@@ -1,6 +1,9 @@
 SUBDIRS=src
 
-.PHONY: subdirs $(SUBDIRS) clean
+.PHONY: clean
+.PHONY: all
+.PHONY: install
+.PHONY: noomp
 
 subdirs: $(SUBDIRS)
 
@@ -9,7 +12,9 @@ $(SUBDIRS):
 
 all: subdirs
 
-dist: 
+noomp: all 
+	?
+dist: :
 	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
 	
 test: all
@@ -17,7 +22,7 @@ test: all
 
 install: all
 	install -m 0755 ./bin/$(NAME) $(prefix)/bin
-.PHONY: install
+
 
 clean:
 	cd $(SUBDIRS) && $(MAKE) $@

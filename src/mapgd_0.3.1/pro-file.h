@@ -95,7 +95,7 @@ public:
 	int setsamples(const count_t&);			//!< set the number of samples in the profile (only called in write mode).
 	int setcolumns(const count_t&);			//!< set the number of columns for reading and writing.
 	int setcolumn_name(const count_t&, const std::string&);
-	const std::string getcolumn_name(const count_t&) const;
+	const std::string getcolumn_name(const size_t&) const;
 	profile_header & operator=(const profile_header&); //!< I don't think the copy makes sense. . . 
 	
 	void clear(void);

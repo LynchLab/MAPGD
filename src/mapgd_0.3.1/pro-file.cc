@@ -866,7 +866,7 @@ void profile::open(std::ios_base::openmode mode)
 
 void profile::close(void){
 	if (write_){
-		//if (not noheader_) header_.writetailer(out);
+		if (not noheader_) header_.writetailer(out);
 		if (outFile.is_open() ) outFile.close();
 	}
 	if(read_) if (inFile.is_open() ) inFile.close();

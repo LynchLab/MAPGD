@@ -22,7 +22,7 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 #include "estimate-individual.h"
 
 #define BUFFER_SIZE 500
-//#define PRAGMA
+#define PRAGMA
 
 /*
 float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,  models &model){
@@ -54,7 +54,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
 		rexc=maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-		rexc=maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+//		rexc=maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.

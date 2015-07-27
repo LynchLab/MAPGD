@@ -11,6 +11,8 @@ $(SUBDIRS):
 
 all: subdirs
 
+noomp: subdirs noomp
+
 dist: 
 	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
 	doxygen doxygen.conf

@@ -22,6 +22,7 @@
 
 These have been fixed in version 0.3.1, but any output from version 0.3 is suspect. 
 
+
 <h3> Introduction </h3>
 
 MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data, and provides minimum MSE estimators of these statistics on low coverage sequence. Although other tools, such as vcftools, give similar allele frequency estimates with less computational investment when coverage is high, MAPGD should always be preferred to other programs when calculating IBD coefficients. 
@@ -39,6 +40,19 @@ We currently do not have a likelihood model to account for errors in calling ind
 <b> How long does it take to run? </b>
 
 Typical benchmarks with 16 threads on a 2.6 GHz put us at around 18,000 sites a second for 96 simulated individuals at 10x coverage. This means that the typical invertebrate population will take around three hours to analyze on a good computer, and a vertebrate genome might take a few days. If you have managed to sequence *Paris japonica* you're looking at three months of computation time. We are not currently focused on scaling our program up for larger genomes, however, if you want to analyze something like *japonica*, let us know and we will make MPS and CUDA priorities! 
+
+<b> Help, I can't get the program to compile. </b>
+
+MAPGD has been written using the gnu C++11 style, but I've attempted to minimize my reliance on  the newer features of the C++ in the hopes that older style's of C++ will have greater cross-platfrom compatibility. However, I have not yet made a systematic attempt to but I have compiled mapgd on :
+	* Ubuntu Linux, 14.04
+	* Red Hat Enterprise Linux 6.x
+	* A version of the Cray Linux Environment.
+	* OS X Yosemite.
+Version compiled on OS X may run slowly, because the default OS X does compiler does not support openmp. Making MAPDG work correctly on OS X is pretty high on out TODO list, but it is not at the top of the TODO list. 
+ 
+Version 0.1 will compile on windows 32 and 64 bit versions IIRC, but getting current versions of mapgd working on windows is near the bottom of the TODO list.
+
+Long story short: If you have problems, please please please e-mail me, and I will work to get it to compile for you as quickly as I can. 
 
 <b> How can I help? </b>
 
