@@ -17,8 +17,11 @@ noomp:
 	$(MAKE) -C $(SUBDIRS) noomp
 .PHONY: noomp 
 
-dist: 
+dist: docs 
 	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
+.PHONY: dist
+
+docs: 
 	doxygen doxygen.conf
 .PHONY: dist
 	
