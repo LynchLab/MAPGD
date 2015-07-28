@@ -39,7 +39,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -67,7 +66,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -86,26 +85,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga1a351843b430cc9c8260b54ea1346b13"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1a351843b430cc9c8260b54ea1346b13"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#ga1a351843b430cc9c8260b54ea1346b13">map_file::seekp</a> (id1_t)</td></tr>
-<tr class="memdesc:ga1a351843b430cc9c8260b54ea1346b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeks to row number. <br/></td></tr>
-<tr class="separator:ga1a351843b430cc9c8260b54ea1346b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9da8ee6a61db7eba608ddc34ac5c3ebc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga9da8ee6a61db7eba608ddc34ac5c3ebc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#ga9da8ee6a61db7eba608ddc34ac5c3ebc">map_file::seekg</a> (id1_t)</td></tr>
-<tr class="memdesc:ga9da8ee6a61db7eba608ddc34ac5c3ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeks to row number. <br/></td></tr>
-<tr class="separator:ga9da8ee6a61db7eba608ddc34ac5c3ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga12e7f8fac22b7eb0b442a3ae0963d3a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga12e7f8fac22b7eb0b442a3ae0963d3a8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>map_file::tellg</b> ()</td></tr>
-<tr class="separator:ga12e7f8fac22b7eb0b442a3ae0963d3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabf052ba756ff57d0471c3081f4b54a41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabf052ba756ff57d0471c3081f4b54a41"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>map_file::tellp</b> ()</td></tr>
-<tr class="separator:gabf052ba756ff57d0471c3081f4b54a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1e99e89c03cdeb6deeb92241cb26983d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga1e99e89c03cdeb6deeb92241cb26983d"></a>
+istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#ga1e99e89c03cdeb6deeb92241cb26983d">map_file::seekg</a> (id1_t pos)</td></tr>
+<tr class="memdesc:ga1e99e89c03cdeb6deeb92241cb26983d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeks to row number for gets. <br/></td></tr>
+<tr class="separator:ga1e99e89c03cdeb6deeb92241cb26983d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0661bc0a186731130b286f6f7b355545"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0661bc0a186731130b286f6f7b355545"></a>
+ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#ga0661bc0a186731130b286f6f7b355545">map_file::seekp</a> (id1_t pos)</td></tr>
+<tr class="memdesc:ga0661bc0a186731130b286f6f7b355545"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeks to row number for puts. <br/></td></tr>
+<tr class="separator:ga0661bc0a186731130b286f6f7b355545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabe42ccae6bf8ba2566827b2775f303a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gabe42ccae6bf8ba2566827b2775f303a7"></a>
+istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#gabe42ccae6bf8ba2566827b2775f303a7">map_file::seekg</a> (id1_t off, std::ios_base::seekdir way)</td></tr>
+<tr class="memdesc:gabe42ccae6bf8ba2566827b2775f303a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeks to row number for puts. <br/></td></tr>
+<tr class="separator:gabe42ccae6bf8ba2566827b2775f303a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa28a39d1437e1a1bb9a97dba9ef78ad6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaa28a39d1437e1a1bb9a97dba9ef78ad6"></a>
+ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#gaa28a39d1437e1a1bb9a97dba9ef78ad6">map_file::seekp</a> (id1_t off, std::ios_base::seekdir way)</td></tr>
+<tr class="memdesc:gaa28a39d1437e1a1bb9a97dba9ef78ad6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeks to row number for gets. <br/></td></tr>
+<tr class="separator:gaa28a39d1437e1a1bb9a97dba9ef78ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga709c0523a933a883c8e5b38ad83cad07"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga709c0523a933a883c8e5b38ad83cad07"></a>
+id1_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#ga709c0523a933a883c8e5b38ad83cad07">map_file::tellp</a> (void)</td></tr>
+<tr class="memdesc:ga709c0523a933a883c8e5b38ad83cad07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells row number of puts. <br/></td></tr>
+<tr class="separator:ga709c0523a933a883c8e5b38ad83cad07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga743fbc4b445353d7ff9e9c7af0732868"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga743fbc4b445353d7ff9e9c7af0732868"></a>
+id1_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__BasicIO.html#ga743fbc4b445353d7ff9e9c7af0732868">map_file::tellg</a> (void)</td></tr>
+<tr class="memdesc:ga743fbc4b445353d7ff9e9c7af0732868"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells row number of gets. <br/></td></tr>
+<tr class="separator:ga743fbc4b445353d7ff9e9c7af0732868"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 27 2015 13:17:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jul 28 2015 08:59:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
