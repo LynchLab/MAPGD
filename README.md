@@ -150,7 +150,7 @@ By default the program prints information to the file "dataout.txt" and this fil
 
 <h4> Python extras </h4>
 
-<h5> mapgdutils.py </h5>The script mapgdutils.py is a stop gap measure used to generate genotypic likelihoods (i.e. gcf files) for the analysis of the relatedness of a pair of individuals. A script of this name is likely to persist in future version of the program to perform computationally simple task that may be useful; however, we hope to generation genotypic likelihoods directly in mapgd in the near future.
+<h6> mapgdutils.py </h6>The script mapgdutils.py is a stop gap measure used to generate genotypic likelihoods (i.e. gcf files) for the analysis of the relatedness of a pair of individuals. A script of this name is likely to persist in future version of the program to perform computationally simple task that may be useful; however, we hope to generation genotypic likelihoods directly in mapgd in the near future.
 
 <h6> pedigreecalc.py </h6>A simple script to predict the coefficients of IBD from merlin formated pedigree files.
 
@@ -164,7 +164,9 @@ Currently mapgd allows for the estimation of allele frequencies in individually 
 
 For example, if the sequencing center gives you two files called "seq1.fastq" and "seq2.fastq" your entire work flow might look something like this: 
 
-<h5> Examples </h5>
+<h4> Examples </h4>
+
+<h6> Getting Fst for two pooled populations </h6> Generating Fst estimates for popualtions sequenced with pooled sequenc
 
 First you will have to map your reads to some reference. This could be done with the program bwa by typing:
  

@@ -162,6 +162,7 @@ int proview(int argc, char *argv[])
 		for (int x=0; x<in.size(); x++){
 			std::vector <quartet_t>::iterator it_in=in[x]->begin();
 			std::vector <quartet_t>::iterator end_in=in[x]->end();	
+			std::cerr << "reading x" << in[x]->decodeid0() in[x]->get_id0() << " bp " << in[x]->get_id1() << std::endl;
 			if (in[x]->get_id1()==site.get_id1() && out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
 				site.set_extraid(in[x]->get_extraid(0), 0);
 				while (it_in!=end_in){
@@ -173,7 +174,10 @@ int proview(int argc, char *argv[])
 				read_scaffold=true;
 				if (in[x]->read()==EOF ) in[x]->close();
 			} else {
-				if (out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ) read_scaffold=true;
+				if (out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
+					if (in[x]->get_id1()<site.get_id1() ) {std::cerr << "proview:line177:in[x]->get_id1() out of order. Exiting\n"; exit(0);}
+					read_scaffold=true;
+				}
 				while (it_in!=end_in){ 
 					*it=0;
 					it++;
@@ -191,9 +195,11 @@ int proview(int argc, char *argv[])
 			} else out.write(site);
 		} 
 		if (!read_scaffold){
+			std::cerr << "reading " << site.get_id0() << " bp 0 "<< std::endl;
 			site.set_id0(site.get_id0()+1);
 			site.set_id1(0);
 		} else {
+			std::cerr << "reading " << site.get_id0() << " bp " << site.get_id1() << std::endl;
 			site.set_id1(site.get_id1()+1);
 		}
 	};

@@ -23,7 +23,7 @@ debug: CXXFLAGS:=$(DEBUG) $(STD) $(MODE) $(WARNINGS)
 debug: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL)
 
-install: mapdg
+install: all
 	sudo install -m 0755 $(LOCAL) $(GLOBAL)
 .PHONY: install
 	

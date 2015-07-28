@@ -65,10 +65,14 @@ public:
 	 * @{
   	 */
 
-	seekp(id1_t);					//!< Seeks to row number 
-	seekg(id1_t);					//!< Seeks to row number 
-	tellg();					//!< 
-	tellp();					//!< 
+	istream& seekg(id1_t pos);				//!< Seeks to row number for gets. 
+	ostream& seekp(id1_t pos);				//!< Seeks to row number for puts.
+
+	istream& seekg(id1_t off, std::ios_base::seekdir way);	//!< Seeks to row number for puts.
+	ostream& seekp(id1_t off, std::ios_base::seekdir way);	//!< Seeks to row number for gets. 
+
+	id1_t tellp(void);					//!< Tells row number of puts.
+	id1_t tellg(void);					//!< Tells row number of gets.
 
 	/** @} */
 
@@ -78,8 +82,11 @@ public:
 	const char & get_delim_column(const char&) const;	//!< Gest the delimiter that seperates columns. Only used in text mode.
 
 	/*functions dealing with ?*/
-	size_t size(void) const;			//!< Retuern the number of rows in the file. Returns 0 if unknown.
-	size_t column_size(void) const;			//!< Returns the number of columns in the file. Returns 0 if unknown.
+	size_t size(void) const;				//!< Retuern the number of rows in the file. Returns 0 if unknown.
+								// If pro file is opened from a std::in, then the number of rows is simply 
+								// the number of rows that have been read in until d. However, if 
+
+	size_t column_size(void) const;				//!< Returns the number of columns in the file. Returns 0 if unknown.
 
 	file_index get_index(void) const;		//!< Returns the file_index.
 	const count_t get_line_number(void) const;

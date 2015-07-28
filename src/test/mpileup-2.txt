@@ -1,2 +1,6 @@
 scaffold_1	1	T	5	^IG+5TTTCT^!C^8G+5TTTCT^!g^!,	@CC>D
 scaffold_1	2	T	6	...cg^9,	FCF:DD
+scaffold_2	3	T	6	...cg^9,	FCF:DD
+scaffold_2	4	T	6	...cg^9,	FCF:DD
+scaffold_3	1	T	6	...cg^9,	FCF:DD
+scaffold_3	4	T	6	...cg^9,	FCF:DD
