@@ -20,6 +20,12 @@ Ultimately the genetic structure of a population is fully specified by the genot
 
 $ P( \boldsymbol \theta | \boldsymbol X  )= \frac {P( \boldsymbol X | \boldsymbol \theta  ) P( \boldsymbol \theta  ) } { P( \boldsymbol X  ) } $	
 
+<h4> Style Guidlines </h4>
+mapgd is written to conform to the [GNU style guidlines](www.gnu.org/prep/standards/standards.html#Formatting), at least to the extent that I have had time to read and implement the guidlines. 
+Class and type names should be whole english words starting with an initial capital (to distinguish them from the core classes and types of c++). We do not use CamelCase. Variable names should be all lower case with words seperated by an underscore. Private variables ...
+
+* Internationalization: These are good standards... Not implemented yet. 
+
 <h4> Likelihood models:</h4>
 
 <h5> Pior:</h5>

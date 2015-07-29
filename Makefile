@@ -1,16 +1,10 @@
 SUBDIRS=src
-VER=0.3.1
-NAME=mapgd
-
-
-subdirs: $(SUBDIRS)
 
 $(SUBDIRS):
 	$(MAKE) -C $@
-.PHONY: subdirs 
+.PHONY: $(SUBDIRS) 
 
-
-all: subdirs
+all: $(SUBDIRS)
 .PHONY: all
 
 noomp: 
@@ -18,19 +12,26 @@ noomp:
 .PHONY: noomp 
 
 dist: 
-	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
-	doxygen doxygen.conf
+	$(MAKE) -C $(SUBDIRS) dist
 .PHONY: dist
 	
 test: all
-	cd test && bash test.sh
+	$(MAKE) -C $(SUBDIRS) test
 .PHONY: test
 
 install: all
-	install -m 0755 ../bin/$(NAME) $(prefix)/bin
+	$(MAKE) -C $(SUBDIRS) all
 .PHONY: install
 
 clean:
-	cd $(SUBDIRS) && $(MAKE) $@
-	rm -f $(NAME)-*.tar.gz
+	$(MAKE) -C $(SUBDIRS) clean
 .PHONY: clean
+
+push: 
+	$(MAKE) -C $(SUBDIRS) all
+	$(MAKE) -C $(SUBDIRS) test
+	$(MAKE) -C $(SUBDIRS) clean
+	git add -u
+	git commit
+	git push
+.PHONY: push

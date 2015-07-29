@@ -58,6 +58,10 @@ Version 0.1 will compile on windows 32 and 64 bit versions IIRC, but getting cur
 
 Long story short: If you have problems, please please please e-mail me, and I will work to get it to compile for you as quickly as I can. 
 
+<b> Help, the program keeps crashing/hanging </b>
+
+The first thing you should do is e-mail me (for contact infromation type 'mapgd -h'). There are a few known issues that may not be properly fixed in the near future. First off, mapgd has problems merging ddifferent mpileup files into a single .pro file when some of the mpileup files have missing scaffolds. Ultimately we hope to address this by reading directly from bam files which have headers containing scaffold name and size informatoin, however, until this is implemented you can print the header with the 'samtools view -H FILENAME.bam > FILENAME-header.bam' command, and then give this header to mapgd with the 'mapgd view -H FILENAME-header.bam FILENAME.mpileup' command. 
+
 <b> How can I help? </b>
 
 We have lots to do, and need plenty of help! 

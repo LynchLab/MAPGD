@@ -1,16 +1,15 @@
 SUBDIRS=mapgd_0.3.1
 VER=0.3.1
 NAME=mapgd
-
-
-subdirs: $(SUBDIRS)
+DEBIAN=0
+UBUNTU=1
 
 $(SUBDIRS):
 	$(MAKE) -C $@
-.PHONY: subdirs 
+.PHONY: $(SUBDIRS)
 
 
-all: subdirs
+all: $(SUBDIRS)
 .PHONY: all
 
 noomp: 
@@ -19,11 +18,14 @@ noomp:
 
 dist: docs 
 	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
+	bzr dh-make $(NAME) $(VER) $(NAME)-$(VER).tar.gz
+	rm -rf debian/*ex debian/*EX
+	sed $(VER)-$(DEBIAN)ubuntu$(UBUNTU)	
 .PHONY: dist
 
 docs: 
 	doxygen doxygen.conf
-.PHONY: dist
+.PHONY: docs
 	
 test: all
 	cd test && bash test.sh

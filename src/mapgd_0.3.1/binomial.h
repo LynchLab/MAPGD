@@ -4,6 +4,7 @@
 #include <vector>
 #include "typedef.h"
 
+/// A class that returns the binomial coefficent or the pdf the binomial distribution. Not Log.
 /*!	\breif A class to return the binomial coefficent and binomial probabilities. NOT LOG!
  */
 class binomial {

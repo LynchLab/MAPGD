@@ -10,7 +10,29 @@ CXXFLAGS=$(STD) $(MODE) $(WARNINGS) -fopenmp
 DEBUG= -g 
 CXX=g++
 
-OBJS=mapgd.o allele_stat.o binomial.o compare-pooled.o estimate-individual.o estimate-pooled.o genotype.o individual-likelihood.o interface.o likelihood.o lnmultinomial.o locus.o newton-method-theta.o pooled-likelihood.o population.o pro-file.o proview.o quartet.o stream-tools.o models.o
+
+#>! TODO ORGANIZE THESE!!
+OBJS=	mapgd.o \
+	allele_stat.o \
+	binomial.o \
+	compare-pooled.o \
+	estimate-individual.o \
+	estimate-pooled.o \
+	genotype.o \
+	individual-likelihood.o \
+	interface.o \
+	likelihood.o \
+	lnmultinomial.o \
+	locus.o \
+	newton-method-theta.o \
+	pooled-likelihood.o \
+	population.o \
+	pro-file.o \
+	proview.o \
+	quartet.o \
+	stream-tools.o \
+	models.o \
+	file-index.o
 
 all: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL)

@@ -335,7 +335,7 @@ int profile_header::readheader(std::istream *in)
 	//The number of ids in the files
 	//Header lines begin with the '@' character (a nod to samtools).
 	if (in==NULL){
-		std::cerr << "attempted readheader when no instream was open." << std::endl;
+		std::cerr << "mapgd:pro-file.cc:attempted readheader when no instream was open." << std::endl;
 		exit(UNEXPECTED);
 	};
 	std::string line;

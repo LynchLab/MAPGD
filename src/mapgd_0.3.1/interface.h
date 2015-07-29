@@ -32,7 +32,9 @@ int arg_error(int, char **, void *);		//<! Sets the error to be printed if a arg
 int flag_error(void *);				//<! Sets the error to be printed if a flag_set returns -1.
 int command_error(int, char **);		//<! Sets the error to be printed if a command does not return 0.
 
-/* \breif A class that passes command line flags. It takes no arguments and chews only a single letter.*/
+///breif A class that passes command line flags. It takes no arguments and chews only a single letter.*/
+/*! TODO Write a long descrition you jerk!
+ */
 class flag_t {
 	private:
 	public:
@@ -60,7 +62,8 @@ class flag_t {
 	char *umsg;			//!< A short discription of this option to be displayed in the usage message.
 };
 
-/*! \breif An argument.
+/// A command line argument. See the interface tutorial for a demonstration of usage. 
+/*! TODO Write a long descrition you jerk!
  *
  */
 class arg_t {
@@ -92,7 +95,8 @@ class arg_t {
 	char *umsg;				//!< A short description of this option to be displayed in the usage message.
 };
 
-/*! \breif A command.
+///A sub-command of mapgd.
+/*! TODO Write a long descrition you jerk!
  *
  */
 class com_t {
@@ -122,7 +126,8 @@ class com_t {
 	char *umsg;				/*!< A short description of this command to be displated in the usage and help message.*/
 };
 
-/*! \breif A class for handelling options and formating help, usage and version information.
+/// A class for handelling options and automatically formating --help, -h, -u and -v.
+/*! TODO Write a long descrition you jerk!
  *
  */
 class env_t{
@@ -148,12 +153,12 @@ class env_t{
 	const char *author;				/*!< author*/
 	const char *description;			/*!< a breif description of the command being executed*/
 
-	std::list <flag_t> flags;
-	std::list <arg_t> args;
-	std::list <com_t> commands;
+	std::list <flag_t> flags;			/*!< A list of flags that can be set*/
+	std::list <arg_t> args;				/*!< A list of options that can be passed from the command line.*/
+	std::list <com_t> commands;			/*!< A list of sub-commands that can be called from the command line.*/
 
-	std::list <arg_t *> required_args;
-	std::list <com_t *> required_coms;
+	std::list <arg_t *> required_args;		/*!< A list of flags or options, all of which must be set*/
+	std::list <com_t *> required_coms;		/*!< A list of sub-commands one of which must be run*/
 
 	env_t(){
 		name="Unnammed program";
