@@ -6,24 +6,29 @@
 #include <fstream>
 #include <sstream>
 
-/* \brief tokenizes a sting seperated by delimiter delim
+/// Takes a stream/string and returns a vector with one element for each field.
+/* 
+ * For example, if the string "A,B,C , D" is given, then {"A", "B", "C "," D"} is returned.
+ * If the string "A,B,C,\nD,E,F" is given, then {"A", "B", "C"} is returned.
  */
-/// Takes a string and returns a vector with one element for each field.
-/* For example, if the string "A,B,C , D" is given, then {"A", "B", "C "," D"} is returned.
- */
-
 inline std::vector<std::string> split(std::istream &in, const char &delim)
 {
 	std::vector<std::string> elements;
-	std::string line, element;
+	std::string line;
 	size_t last_delim=0, this_delim=0;
 	getline(in, line);
 	do { 
-		this_delim=line.find(delim);
-		element=line.substr(0, this_delim);
-		elements.push_back(element);
-		last_delim=this_delim;
+		this_delim=line.find(delim, last_delim);
+		elements.push_back( line.substr(last_delim, this_delim-last_delim) );
+		last_delim=this_delim+1;
 	} while ( this_delim!=std::string::npos );
+/*
+	std::cerr << line << std::endl;
+	for (size_t x=0; x<elements.size(); ++x){
+		std::cerr << "[" << x << "]:" << elements[x] << std::endl;
+	}
+	std::cerr <<std::endl;
+*/
 	return elements;
 }
 

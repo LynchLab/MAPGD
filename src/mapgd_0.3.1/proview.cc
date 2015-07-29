@@ -59,9 +59,9 @@ int proview(int argc, char *argv[])
 	env.flag(	'b',"binary",	&binary, 	&flag_set, 	"an error occured", "output in a binary format");
 	env.flag(	'B',"bernhard",	&bernhard, 	&flag_set, 	"an error occured", "print in mlRho compatibility mode.");
 	env.flag(	'H',"noheader",	&noheader, 	&flag_set, 	"an error occured", "don't print a header.");
-	
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
+
 
 	if (bernhard) { 
 		outc=5; 
@@ -70,7 +70,7 @@ int proview(int argc, char *argv[])
 		if(sample==-1) sample=1;
 	} 
 
-	if ( outc!=6 && outc!=5 && outc!=7 ) {std::cerr << "columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
+	if ( outc!=6 && outc!=5 && outc!=7 ) {std::cerr << "proview.cc:line73:columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
 
 	//Setting up the input/output
 
@@ -162,7 +162,6 @@ int proview(int argc, char *argv[])
 		for (int x=0; x<in.size(); x++){
 			std::vector <quartet_t>::iterator it_in=in[x]->begin();
 			std::vector <quartet_t>::iterator end_in=in[x]->end();	
-			//std::cerr << "reading x" << in[x]->decodeid0() in[x]->get_id0() << " bp " << in[x]->get_id1() << std::endl;
 			if (in[x]->get_id1()==site.get_id1() && out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
 				site.set_extraid(in[x]->get_extraid(0), 0);
 				while (it_in!=end_in){
@@ -175,7 +174,7 @@ int proview(int argc, char *argv[])
 				if (in[x]->read()==EOF ) in[x]->close();
 			} else {
 				if (out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
-					if (in[x]->get_id1()<site.get_id1() ) {std::cerr << "proview:line177:in[x]->get_id1() out of order. Exiting\n"; exit(0);}
+					if (in[x]->get_id1()<site.get_id1() ) {std::cerr << "proview.cc:line177:in[x]->get_id1() out of order. Exiting\n"; exit(0);}
 					read_scaffold=true;
 				}
 				while (it_in!=end_in){ 
@@ -195,11 +194,9 @@ int proview(int argc, char *argv[])
 			} else out.write(site);
 		} 
 		if (!read_scaffold){
-		//	std::cerr << "reading " << site.get_id0() << " bp 0 "<< std::endl;
 			site.set_id0(site.get_id0()+1);
 			site.set_id1(0);
 		} else {
-		//	std::cerr << "reading " << site.get_id0() << " bp " << site.get_id1() << std::endl;
 			site.set_id1(site.get_id1()+1);
 		}
 	};
