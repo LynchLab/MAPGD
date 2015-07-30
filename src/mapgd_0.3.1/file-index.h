@@ -35,7 +35,6 @@ private:
 /*! \breif The last string id returned by an decodeid0 querry. Initilized to "".
  */
 	std::string last_id0_str_;
-
 	char delim_;				
 	char key_;			
 

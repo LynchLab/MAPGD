@@ -34,7 +34,7 @@ mapgd is written to conform to the [GNU style guidlines](https://www.gnu.org/pre
 
 * Error messages: error messages should list the name of the file generating the error and the line number the error occurs on. These should be set with the compiler Macros \_\_NAME\_\_ and \_\_LINE\_\_ so that they remain accurate in the future. 
 
-* Internationalization: The [GNU style guidlines](https://www.gnu.org/prep/standards/standards.html#Formatting) list a number of good standards to make it easy to translate programs into different languages. We would like to implement these standards in the future, however, we have not done so yet.
+* Internationalization: The [GNU style guidlines](https://www.gnu.org/prep/standards/standards.html#Internationalization) list a number of good standards to make it easy to translate programs into different languages. We would like to implement these standards in the future, however, we have not done so yet.
 
 <h4> Likelihood models:</h4>
 
@@ -55,7 +55,7 @@ mapgd is written to conform to the [GNU style guidlines](https://www.gnu.org/pre
 
 <h3> Tutorials </h3>
 
-####[An introduction to quartets](https://lynchlab.github.io/MAPGD/tutorial/quartet.md)
-####[Reading and writing to files](https://lynchlab.github.io/MAPGD/tutorial/map.md)
-####[Making likelihood functions](https://lynchlab.github.io/MAPGD/tutorial/likelihood.md)
-####[Maximizing a likelihood function](https://lynchlab.github.io/MAPGD/tutorial/maximize.md)
+####[An introduction to quartets](https://lynchlab.github.io/MAPGD/quartet.html)
+####[Reading and writing to files](https://lynchlab.github.io/MAPGD/map.html)
+####[Making likelihood functions](https://lynchlab.github.io/MAPGD/likelihood.html)
+####[Maximizing a likelihood function](https://lynchlab.github.io/MAPGD/maximize.html)

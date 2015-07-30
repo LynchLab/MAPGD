@@ -36,6 +36,7 @@ int proview(int argc, char *argv[])
 	std::vector <std::string> infiles;
 	int sample=-1;
 	std::string outfile="";
+	std::string samheader="";
 
 	env_t env;
 	env.setname("mapgd proview");
@@ -53,6 +54,7 @@ int proview(int argc, char *argv[])
 									"an error occured", "sets the input file (default stdin). If multiple input files given, the default behavior is to merge the files.");
 	env.optional_arg('I',"sample",	&sample, 	&arg_setint,	"an error occured", "limit output to sample N.");
 	env.optional_arg('o',"output",	&outfile,	&arg_setstr, 	"an error occured", "sets the output file (default stdout)");
+	env.optional_arg('S',"samheader",&samheader, 	&arg_setstr, 	"an error occured", "use a sam header to merge files.");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 	env.flag(	'P',"pro",	&args.pro, 	&flag_set, 	"an error occured", "input is in the pro format");
@@ -73,6 +75,14 @@ int proview(int argc, char *argv[])
 	if ( outc!=6 && outc!=5 && outc!=7 ) {std::cerr << __FILE__ << ":" << __LINE__ << ": columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
 
 	//Setting up the input/output
+
+	file_index index;
+	if (samheader.size()!=0){
+		std::fstream sam_header;
+		sam_header.open(samheader.c_str(), std::fstream::in );
+		if (! sam_header.is_open() ) {std::cerr << __FILE__ << ":" << __LINE__ << ": could not open sam_header.\n"; exit(0);}
+		index.from_sam_header(sam_header);
+	}
 
 	profile out;			//the output profile
 	std::vector <profile *> in;	//the input profile(s)

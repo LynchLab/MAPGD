@@ -1,11 +1,19 @@
 #include "file-index.h"
 
+file_index::file_index()
+{
+	id0_t last_id0_=-1;						
+	std::string last_id0_str_="";
+	char delim_='\t';				
+	char key_='@';			
+}
+
 int file_index::from_sam_header(std::istream &in)
 {
 	id1_t length;
 	std::string line, sn, ln;
 	if (&in==NULL){
-		std::cerr << "mapgd:file-index.h:8: attempt to read from istream when no istream is open.\n";
+		std::cerr << __FILE__ << ":" << __LINE__ << ": attempt to read from istream when no istream is open.\n";
 		return -1;
 	};
 	while ( std::getline(in, line) ) {
@@ -21,7 +29,7 @@ int file_index::from_sam_header(std::istream &in)
 				id0_.push_back(last_id0_str_);
 				size_.push_back(length);
 			} else {
-				std::cerr << "mapgd:file-index.h:24: incorrect number of columns in samfile header.\n";
+				std::cerr << __FILE__ << ":" << __LINE__ << ": incorrect number of columns in samfile header.\n";
 			}; 
 		};
 	}
@@ -33,7 +41,7 @@ int file_index::write_index(std::ostream &out)
 	id1_t length;
 	std::string line, sn, ln;
 	if (&out==NULL){
-		std::cerr << "mapgd:file-index.h:36: attempt to write to ostream when no ostream is open.\n";
+		std::cerr << __FILE__ << ":" << __LINE__ << ": attempt to write to ostream when no ostream is open.\n";
 		return -1;
 	}
 	for (size_t x; x<id0_.size(); ++x){
