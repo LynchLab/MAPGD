@@ -20,6 +20,6 @@
 #include "genotype.h"
 
 int estimateInd(int, char **);
-allele_stat estimate(quartet_t, count_t, count_t, count_t, count_t);
+allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH);
 
 #endif 

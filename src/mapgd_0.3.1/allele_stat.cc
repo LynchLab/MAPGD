@@ -43,6 +43,7 @@ std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 		out << (x.ll-x.monoll)*2 << x.delim;
 		out << (x.ll-x.hwell)*2 << x.delim;
 		out << x.gof << x.delim;
+		out << std::setw(2);
 		out << x.efc << x.delim;
 		out << std::fixed << std::setprecision(0);
 		out << x.N << x.delim;

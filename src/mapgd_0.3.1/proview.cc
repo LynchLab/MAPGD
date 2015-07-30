@@ -70,7 +70,7 @@ int proview(int argc, char *argv[])
 		if(sample==-1) sample=1;
 	} 
 
-	if ( outc!=6 && outc!=5 && outc!=7 ) {std::cerr << "proview.cc:line73:columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
+	if ( outc!=6 && outc!=5 && outc!=7 ) {std::cerr << __FILE__ << ":" << __LINE__ << ": columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
 
 	//Setting up the input/output
 
@@ -86,6 +86,7 @@ int proview(int argc, char *argv[])
 			if (!in[x]->is_open() ) {printUsage(env); exit(0);}
 			if (inC!=0) in[x]->setcolumns(inC);
 			samples+=in[x]->size();
+			in[x]->set_sample_name(infiles[x]);
 		}
 	} else {
 		in.push_back(new profile);
@@ -124,7 +125,7 @@ int proview(int argc, char *argv[])
 	if (sample==-1){
 		for (size_t x=0; x<in.size(); x++){		//copies the sample names from the in file(s) to out.
 			for (size_t y=0;y<in[x]->size(); ++y){
-				out.setsample_name(z, in[x]->getsample_name(y) );
+				out.set_sample_name(z, in[x]->get_sample_name(y) );
 				z++;
 			}
 		}
@@ -134,7 +135,7 @@ int proview(int argc, char *argv[])
 			for (size_t y=0;y<in[x]->size(); ++y){
 			++thissample;
 			if (thissample==sample)
-			out.setsample_name(0, in[x]->getsample_name(y) );
+			out.set_sample_name(0, in[x]->get_sample_name(y) );
 			}
 		}
 	}
@@ -174,7 +175,7 @@ int proview(int argc, char *argv[])
 				if (in[x]->read()==EOF ) in[x]->close();
 			} else {
 				if (out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
-					if (in[x]->get_id1()<site.get_id1() ) {std::cerr << "proview.cc:line177:in[x]->get_id1() out of order. Exiting\n"; exit(0);}
+					if (in[x]->get_id1()<site.get_id1() ) {std::cerr << __FILE__ << ":" << __LINE__ << ": in[x]->get_id1() out of order. Exiting\n"; exit(0);}
 					read_scaffold=true;
 				}
 				while (it_in!=end_in){ 

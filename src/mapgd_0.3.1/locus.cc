@@ -51,16 +51,36 @@ void Locus::unmask(count_t a){
 	if(a<sample.size() ) sample[a].masked=false;
 }*/
 
+
+/// Unmask all the quartets at this locus.
 void Locus::unmaskall(void){
-	for (unsigned int s=0; s<sample.size();++s){
+	for (size_t s=0; s<sample.size();++s){
 		sample[s].masked=false;
 	}
 }
 
 
+/// Mask all the quartets at this locus.
 void Locus::maskall(void){
-	for (unsigned int s=0; s<sample.size();++s){
+	for (size_t s=0; s<sample.size();++s){
 		sample[s].masked=true;
+	};
+}
+
+/// Unmask all the quartets in the populations in the vector.
+void Locus::unmask(const std::vector <size_t> &s){
+	for (size_t s_=0; s_<sample.size();++s_){
+		if (s_>=sample.size() ) {std::cerr << __FILE__ << ":" << __LINE__ << ":attempted to unmask a non-existent quartet. Exiting."; exit(0); };
+		sample[s_].masked=false;
+	}
+}
+
+
+/// Mask all the quartets in the populations in the vector.
+void Locus::mask(const std::vector <size_t> &s){
+	for (size_t s_=0; s_<s.size();++s_){
+		if (s_>=sample.size() ) {std::cerr << __FILE__ << ":" << __LINE__ << ":attempted to mask a non-existent quartet. Exiting."; exit(0); };
+		sample[s_].masked=true;
 	};
 };
 
@@ -164,35 +184,45 @@ count_t Locus::getcoverage() const
 	return total;
 }
 
+/// sets quartet_t c to q.
 void Locus::set_quartet(const quartet_t &q, const count_t &c)
 {
 	sample[c]=q;
 }		
 
+/// returns quartet_t c.
 const quartet_t & Locus::get_quartet(const count_t &c) const 
 {
 	return sample[c];
 }
 
+/// returns quartet_t c.
 quartet_t & Locus::get_quartet(const count_t &c) 
 {
 	return sample[c];
 }
 	
-
+/// sets the number of sampels to c.
 void Locus::resize(const size_t &c)
 {
 	sample.resize(c);
 }
 
+/// gets extraid c. Which I believe we have defined as char.
 count_t Locus::get_extraid(const size_t &c) const 
 {
 	if (extraid.size()>c) return extraid[c];
 	else return 5;
 }
 
+/// sets extraid c to v.
 void Locus::set_extraid(const count_t &v, const size_t &c)
 {
 	while(extraid.size()<=c) extraid.push_back(0);
 	extraid[c]=v;
+}
+
+void Locus::mask_low_cov( const count_t &dp )
+{ 
+	for (size_t s=0; s<sample.size();++s) sample[s].masked=(count(sample[s])<dp);
 }

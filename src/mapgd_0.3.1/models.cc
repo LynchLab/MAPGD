@@ -129,46 +129,36 @@ void Mmmodel(const allele_stat &a, float_t *l){		//Dito.
 	};
 };
 
-/*! \Breif, a function that calculates the logl likelihood of a set of observations. */
-float_t models::loglikelihood(const Locus &site, const allele_stat &p, const count_t &MIN){
+/// A function that calculates the logl likelihood of a set of observations. 
+float_t models::loglikelihood(const Locus &site, const allele_stat &p){
 
 	float_t sumll=0;
 
 	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//Lets us iterate over the quartets. 
 	std::vector <quartet_t>::const_iterator end=site.sample.end();	//Tells us when to stop iterating, so we don't generate a seg. fault.
 
-	lnMM_.set(&MMmodel, p);	//Lets initialize the multinomial distributions that will tell us the probability of  
-	lnMm_.set(&Mmmodel, p);	//observing a particular quartet given that the individual has the MM, Mm or mm genotype.
-	lnmm_.set(&mmmodel, p);	//
+	lnMM_.set(&MMmodel, p);						//Lets initialize the multinomial distributions that will tell us the probability of  
+	lnMm_.set(&Mmmodel, p);						//observing a particular quartet given that the individual has the MM, Mm or mm genotype.
+	lnmm_.set(&mmmodel, p);						//
 
-	float_t logMM=logl(p.MM);	//The frequency of the MM genotype in the sample.
-	float_t logMm=logl(p.Mm);	// Dito Mm.
-	float_t logmm=logl(p.mm);	// Diot mm.
+	float_t logMM=logl(p.MM);					//The frequency of the MM genotype in the sample.
+	float_t logMm=logl(p.Mm);					// Dito Mm.
+	float_t logmm=logl(p.mm);					// Diot mm.
 
-	float_t E0, E1, E2;		//These are some variables to breifly store a portion of our likelihood calculation
-
-	count_t T;
+	float_t E0, E1, E2;						//These are some variables to breifly store a portion of our likelihood calculation
 
 	while(it!=end){
 		if (!it->masked){
-			T=( it->base[0]+it->base[1]+it->base[2]+it->base[3] );
-			if ( T>=MIN ) {
-
-//				std::cout << "e: " << p.error << " a.MM:" << p.MM << " a.Mm:" << p.Mm << " a.mm:" << p.mm << std::endl; 
-				E0=logMM+lnMM_.lnprob_approx(it->base);
-				E1=logMm+lnMm_.lnprob_approx(it->base);
-				E2=logmm+lnmm_.lnprob_approx(it->base);
+			E0=logMM+lnMM_.lnprob_approx(it->base);
+			E1=logMm+lnMm_.lnprob_approx(it->base);
+			E2=logmm+lnmm_.lnprob_approx(it->base);
 	
-//				std::cout << it->base[0] << ", " << it->base[1] << ", " << it->base[2] << ", " <<it->base[3] << std::endl;
-//				std::cout << E0 << ", " << E1 << ", " << E2 << std::endl;
-
-				if(E0>E2){
-					if(E0>E1) sumll+=logl(expl(E1-E0)+expl(E2-E0)+1.)+E0;
-					else sumll+=logl(expl(E0-E1)+expl(E2-E1)+1.)+E1;
-				} 
-				else if(E1>E2) sumll+=logl(expl(E0-E1)+expl(E2-E1)+1.)+E1;
-				else sumll+=logl(expl(E0-E2)+expl(E1-E2)+1.)+E2;
-			}
+			if(E0>E2){
+				if(E0>E1) sumll+=logl(expl(E1-E0)+expl(E2-E0)+1.)+E0;
+				else sumll+=logl(expl(E0-E1)+expl(E2-E1)+1.)+E1;
+			} 
+			else if(E1>E2) sumll+=logl(expl(E0-E1)+expl(E2-E1)+1.)+E1;
+			else sumll+=logl(expl(E0-E2)+expl(E1-E2)+1.)+E2;
 		}
 		++it;
 	}
@@ -177,7 +167,7 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p, const cou
 }
 
 /*! \Breif DONT USE THIS!!! TODO FIX IT!. */
-float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population, const count_t &MIN){
+float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population){
 
 	lnMM_.set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
 	lnMm_.set(&Mmmodel, population);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
@@ -213,7 +203,7 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 }
 
 //THE goodness of fit calcualtion.
-float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::vector <float_t> &gofs, const count_t &MIN, const float_t &MINGOF){
+float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::vector <float_t> &gofs, const float_t &MINGOF){
 	float_t Num=0., Den=0., E, V, O, thisgof, clone_mingof=FLT_MAX;
 	std::vector <float_t>::iterator gof=gofs.begin();
 
@@ -239,37 +229,35 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 	while (it!=end){
 		if (!it->masked){
 			N_=float_t(count(*it) );
-			if ( N_>MIN ){
-				M_=(*it).base[allele.major];
+			M_=(*it).base[allele.major];
 
-				count1[0]=M_;
-				count1[1]=N_-M_;
+			count1[0]=M_;
+			count1[1]=N_-M_;
 
-				O=lnL(logMM, logMm, logmm, count1);
+			O=lnL(logMM, logMm, logmm, count1);
 
-				E=0; V=0;	//The [E]xpectation and [V]arriance.
+			E=0; V=0;	//The [E]xpectation and [V]arriance.
 
-				for (size_t x=0; x<N_+1; ++x){
-					count1[0]=x;			
-					count1[1]=N_-x;			
+			for (size_t x=0; x<N_+1; ++x){
+				count1[0]=x;			
+				count1[1]=N_-x;			
 
-					tP=lnL(logMM, logMm, logmm, count1);
-					etP=exp(tP);				//
+				tP=lnL(logMM, logMm, logmm, count1);
+				etP=exp(tP);				//
 
-					E+=etP*tP;				//
-					V+=etP*pow(tP, 2);			//
-				}
-
-				V-=pow(E, 2);
-				Num+=O-E;
-				Den+=V;
-
-				if (V>0) (*gof)=( (O-E)/sqrt(V) );
-				if((*gof)<clone_mingof){
-					clone_mingof=(*gof);
-					maxgof_ptr=&(*it);
-				};
+				E+=etP*tP;				//
+				V+=etP*pow(tP, 2);			//
 			}
+
+			V-=pow(E, 2);
+			Num+=O-E;
+			Den+=V;
+
+			if (V>0) (*gof)=( (O-E)/sqrt(V) );
+			if((*gof)<clone_mingof){
+				clone_mingof=(*gof);
+				maxgof_ptr=&(*it);
+			};
 		}
 		++it;
 		++gof;

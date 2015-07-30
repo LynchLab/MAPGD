@@ -52,6 +52,8 @@ public:
 
 	void maskall(void);				//!< Mask all lines
 	void unmaskall(void);				//!< Unmask all lines
+	void mask(const std::vector <size_t> &);	//!< Mask all lines
+	void unmask(const std::vector <size_t> &);	//!< Unmask all lines
 
 	char getname( const count_t &) const;		//!< Get the nucleotide represented by the count at the N'th indexed quartet_t.
 	char getname_gt( const count_t &) const;	//!< Get the nucleotide represented by the count at the N'th indexed quartet_t, return * if the count equals the N+1 indexed quartet.
@@ -69,6 +71,7 @@ public:
 
 	std::vector <quartet_t>::iterator begin(void) {return sample.begin();};		//!< Return an iterator to the quartet_t s stored at this Locus.
 	std::vector <quartet_t>::iterator end(void) {return sample.end();};		//!< Return an iterator to the quartet_t s stored at this Locus.
+	void mask_low_cov(const count_t &dp);							//!< Mask site with coverage stricktly lt dp;
 };
 
 #endif

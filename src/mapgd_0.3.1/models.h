@@ -29,22 +29,22 @@ public:
 	models(void);
 	~models(void);
 
-	/*! \breif Gets the log likelihood of the observations at Locus, given allele_stat.*/
-	float_t loglikelihood(const Locus &, const allele_stat &, const count_t &);
+	/// Gets the log likelihood of the observations at Locus, given allele_stat.
+	float_t loglikelihood(const Locus &, const allele_stat &);
 
-	/*! \breif Gets the log likelihood of the observations at Locus, given allele_stat.*/
-	float_t goodness_of_fit (Locus &, const allele_stat &, std::vector <float_t> &, const count_t &, const float_t &);
+	/// Gets the log likelihood of the observations at Locus, given allele_stat.
+	float_t goodness_of_fit (Locus &, const allele_stat &, std::vector <float_t> &, const float_t &);
 
-	/*! \breif Initilizes the ? for goodness of fit calculations.*/
+	/// breif Initilizes the ? for goodness of fit calculations.
 	void init_gof(const count_t *, const allele_stat &);
 
-	/*! \breif Returns the likelihood of a ?? goodness of fit... blah blah blah.*/
+	/// Returns the likelihood of a ?? goodness of fit... blah blah blah.
 	float_t get_gof(const count_t *, const allele_stat &);
 
-	/*! \breif Clalculates genotypic likelihoods. Not implement, may be depricated.*/
-	float_t genotypelikelihood(const quartet_t &, const allele_stat &, const count_t &);
+	/// Clalculates genotypic likelihoods. Not implement, may be depricated.
+	float_t genotypelikelihood(const quartet_t &, const allele_stat &);
 
-	/*! \breif Clalculates goodness of fit likelihoods.*/
+	/// Clalculates goodness of fit likelihoods.
 	inline float_t lnL(const float_t &logMM, const float_t &logMm, const float &logmm, const count_t *count){
 		/*posterior = prior x likelihood */
 		E0_=logMM+lnMMP_.lnprob(count);

@@ -139,16 +139,16 @@ const float_t profile_header::getsample_property(const count_t &a) const {
 }
 
 
-const std::string profile_header::getsample_name(const count_t &a) const{
+const std::string profile_header::get_sample_name(const count_t &a) const{
 	switch (*columns_){
 		case 5:
-			return getcolumn_name(a+1);
+			return get_column_name(a+1);
 		break;
 		case 6:
-			return getcolumn_name(a+2);
+			return get_column_name(a+2);
 		break;
 		case 7:
-			return getcolumn_name(a+3);
+			return get_column_name(a+3);
 		break;
 		default:
 		break;
@@ -156,35 +156,53 @@ const std::string profile_header::getsample_name(const count_t &a) const{
 	return NULL;
 }
 
-const std::string profile::getsample_name(const count_t &a) const{
-	return header_.getsample_name(a);
+const std::string profile::get_sample_name(const count_t &a) const{
+	return header_.get_sample_name(a);
 };
 
-int profile::setsample_name(const count_t &a, const std::string &str){
+int profile::set_sample_name(const std::string &str){
 	switch (columns_){
 		case 5:
-			return header_.setcolumn_name(a+1, str);
+			for (size_t a; a<samples_; ++a) if (!(header_.set_column_name(a+1, str) ) ) return BADHEADER;
+			return 0;
 		break;
 		case 6:
-			return header_.setcolumn_name(a+2, str);
+			for (size_t a; a<samples_; ++a) if (!(header_.set_column_name(a+2, str) ) ) return BADHEADER;
+			return 0;
 		break;
 		case 7:
-			return header_.setcolumn_name(a+3, str);
+			for (size_t a; a<samples_; ++a) if (!(header_.set_column_name(a+3, str) ) ) return BADHEADER;
+			return 0;
 		break;
 	};
 	return BADHEADER;
 }
 
-const std::string profile_header::getcolumn_name(const size_t &x) const{
+int profile::set_sample_name(const count_t &a, const std::string &str){
+	switch (columns_){
+		case 5:
+			return header_.set_column_name(a+1, str);
+		break;
+		case 6:
+			return header_.set_column_name(a+2, str);
+		break;
+		case 7:
+			return header_.set_column_name(a+3, str);
+		break;
+	};
+	return BADHEADER;
+}
+
+const std::string profile_header::get_column_name(const size_t &x) const{
 	if (x<column_names.size() ) return column_names[x];
-	std::cerr << "pro-file.cc:180: Attempted to access column that does not exist.\n";
+	std::cerr << __FILE__ << ":" << __LINE__ << ": attempted to access column that does not exist.\n";
 	exit(0);
 	return "ACCESS ERROR";
 };
 
-int profile_header::setcolumn_name(const count_t &x, const std::string &str) {
-	column_names[x]=str;
-	return NONE;
+int profile_header::set_column_name(const size_t &x, const std::string &str) {
+	if (x<column_names.size() ) {column_names[x]=str; return NONE;}
+	return BADHEADER;
 }
 
 profile_header::profile_header(){}
@@ -228,7 +246,7 @@ profile_header::profile_header(profile *pro){
 
 int profile_header::writeheader(std::ostream *out){
 	if (out==NULL){
-		std::cerr << "attempted writeheader when no outstream was open." << std::endl;
+		std::cerr << __FILE__ << ":" << __LINE__ << ": attempted writeheader when no ostream was open." << std::endl;
 		exit(UNEXPECTED);
 	};
 	//Headers should contain the following feilds:
@@ -253,7 +271,7 @@ int profile_header::writeheader(std::ostream *out){
 
 int profile_header::writetailer(std::ostream *out){
 	if (out==NULL){
-		std::cerr << "attempted writetailer when no outstream was open." << std::endl;
+		std::cerr << __FILE__ << ":" << __LINE__ << ": called writetailer when no ostream was open.\n";
 		exit(UNEXPECTED);
 	};
 	bool notdone_=true;
@@ -335,7 +353,7 @@ int profile_header::readheader(std::istream *in)
 	//The number of ids in the files
 	//Header lines begin with the '@' character (a nod to samtools).
 	if (in==NULL){
-		std::cerr << "mapgd:pro-file.cc:attempted readheader when no instream was open." << std::endl;
+		std::cerr << __FILE__ << ":" << __LINE__ << ": called readheader when no istream was open.\n";
 		exit(UNEXPECTED);
 	};
 	std::string line;
@@ -424,7 +442,7 @@ int profile_header::readheader(std::istream *in)
 						default :
 							if (reading_id) column_names.push_back(*argit);
 							else {
-								std::cerr << "Warning: unexpected field encountered in header (" << *argit << "). File may not have opened correctly. Try removing this field and running the program again." << std::endl;
+								std::cerr << __FILE__ << ":" << __LINE__ << ": unexpected field encountered in header (" << *argit << "). File may not have opened correctly. Try removing this field and running the program again." << std::endl;
 								return BADHEADER;
 							}
 						break;
@@ -438,16 +456,16 @@ int profile_header::readheader(std::istream *in)
 					in->unget();
 					while( (in->peek() )!='\n') {in->unget();}
 					if ( not (std::getline(*in, line) ) ) { 
-						std::cerr << "Error: encountred unexpected EOF. Is the file truncated?" << std::endl;
+						std::cerr << __FILE__ << ":" << __LINE__ << ": encountred unexpected EOF. Is the file truncated? (1)" << std::endl;
 						return BADHEADER; 
 					}
 					if ( not (std::getline(*in, line) ) ) { 
-						std::cerr << "Error: encountred unexpected EOF. Is the file truncated?" << std::endl; 
+						std::cerr << __FILE__ << ":" << __LINE__ << ": encountred unexpected EOF. Is the file truncated? (2)" << std::endl;
 						return BADHEADER; 
 					}
 					args=split(line, *delim_column);
 					if (args.size()==0) { 
-						std::cerr << "Line miss-formated. Is the file truncated?" << std::endl; 
+						std::cerr << __FILE__ << ":" << __LINE__ << ": line miss-formated. Is the file truncated?" << std::endl; 
 						return BADHEADER;
 					}
 					for(std::vector<std::string>::iterator argit = args.begin(); argit != args.end(); ++argit){
@@ -465,7 +483,7 @@ int profile_header::readheader(std::istream *in)
 				};
 			} 
 		} else {
-			std::cerr << "Error: encountred unexpected EOF. Is the file empty?" << std::endl;
+			std::cerr << __FILE__ << ":" << __LINE__ << ": encountred unexpected EOF. Is the file empty?" << std::endl;
 			return BADHEADER;
 		}; 
 	}
@@ -502,7 +520,7 @@ int profile::readm(Locus &site)
 	if( std::getline(*in, line) ){
 		column = split(line, delim_column);
 		if(column.size() < 5){
-			std::cerr << "WARNING[proFile.cpp]: Skipping line " << getlinenumber() << " with only " << column.size() << " fields." << std::endl;
+			std::cerr << "WARNING:" << __FILE__ << ":" << __LINE__ << ": Skipping line " << getlinenumber() << " with only " << column.size() << " fields." << std::endl;
 			return 0;
 		}
 
@@ -583,7 +601,7 @@ int profile::readb(Locus &site){
 			for (unsigned int x=0; x<samples_; ++x) in->read ( (char *)site.sample[x].base, 4*sizeof(count_t) );
 		break;
 		default:
-			std::cerr << "Error in binary file formating. "<< std::endl;
+			std::cerr << __FILE__ << ":" << __LINE__ << ": error in binary file formating. "<< std::endl;
 			exit(0);
 		break;	
 	}
@@ -598,7 +616,7 @@ int profile::readt(Locus &site){
 	std::vector <std::string> column, quartet;
 
 	if (in==NULL){
-		std::cerr << "attempted read when no instream was open." << std::endl;
+		std::cerr << __FILE__ << ":" << __LINE__ << ": attempted read line when no istream was open." << std::endl;
 		exit(UNEXPECTED);
 	};
 
@@ -611,7 +629,7 @@ int profile::readt(Locus &site){
 				if (line[0]!='>'){
 					column=split(line, delim_column);
 					if ( (column.size()-1) != samples_){
-						std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
+						std::cerr << __FILE__ << ":" << __LINE__ << ": could not parse line : \"" << line << "\"" << std::endl;
 						std::cerr << column.size() << " fields found." << std::endl;
 						std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
 						std::cerr << "columns : \'" << columns_ << "\'" << std::endl;
@@ -636,7 +654,7 @@ int profile::readt(Locus &site){
 			case 6:
 			column=split(line, delim_column);
 			if ( (column.size()-2) != samples_){
-				std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
+				std::cerr << __FILE__ << ":" << __LINE__ << ": could not parse line : \"" << line << "\"" << std::endl;
 				std::cerr << column.size() << " fields found." << std::endl;
 				std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
 				std::cerr << "columns : \'" << columns_ << "\'" << std::endl;
@@ -656,7 +674,7 @@ int profile::readt(Locus &site){
 			case 7:
 			column=split(line, delim_column);
 			if ( (column.size()-3)!=samples_){
-				std::cerr << "could not parse line : \"" << line << "\"" << std::endl;
+				std::cerr << __FILE__ << ":" << __LINE__ << ": could not parse line : \"" << line << "\"" << std::endl;
 				std::cerr << column.size() << " fields found." << std::endl;
 				std::cerr << "delimiter : \'" << delim_column << "\'" << std::endl;
 				std::cerr << "columns : \'" << columns_ << "\'" << std::endl;
@@ -697,7 +715,7 @@ int profile::write(const Locus &site){
 
 int profile::writeb (const Locus &thissite){
 	if (out==NULL){
-		std::cerr << "attempted write when no outstream was open." << std::endl;
+		std::cerr << __FILE__ << ":" << __LINE__ << ": attempted write when no ostream was open." << std::endl;
 		exit(UNEXPECTED);
 	}
 	out->write((char *)&(header_.control), sizeof(char) );
@@ -716,7 +734,7 @@ int profile::writeb (const Locus &thissite){
 			for (unsigned int x=0; x<samples_; ++x) out->write((char *)thissite.sample[x].base, 4*sizeof(count_t) );
                 break;
                 default:
-                        std::cerr << "Error in binary file formating. "<< std::endl;
+			std::cerr << __FILE__ << ":" << __LINE__ << ": error in binary file formating. "<< std::endl;
                         exit(0);
                 break;
         }
@@ -727,7 +745,7 @@ int profile::writeb (const Locus &thissite){
 
 int profile::writet(const Locus &thissite){
 	if (out==NULL){
-		std::cerr << "attempted write when no outstream was open." << std::endl;
+		std::cerr << __FILE__ << ":" << __LINE__ << ": attempted write when no outstream was open." << std::endl;
 		exit(UNEXPECTED);
 	};
 	switch (columns_){
@@ -817,20 +835,20 @@ void profile::open(const char* filename, std::ios_base::openmode mode){
 	if ( mode & std::fstream::in ){
 		inFile.open(filename, std::ifstream::in);
 		if (!inFile.is_open() ){
-			std::cerr << "cannot open " << filename << " for reading (1)." << std::endl;				
+			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading (1)." << std::endl;				
 			exit(0);
 		};
 		in=&inFile;
 		if (readheader()==BADHEADER){
-			std::cerr << "cannot read header on " << filename << " (1). " << std::endl;
-			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;
+			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot read header on " << filename << " (1). " << std::endl;
+			std::cerr << "Vesions of mapgd >=0.3 require headers on .pro files" << std::endl;
 			exit(0);
 		};
 		read_=true;
 	} else if ( mode & std::fstream::out ){
 		outFile.open(filename, std::ofstream::out);
 		if (!outFile.is_open() ){
-			std::cerr << "cannot open " << filename << " for writing." << std::endl;				
+			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for writing." << std::endl;				
 			exit(0);
 		};
 		out=&outFile;
@@ -847,7 +865,7 @@ void profile::open(std::ios_base::openmode mode)
 		in=&std::cin;
 		if (readheader()==BADHEADER){
 			std::cerr << "cannot find header in stdin (2). " << std::endl;				
-			std::cerr << "Vesions of mapgd >=2.0 require headers on .pro files" << std::endl;			
+			std::cerr << "Vesions of mapgd >=0.3 require headers on .pro files" << std::endl;			
 			exit(0);
 		}
 		read_=true;
@@ -993,17 +1011,17 @@ void profile::set_extraid(const char &eid, const size_t &x)
 char Locus::getname(const count_t &c) const
 {
         if (c<5){
-                if (getcount(c)==0 ) return '*';
+                if (getcount(c)==0 ) return '.';
                 return  names_[sorted_[c]];
         }
-        return '*';
+        return '.';
 }
 
 char Locus::getname_gt(const count_t &c) const
 {
         if (c<5){
-                if (getcount(c)==getcount(c+1) || getcount(c)==0 ) return '*';
+                if (getcount(c)==getcount(c+1) || getcount(c)==0 ) return '.';
                 return  names_[sorted_[c]];
         }
-        return '*';
+        return '.';
 }

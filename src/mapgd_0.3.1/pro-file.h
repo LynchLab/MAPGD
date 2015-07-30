@@ -69,7 +69,7 @@ private:
 	std::vector <float_t> sample_gof_;		// the number of samples (i.e. different individuals or populations) in the profile.
 public:
 	const float_t getsample_property(const count_t &) const;
-	const std::string getsample_name(const count_t &) const;
+	const std::string get_sample_name(const count_t &) const;
 	char control;					//!< a variable that controls switches in the binary read/write mode.
 	profile_header();				//!< does not initilize . . .
 	profile_header(profile *);			//!< initilizes profile_header.
@@ -94,8 +94,8 @@ public:
 
 	int setsamples(const count_t&);			//!< set the number of samples in the profile (only called in write mode).
 	int setcolumns(const count_t&);			//!< set the number of columns for reading and writing.
-	int setcolumn_name(const count_t&, const std::string&);
-	const std::string getcolumn_name(const size_t&) const;
+	int set_column_name(const count_t&, const std::string&);
+	const std::string get_column_name(const size_t&) const;
 	profile_header & operator=(const profile_header&); //!< I don't think the copy makes sense. . . 
 	
 	void clear(void);
@@ -197,10 +197,11 @@ public:
 	void setcolumns(count_t);			//!< Set the number of columns for reading and writing.
 	size_t get_columns(void) const {return columns_;};	//!< Set the number of columns for reading and writing.
 
-	int setcolumn_name(const count_t&, const std::string &);
-	int setsample_name(const count_t&, const std::string &);
+	int set_column_name(const count_t&, const std::string &);
+	int set_sample_name(const count_t&, const std::string &);
+	int set_sample_name(const std::string &);
 
-	const std::string getsample_name(const count_t &) const;
+	const std::string get_sample_name(const count_t &) const;
 
 	/*a set of functions for converting the string information read in text mode into count_t and vice versa.*/
 

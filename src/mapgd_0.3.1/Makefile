@@ -32,6 +32,7 @@ OBJS=	mapgd.o \
 	quartet.o \
 	stream-tools.o \
 	models.o \
+	estimate-fst.o \
 	file-index.o
 
 all: $(OBJS)

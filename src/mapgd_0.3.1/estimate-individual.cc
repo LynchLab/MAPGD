@@ -35,7 +35,7 @@ float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,
 /// Estimates a number of summary statistics from short read sequences.
 /**
  */
-allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, count_t MIN, count_t EMLMIN, float_t MINGOF, count_t MAXPITCH){
+allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH){
 
 	allele_stat mle, temp;					//allele_stat is a basic structure that containes all the summary statistics for
 								//an allele. It gets passed around a lot, and a may turn it into a class that has
@@ -47,24 +47,25 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								 //allele_stat has gotten too bloated, but . . . 
 	mle.N=0;
 
+	site.mask_low_cov(MIN);
 	count_t texc=site.maskedcount(), rexc;
 	rexc=texc;
-	
-	if (init_params(site, mle, MIN, EMLMIN, 0) ){		//If >90% of reads agree, then assume a homozygote,
+
+	if (init_params(site, mle, EMLMIN) ){		//If >90% of reads agree, then assume a homozygote,
 								//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
-		rexc=maximize_grid(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		rexc=maximize_grid(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 //		rexc=maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
-		rexc=maximize_analytical(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 
 	mle.excluded=rexc-texc;
 
 	// CALCULATE THE LIKELIHOODS 
 
-	mle.ll=model.loglikelihood(site, mle, MIN);		//Sets the site.ll to the log likelihood of the best fit (ll). 
+	mle.ll=model.loglikelihood(site, mle);		//Sets the site.ll to the log likelihood of the best fit (ll). 
 
 	if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
 		std::swap(mle.major, mle.minor);
@@ -87,7 +88,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	temp.error=mle.null_error;				//Sets the error rate of mono to the null error rate.
 	temp.freq=1.;
 	temp.f=0.;
-	mle.monoll=model.loglikelihood(site, temp, MIN);			//Sets the site.ll to the log likelihood of the best fit (ll). 
+	mle.monoll=model.loglikelihood(site, temp);			//Sets the site.ll to the log likelihood of the best fit (ll). 
 
 	if (mle.monoll>mle.ll){
 		mle.ll=mle.monoll;
@@ -97,7 +98,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	temp.MM=pow(mle.freq, 2);				//Similar set up to mono, but now assuming 
 	temp.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
 	temp.mm=pow(1.-mle.freq, 2);				//?
-	mle.hwell=model.loglikelihood(site, temp, MIN);		//?
+	mle.hwell=model.loglikelihood(site, temp);		//?
 	return mle;
 }
 
@@ -282,7 +283,7 @@ int estimateInd(int argc, char *argv[])
 		}
 		if (readed!=BUFFER_SIZE){break;}
 	}
-	for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.getsample_name(ind[x]) << ":" << sum_gofs[x]/sqrt(float_t(gofs_read[x])) << std::endl;
+	for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.get_sample_name(ind[x]) << ":" << sum_gofs[x]/sqrt(float_t(gofs_read[x])) << std::endl;
 	pro.close();
 	if (outFile.is_open()) outFile.close();		//Closes outFile iff outFile is open.
 	if (pro_out.is_open()) pro_out.close();		//Closes pro_out iff pro_out is open.

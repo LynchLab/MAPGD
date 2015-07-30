@@ -27,6 +27,8 @@ int main (int argc, char* argv[])
 	env.command(	' ',"cp", 	&comparePooled, 		"an error occured while calling cp", "compares allele frequencies between populations using pooled data");
 
 	env.command(	' ',"ei", 	&estimateInd,	 		"an error occured while calling ei", "estimates allelel frequencies using individual data");
+
+	env.command(	' ',"fst", 	&estimate_fst,	 		"an error occured while calling fst", "estimates fst between two populations");
 	
 //	env.command(	' ',"calc", 	&calcInd,	 		"an error occured while calling calc", "print log likelihood of ...");
 
