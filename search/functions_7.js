@@ -7,5 +7,5 @@ var searchData=
   ['lnprob',['lnprob',['../classlnmultinomial.html#a97f19c05ef64d56f1f41cffb78058b9d',1,'lnmultinomial']]],
   ['lnprob_5fapprox',['lnprob_approx',['../classlnmultinomial.html#af5a14d8dec973b79711a55a3a747b59e',1,'lnmultinomial']]],
   ['locus',['Locus',['../classLocus.html#a0bee741faae71aa0bb9d809e0b98f3c3',1,'Locus::Locus(count_t)'],['../classLocus.html#a66f73ca4df29ccd3cb96118a81ea2d38',1,'Locus::Locus()']]],
-  ['loglikelihood',['loglikelihood',['../classmodels.html#a57d9f7de3f3d021007e8700cf4a07814',1,'models']]]
+  ['loglikelihood',['loglikelihood',['../classmodels.html#ab2e87d68b41f312848eca514d0e7f51b',1,'models']]]
 ];

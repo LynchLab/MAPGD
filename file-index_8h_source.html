@@ -93,72 +93,88 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define FILE_INDEX_H_</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;file-index.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classfile__index.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="classfile__index.html">file_index</a>{</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classfile__index.html#a6534d221b04ca8a8cdb12b05b87dd97b">   13</a></span>&#160;    std::map &lt;std::string, id0_t&gt; <a class="code" href="classfile__index.html#a6534d221b04ca8a8cdb12b05b87dd97b">id0_str_</a>;         </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classfile__index.html#a4be855352027b35e822cecf1f92a60a0">   16</a></span>&#160;    std::vector &lt;std::string&gt; <a class="code" href="classfile__index.html#a4be855352027b35e822cecf1f92a60a0">id0_</a>; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            </div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classfile__index.html#a9be03afd832c7b341c13736733495c79">   20</a></span>&#160;    std::vector &lt;id1_t&gt; <a class="code" href="classfile__index.html#a9be03afd832c7b341c13736733495c79">sizes_</a>;             </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classfile__index.html#a710a18c15667280a8681bfb12cf20958">   24</a></span>&#160;    id0_t <a class="code" href="classfile__index.html#a710a18c15667280a8681bfb12cf20958">lastid0_</a>;                     </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classfile__index.html#aab103d49790f5d133985366205dbea47">   28</a></span>&#160;    std::string <a class="code" href="classfile__index.html#aab103d49790f5d133985366205dbea47">lastid0_str_</a>;               </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="classfile__index.html">file_index</a>();                       </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">const</span> id0_t &amp; <a class="code" href="classfile__index.html#a9bc1769c562f2fc28956fb37326d4960">encode_id0</a>(<span class="keyword">const</span> std::string &amp;);      </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">const</span> std::string &amp; <a class="code" href="classfile__index.html#abbd1d70fee35330f0c3e6e1d7476e0fc">decode_id0</a>(<span class="keyword">const</span> id0_t &amp;);      </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    id1_t <a class="code" href="classfile__index.html#a2ee314e1d2e8b081d58a320842790ed9">get_offset</a> (<span class="keyword">const</span> id0_t &amp;, <span class="keyword">const</span> id1_t &amp;);    </div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;stream-tools.h&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;typedef.h&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">/* file_index should always be used to re designate pairs of keys into a single record</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment"> * number. </span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classfile__index.html">   17</a></span>&#160;<span class="keyword">class </span><a class="code" href="classfile__index.html">file_index</a>{</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classfile__index.html#a6534d221b04ca8a8cdb12b05b87dd97b">   22</a></span>&#160;    std::map &lt;std::string, id0_t&gt; <a class="code" href="classfile__index.html#a6534d221b04ca8a8cdb12b05b87dd97b">id0_str_</a>;         </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classfile__index.html#a4be855352027b35e822cecf1f92a60a0">   25</a></span>&#160;    std::vector &lt;std::string&gt; <a class="code" href="classfile__index.html#a4be855352027b35e822cecf1f92a60a0">id0_</a>; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            </div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classfile__index.html#a3aba13a5669ee49954c811afb715ea07">   29</a></span>&#160;    std::vector &lt;id1_t&gt; <a class="code" href="classfile__index.html#a3aba13a5669ee49954c811afb715ea07">size_</a>;              </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classfile__index.html#a1ab86b2f9dee1822de9cb139b9b6509c">   33</a></span>&#160;    id0_t <a class="code" href="classfile__index.html#a1ab86b2f9dee1822de9cb139b9b6509c">last_id0_</a>;                        </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classfile__index.html#a1afb4512b35ba29f3fdebfd6c544f1d4">   37</a></span>&#160;    std::string <a class="code" href="classfile__index.html#a1afb4512b35ba29f3fdebfd6c544f1d4">last_id0_str_</a>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">char</span> delim_;                </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">char</span> key_;          </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="classfile__index.html">file_index</a>();                       </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classfile__index.html#a63aed225c5c30dafe1cfb347f29d3b9f">set_size</a> (<span class="keyword">const</span> std::string &amp;, <span class="keyword">const</span> id1_t &amp;); </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">const</span> id0_t &amp; <a class="code" href="classfile__index.html#a9bc1769c562f2fc28956fb37326d4960">encode_id0</a>(<span class="keyword">const</span> std::string &amp;);      </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classfile__index.html#a63aed225c5c30dafe1cfb347f29d3b9f">set_size</a> (<span class="keyword">const</span> id0_t &amp;, <span class="keyword">const</span> id1_t &amp;);   </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> std::string &amp; <a class="code" href="classfile__index.html#abbd1d70fee35330f0c3e6e1d7476e0fc">decode_id0</a>(<span class="keyword">const</span> id0_t &amp;);      </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classfile__index.html#a25bd955b88e6d020b0841031d8ba3fb2">set_last_size</a> (<span class="keyword">const</span> id1_t &amp;);         </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    id1_t <a class="code" href="classfile__index.html#a2ee314e1d2e8b081d58a320842790ed9">get_offset</a> (<span class="keyword">const</span> id0_t &amp;, <span class="keyword">const</span> id1_t &amp;);    </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classfile__index.html#ac0dfe7cdf5127834b03cb02b01c89269">set_next_size</a> (<span class="keyword">const</span> id1_t &amp;);         </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classfile__index.html#a63aed225c5c30dafe1cfb347f29d3b9f">set_size</a> (<span class="keyword">const</span> std::string &amp;, <span class="keyword">const</span> id1_t &amp;); </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::vector &lt;id1_t&gt; <a class="code" href="classfile__index.html#aff106a09e0c19c6bdeb0d000cf7f91bb">get_all_sizes</a> (<span class="keywordtype">void</span>);       </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classfile__index.html#a63aed225c5c30dafe1cfb347f29d3b9f">set_size</a> (<span class="keyword">const</span> id0_t &amp;, <span class="keyword">const</span> id1_t &amp;);   </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    id1_t <a class="code" href="classfile__index.html#aca45135b9a979671cfa005838be47c56">get_last_size</a> (<span class="keywordtype">void</span>);             </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classfile__index.html#a25bd955b88e6d020b0841031d8ba3fb2">set_last_size</a> (<span class="keyword">const</span> id1_t &amp;);         </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    id1_t <a class="code" href="classfile__index.html#adbb1af73e0f1797f7a71d2ec7817c695">get_next_size</a> (<span class="keywordtype">void</span>);             </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classfile__index.html#ac0dfe7cdf5127834b03cb02b01c89269">set_next_size</a> (<span class="keyword">const</span> id1_t &amp;);         </div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classfile__index.html#abb372d71f4ddc2a4e5be5f66105ae99d">read_index</a>(std::istream *);             </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::vector &lt;id1_t&gt; <a class="code" href="classfile__index.html#aff106a09e0c19c6bdeb0d000cf7f91bb">get_all_sizes</a> (<span class="keywordtype">void</span>);       </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classfile__index.html#aa41050f234a3adb88f108d834c7c5ec0">write_index</a>(std::ostream *);            </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    id1_t <a class="code" href="classfile__index.html#aca45135b9a979671cfa005838be47c56">get_last_size</a> (<span class="keywordtype">void</span>);             </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="classfile__index.html">file_index</a> &amp; <a class="code" href="classfile__index.html#a175bad8f17a4fc6285903d58d45ab5fd">operator=</a>(<span class="keyword">const</span> <a class="code" href="classfile__index.html">file_index</a>&amp;);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;};</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif </span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    id1_t <a class="code" href="classfile__index.html#adbb1af73e0f1797f7a71d2ec7817c695">get_next_size</a> (<span class="keywordtype">void</span>);             </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classfile__index.html#a3deac7f106e1a8d72f4263a311da5be7">read_index</a>(std::istream &amp;);             </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classfile__index.html#a3a685eabc3286acaa9e6743cec08e234">from_sam_header</a>(std::istream &amp;);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="classfile__index.html#a9f92829ce47e57d948f346be7f8a3df6">write_index</a>(std::ostream &amp;);            </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="classfile__index.html">file_index</a> &amp; <a class="code" href="classfile__index.html#a175bad8f17a4fc6285903d58d45ab5fd">operator=</a>(<span class="keyword">const</span> <a class="code" href="classfile__index.html">file_index</a>&amp;);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#endif </span></div>
 <div class="ttc" id="classfile__index_html_ac0dfe7cdf5127834b03cb02b01c89269"><div class="ttname"><a href="classfile__index.html#ac0dfe7cdf5127834b03cb02b01c89269">file_index::set_next_size</a></div><div class="ttdeci">void set_next_size(const id1_t &amp;)</div></div>
 <div class="ttc" id="classfile__index_html_adbb1af73e0f1797f7a71d2ec7817c695"><div class="ttname"><a href="classfile__index.html#adbb1af73e0f1797f7a71d2ec7817c695">file_index::get_next_size</a></div><div class="ttdeci">id1_t get_next_size(void)</div></div>
-<div class="ttc" id="classfile__index_html_a9be03afd832c7b341c13736733495c79"><div class="ttname"><a href="classfile__index.html#a9be03afd832c7b341c13736733495c79">file_index::sizes_</a></div><div class="ttdeci">std::vector&lt; id1_t &gt; sizes_</div><div class="ttdef"><b>Definition:</b> file-index.h:20</div></div>
 <div class="ttc" id="classfile__index_html_abbd1d70fee35330f0c3e6e1d7476e0fc"><div class="ttname"><a href="classfile__index.html#abbd1d70fee35330f0c3e6e1d7476e0fc">file_index::decode_id0</a></div><div class="ttdeci">const std::string &amp; decode_id0(const id0_t &amp;)</div></div>
-<div class="ttc" id="classfile__index_html_aab103d49790f5d133985366205dbea47"><div class="ttname"><a href="classfile__index.html#aab103d49790f5d133985366205dbea47">file_index::lastid0_str_</a></div><div class="ttdeci">std::string lastid0_str_</div><div class="ttdef"><b>Definition:</b> file-index.h:28</div></div>
 <div class="ttc" id="classfile__index_html_a175bad8f17a4fc6285903d58d45ab5fd"><div class="ttname"><a href="classfile__index.html#a175bad8f17a4fc6285903d58d45ab5fd">file_index::operator=</a></div><div class="ttdeci">file_index &amp; operator=(const file_index &amp;)</div></div>
 <div class="ttc" id="classfile__index_html_a25bd955b88e6d020b0841031d8ba3fb2"><div class="ttname"><a href="classfile__index.html#a25bd955b88e6d020b0841031d8ba3fb2">file_index::set_last_size</a></div><div class="ttdeci">void set_last_size(const id1_t &amp;)</div></div>
 <div class="ttc" id="classfile__index_html_a9bc1769c562f2fc28956fb37326d4960"><div class="ttname"><a href="classfile__index.html#a9bc1769c562f2fc28956fb37326d4960">file_index::encode_id0</a></div><div class="ttdeci">const id0_t &amp; encode_id0(const std::string &amp;)</div></div>
-<div class="ttc" id="classfile__index_html"><div class="ttname"><a href="classfile__index.html">file_index</a></div><div class="ttdef"><b>Definition:</b> file-index.h:8</div></div>
+<div class="ttc" id="classfile__index_html_a3a685eabc3286acaa9e6743cec08e234"><div class="ttname"><a href="classfile__index.html#a3a685eabc3286acaa9e6743cec08e234">file_index::from_sam_header</a></div><div class="ttdeci">int from_sam_header(std::istream &amp;)</div><div class="ttdef"><b>Definition:</b> file-index.cc:3</div></div>
+<div class="ttc" id="classfile__index_html"><div class="ttname"><a href="classfile__index.html">file_index</a></div><div class="ttdoc">An interface that transforms pairs of name and position keys into record numbers. ...</div><div class="ttdef"><b>Definition:</b> file-index.h:17</div></div>
 <div class="ttc" id="classfile__index_html_aff106a09e0c19c6bdeb0d000cf7f91bb"><div class="ttname"><a href="classfile__index.html#aff106a09e0c19c6bdeb0d000cf7f91bb">file_index::get_all_sizes</a></div><div class="ttdeci">std::vector&lt; id1_t &gt; get_all_sizes(void)</div></div>
-<div class="ttc" id="classfile__index_html_aa41050f234a3adb88f108d834c7c5ec0"><div class="ttname"><a href="classfile__index.html#aa41050f234a3adb88f108d834c7c5ec0">file_index::write_index</a></div><div class="ttdeci">int write_index(std::ostream *)</div></div>
+<div class="ttc" id="classfile__index_html_a3deac7f106e1a8d72f4263a311da5be7"><div class="ttname"><a href="classfile__index.html#a3deac7f106e1a8d72f4263a311da5be7">file_index::read_index</a></div><div class="ttdeci">int read_index(std::istream &amp;)</div></div>
+<div class="ttc" id="classfile__index_html_a1afb4512b35ba29f3fdebfd6c544f1d4"><div class="ttname"><a href="classfile__index.html#a1afb4512b35ba29f3fdebfd6c544f1d4">file_index::last_id0_str_</a></div><div class="ttdeci">std::string last_id0_str_</div><div class="ttdef"><b>Definition:</b> file-index.h:37</div></div>
+<div class="ttc" id="classfile__index_html_a1ab86b2f9dee1822de9cb139b9b6509c"><div class="ttname"><a href="classfile__index.html#a1ab86b2f9dee1822de9cb139b9b6509c">file_index::last_id0_</a></div><div class="ttdeci">id0_t last_id0_</div><div class="ttdef"><b>Definition:</b> file-index.h:33</div></div>
+<div class="ttc" id="classfile__index_html_a3aba13a5669ee49954c811afb715ea07"><div class="ttname"><a href="classfile__index.html#a3aba13a5669ee49954c811afb715ea07">file_index::size_</a></div><div class="ttdeci">std::vector&lt; id1_t &gt; size_</div><div class="ttdef"><b>Definition:</b> file-index.h:29</div></div>
 <div class="ttc" id="classfile__index_html_a63aed225c5c30dafe1cfb347f29d3b9f"><div class="ttname"><a href="classfile__index.html#a63aed225c5c30dafe1cfb347f29d3b9f">file_index::set_size</a></div><div class="ttdeci">void set_size(const std::string &amp;, const id1_t &amp;)</div></div>
 <div class="ttc" id="classfile__index_html_aca45135b9a979671cfa005838be47c56"><div class="ttname"><a href="classfile__index.html#aca45135b9a979671cfa005838be47c56">file_index::get_last_size</a></div><div class="ttdeci">id1_t get_last_size(void)</div></div>
-<div class="ttc" id="classfile__index_html_a4be855352027b35e822cecf1f92a60a0"><div class="ttname"><a href="classfile__index.html#a4be855352027b35e822cecf1f92a60a0">file_index::id0_</a></div><div class="ttdeci">std::vector&lt; std::string &gt; id0_</div><div class="ttdef"><b>Definition:</b> file-index.h:16</div></div>
-<div class="ttc" id="classfile__index_html_a6534d221b04ca8a8cdb12b05b87dd97b"><div class="ttname"><a href="classfile__index.html#a6534d221b04ca8a8cdb12b05b87dd97b">file_index::id0_str_</a></div><div class="ttdeci">std::map&lt; std::string, id0_t &gt; id0_str_</div><div class="ttdef"><b>Definition:</b> file-index.h:13</div></div>
-<div class="ttc" id="classfile__index_html_a710a18c15667280a8681bfb12cf20958"><div class="ttname"><a href="classfile__index.html#a710a18c15667280a8681bfb12cf20958">file_index::lastid0_</a></div><div class="ttdeci">id0_t lastid0_</div><div class="ttdef"><b>Definition:</b> file-index.h:24</div></div>
-<div class="ttc" id="classfile__index_html_abb372d71f4ddc2a4e5be5f66105ae99d"><div class="ttname"><a href="classfile__index.html#abb372d71f4ddc2a4e5be5f66105ae99d">file_index::read_index</a></div><div class="ttdeci">int read_index(std::istream *)</div></div>
+<div class="ttc" id="classfile__index_html_a4be855352027b35e822cecf1f92a60a0"><div class="ttname"><a href="classfile__index.html#a4be855352027b35e822cecf1f92a60a0">file_index::id0_</a></div><div class="ttdeci">std::vector&lt; std::string &gt; id0_</div><div class="ttdef"><b>Definition:</b> file-index.h:25</div></div>
+<div class="ttc" id="classfile__index_html_a6534d221b04ca8a8cdb12b05b87dd97b"><div class="ttname"><a href="classfile__index.html#a6534d221b04ca8a8cdb12b05b87dd97b">file_index::id0_str_</a></div><div class="ttdeci">std::map&lt; std::string, id0_t &gt; id0_str_</div><div class="ttdef"><b>Definition:</b> file-index.h:22</div></div>
+<div class="ttc" id="classfile__index_html_a9f92829ce47e57d948f346be7f8a3df6"><div class="ttname"><a href="classfile__index.html#a9f92829ce47e57d948f346be7f8a3df6">file_index::write_index</a></div><div class="ttdeci">int write_index(std::ostream &amp;)</div><div class="ttdef"><b>Definition:</b> file-index.cc:31</div></div>
 <div class="ttc" id="classfile__index_html_a2ee314e1d2e8b081d58a320842790ed9"><div class="ttname"><a href="classfile__index.html#a2ee314e1d2e8b081d58a320842790ed9">file_index::get_offset</a></div><div class="ttdeci">id1_t get_offset(const id0_t &amp;, const id1_t &amp;)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 28 2015 08:59:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 30 2015 10:35:02 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

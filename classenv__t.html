@@ -91,6 +91,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>A class for handelling options and automatically formating &ndash;help, -h, -u and -v.  
+ <a href="classenv__t.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="interface_8h_source.html">interface.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -131,24 +134,20 @@ Data Fields</h2></td></tr>
 <tr class="separator:a93b99498ee34c3e607bf2757b13443dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3578fa78fcac7714be35958427095c2"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenv__t.html#ae3578fa78fcac7714be35958427095c2">description</a></td></tr>
 <tr class="separator:ae3578fa78fcac7714be35958427095c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b17ee1539e7a27fe0e5efb1ddf13af0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b17ee1539e7a27fe0e5efb1ddf13af0"></a>
-std::list&lt; <a class="el" href="classflag__t.html">flag_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
+<tr class="memitem:a0b17ee1539e7a27fe0e5efb1ddf13af0"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classflag__t.html">flag_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenv__t.html#a0b17ee1539e7a27fe0e5efb1ddf13af0">flags</a></td></tr>
 <tr class="separator:a0b17ee1539e7a27fe0e5efb1ddf13af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae74e249d826b986f6af2f5450cd246df"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae74e249d826b986f6af2f5450cd246df"></a>
-std::list&lt; <a class="el" href="classarg__t.html">arg_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>args</b></td></tr>
+<tr class="memitem:ae74e249d826b986f6af2f5450cd246df"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classarg__t.html">arg_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenv__t.html#ae74e249d826b986f6af2f5450cd246df">args</a></td></tr>
 <tr class="separator:ae74e249d826b986f6af2f5450cd246df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26bd9c2ce445926975e57dbe831f4a39"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a26bd9c2ce445926975e57dbe831f4a39"></a>
-std::list&lt; <a class="el" href="classcom__t.html">com_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>commands</b></td></tr>
+<tr class="memitem:a26bd9c2ce445926975e57dbe831f4a39"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classcom__t.html">com_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenv__t.html#a26bd9c2ce445926975e57dbe831f4a39">commands</a></td></tr>
 <tr class="separator:a26bd9c2ce445926975e57dbe831f4a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa756e347b263bb995d2e1b469cccf4cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa756e347b263bb995d2e1b469cccf4cd"></a>
-std::list&lt; <a class="el" href="classarg__t.html">arg_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>required_args</b></td></tr>
+<tr class="memitem:aa756e347b263bb995d2e1b469cccf4cd"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classarg__t.html">arg_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenv__t.html#aa756e347b263bb995d2e1b469cccf4cd">required_args</a></td></tr>
 <tr class="separator:aa756e347b263bb995d2e1b469cccf4cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a933addf499dd49e5ee6883c4960e1a44"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a933addf499dd49e5ee6883c4960e1a44"></a>
-std::list&lt; <a class="el" href="classcom__t.html">com_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>required_coms</b></td></tr>
+<tr class="memitem:a933addf499dd49e5ee6883c4960e1a44"><td class="memItemLeft" align="right" valign="top">std::list&lt; <a class="el" href="classcom__t.html">com_t</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classenv__t.html#a933addf499dd49e5ee6883c4960e1a44">required_coms</a></td></tr>
 <tr class="separator:a933addf499dd49e5ee6883c4960e1a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class for handelling options and formating help, usage and version information. </p>
+<div class="textblock"><p>A class for handelling options and automatically formating &ndash;help, -h, -u and -v. </p>
+<p>TODO Write a long descrition you jerk! </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a9f3138b6b234353c3167e00f0d19f48d"></a>
 <div class="memitem">
@@ -409,6 +408,19 @@ std::list&lt; <a class="el" href="classcom__t.html">com_t</a> * &gt;&#160;</td><
 </div>
 </div>
 <h2 class="groupheader">Field Documentation</h2>
+<a class="anchor" id="ae74e249d826b986f6af2f5450cd246df"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;<a class="el" href="classarg__t.html">arg_t</a>&gt; env_t::args</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A list of options that can be passed from the command line. </p>
+
+</div>
+</div>
 <a class="anchor" id="a93b99498ee34c3e607bf2757b13443dc"></a>
 <div class="memitem">
 <div class="memproto">
@@ -419,6 +431,19 @@ std::list&lt; <a class="el" href="classcom__t.html">com_t</a> * &gt;&#160;</td><
       </table>
 </div><div class="memdoc">
 <p>author </p>
+
+</div>
+</div>
+<a class="anchor" id="a26bd9c2ce445926975e57dbe831f4a39"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;<a class="el" href="classcom__t.html">com_t</a>&gt; env_t::commands</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A list of sub-commands that can be called from the command line. </p>
 
 </div>
 </div>
@@ -435,6 +460,19 @@ std::list&lt; <a class="el" href="classcom__t.html">com_t</a> * &gt;&#160;</td><
 
 </div>
 </div>
+<a class="anchor" id="a0b17ee1539e7a27fe0e5efb1ddf13af0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;<a class="el" href="classflag__t.html">flag_t</a>&gt; env_t::flags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A list of flags that can be set </p>
+
+</div>
+</div>
 <a class="anchor" id="a8a4fdbcdf5773e33d4a1553bc621e1b4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -445,6 +483,32 @@ std::list&lt; <a class="el" href="classcom__t.html">com_t</a> * &gt;&#160;</td><
       </table>
 </div><div class="memdoc">
 <p>the name of the command </p>
+
+</div>
+</div>
+<a class="anchor" id="aa756e347b263bb995d2e1b469cccf4cd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;<a class="el" href="classarg__t.html">arg_t</a> *&gt; env_t::required_args</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A list of flags or options, all of which must be set </p>
+
+</div>
+</div>
+<a class="anchor" id="a933addf499dd49e5ee6883c4960e1a44"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::list&lt;<a class="el" href="classcom__t.html">com_t</a> *&gt; env_t::required_coms</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A list of sub-commands one of which must be run </p>
 
 </div>
 </div>
@@ -468,7 +532,7 @@ std::list&lt; <a class="el" href="classcom__t.html">com_t</a> * &gt;&#160;</td><
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 28 2015 08:59:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 30 2015 10:35:02 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

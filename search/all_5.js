@@ -7,6 +7,8 @@ var searchData=
   ['file_5findex',['file_index',['../classfile__index.html',1,'']]],
   ['flag',['flag',['../classenv__t.html#a32619a9a5d586b4ec83546e7b08ca7ad',1,'env_t']]],
   ['flag_5ft',['flag_t',['../classflag__t.html',1,'']]],
+  ['flags',['flags',['../classenv__t.html#a0b17ee1539e7a27fe0e5efb1ddf13af0',1,'env_t']]],
   ['freq',['freq',['../classallele__stat.html#aa1b30be6ca2ced00da992dc230336757',1,'allele_stat']]],
+  ['from_5fsam_5fheader',['from_sam_header',['../classfile__index.html#a3a685eabc3286acaa9e6743cec08e234',1,'file_index']]],
   ['func',['func',['../classflag__t.html#a0df7aa844332aebaf5ccb68d889cd584',1,'flag_t::func()'],['../classarg__t.html#a1056d3714b616261fd36049495026cc0',1,'arg_t::func()'],['../classcom__t.html#a04457e8446cd906b5bed24c43077979d',1,'com_t::func()']]]
 ];

@@ -80,27 +80,43 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">mapgd Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h3>Contents</h3>
+<div class="textblock"><p>&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt;&lt;/script&gt;</p>
+<h1>MAPGD version 0.3.1 </h1>
+<h3>Contents </h3>
 <h4><a href="https://lynchlab.github.io/MAPGD/index.html#-introduction-">Introduction</a></h4>
+<h4><a href="https://lynchlab.github.io/MAPGD/index.html#-basic-design-">Basic Design</a></h4>
+<h4><a href="https://lynchlab.github.io/MAPGD/index.html#-tutorials-">Tutorials</a></h4>
 <h3>Introduction </h3>
 <p>MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach.</p>
 <p>We have tried to produce an extensible program ...</p>
-<p>Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that popualtion. This means that if we can accurately calculate all <a href="https://lynchlab.github.io/MAPGD/">genotypic probabilities</a>, then the calculation of any other population statistics becomes trivial. The three big stumbling blocks to the calculation of genotypic probabilities are the errors made by the machine when sequencing, failure to sample all parental chromosomes in organisms that are not haploid, and systematic errors ...</p>
-<h3>Design </h3>
-<h3>Likelihood modes:</h3>
-<h3>Piors:</h3>
-<h3>Likelihoods:</h3>
-<h3>Posteriors:</h3>
+<p>Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that popualtion. This means that if we can accurately calculate all <a href="https://lynchlab.github.io/MAPGD/classgenotype.html">genotypic probabilities</a>, then the calculation of any other population statistics becomes trivial. However, in order to calcule genotypic probabilities we must take acount of the errors made in the genotyping process, include infering the precense of alleles that are not there, which can arrise from sequencing error or mistakes made aligning to a reference, and failing to detect the precense of alleles which are there because of low coveraged or biased sequencing of a single parental chromosome. We maximize a likelihood equation to account for sequeincing error and failure to sample genotypes, and then we test the data for fit to the parameters, and reject estimates where the data has a poor fit to the estimated parameters.</p>
+<h3>Bais Design </h3>
+<p>$ P(   |  X )=  {P(  X |   ) P(   ) } { P(  X ) } $</p>
+<h4>Style Guidlines </h4>
+<p>mapgd is written to conform to the <a href="www.gnu.org/prep/standards/standards.html#Formatting">GNU style guidlines</a>, at least to the extent that I have had time to read and implement the guidlines. Class and type names should be whole english words starting with an initial capital (to distinguish them from the core classes and types of c++). We do not use CamelCase. Variable names should be all lower case with words seperated by an underscore. Private variables ...</p>
+<ul>
+<li>Internationalization: These are good standards... Not implemented yet.</li>
+</ul>
+<h4>Likelihood models:</h4>
+<h5>Pior:</h5>
+<h5>Likelihoods:</h5>
+<h5>Posteriors:</h5>
 <h3>Maximizing Priors:</h3>
 <h3>Genotypic Posteriors:</h3>
 <h3>Summary Statistics:</h3>
-<h3>MAP files:</h3>
-<h3>Examples </h3>
-<p>... </p>
+<h4><a href="https://lynchlab.github.io/MAPGD/classmap__file.html">MAP files</a></h4>
+<h4><a href="https://lynchlab.github.io/MAPGD/classmap__file.html">PRO files</a></h4>
+<h3>Tutorials </h3>
+<ul>
+<li>https://lynchlab.github.io/MAPGD/tutorial/quartet.md "An introduction to quartets"</li>
+<li>https://lynchlab.github.io/MAPGD/tutorial/map.md "Reading and writing to map files"</li>
+<li>https://lynchlab.github.io/MAPGD/tutorial/likelihood.md "Making likelihood functions"</li>
+<li>https://lynchlab.github.io/MAPGD/tutorial/maximize.md "Maximizing a likelihood function" </li>
+</ul>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 28 2015 08:59:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 30 2015 10:35:02 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

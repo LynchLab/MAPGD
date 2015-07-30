@@ -99,9 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa666e5c8637ce8191b438d4cd0112cde"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa666e5c8637ce8191b438d4cd0112cde"></a>
 const float_t&#160;</td><td class="memItemRight" valign="bottom"><b>getsample_property</b> (const count_t &amp;) const </td></tr>
 <tr class="separator:aa666e5c8637ce8191b438d4cd0112cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a201dbada841c37df4d9981826a4e9f9e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a201dbada841c37df4d9981826a4e9f9e"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getsample_name</b> (const count_t &amp;) const </td></tr>
-<tr class="separator:a201dbada841c37df4d9981826a4e9f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbf507736e40981039015d6509f198b2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adbf507736e40981039015d6509f198b2"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_sample_name</b> (const count_t &amp;) const </td></tr>
+<tr class="separator:adbf507736e40981039015d6509f198b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6be558799b0b447f718c0546dd00033a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6be558799b0b447f718c0546dd00033a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile__header.html#a6be558799b0b447f718c0546dd00033a">profile_header</a> ()</td></tr>
 <tr class="memdesc:a6be558799b0b447f718c0546dd00033a"><td class="mdescLeft">&#160;</td><td class="mdescRight">does not initilize . . . <br/></td></tr>
@@ -165,12 +165,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile__header.html#a9e83afd1b3c7be15b90b49b7849b6768">setcolumns</a> (const count_t &amp;)</td></tr>
 <tr class="memdesc:a9e83afd1b3c7be15b90b49b7849b6768"><td class="mdescLeft">&#160;</td><td class="mdescRight">set the number of columns for reading and writing. <br/></td></tr>
 <tr class="separator:a9e83afd1b3c7be15b90b49b7849b6768"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cadad0c1745947fb34071ca2ef1bdcd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7cadad0c1745947fb34071ca2ef1bdcd"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>setcolumn_name</b> (const count_t &amp;, const std::string &amp;)</td></tr>
-<tr class="separator:a7cadad0c1745947fb34071ca2ef1bdcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99875a59dfe4b026597ea87351ec1db7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a99875a59dfe4b026597ea87351ec1db7"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getcolumn_name</b> (const size_t &amp;) const </td></tr>
-<tr class="separator:a99875a59dfe4b026597ea87351ec1db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae910286f2671cbe7b5b1d202e4d3d08b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae910286f2671cbe7b5b1d202e4d3d08b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>set_column_name</b> (const count_t &amp;, const std::string &amp;)</td></tr>
+<tr class="separator:ae910286f2671cbe7b5b1d202e4d3d08b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1466aab170e5c0cbdd032475191f9e41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1466aab170e5c0cbdd032475191f9e41"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_column_name</b> (const size_t &amp;) const </td></tr>
+<tr class="separator:a1466aab170e5c0cbdd032475191f9e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05787a0e90bb4f27d6b7b1cccecd20d3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a05787a0e90bb4f27d6b7b1cccecd20d3"></a>
 <a class="el" href="classprofile__header.html">profile_header</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprofile__header.html#a05787a0e90bb4f27d6b7b1cccecd20d3">operator=</a> (const <a class="el" href="classprofile__header.html">profile_header</a> &amp;)</td></tr>
 <tr class="memdesc:a05787a0e90bb4f27d6b7b1cccecd20d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">I don't think the copy makes sense. . . <br/></td></tr>
@@ -265,7 +265,7 @@ std::vector&lt; float_t &gt;&#160;</td><td class="memItemRight" valign="bottom">
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 28 2015 08:59:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 30 2015 10:35:02 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

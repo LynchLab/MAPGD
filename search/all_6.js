@@ -1,7 +1,7 @@
 var searchData=
 [
   ['genotype',['genotype',['../classgenotype.html',1,'genotype'],['../classgenotype.html#af5ebf8bb0c53dca2400d58fabf82f445',1,'genotype::genotype()']]],
-  ['genotypelikelihood',['genotypelikelihood',['../classmodels.html#a67c5d64baed8963d4306646e5e5be38d',1,'models']]],
+  ['genotypelikelihood',['genotypelikelihood',['../classmodels.html#a9f9fbe39f3b247664bf658ddeaa2052d',1,'models']]],
   ['get_5fall_5fsizes',['get_all_sizes',['../classfile__index.html#aff106a09e0c19c6bdeb0d000cf7f91bb',1,'file_index']]],
   ['get_5fdelim_5fcolumn',['get_delim_column',['../classmap__file.html#a45549e59d2459ba05e490b523f9ae849',1,'map_file']]],
   ['get_5fextraid',['get_extraid',['../classLocus.html#a1c4d5b147496126ee1dbf5d74b04fa15',1,'Locus']]],
@@ -20,5 +20,5 @@ var searchData=
   ['getname',['getname',['../classLocus.html#a8f524607e970e919b1a57d019fd96b14',1,'Locus']]],
   ['getname_5fgt',['getname_gt',['../classLocus.html#a76abc341c0e718ebf91258ffc51e9a4f',1,'Locus']]],
   ['gof',['gof',['../classallele__stat.html#a84c271c57a619f6ea3e520f44e446361',1,'allele_stat']]],
-  ['goodness_5fof_5ffit',['goodness_of_fit',['../classmodels.html#a526bfb6a483fc01763a71dcf18f009c3',1,'models']]]
+  ['goodness_5fof_5ffit',['goodness_of_fit',['../classmodels.html#ab9163b4949a4a51e9207e0e95a44e26d',1,'models']]]
 ];
