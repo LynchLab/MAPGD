@@ -80,22 +80,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">mapgd Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt;&lt;/script&gt;</p>
-<h1>MAPGD version 0.3.1 </h1>
+<div class="textblock"><h1>MAPGD version 0.3.1 </h1>
 <h3>Contents </h3>
 <h4><a href="https://lynchlab.github.io/MAPGD/index.html#-introduction-">Introduction</a></h4>
 <h4><a href="https://lynchlab.github.io/MAPGD/index.html#-basic-design-">Basic Design</a></h4>
 <h4><a href="https://lynchlab.github.io/MAPGD/index.html#-tutorials-">Tutorials</a></h4>
 <h3>Introduction </h3>
 <p>MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach.</p>
-<p>We have tried to produce an extensible program ...</p>
 <p>Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that popualtion. This means that if we can accurately calculate all <a href="https://lynchlab.github.io/MAPGD/classgenotype.html">genotypic probabilities</a>, then the calculation of any other population statistics becomes trivial. However, in order to calcule genotypic probabilities we must take acount of the errors made in the genotyping process, include infering the precense of alleles that are not there, which can arrise from sequencing error or mistakes made aligning to a reference, and failing to detect the precense of alleles which are there because of low coveraged or biased sequencing of a single parental chromosome. We maximize a likelihood equation to account for sequeincing error and failure to sample genotypes, and then we test the data for fit to the parameters, and reject estimates where the data has a poor fit to the estimated parameters.</p>
 <h3>Bais Design </h3>
-<p>$ P(   |  X )=  {P(  X |   ) P(   ) } { P(  X ) } $</p>
+<p>&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt; $ P(   |  X )=  {P(  X |   ) P(   ) } { P(  X ) } $ &lt;/script&gt;</p>
 <h4>Style Guidlines </h4>
-<p>mapgd is written to conform to the <a href="www.gnu.org/prep/standards/standards.html#Formatting">GNU style guidlines</a>, at least to the extent that I have had time to read and implement the guidlines. Class and type names should be whole english words starting with an initial capital (to distinguish them from the core classes and types of c++). We do not use CamelCase. Variable names should be all lower case with words seperated by an underscore. Private variables ...</p>
+<p>mapgd is written to conform to the <a href="https://www.gnu.org/prep/standards/standards.html#Formatting">GNU style guidlines</a>, at least to the extent that I have had time to read and implement the guidlines.</p>
 <ul>
-<li>Internationalization: These are good standards... Not implemented yet.</li>
+<li>Class names should be whole english words starting with an initial capital (to distinguish them from the core classes and types of c++): e.g My_class_name.</li>
+<li>Variables should follow the same rules, but begin with a lower case letter: e.g. my_variable_name. etc. Variables should never be named something like aa, ab, ac, etc.</li>
+<li>We do not use CamelCase.</li>
+<li>Private members of classes should be postfixed with an underscore (e.g. var_)</li>
+<li>Types should be postfixed with an _t, ...</li>
+<li>Error messages: error messages should list the name of the file generating the error and the line number the error occurs on. These should be set with the compiler Macros __NAME__ and __LINE__ so that they remain accurate in the future.</li>
+<li>Internationalization: The <a href="https://www.gnu.org/prep/standards/standards.html#Formatting">GNU style guidlines</a> list a number of good standards to make it easy to translate programs into different languages. We would like to implement these standards in the future, however, we have not done so yet.</li>
 </ul>
 <h4>Likelihood models:</h4>
 <h5>Pior:</h5>
@@ -107,16 +111,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h4><a href="https://lynchlab.github.io/MAPGD/classmap__file.html">MAP files</a></h4>
 <h4><a href="https://lynchlab.github.io/MAPGD/classmap__file.html">PRO files</a></h4>
 <h3>Tutorials </h3>
-<ul>
-<li>https://lynchlab.github.io/MAPGD/tutorial/quartet.md "An introduction to quartets"</li>
-<li>https://lynchlab.github.io/MAPGD/tutorial/map.md "Reading and writing to map files"</li>
-<li>https://lynchlab.github.io/MAPGD/tutorial/likelihood.md "Making likelihood functions"</li>
-<li>https://lynchlab.github.io/MAPGD/tutorial/maximize.md "Maximizing a likelihood function" </li>
-</ul>
+<h4><a href="https://lynchlab.github.io/MAPGD/tutorial/quartet.md">https://lynchlab.github.io/MAPGD/tutorial/quartet.md</a> "An introduction to quartets"</h4>
+<h4><a href="https://lynchlab.github.io/MAPGD/tutorial/map.md">https://lynchlab.github.io/MAPGD/tutorial/map.md</a> "Reading and writing to files"</h4>
+<h4><a href="https://lynchlab.github.io/MAPGD/tutorial/likelihood.md">https://lynchlab.github.io/MAPGD/tutorial/likelihood.md</a> "Making likelihood functions"</h4>
+<h4><a href="https://lynchlab.github.io/MAPGD/tutorial/maximize.md">https://lynchlab.github.io/MAPGD/tutorial/maximize.md</a> "Maximizing a likelihood function"</h4>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 30 2015 10:35:02 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jul 30 2015 11:51:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
