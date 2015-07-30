@@ -1,4 +1,3 @@
-@The locations of fixed markers from Tucker et al.
 scaffold_1	3974285	C	Y
 scaffold_1	3974506	T	Y
 scaffold_1	3974730	A	W

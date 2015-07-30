@@ -5,10 +5,6 @@ import math
 import argparse
 
 parser = argparse.ArgumentParser(description='Utilities to help with the analysis of the output of mapgd')
-parser.add_argument('proFile', metavar='proFile', type=str, nargs=1,
-                   help='the name of a proFile')
-parser.add_argument('mapFile', metavar='mapFile', type=str, nargs=1,
-                   help='the name of a mapFile')
 parser.add_argument('-p', metavar='--maf', type=float, default=0.0,
                    help='minimum allele frequency for analysis')
 parser.add_argument('-P', metavar='--max-maf', type=float, default=0.5, 
@@ -25,18 +21,27 @@ parser.add_argument('-e', metavar='--error', type=float, default=0.1,
                    help='maximum estimated sequencing error')
 parser.add_argument('-H', metavar='--hwe', type=float, default=0.0, 
                    help='maximum ll-score for hw diseqaulibrium')
+parser.add_argument('--pro', metavar='proFile', type=str, nargs=1,
+                   help='the name of a proFile',  required=True)
+parser.add_argument('--map', metavar='mapFile', type=str, nargs=1,
+                   help='the name of a mapFile',  required=True)
+parser.add_argument('--mode', metavar='mode', type=str, nargs=1,
+                   help=' < F|G|H>',  required=True)
 args = parser.parse_args()
 
-proFile=open(args.proFile[0])
-mapFile=open(args.mapFile[0])
+proFile=open(args.pro[0])
+mapFile=open(args.map[0])
 
-#0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	
-#id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
-#id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
-
-F=True
+F=False
 HET=False
 GENOTYPE=False
+
+if args.mode[0]=='F':
+	F=True
+if args.mode[0]=='H':
+	HET=True
+if args.mode[0]=='G':
+	GENOTYPE=True
 
 scaffold=0
 site=1	
@@ -57,7 +62,7 @@ pol_llstat=15
 HWE_llstat=16
 Z_score=17
 
-atoi={'A':0, 'C':1, 'G':2, 'T':3}
+atoi={'A':0, 'C':1, 'G':2, 'T':3, '.':5}
 
 def likelihoods_uniform(calls, major, minor, error, p):
         error=max(0.001, error)
@@ -91,9 +96,18 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
         p0=math.log(error/3.)
         notp0=math.log(1-error/3.)
 
-        MM=M*p2+notp2*(n-M)+math.log(pMM)
-        Mm=M*p1+notp1*(n-M)+math.log(pMm)+math.log(0.5)
-        mm=M*p0+notp0*(n-M)+math.log(pmm)
+	if (pMM>0) :
+		MM=M*p2+notp2*(n-M)+math.log(pMM)
+	else : 
+		MM=-sys.float_info.max
+        if (pMm>0) :
+		 Mm=M*p1+notp1*(n-M)+math.log(pMm)+math.log(0.5)
+	else : 
+		Mm=-sys.float_info.max
+        if (pmm>0) :
+		mm=M*p0+notp0*(n-M)+math.log(pmm)
+	else : 
+		mm=-sys.float_info.max
         [E1, E2, E3]=sorted([MM, Mm, mm])
         N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
 	return [-MM+N, -Mm+N, -mm+N, n]
@@ -110,9 +124,9 @@ for line in mapFile:
                         continue
                 if line[0][0]=='@':
                         continue
-                if line[pol_llstat]=="*":
+                if line[pol_llstat]==".":
                         continue
-                if line[best_error]=="*":
+                if line[best_error]==".":
                         continue
         except:
 		print "could not parse line ", line
@@ -131,9 +145,9 @@ for line in mapFile:
 			continue
 		if line[0][0]=='@':
 			continue
-		if line[pol_llstat]=="*":
+		if line[pol_llstat]==".":
 			continue
-		if line[best_error]=="*":
+		if line[best_error]==".":
 			continue
 	except:
 		print "could not parse line ", line
@@ -156,25 +170,26 @@ for line in proFile:
 	line=line.split()
 	if line[0][0]=="@":
 		continue
+	if (HEADER):
+		if(GENOTYPE):
+			out=[]
+			for x in range(3, len(line) ):
+				out.append(str(x-3)+"MM")
+				out.append(str(x-3)+"Mm")
+				out.append(str(x-3)+"mm")
+			print "scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
+		elif(HET or F):
+			out=[]
+			for x in range(3, len(line) ):
+				out.append(x-3)
+			print "scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
+		HEADER=False
 	try:
-		if (HEADER):
-#			print line
-			if(GENOTYPE):
-				out=[]
-				for x in range(3, len(line) ):
-					out.append(str(x-3)+"MM")
-					out.append(str(x-3)+"Mm")
-					out.append(str(x-3)+"mm")
-				print "scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
-			elif(HET or F):
-				out=[]
-				for x in range(3, len(line) ):
-					out.append(x-3)
-				print "scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
-			HEADER=False
-
 		this=poly[line[scaffold]][line[site]]
-		out=[line[scaffold], line[site]]+this[0:4]
+	except:
+		continue
+	out=[line[scaffold], line[site]]+this[0:4]
+	if this[0]!='.' and this[1]!='.':
 		for x in range(3, len(line) ):
 			calls=map(int, line[x].split('/') )
 			if (GENOTYPE):
@@ -182,23 +197,21 @@ for line in proFile:
 			elif (HET):
 				M=atoi[this[0]]
 				m=atoi[this[1]]
-				out.append(float(calls[M])/(float(calls[M])+float(calls[m]) ) )
+				if (calls[M]+calls[m]>0):
+					out.append(float(calls[M])/(float(calls[M])+float(calls[m]) ) )
+				else:
+					out.append('.')
 			elif (F):
 				Mm=float(this[5])
 				mm=float(this[6])
 				MM=float(this[4])
 				p=float(this[2])
-				Mm=2*(1-p)*p*(1-f)
-				f=1-Mm/(2*(1-p)*p )
-				
-				f=1-A
-				F-1=A
-				A=F-1
-				f=1-(F-1)
-				out.append(f)
+				if (p!=0 and p!=1):
+					f=1-Mm/(2*(1-p)*p )
+					out.append(f)
+				else:
+					out.append('.')	
+				#f=1-(f-1)
 		print '\t'.join(map(str, out) )
-
-	except:
-		C=0
 proFile.close()
 
