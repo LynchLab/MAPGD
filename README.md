@@ -11,6 +11,7 @@
 ####Basic Usage
 #####[Commands](https://github.com/LynchLab/MAPGD#-commands-)
 #####[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
+#####[Scripting](https://github.com/LynchLab/MAPGD#-scripting-)
 #####[Examples](https://github.com/LynchLab/MAPGD#-examples-)
 #####[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
 ####Misc.
@@ -160,6 +161,10 @@ By default the program prints information to the file "dataout.txt" and this fil
 
 <b> .gcf files </b> Again, this format is actively being developed, but .gcf files are intended to serve as a close analog of vcf files, with the only intentional difference being the storage of genotpyic likelihoods as floating point numbers.
 
+<h5> Scripting </h5>
+
+keys.txt
+
 <h4> Extras </h4>
 
 <h6> mapgdutils.py </h6>The script mapgdutils.py is a stop gap measure used to generate genotypic likelihoods (i.e. gcf files) for the analysis of the relatedness of a pair of individuals. A script of this name is likely to persist in future version of the program to perform computationally simple task that may be useful; however, we hope to generation genotypic likelihoods directly in mapgd in the near future.
@@ -178,7 +183,7 @@ By default the program prints information to the file "dataout.txt" and this fil
 <h6> MakeNewtonRho.py </h6>  A script to automatically generate some source code for minimization. 
 <h6> MakeNewtonTheta.py </h6> A script to automatically generate some source code for minimization. 
 <h6> marker.txt </h6> A list of 30,000 some odd markers for asexuallity that were found in Tucker et al.
-<h6> score_markers.py </h6> A script to record the % of makers in a file that and individual has. Usage python score_markers.py marker.txt GENOTYPES.gcf.
+<h6> score_markers.py </h6> A script to record the % of makers in a file that and individual has. Usage python score\_markers.py marker.txt GENOTYPES.gcf.
 
 <h5> Making the Input File </h5>
 
