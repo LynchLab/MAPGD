@@ -1,104 +1,79 @@
 #include "pro-file.h"
 
-/*! \brief The default order of names_. Together with sorted_ member of Locus this specifies the identity of a quartet.
-*/	
 static const std::string names_="ACGTN";
 
-/*! \brief The default mapping of quartet to names. memcpy this to reorder the sorted_ member of Locus. 
- */	
 const count_t profile::defaultorder[5] = {0,1,2,3,4};
 
-/*! \brief The default mapping of quartet to names.
- */	
-const std::string profile::decodeid0(const id0_t &id){
-	return header_.decodeid0(id);
-}
-
-/*! \brief takes a numerical id and returns the string in represents.
- */	
-const std::string profile_header::decodeid0(const id0_t &id){
-	if (lastid0==id) return lastid0_str;
-	lastid0=id;
-	lastid0_str=id0[id];
-	return lastid0_str;
-}
-
-/*! \brief takes a numerical id and returns the string in represents.
- */	
-void profile::setsamples(count_t samples){
+void profile::setsamples(count_t samples)
+{
 	header_.setsamples(samples);
 }			
 
-void profile::setcolumns(count_t a){
+void profile::setcolumns(count_t a)
+{
 	header_.setcolumns(a);
 }
 
-const std::string profile::decodeid1(const id1_t &id){
-	return header_.decodeid1(id);
-}
-const std::string profile_header::decodeid1(const id1_t &id){
-	return std::to_string( (unsigned long long int)id );
+const std::string profile::decodeid0(const id0_t &id)
+{
+	return index_.decode_id0(id);
 }
 
-const std::string profile::decodeextraid(const char &id, const size_t &a) {
+const std::string profile::decodeid1(const id1_t &id)
+{
+	return index_.decode_id1(id);
+}
+
+const std::string profile::decodeextraid(const char &id, const size_t &a)
+{
 	return header_.decodeextraid(id, a);
 }
-const std::string profile_header::decodeextraid(const char &id, const size_t &a) {
+
+const std::string profile_header::decodeextraid(const char &id, const size_t &a) 
+{
 	return std::string(1, decodechar[size_t(id)]);
 }
 
-const id0_t profile::encodeid0(const std::string &id){
-	return header_.encodeid0(id);
+const id0_t profile::encodeid0(const std::string &id)
+{
+	return index_.encode_id0(id);
 }
 
-const id0_t profile_header::encodeid0(const std::string &id){
-	if (lastid0_str==id) return lastid0;
-	lastid0_str=id;
-	std::map<std::string, count_t>::iterator search = id0_str.find(id);
-	if(search != id0_str.end()) {
-		lastid0=search->second;
-		return lastid0;
-	}
-	else {
-		control=(control|NEWID0);
-		count_t emplace=id0_str.size();
-		id0_str[id]=emplace;
-		id0.push_back(id);
-		lastid0=emplace;
-		return lastid0;
-	}
+const id1_t profile::encodeid1(const std::string &id)
+{
+	return index_.encode_id1(id);
 }
 
-const id1_t profile::encodeid1(const std::string &id){
-	return header_.encodeid1(id);
-}
-
-const id1_t profile_header::encodeid1(const std::string &id){
-	return atoi(id.c_str() );
-}
-
-const char profile::encodeextraid(const char &id, const count_t &a){
+const char profile::encodeextraid(const char &id, const count_t &a)
+{
 	return header_.encodeextraid(id, a);
 }
-const char profile_header::encodeextraid(const char &id, const size_t &a){
+
+const char profile_header::encodeextraid(const char &id, const size_t &a)
+{
 	return encodechar[size_t(id)];
 }
 
-int profile::seek(std::streampos pos) {
-	/*if (column==5 || in==NULL){
-		std::cerr << "seek is currently only implemented on random access files opened in 6 or 7 column mode. Try re-running ei w/o the -s option.\n";
-	};*/
+int profile::seek(std::streampos pos) 
+{
 	in->seekg(pos);
 	read();
 	return NONE;
 }
 
-void profile_header::clear(void){ column_names.clear(); }
+void profile_header::clear(void)
+{ 
+	column_names.clear();
+}
 
 
-profile_header::~profile_header(void){ column_names.clear(); }
+profile_header::~profile_header(void)
+{
+	column_names.clear();
+}
 
-int profile_header::setsamples(const count_t &samples) {
+int profile_header::setsamples(const count_t &samples)
+{
 	*samples_=samples;
 	column_names.clear();
 	if (*columns_==6 or *columns_==7) column_names.push_back("scaffold");
@@ -107,7 +82,7 @@ int profile_header::setsamples(const count_t &samples) {
 
 	for (unsigned int x=0; x<*samples_; ++x){
 		column_names.push_back("sample_"+std::to_string( (unsigned long long int)(x+1) ) );
-		sample_gof_.push_back(0);				// the number of samples (i.e. different individuals or populations) in the profile.
+		sample_gof_.push_back(0);				
 	};
 	site_->resize(samples);
 	return NONE;
@@ -121,6 +96,7 @@ int profile::copyheader(const profile &pro){
 
 int profile_header::setcolumns(const count_t &x) {
 	if (column_names.size()==0) setsamples(0);
+	//TODO I could change these over to switch case statements.
 	if (*columns_==5 and x==6){column_names.insert(column_names.begin(), "scaffold");}
 	if (*columns_==5 and x==7){column_names.insert(column_names.begin(), "scaffold"); column_names.insert(column_names.begin()+2, "ref");}
 	if (*columns_==6 and x==5){column_names.erase(column_names.begin() );}

@@ -51,3 +51,21 @@ int file_index::write_index(std::ostream &out)
 	}
 	return 0;
 }
+
+id0_t file_index::encodeid0(const std::string &id)
+	if (lastid0_str==id) return lastid0;
+	lastid0_str=id;
+	std::map<std::string, count_t>::iterator search = id0_str.find(id);
+	if(search != id0_str.end()) {
+		lastid0=search->second;
+		return lastid0;
+	}
+	else {
+		control=(control|NEWID0);
+		count_t emplace=id0_str.size();
+		id0_str[id]=emplace;
+		id0.push_back(id);
+		lastid0=emplace;
+		return lastid0;
+	}
+}

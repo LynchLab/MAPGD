@@ -43,7 +43,7 @@ public:
 
 /*! \breif Returns the numerical representation of the string used to identify scaffolds.
  */
-	const id0_t & encode_id0(const std::string &);		
+	const id0_t encode_id0(const std::string &);		
 
 /*! \breif Returns the string represented by id0's encoded by this (and only this) file_index.
  */

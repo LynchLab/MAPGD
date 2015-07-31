@@ -16,6 +16,7 @@
 
 #include "typedef.h"
 #include "stream-tools.h"
+#include "file-index.h"
 #include "locus.h"
 #include "quartet.h"
 
@@ -40,15 +41,9 @@ struct profile_flags{
 class  profile_header{
 private:
 //private variables should be initialized by reading the header...
-	std::map <std::string, count_t> id0_str;
-	std::vector <std::string> id0;
 	std::vector <std::string> extraids;		//!< extra ids associated with the quartet. (ref base identiy?).	
-
 	std::vector <std::string> column_names;		//!< the names of all the columns in the profile.
 	
-	count_t lastid0;				//!< initilize to 0-1;
-	std::string lastid0_str;			//!< initilize to "";
-
 	count_t encodechar[256];
 	char decodechar[256];
 
@@ -70,18 +65,15 @@ private:
 public:
 	const float_t getsample_property(const count_t &) const;
 	const std::string get_sample_name(const count_t &) const;
+
 	char control;					//!< a variable that controls switches in the binary read/write mode.
+
 	profile_header();				//!< does not initilize . . .
-	profile_header(profile *);			//!< initilizes profile_header.
 	~profile_header(void);
+	profile_header(profile *);			//!< initilizes profile_header.
 	void init(profile *);				//!< initilizes profile_header.
 
-	const id0_t encodeid0(const std::string &);
-	const id1_t encodeid1(const std::string &);
 	const char encodeextraid(const char &, const size_t &);
-
-	const std::string decodeid0(const id0_t&);
-	const std::string decodeid1(const id1_t&);
 	const std::string decodeextraid(const char &, const size_t &);
 
 	int readheader(std::istream *);			//!< reads the header of a profile. All profiles from v 2.0 and later should have headers.
@@ -94,15 +86,18 @@ public:
 
 	int setsamples(const count_t&);			//!< set the number of samples in the profile (only called in write mode).
 	int setcolumns(const count_t&);			//!< set the number of columns for reading and writing.
+
 	int set_column_name(const count_t&, const std::string&);
 	const std::string get_column_name(const size_t&) const;
+
 	profile_header & operator=(const profile_header&); //!< I don't think the copy makes sense. . . 
 	
 	void clear(void);
 };
 
 	
-/*! \breif A table to store quartet information. 
+///breif A table to store quartet information. 
+/* 
  *	Eventually this will be a specialization to add conversion functions from mpileup, and the various .pro 
  *	format to a more map format that will be used to read/write information within mapgd commands. 
  *	See the design document for the map format in the docs directory. 
@@ -130,7 +125,7 @@ private:
 
 	/*done*/
 
-	bool donothing_;			// a flag to indicate that nothing should be read for infile stream when read is called 
+	bool donothing_;			//!< a flag to indicate that nothing should be read for infile stream when read is called. This will be depricated.
 
 	static const count_t defaultorder[5];	// 01234 
 
@@ -143,12 +138,12 @@ private:
 
 	int writet();				//!< write the quartet information in memory to file in text mode.
 	int writeb();				//!< write the quartet information in memory to file in binary mode.
-						// pro files do not contain enough information to construct mpileup files.
 
 	int writet(Locus const &);		//!< write the quartet information passed to file in text mode.
 	int writeb(Locus const &);		//!< write the quartet information passed to file in binary mode.
 
-	profile_header header_;
+	profile_header header_;			//!< change this to a row header?
+	file_index index_;			//!< this tells us where we are.
 
 	std::istream *in;			//!< all data is read from in.
 	std::ostream *out;			//!< all data is writen is writen to out.
