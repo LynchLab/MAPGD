@@ -4,7 +4,7 @@ from scipy import stats
 import scipy
 import numpy as np
 from scipy.optimize import minimize
-import rml
+import ../lib/rml
 import random
 
 def getdll (model, params):
