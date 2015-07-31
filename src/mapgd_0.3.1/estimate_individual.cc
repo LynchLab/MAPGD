@@ -227,7 +227,7 @@ int estimateInd(int argc, char *argv[])
 	std::vector <float_t> gofs_read(ind.size() );
 	models model;
 	allele_stat buffer_mle[BUFFER_SIZE]; 
-	locus buffer_site[BUFFER_SIZE];
+	row buffer_row[BUFFER_SIZE];
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
 		uint32_t c=0, readed=0;
 		bool estimate_me=1;
@@ -244,15 +244,17 @@ int estimateInd(int argc, char *argv[])
 				#endif
 				{
 					c=readed;				//Turn on the ability to read data from all clones in 
-					if(pro.read(buffer_site[c])!=EOF){
+					if(pro.read(buffer_row[c])!=EOF){
 						readed++;	//reads the next line of the pro file. pro.read() retuerns 0
 						estimate_me=1;
 					}
 					else estimate_me=0;
 				}
 				if(estimate_me) {
+
 					std::vector <float_t> gofs(ind.size() );
-					buffer_site[c].unmaskall(); 
+					locus site=(locus) buffer_row[c].get(1);
+					buffer_site[c].unmaskall();
 					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
 					#ifdef PRAGMA
 					#pragma omp critical
@@ -275,8 +277,7 @@ int estimateInd(int argc, char *argv[])
 			}
 			if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
 			if (pro_out.is_open() ){
-				pro_out.encodeid0(pro.decodeid0(buffer_site[x].id0) );
-				pro_out.write( , buffer_site[x]);
+				pro_out.write(buffer_row[x]);
 			}
 		}
 		if (readed!=BUFFER_SIZE){break;}

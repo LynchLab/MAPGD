@@ -1,13 +1,16 @@
-SUBDIRS=mapgd_0.3.1 
+SUBDIRS=mapgd_0.3.1 intefaces 
 VER=0.3.1
 NAME=mapgd
 DEBIAN=0
 UBUNTU=1
 
+
+.PHONY: subdirs $(SUBDIRS)
+
+subdirs: $(SUBDIRS)
+
 $(SUBDIRS):
 	$(MAKE) -C $@
-.PHONY: $(SUBDIRS)
-
 
 all: $(SUBDIRS)
 .PHONY: all
@@ -31,11 +34,7 @@ test: all
 	cd test && bash test.sh
 .PHONY: test
 
-install: all
-	install -m 0755 ../bin/$(NAME) $(prefix)/bin
-.PHONY: install
-
-clean:
-	cd $(SUBDIRS) && $(MAKE) $@
+clean: 
+	-for d in $(SUBDIRS); do (cd $$d; $(MAKE) clean ); done
 	rm -f $(NAME)-*.tar.gz
 .PHONY: clean

@@ -53,5 +53,3 @@ install: all
 clean:
 	rm -f *.o
 	rm -f ../../bin/*
-.PHONY: clean
-

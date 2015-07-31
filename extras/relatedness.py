@@ -4,7 +4,7 @@ from scipy import stats
 import scipy
 import numpy as np
 from scipy.optimize import minimize
-import rml
+import ../lib/rml
 import random
 
 def getdll (model, params):
@@ -77,16 +77,10 @@ print "total sites, (line A:min-max, line C:min-max), success, e, dll, fA, dll, 
 
 model=FullModel
 
-
-
 for x in range(0, size):
 	for y in range(x+1, size):
-		x=int(sys.argv[2])
-		y=int(sys.argv[3])
 		rml.read(sys.argv[1], x, y)
 		params=rml.estimate()
-#		print params
-#		params=[0.,0.0,0.0,0.25,0.0,0.0,0.0,0.25]
 		results = minimize(model, params, method='SLSQP')
 		fit=np.copy(results.x).tolist() 
 		dlls=getdll(model, np.copy(results.x) )
@@ -102,4 +96,3 @@ for x in range(0, size):
 		out.append('{:.4f}'.format(null_ll) )
 		out.append('{:.4f}'.format(fit_ll) )
 		print ", ".join(out)
-		quit()
