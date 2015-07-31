@@ -7,10 +7,10 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
-#include "compare-pooled.h"
-#include "estimate-pooled.h"
-#include "estimate-individual.h"
-#include "estimate-fst.h"
+#include "compare_pooled.h"
+#include "estimate_pooled.h"
+#include "estimate_individual.h"
+#include "estimate_fst.h"
 #include "proview.h"
 
 #endif

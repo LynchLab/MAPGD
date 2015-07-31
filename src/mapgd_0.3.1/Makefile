@@ -15,25 +15,25 @@ CXX=g++
 OBJS=	mapgd.o \
 	allele_stat.o \
 	binomial.o \
-	compare-pooled.o \
-	estimate-individual.o \
-	estimate-pooled.o \
+	compare_pooled.o \
+	estimate_individual.o \
+	estimate_pooled.o \
 	genotype.o \
-	individual-likelihood.o \
+	individual_likelihood.o \
 	interface.o \
 	likelihood.o \
 	lnmultinomial.o \
 	locus.o \
-	newton-method-theta.o \
-	pooled-likelihood.o \
+	newton_method_theta.o \
+	pooled_likelihood.o \
 	population.o \
-	pro-file.o \
+	pro_file.o \
 	proview.o \
 	quartet.o \
-	stream-tools.o \
+	stream_tools.o \
 	models.o \
-	estimate-fst.o \
-	file-index.o
+	estimate_fst.o \
+	file_index.o
 
 all: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL)
@@ -47,7 +47,7 @@ debug: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL)
 
 install: all
-	sudo install -m 0755 $(LOCAL) $(GLOBAL)
+	sudo install _m 0755 $(LOCAL) $(GLOBAL)
 .PHONY: install
 	
 clean:

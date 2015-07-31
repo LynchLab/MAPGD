@@ -11,9 +11,9 @@
 #include <string.h>
 
 #include "interface.h"
-#include "stream-tools.h"
-#include "pro-file.h"
-#include "file-index.h"
+#include "stream_tools.h"
+#include "pro_file.h"
+#include "file_index.h"
 
 #include <math.h>
 #include <vector>

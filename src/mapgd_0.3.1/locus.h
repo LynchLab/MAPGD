@@ -4,74 +4,61 @@
 #include <iostream>
 #include <vector>
 #include "quartet.h"
+#include "typedef.h"
 
-class Locus {
+/// A class to sort the alleles at [quartet_t]s.
+/* The class locus handles sorting alleles at [quartet_t]s. Operations that use the relative count of [quartet_t]s etc.
+ * should be members of this class.
+ */ 
+class locus {
 private:
+	gt_t sorted_[5];				//!< an array to allow sorted access to quartets.
+	std::vector <quartet_t> sample_;		//!< The five bases A/C/G/T/N;
 public:
-	/* these need to be changed to private */
-	count_t sorted_[5];				//!< an array to allow sorted access to quartets.
-	
-	std::vector <quartet_t> sample;			//!< The five bases A/C/G/T/N;
-	std::vector <count_t> extraid;			//!< extra ids associated with the quartet. (ref base identiy?).
-
-//TODO count_t to be replaced.
-	id0_t id0;
-	id1_t id1;					//!< The ids associated with the quartet.
+	static constexpr gt_t defaultorder[5] = {0,1,2,3,4};//!<???
 //public:
 
-	Locus (count_t);
-	Locus ();
+	locus (count_t);
+	locus ();
 
 	/*BASIC OPERATORS*/
-	Locus & operator=(const Locus&);	
-	Locus & operator+=(const Locus&);	
-	const Locus operator+(const Locus&) const;	
+	locus & operator=(const locus&);		//!<
+	locus & operator+=(const locus&);		//!<
+	const locus operator+(const locus&) const;	//!<	
 
+	gt_t get_index(const gt_t &a) const;		//!< returns the index of the a'th alleles in a sorted quartet_t.
+	count_t get_coverage(size_t &s) const;		//!< returns coverage of population/individual s.
+	count_t get_coverage(void) const;		//!< returns total coverage.
 
+	count_t get_count(const gt_t &a) const;		//!< returns the count of allele in all individuals in the population.
+	count_t get_count(const size_t &s, const gt_t &a) const;//!< returns the count of individual/population s's a'th allele.
 
-	const count_t getindex(count_t) const;		//!< Returns the index of the alleles in order a sorted order.
-
-	count_t getcoverage(count_t) const;		//!< Returns coverage of population/individual N.
-	count_t getcoverage(void) const;		//!< Returns total coverage.
-
-	count_t getcount(count_t) const;		//!< Returns the count of allele in all indivuals in the population.
-	count_t getcount(count_t, count_t) const;	//!< Returns the count of individual a's b'th allele.
-
-	void swap(count_t, count_t);			//!< Exchage the alleles.
-	void sort(count_t);				//!< Sort counts from most common to least common (based on poulation N).
-	void sort(void);				//!< Sort counts from most common to least common (amoung all non-masked sites).
+	void swap(const gt_t &lhs, const gt_t &rhs);	//!< exchange the alleles.
+	void sort(size_t &s);				//!< sort counts from most common to least common (based on poulation N).
+	void sort(void);				//!< sort counts from most common to least common (among all non-masked sites).
 
 	/**/
-	void set_quartet(const quartet_t &, const count_t &);	//!< Sets the quartet_t array (unsorted).
+	void set_quartet(const quartet_t &q, const size_t &s);	//!< sets quartet_t of individual/population s to q (unsorted).
 
-	const quartet_t & get_quartet(const count_t &) const; 	//!< Returns the N'th quartet at the Locus.	
-	quartet_t & get_quartet(const count_t &);		//!< Returns the N'th quartet at the Locus.
+	const quartet_t & get_quartet(const size_t &s) const; 	//!< returns the s'th quartet at the locus.	
+	quartet_t & get_quartet(const size_t &s);		//!< returns the s'th quartet at the locus.
 
 	/*MASKING*/
-	count_t maskedcount(void) const;		//!< Returns the count of the number of individuals that are masked.
+	count_t maskedcount(void) const;		//!< returns the count of the number of individuals/populations that are masked.
 
-	void maskall(void);				//!< Mask all lines
-	void unmaskall(void);				//!< Unmask all lines
-	void mask(const std::vector <size_t> &);	//!< Mask all lines
-	void unmask(const std::vector <size_t> &);	//!< Unmask all lines
+	void maskall(void);				//!< mask all individuals/populations.
+	void unmaskall(void);				//!< unmask all lines
+	void mask(const std::vector <size_t> &v);	//!< mask all lines
+	void unmask(const std::vector <size_t> &v);	//!< unmask all lines
 
-	char getname( const count_t &) const;		//!< Get the nucleotide represented by the count at the N'th indexed quartet_t.
-	char getname_gt( const count_t &) const;	//!< Get the nucleotide represented by the count at the N'th indexed quartet_t, return * if the count equals the N+1 indexed quartet.
+	char get_name( const gt_t &a) const;		//!< get the nucleotide represented by the count at the a'th indexed quartet_t.
+	char get_name_gt( const gt_t &a) const;		//!< get the nucleotide represented by the count at the a'th indexed quartet_t, return * if the count equals the N+1 indexed quartet.
 
-	id0_t get_id0(void) {return id0;};		//!< Get the id0 of the Locus.
-	id1_t get_id1(void) {return id1;};		//!< Get the id1 of the Locus.
+	void resize(const size_t &);			//!< change the number of quartet_t s at the locus.
 
-	void set_id0(const id0_t &tid0) {id0=tid0;};	//!< Set the id0 of the Locus.
-	void set_id1(const id1_t &tid1) {id1=tid1;};	//!< Set the id1 of the Locus.
-	void set_extraid(const count_t &, const size_t &);	//!< Set the extraid of the Locus. Just used to represent the reference call. 
+	void mask_low_cov(const count_t &dp);						//!< mask site with coverage strictly less than dp;
 
-	count_t get_extraid(const size_t &) const;	//!< Get the extraid of the Locus. Used to represent the reference call.
-
-	void resize(const size_t &);			//!< Change the number of quartet_t s at the Locus.
-
-	std::vector <quartet_t>::iterator begin(void) {return sample.begin();};		//!< Return an iterator to the quartet_t s stored at this Locus.
-	std::vector <quartet_t>::iterator end(void) {return sample.end();};		//!< Return an iterator to the quartet_t s stored at this Locus.
-	void mask_low_cov(const count_t &dp);							//!< Mask site with coverage stricktly lt dp;
+	std::vector <quartet_t>::iterator begin(void) {return sample_.begin();};		//!< return an iterator to the quartet_t s stored at this locus.
+	std::vector <quartet_t>::iterator end(void) {return sample_.end();};		//!< return an iterator to the quartet_t s stored at this locus.
 };
-
 #endif

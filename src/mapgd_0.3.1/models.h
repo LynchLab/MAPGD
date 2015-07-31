@@ -29,11 +29,11 @@ public:
 	models(void);
 	~models(void);
 
-	/// Gets the log likelihood of the observations at Locus, given allele_stat.
-	float_t loglikelihood(const Locus &, const allele_stat &);
+	/// Gets the log likelihood of the observations at locus, given allele_stat.
+	float_t loglikelihood(const locus &, const allele_stat &);
 
-	/// Gets the log likelihood of the observations at Locus, given allele_stat.
-	float_t goodness_of_fit (Locus &, const allele_stat &, std::vector <float_t> &, const float_t &);
+	/// Gets the log likelihood of the observations at locus, given allele_stat.
+	float_t goodness_of_fit (locus &, const allele_stat &, std::vector <float_t> &, const float_t &);
 
 	/// breif Initilizes the ? for goodness of fit calculations.
 	void init_gof(const count_t *, const allele_stat &);
