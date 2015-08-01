@@ -23,3 +23,7 @@ mapgd estimate --fit --hwe --fst --filter -M ...
 |1      |    2   |
 | data  |        |
 
+Markdown | Less | Pretty
+--- | --- | ---
+*Still* | `renders` | **nicely**
+1 | 2 | 3
