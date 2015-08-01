@@ -60,5 +60,10 @@ public:
 
 	std::vector <quartet_t>::iterator begin(void) {return sample_.begin();};		//!< return an iterator to the quartet_t s stored at this locus.
 	std::vector <quartet_t>::iterator end(void) {return sample_.end();};		//!< return an iterator to the quartet_t s stored at this locus.
+
+	std::vector <quartet_t>::iterator begin(void) {return sample_.begin();};		//!< return an iterator to the quartet_t s stored at this locus.
+	std::vector <quartet_t>::iterator end(void) {return sample_.end();};		//!< return an iterator to the quartet_t s stored at this locus.
+
+	ostream& operator<<(ostream& output, const Point& p);
 };
 #endif
