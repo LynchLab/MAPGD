@@ -18,8 +18,8 @@ EXAMPLE USAGE
 
 mapgd estimate --fit --hwe --fst --filter -M ...
 
-|Table  | A  | B |
-|-------|:------:|
+|Table  | A    B |
+|-------|--------|
 |1      |    2   |
 | data  |        |
 
