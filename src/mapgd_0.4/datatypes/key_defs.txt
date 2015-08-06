@@ -1,0 +1,44 @@
+KEYNAME	KEYNUM	TYPE		DESC
+KEYNAME	0	char[7]		a unique label for data stored in columns
+KEYNUM	1	uint8_t		a number that is synonymous for a KEYNAME
+TYPE	2	char[13]	the type of data stored in KEY columns
+DESC	3	std::string	a verbak description of data stored by the key
+SYNONYM	4	char[13]	a key which is synonomous for another key
+SIZE	5	size_t		an integer number representing a size in bytes
+REAL	6	real_t		a floating-point number
+GENOTYP	7	gt_t		a genotype
+COUNT	8	count_t		a small integer
+BOOL	9	bool		a true or false value
+CHR	10	char[13]	a short string representing a scaffold or chromosome
+CHRNUM	11	id0_t		a number refering to how may scaffolds occur before this scaffold
+POS	12	id1_t		the position on a scaffold or chromosome
+QUARTET	13	quartet_t	five values representing the number of times a A,C,G,T, or N were observed
+ALLELE	14	allele		an array of all mutaully exclusive genotypes and their frequencies
+LOCUS	15	quartet_t[]	an array of quartets at some locus
+GENPROB	16	REAL		genotypic probability
+FREQ	17	REAL		allele frequency
+ERROR	18	REAL		error rate
+LOGLIKE	19	REAL		log likelihood
+SMPNAME	20	SIZE		sample name
+ROWID	21	SIZE		a number representing how many rows occur before this row in the file
+COV	22	COUNT		read depth
+SMPSIZE	23	SIZE		the number of samples/individuals within the data
+SOMATIC	24	BOOL		a flag to indicate that the record is a somatic mutaiton
+VALID	25	BOOL		a flag to indicate that a record has been validated?
+STRBIAS	26	REAL		strand bais at this position
+SB	26	REAL		strand bais at this position
+MAPQ0	27	COUNT		number of MAPQ==0 reads covering this position
+MQ0	27	SYNOM		a synonym for MAPQ0
+HAPMAP2	28	BOOL		membership in hapmap2
+H2	28	SYNOM		membership in hapmap2
+END	29	SIZE		ending row of a variant described by this record
+REF	30	GENOTYP		reference allele
+ANCTYPE	31	GENOTYP		ancestoral allele
+AA	31	SYNOM		ancestoral allele
+NCUT	32	SIZE		the number of samples excluded because of filters
+GOF	33	REAL		goodness of fit value
+DEFAULT	34	BOOL		a flag to indicate that a record represents a default value
+POLYLL	35	REAL		the log of the ratio polymorphic fit / monomorphic fit (chi-sqr, 2 df)
+HWELL	36	REAL		the log of the ratio polymorphic fit / monomorphic fit (chi-sqr, 2 df)
+MAXLL	37	REAL		the maximum likelihood fit of the data
+EFCHROM	38	REAL		the effective number of chromosomes at a locus

@@ -2,7 +2,7 @@
 import sys
 import argparse
 
-parser=argparse.ArgumentParser(description="Command Line argument parser")
+parser=argparse.ArgumentParser(description="A script to calculate the general IBD model from pedigree files") 
 parser.add_argument('-n', nargs=2, metavar='rec1 rec2', type=str, help="rec1 rec2")
 parser.add_argument('pedigree', metavar='FileName', type=str, help="A csv formated pedigree file. FamilyID,PersonID,FatherID,MotherID,Sex.")
 args=parser.parse_args()
