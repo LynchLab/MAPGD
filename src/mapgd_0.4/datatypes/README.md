@@ -1,24 +1,27 @@
 The row class servers as a cheep and easy way to pass information between different routines within mapgd. It is intended to be easy for new developers to implement, to help ensure that new mapgd commands can benefit from multi-threaded and multi-node execution, and to serve as a convenient way for users and developers alike to interact with the output of mapgd commands.
 
-	|    key1  	|     key2	|     key3 	|
+	| KEY NAME    \t| KEY NAME    \t| KEY NAME    \t|
+	| key info.	| key info.	| key info.	|
+--------|---------------|---------------|---------------|
 row 	|   datum	|    datum	|   datum	|
 row 	|   datum	|    datum	|   datum	|
 row 	|   datum	|    datum	|   datum	|
 
 
 For instance, the output of a text command can look like this:
-			
->CHROM	POS	LOCUS                                         
->(id#)	(bp)	(An array of quartets!)
->  	  	IND\_1	       IND\_2	      IND\_3	     IND\_4
->--------------------------------------------------------------------
->0       1       0/0/0/0        0/0/0/1        199/0/0/0      2/0/0/1
->0       2       0/1/0/0        0/1/0/0        0/0/0/0        2/0/0/1
 
+```			
+CHROM	POS	LOCUS                                         
+(id#)	(bp)	(An array of quartets!)
+  	  	IND\_1	       IND\_2	      IND\_3	     IND\_4
+--------------------------------------------------------------------
+0       1       0/0/0/0        0/0/0/1        199/0/0/0      2/0/0/1
+0       2       0/1/0/0        0/1/0/0        0/0/0/0        2/0/0/1
+```
 				
  new row can b
 
-```
+```C++
 void row.get(key, void* dst);
 void row.put(key, void* src);
 
@@ -33,19 +36,19 @@ void row.set_keys(container <key> keys);
 void row.set_keys(std::istream in);
 ```
 
-```
-keyid_t key (std::istream in);				//!< creates a key with name and description.
-keyid_t key (char* name, std::string desc);		//!< creates a key with name and description.
-keyid_t key (char* name, std::string desc, format); 	//!< same as above, except overrides the format class.
+```C++
+keyid_t key (std::istream in);				
+keyid_t key (char* name, std::string desc);		
+keyid_t key (char* name, std::string desc, format); 	
 ```
 
-```
+```C++
 char* key.get_name();
 keyid_t key.get_id();
 std::string key.get_desc();
 ```
 
-```
+```C++
 format(data);
 
 void format.get_key(void* src, char* dst);
