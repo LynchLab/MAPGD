@@ -1,16 +1,10 @@
 The row class servers as a cheep and easy way to pass information between different routines within mapgd. It is intended to be easy for new developers to implement, to help ensure that new mapgd commands can benefit from multi-threaded and multi-node execution, and to serve as a convenient way for users and developers alike to interact with the output of mapgd commands.
 
-empty	| KEY NAME      | KEY NAME      | KEY NAME      
-	| key info.	| key info.	| key info.	
-------- | ------------- | ------------- | ---------------
-row 	|   datum	|    datum	|   datum	
-row 	|   datum	|    datum	|   datum	
-row 	|   datum	|    datum	|   datum	
-
-First Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
+KEYNAME  | KEYNAME
+key info | key info
+--------- | -------------
+datum  | datum
+datam  | datum
 
 For instance, the output of a text command can look like this:
 
