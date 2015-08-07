@@ -17,8 +17,9 @@ KEYNUM::KEYNUM(void)
 }
 
 KEYNUM::KEYNUM(uint8_t keynum){
-	keynum_=keynum;
-	key_=new key("KEYNUM", 1, "a number that is synonymous for a key", this);
+	keyname_="KEYNUM";
+	keynum_=1
+	keydesc_="a number that is synonymous for a key";
 }
 
 
@@ -44,7 +45,6 @@ key::key(const std::string &name, const uint8_t &num, const std::string &desc, d
 	data_=this_data;
 	instance=0;
 	offset_=nokey;
-	dest_=this_data->get_dest();
 }
 
 const char * data::get_name(void) const

@@ -8,25 +8,24 @@
 #include "../typedef.h"
 #include "basic_types.h"
 
-class key;
-
 /// a key is a class that allows for us to read/write data to rows. 
 class key {
 private:
-	uint8_t offset_;		//!< the offset for storing this object in a row.
+	uint8_t row_offset_;		//!< the offset for storing this object in a row.
+	void * value_;			//!<  
 	size_t size_;			//!< The size of this object. 
 
 	KEYNAME keyname_;		//!< the name of the key. See key_defs.txt. 
 	KEYNUM keynum_;			//!< the number of the key. See key_defs.txt.
 	KEYDESC keydesc_;		//!< the description of the key. See key_defs.txt.
-	data *data_;
+
 public:
 	void set_offset(const uint8_t &new_offset){offset_=new_offset;}; //!< should be made privateish.
 
 	key(const std::string &name, 
 		const uint8_t &num, 
 		const std::string &desc, 
-		data *this_data);	//!< returns a key ...
+		void * data);			//!< returns a key ...
 	
 	static constexpr uint8_t nokey=-1;	//!< used to represent an uninstated key. 
 
@@ -39,9 +38,11 @@ public:
 
 	size_t size(void) const {return size_;}			//!< returns size of the data referenced by this key in bytes.
 	uint8_t offset(void) const {return offset_;}		//!< returns the number the offset (in bytes) from the beging of a row. 
-	std::string get_name(void) const { return keyname_.get_name();};
-	uint8_t get_num(void) const { return keynum_.get_num();};
-	std::string get_desc(void) const { return keydesc_.get_desc();};
+	virtual void * value (void)=0;
+
+	std::string get_name(void) const { return keyname_.value();};
+	uint8_t get_num(void) const { return keynum_.value();};
+	std::string get_desc(void) const { return keydesc_.value();};
 };
 
 

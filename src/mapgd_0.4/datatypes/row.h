@@ -35,7 +35,7 @@ public:
 	row ();							//!< make an empty row.	
 	~row ();						//!< destroy a row.	
 
-	void add_data(const key &this_key);			//!< add new column to the row. 
+	void add_data(const key &this_key, void *data);		//!< add new column to the row. 
 
 	key get_key(const std::string &key_num) const;		//!< gets a key by name
 	key get_key(const char *key_name) const;		//!< gets a key by number
@@ -44,7 +44,7 @@ public:
 	std::list <key> get_keys(void) const;			//!< returns all keys describing the row
 
 	void get(const std::string &key_name, void *dst) const;	//!< copies data from row to dst
-	void get(const char *key_name, void *dst) const		//!< copies data from row to dst
+	void get(const char *key_name, void *dst) const;	//!< copies data from row to dst
 	void get(const uint8_t &key_num, void *dst) const;	//!< copies data from row to dst
 
 	void put(const std::string &key_name, void *src);	//!< copies data from src to row

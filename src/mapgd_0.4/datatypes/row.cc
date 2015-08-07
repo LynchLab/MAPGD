@@ -28,8 +28,9 @@ row::~row(void)
 	free(data_);
 }	
 
-void row::add_data (key this_key)
+void row::add_key (const key &this_key)
 {
+	if (this_key.is!=key::nokey);	// checking to see if the key has been added to a row.
 	size_t old_row_size=row_size_;
 	key new_key=this_key;
 	new_key.set_offset(row_size_);
@@ -43,21 +44,17 @@ void row::add_data (key this_key)
 		exit(0);
 	}
 	memcpy(new_data, data_, old_row_size);
-	memcpy(new_data, *data, new_key.size(data) );
+	memcpy(new_data, &this_key.value(), new_key.size() );
 	free(data_);
+	this_key.clear();
 	data_=new_data;	
 }
 
-std::list <key> get_keys(void) const
+std::list <key> row::get_keys(void) const
 {
 	return keys_;
 }		
 	
-std::string row::get_name(const key &this_key)
-{
-	return this_key.name();
-}
-
 key row::get_key(const char *key_name) const
 {
 	return get_key(std::string(key_name) );
@@ -65,7 +62,7 @@ key row::get_key(const char *key_name) const
 
 key row::get_key(const std::string &key_name) const
 {
-	return *keys_by_name_[key_name]; 
+	return *keys_by_name_.find(key_name)->second; 
 }			
 
 key row::get_key(const uint8_t &key_num) const
@@ -85,7 +82,7 @@ void row::get(const uint8_t &key_num, void *dest) const
 	memcpy(dest, data_+this_key.offset(), this_key.size() );
 }
 
-void row::get(char *key_name, void *dest) const
+void row::get(const char *key_name, void *dest) const
 {
 	key this_key=get_key(key_name);
 	memcpy(dest, data_+this_key.offset(), this_key.size() );
