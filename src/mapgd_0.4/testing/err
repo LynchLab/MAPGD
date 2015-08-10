@@ -1,0 +1,90 @@
+In file included from ../datatypes/key.h:10:0,
+                 from ../datatypes/key.cc:1:
+../datatypes/formats.h: In function ‘void to_text_real(uint8_t*, void*)’:
+../datatypes/formats.h:50:37: error: ‘real’ was not declared in this scope
+  sprintf ( (char *)(txt), "%.2g", *(real *)val);  
+                                     ^
+../datatypes/formats.h:50:43: error: expected primary-expression before ‘)’ token
+  sprintf ( (char *)(txt), "%.2g", *(real *)val);  
+                                           ^
+../datatypes/formats.h: In function ‘size_t size_of_null(void*)’:
+../datatypes/formats.h:60:38: error: expected ‘;’ before ‘}’ token
+ size_t size_of_null (void *){return 7};
+                                      ^
+In file included from ../datatypes/key.cc:1:0:
+../datatypes/key.h: At global scope:
+../datatypes/key.h:68:2: error: ‘size_of_f’ does not name a type
+  size_of_f=&format::size_of_chr7;
+  ^
+../datatypes/key.h:69:2: error: ‘to_text_f’ does not name a type
+  to_text_f=&format::to_text_chr7;
+  ^
+../datatypes/key.h:70:2: error: ‘from_tx_f’ does not name a type
+  from_tx_f=&format::from_tx_chr7;
+  ^
+../datatypes/key.h:81:2: error: ‘size_of_f’ does not name a type
+  size_of_f=&format::size_of_uint8;
+  ^
+../datatypes/key.h:82:2: error: ‘to_text_f’ does not name a type
+  to_text_f=&format::to_text_uint8;
+  ^
+../datatypes/key.h:83:2: error: ‘from_tx_f’ does not name a type
+  from_tx_f=&format::from_tx_uint8;
+  ^
+../datatypes/key.cc: In constructor ‘KEYNAME::KEYNAME(const char*)’:
+../datatypes/key.cc:37:13: error: ‘size_of_chr7’ was not declared in this scope
+  size_of_f=&size_of_chr7;
+             ^
+../datatypes/key.cc:38:13: error: ‘to_text_chr7’ was not declared in this scope
+  to_text_f=&to_text_chr7;
+             ^
+../datatypes/key.cc:39:13: error: ‘from_tx_chr7’ was not declared in this scope
+  from_tx_f=&from_tx_chr7;
+             ^
+../datatypes/key.cc: In constructor ‘KEYNUM::KEYNUM(const uint8_t&)’:
+../datatypes/key.cc:56:13: error: ‘size_of_chr7’ was not declared in this scope
+  size_of_f=&size_of_chr7;
+             ^
+../datatypes/key.cc:57:13: error: ‘to_text_chr7’ was not declared in this scope
+  to_text_f=&to_text_chr7;
+             ^
+../datatypes/key.cc:58:13: error: ‘from_tx_chr7’ was not declared in this scope
+  from_tx_f=&from_tx_chr7;
+             ^
+../datatypes/key.cc: In constructor ‘KEYDESC::KEYDESC(const string&)’:
+../datatypes/key.cc:76:13: error: ‘size_of_chr7’ was not declared in this scope
+  size_of_f=&size_of_chr7;
+             ^
+../datatypes/key.cc:77:13: error: ‘to_text_chr7’ was not declared in this scope
+  to_text_f=&to_text_chr7;
+             ^
+../datatypes/key.cc:78:13: error: ‘from_tx_chr7’ was not declared in this scope
+  from_tx_f=&from_tx_chr7;
+             ^
+../datatypes/key.cc: In constructor ‘key::key()’:
+../datatypes/key.cc:89:13: error: ‘size_of_chr7’ was not declared in this scope
+  size_of_f=&size_of_chr7;
+             ^
+../datatypes/key.cc:90:13: error: ‘to_text_chr7’ was not declared in this scope
+  to_text_f=&to_text_chr7;
+             ^
+../datatypes/key.cc:91:13: error: ‘from_tx_chr7’ was not declared in this scope
+  from_tx_f=&from_tx_chr7;
+             ^
+../datatypes/key.cc: In constructor ‘key::key(const string&, const uint8_t&, const string&, void*)’:
+../datatypes/key.cc:103:2: error: ‘format_’ was not declared in this scope
+  format_=&format();
+  ^
+../datatypes/key.cc:103:18: error: ‘format’ was not declared in this scope
+  format_=&format();
+                  ^
+../datatypes/key.cc:104:13: error: ‘size_of_chr7’ was not declared in this scope
+  size_of_f=&size_of_chr7;
+             ^
+../datatypes/key.cc:105:13: error: ‘to_text_chr7’ was not declared in this scope
+  to_text_f=&to_text_chr7;
+             ^
+../datatypes/key.cc:106:13: error: ‘from_tx_chr7’ was not declared in this scope
+  from_tx_f=&from_tx_chr7;
+             ^
+make: *** [../datatypes/key.o] Error 1

@@ -1,5 +1,8 @@
-#ifndef FILE_INDEX_H_
-#define FILE_INDEX_H_
+#ifndef _FILE_INDEX_H_
+#define _FILE_INDEX_H_
+
+
+//these need to be moved ...
 
 #include <iostream>
 #include <map>
@@ -10,7 +13,7 @@
 
 #include "stream_tools.h"
 #include "typedef.h"
-#include "datatypes/basic_types.h"
+//#include "datatypes/row.h"
 
 /// An interface that transforms pairs of name and position keys into record numbers.
 /* file_index should always be used to re designate pairs of keys into a single record

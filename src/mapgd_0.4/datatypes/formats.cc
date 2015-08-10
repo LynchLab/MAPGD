@@ -1,30 +1,30 @@
-#include "basic_types.h"
+#include "formats.h"
 
-void CHAR7::to_text(uint8_t *source, char *destination)
+void to_text_char7(uint8_t *source, char *destination)
 {
 	memcpy(destination, source, 7);
 	memset(destination+7, 0, 1);
 }
 
-void CHAR7::from_text(char *source, uint8_t *destination)
+void from_tx_char7(char *source, uint8_t *destination)
 {
 	memcpy(destination, source, 7);
 	memset(destination+7, 0, 1);
 }
 
-void CHAR13::to_text(uint8_t *source, char *destination)
+void to_text_char13(uint8_t *source, char *destination)
 {
 	memcpy(destination, source, 13);
 	memset(destination+13, 0, 1);
 }
 
-void CHAR13::from_text(char *source, uint8_t *destination)
+void from_tx_char13(char *source, uint8_t *destination)
 {
 	memcpy(destination, source, 13);
 	memset(destination+13, 0, 1);
 }
 
-void UINT8::to_text(uint8_t *source, char *destination)
+void to_text_uint8(uint8_t *source, char *destination)
 {
 	size_t wrote=snprintf(destination, 7, "%d", *source);
 	if (wrote<=7) {
@@ -33,7 +33,7 @@ void UINT8::to_text(uint8_t *source, char *destination)
 	
 }
 
-void UINT8::from_text(char *source, uint8_t *destination)
+void from_tx_uint8(char *source, uint8_t *destination)
 {
 	char buffer[8]={0};
 	memcpy(buffer, source, 7);

@@ -1,5 +1,6 @@
 The row class servers as a cheep and easy way to pass information between different routines within mapgd. It is intended to be easy for new developers to implement, to help ensure that new mapgd commands can benefit from multi-threaded and multi-node execution, and to serve as a convenient way for users and developers alike to interact with the output of mapgd commands.
 
+Conseptutally mapgd 
 KEYNAME  | KEYNAME
 --------- | -------------
 datum  | datum
@@ -8,10 +9,11 @@ datam  | datum
 For instance, the output of a text command can look like this:
 
 ```			
-CHROM  |POS    |LOCUS                                         
-(id#)  |(bp)   |(An array of quartets!)
-       |       |IND\_1         IND\_2         IND\_3         IND\_4
---------------------------------------------------------------------
+═══════╦═══════╦═════════════════════════════════════════════════════ 
+CHROM  ║ POS   ║LOCUS                             
+ID#    ║ (bp)  ║                                                   
+       ║       ║IND_1          IND_2          IND_3          IND_4  
+═══════╩═══════╩════════════════════════════════════════════════════ 
 0       1       0/0/0/0        0/0/0/1        199/0/0/0      2/0/0/1
 0       2       0/1/0/0        0/1/0/0        0/0/0/0        2/0/0/1
 ```

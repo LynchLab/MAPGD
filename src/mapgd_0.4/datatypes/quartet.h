@@ -45,14 +45,6 @@ typedef struct quartet {
 	}
 } __attribute__((packed)) quartet_t;
 
-size_t size_bin(const quartet_t &q){
-	return sizeof(q);
-}
-
-size_t size_tex(const quartet_t &q){
-	return 4;
-}
-
 /// returns the total depth of coverge at the quartet
 count_t count(const quartet_t&);
 

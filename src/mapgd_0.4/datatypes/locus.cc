@@ -1,5 +1,7 @@
 #include "locus.h"
 
+constexpr gt_t locus::defaultorder[];
+
 locus::locus(void){
 	locus(0);
 };

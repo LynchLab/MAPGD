@@ -13,7 +13,7 @@
 #include "datatypes/allele.h"
 #include "datatypes/population.h"	
 #include "datatypes/genotype.h"
-#include "datatypes/simple_types.h"
-#include "datatypes/basic_types.h"
+#include "datatypes/formats.h"
+#include "datatypes/base_keys.h"
 
 #endif 

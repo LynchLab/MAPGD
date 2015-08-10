@@ -22,13 +22,6 @@ inline std::vector<std::string> split(std::istream &in, const char &delim)
 		elements.push_back( line.substr(last_delim, this_delim-last_delim) );
 		last_delim=this_delim+1;
 	} while ( this_delim!=std::string::npos );
-/*
-	std::cerr << line << std::endl;
-	for (size_t x=0; x<elements.size(); ++x){
-		std::cerr << "[" << x << "]:" << elements[x] << std::endl;
-	}
-	std::cerr <<std::endl;
-*/
 	return elements;
 }
 
@@ -39,16 +32,28 @@ inline std::vector<std::string> split(const std::string &s, const char &delim)
 	return split(ss, delim);
 }
 
-///Default behavior is to split on white space and remove it
-/*inline std::vector<std::string> split(std::istream &in)
+inline std::vector<std::string> split(std::istream &in)
 {
-	std::string line_in;
-	std::string line_out;
-	getline(in, line_in);
-	line_out.reserve(line_in.size() );
-	//TODO REMOVE WHITESPACE
-	return split(line_out, ' ');
-}*/
+	std::vector<std::string> elements;
+	std::string line;
+	size_t last_delim=0, this_delim=0;
+	getline(in, line);
+	do {
+		this_delim=line.find(" \t", last_delim);
+		if (this_delim-last_delim>0) elements.push_back( line.substr(last_delim, this_delim-last_delim) );
+		last_delim=this_delim+1;
+    	} while ( this_delim!=std::string::npos );
+	return elements;
+}
+
+inline std::vector<std::string> split(const std::string &s)
+{
+	std::stringstream ss;
+	ss <<s;
+	return split(ss);
+}
+	
+///Default behavior is to split on white space and remove it
 
 /// Takes a string and returns a vector with two elements, split on first. 
 /* For example, if the string "A,B,C , D" is given, then {"A", "B,C , D"} is returned.
@@ -68,6 +73,29 @@ inline std::vector<std::string> split_first(const std::string &s, const char &de
 	std::stringstream ss;
 	ss << s;
 	return split_first(ss, delim);
+}
+
+///Stolen from Erik Aronesty's stackoverflow answer.
+std::string strprintf(const std::string fmt, ...) 
+{
+	int size = ((int)fmt.size()) * 2 + 50;   // Use a rubric appropriate for your code
+	std::string str;
+	va_list args;
+	while (true) {     // Maximum two passes on a POSIX system...
+		str.resize(size);
+		va_start(args, fmt);
+		int n = vsnprintf((char *)str.data(), size, fmt.c_str(), args);
+		va_end(args);
+		if (n > -1 && n < size) {  // Everything worked
+			str.resize(n);
+			return str;
+		}	
+		if (n > -1)  // Needed size returned
+			size = n + 1;   // For null char
+		else
+			size *= 2;      // Guess at a larger size (OS specific)
+	}
+	return str;
 }
 
 /// Writes a vector out in a format . . . 

@@ -70,6 +70,4 @@ public:
 	//ostream& operator<<(ostream& output, const Point& p);
 };
 
-size_t size_bin(const locus &l) {return l.quartet_size()*sizeof(quartet_t)+sizeof(gt_t)*5;};	//!< all class of type data need to decleare a size function that returns the total size of ...
-size_t size_tex(const locus &l) {return l.quartet_size()*4;};	//!< all class of type data need to decleare a size function that returns the total size of ...
 #endif

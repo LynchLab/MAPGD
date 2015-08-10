@@ -19,10 +19,6 @@
 #####[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
-<b> SEVERAL MAJOR ERRORS WERE INTRODUCED IN A RECENT VERSION OF MAPGD </b>
-
-These have been fixed in version 0.3.1, but any output from version 0.3 is suspect. 
-
 <h3> Introduction </h3>
 
 MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data, and provides minimum MSE estimators of these statistics on low coverage sequence. Although other tools, such as vcftools, give similar allele frequency estimates with less computational investment when coverage is high, MAPGD should always be preferred to other programs when calculating IBD coefficients. 
@@ -95,12 +91,11 @@ Finally show me your changes by typing.
 
 <h5> Changes </h5>
 
-Changes to the interface have been made to better conform to [POSIX](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html) guidelines:
-The the syntax of the -p option (which specifies the populations to be analyzed) has been changed from a space delimited list to a comma delimited list. See the -h option from more information.
+Data is now saved to a sqlite3 database by default. This data can be viewed using a wide variety of software, e.g [sqlitebrowser](http://sqlitebrowser.org/). This format is our stable format we guarand useful than formats used in other software. 
 
-The default behavior of the cp and ep commands bas been changed to read and write to the stdin and stdout (respectively).
+##SCREEN SHOT## 
 
-The ability to specify input and output files with the -i and -o options may be deprecated in the near future. Because files within the program are unbuffered, reading and writing is quite slow and you will see significant gains in performance using i/o redirection. 
+
 
 Headers have been added to .pro files to preserve information about input files and aid with compatibility as development continues. Additionally, the last line of .pro files now list the total number of lines in the file. 
  

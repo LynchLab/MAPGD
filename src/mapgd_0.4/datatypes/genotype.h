@@ -14,7 +14,7 @@
  *
  *	For members to be stored in map files they must contain only fixed width . . . Individuals can have names that appear in the column header. 
  */
-class genotype : public data {
+class genotype {
 
 private:
 	std::string name_;

@@ -16,16 +16,13 @@ OBJS=	mapgd.o \
 	interface.o \
 	stream_tools.o \
 	datatypes/row.o \
-	datatypes/basic_types.o \
+	datatypes/formats.o \
 	datatypes/key.o \
 	datatypes/allele.o \
 	datatypes/genotype.o \
 	datatypes/locus.o \
 	datatypes/quartet.o \
-	datatypes/population.o \
-	datatypes/simple_types.o \
-	keyview.o \
-	data_stream.o
+	datatypes/population.o 
 #	proview.o \
 #	pro_file.o \
 	models.o \
