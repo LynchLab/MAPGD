@@ -18,6 +18,10 @@
 #####[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
+<b> VERSION 0.4 </b>
+
+Development of version 0.4 is nearly complete. Version 0.4 will move over to using an SQL database for storing data, which should result in performance increases when processing large files. Development of the 0.3 version has been stopped, although I will still perform major bug fixes if anyone tells me about bugs. 
+
 <b> SEVERAL MAJOR ERRORS WERE INTRODUCED IN A RECENT VERSION OF MAPGD </b>
 
 These have been fixed in version 0.3.1, but any output from version 0.3 is suspect. 
