@@ -3,10 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include "../typedef.h"
-
 #include "quartet.h"
-#include "key.h"
 
 /// A class to sort the alleles at [quartet_t]s.
 /* The class locus handles sorting alleles at [quartet_t]s. Operations that use the relative count of [quartet_t]s etc.

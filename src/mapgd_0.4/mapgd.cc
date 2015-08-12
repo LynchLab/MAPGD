@@ -3,7 +3,6 @@
 #include <cstring>
 
 #include "interface.h"
-#include "proview.h"
 #include "commands.h"
 
 using namespace std;
@@ -22,8 +21,9 @@ int main (int argc, char* argv[])
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 
-	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "prints data in the '.pro' file quartet format");
-	env.command(	' ',"ep", 	&estimate_pooled, 		"an error occured while calling ep", "estimates allele frequencies using pooled data");
+	env.command(	' ',"write", 	&write_command,			"an error occured while calling write", "write data in a format the humans can use");
+	env.command(	' ',"read", 	&read_command,			"an error occured while calling read", "stream data in a format mapgd commands can use");
+	env.command(	' ',"ep",	&estimate_pooled, 		"an error occured while calling ep", "estimates allele frequencies using pooled data");
 	env.command(	' ',"cp", 	&compare_pooled, 		"an error occured while calling cp", "compares allele frequencies between populations using pooled data");
 
 	env.command(	' ',"ei", 	&estimate_individual, 		"an error occured while calling ei", "estimates allelel frequencies using individual data");

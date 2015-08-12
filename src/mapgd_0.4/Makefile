@@ -2,7 +2,7 @@
 #c90 c89 c99 c9x c11 c1x gnu90 gnu89 gnu99 gnu9x gnu11 gnu1x c++98 c++03 gnu++98 gnu++03 c++11 c++0x gnu++11 gnu++0x c++1y gnu++1y
 
 MODE=-O3
-STD=-std=c++0x
+STD=-std=c++11
 GLOBAL=/usr/local/bin
 LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
@@ -13,16 +13,18 @@ CXX=g++
 
 #>! TODO ORGANIZE THESE!!
 OBJS=	mapgd.o \
-	interface.o \
+	interface/interface.o \
 	stream_tools.o \
-	datatypes/row.o \
-	datatypes/formats.o \
-	datatypes/key.o \
 	datatypes/allele.o \
 	datatypes/genotype.o \
 	datatypes/locus.o \
 	datatypes/quartet.o \
-	datatypes/population.o 
+	datatypes/population.o \
+	pipe/pipe.o \
+	pipe/dbapi.o \
+	commands/estimate_individual.o \
+	commands/read.o \
+	commands/write.o
 #	proview.o \
 #	pro_file.o \
 	models.o \

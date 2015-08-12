@@ -1,7 +1,7 @@
 #ifndef _ALLELE_H_
 #define _ALLELE_H_
 
-#include "key.h"
+#include <cstring>
 #include "../typedef.h"
 
 ///	A class to store population specific information. May be moved over to population.

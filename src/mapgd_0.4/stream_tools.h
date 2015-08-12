@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <cstdarg>
 #include <sstream>
 
 /// Takes a stream/string and returns a vector with one element for each field.

@@ -1,0 +1,12 @@
+In file included from pipe/pipe.cc:3:0:
+pipe/pipe.h:128:59: error: the type ‘const key’ of constexpr variable ‘locus’ is not literal
+ static constexpr key locus(key_type::locus, 0, "LOCUS", "");
+                                                           ^
+pipe/pipe.h:32:7: note: ‘key’ is not literal because:
+ class key
+       ^
+pipe/pipe.h:32:7: note:   ‘key’ is not an aggregate, does not have a trivial default constructor, and has no constexpr constructor that is not a copy or move constructor
+pipe/pipe.cc:5:12: warning: ‘int callback(void*, int, char**, char**)’ defined but not used [-Wunused-function]
+ static int callback(void *NotUsed, int argc, char **argv, char **azColName){
+            ^
+make: *** [pipe/pipe.o] Error 1

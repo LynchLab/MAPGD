@@ -18,5 +18,4 @@ typedef int64_t	id1_off_t;	//specifies a distance between bp, must addres -id1_t
 typedef uint8_t gt_t;		//specifies a genotype.		limit 128.
 typedef uint8_t keyid_t;
 
-
 #endif

@@ -5,10 +5,9 @@
 
 #include "quartet.h"
 #include "allele.h"
-#include "key.h"
 
 #include "../typedef.h"
-#include "../binomial.h"
+#include "../statistics/binomial.h"
 
 /*!	\breif A data type to store genotypic probabilities. 
  *
