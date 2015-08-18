@@ -16,6 +16,7 @@
 #include "../interface.h" 
 #include "../statistics/individual_likelihood.h"
 #include "../statistics/likelihood.h"
+#include "../statistics/models.h"
 #include "../pipe/pipe.h"
 #include "../data.h"
 

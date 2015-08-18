@@ -6,7 +6,7 @@
 #include <math.h>
 
 inline real_t H0 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -18,7 +18,7 @@ inline real_t H0 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t H1 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -30,7 +30,7 @@ inline real_t H1 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t H2 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -42,7 +42,7 @@ inline real_t H2 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J00 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -54,7 +54,7 @@ inline real_t J00 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J01 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -66,7 +66,7 @@ inline real_t J01 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J02 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -78,7 +78,7 @@ inline real_t J02 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J10 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -90,7 +90,7 @@ inline real_t J10 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J11 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -102,7 +102,7 @@ inline real_t J11 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J12 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -114,7 +114,7 @@ inline real_t J12 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J20 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -126,7 +126,7 @@ inline real_t J20 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J21 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -138,7 +138,7 @@ inline real_t J21 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t J22 (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 
@@ -150,7 +150,7 @@ inline real_t J22 (const quartet_t &q, const allele_t &a) {
 }
 
 inline real_t lnL_NR (const quartet_t &q, const allele_t &a) {
-	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele.
+	const real_t M=q.base[get_major(a)];		//count_t of the number of reads of the major allele_t.
 	const real_t m=q.base[get_minor(a)];		//count_t of the number of reads of the minor allele
 	const real_t E=q.base[get_error1(a)]+q.base[get_error2(a)];	//count_t of the number of reads of niether major nor minor
 

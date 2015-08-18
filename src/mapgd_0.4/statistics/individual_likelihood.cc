@@ -21,7 +21,7 @@ real_t efc (const locus &site){
 };
 
 //Intilaizes the parameters of the ... returns 1 on succesful excecution, returns 0 if there are no reads...
-count_t init_params(locus &site, allele &a, const real_t &minerr){
+count_t init_params(locus &site, allele_t &a, const real_t &minerr){
 
 	std::vector <quartet_t>::iterator it=site.begin(); 
 	std::vector <quartet_t>::iterator end=site.end(); 
@@ -88,7 +88,7 @@ count_t init_params(locus &site, allele &a, const real_t &minerr){
 }
 
 
-count_t maximize_newton (locus &site, allele &a, models &model, std::vector <real_t> &gofs, const real_t &maxgof, const count_t &maxpitch){
+count_t maximize_newton (locus &site, allele_t &a, models &model, std::vector <real_t> &gofs, const real_t &maxgof, const count_t &maxpitch){
 
 	real_t J[3][3];		//The Jacobian/Hessian.
         real_t iJ[3][3]; 		//Inverse of the Jacobian/Hessian.
@@ -218,7 +218,7 @@ count_t maximize_newton (locus &site, allele &a, models &model, std::vector <rea
 }
 
 /* Uses a grid method to maximize the likelihood equations.*/
-count_t maximize_grid (locus &site, allele &a, models &model, std::vector <real_t> &gofs, const real_t &MINGOF, const size_t &maxpitch){
+count_t maximize_grid (locus &site, allele_t &a, models &model, std::vector <real_t> &gofs, const real_t &MINGOF, const size_t &maxpitch){
 
 	count_t N_=site.get_coverage();
 	count_t P_=a.MM*N_;
@@ -314,7 +314,7 @@ count_t maximize_grid (locus &site, allele &a, models &model, std::vector <real_
 */	return excluded;
 }
 
-count_t maximize_analytical (locus &site, allele &a, models &model, std::vector <real_t> &gofs, const real_t &maxgof, const size_t &maxpitch){
+count_t maximize_analytical (locus &site, allele_t &a, models &model, std::vector <real_t> &gofs, const real_t &maxgof, const size_t &maxpitch){
 
 
 	a.frequency[0]=1.0;

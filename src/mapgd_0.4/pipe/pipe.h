@@ -13,7 +13,6 @@
 #include <sqlite3.h>
 #include "../typedef.h"
 
-
 class key;
 class row;
 class table;
@@ -34,8 +33,6 @@ class key
 private:
 	size_t offset_;			//!< specifies where an object is stored relative to the begining of a row.
 	size_t size_;			//!< the size of an object in bytes.
-	void *begin_;			//!< the reference to where the object is stored.
-	bool delete_;			//!< a flag to indicate that key should delete the object at value_ when it goes out of scope.
 	bool indexed_;			//!< a flag to indicate that key should be used as an index in the construction of a database. 
 	char name_[256];		//!< the name of the key.
 	char desc_[256];		//!< a verbal description of the key.
@@ -99,33 +96,6 @@ public:
 	friend void * db_insert(sqlite3 *, const row &);
 	const char * table(void) const;
 };
-
-class key_type
-{
-public:
-	static constexpr uint8_t
-	real_80	=0,
-	real_64	=1,
-	real_32	=2,
-	uint_8	=3,
-	uint_16	=4,
-	uint_32	=5,
-	uint_64	=6,
-	locus	=7,	
-	allele	=8,
-	genotyp	=9;	
-};
-
-class keyid
-{
-public:
-	static constexpr uint8_t
-	locus	=0,
-	allele	=1,
-	genotyp =2;
-};
-
-static constexpr key locus(key_type::locus, 0, "LOCUS", "");
 
 inline void * fetch(const row &this_row, const key &this_key)
 {

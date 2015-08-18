@@ -34,7 +34,7 @@ public:
 
 	void set (float_t*);				//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
 	void set (float_t, float_t, float_t, float_t);	//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
-	void set(void (*)(const allele&, float_t *), const allele&);
+	void set(void (*)(const allele_t&, float_t *), const allele_t&);
 
 	float_t lnprob(const count_t*) ;		//!< returns the probabiltiy of the multinomial distribution . . .
 	float_t lnprob_approx(const count_t*);		//!< returns the probabiltiy of the multinomial distribution . . .

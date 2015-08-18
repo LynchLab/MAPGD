@@ -64,12 +64,15 @@ void estimate (locus &site, row &out, models &model, const count_t &MIN, const f
 	temp.frequency[1]=2.*get_freq(mle)*(1.-get_freq(mle) ); 		//Hardy-Weinberg equilibrium.
 	temp.frequency[2]=pow(1.-get_freq(mle) , 2);				//?
 	real_t hwell=model.loglikelihood(site, temp);			//?
+	real_t this_efc=efc(site);
 
-	place(out, key::polyll,	maxll-monoll);
-	place(out, key::hwell, 	maxll-hwell);
-	place(out, key::ncut, 	excluded);
-	place(out, key::efchrom,efc(site) );
-	place(out, key::maxll, 	maxll);
+	real_t m1=maxll-monoll, m2=maxll-hwell;  
+	place(out, polyll_k,	&m1);
+	place(out, hwell_k, 	&m2);
+	place(out, ncut_k, 	&excluded);
+	place(out, efchrom_k, 	&this_efc );
+	place(out, maxll_k, 	&maxll);
+	place(out, allele_k, 	&mle);
 }
 
 
@@ -86,6 +89,8 @@ int estimate_individual(int argc, char *argv[])
 	std::string infile="";
 	std::string outfile="";
 
+	table in, out, env;
+
 	bool verbose=false;
 	bool quite=false;
 	bool noheader=false;
@@ -101,26 +106,27 @@ int estimate_individual(int argc, char *argv[])
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
 
 	env_t env;
-	env.setname("mapgd ei");
+	env.setname("mapgd estimate");
 	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman and Takahiro Maruki");
-	env.setdescription("Uses a maximum likelihood approach to estimate population genomic statistics from an individually 'labeled' population.");
-	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "the individuals to be used in estimates.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).");
-	env.optional_arg('m',"minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
-	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage of sites to be estimated (defualt 4).");
-	env.optional_arg('a',"alpha", 	&A, 		&arg_setfloat_t, "please provide a float.", "cut-off value for printing polymorphic sites (default 0.0).");
-	env.optional_arg('g',"goodfit", &MINGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
-	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
-	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
-	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
-	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
-	env.flag(	'q', "quite", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
+	env.setdescription("Uses a maximum likelihood approach to estimate population genomic statistics from a population.");
+	env.optional_arg('I', "individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "the individuals to be used in estimates.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).");
+	env.optional_arg('m', "minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
+	env.optional_arg('M', "mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage of sites to be estimated (defualt 4).");
+	env.optional_arg('a', "alpha", 	&A, 		&arg_setfloat_t, "please provide a float.", "cut-off value for printing polymorphic sites (default 0.0).");
+	env.optional_arg('g', "goodfit", &MINGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
+	env.optional_arg('N', "number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
+	env.flag(	 'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
+	env.flag(	 'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
+	env.flag(	 'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
+	env.flag(	 'q', "quite", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
 
 	if ( parsargs(argc, argv, env) ) printUsage(env); 	//Gets all the command line options, and prints usage on failure.
 
 	models model;						//model is needed to do our likelihood calculations.
 
-	std::list <key> required={key(keyid::allele)};	// makes a key to read/write a "ALLELE_STATS".
+	std::list <key> required={allele_k};			// makes a key to read/write a "ALLELE_STATS".
+
 
 	row  in_row[BUFFER_SIZE]=row( in.get_keys("PROFILE") );
 	row out_row[BUFFER_SIZE]=row( in.get_keys("GENOME").Union(required).ToList() );
@@ -162,7 +168,6 @@ int estimate_individual(int argc, char *argv[])
 		}
 		if (readed!=BUFFER_SIZE){break;}
 	}
-//	for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.get_sample_name(ind[x]) << ":" << sum_gofs[x]/sqrt(float_t(gofs_read[x])) << std::endl;
 	in.close();
 	out.close();
 	return 0;					//Since everything worked, return 0!.

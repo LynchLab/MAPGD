@@ -51,7 +51,7 @@ lnmultinomial::~lnmultinomial (void){
 
 /* \breif  . . .	
  */
-void lnmultinomial::set(void (*fn)(allele const &, float_t *), allele const &s)
+void lnmultinomial::set(void (*fn)(allele_t const &, float_t *), allele_t const &s)
 {
 	delete [] lnp_;
 	lnp_=new float_t[size_];

@@ -1,11 +1,11 @@
-#ifndef MODELS_H_
-#define MODELS_H_
+#ifndef _MODELS_H_
+#define _MODELS_H_
 /*! \breif this class perfoms some likelihood calculations. It keeps some look-up tables that will grow as calculations
  *	are performed, and may become to large over time. TODO: implement automatic look-up table purging. 
  *
  *  Currently likelihood calculations are all performed by a set of 'models' that we give to the "multinomial" class via the 
- *  multinomial::set method. These models should be able to look at the allele structure, which contains information about
- *  the error rate at the locus and the identity of the major and minor allele, and return a set of four log probabilities of 
+ *  multinomial::set method. These models should be able to look at the allele_t structure, which contains information about
+ *  the error rate at the locus and the identity of the major and minor allele_t, and return a set of four log probabilities of 
  *  observing each particular nucleotide in a given call.
 */	
 
@@ -30,20 +30,20 @@ public:
 	models(void);
 	~models(void);
 
-	/// Gets the log likelihood of the observations at locus, given allele.
-	float_t loglikelihood(const locus &, const allele &);
+	/// Gets the log likelihood of the observations at locus, given allele_t.
+	float_t loglikelihood(const locus &, const allele_t &);
 
-	/// Gets the log likelihood of the observations at locus, given allele.
-	float_t goodness_of_fit (locus &, const allele &, std::vector <float_t> &, const float_t &);
+	/// Gets the log likelihood of the observations at locus, given allele_t.
+	float_t goodness_of_fit (locus &, const allele_t &, std::vector <float_t> &, const float_t &);
 
 	/// breif Initilizes the ? for goodness of fit calculations.
-	void init_gof(const count_t *, const allele &);
+	void init_gof(const count_t *, const allele_t &);
 
 	/// Returns the likelihood of a ?? goodness of fit... blah blah blah.
-	float_t get_gof(const count_t *, const allele &);
+	float_t get_gof(const count_t *, const allele_t &);
 
 	/// Clalculates genotypic likelihoods. Not implement, may be depricated.
-	float_t genotypelikelihood(const quartet_t &, const allele &);
+	float_t genotypelikelihood(const quartet_t &, const allele_t &);
 
 	/// Clalculates goodness of fit likelihoods.
 	inline float_t lnL(const float_t &logMM, const float_t &logMm, const float &logmm, const count_t *count){
@@ -66,15 +66,15 @@ public:
 };
 
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous minor.*/
-float_t *mmModel(allele *);
+float_t *mmModel(allele_t *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: heterozygous.*/
-float_t *MmModel(allele *);
+float_t *MmModel(allele_t *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous major.*/
-float_t *MMModel(allele *);
+float_t *MMModel(allele_t *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous minor.*/
-float_t *mmModelP(allele *);
+float_t *mmModelP(allele_t *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: heterozygous.*/
-float_t *MmModelP(allele *);
+float_t *MmModelP(allele_t *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous major.*/
-float_t *MMModelP(allele *);
+float_t *MMModelP(allele_t *);
 #endif

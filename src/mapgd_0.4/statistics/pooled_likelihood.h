@@ -5,8 +5,8 @@
 #include "../datatypes/allele.h"
 #include <math.h>
 
-void polymorphicmodel(allele const &, float_t *);
-void monomorphicmodel(allele const &, float_t *);
-void fixedmorphicmodel(allele const &, float_t *);
+void polymorphicmodel(allele_t const &, float_t *);
+void monomorphicmodel(allele_t const &, float_t *);
+void fixedmorphicmodel(allele_t const &, float_t *);
 
 #endif

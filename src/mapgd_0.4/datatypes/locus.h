@@ -1,5 +1,5 @@
-#ifndef LOCUS_H_
-#define LOCUS_H_
+#ifndef _LOCUS_H_
+#define _LOCUS_H_
 
 #include <iostream>
 #include <vector>
