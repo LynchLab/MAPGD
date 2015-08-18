@@ -9,11 +9,10 @@ float_t efc (const Locus &site){
 	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
 
 	float_t ec=0;
-	count_t N_;
 
 	while (it!=end){
 		if (!it->masked){
-			ec+=2.-2.*pow(0.5, N_);
+			ec+=2.-2.*pow(0.5, count(*it) );
 		}
 		++it;
 	}
@@ -100,7 +99,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
         float_t iJ[3][3]; 		//Inverse of the Jacobian/Hessian.
 	float_t R[3]={100,100,100};	//The 'residual'. Th
 
-        float_t det, lim;
+        float_t det;
 
 	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//Lets us iterate over the quartets. 
 	std::vector <quartet_t>::const_iterator end=site.sample.end();	 

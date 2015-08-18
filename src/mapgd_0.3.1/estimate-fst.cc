@@ -24,7 +24,7 @@ int estimate_fst(int argc, char *argv[])
 				//which are files containing set of read 'quartets' that specify the number of 
 				//A,C,G and T read at some specific location in a genome. See proFile.h for more info.
 
-	std::ostream *out=&std::cout;
+	//std::ostream *out=&std::cout;
 	pro.open(std::iostream::in);			
 	std::vector <float_t> gofs(pro.size() );
 	Locus line;

@@ -141,10 +141,10 @@ int estimateInd(int argc, char *argv[])
 
 //	env.optional_arg('c',"columns", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "number of columsn in profile (if applicable).");
 
-	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage of sites to be estimated (defualt 4).");
+	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
 	env.optional_arg('a',"alpha", 	&A, 		&arg_setfloat_t, "please provide a float.", "cut-off value for printing polymorphic sites (default 0.0).");
 	env.optional_arg('g',"goodfit", &MINGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
-	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "maximum number of clones to be trimmed (default 96).");
+	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
 	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "maximum number of sites to be analyzed (default All sites)");
 	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
@@ -162,10 +162,6 @@ int estimateInd(int argc, char *argv[])
 	//gcfile out;
 	std::ostream *out=&std::cout;
 	std::ofstream outFile;
-
-	genotype dip(2);
-	genotype trip(3);
-	genotype tet(4);
 
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
 		pro.open(infile.c_str(), std::fstream::in);	
@@ -201,8 +197,10 @@ int estimateInd(int argc, char *argv[])
 		pro_out.setcolumns(outc);
 		pro_out.set_delim_column(cdel);
 		pro_out.set_delim_quartet(qdel);
+		for (size_t y=0;y<pro.size(); ++y) pro_out.set_sample_name(y, pro.get_sample_name(y) );
 		if (not (noheader) ) pro_out.writeheader();
 	};
+
 
 	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
 	if (not (noheader) ){

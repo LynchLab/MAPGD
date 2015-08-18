@@ -134,8 +134,7 @@ int proview(int argc, char *argv[])
 		for (size_t x=0; x<in.size(); x++){		//copies the sample names from the in file(s) to out.
 			for (size_t y=0;y<in[x]->size(); ++y){
 			++thissample;
-			if (thissample==sample)
-			out.set_sample_name(0, in[x]->get_sample_name(y) );
+			if (thissample==sample) out.set_sample_name(0, in[x]->get_sample_name(y) );
 			}
 		}
 	}
@@ -160,7 +159,7 @@ int proview(int argc, char *argv[])
 		go=false;
 		read_site=false;
 		read_scaffold=false;
-		for (int x=0; x<in.size(); x++){
+		for (size_t x=0; x<in.size(); x++){
 			std::vector <quartet_t>::iterator it_in=in[x]->begin();
 			std::vector <quartet_t>::iterator end_in=in[x]->end();	
 			if (in[x]->get_id1()==site.get_id1() && out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){

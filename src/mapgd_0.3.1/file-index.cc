@@ -30,13 +30,13 @@ int file_index::from_sam_header(std::istream &in)
 
 int file_index::write_index(std::ostream &out)
 {
-	id1_t length;
+	//id1_t length;
 	std::string line, sn, ln;
 	if (&out==NULL){
 		std::cerr << "mapgd:file-index.h:36: attempt to write to ostream when no ostream is open.\n";
 		return -1;
 	}
-	for (size_t x; x<id0_.size(); ++x){
+	for (size_t x=0; x<id0_.size(); ++x){
 		out << "@SQ" << delim_;
 		out << "SN:" << id0_[x] << delim_; 
 		out << "LN:" << size_[x] << std::endl; 

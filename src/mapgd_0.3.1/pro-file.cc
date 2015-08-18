@@ -163,15 +163,15 @@ const std::string profile::get_sample_name(const count_t &a) const{
 int profile::set_sample_name(const std::string &str){
 	switch (columns_){
 		case 5:
-			for (size_t a; a<samples_; ++a) if (!(header_.set_column_name(a+1, str) ) ) return BADHEADER;
+			for (size_t a=0; a<samples_; ++a) if (!(header_.set_column_name(a+1, str) ) ) return BADHEADER;
 			return 0;
 		break;
 		case 6:
-			for (size_t a; a<samples_; ++a) if (!(header_.set_column_name(a+2, str) ) ) return BADHEADER;
+			for (size_t a=0; a<samples_; ++a) if (!(header_.set_column_name(a+2, str) ) ) return BADHEADER;
 			return 0;
 		break;
 		case 7:
-			for (size_t a; a<samples_; ++a) if (!(header_.set_column_name(a+3, str) ) ) return BADHEADER;
+			for (size_t a=0; a<samples_; ++a) if (!(header_.set_column_name(a+3, str) ) ) return BADHEADER;
 			return 0;
 		break;
 	};
@@ -361,7 +361,7 @@ int profile_header::readheader(std::istream *in)
 
 	control=0;
 
-	bool notdone_=true, reading_pr=false, reading_id=false;
+	bool notdone_=true, reading_id=false, reading_pr=true;
 
 #ifdef DEBUG 
 	std::cerr << "attempting to read header.\n";
