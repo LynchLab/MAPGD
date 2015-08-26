@@ -8,7 +8,7 @@
 #include "convert.h"
 
 int main (int argc, char**argv){
-	if (optind!=3){
+	if (argc!=3){
 		cerr << "Usage FILE1 FILE2\nconverts FILE1 to FILE2, which is readable by relatedness.py" << endl;
 		exit(1);
 	}

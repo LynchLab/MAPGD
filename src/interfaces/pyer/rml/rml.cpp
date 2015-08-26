@@ -81,9 +81,10 @@ double get_ll_py(void){
 	return ll.ll;
 };
 
+/*
 void get_dS_py(void){
 	if (counts.size()!=0) ll.get_dS(counts);
-};
+};*/
 
 void arrayinc(ll_t *ret, ll_t *inc){
 	ret[0]+=inc[0];
@@ -97,6 +98,7 @@ void arrayinc(ll_t *ret, ll_t *inc){
 	ret[8]+=inc[8];
 }; 
 
+/*
 void likelihood_eq::get_dS(map <PAIRGL, size_t> counts){
 	memset(dSll, 0, 9*sizeof(ll_t) );
 	int rc;
@@ -156,7 +158,7 @@ void likelihood_eq::get_dS(map <PAIRGL, size_t> counts){
 			}
 		}
 	}
-}
+}*/
 
 void likelihood_eq::get_ll(map <PAIRGL, size_t> counts){
 	ll=0;
@@ -245,8 +247,8 @@ inline ll_t likelihood_eq::inc(const PAIRGL popgl, const ll_t count){
 
 	P=popgl.P;
 
-	if (P==0) return 0;
-		
+	if (P==0) return 0;	
+	
 	ll_t A=P+e*P; 		//mean major allele frequency in A
 	ll_t C=P-e*P; 		//mean major allele frequency in C
 	ll_t Va=A*(1.-A);	//variance of the two haploid genomes of A 
@@ -328,6 +330,8 @@ inline ll_t likelihood_eq::inc(const PAIRGL popgl, const ll_t count){
 
 	std::sort(E, E+9);
 
+//	std::cout << count << ", " <<  log(1+exp(E[0]-E[8])+exp(E[1]-E[8])+exp(E[2]-E[8])+exp(E[3]-E[8])+exp(E[4]-E[8])+exp(E[5]-E[8])+exp(E[6]-E[8])+exp(E[7]-E[8]) )+E[8];
+//	std::cout << std::endl;
 	return (log(1+exp(E[0]-E[8])+exp(E[1]-E[8])+exp(E[2]-E[8])+exp(E[3]-E[8])+exp(E[4]-E[8])+exp(E[5]-E[8])+exp(E[6]-E[8])+exp(E[7]-E[8]) )+E[8] )*count;
 };
 
@@ -347,6 +351,7 @@ int read_small_py (char *filename, size_t A, size_t B, size_t s){
 	return 0;
 };
 
+/*
 ll_t dS1_py(void){return ll.dSll[0];};
 ll_t dS2_py(void){return ll.dSll[1];};
 ll_t dS3_py(void){return ll.dSll[2];};
@@ -356,7 +361,7 @@ ll_t dS6_py(void){return ll.dSll[5];};
 ll_t dS7_py(void){return ll.dSll[6];};
 ll_t dS8_py(void){return ll.dSll[7];};
 ll_t dS9_py(void){return ll.dSll[8];};
-
+*/
 int getsize_py(const char *filename){
 	ifstream file;
 	file.open(filename, ios::binary);
@@ -440,20 +445,20 @@ BOOST_PYTHON_MODULE(rml)
     def("estimate", estimate_py);
     def("getsize", getsize_py);
     def("read", read_py);
-    def("read_small", read_small_py);
+//    def("read_small", read_small_py);
     def("get_ll", get_ll_py);
-    def("get_dS", get_dS_py);
+//    def("get_dS", get_dS_py);
     def("fullModel", fullModel_py);
    
-    def("dS1", dS1_py);
-    def("dS2", dS2_py);
-    def("dS3", dS3_py);
-    def("dS4", dS4_py);
-    def("dS5", dS5_py);
-    def("dS6", dS6_py);
-    def("dS7", dS7_py);
-    def("dS8", dS8_py);
-    def("dS9", dS9_py);
+//    def("dS1", dS1_py);
+//    def("dS2", dS2_py);
+//    def("dS3", dS3_py);
+//    def("dS4", dS4_py);
+//    def("dS5", dS5_py);
+//    def("dS6", dS6_py);
+//    def("dS7", dS7_py);
+//    def("dS8", dS8_py);
+//    def("dS9", dS9_py);
 };
 
 const unsigned char MIN_QUAL = '!';

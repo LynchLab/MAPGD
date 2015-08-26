@@ -21,7 +21,7 @@ using std::size_t;
 /** @brief our abstraction of log genotype probabilities.
   *
   */
-typedef double ll_t;
+typedef long double ll_t;
 
 class GL{
 private :

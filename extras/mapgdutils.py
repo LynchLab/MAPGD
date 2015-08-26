@@ -34,8 +34,8 @@ mapFile=open(args.mapFile[0])
 #id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
 #id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
 
-F=True
-HET=False
+F=False
+HET=True
 GENOTYPE=False
 
 scaffold=0
@@ -62,41 +62,50 @@ atoi={'A':0, 'C':1, 'G':2, 'T':3}
 def likelihoods_uniform(calls, major, minor, error, p):
         error=max(0.001, error)
         M=calls[major]
-        n=sum(calls)
+        m=calls[minor]
+        e=sum(calls)-M-m
+
         p2=math.log(1.0-error)
         notp2=math.log(error)
         p1=math.log( (1.0-error)/2.0+error/6.0)
         notp1=math.log(1-( (1.0-error)/2.0+error/6.0) )
+
         p0=math.log(error/3.)
         notp0=math.log(1-error/3.)
 
         MM=M*p2+notp2*(n-M)+math.log(p**2)
         Mm=M*p1+notp1*(n-M)+math.log(2*p*(1-p) )
         mm=M*p0+notp0*(n-M)+math.log( (1-p)**2 )
+
         [E1, E2, E3]=sorted([MM, Mm, mm])
+
         N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
+
         if n>=1:
                 return [-MM+N, -Mm+N, -mm+N, n, '|' ]
         else:
                 return [0, 0, 0, sum(calls), '|' ]
 
 def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
-        error=0.005#max(prior, error)
+	error=max(0.001, error)
+#	error=0.005
         M=calls[major]
-        n=sum(calls)
-        p2=math.log(1.0-error)
-        notp2=math.log(error)
-        p1=math.log( (1.0-error)/2.0+error/6.0)
-        notp1=math.log(1-( (1.0-error)/2.0+error/6.0) )
-        p0=math.log(error/3.)
-        notp0=math.log(1-error/3.)
+        m=calls[minor]
+        e=sum(calls)-M-m
 
-        MM=M*p2+notp2*(n-M)+math.log(pMM)
-        Mm=M*p1+notp1*(n-M)+math.log(pMm)+math.log(0.5)
-        mm=M*p0+notp0*(n-M)+math.log(pmm)
+        pne2=math.log( (1.0-error)/2.0+error/6.0) 
+        pe=math.log(error/3.)
+        pne=math.log(1-error)
+
+        MM=pne*M+pe*(e+m)#+math.log(pMM)
+        Mm=pne2*(M+m)+pe*e#+math.log(pMm)+math.log(0.5)
+        mm=pne*m+pe*(e+M)#+math.log(pmm)
+
         [E1, E2, E3]=sorted([MM, Mm, mm])
+
         N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
-	return [-MM+N, -Mm+N, -mm+N, n]
+
+	return [-MM+N, -Mm+N, -mm+N, sum(calls)]
 
 	
 poly={}
@@ -165,12 +174,12 @@ for line in proFile:
 					out.append(str(x-3)+"MM")
 					out.append(str(x-3)+"Mm")
 					out.append(str(x-3)+"mm")
-				print "scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
+				print "@scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
 			elif(HET or F):
 				out=[]
 				for x in range(3, len(line) ):
 					out.append(x-3)
-				print "scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
+				print "@scaffold\tbp\t?\t?\t?\t?\t"+'\t'.join(map(str, out) )
 			HEADER=False
 
 		this=poly[line[scaffold]][line[site]]
@@ -182,7 +191,10 @@ for line in proFile:
 			elif (HET):
 				M=atoi[this[0]]
 				m=atoi[this[1]]
-				out.append(float(calls[M])/(float(calls[M])+float(calls[m]) ) )
+				if (calls[M]+calls[m])>0:
+					out.append(float(calls[M])/(float(calls[M])+float(calls[m]) ) )
+				else:
+					out.append('NA')
 			elif (F):
 				Mm=float(this[5])
 				mm=float(this[6])
@@ -190,11 +202,6 @@ for line in proFile:
 				p=float(this[2])
 				Mm=2*(1-p)*p*(1-f)
 				f=1-Mm/(2*(1-p)*p )
-				
-				f=1-A
-				F-1=A
-				A=F-1
-				f=1-(F-1)
 				out.append(f)
 		print '\t'.join(map(str, out) )
 

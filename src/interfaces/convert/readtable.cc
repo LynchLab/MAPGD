@@ -35,8 +35,13 @@ void streamtable(const char *inname, const char *outname){
 	bool first=true;
 
 	POPGL pgl;
+	cerr << "Starting\n";
 	while (!in.eof()){
 		getline(in, buffer);
+		if (buffer[0]=='@') {
+			cerr << "Skipping\n";
+			continue;
+		}
 		if (in.eof() ) break;
    		boost::tokenizer<> tok(buffer);
 		boost::char_separator<char> sep("\t");
