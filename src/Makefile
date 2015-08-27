@@ -1,4 +1,4 @@
-SUBDIRS=mapgd_0.4 interfaces 
+SUBDIRS=mapgd_0.4 api
 VER=0.4
 NAME=mapgd
 DEBIAN=0

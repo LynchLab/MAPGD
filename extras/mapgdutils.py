@@ -26,7 +26,7 @@ parser.add_argument('--pro', metavar='proFile', type=str, nargs=1,
 parser.add_argument('--map', metavar='mapFile', type=str, nargs=1,
                    help='the name of a mapFile',  required=True)
 parser.add_argument('--mode', metavar='mode', type=str, nargs=1,
-                   help=' < F|G|H>',  required=True)
+                   help=' <F|G|H>',  required=True)
 args = parser.parse_args()
 
 proFile=open(args.pro[0])

@@ -1,0 +1,5 @@
+pdf("graphs.pdf")
+t<-
+n<-
+for (i in 8:208) {hist(t[,i], col="red", main=n[i-7,], xlab="M/(M+m)" )}
+dev.off()
