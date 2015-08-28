@@ -35,8 +35,8 @@ mapFile=open(args.mapFile[0])
 #id1	id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	polyll	HWEll	gof	eff_chrom	N	N_excluded	model_ll
 
 F=False
-HET=True
-GENOTYPE=False
+HET=False
+GENOTYPE=True
 
 scaffold=0
 site=1	
@@ -119,9 +119,9 @@ for line in mapFile:
                         continue
                 if line[0][0]=='@':
                         continue
-                if line[pol_llstat]=="*":
+		if line[pol_llstat]=="." or line[pol_llstat]=="*":
                         continue
-                if line[best_error]=="*":
+		if line[best_error]=="." or line[best_error]=="*":
                         continue
         except:
 		print "could not parse line ", line
@@ -140,9 +140,9 @@ for line in mapFile:
 			continue
 		if line[0][0]=='@':
 			continue
-		if line[pol_llstat]=="*":
+		if line[pol_llstat]=="." or line[pol_llstat]=="*":
 			continue
-		if line[best_error]=="*":
+		if line[best_error]=="." or line[best_error]=="*":
 			continue
 	except:
 		print "could not parse line ", line

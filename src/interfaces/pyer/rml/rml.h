@@ -4,7 +4,7 @@
 #include <math.h>
 #include <map>
 #include <iostream>
-#include <thread>
+#include <omp.h>
 #include <list>
 #include <vector>
 #include <fstream>
@@ -114,15 +114,5 @@ public:
 	void recallmax();
 	friend std::ostream& operator<<(std::ostream& os, const likelihood_eq& ll);
 };
-
-typedef struct stops_thdata
-{
-	std::map<PAIRGL, size_t>::iterator start;
-	std::map<PAIRGL, size_t>::iterator stop;
-	std::map<PAIRGL, size_t>::iterator it;
-	likelihood_eq *eq;
-	ll_t ret;
-	ll_t dret[9];
-} thdata;
 
 void compute(const char* filename, size_t a, size_t b, size_t subsample);

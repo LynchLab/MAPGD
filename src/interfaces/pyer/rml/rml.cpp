@@ -62,6 +62,7 @@ PAIRGL convert(POPGL& popgl, size_t a, size_t b, ll_t ma, ll_t Ma, ll_t mb, ll_t
 	else return PAIRGL (0, 0, 0, 0, 0, 0, 0);
 };
 
+//Globals. counst is probably ok, since it doesn't do much, but I'm worried about likelihood_eq ll
 std::map<PAIRGL, size_t> counts;
 likelihood_eq ll(0, 1);
 
@@ -78,13 +79,8 @@ void likelihood_eq::fullModel (ll_t p1, ll_t p2, ll_t p3, ll_t p4, ll_t p5, ll_t
 double get_ll_py(void){
 	if (counts.size()==0) return 0;
 	ll.get_ll(counts);
-	return ll.ll;
+	return double(ll.ll);
 };
-
-/*
-void get_dS_py(void){
-	if (counts.size()!=0) ll.get_dS(counts);
-};*/
 
 void arrayinc(ll_t *ret, ll_t *inc){
 	ret[0]+=inc[0];
@@ -98,139 +94,31 @@ void arrayinc(ll_t *ret, ll_t *inc){
 	ret[8]+=inc[8];
 }; 
 
-/*
-void likelihood_eq::get_dS(map <PAIRGL, size_t> counts){
-	memset(dSll, 0, 9*sizeof(ll_t) );
-	int rc;
-	int i, s;
-	pthread_t threads[NUM_THREADS];
-	thdata data[NUM_THREADS];
-	bool open[NUM_THREADS];
-	pthread_attr_t attr;
-	void *status;
-
-	map<PAIRGL, size_t>::iterator start=counts.begin();
-	map<PAIRGL, size_t>::iterator end=counts.end();
-
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
- 
-	for( i=0; i < NUM_THREADS; ++i ){
-		data[i].start=start;
-		data[i].eq=this;
-		memset(data[i].dret, 0, 9*sizeof(ll_t) );
-		open[i]=true;
-		for(s=0; s < STACK_SIZE; ++s ) {++start; if(start==end) break; }
-		data[i].stop=start;
-		rc = pthread_create(&threads[i], NULL, &likelihood_eq::slice_dSinc, &data[i] );
-		if (rc){
-			cout << "Error:unable to create thread," << rc << endl;
-			exit(-1);
-		}
-	}
-	bool running=true;
-	while(running){
-		running=false;
-		for( i=0; i < NUM_THREADS; i++ ){
-			if (open[i]){
-				rc = pthread_join(threads[i], &status);
-				if (rc){
- 					cout << "Error:unable to join," << rc << endl;
- 					exit(-1);
- 				}
- 				arrayinc(dSll, data[i].dret);
- 				if (start!=end){
-					running=true;
-					data[i].start=start;
-					for(s=0; s < STACK_SIZE; ++s ) {++start; if(start==end) break; }
-					data[i].stop=start;
-					rc = pthread_create(&threads[i], NULL, &likelihood_eq::slice_dSinc, &data[i] );
- 					pthread_attr_init(&attr);
- 					pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-					if (rc){
-						cout << "Error:unable to create thread," << rc << endl;
- 						exit(-1);
- 					}
-				}
-				else{
-					open[i]=false;
-				}
-			}
-		}
-	}
-}*/
-
 void likelihood_eq::get_ll(map <PAIRGL, size_t> counts){
-	ll=0;
-	int rc;
-	int i, s;
-	pthread_t threads[NUM_THREADS];
-	thdata data[NUM_THREADS];
-	bool open[NUM_THREADS];
-	pthread_attr_t attr;
-	void *status;
 
 	map<PAIRGL, size_t>::iterator start=counts.begin();
 	map<PAIRGL, size_t>::iterator end=counts.end();
 
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
- 
-	for( i=0; i < NUM_THREADS; ++i ){
-		data[i].start=start;
-		data[i].eq=this;
-		open[i]=true;
-		for(s=0; s < STACK_SIZE; ++s ) {++start; if(start==end) break; }
-		data[i].stop=start;
-		rc = pthread_create(&threads[i], NULL, &likelihood_eq::slice_inc, &data[i] );
-		if (rc){
-			cout << "Error:unable to create thread," << rc << endl;
-			exit(-1);
-		}
-	}
- 
-	bool running=true;
-	while(running){
-		running=false;
-		for( i=0; i < NUM_THREADS; i++ ){
-			if (open[i]){
-				rc = pthread_join(threads[i], &status);
-				if (rc){
- 					cout << "Error:unable to join," << rc << endl;
- 					exit(-1);
- 				}
- 				ll+=data[i].ret;
- 				if (start!=end){
-					running=true;
-					data[i].start=start;
-					for(s=0; s < STACK_SIZE; ++s ) {++start; if(start==end) break; }
-					data[i].stop=start;
-					rc = pthread_create(&threads[i], NULL, &likelihood_eq::slice_inc, &data[i] );
- 					pthread_attr_init(&attr);
- 					pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-					if (rc){
-						cout << "Error:unable to create thread," << rc << endl;
- 						exit(-1);
- 					}
-				}
-				else{
-					open[i]=false;
-				}
-			}
-		}
-	}
-}
+	vector <pair <PAIRGL, size_t> > v;
 
-void* likelihood_eq::slice_inc(void *t){
-	thdata* data=(thdata *) t;
-	data->ret=0;
-	data->it=data->start;
-	while(data->it!=data->stop){
-		data->ret+=data->eq->inc(data->it->first, data->it->second);
-		++(data->it);
-	}
-	return 0;
-};
+	v.reserve(counts.size() ); 
+
+	for(map<PAIRGL, size_t>::iterator it=start; it!=end; ++it){
+		v.push_back(*it);
+	} 
+
+//#pragma omp parallel 
+//#pragma omp for 
+//	#pragma omp parallel for
+	ll_t sum=0;
+	#pragma omp parallel for reduction(+:sum)
+	for (size_t x=0; x<v.size(); ++x){
+		
+		sum+=inc(v[x].first, v[x].second);
+	};
+	ll=sum;
+	
+}
 
 inline ll_t likelihood_eq::inc(const PAIRGL popgl, const ll_t count){
 	/*This is the basic likelihood model that we are fitting. It essentially calculates the correlation coefficents
@@ -330,8 +218,6 @@ inline ll_t likelihood_eq::inc(const PAIRGL popgl, const ll_t count){
 
 	std::sort(E, E+9);
 
-//	std::cout << count << ", " <<  log(1+exp(E[0]-E[8])+exp(E[1]-E[8])+exp(E[2]-E[8])+exp(E[3]-E[8])+exp(E[4]-E[8])+exp(E[5]-E[8])+exp(E[6]-E[8])+exp(E[7]-E[8]) )+E[8];
-//	std::cout << std::endl;
 	return (log(1+exp(E[0]-E[8])+exp(E[1]-E[8])+exp(E[2]-E[8])+exp(E[3]-E[8])+exp(E[4]-E[8])+exp(E[5]-E[8])+exp(E[6]-E[8])+exp(E[7]-E[8]) )+E[8] )*count;
 };
 
@@ -368,12 +254,12 @@ int getsize_py(const char *filename){
 	size_t SIZE;
 	file.read((char *)&SIZE,sizeof(size_t) );
 	file.close();
-	return SIZE;
+	return int(SIZE);
 };
 
 PyObject * estimate_py(void){
 	ll.estimate(counts);
-	return Py_BuildValue("ffffffff", ll.e, ll.FA, ll.FC, ll.r, ll.sA, ll.sC, ll.z1, ll.z2);
+	return Py_BuildValue("ffffffff", float(ll.e), float(ll.FA), float(ll.FC), float(ll.r), float(ll.sA), float(ll.sC), float(ll.z1), float(ll.z2) );
 };
 
 void likelihood_eq::estimate(map <PAIRGL, size_t> counts){
@@ -386,11 +272,10 @@ void likelihood_eq::estimate(map <PAIRGL, size_t> counts){
         while(it!=end){
                 inc_f(it->first, it->second);
                 inc_r(it->first, it->second);
-		if (it->first.P!=0) N+=it->second;
+		if (it->first.P!=0) N+=it->second/(it->first.P*(1-it->first.P) );
 		
                 ++(it);
         }
-	//std::cout << FA << ", " << N << std::endl;
 	FA/=N;
 	FC/=N;
 	r/=N;
@@ -412,17 +297,17 @@ void likelihood_eq::estimate(map <PAIRGL, size_t> counts){
 
 inline void likelihood_eq::inc_f(const PAIRGL popgl, const ll_t count){
 	ll_t P=popgl.P;
-	ll_t v=(P*(1-P ) );
+	ll_t v=(P*(1.-P ) );
 	if(P!=0){
-		FA+=( 2.*(exp(-popgl.Mm1)/4.+exp(-popgl.MM1)-P*P) -v)/v*count;
-		FC+=( 2.*(exp(-popgl.Mm2)/4.+exp(-popgl.MM2)-P*P) -v)/v*count;
+		FA+=( 2.*(exp(-popgl.Mm1)/4.+exp(-popgl.MM1)-P*P) -v)/pow(v,2)*count;
+		FC+=( 2.*(exp(-popgl.Mm2)/4.+exp(-popgl.MM2)-P*P) -v)/pow(v,2)*count;
 	};
 };
 
 inline void likelihood_eq::inc_r(const PAIRGL popgl, const ll_t count){
 	ll_t P=popgl.P;
 	if(P!=0){
-		r+=( (exp(-popgl.Mm1-popgl.Mm2)/4.+exp(-popgl.MM1-popgl.Mm2)/2.+exp(-popgl.Mm1-popgl.MM2)/2.+exp(-popgl.MM1-popgl.MM2) )-pow(P,2) )/(P*(1-P) )*count;
+		r+=( (exp(-popgl.Mm1-popgl.Mm2)/4.+exp(-popgl.MM1-popgl.Mm2)/2.+exp(-popgl.Mm1-popgl.MM2)/2.+exp(-popgl.MM1-popgl.MM2) )-pow(P,2) )/pow(P*(1-P),2)*count;
 	};
 };
 
@@ -445,20 +330,8 @@ BOOST_PYTHON_MODULE(rml)
     def("estimate", estimate_py);
     def("getsize", getsize_py);
     def("read", read_py);
-//    def("read_small", read_small_py);
     def("get_ll", get_ll_py);
-//    def("get_dS", get_dS_py);
     def("fullModel", fullModel_py);
-   
-//    def("dS1", dS1_py);
-//    def("dS2", dS2_py);
-//    def("dS3", dS3_py);
-//    def("dS4", dS4_py);
-//    def("dS5", dS5_py);
-//    def("dS6", dS6_py);
-//    def("dS7", dS7_py);
-//    def("dS8", dS8_py);
-//    def("dS9", dS9_py);
 };
 
 const unsigned char MIN_QUAL = '!';

@@ -12,5 +12,6 @@ setup(name="PackageName",
 	ext_modules=[
 		Extension("rml", ["rml/rml.cpp"],
 		libraries=["boost_python"],
-		extra_compile_args=['-std=c++11'])
+		extra_compile_args=['-std=c++11', '-fopenmp'],
+		extra_link_args=['-lgomp'])
 	])

@@ -11,7 +11,7 @@ def getdll (model, params):
 	ret=[]
 	maxll=model(params)
 	z=0
-	for x in range(0, 8):
+	for x in range(0, len(params) ):
 	#	ret.append(getci(model, params, x-z, 'l', maxll) )
 	#	ret.append(getci(model, params, x-z, 'u', maxll) )
 		ret.append(getci(model, params, x-z, 'dll', maxll) )
@@ -60,36 +60,35 @@ def getci (model, params, x, b, maxll):
 
 def Model(params):
 	fA, fC, r, sA, sC, z1, z2=params
-#	e, z1, z2=[0, 0, 0]
 	rml.fullModel(0, fA, fC, r, sA, sC, z1, z2)
 	return (-rml.get_ll())
 
 def FullModel(params):
 	e, fA, fC, r, sA, sC, z1, z2=params
-	rml.fullModel(0, fA, fC, r, sA, sC, z1, z2)
-	return (-rml.get_ll()+abs(e) )
+	rml.fullModel(e, fA, fC, r, sA, sC, z1, z2)
+	return (-rml.get_ll() )
 
 size=rml.getsize(sys.argv[1])
 
 R=[]
 print "total sites, (line A:min-max, line C:min-max), success, e, dll, fA, dll, fC, dll, r, dll, sAC, dll, sCA, dll, z1, dll, z2, dll, null_ll, fit_ll"
 
-model=FullModel
+model=Model
 
 for x in range(0, size):
 	for y in range(x+1, size):
 		rml.read(sys.argv[1], x, y)
-#		params=rml.estimate()
-		params=[0.,0.,0.,0.25,0.,0.,0.,0.25]
+		params=rml.estimate()
+		params=[0,0,0,0,0,0,0,0]
 		SLSQP=[]
 		#for x in range (0, 10):
 		#	params=[0.,0.,0.,random.random(),0.,0.,0., random.random()]
 
-		SLSQP.append( minimize(model, params, method='SLSQP', options={'ftol': 1e-11}) )
-		#	BFGS = minimize(model, params, method='BFGS', options={'gtol': 1e-11} )
+		SLSQP.append( minimize(model, params[1:], method='SLSQP') )#, options={'ftol': 1e-11}) )
+		#SLSQP.append( minimize(model, params[1:], method='BFGS', options={'gtol': 1e-11} ) )
 		#	L_BFGS_B = minimize(model, params, method='L-BFGS-B', options={'gtol': 1e-11} )
 		#	COBYLA = minimize(model, params, method='COBYLA')
-#			NEWTON-CG = minimize(model, params, method='DOGLEG')
+		#	NEWTON-CG = minimize(model, params, method='DOGLEG')
 
 
 		#	print "SL", SLSQP.fun, 		SLSQP.x[1:4] 
@@ -100,12 +99,13 @@ for x in range(0, size):
 		results=SLSQP[0]
 		#quit()
 		fit=np.copy(results.x).tolist() 
+		fit=[0]+fit
 		dlls=getdll(model, np.copy(results.x) )
+		dlls=[0]+dlls
 		out=[]
 		null_ll=FullModel( [0.,0.,0.,0.,0.,0.,0.,0.] ) 
-		out.append(str(results.success))
 		fit_ll=model( results.x ) 
-		best_ll=FullModel( [0.,0.,0.,0.25,0.,0.,0.,0.25] )
+		out.append(str(results.success))
 		for z in range(0, 8):
 			fit[z]='{:.4f}'.format(fit[z])
 			dlls[z]='{:.4f}'.format(dlls[z])
@@ -114,6 +114,3 @@ for x in range(0, size):
 		out.append('{:.4f}'.format(null_ll) )
 		out.append('{:.4f}'.format(fit_ll) )
 		print ", ".join(out)
-		print (best_ll-fit_ll)
-		print (null_ll-fit_ll)
-		quit()
