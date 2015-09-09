@@ -3,13 +3,11 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser(description='scans a gcf file for markers')
-parser.add_argument('genotypic.tsv', metavar='genotypic.tsv', type=str, nargs=1,
-                   help='the name of a tab seperated genotypic liklelihood file')
+parser.add_argument('gcfFile', metavar='gcfFile', type=str, nargs=1,
+                   help='the name of a genome file')
+parser.add_argument('tsvFile', metavar='tsvFile', type=str, nargs=1,
+                   help='the name of a tab seperated file containing markers')
 args = parser.parse_args()
-
-proFile=open(args.proFile[0])
-mapFile=open(args.mapFile[0])
-
 
 sites={}
 def comp (c, a):
@@ -17,16 +15,18 @@ def comp (c, a):
 	try:
 		return ret[a][c]
 	except:
-		print c, a
+		print c, "is not a base in ", a
 		return ret[a][c]
 
 def toi (c):
 	ret={'A':0, 'C':1, 'G':2, 'T':3}
 	return ret[c]
 
-markerFile=open(tsvFile)
+markerFile=open(args.tsvFile[0])
 
 for line in markerFile:
+	if line[0]=='@':
+		continue
 	line=line.strip('\n').split()
 	scaffold=line[0].split('_')[1]
 	bp=line[1]
@@ -39,9 +39,8 @@ for line in markerFile:
 		except:
 			print line	
 
-print sites.keys()
 processed=0
-File=open(gfcFile)
+File=open(args.gcfFile[0])
 num=[]
 denom=[]
 
@@ -49,16 +48,17 @@ for x in range(0, 96):
 	num.append(0)
 	denom.append(0)
 
+print sites.keys()
+
+
 for line in File:
 	line=line.split()
-	scaffold=line[0]
-	bp=line[1]
+	scaffold=str(line[0])
+	bp=str(line[1])
 	try:
-#		print scaffold, bp
 		asex=sites[scaffold][bp]
 		MAJOR=line[2]
 		MINOR=line[3]
-		print scaffold, bp, asex, MAJOR, MINOR
 		calls=map(float, line[6:] )
 		for y in range(0, 96):
 			lcal=calls[y*4:(y+1)*4]
@@ -68,7 +68,7 @@ for line in File:
 				denom[y]+=1
 	except:
 		processed+=1
+print 
 for x in range(0, 96):
 	if denom[x]>0:
 		print x, float(num[x])/float(denom[x]), denom[x]
-		

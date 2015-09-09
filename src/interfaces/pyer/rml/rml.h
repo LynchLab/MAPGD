@@ -1,3 +1,6 @@
+#ifndef _RML_H_
+#define _RML_H_
+
 #include <cstring>
 #include <float.h>
 #include <algorithm>    // std::random_shuffle
@@ -12,8 +15,6 @@
 #include <iostream>
 #include <boost/tokenizer.hpp>
 
-
-#define NUM_THREADS 	1
 #define STACK_SIZE	100
 
 using std::size_t;
@@ -74,10 +75,15 @@ typedef struct pairgl_t{
 	}
 } PAIRGL;
 
+struct sample_stats{
+	ll_t sampled, amin, amax, bmin, bmax;
+	std::map <PAIRGL, size_t> counts;
+};
+
 typedef std::vector<POPGL> table_t;
 table_t readtable(const char *filename);
 table_t readbin(const char *filename);
-std::map <PAIRGL, size_t> readcounts(const char *filename, size_t a, size_t b, size_t s);
+sample_stats readcounts(const char *filename, size_t a, size_t b, size_t s);
 void writebin(table_t table, const char *filename);
 
 //typedef std::tuple <ll_t, ll_t, ll_t, ll_t, ll_t, ll_t> PAIRGL; 
@@ -88,26 +94,30 @@ class likelihood_eq{
 private:
 //	ll_t P, Q, Q2, Q3, Q4, P2, P3, P4, PQ;
 	inline ll_t inc(PAIRGL popgl, ll_t count);
-	inline void inc_f(PAIRGL popgl, ll_t count);
-	inline void inc_s(PAIRGL popgl, ll_t count);
-	inline void inc_r(PAIRGL popgl, ll_t count);
-	inline void inc_z(PAIRGL popgl, ll_t count);
- 	void dSinc(const PAIRGL, const ll_t, ll_t* dret);
+	inline void inc_dl(PAIRGL popgl, ll_t count);
+	inline bool check(const PAIRGL &popgl);
+	void inc_r(const PAIRGL popgl, const ll_t count);
+	void inc_z(const PAIRGL popgl, const ll_t count);
+	void inc_s(const PAIRGL popgl, const ll_t count);
+	void inc_f(const PAIRGL popgl, const ll_t count);
 	static void* slice_inc(void *t);
 	static void* slice_dSinc(void *t);
 public:
-	size_t a, b;
-	ll_t S1, S2, S3, S4, S5, S6, S7, S8, S9;
+	size_t a, b, size;
+	ll_t max_P;
 	ll_t e, FA, FC, r, sA, sC, z1, z2;
-	ll_t b1, b2, b3, b4, b5, b6, b7, b8, b9;
-	ll_t c1, c2, c3, c4, c5, c6, c7, c8, c9;
+	ll_t dfX, dfY, dr, dgXY, dgYX, dd, dD;
+	ll_t J[7][7];
+	ll_t H[7];
+
 	ll_t lastP;
 	ll_t ll, llmax, dSll[9];
 	likelihood_eq(size_t _a, size_t _b);
 	void set();
 	void set_known(int);
 	void get_ll(std::map<PAIRGL,size_t>);
-	void get_dS(std::map<PAIRGL,size_t>);
+	void get_jac(std::map<PAIRGL,size_t>);
+	void get_hess(std::map<PAIRGL,size_t>);
 	void fullModel(ll_t, ll_t, ll_t, ll_t, ll_t, ll_t, ll_t, ll_t);
 	void setmax();
 	void estimate(std::map <PAIRGL, size_t>);
@@ -116,3 +126,5 @@ public:
 };
 
 void compute(const char* filename, size_t a, size_t b, size_t subsample);
+
+#endif
