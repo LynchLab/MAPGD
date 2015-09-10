@@ -141,10 +141,12 @@ mapFile.seek(0)
 COV_SUM=0
 COV_N=0
 
+HEADER=True
+
 for line in mapFile:
 	line=line.split()
 	try:
-		if line[0]=="scaffold" or "id1":
+		if line[0]=="scaffold" or line[0]=="id1":
 			continue
 		if line[0][0]=='@':
 			continue
@@ -166,12 +168,11 @@ for line in mapFile:
 							poly[line[scaffold]]={}
 							poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
 				else:
-					COV_SUM+=lin[pop_coverage]
+					COV_SUM+=int(line[pop_coverage])
 					COV_N+=1
 					print float(COV_SUM)/float(COV_N)
 mapFile.close()
 
-HEADER=True
 
 for line in proFile:
 	line=line.split()
@@ -200,10 +201,7 @@ for line in proFile:
 		for x in range(3, len(line) ):
 			calls=map(int, line[x].split('/') )
 			if (GENOTYPE):
-			#	try:
 				out+=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
-			#	except:
-			#		E=0
 			elif (HET):
 				M=atoi[this[0]]
 				m=atoi[this[1]]

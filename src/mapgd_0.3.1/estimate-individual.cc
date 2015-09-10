@@ -257,9 +257,11 @@ int estimateInd(int argc, char *argv[])
 					#ifdef PRAGMA
 					#pragma omp critical
 					#endif
-					for (size_t i=0; i<sum_gofs.size(); i++){
-						sum_gofs[i]+=gofs[i];
-						if (gofs[i]!=0) gofs_read[i]++;
+					if (2*(buffer_mle[c].ll-buffer_mle[c].monoll)>=22){
+						for (size_t i=0; i<sum_gofs.size(); i++){
+							sum_gofs[i]+=gofs[i];
+							if (gofs[i]!=0) gofs_read[i]++;
+						}
 					}
 				}
 			}
