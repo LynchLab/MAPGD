@@ -276,6 +276,8 @@ Scripts for both Linux and Mac users are present in the top level directory, or 
 
 A note to IU users: Bigred2 has several different programming environments. While we hope to support use int he cray development environment in the future, currently support is only available in the gnu programming environment. To compile the code you will have to type "module rm PrgEnv-cray" then "module load PrgEnv-gnu".
 
+module load boost
+
 <h3> References </h3>
 
 Please cite the following paper (once it is written) when publishing results derived from this program:

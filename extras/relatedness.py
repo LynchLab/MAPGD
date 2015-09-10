@@ -14,15 +14,21 @@ class my_results:
 		self.func=func
 
 def my_minimize (model, params):
+#	return scipy.optimize.minimize(model, params, method='SLSQP').x
 	nR=np.copy(map(float, params) )
 	rml.set_max_P(1.0)
 	ret=my_results(0)
 	ret.niter=0
 	while True:
+#		print params
 		if(rml.get_max_P()<0.75):	
 			rml.set_max_P(0.75)
-		ret.hess=Model_hess(params)	
 		ret.jac=Model_jac(params)	
+		ret.hess=Model_hess(params)	
+		if (np.linalg.det(ret.hess)==0):
+			for x in range(0, len(params) ):
+				params[x]=params[x]/2.
+			continue
 		R=np.linalg.inv( np.matrix(ret.hess ) )*np.matrix( ret.jac ).transpose()
 		R=np.array(R.transpose() )[0]
 		for x in range(0, len(R) ):
@@ -39,6 +45,7 @@ def my_minimize (model, params):
 	return params
 
 def my_dll (model, params, x):
+#	return scipy.optimize.minimize(model, params, method='SLSQP').fun
 	ret=my_results(model(params) )
 	ret.x=params
 	params=[0.,0.,0.,0.,0.,0.,0.]
@@ -56,7 +63,18 @@ def my_dll (model, params, x):
 		ret.hess=np.delete(ret.hess, (x), axis=1)
 		ret.jac=np.delete(ret.jac, (x), axis=0)
 
-		R=np.linalg.inv( np.matrix(ret.hess ) )*np.matrix( ret.jac ).transpose()
+		if (np.linalg.det(ret.hess)==0):
+			for x in range(0, len(params) ):
+				params[x]=params[x]/2.
+			continue
+		try:
+			R=np.linalg.inv( np.matrix(ret.hess ) )*np.matrix( ret.jac ).transpose()
+		except:
+			print params
+			print ret.hess
+			print np.linalg.inv(ret.hess)
+			print ret.jac
+			quit()
 		R=np.array(R.transpose() )[0]
 
 		for y in range(0, len(params) ):
@@ -70,6 +88,7 @@ def my_dll (model, params, x):
 		ret.niter+=1
 		if (ret.niter>99):
 			ret.success=False
+			print "DANM!"
 			break
 	ret.func=model(params)-model(ret.x)
 	ret.x=params
@@ -117,7 +136,7 @@ model=Model
 for x in range(0, size):
 	for y in range(x+1, size):
 		cov=rml.read(sys.argv[1], x, y)
-		out=(map(str, cov) )
+		out=map(str, cov) 
 		if cov[0]!=0:
 			params=[0.,0.,0.,0.,0.,0.,0.,0.]
 

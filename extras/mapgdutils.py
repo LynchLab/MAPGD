@@ -35,6 +35,7 @@ mapFile=open(args.map[0])
 F=False
 HET=False
 GENOTYPE=False
+COVERAGE=False
 
 if args.mode[0]=='F':
 	F=True
@@ -42,6 +43,8 @@ if args.mode[0]=='H':
 	HET=True
 if args.mode[0]=='G':
 	GENOTYPE=True
+if args.mode[0]=='C':
+	COVERAGE=True
 
 scaffold=0
 site=1	
@@ -103,8 +106,6 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
 
         [E1, E2, E3]=sorted([MM, Mm, mm])
         N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
-#	print "A:"+','.join(map(str, [M, m, major, minor, error, p, pMM, pMm, pmm] ) )
-#	print "B:"+','.join(map(str, [-MM+N, -Mm+N, -mm+N, n] ) )
 	return [-MM+N, -Mm+N, -mm+N, n]
 
 	
@@ -115,48 +116,59 @@ N=0
 for line in mapFile:
 	line=line.split()
         try:
-                if line[0]=="id1":
+		if line[0]=="scaffold" or "id1":
                         continue
                 if line[0][0]=='@':
                         continue
-		if line[pol_llstat]=="." or line[pol_llstat]=="*":
+		if line[pol_llstat]=="." or line[pol_llstat]=="*" or line[pol_llstat]=="NA":
                         continue
-		if line[best_error]=="." or line[best_error]=="*":
+		if line[best_error]=="." or line[best_error]=="*" or line[best_error]=="NA":
                         continue
         except:
 		print "could not parse line ", line
 		exit(0)
-	E+=float(line[best_error])
+	try:
+		E+=float(line[best_error])
+	except:
+		print line
+		exit(0)
 	N+=1
 
 prior=(E/N)
 
 mapFile.seek(0)
 
+COV_SUM=0
+COV_N=0
+
 for line in mapFile:
 	line=line.split()
 	try:
-		if line[0]=="id1":
+		if line[0]=="scaffold" or "id1":
 			continue
 		if line[0][0]=='@':
 			continue
-		if line[pol_llstat]=="." or line[pol_llstat]=="*":
+		if line[pol_llstat]=="." or line[pol_llstat]=="*" or line[pol_llstat]=="NA":
 			continue
-		if line[best_error]=="." or line[best_error]=="*":
+		if line[best_error]=="." or line[best_error]=="*" or line[best_error]=="NA":
 			continue
 	except:
 		print "could not parse line ", line
 		exit(0)
 	if float(line[best_error])<=args.e:
 		if float(line[pol_llstat])>=args.l:
-			if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
-				if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
-					try:
-						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
-					except:
-						poly[line[scaffold]]={}
-						poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
-
+			if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
+				if not (COVERAGE):
+					if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
+						try:
+							poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
+						except:
+							poly[line[scaffold]]={}
+							poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
+				else:
+					COV_SUM+=lin[pop_coverage]
+					COV_N+=1
+					print float(COV_SUM)/float(COV_N)
 mapFile.close()
 
 HEADER=True

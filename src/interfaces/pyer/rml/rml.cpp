@@ -133,12 +133,13 @@ void likelihood_eq::get_hess(map <PAIRGL, size_t> counts){
 
         v.reserve(counts.size() );
 
-
         for(map<PAIRGL, size_t>::iterator it=start; it!=end; ++it){
                 v.push_back(*it);
         }
 	
 	memset(J, 0, sizeof(ll_t)*7*7);
+
+//#	std::cout << "!!" << max_P << std::endl;
 
 	#pragma omp parallel
 	{
@@ -229,7 +230,7 @@ inline bool likelihood_eq::check(const PAIRGL &popgl){
 	ll_t P, mm1mm2, Mm1mm2, MM1mm2, mm1Mm2, Mm1Mm2, MM1Mm2, mm1MM2, Mm1MM2, MM1MM2;
 	P=popgl.P;
 
-	if (P>max_P) return false;
+	if (max(P, 1-P) > max_P) return false;
 	if (P==0 or P==1) return false;	
 	
 	ll_t A=P+e*P; 		//mean major allele frequency in A
@@ -265,7 +266,7 @@ inline bool likelihood_eq::check(const PAIRGL &popgl){
 	MM1MM2=0+0*P+0.0*e+0*E_A2+0*E_C2+0.0*E_AC+0*E_A2C+0*E_AC2+1*E_A2C2;
 
 	if(mm1mm2>=0 and Mm1mm2>=0 and MM1mm2>=0 and mm1Mm2>=0 and Mm1Mm2>=0 and MM1Mm2>=0 and mm1MM2>=0 and Mm1MM2>=0 and MM1MM2>=0) return true;
-	max_P=P;
+	max_P=max(P, 1.-P);
 	return false;
 };
 
@@ -319,18 +320,16 @@ inline ll_t likelihood_eq::inc(const PAIRGL popgl, const ll_t count){
 	MM1MM2=0+0*P+0.0*e+0*E_A2+0*E_C2+0.0*E_AC+0*E_A2C+0*E_AC2+1*E_A2C2;
 
 
-/*
-	if (mm1mm2<0 or mm1mm2>1) std::cerr << "out of range:" << P << "\n";
-	if (Mm1mm2<0 or Mm1mm2>1) std::cerr << "out of range:" << P << "\n";
-	if (MM1mm2<0 or MM1mm2>1) std::cerr << "out of range:" << P << "\n";
-	if (mm1Mm2<0 or mm1Mm2>1) std::cerr << "out of range:" << P << "\n";
-	if (Mm1Mm2<0 or Mm1Mm2>1) std::cerr << "out of range:" << P << "\n";
-	if (MM1Mm2<0 or MM1Mm2>1) std::cerr << "out of range:" << P << "\n";
-	if (mm1MM2<0 or mm1MM2>1) std::cerr << "out of range:" << P << "\n";
-	if (Mm1MM2<0 or Mm1MM2>1) std::cerr << "out of range:" << P << "\n";
-	if (MM1MM2<0 or MM1MM2>1) std::cerr << "out of range:" << P << "\n";
-*/
-/*
+	if (mm1mm2<0 or mm1mm2>1) mm1mm2=0;
+	if (Mm1mm2<0 or Mm1mm2>1) Mm1mm2=0; 
+	if (MM1mm2<0 or MM1mm2>1) MM1mm2=0; 
+	if (mm1Mm2<0 or mm1Mm2>1) mm1Mm2=0; 
+	if (Mm1Mm2<0 or Mm1Mm2>1) Mm1Mm2=0;
+	if (MM1Mm2<0 or MM1Mm2>1) MM1Mm2=0;
+	if (mm1MM2<0 or mm1MM2>1) mm1MM2=0;
+	if (Mm1MM2<0 or Mm1MM2>1) Mm1MM2=0;
+	if (MM1MM2<0 or MM1MM2>1) MM1MM2=0;
+
 	ll_t S=pow(mm1mm2+Mm1mm2+MM1mm2+mm1Mm2+Mm1Mm2+MM1Mm2+mm1MM2+Mm1MM2+MM1MM2, 2);
 
 	if(S>1){
@@ -343,7 +342,7 @@ inline ll_t likelihood_eq::inc(const PAIRGL popgl, const ll_t count){
 		mm1MM2/=S;
 		Mm1MM2/=S;
 		MM1MM2/=S;
-	};*/
+	};
 	
 	ll_t E[9];
 
@@ -377,7 +376,7 @@ PyObject * read_py (char *filename, size_t A, size_t B){
 	ll.b=B;
 	sample_stats sample=readcounts(filename, A, B, 0);
 	counts=sample.counts;
-	return Py_BuildValue("fffff", float(sample.sampled), float(sample.amin), float(sample.amax), float(sample.bmin), float(sample.bmax) );
+	return Py_BuildValue("fffffff", float(sample.sampled), float(A), float(sample.amin), float(sample.amax), float(B), float(sample.bmin), float(sample.bmax) );
 };
 
 PyObject * read_small_py (char *filename, size_t A, size_t B, size_t s){
