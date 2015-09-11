@@ -1,3 +1,4 @@
+import time
 import sys
 import math
 from scipy import stats
@@ -14,7 +15,7 @@ class my_results:
 		self.func=func
 
 def my_minimize (model, params):
-#	return scipy.optimize.minimize(model, params, method='SLSQP').x
+	return scipy.optimize.minimize(model, params, method='SLSQP').x
 	nR=np.copy(map(float, params) )
 	rml.set_max_P(1.0)
 	ret=my_results(0)
@@ -45,9 +46,9 @@ def my_minimize (model, params):
 	return params
 
 def my_dll (model, params, x):
-#	return scipy.optimize.minimize(model, params, method='SLSQP').fun
 	ret=my_results(model(params) )
 	ret.x=params
+	return scipy.optimize.minimize(model_x[x], params, method='SLSQP').fun-model(ret.x)
 	params=[0.,0.,0.,0.,0.,0.,0.]
 	nR=np.copy(map(float, params) )
 	ret.niter=0
@@ -88,7 +89,6 @@ def my_dll (model, params, x):
 		ret.niter+=1
 		if (ret.niter>99):
 			ret.success=False
-			print "DANM!"
 			break
 	ret.func=model(params)-model(ret.x)
 	ret.x=params
@@ -101,10 +101,60 @@ def getdll (model, params):
 	maxll=model(params)
 	z=0
 	for x in range(0, len(params) ):
-	#	ret.append(getci(model, params, x-z, 'l', maxll) )
-	#	ret.append(getci(model, params, x-z, 'u', maxll) )
 		ret.append(my_dll(model, params, x) )
 	return ret
+
+def Model_0(params):
+	A=[]
+	B=[0.0]
+	C=params[1:]
+	D=np.concatenate( (np.concatenate((A, B), axis=0 ), C), axis=0)
+	return Model(D)
+
+def Model_1(params):
+	A=params[:1]
+	B=[0.0]
+	C=params[2:]
+	D=np.concatenate( (np.concatenate((A, B), axis=0 ), C), axis=0)
+	return Model(D)
+
+def Model_2(params):
+	A=params[:2]
+	B=[0.0]
+	C=params[3:]
+	D=np.concatenate( (np.concatenate((A, B), axis=0 ), C), axis=0)
+	return Model(D)
+def Model_3(params):
+	A=params[:3]
+	B=[0.0]
+	C=params[4:]
+	D=np.concatenate( (np.concatenate((A, B), axis=0 ), C), axis=0)
+	return Model(D)
+def Model_4(params):
+	A=params[:4]
+	B=[0.0]
+	C=params[5:]
+	D=np.concatenate( (np.concatenate((A, B), axis=0 ), C), axis=0)
+	return Model(D)
+def Model_5(params):
+	A=params[:5]
+	B=[0.0]
+	C=params[6:]
+	D=np.concatenate( (np.concatenate((A, B), axis=0 ), C), axis=0)
+	return Model(D)
+def Model_6(params):
+	A=params[:6]
+	B=[0.0]
+	C=params[7:]
+	D=np.concatenate( (np.concatenate((A, B), axis=0 ), C), axis=0)
+	return Model(D)
+def Model_7(params):
+	A=params[:7]
+	B=[0.0]
+	C=params[8:]
+	D=np.concatenate( (np.concatenate((A, B), axis=0 ), C), axis=0)
+	return Model(D)
+
 
 def Model(params):
 	fA, fC, r, sA, sC, z1, z2=params
@@ -133,12 +183,15 @@ print "total sites, line A, min, max, line C, min, max, success, e, dll, fA, dll
 
 model=Model
 
+model_x=[Model_0, Model_1, Model_2, Model_3, Model_4, Model_5, Model_6, Model_7]
+
 for x in range(0, size):
 	for y in range(x+1, size):
+		A=time.time()
 		cov=rml.read(sys.argv[1], x, y)
 		out=map(str, cov) 
 		if cov[0]!=0:
-			params=[0.,0.,0.,0.,0.,0.,0.,0.]
+			params=[0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01]
 
 			maximum=my_minimize(model, params[1:] )
 			fit=np.copy(maximum).tolist() 
@@ -149,11 +202,13 @@ for x in range(0, size):
 			fit_ll=model( maximum ) 
 			out.append("true")
 			for z in range(0, 8):
-				fit[z]='{:.4f}'.format(fit[z])
+				fit[z]='{:.4f}'.format( (fit[z]))
 				dlls[z]='{:.4f}'.format(dlls[z])
 			for z in range(0, 8):
 				out.append(fit[z]+", "+dlls[z])
 			out.append('{:.4f}'.format(null_ll) )
 			out.append('{:.4f}'.format(fit_ll) )
 			out.append( str(rml.get_max_P()) )
+			B=time.time()
+			out.append(str(B-A))
 			print ", ".join(out)

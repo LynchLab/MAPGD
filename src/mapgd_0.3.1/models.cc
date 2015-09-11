@@ -228,6 +228,7 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 
 	while (it!=end){
 		if (!it->masked){
+			(*gof)=0;
 			N_=float_t(count(*it) );
 			M_=(*it).base[allele.major];
 
