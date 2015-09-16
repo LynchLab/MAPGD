@@ -273,8 +273,8 @@ int estimateInd(int argc, char *argv[])
 			//TODO move this over into a formated file.
 			//?
 			if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
-			//	*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
-			//	*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
+				*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
+				*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
 			}
 			if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
 			if (pro_out.is_open() ){
@@ -284,7 +284,6 @@ int estimateInd(int argc, char *argv[])
 		}
 		if (readed!=BUFFER_SIZE){break;}
 		all_read+=readed;
-		std::cout << readed << std::endl;
 		if (all_read>stop){break;}
 	}
 	for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.get_sample_name(ind[x]) << ":" << sum_gofs[x]/(float_t(gofs_read[x])) << std::endl;

@@ -179,7 +179,9 @@ def FullModel(params):
 size=rml.getsize(sys.argv[1])
 
 R=[]
+
 print "total sites, line A, min, max, line C, min, max, success, e, dll, fA, dll, fC, dll, r, dll, sAC, dll, sCA, dll, z1, dll, z2, dll, null_ll, fit_ll, max_P"
+#sys.stdout.flush()
 
 model=Model
 
@@ -212,3 +214,4 @@ for x in range(0, size):
 			B=time.time()
 			out.append(str(B-A))
 			print ", ".join(out)
+			sys.stdout.flush()

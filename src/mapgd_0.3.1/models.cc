@@ -225,6 +225,7 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 	count_t count1[2];	//The count of the number of major alleles observed.
 
 	float_t tP, etP;	//Two pointless temporary variables.
+	float_t Z;
 
 	while (it!=end){
 		if (!it->masked){
@@ -251,10 +252,13 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 			}
 
 			V-=pow(E, 2);
-			Num+=O-E;
-			Den+=V;
 
-			if (V>0) (*gof)=( (O-E)/sqrt(V) );
+			if (V>0.001) {
+				Z=(O-E)/sqrt(V);
+				(*gof)=Z;
+				Num+=Z;
+				Den+=1;
+			}
 			if((*gof)<clone_mingof){
 				clone_mingof=(*gof);
 				maxgof_ptr=&(*it);
