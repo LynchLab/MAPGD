@@ -50,7 +50,6 @@ for x in range(0, 96):
 
 print sites.keys()
 
-
 for line in File:
 	line=line.split()
 	scaffold=str(line[0])
@@ -68,7 +67,7 @@ for line in File:
 				denom[y]+=1
 	except:
 		processed+=1
-print 
+print processed
 for x in range(0, 96):
 	if denom[x]>0:
 		print x, float(num[x])/float(denom[x]), denom[x]

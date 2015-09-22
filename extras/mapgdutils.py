@@ -111,30 +111,30 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
 	
 poly={}
 
-E=0
-N=0
-for line in mapFile:
-	line=line.split()
-        try:
-		if line[0]=="scaffold" or "id1":
-                        continue
-                if line[0][0]=='@':
-                        continue
-		if line[pol_llstat]=="." or line[pol_llstat]=="*" or line[pol_llstat]=="NA":
-                        continue
-		if line[best_error]=="." or line[best_error]=="*" or line[best_error]=="NA":
-                        continue
-        except:
-		print "could not parse line ", line
-		exit(0)
-	try:
-		E+=float(line[best_error])
-	except:
-		print line
-		exit(0)
-	N+=1
-
-prior=(E/N)
+#E=0
+#N=0
+#for line in mapFile:
+#	line=line.split()
+#        try:
+#		if line[0]=="scaffold" or "id1":
+#                        continue
+#                if line[0][0]=='@':
+#                        continue
+#		if line[pol_llstat]=="." or line[pol_llstat]=="*" or line[pol_llstat]=="NA":
+#                        continue
+#		if line[best_error]=="." or line[best_error]=="*" or line[best_error]=="NA":
+#                        continue
+#        except:
+#		print "could not parse line ", line
+#		exit(0)
+#	try:
+#		E+=float(line[best_error])
+#	except:
+#		print line
+#		exit(0)
+#	N+=1
+#
+#prior=(E/N)
 
 mapFile.seek(0)
 
