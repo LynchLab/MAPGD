@@ -19,8 +19,16 @@ const std::string profile::decodeid0(const id0_t &id){
 const std::string profile_header::decodeid0(const id0_t &id){
 	if (lastid0==id) return lastid0_str;
 	lastid0=id;
-	lastid0_str=id0[id];
-	return lastid0_str;
+	if (id<id0.size() ) {
+		lastid0_str=id0[id]; 
+		return lastid0_str; 
+	}
+	else {
+		std::cerr << id << ", " << lastid0 << ", " << id0.size() << ", " << id0[id] << "\n";
+		exit(0);
+		return "";
+	}
+//	return index.get_string(id);
 }
 
 /*! \brief takes a numerical id and returns the string in represents.
@@ -299,7 +307,8 @@ profile_header & profile_header::operator =(const profile_header& arg){
 
 
 		id0_str=arg.id0_str;
-		id0=arg.id0;				
+		id0=arg.id0;
+//		index=arg.index;
 		extraids=arg.extraids;			//extra ids associated with the quartet. (ref base identiy?).   
 		sample_gof_=arg.sample_gof_;		// the number of samples (i.e. different individuals or populations) in the profile.
 

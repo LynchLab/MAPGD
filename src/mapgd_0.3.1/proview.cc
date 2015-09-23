@@ -26,16 +26,19 @@ int proview(int argc, char *argv[])
 	bool bernhard=false;
 	bool split=false;
 
-	count_t outc=6;
+	count_t outc=7;
 	count_t inC=0;
 
 	args.pro=false;
 	args.min=4;
 	args.pvalue=0.001;
 
+//	??
+
 	std::vector <std::string> infiles;
 	int sample=-1;
 	std::string outfile="";
+	std::string headerfile="";
 
 	env_t env;
 	env.setname("mapgd proview");
@@ -52,13 +55,15 @@ int proview(int argc, char *argv[])
 	env.optional_arg('i',"input",	&infiles,	&arg_setvectorstr,
 									"an error occured", "sets the input file (default stdin). If multiple input files given, the default behavior is to merge the files.");
 	env.optional_arg('I',"sample",	&sample, 	&arg_setint,	"an error occured", "limit output to sample N.");
+	env.optional_arg('H',"header",	&headerfile, 	&arg_setstr, 	"an error occured", "use a SAM header file.");
+	env.optional_arg('n',"names",	&headerfile, 	&arg_setstr, 	"an error occured", "a tab delimited file with sample name\tfile name pairs.");
 	env.optional_arg('o',"output",	&outfile,	&arg_setstr, 	"an error occured", "sets the output file (default stdout)");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 	env.flag(	'P',"pro",	&args.pro, 	&flag_set, 	"an error occured", "input is in the pro format");
 	env.flag(	'b',"binary",	&binary, 	&flag_set, 	"an error occured", "output in a binary format");
 	env.flag(	'B',"bernhard",	&bernhard, 	&flag_set, 	"an error occured", "print in mlRho compatibility mode.");
-	env.flag(	'H',"noheader",	&noheader, 	&flag_set, 	"an error occured", "don't print a header.");
+	env.flag(	'N',"noheader",	&noheader, 	&flag_set, 	"an error occured", "don't print a header.");
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
 
@@ -122,6 +127,7 @@ int proview(int argc, char *argv[])
 
 	size_t thissample=0;
 
+
 	if (sample==-1){
 		for (size_t x=0; x<in.size(); x++){		//copies the sample names from the in file(s) to out.
 			for (size_t y=0;y<in[x]->size(); ++y){
@@ -142,14 +148,27 @@ int proview(int argc, char *argv[])
 	if (!noheader) out.writeheader();		//writes a header iff noheader is not set.
 	else out.noheader();
 
-	out.set_id0(-1);
-	out.set_id1(-1);	//set the ids of out to -1 for syncronization purposes.
-	
+	file_index index;
+	if (headerfile.size()!=0) {
+		std::fstream header;
+		header.open(headerfile.c_str(),  std::fstream::in);
+		index.from_sam_header( header );
+		for (size_t x=0; x<index.get_sizes().size(); x++) out.encodeid0(index.get_string(x) );
+		out.set_id0(0);
+		out.set_id1(1);
+	} 
+	else {
+		out.set_id0(-1);
+		out.set_id1(-1);	//set the ids of out to -1 for syncronization purposes.
+	}
 	for (size_t x=0; x<in.size(); x++){ in[x]->read(); }
 
 	bool go=true;
 	bool read_site=false;
 	bool read_scaffold=false;
+	bool print_all=true;
+
+	if (!index.is_open() ) print_all=false;
 
 	Locus site=out.get_locus();
 
@@ -174,7 +193,7 @@ int proview(int argc, char *argv[])
 				if (in[x]->read()==EOF ) in[x]->close();
 			} else {
 				if (out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
-					if (in[x]->get_id1()<site.get_id1() ) {std::cerr << __FILE__ << ":" << __LINE__ << ": in[x]->get_id1() out of order. Exiting\n"; exit(0);}
+					if (in[x]->get_id1()<site.get_id1() && in[x]->is_open() ) {std::cerr << __FILE__ << ":" << __LINE__ << ": in[x]->get_id1() out of order. Exiting\n"; exit(0);}
 					read_scaffold=true;
 				}
 				while (it_in!=end_in){ 
@@ -185,24 +204,37 @@ int proview(int argc, char *argv[])
 			} 
 			if (in[x]->is_open() ) go=true;
 		}
-		if (read_site){
+		if (read_site || print_all ){
 			if (bernhard){
 				Locus L=site;
 				L.resize(1);
 				L.set_quartet(site.get_quartet(sample), 0);
 				out.write(L);
 			} else out.write(site);
-		} 
+		}
 		if (!read_scaffold){
-			site.set_id0(site.get_id0()+1);
-			site.set_id1(0);
+			if (not (index.is_open() ) ) {
+				site.set_id0(site.get_id0()+1);
+				site.set_id1(1);
+			}
+			else site.set_id1(site.get_id1()+1);
 		} else {
 			site.set_id1(site.get_id1()+1);
 		}
+		if (index.is_open() ) {
+			if (site.get_id1()>index.get_size(site.get_id0() ) ) {
+				site.set_id0(site.get_id0()+1);
+				site.set_id1(1);
+			}
+			if (site.get_id0()<index.get_sizes().size() ) go=true;
+			else go=false;
+		}
 	};
-
 	out.close();
-	for (size_t x=0; x<in.size(); ++x) {in[x]->close(); delete in[x];}
+	for (size_t x=0; x<in.size(); ++x) {
+		in[x]->close(); 
+		delete in[x];
+	}
 	env.close();
 	return 0;
 }

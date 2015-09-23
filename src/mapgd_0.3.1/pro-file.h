@@ -18,6 +18,7 @@
 #include "stream-tools.h"
 #include "locus.h"
 #include "quartet.h"
+#include "file-index.h"
 
 #define NONE		0
 #define BADHEADER	1
@@ -42,6 +43,8 @@ private:
 //private variables should be initialized by reading the header...
 	std::map <std::string, count_t> id0_str;
 	std::vector <std::string> id0;
+	file_index index;
+
 	std::vector <std::string> extraids;		//!< extra ids associated with the quartet. (ref base identiy?).	
 
 	std::vector <std::string> column_names;		//!< the names of all the columns in the profile.

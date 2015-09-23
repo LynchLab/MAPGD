@@ -13,6 +13,7 @@
 #include "interface.h"
 #include "stream-tools.h"
 #include "pro-file.h"
+#include "file-index.h"
 
 #include <math.h>
 #include <vector>

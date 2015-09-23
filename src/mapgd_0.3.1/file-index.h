@@ -1,14 +1,21 @@
-#ifndef FILE_INDEX_H_
-#define FILE_INDEX_H_
+#ifndef _FILE_INDEX_H_
+#define _FILE_INDEX_H_
 
-#include "file-index.h"
-#include "stream-tools.h"
-#include "typedef.h"
+
+//these need to be moved ...
+
 #include <iostream>
 #include <map>
 #include <vector>
-#include <stdio.h>
-#include <cstring>
+#include <stdio.h>	
+#include <cstring>	//memcpy
+#include <string>
+
+#include "stream-tools.h"
+#include "typedef.h"
+
+
+//#include "datatypes/row.h"
 
 /// An interface that transforms pairs of name and position keys into record numbers.
 /* file_index should always be used to re designate pairs of keys into a single record
@@ -17,86 +24,87 @@
 class file_index{
 
 private:
-/*! \breif A hash table to store pairs of strings and the numeral associated with them.
- */
+	/// a hash table to store pairs of strings and the numeral associated with them.
 	std::map <std::string, id0_t> id0_str_;			
-/*! \breif The keys to the hash table id0_str_.
- */
+
+	/// the keys to the hash table id0_str_.
 	std::vector <std::string> id0_;	
 			
-/*! \breif The sizes of the rows in bytes.
- */
+	/// the sizes of the rows in bytes.
 	std::vector <id1_t> size_;				
 
-/*! \breif The last numberical id returned by an decodeid0 querry. Initilized to 0-1.
- */
+	/// the last numberical id returned by an decodeid0 querry. Initilized to 0-1.
 	id0_t last_id0_;						
 
-/*! \breif The last string id returned by an decodeid0 querry. Initilized to "".
- */
+	/// the last string id returned by an decodeid0 querry. Initilized to "".
 	std::string last_id0_str_;
+	
+	bool open_;
 
-	char delim_;				
-	char key_;			
+	/// this is the stupid implementation for now, make it better later.
+	//gap gaps_; //You know what? F$%# it. It will make our files 20% larger, do I really care that much?
 
 public:
 	file_index();						
 
-/*! \breif Returns the numerical representation of the string used to identify scaffolds.
- */
-	const id0_t & encode_id0(const std::string &);		
+	/// returns the number of rows until a row with id0, id1.
+	id1_off_t get_offset (const std::string &, const id1_t &) const;	
 
-/*! \breif Returns the string represented by id0's encoded by this (and only this) file_index.
- */
-	const std::string & decode_id0(const id0_t &);		
+	/// returns the record number corresponding to id0, id1.
+	id1_off_t get_rowid (const std::string &, const id1_t &) const;	
 
-/*! \breif Returns the number of rows until a row with id0, id1.
- */
-	id1_t get_offset (const id0_t &, const id1_t &);	
+	/// returns the id0 corresponding to string.
+	id0_t get_id0 (const std::string &) const;	
 
-/*! \breif Set the number of rows (bp) in the scaffold with string id id0.
- */
+	/// returns the id0 corresponding to rowid.
+	id0_t get_id0 (const id1_t &) const;	
+
+	/// returns the id1 corresponding rowid.
+	id1_t get_id1 (const id1_t &) const;	
+
+	/// returns the string corresponding to id0.
+	std::string get_string (const id0_t &) const;	
+
+	/// sets the string corresponding to id0.
+	void set_string (const id0_t &, const std::string &);	
+
+	/// set the number of rows (bp) in the scaffold with string id id0.
 	void set_size (const std::string &, const id1_t &);	
 
-/*! \breif Set the number of rows (bp) in the scaffold with numeric id id0.
- */
+	/// set the number of rows (bp) in the scaffold with numeric id id0.
 	void set_size (const id0_t &, const id1_t &);	
 
-/*! \breif Set the number of rows in the most resently read scaffold.
- */
+	/// set the number of rows in the most resently read scaffold.
 	void set_last_size (const id1_t &);			
 
-/*! \breif Set the number of rows in the next scaffold to be read.
- */
+	/// set the number of rows in the next scaffold to be read.
 	void set_next_size (const id1_t &);			
 
-/*! \breif Get a vector containing the sizes of each scaffold.
- */
-	std::vector <id1_t> get_all_sizes (void);		
+	/// get a vector containing the sizes of each scaffold.
+	std::vector <id1_t> get_sizes (void);		
 
-/*! \breif Get the size of the last scaffold read.
- */
+	/// get the size of scaffold blarg.
+	id1_t get_size (const id0_t &) const;
+
+	/// get the size of the last scaffold which has been read from. returns map_file::noid on error.
 	id1_t get_last_size (void);				
 
-/*! \breif Get the size of the next scaffold to be read.
- */
+	/// get the size of the next scaffold to be read. returns map_file::noid on error.
 	id1_t get_next_size (void);				
 
-/*! \breif Read in a file_index (strictly text mode).
- */
+	/// read in a file_index (strictly text mode).
 	int read_index(std::istream &);				
 
-/*! \breif Read in a file_index from a sam header.
- */
+	/// read in a file index from a sam header.
 	int from_sam_header(std::istream &);
 
-/*! \breif Write out a file_index (strictely text mode).
- */
+	/// write out a file_index
 	int write_index(std::ostream &);			
 
-/*! \breif Not implemented. Do not use.
- */
+	/// not implemented. Do not use.
 	file_index & operator=(const file_index&);
+
+	bool is_open(void) const;
 };
 
 #endif 

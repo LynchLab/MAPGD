@@ -16,4 +16,5 @@ typedef long double my_float_t;
 typedef uint16_t id0_t;		//specifies scaffold. 		limits to 65,536 scaffolds.
 typedef uint32_t id1_t;		//specifies bp locations.	limits to 4,294,967,296 bp per scaffold.
 
+typedef uint32_t id1_off_t;	//specifies an offset
 #endif
