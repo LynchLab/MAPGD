@@ -10,6 +10,19 @@ from scipy.optimize import fmin_ncg
 import rml
 import random
 
+import argparse
+
+parser = argparse.ArgumentParser(description='Utilities to help with the analysis of the output of mapgd')
+parser.add_argument('-a', metavar='--a', type=int, default=0,
+                   help='maximum estimated sequencing error')
+parser.add_argument('-b', metavar='--b', type=int, default=1,
+                   help='maximum ll-score for hw diseqaulibrium')
+parser.add_argument('--bcf', metavar='bcfFile', type=str, nargs=1,
+                   help='the name of a bcfFile',  required=True)
+args = parser.parse_args()
+
+bcfFile=open(args.bcf[0])
+
 class my_results:
 	def __init__(self, func):
 		self.func=func
@@ -176,7 +189,7 @@ def FullModel(params):
 	rml.fullModel(e, fA, fC, r, sA, sC, z1, z2)
 	return (-rml.get_ll() )
 
-size=rml.getsize(sys.argv[1])
+size=rml.getsize(args.bcf[0])
 
 R=[]
 
@@ -190,7 +203,7 @@ model_x=[Model_0, Model_1, Model_2, Model_3, Model_4, Model_5, Model_6, Model_7]
 for x in range(0, size):
 	for y in range(x+1, size):
 		A=time.time()
-		cov=rml.read(sys.argv[1], x, y)
+		cov=rml.read(args.bcf[0], x, y)
 		out=map(str, cov) 
 		if cov[0]!=0:
 			params=[0.01,0.01,0.01,0.01,0.01,0.01,0.01,0.01]

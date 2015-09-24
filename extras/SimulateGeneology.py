@@ -1,8 +1,49 @@
 import random
+import numpy
 import os
+import math
 
 Pfreq=0.2
 SIZE=100
+bp=1
+GEN=50
+
+File05=open("seq05.gcf", 'w')
+File10=open("seq15.gcf", 'w')
+File15=open("seq15.gcf", 'w')
+File20=open("seq20.gcf", 'w')
+File25=open("seq25.gcf", 'w')
+File30=open("seq30.gcf", 'w')
+File35=open("seq35.gcf", 'w')
+File40=open("seq40.gcf", 'w')
+File45=open("seq45.gcf", 'w')
+
+def seq(File, P, e, F, N):
+	global File2
+	global bp
+	lnc=math.log(1.0-e)
+	lnch=math.log((1.0-e)/2.0+e/6)
+	lne=math.log(e)
+
+        File.write( '\t'.join(map(str, [1, bp, "C", "A", P, e] ) ) )
+	bp+=1
+	for f in F:
+	        if f.gen==2:
+	                [M, m, E]=numpy.random.multinomial(N,[(1-e), e/3, 2*e/3])
+	        elif f.gen==1:
+	                [M, m, E]=numpy.random.multinomial(N,[(1-e)/2.0+e/6, (1-e)/2.0+e/6, 2*e/3])
+	        else:
+	                [M, m, E]=numpy.random.multinomial(N,[e/3.0, (1-e), 2*e/3])
+
+		MM=lnc*M+lne*(m+E)#-math.log(P**2)
+		Mm=lnch*(M+m)+lne*E#-math.log(2*P*Q)
+		mm=lnc*m+lne*(M+E)#-math.log(Q**2)
+
+		norm=math.log(math.exp(MM)+math.exp(Mm)+math.exp(mm) )
+
+		File.write('\t'+'\t'.join(map(str, [-MM+norm, -Mm+norm, -mm+norm, N] ) ) )
+	File.write('\n')
+
 
 def f(h, q):
 	return ( h-2*q)**2 /(2.*q*(1.-q) )-1. 
@@ -91,7 +132,6 @@ class individual:
 				
 		
 
-GEN=2
 F = [ [] for y in range(GEN)]
 
 digraph_head=[]
@@ -153,8 +193,28 @@ while a<LIM:
 	E.Den[Q]+=1.
 	E.Num[Q]=E.Num[Q]*(E.Den[Q]-1.)/E.Den[Q]+f(E.gen, float(Q)/float(SIZE*2) )*1./E.Den[Q]
 
-
 	count[get_freq(F[-1])][C.gen][D.gen]+=1
+
+	Qf=min(float(Q)/float(SIZE*2), float(SIZE*2-Q)/float(SIZE*2) )
+
+	if (Qf <= 0.05 ):
+		seq(File05, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+	elif (Qf <=0.10 ):
+		seq(File10, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+	elif (Qf <=0.15 ):
+		seq(File15, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+	elif (Qf <=0.20 ):
+		seq(File20, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+	elif (Qf <=0.25 ):
+		seq(File25, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+	elif (Qf <=0.30 ):
+		seq(File30, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+	elif (Qf <=0.35 ):
+		seq(File35, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+	elif (Qf <=0.40 ):
+		seq(File40, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+	elif (Qf <=0.45 ):
+		seq(File45, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
 
 	if a==LIM-1:
 		for Q in range(1, SIZE):
