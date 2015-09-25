@@ -40,26 +40,31 @@ id1_t file_index::get_size (const id0_t &id0) const{
 int file_index::from_sam_header(std::istream &in)
 {
 	id1_t length;
-	std::string line, sn, ln;
+	std::string line, val, tag;
 	if (&in==NULL){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": attempt to read from istream when no istream is open.\n";
 		return -1;
 	};
 	while ( std::getline(in, line) ) {
 		std::vector <std::string> column=split(line, '\t');
+		bool has_sn=false, has_ln=false;
 		if ( column[0]=="@SQ" ) {
-			if (column.size()==3) {
-				sn=split_first(column[1], ':')[1];
-				ln=split(column[2], ':')[1];
-				last_id0_str_=sn;
-				length=atoi(ln.c_str());
-				last_id0_=id0_.size();
-				id0_str_[last_id0_str_]=last_id0_;
-				id0_.push_back(last_id0_str_);
-				size_.push_back(length);
-			} else {
-				std::cerr << __FILE__ << ":" << __LINE__ << ": incorrect number of columns in samfile header.\n";
-			}; 
+			for (size_t x=1; x<column.size(); ++x){
+				tag=split(column[x], ':')[0];
+				val=split(column[x], ':')[1];
+				if(tag.compare("LN")==0){
+					length=atoi(val.c_str());
+					size_.push_back(length);
+					has_ln=true;
+				} else if(tag.compare("SN")==0) {
+					last_id0_str_=val;
+					last_id0_=id0_.size();
+					id0_str_[last_id0_str_]=last_id0_;
+					id0_.push_back(last_id0_str_);
+					has_sn=true;
+				}
+			}
+			if( not (has_sn && has_ln) ) std::cerr << __FILE__ << ":" << __LINE__ << ": formating error in samfile header.\n";
 		};
 	}
 	open_=true;

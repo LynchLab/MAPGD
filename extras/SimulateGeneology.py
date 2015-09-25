@@ -4,19 +4,19 @@ import os
 import math
 
 Pfreq=0.2
-SIZE=100
+SIZE=1000
 bp=1
-GEN=50
+GEN=8
 
-File05=open("seq05.gcf", 'w')
-File10=open("seq15.gcf", 'w')
-File15=open("seq15.gcf", 'w')
-File20=open("seq20.gcf", 'w')
-File25=open("seq25.gcf", 'w')
-File30=open("seq30.gcf", 'w')
-File35=open("seq35.gcf", 'w')
-File40=open("seq40.gcf", 'w')
-File45=open("seq45.gcf", 'w')
+File=open("seq.gcf", 'w')
+#File10=open("seq15.gcf", 'w')
+#File15=open("seq15.gcf", 'w')
+#File20=open("seq20.gcf", 'w')
+#File25=open("seq25.gcf", 'w')
+#File30=open("seq30.gcf", 'w')
+#File35=open("seq35.gcf", 'w')
+#File40=open("seq40.gcf", 'w')
+#File45=open("seq45.gcf", 'w')
 
 def seq(File, P, e, F, N):
 	global File2
@@ -197,24 +197,24 @@ while a<LIM:
 
 	Qf=min(float(Q)/float(SIZE*2), float(SIZE*2-Q)/float(SIZE*2) )
 
-	if (Qf <= 0.05 ):
-		seq(File05, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.10 ):
-		seq(File10, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.15 ):
-		seq(File15, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.20 ):
-		seq(File20, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.25 ):
-		seq(File25, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.30 ):
-		seq(File30, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.35 ):
-		seq(File35, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.40 ):
-		seq(File40, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.45 ):
-		seq(File45, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	if (Qf = 0.05 ):
+	seq(File, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	elif (Qf <=0.10 ):
+#		seq(File10, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	elif (Qf <=0.15 ):
+#		seq(File15, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	elif (Qf <=0.20 ):
+#		seq(File20, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	elif (Qf <=0.25 ):
+#		seq(File25, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	elif (Qf <=0.30 ):
+#		seq(File30, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	elif (Qf <=0.35 ):
+#		seq(File35, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	elif (Qf <=0.40 ):
+#		seq(File40, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	elif (Qf <=0.45 ):
+#		seq(File45, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
 
 	if a==LIM-1:
 		for Q in range(1, SIZE):
