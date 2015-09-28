@@ -24,7 +24,7 @@ const std::string profile_header::decodeid0(const id0_t &id){
 		return lastid0_str; 
 	}
 	else {
-		std::cerr << id << ", " << lastid0 << ", " << id0.size() << ", " << id0[id] << "\n";
+		std::cerr << __FILE__ << ":" << __LINE__ << ":" << id << ", " << lastid0 << ", " << id0.size() << ", " << id0[id] << "\n";
 		exit(0);
 		return "";
 	}

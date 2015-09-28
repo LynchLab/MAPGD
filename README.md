@@ -22,13 +22,9 @@
 
 Development of version 0.4 is nearly complete. Version 0.4 will move over to using an SQL database for storing data, which should result in performance increases when processing large files. Development of the 0.3 version has been stopped, although I will still perform major bug fixes if anyone tells me about bugs. 
 
-<b> SEVERAL MAJOR ERRORS WERE INTRODUCED IN A RECENT VERSION OF MAPGD </b>
-
-These have been fixed in version 0.3.1, but any output from version 0.3 is suspect. 
-
 <h3> Introduction </h3>
 
-MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data, and provides minimum MSE estimators of these statistics on low coverage sequence. Although other tools, such as vcftools, give similar allele frequency estimates with less computational investment when coverage is high, MAPGD should always be preferred to other programs when calculating IBD coefficients. 
+MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data, and provides minimum MSE estimators of these statistics on low coverage sequence. Although other tools, such as vcftools, give similar allele frequency estimates with less computational investment when coverage is high, other programs continue exhibt poor performance on IBD estiamtes eveb at high coverage.
 
 <h5> FAQ </h5>
 
@@ -206,7 +202,7 @@ You would then type some similar commands to map reads from seq2 to the same ref
 
 Next the data have to be converted into some format the mapgd can read. Currently the easiest route to accomplish this is to create an 'mpileup' file with samtools:
 
-	samtools mpileup -q 25 -Q 25 -B seq.sort.bam seq.sort.bam > 	population.mpileup
+	samtools mpileup -q 25 -Q 25 -B seq.sort.bam seq.sort.bam > population.mpileup
 
 Then mpileup file must be converted to a .pro file which mapgd can use directly: 
 

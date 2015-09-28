@@ -193,15 +193,19 @@ size=rml.getsize(args.bcf[0])
 
 R=[]
 
-print "total sites, line A, min, max, line C, min, max, success, e, dll, fA, dll, fC, dll, r, dll, sAC, dll, sCA, dll, z1, dll, z2, dll, null_ll, fit_ll, max_P"
+print "total sites, line A, min, max, line C, min, max, success, e, dll, fA, dll, fC, dll, r, dll, sAC, dll, sCA, dll, z1, dll, z2, dll, null_ll, fit_ll, max_P, time"
 #sys.stdout.flush()
 
 model=Model
 
 model_x=[Model_0, Model_1, Model_2, Model_3, Model_4, Model_5, Model_6, Model_7]
 
-for x in range(0, size):
-	for y in range(x+1, size):
+for x in range(args.a, size):
+	if (x==args.a):
+		lim=args.b
+	else:
+		lim=args.a+1
+	for y in range(lim, size):
 		A=time.time()
 		cov=rml.read(args.bcf[0], x, y)
 		out=map(str, cov) 

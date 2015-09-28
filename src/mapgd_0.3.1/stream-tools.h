@@ -22,13 +22,6 @@ inline std::vector<std::string> split(std::istream &in, const char &delim)
 		elements.push_back( line.substr(last_delim, this_delim-last_delim) );
 		last_delim=this_delim+1;
 	} while ( this_delim!=std::string::npos );
-/*
-	std::cerr << line << std::endl;
-	for (size_t x=0; x<elements.size(); ++x){
-		std::cerr << "[" << x << "]:" << elements[x] << std::endl;
-	}
-	std::cerr <<std::endl;
-*/
 	return elements;
 }
 
