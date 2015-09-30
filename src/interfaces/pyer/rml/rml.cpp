@@ -281,6 +281,7 @@ inline ll_t likelihood_eq::inc(const PAIRGL popgl, const ll_t count){
 	become negative. These probabilities are forced to be zero, which may be a little arbitrary, but it seems to 
 	work.*/
 
+
 	ll_t P, mm1mm2, Mm1mm2, MM1mm2, mm1Mm2, Mm1Mm2, MM1Mm2, mm1MM2, Mm1MM2, MM1MM2;
 
 	P=popgl.P;

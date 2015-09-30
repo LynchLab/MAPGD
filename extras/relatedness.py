@@ -17,6 +17,10 @@ parser.add_argument('-a', metavar='--a', type=int, default=0,
                    help='maximum estimated sequencing error')
 parser.add_argument('-b', metavar='--b', type=int, default=1,
                    help='maximum ll-score for hw diseqaulibrium')
+parser.add_argument('-A', metavar='--A', type=int, default=1000,
+                   help='maximum estimated sequencing error')
+parser.add_argument('-B', metavar='--B', type=int, default=1000,
+                   help='maximum ll-score for hw diseqaulibrium')
 parser.add_argument('--bcf', metavar='bcfFile', type=str, nargs=1,
                    help='the name of a bcfFile',  required=True)
 args = parser.parse_args()
@@ -200,12 +204,15 @@ model=Model
 
 model_x=[Model_0, Model_1, Model_2, Model_3, Model_4, Model_5, Model_6, Model_7]
 
-for x in range(args.a, size):
+args.A=min(args.A, size-1)
+args.B=min(args.B, size-1)
+
+for x in range(args.a, args.A+1):
 	if (x==args.a):
 		lim=args.b
 	else:
 		lim=args.a+1
-	for y in range(lim, size):
+	for y in range(lim, args.B+1):
 		A=time.time()
 		cov=rml.read(args.bcf[0], x, y)
 		out=map(str, cov) 

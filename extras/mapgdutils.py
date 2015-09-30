@@ -67,26 +67,27 @@ Z_score=17
 
 atoi={'A':0, 'C':1, 'G':2, 'T':3, '.':5}
 
-def likelihoods_uniform(calls, major, minor, error, p):
+def likelihoods_uniform(calls, major, minor, error, p, pMM, pMm, pmm):
         error=max(0.001, error)
         M=calls[major]
+	m=calls[minor]
         n=sum(calls)
-        p2=math.log(1.0-error)
-        notp2=math.log(error)
-        p1=math.log( (1.0-error)/2.0+error/6.0)
-        notp1=math.log(1-( (1.0-error)/2.0+error/6.0) )
-        p0=math.log(error/3.)
-        notp0=math.log(1-error/3.)
+	E=n-M-m
 
-        MM=M*p2+notp2*(n-M)+math.log(p**2)
-        Mm=M*p1+notp1*(n-M)+math.log(2*p*(1-p) )
-        mm=M*p0+notp0*(n-M)+math.log( (1-p)**2 )
+	lnc=math.log(1-error)
+	lnch=math.log( (1-error)/2+error/6. )
+	notc=math.log(error/3)
+
+	MM=M*lnc+notc*(m+E)-math.log(p**2)
+	Mm=(M+m)*lnch+notc*(E)-math.log(2*p*(1-p ) )
+	mm=m*lnc+notc*(M+E)-math.log( (1-p)**2 )
+
         [E1, E2, E3]=sorted([MM, Mm, mm])
         N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
         if n>=1:
-                return [-MM+N, -Mm+N, -mm+N, n, '|' ]
+                return [-MM+N, -Mm+N, -mm+N, n]
         else:
-                return [0, 0, 0, sum(calls), '|' ]
+                return [0, 0, 0, sum(calls)]
 
 def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
 #        error=0.005#max(prior, error)
@@ -101,7 +102,7 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
 	notc=math.log(error/3)
 
 	MM=M*lnc+notc*(m+E)
-	Mm=(M+m)*lnch+notc*(E)
+	Mm=(M+m)*lnch+notc*(E)-math.log(1.01)
 	mm=m*lnc+notc*(M+E)
 
         [E1, E2, E3]=sorted([MM, Mm, mm])
