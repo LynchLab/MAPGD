@@ -89,7 +89,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach.</p>
 <p>Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that popualtion. This means that if we can accurately calculate all <a href="https://lynchlab.github.io/MAPGD/classgenotype.html">genotypic probabilities</a>, then the calculation of any other population statistics becomes trivial. However, in order to calcule genotypic probabilities we must take acount of the errors made in the genotyping process, include infering the precense of alleles that are not there, which can arrise from sequencing error or mistakes made aligning to a reference, and failing to detect the precense of alleles which are there because of low coveraged or biased sequencing of a single parental chromosome. We maximize a likelihood equation to account for sequeincing error and failure to sample genotypes, and then we test the data for fit to the parameters, and reject estimates where the data has a poor fit to the estimated parameters.</p>
 <h3>Bais Design </h3>
-<p>&lt;script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"&gt; $ P(   |  X )=  {P(  X |   ) P(   ) } { P(  X ) } $ &lt;/script&gt;</p>
+
+<NOSCRIPT>
+<DIV STYLE="color:#CC0000; text-align:center">
+<B>Warning: <A HREF="http://www.math.union.edu/locate/jsMath">jsMath</A>
+requires JavaScript to process the mathematics on this page.<BR>
+If your browser supports JavaScript, be sure it is enabled.</B>
+</DIV>
+<HR>
+</NOSCRIPT>
+
+<DIV CLASS="math">
+P(   |  X )=  {P(  X |   ) P(   ) } { P(  X ) } $ &lt;/script
+<DIV>
 <h4>Style Guidlines </h4>
 <p>mapgd is written to conform to the <a href="https://www.gnu.org/prep/standards/standards.html#Formatting">GNU style guidlines</a>, at least to the extent that I have had time to read and implement the guidlines.</p>
 <ul>
