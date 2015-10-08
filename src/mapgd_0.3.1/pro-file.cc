@@ -578,6 +578,11 @@ void inline profile::scan(const Locus & site, const std::string &str, quartet_t 
 			continue;
     		} else if(*it == ',' || *it=='.') {
 			q.base[site.extraid[0] ]++;
+			#ifdef DEBUG
+				if (site.extraid[0]==5) {
+					std::cerr << __FILE__ << ":" << __LINE__ << ": no reference nucleotide set.\n";
+				}
+			#endif 
 		} else {
 			q.base[size_t(header_.encodeextraid( (char) (*it), 0) )]++;
 		}
@@ -955,6 +960,10 @@ size_t profile::size(void) const
 };
 
 void profile::maskall(void){
+	site_.maskall();
+};
+
+void profile::unmaskall(void){
 	site_.maskall();
 };
 

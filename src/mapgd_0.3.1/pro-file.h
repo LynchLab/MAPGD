@@ -246,6 +246,7 @@ public:
 
 	count_t maskedcount(void);			//!< Returns a count of the number of quartets masked at the current Locus. 
 	void maskall(void);				//!< Mask all lines at the current Locus. 
+	void unmaskall(void);				//!< Mask all lines at the current Locus. 
 
 
 	void header(void) {noheader_=false;};		//!< If header is true pro-file will expect a file to have a header...

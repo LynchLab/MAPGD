@@ -211,7 +211,7 @@ for x in range(args.a, args.A+1):
 	if (x==args.a):
 		lim=args.b
 	else:
-		lim=args.a+1
+		lim=x+1
 	for y in range(lim, args.B+1):
 		A=time.time()
 		cov=rml.read(args.bcf[0], x, y)

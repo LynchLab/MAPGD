@@ -205,6 +205,7 @@ int proview(int argc, char *argv[])
 			if (in[x]->is_open() ) go=true;
 		}
 		if (read_site || print_all ){
+			site.unmaskall();
 			if (bernhard){
 				Locus L=site;
 				L.resize(1);

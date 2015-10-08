@@ -26,7 +26,7 @@ parser.add_argument('--pro', metavar='proFile', type=str, nargs=1,
 parser.add_argument('--map', metavar='mapFile', type=str, nargs=1,
                    help='the name of a mapFile',  required=True)
 parser.add_argument('--mode', metavar='mode', type=str, nargs=1,
-                   help=' <F|G|H>',  required=True)
+                   help=' <F|G|H|R|C>',  required=True)
 args = parser.parse_args()
 
 proFile=open(args.pro[0])
@@ -36,6 +36,7 @@ F=False
 HET=False
 GENOTYPE=False
 COVERAGE=False
+RELATEDNESS=False
 
 if args.mode[0]=='F':
 	F=True
@@ -45,6 +46,18 @@ if args.mode[0]=='G':
 	GENOTYPE=True
 if args.mode[0]=='C':
 	COVERAGE=True
+if args.mode[0]=='R':
+	RELATEDNESS=True
+	z_n=0
+	z_d=0
+	r_n=0
+	r_d=0
+	FX_n=0
+	FX_d=0
+	FY_n=0
+	FY_d=0
+	X=0
+	Y=6
 
 scaffold=0
 site=1	
@@ -159,6 +172,7 @@ for line in mapFile:
 		print "could not parse line ", line
 		exit(0)
 	if float(line[best_error])<=args.e:
+#		print line[pol_llstat]
 		if float(line[pol_llstat])>=args.l:
 			if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
 				if not (COVERAGE):
@@ -178,17 +192,14 @@ mapFile.close()
 for line in proFile:
 	line=line.split()
 	if line[0][0]=="@":
-		if line[0]=="@ID"
-			NAME=line[3:]
 		continue
 	if (HEADER):
 		if(GENOTYPE):
 			out=[]
 			for x in range(3, len(line) ):
-				out.append(name[str(x-3)]+"_MM")
-				out.append(name[str(x-3)]+"_Mm")
-				out.append(name[str(x-3)]+"_mm")
-				out.append(name[str(x-3)]+"_N")
+				out.append(str(x-3)+"MM")
+				out.append(str(x-3)+"Mm")
+				out.append(str(x-3)+"mm")
 			print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
 		elif(HET or F):
 			out=[]
@@ -206,6 +217,35 @@ for line in proFile:
 			calls=map(int, line[x].split('/') )
 			if (GENOTYPE):
 				out+=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
+			elif (RELATEDNESS):
+				if x-3==X:
+#					print line, this
+					try:
+						Lx=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
+					except:
+						print this, line
+						quit()				
+				elif x-3==Y:
+					Mm=float(this[5])
+					mm=float(this[6])
+					MM=float(this[4])
+					Ly=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
+					SSxy=math.exp(-Lx[0])*math.exp(-Ly[0])+math.exp(-Lx[1])*math.exp(-Ly[1])+math.exp(-Lx[2])*math.exp(-Ly[2])
+					ZZxy=math.exp(-Lx[0])*math.exp(-Ly[0])+math.exp(-Lx[1])*math.exp(-Ly[1])+math.exp(-Lx[2])*math.exp(-Ly[2])+math.exp(-Lx[0])*math.exp(-Lx[2])+math.exp(-Lx[2])*math.exp(-Ly[0])
+					Mx=1./3.
+					My=1./3.
+					SSx=math.exp(-Lx[0])**2+math.exp(-Lx[1])**2+math.exp(-Lx[2])**2
+					SSy=math.exp(-Ly[0])**2+math.exp(-Ly[1])**2+math.exp(-Ly[2])**2
+					Vx=SSx-Mx**2
+					Vy=SSy-My**2
+					#print SSxy, ( ( SSxy-(Mm**2)-(mm**2)-(MM**2) ) )
+					#FX_n+=?
+					#FX_d+=?
+					r_n+=( ( (1.+(SSxy-Mx*My)/math.sqrt(Vx*Vy) )/2-(Mm**2)-(mm**2)-(MM**2) )/(1-Mm**2-mm**2-MM**2 ) )*math.sqrt(Vx*Vy)
+					r_d+=math.sqrt(Vx*Vy)*3.
+					if Mm!=0:
+						z_n+=( ( (1.+(ZZxy-Mx*My)/math.sqrt(Vx*Vy) )/2.-(Mm**2)-(mm**2)-(MM**2)-2*MM*mm )/(1-Mm**2-mm**2-MM**2-MM*mm*2 ) )*math.sqrt(Vx*Vy)
+						z_d+=math.sqrt(Vx*Vy)*3.
 			elif (HET):
 				M=atoi[this[0]]
 				m=atoi[this[1]]
@@ -224,6 +264,11 @@ for line in proFile:
 				else:
 					out.append('.')	
 				#f=1-(f-1)
-		print '\t'.join(map(str, out) )
+		if (not (RELATEDNESS) ):
+			print '\t'.join(map(str, out) )
+if (RELATEDNESS):
+	print r_n/r_d
+	print z_n/z_d
+	print FY_n/FY_d
 proFile.close()
 
