@@ -4,7 +4,7 @@ int PopLD(int argc, char *argv[])
 {
 
 	/* All the variables that can be set from the command line */
-
+/*
 	std::string infile="";
 	std::string outfile="";
 	std::string outfilepro;
@@ -23,7 +23,6 @@ int PopLD(int argc, char *argv[])
 
 	std::vector <int> ind;
 
-	/* sets up the help messages and options, see the 'interface.h' for more detials. */
 
 	env_t env;
 	env.setname("mapgd ld");
@@ -50,5 +49,7 @@ int PopLD(int argc, char *argv[])
 	env.flag(	'q', "quite", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
 
 	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	*/
+	
 	return 0;
 };
