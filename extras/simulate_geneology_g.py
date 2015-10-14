@@ -8,15 +8,17 @@ SIZE=5
 bp=1
 GEN=5
 
-File05=open("seq05.gcf", 'w')
-File10=open("seq10.gcf", 'w')
-File15=open("seq15.gcf", 'w')
-File20=open("seq20.gcf", 'w')
-File25=open("seq25.gcf", 'w')
-File30=open("seq30.gcf", 'w')
-File35=open("seq35.gcf", 'w')
-File40=open("seq40.gcf", 'w')
-File45=open("seq45.gcf", 'w')
+gdir="graphs/"
+
+File05=open("sim/seq05.gcf", 'w')
+File10=open("sim/seq10.gcf", 'w')
+File15=open("sim/seq15.gcf", 'w')
+File20=open("sim/seq20.gcf", 'w')
+File25=open("sim/seq25.gcf", 'w')
+File30=open("sim/seq30.gcf", 'w')
+File35=open("sim/seq35.gcf", 'w')
+File40=open("sim/seq40.gcf", 'w')
+File45=open("sim/eq45.gcf", 'w')
 
 def seq(File, P, e, F, N):
 	global File2
@@ -180,7 +182,7 @@ while a<LIM:
 		continue
 	a+=1
 
-	digraph=open("temp_gene"+str(a)+".gv", 'w')
+	digraph=open(gdir+"temp_gene"+str(a)+".gv", 'w')
 	digraph.write(''.join(digraph_head) )
 	for y in range(0, GEN):
 		for x in range(0, SIZE):
@@ -188,7 +190,7 @@ while a<LIM:
 				digraph.write("\"F"+str(y)+"_"+str(x)+"\" [label=\"\" fillcolor="+color(-F[y][x].gen/2.)+", style=filled];\n" )
 	digraph.write("}\n")
 	digraph.close()
-	os.system("dot -T pdf temp_gene"+str(a)+".gv > file_gene"+str(a)+".pdf ")
+	os.system("dot -T png "+gdir+"temp_gene"+str(a)+".gv > "+gdir+"file_gene"+str(a)+".png ")
 print C.Num
 print D.Num
 print E.Num

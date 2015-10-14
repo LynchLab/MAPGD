@@ -28,8 +28,8 @@ int main (int argc, char* argv[])
 
 	env.command(	' ',"ei", 	&estimateInd,	 		"an error occured while calling ei", "estimates allelel frequencies using individual data");
 
-	env.command(	' ',"fst", 	&estimate_fst,	 		"an error occured while calling fst", "estimates fst between two populations");
-	
+	env.command(	' ',"ld", 	&PopLD,	 			"an error occured while calling fst", "estimates LD between loci");
+
 //	env.command(	' ',"calc", 	&calcInd,	 		"an error occured while calling calc", "print log likelihood of ...");
 
 //	env.command(	' ',"er", 	&estimateRel,	 		"an error occured while calling er", "calculates the relatedness of individuals within a popualtions.");

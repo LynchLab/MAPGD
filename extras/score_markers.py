@@ -15,8 +15,12 @@ def comp (c, a):
 	try:
 		return ret[a][c]
 	except:
-		print c, "is not a base in ", a
-		return ret[a][c]
+		if a not in ret.keys():
+			print a, " is WSKY or R"
+			return None
+		else:
+			print c, "is not a base in ", a
+			return None
 
 def toi (c):
 	ret={'A':0, 'C':1, 'G':2, 'T':3}
@@ -24,20 +28,26 @@ def toi (c):
 
 markerFile=open(args.tsvFile[0])
 
+G=0
+E=0
+
 for line in markerFile:
 	if line[0]=='@':
 		continue
 	line=line.strip('\n').split()
 	scaffold=line[0].split('_')[1]
 	bp=line[1]
+	K=comp(line[2], line[3])
+	if K!=None:
+		G+=1
+	else:
+		E+=1
 	try:
-		sites[scaffold][bp]=comp(line[2], line[3])
+		sites[scaffold][bp]=K
 	except:
 		sites[scaffold]={}
-		try:
-			sites[scaffold][bp]=comp(line[2], line[3])
-		except:
-			print line	
+		sites[scaffold][bp]=K
+print G
 
 processed=0
 File=open(args.gcfFile[0])

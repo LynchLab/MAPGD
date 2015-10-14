@@ -33,6 +33,7 @@ OBJS=	mapgd.o \
 	stream-tools.o \
 	models.o \
 	estimate-fst.o \
+	PopLD.o \
 	file-index.o
 
 all: $(OBJS)

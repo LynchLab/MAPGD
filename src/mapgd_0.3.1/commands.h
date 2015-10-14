@@ -12,5 +12,6 @@
 #include "estimate-individual.h"
 #include "estimate-fst.h"
 #include "proview.h"
+#include "PopLD.h"
 
 #endif

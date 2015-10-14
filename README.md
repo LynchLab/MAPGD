@@ -270,9 +270,13 @@ Scripts for both Linux and Mac users are present in the top level directory, or 
 
 <h3> Bigred2 </h3>
 
+*make sure to specify the number of threads to use with the ppn option* 
+i.e., #PBS -l ppn=16
+
 A note to IU users: Bigred2 has several different programming environments. While we hope to support use int he cray development environment in the future, currently support is only available in the gnu programming environment. To compile the code you will have to type "module rm PrgEnv-cray" then "module load PrgEnv-gnu". Additionally, usage of the relatedness python scripts requires that you type "module load boost"
 
 <h3> Karst </h3>
+
 
 module load boost
 module load intel
