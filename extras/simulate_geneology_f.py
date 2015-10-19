@@ -4,9 +4,9 @@ import os
 import math
 
 Pfreq=0.2
-SIZE=5
+SIZE=20
 bp=1
-GEN=5
+GEN=2
 
 File=open("seq.gcf", 'w')
 File05=open("seq05.gcf", 'w')
@@ -145,14 +145,19 @@ for x in range(0, SIZE):
 
 for y in range(1, GEN):
 	for x in range(0, SIZE):
-		z=random.randint(0, 4)#x-1
-		w=random.randint(0, 4)##w=x+1
-		#if x==0 or x==50:
-		#	z=x
-			#z=random.randint(0, 49)
-			#w=random.randint(0, 49)
-		#if x==49 or x==SIZE-1:
-		#	w=x
+		z=x-1
+		w=x+1
+		if y==10:
+			if x==0 or x==2:
+				z=x
+			if x==1 or x==3:
+				w=x
+		else:
+			if x==0 :
+				z=x
+			if x==SIZE-1 :
+				w=SIZE-1
+			
 		#if y==GEN-1:
 		#	z=random.randint(0, SIZE-1)
 		#	w=random.randint(0, SIZE-1)
@@ -172,23 +177,29 @@ for y in range(1, GEN):
 		digraph_head.append("F"+str(y-1)+"_"+str(w)+" -> F"+str(y)+"_"+str(x)+";\n")
 
 E=individual("E", F[-1][0], F[-1][1])
-D=individual("D", F[-1][1], F[-1][2])
+D=individual("D", F[-1][0], F[-1][1])
 C=individual("C", E, D)
-A=individual("C", E, F[-1][3])
+A=individual("A", E, F[-1][3])
 
 count = [[ [0,0,0] for x in range(3)] for y in range(SIZE*2+1)]
 
 a=0
 
-LIM=5000
+LIM=50000
 
 while a<LIM:
 	if a%1000==0:
 		print a
-	Pfreq=random.random()
+
 	for y in range(0, GEN):
-		for x in range(0, SIZE):
+		Pfreq=numpy.random.triangular(0.05, 0.1, 0.5)
+		for x in range(0, 3):
 			F[y][x].rand(Pfreq)
+		#Pfreq+=(random.random()-0.5)/1.5
+		#Pfreq=abs(Pfreq)
+		for x in range(3, SIZE):
+			F[y][x].rand(Pfreq)
+
 	if get_freq(F[-1])==0 or get_freq(F[-1])==SIZE*2:
 		continue
 	a+=1
@@ -199,8 +210,8 @@ while a<LIM:
 			F[y][x].Den[Q]+=1.
 			F[y][x].Num[Q]=F[y][x].Num[Q]*(F[y][x].Den[Q]-1)/F[y][x].Den[Q]+f(F[y][x].gen, float(Q)/float(SIZE*2) )*1./F[y][x].Den[Q]
 
-	D.rand(Pfreq)
 	E.rand(Pfreq)	
+	D.rand(Pfreq)
 	C.rand(Pfreq)
 	A.rand(Pfreq)
 
@@ -215,7 +226,7 @@ while a<LIM:
 
 	Qf=min(float(Q)/float(SIZE*2), float(SIZE*2-Q)/float(SIZE*2) )
 
-	seq(File, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+	seq(File, float(Q)/float(SIZE*2), 0.01, [C,A]+F[-1], 50)
 	if (Qf == 0.05 ):
 		seq(File05, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
 	elif (Qf <=0.10 ):

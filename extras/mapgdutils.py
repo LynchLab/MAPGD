@@ -178,7 +178,7 @@ mapFile.close()
 for line in proFile:
 	line=line.split()
 	if line[0][0]=="@":
-		if line[0]=="@ID"
+		if line[0]=="@ID":
 			NAME=line[3:]
 		continue
 	if (HEADER):
