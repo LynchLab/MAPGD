@@ -174,12 +174,14 @@ for line in mapFile:
 					print float(COV_SUM)/float(COV_N)
 mapFile.close()
 
+name={}
 
 for line in proFile:
 	line=line.split()
 	if line[0][0]=="@":
 		if line[0]=="@ID":
-			NAME=line[3:]
+			for x in range(4, len(line) ):
+				name[str(x-4)]=line[x]
 		continue
 	if (HEADER):
 		if(GENOTYPE):
