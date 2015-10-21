@@ -227,10 +227,11 @@ or equivalently:
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
 	| mapgd ei -p 1,2 > allelefrequency.txt
 
-In the case where the ei command has been used the txt files can be further analized to estimate the seven IBD coefficients. Currently The tool mapgdutils.py must be used on the reformat the results, folowed by use of the SciEst.py script:
+In the case where the ei command has been used the txt files can be further analized to estimate the seven IBD coefficients. Currently The tool mapgdutils.py must be used on the reformat the results, folowed by use of the relatedness.py script:
 
-	mapgdutils.py -l 10 -e 0.01 -c 50 -C 200 population.pro > population.gcf
-	SciEst.py population.gcf
+	mapgdutils.py -l 10 -e 0.01 -c 50 -C 200 --pro population.pro --map population.mpa > population.gcf
+	convert2bcf population.gcf population.bcf
+	relatedness.py population.bcf
 
 <h5> Other Useful Programs </h5>
 

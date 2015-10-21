@@ -8,16 +8,16 @@ SIZE=20
 bp=1
 GEN=2
 
-File=open("seq.gcf", 'w')
-File05=open("seq05.gcf", 'w')
-File10=open("seq10.gcf", 'w')
-File15=open("seq15.gcf", 'w')
-File20=open("seq20.gcf", 'w')
-File25=open("seq25.gcf", 'w')
-File30=open("seq30.gcf", 'w')
-File35=open("seq35.gcf", 'w')
-File40=open("seq40.gcf", 'w')
-File45=open("seq45.gcf", 'w')
+File=open("sim/seq.gcf", 'w')
+File05=open("sim/seq05.gcf", 'w')
+File10=open("sim/seq10.gcf", 'w')
+File15=open("sim/seq15.gcf", 'w')
+File20=open("sim/seq20.gcf", 'w')
+File25=open("sim/seq25.gcf", 'w')
+File30=open("sim/seq30.gcf", 'w')
+File35=open("sim/seq35.gcf", 'w')
+File40=open("sim/seq40.gcf", 'w')
+File45=open("sim/seq45.gcf", 'w')
 
 def seq(File, P, e, F, N):
 	global File2
@@ -177,9 +177,14 @@ for y in range(1, GEN):
 		digraph_head.append("F"+str(y-1)+"_"+str(w)+" -> F"+str(y)+"_"+str(x)+";\n")
 
 E=individual("E", F[-1][0], F[-1][1])
-D=individual("D", F[-1][0], F[-1][1])
-C=individual("C", E, D)
-A=individual("A", E, F[-1][3])
+B=individual("B", F[-1][2], F[-1][3])
+H=individual("H", E, E)
+A=individual("A", E, E)
+D=individual("D", E, B)
+C=individual("C", H, A)
+G=individual("G", D, F[-1][4])
+
+SPEC=[E, B, H, A, D, C, G]
 
 count = [[ [0,0,0] for x in range(3)] for y in range(SIZE*2+1)]
 
@@ -210,10 +215,8 @@ while a<LIM:
 			F[y][x].Den[Q]+=1.
 			F[y][x].Num[Q]=F[y][x].Num[Q]*(F[y][x].Den[Q]-1)/F[y][x].Den[Q]+f(F[y][x].gen, float(Q)/float(SIZE*2) )*1./F[y][x].Den[Q]
 
-	E.rand(Pfreq)	
-	D.rand(Pfreq)
-	C.rand(Pfreq)
-	A.rand(Pfreq)
+	for l in SPEC:
+		l.rand(Pfreq)
 
 	C.Den[Q]+=1.
 	C.Num[Q]=C.Num[Q]*(C.Den[Q]-1.)/C.Den[Q]+f(C.gen, float(Q)/float(SIZE*2) )*1./C.Den[Q]
@@ -226,7 +229,7 @@ while a<LIM:
 
 	Qf=min(float(Q)/float(SIZE*2), float(SIZE*2-Q)/float(SIZE*2) )
 
-	seq(File, float(Q)/float(SIZE*2), 0.01, [C,A]+F[-1], 50)
+	seq(File, float(Q)/float(SIZE*2), 0.01, SPEC+F[-1], 50)
 	if (Qf == 0.05 ):
 		seq(File05, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
 	elif (Qf <=0.10 ):
@@ -248,7 +251,7 @@ while a<LIM:
 
 	if a==LIM-1:
 		for Q in range(1, SIZE):
-			digraph=open("temp"+format(Q, '03')+".gv", 'w')
+			digraph=open("graphs/temp"+format(Q, '03')+".gv", 'w')
 			digraph.write(''.join(digraph_head) )
 			for y in range(0, GEN):
 				for x in range(0, SIZE):
@@ -266,7 +269,7 @@ while a<LIM:
 #			digraph.write("F"+str(GEN-1)+"_2 -> c;\n")
 			digraph.write("}\n")
 			digraph.close()
-			os.system("dot -T png temp"+format(Q, '03')+".gv > file"+format(Q, '03')+".png ")
+			os.system("dot -T png graphs/temp"+format(Q, '03')+".gv > graphs/file"+format(Q, '03')+".png ")
 print C.Num
 print D.Num
 print E.Num
