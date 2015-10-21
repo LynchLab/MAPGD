@@ -165,7 +165,7 @@ By default the program prints information to the file "dataout.txt" and this fil
 <h6> mapgdutils.py </h6>The script mapgdutils.py is a stop gap measure used to generate genotypic likelihoods (i.e. gcf files) for the analysis of the relatedness of a pair of individuals. A script of this name is likely to persist in future version of the program to perform computationally simple task that may be useful; however, we hope to generation genotypic likelihoods directly in mapgd in the near future.
 
 	mapgd proview -i \*.mpileups | mapgd ei -p FILENAME.pro -o FILENAME.map 
-	python mapgdutils.py FILENAME.pro FILENAME.map > GENOTYPES.gcf
+	python mapgdutils.py --pro FILENAME.pro --map FILENAME.map > GENOTYPES.gcf
 
 <h6> pedigreecalc.py </h6>A simple script to predict the coefficients of IBD from merlin formated pedigree files.
 
