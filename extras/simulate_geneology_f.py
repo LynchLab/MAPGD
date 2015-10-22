@@ -4,9 +4,9 @@ import os
 import math
 
 Pfreq=0.2
-SIZE=20
+SIZE=80
 bp=1
-GEN=2
+GEN=1
 
 File=open("sim/seq.gcf", 'w')
 File05=open("sim/seq05.gcf", 'w')
@@ -178,13 +178,13 @@ for y in range(1, GEN):
 
 E=individual("E", F[-1][0], F[-1][1])
 B=individual("B", F[-1][2], F[-1][3])
-H=individual("H", E, E)
-A=individual("A", E, E)
+#H=individual("H", E, E)
+A=individual("A", E, B)
 D=individual("D", E, B)
-C=individual("C", H, A)
+C=individual("C", A, A)
 G=individual("G", D, F[-1][4])
 
-SPEC=[E, B, H, A, D, C, G]
+SPEC=[E, B, A, D, C, G]
 
 count = [[ [0,0,0] for x in range(3)] for y in range(SIZE*2+1)]
 

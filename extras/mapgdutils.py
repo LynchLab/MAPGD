@@ -75,8 +75,8 @@ def likelihoods_uniform(calls, major, minor, error, p, pMM, pMm, pmm):
 	E=n-M-m
 
 	lnc=math.log(1-error)
-	lnch=math.log( (1-error)/2+error/6. )
-	notc=math.log(error/3)
+	lnch=math.log( (1-error)/2.+error/6. )
+	notc=math.log(error/3.)
 
 	MM=M*lnc+notc*(m+E)-math.log(p**2)
 	Mm=(M+m)*lnch+notc*(E)-math.log(2*p*(1-p ) )
@@ -98,16 +98,19 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
 	E=n-M-m
 
 	lnc=math.log(1-error)
-	lnch=math.log( (1-error)/2+error/6. )
-	notc=math.log(error/3)
+	lnch=math.log( (1-error)/2.+error/6. )
+	notc=math.log(error/3.)
 
 	MM=M*lnc+notc*(m+E)
 	Mm=(M+m)*lnch+notc*(E)-math.log(1.01)
 	mm=m*lnc+notc*(M+E)
 
         [E1, E2, E3]=sorted([MM, Mm, mm])
-        N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
-	return [-MM+N, -Mm+N, -mm+N, n]
+	try:
+	        N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
+		return [-MM+N, -Mm+N, -mm+N, n]
+	except:
+		return [1/3,1/3,1/3, 0]
 
 	
 poly={}
