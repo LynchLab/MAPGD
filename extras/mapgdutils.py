@@ -113,7 +113,7 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
 		return [1/3,1/3,1/3, 0]
 
 	
-poly={}
+name={}
 
 #E=0
 #N=0
@@ -140,95 +140,88 @@ poly={}
 #
 #prior=(E/N)
 
-mapFile.seek(0)
-
 COV_SUM=0
 COV_N=0
 
 HEADER=True
 
-for line in mapFile:
-	line=line.split()
-	try:
-		if line[0]=="scaffold" or line[0]=="id1":
+#for mapline in mapFile:
+while(True):
+	while(True):
+		line=mapFile.readline().split()
+		try:
+			if line[0]=="scaffold" or line[0]=="id1":
+				continue
+			if line[0][0]=='@':
+				continue
+			if line[pol_llstat]=="." or line[pol_llstat]=="*" or line[pol_llstat]=="NA":
+				continue
+			if line[best_error]=="." or line[best_error]=="*" or line[best_error]=="NA":
+				continue
+		except:
+			print "could not parse line ", line
+			exit(0)
+		if float(line[best_error])<=args.e:
+			if float(line[pol_llstat])>=args.l:
+				if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
+					if not (COVERAGE):
+						if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
+							this=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
+							next_scaffold=line[scaffold]
+							next_site=line[site]
+							break
+					else:
+						COV_SUM+=int(line[pop_coverage])
+						COV_N+=1
+						print float(COV_SUM)/float(COV_N)
+	while (True):
+		line=proFile.readline().split()
+		if line[0][0]=="@":
+			if line[0]=="@ID":
+				for x in range(4, len(line) ):
+					name[str(x-4)]=line[x]
 			continue
-		if line[0][0]=='@':
+		if (HEADER):
+			if(GENOTYPE):
+				out=[]
+				for x in range(3, len(line) ):
+					out.append(name[str(x-3)]+"_MM")
+					out.append(name[str(x-3)]+"_Mm")
+					out.append(name[str(x-3)]+"_mm")
+					out.append(name[str(x-3)]+"_N")
+				print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
+			elif(HET or F):
+				out=[]
+				for x in range(3, len(line) ):
+					out.append(x-3)
+				print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
+			HEADER=False
+		if next_scaffold!=line[scaffold] or next_site!=line[site]:
 			continue
-		if line[pol_llstat]=="." or line[pol_llstat]=="*" or line[pol_llstat]=="NA":
-			continue
-		if line[best_error]=="." or line[best_error]=="*" or line[best_error]=="NA":
-			continue
-	except:
-		print "could not parse line ", line
-		exit(0)
-	if float(line[best_error])<=args.e:
-		if float(line[pol_llstat])>=args.l:
-			if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
-				if not (COVERAGE):
-					if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
-						try:
-							poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
-						except:
-							poly[line[scaffold]]={}
-							poly[line[scaffold]][line[site]]=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
-				else:
-					COV_SUM+=int(line[pop_coverage])
-					COV_N+=1
-					print float(COV_SUM)/float(COV_N)
-mapFile.close()
-
-name={}
-
-for line in proFile:
-	line=line.split()
-	if line[0][0]=="@":
-		if line[0]=="@ID":
-			for x in range(4, len(line) ):
-				name[str(x-4)]=line[x]
-		continue
-	if (HEADER):
-		if(GENOTYPE):
-			out=[]
+		out=[next_scaffold, next_site]+this[0:4]
+		if this[0]!='.' and this[1]!='.' and this[0]!='*' and this[1]!='*':
 			for x in range(3, len(line) ):
-				out.append(name[str(x-3)]+"_MM")
-				out.append(name[str(x-3)]+"_Mm")
-				out.append(name[str(x-3)]+"_mm")
-				out.append(name[str(x-3)]+"_N")
-			print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
-		elif(HET or F):
-			out=[]
-			for x in range(3, len(line) ):
-				out.append(x-3)
-			print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
-		HEADER=False
-	try:
-		this=poly[line[scaffold]][line[site]]
-	except:
-		continue
-	out=[line[scaffold], line[site]]+this[0:4]
-	if this[0]!='.' and this[1]!='.':
-		for x in range(3, len(line) ):
-			calls=map(int, line[x].split('/') )
-			if (GENOTYPE):
-				out+=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
-			elif (HET):
-				M=atoi[this[0]]
-				m=atoi[this[1]]
-				if (calls[M]+calls[m]>0):
-					out.append(float(calls[M])/(float(calls[M])+float(calls[m]) ) )
-				else:
-					out.append('.')
-			elif (F):
-				Mm=float(this[5])
-				mm=float(this[6])
-				MM=float(this[4])
-				p=float(this[2])
-				if (p!=0 and p!=1):
-					f=1-Mm/(2*(1-p)*p )
-					out.append(f)
-				else:
-					out.append('.')	
-				#f=1-(f-1)
-		print '\t'.join(map(str, out) )
-proFile.close()
+				calls=map(int, line[x].split('/') )
+				if (GENOTYPE):
+					out+=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
+				elif (HET):
+					M=atoi[this[0]]
+					m=atoi[this[1]]
+					if (calls[M]+calls[m]>0):
+						out.append(float(calls[M])/(float(calls[M])+float(calls[m]) ) )
+					else:
+						out.append('.')
+				elif (F):
+					Mm=float(this[5])
+					mm=float(this[6])
+					MM=float(this[4])
+					p=float(this[2])
+					if (p!=0 and p!=1):
+						f=1-Mm/(2*(1-p)*p )
+						out.append(f)
+					else:
+						out.append('.')	
+					#f=1-(f-1)
+			print '\t'.join(map(str, out) )
+		break
 
