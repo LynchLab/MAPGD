@@ -286,7 +286,7 @@ module load intel
 
 Please cite the following paper (once it is written) when publishing results derived from this program:
 
-? A Paper ?. 
+Maruki, Takahiro, and Michael Lynch. "Genotype-Frequency Estimation from High-Throughput Sequencing Data." Genetics 201.2 (2015): 473-486.
 
 For understanding the output of the relatedness.py command, it may be useful to read 
 
