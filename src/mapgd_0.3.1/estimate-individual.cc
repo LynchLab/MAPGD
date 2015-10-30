@@ -126,6 +126,8 @@ int estimateInd(int argc, char *argv[])
 	std::vector <size_t> ind;
 
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
+	std::cerr "If you are using .... please cite ...."
+
 
 	env_t env;
 	env.setname("mapgd ei");
