@@ -69,9 +69,9 @@ void Locus::maskall(void){
 
 /// Unmask all the quartets in the populations in the vector.
 void Locus::unmask(const std::vector <size_t> &s){
-	for (size_t s_=0; s_<sample.size();++s_){
+	for (size_t s_=0; s_<s.size(); ++s_){
 		if (s_>=sample.size() ) {std::cerr << __FILE__ << ":" << __LINE__ << ":attempted to unmask a non-existent quartet. Exiting."; exit(0); };
-		sample[s_].masked=false;
+		sample[ s[s_] ].masked=false;
 	}
 }
 
@@ -224,5 +224,5 @@ void Locus::set_extraid(const count_t &v, const size_t &c)
 
 void Locus::mask_low_cov( const count_t &dp )
 { 
-	for (size_t s=0; s<sample.size();++s) sample[s].masked=(count(sample[s])<dp);
+	for (size_t s=0; s<sample.size();++s) sample[s].masked=((sample[s].masked)|(count(sample[s])<dp));
 }

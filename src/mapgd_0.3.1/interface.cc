@@ -48,18 +48,19 @@ int arg_setvectorstr(int argc, char **argv, void *parm)
 /*@Breif : sets a vector of ints from a string. */
 int arg_setvectorint(int argc, char **argv, void *parm)
 {
-	std::vector <int> *v=(std::vector <int> *)(parm);
+	std::vector <size_t> *v=(std::vector <size_t> *)(parm);
 	if (argc>1){
 		std::vector<std::string> elems=split(argv[1], ',');
-		for (uint16_t x=0; x<elems.size(); ++x){
+		for (size_t x=0; x<elems.size(); ++x){
 			if ( isint(elems[x].c_str() ) ) v->push_back(atoi(elems[x].c_str() )-1) ;
 			else {
 				std::vector<std::string> intpair=split(elems[x], '-');
 				if (intpair.size()==2){
 					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
-						for (int y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
+						for (size_t y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
 							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
 								v->push_back(y-1);
+							//	std::cout << "pusshing back" << y << std::endl;
 							}
 						};
 					} else {

@@ -22,7 +22,7 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 #include "estimate-individual.h"
 
 #define BUFFER_SIZE 500
-#define PRAGMA
+//#define PRAGMA
 
 /*
 float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,  models &model){
@@ -123,7 +123,7 @@ int estimateInd(int argc, char *argv[])
 	count_t skip=0;
 	count_t stop=-1;
 
-	std::vector <int> ind;
+	std::vector <size_t> ind;
 
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
 
@@ -253,7 +253,14 @@ int estimateInd(int argc, char *argv[])
 				}
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
-					buffer_site[c].unmaskall(); 
+			//		for (count_t x=0; x<ind.size(); x++){
+				//		std::cout << ind[x] << ",";
+					//}
+					buffer_site[c].maskall();
+					buffer_site[c].unmask(ind);
+					//std::cout << "::" << buffer_site[c].maskedcount() << std::endl;
+					//} 
+
 					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
 					#ifdef PRAGMA
 					#pragma omp critical
