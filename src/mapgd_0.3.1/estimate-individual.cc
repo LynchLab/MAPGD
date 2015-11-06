@@ -126,7 +126,7 @@ int estimateInd(int argc, char *argv[])
 	std::vector <size_t> ind;
 
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
-	std::cerr "If you are using .... please cite ...."
+	//std::cerr "If you are using .... please cite ...."
 
 
 	env_t env;
@@ -153,7 +153,7 @@ int estimateInd(int argc, char *argv[])
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
-	env.flag(	'q', "quite", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
+	env.flag(	'q', "quiet", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
 
 	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
