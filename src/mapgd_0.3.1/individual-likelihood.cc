@@ -322,7 +322,7 @@ count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <
 		return maximize_grid(site, a, model, gofs, MINGOF, maxpitch);
 	};
 	for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
-	return excluded;
+	return 	excluded;
 }
 
 count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch){

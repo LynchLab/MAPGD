@@ -224,5 +224,5 @@ void Locus::set_extraid(const count_t &v, const size_t &c)
 
 void Locus::mask_low_cov( const count_t &dp )
 { 
-	for (size_t s=0; s<sample.size();++s) sample[s].masked=((sample[s].masked)|(count(sample[s])<dp));
+	for (size_t s=0; s<sample.size();++s) sample[s].masked=((sample[s].masked)|(count(sample[s])<=dp));
 }
