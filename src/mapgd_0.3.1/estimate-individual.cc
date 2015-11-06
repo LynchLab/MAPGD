@@ -47,7 +47,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								 //allele_stat has gotten too bloated, but . . . 
 	mle.N=0;
 
-	site.mask_low_cov(MIN);
+	site.mask_low_cov(MIN-1);
 	count_t texc=site.maskedcount(), rexc;
 	rexc=texc;
 
@@ -115,7 +115,7 @@ int estimateInd(int argc, char *argv[])
 	bool quite=false;
 	bool noheader=false;
 	float_t EMLMIN=0.001;
-	count_t MIN=0;
+	count_t MIN=4;
 	float_t A=0.00;
 	float_t MINGOF=2.00;
 	count_t MAXPITCH=96;
