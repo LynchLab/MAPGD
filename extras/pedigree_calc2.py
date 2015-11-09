@@ -2,113 +2,48 @@
 import sys
 import argparse
 
-parser=argparse.ArgumentParser(description="Command Line argument parser")
+parser=argparse.ArgumentParser(description="Genotypic correlation calculator")
 parser.add_argument('-n', nargs=2, metavar='rec1 rec2', type=str, help="rec1 rec2")
 parser.add_argument('pedigree', metavar='FileName', type=str, help="A csv formated pedigree file. FamilyID,PersonID,FatherID,MotherID,Sex.")
 args=parser.parse_args()
 
 PersonIDs={}
-Thetas={}
+independent=[]
+
+P=0.1
+Q=1-P
 
 class record:
 	def __init__ (self, args):
 		self.FamilyID, self.PersonID, self.FatherID, self.MotherID, self.Sex=args
 		global PersonIDs
 		PersonIDs[self.PersonID]=self
-		if self.FatherID=='' and self.MotherID=='':
-			self.f=0
+		self.F=[]
+		self.M=[]
+		if self.FatherID=='':
+			self.PF=[P, Q]	#These are unconditional
+			self.F=0
+			independent.append(self.PF)
+		if self.MotherID=='':
+			self.PM=[P, Q]
+			self.M=0
+			independent.append(self.PM)
 		self.bellow=[]
-	def getrel (self, rec2):
-		global PersonIDs
-		try:
-			f1=self.f
-		except:
-			self.f=gettheta(self.FatherID, self.MotherID)
-			f1=self.f
-		try:
-			f2=PersonIDs[rec2].f
-		except:
-			PersonIDs[rec2].f=gettheta(PersonIDs[rec2].FatherID, PersonIDs[rec2].MotherID)
-			f2=PersonIDs[rec2].f	
-		theta=gettheta(self.PersonID, rec2)
-		d12=getdelta(self.PersonID, rec2)
-		z12=getzed(self.PersonID, rec2)
-		if rec2==self.PersonID:
-			s12=self.f
-			s21=self.f
-		else:
-			s12="NaN"
-			s21="NaN"
-		return f1, f2, theta, s12, s21, z12, d12
-
-def getzed(ID1, ID2):
-	global PersonIDs
-	if ID1=='' or ID2=='':
-		return 0
-	if ID1==ID2:
-		return PersonIDs[ID1].f
-	ID1=PersonIDs[ID1]
-	ID2=PersonIDs[ID2]
-	if not(ID1.PersonID in ID2.bellow) and not(ID2.PersonID in ID1.bellow):
-		return (gettheta(ID2.MotherID, ID2.FatherID)*gettheta(ID1.MotherID, ID2.FatherID)
-				+gettheta(ID1.FatherID, ID1.MotherID)*gettheta(ID1.FatherID, ID2.MotherID) )
-	else:
-		if (ID2.PersonID in ID1.bellow):
-			return (gettheta(ID1.PersonID, ID2.FatherID)*gettheta(ID1.PersonID, ID2.MotherID) )*2
-		else:
-			return (gettheta(ID2.PersonID, ID1.FatherID)*gettheta(ID2.PersonID, ID1.MotherID) )*2
-
-def getdelta(ID1, ID2):
-	global PersonIDs
-	if ID1=='' or ID2=='':
-		return 0
-	if ID1==ID2:
-		return 1.-PersonIDs[ID1].f
-	ID1=PersonIDs[ID1]
-	ID2=PersonIDs[ID2]
-	if not(ID1.PersonID in ID2.bellow) and not(ID2.PersonID in ID1.bellow):
-		return (gettheta(ID1.FatherID, ID2.MotherID)*gettheta(ID1.MotherID, ID2.FatherID)
-				+gettheta(ID1.FatherID, ID2.FatherID)*gettheta(ID1.MotherID, ID2.MotherID) )
-	else:
-		if (ID2.PersonID in ID1.bellow):
-			return (gettheta(ID1.PersonID, ID1.FatherID)*gettheta(ID1.PersonID, ID2.MotherID) )*2
-		else:
-			return (gettheta(ID2.PersonID, ID1.FatherID)*gettheta(ID2.PersonID, ID1.MotherID) )*2
-
-
-def gettheta(ID1, ID2):
-	global PersonIDs
-	if ID1=='' or ID2=='':
-		return 0
-	if ID1==ID2:
-		try:
-			return (1.+PersonIDs[ID1].f)/2.
-		except:
-			print ID1, " isn't set?"
-			PersonIDs[ID1].f=gettheta(PersonIDs[ID1].MotherID, PersonIDs[ID1].FatherID)
-			return (1.+PersonIDs[ID1].f)/2.
-	ID1=PersonIDs[ID1]
-	ID2=PersonIDs[ID2]
-	if not(ID1.PersonID in ID2.bellow) and not(ID2.PersonID in ID1.bellow):
-		return (gettheta(ID1.FatherID, ID2.FatherID)+gettheta(ID1.MotherID, ID2.FatherID)
-				+gettheta(ID1.FatherID, ID2.MotherID)+gettheta(ID1.MotherID, ID2.MotherID) )/4.
-	else:
-		if (ID2.PersonID in ID1.bellow):
-			return (gettheta(ID1.PersonID, ID2.FatherID)+gettheta(ID1.PersonID, ID2.MotherID) )/2.
-		else:
-			return (gettheta(ID2.PersonID, ID1.FatherID)+gettheta(ID2.PersonID, ID1.MotherID) )/2.
+	def getP (self, conditions):
+		self.getF()
+		self.getM()
+		self.G=[ (self.F[0]+self.M[0])/2., (self.F[1]+self.M[1])/2. ]
 
 def setbellow(ID, IDB):
-	if ID!='':
-	#	print "putting "+IDB+" in "+ID
-		ID=PersonIDs[ID]
-		ID.bellow.append(IDB)
-		setbellow(ID.FatherID, IDB)	
-		setbellow(ID.MotherID, IDB)	
-	
-	
-	#else:
-	#	return 0.5
+        if ID!='':
+                ID=PersonIDs[ID]
+                ID.bellow.append(IDB)
+                setbellow(ID.FatherID, IDB)
+                setbellow(ID.MotherID, IDB)
+
+for event in independent:
+	trees	
+
 
 try:
 	File=open(args.pedigree, "r")

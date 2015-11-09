@@ -178,6 +178,7 @@ int proview(int argc, char *argv[])
 		go=false;
 		read_site=false;
 		read_scaffold=false;
+		site.set_extraid(4, 0);
 		for (size_t x=0; x<in.size(); x++){
 			std::vector <quartet_t>::iterator it_in=in[x]->begin();
 			std::vector <quartet_t>::iterator end_in=in[x]->end();	
