@@ -74,7 +74,7 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double N_i, int ml
 	// printf("Entered the function\n");
 	// printf("best_p: %f\tmononuc_count_1[1][1]: %d\tcov1[1]: %d\n", best_p, mononuc_count_1[1][1], cov1[1]);
 	// Estimate the LD coefficient D between the polymorphic sites
-	maxll = -10000000000.0;	
+	maxll = -FLT_MAX;	
 	// Find the minimum and maximum possible values of D given the estimated allele frequencies
 	if ( best_p*best_q <= (1.0-best_p)*(1.0-best_q) ) {
 		Dmin = -best_p*best_q;
@@ -255,7 +255,7 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double N_i, int ml
 				if (prob_all_obs[mig] > 0) {
 					llhood = llhood + log(prob_all_obs[mig]);
 				} else {
-					llhood = -10000000001.0;
+					llhood = -FLT_MAX;	
 				}
 			} else if (cov1[mig] > 0) {
 				for(mgg = 1; mgg <= 10; mgg++) {
@@ -264,7 +264,7 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double N_i, int ml
 				if (prob_obs_mononuc1[mig] > 0) {
 					llhood = llhood + log(prob_obs_mononuc1[mig]);
 				} else {
-					llhood = -10000000001.0;
+					llhood = -FLT_MAX;	
 				}
 			} else if (cov2[mig] > 0) {
 				for(mgg = 1; mgg <= 10; mgg++) {
@@ -273,7 +273,7 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double N_i, int ml
 				if (prob_obs_mononuc2[mig] > 0) {
 					llhood = llhood + log(prob_obs_mononuc2[mig]);
 				} else {
-					llhood = -10000000001.0;
+					llhood = -FLT_MAX;	
 				}
 			}
 		} // End the loop over the individuals
@@ -318,123 +318,52 @@ int PopLD(int argc, char *argv[])
 {
 
 	/* All the variables that can be set from the command line */
-/*
+
 	std::string infile="";
 	std::string outfile="";
-	std::string outfilepro;
-
-	bool verbose=false;
-	bool quite=false;
-	bool noheader=false;
-	float_t EMLMIN=0.001;
-	count_t MIN=0;
-	float_t A=0.00;
-	float_t MINGOF=2.00;
-	count_t MAXPITCH=96;
-
-	count_t skip=0;
-	count_t stop=-1;
-
-	std::vector <int> ind;
-
+	int max_d = INT_MAX;
 
 	env_t env;
-	env.setname("mapgd ld");
+	env.setname("mapgd popld");
 	env.setver(VERSION);
 	env.setauthor("Takahiro Maruki");
 	env.setdescription("Uses a maximum likelihood approach to estimate gametic phase disequalibrium from population data.");
 
-	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdout).");
-	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
-	env.optional_arg('p',"out-pro", &outfilepro,	&arg_setstr, 	"an error occured while setting the name of the output file.", "name of a 'cleaned' pro file (default none).");
-	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "the individuals to be used in estimates.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).");
-	env.optional_arg('m',"minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
-
-//	env.optional_arg('c',"columns", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "number of columsn in profile (if applicable).");
-
-	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
-	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
-	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
-	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "maximum number of sites to be analyzed (default All sites)");
-	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
-	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
-	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
-	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
-	env.flag(	'q', "quite", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
+	env.optional_arg('i',"in", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdin).");
+	env.optional_arg('o',"out", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdout).");
+	env.optional_arg('m',"max_d",   &max_d,		&arg_setint, 	"an error occured while setting the name of the output file.", "the maximum value fo the distance between polymorphic sites.\n");
+	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message.");
+	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version.");
 
 	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
-	*/
 	
-	// Default values of the options
-	const char* in_file_name = {"In_PopLD.txt"};
-	const char* out_file_name = {"Out_PopLD.txt"};
-	int max_d = 2000000000;
-	int print_help = 0;
 
-	int argz = 1;	// argument counter
-
-	// Read the specified setting
-	while( (argz<argc) && (argv[argz][0] == '-') ) {
-		if (strcmp(argv[argz], "-h") == 0) {
-			print_help = 1;
-		} else if (strcmp(argv[argz], "-in") == 0) {
-			in_file_name = argv[++argz];
-		} else if (strcmp(argv[argz], "-out") == 0) {
-			out_file_name = argv[++argz];
-		} else if (strcmp(argv[argz], "-max_d") == 0) {
-			sscanf(argv[++argz], "%d", &max_d);
-		} else {
-			fprintf(stderr, "unknown option %s\n", argv[argz]);
-			print_help = 1;
-			break;
-		}
-		argz++;
-	}
-	if (print_help) {	// print error/usage message ?
-		fprintf(stderr, "USAGE: %s {<options>}\n", argv[0]);
-		fprintf(stderr, "	options: -h: print the usage message\n");
-		fprintf(stderr, "	-in <s>: specify the input file name\n");
-		fprintf(stderr, "       -out <s>: specify the output file name\n");
-		fprintf(stderr, "	-max_d <d>: specify the maximum value of the distance between polymorphic sites for estimating LD\n");
-		exit(1);
-	}
-
-	if (max_d < 2000000000) {
+	if (max_d < INT_MAX) {
 		printf("max_d: %d\n", max_d);
 	}
 
 	string line;	// String buffer
-
-	ifstream inputFile(in_file_name);	// Try to open the input file
-	if ( !inputFile.is_open() ) {	// Exit on failure
-		printf("Cannot open %s for reading.\n", in_file_name);
-		exit(1);
-	}
-	
-	// Read the header
-	string h_scaf, h_site, h_ref_nuc, h_major_allele, h_minor_allele, h_pop_coverage, h_best_p, h_best_error, h_pol_llstat, h_HWE_llstat;	// Stores header names
-	getline(inputFile, line);
-	istringstream ss(line);
-	ss >> h_scaf >> h_site >> h_ref_nuc >> h_major_allele >> h_minor_allele >> h_pop_coverage >> h_best_p >> h_best_error >> h_pol_llstat >> h_HWE_llstat;
-	string str;	// Temporarily stores each individual ID
-	vector <string> id_ind;      // Stores individual IDs.
-	id_ind.clear();
-	while (true) {
-		ss >> str;
-		id_ind.push_back(str);
-		if ( ss.eof() ) {
-			break;
+	profile pro;
+	if (infile.size()!=0) {                                 //Iff a filename has been set for infile
+		pro.open(infile.c_str(), std::fstream::in);
+		if (!pro.is_open() ) {                          //try to open a profile of that name.
+			std::cerr << "Cannot open " << infile << " for reading.\n";
+			printUsage(env);                        //Print help message on failure.
 		}
 	}
-	int nsample = id_ind.size();
+	else {
+		pro.open(std::fstream::in);                     //Iff no filename has been set for infile, open profile from stdin.
+	};
+
+	int nsample = pro.size();
 	printf("%d individuals to be analyzed\n", nsample);
 
 	// Open the output file and print out the field names
-	outstream = fopen(out_file_name, "w");
+	outstream = fopen(outfile.c_str(), "w");
 	fprintf(outstream, "scaffold\tsite 1\tsite 2\tdistance\tbest_D\tbest_D'\tbest_D2\tbest_r2\tadj_best_D\tadj_best_D'\tadj_best_D2\tadj_best_r2\n");
 	// printf("scaffold\tsite 1\tsite 2\tdistance\tbest_D\tbest_D'\tbest_D2\tbest_r2\tadj_best_D\tadj_best_D'\tadj_best_D2\tadj_best_r2\n");
 
-	int t_site;	// temporarily stores the coordinate
+	int t_site;				// temporarily stores the coordinate
 	double t_best_Maf, t_best_error;	// temporarily stores major-allele frequency estimates and error rates
 	double pol_llstat, HWE_llstat;
 	string t_quartet;
@@ -459,6 +388,8 @@ int PopLD(int argc, char *argv[])
 	for (ig = 1; ig <= nsample; ig++) {
 		quartet[ig].clear();
 	}
+
+	/*
 	while ( getline(inputFile, line) ) {
 		istringstream ss(line);
 		ss >> scaffold >> t_site >> ref_nuc >> t_mlNuc1 >> t_mlNuc2 >> pop_cov >> t_best_Maf >> t_best_error >> pol_llstat >> HWE_llstat;
@@ -471,7 +402,8 @@ int PopLD(int argc, char *argv[])
 			ss >> t_quartet;
 			quartet[ig].push_back(t_quartet);
 		}
-	}
+	}*/
+
 	num_pol_sites = best_Maf.size();
 	printf("%d polymorphic sites to be analyzed\n", num_pol_sites);		
 	

@@ -4,7 +4,7 @@ NAME=mapgd
 all:
 	python setup.py build
 	rm -rf ../../../lib/rml.so
-	ln -s `pwd`/`find build -name *.so` ../../../lib/ 
+	ln -sf `pwd`/`find build -name *.so` ../../../lib/ 
 .PHONY: all
 
 clean:

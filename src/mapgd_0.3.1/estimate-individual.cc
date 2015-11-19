@@ -210,10 +210,10 @@ int estimateInd(int argc, char *argv[])
 			switch (pro.get_columns()) {
 				case 5:
 				case 6:
-					*out << id1 << "\tid2\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpoly_ll\thwe_ll\tgof\tef_chrm\tN\tN_cut\tmodel_ll" << std::endl;
+					*out << id1 << "\tid2\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tunbaised_f\tMM\tMm\tmm\tunbiased_h\tpoly_ll\thwe_ll\tgof\tef_chrm\tN\tN_cut\tmodel_ll" << std::endl;
 				break;
 				case 7:
-					*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpoly_ll\thwe_ll\tgof\tef_chrm\tN\tN_cut\tmodel_ll" << std::endl;
+					*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tunbiased_f\tMM\tMm\tmm\tunbiased_h\tpoly_ll\thwe_ll\tgof\tef_chrm\tN\tN_cut\tmodel_ll" << std::endl;
 				break;
 			}	
 	}
@@ -269,8 +269,10 @@ int estimateInd(int argc, char *argv[])
 					#endif
 					if (2*(buffer_mle[c].ll-buffer_mle[c].monoll)>=22){
 						for (size_t i=0; i<sum_gofs.size(); i++){
-							sum_gofs[i]+=gofs[i];
-							if (gofs[i]!=0) gofs_read[i]++;
+							//if (?){
+								sum_gofs[i]+=gofs[i];
+								if (gofs[i]!=0) gofs_read[i]++;
+							//}
 						}
 					}
 				}

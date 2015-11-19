@@ -41,6 +41,10 @@ count_t init_params(Locus &site, allele_stat &a, const float_t &minerr){
 
 	count_t M_=site.getcount(0);
 	count_t m_=site.getcount(1);
+	if (m_==site.getcount(2) ){
+		if (m_==site.getcount(3) ) a.minor=site.getindex(1+rand()%3);
+		else a.minor=site.getindex(1+rand()%2);
+	};
 
 	count_t E_=S-M_-m_;
 
@@ -88,7 +92,6 @@ count_t init_params(Locus &site, allele_stat &a, const float_t &minerr){
 	a.MM=P_;
 	a.Mm=H_;
 	a.mm=Q_;
-	a.efc=efc(site);
 	return 1;
 }
 
@@ -313,12 +316,14 @@ count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <
 	a.gof=model.goodness_of_fit(site, a, temp_gofs, MINGOF);
 
 	excluded=site.maskedcount();
+	a.efc=efc(site);
 	
 	if ( a.gof<MINGOF) {
 		if (excluded==maxpitch){
 			for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 			return excluded;
 		}
+		a.N-=1;
 		return maximize_grid(site, a, model, gofs, MINGOF, maxpitch);
 	};
 	for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];

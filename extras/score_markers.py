@@ -53,10 +53,14 @@ processed=0
 File=open(args.gcfFile[0])
 num=[]
 denom=[]
+Pulex=[]
+Pulicaria=[]
 
 for x in range(0, 96):
 	num.append(0)
 	denom.append(0)
+	Pulex.append(0)
+	Pulicaria.append(0)
 
 print sites.keys()
 
@@ -74,10 +78,21 @@ for line in File:
 			if lcal[3]>4:
 				if lcal[1]<lcal[0] and lcal[1]<lcal[2]:
 					num[y]+=1
+				if lcal[0]<lcal[1] and lcal[0]<lcal[2]:
+					if MAJOR!=asex:
+						Pulex[y]+=1
+					else:
+						Pulicaria[y]+=1
+				if lcal[2]<lcal[0] and lcal[2]<lcal[1]:
+					if MAJOR==asex:
+						Pulex[y]+=1
+					else:
+						Pulicaria[y]+=1
+				
 				denom[y]+=1
 	except:
 		processed+=1
 print processed
 for x in range(0, 96):
 	if denom[x]>0:
-		print x, float(num[x])/float(denom[x]), denom[x]
+		print x, float(num[x])/float(denom[x]), float(Pulex[x])/float(denom[x]), float(Pulicaria[x])/float(denom[x]), denom[x]

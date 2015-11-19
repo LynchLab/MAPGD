@@ -13,6 +13,9 @@ independent=[]
 P=0.1
 Q=1-P
 
+def G(M, F):
+	return [M[0]*F[0], M[1]*F[0]+M[0]*F[1], M[1]*F[1] ]
+
 class record:
 	def __init__ (self, args):
 		self.FamilyID, self.PersonID, self.FatherID, self.MotherID, self.Sex=args
@@ -29,10 +32,17 @@ class record:
 			self.M=0
 			independent.append(self.PM)
 		self.bellow=[]
-	def getP (self, conditions):
+
+	def getF (self):
+		self.F=[PersonIDs[self.FatherID].getG()[0]+PersonIDs[self.FatherID].getG()[1]/2., PersonIDs[self.FatherID].getG()[2]+PersonIDs[self.FatherID].getG()[1]/2.]
+	def getM (self):
+		self.M=[PersonIDs[self.MotherID].getG()[0]+PersonIDs[self.MotherID].getG()[1]/2., PersonIDs[self.MotherID].getG()[2]+PersonIDs[self.MotherID].getG()[1]/2.]
+		
+	def getG (self, conditions):
 		self.getF()
 		self.getM()
-		self.G=[ (self.F[0]+self.M[0])/2., (self.F[1]+self.M[1])/2. ]
+		self.G=G(self.M, self.F)
+		return self.G
 
 def setbellow(ID, IDB):
         if ID!='':

@@ -35,11 +35,11 @@ std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 		out << 1.-x.freq <<  x.delim;
 		out << x.error << x.delim;
 		out << x.null_error << x.delim;
-		out << x.f <<  x.delim;
+		out << x.f+1/(2.*x.N-1) <<  x.delim;
 		out << x.MM << x.delim;
 		out << x.Mm << x.delim;
 		out << x.mm << x.delim;
-		out << 2*x.freq*(1-x.freq) << x.delim;
+		out << 2*x.freq*(1-x.freq)*(2*x.N/(2*x.N-1) ) << x.delim;
 		out << (x.ll-x.monoll)*2 << x.delim;
 		out << (x.ll-x.hwell)*2 << x.delim;
 		out << x.gof << x.delim;
