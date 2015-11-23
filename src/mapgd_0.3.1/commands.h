@@ -11,7 +11,8 @@
 #include "estimate-pooled.h"
 #include "estimate-individual.h"
 #include "estimate-fst.h"
+#include "relatedness.h"
 #include "proview.h"
-#include "PopLD.h"
+#include "linkage.h"
 
 #endif

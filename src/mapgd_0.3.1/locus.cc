@@ -226,3 +226,11 @@ void Locus::mask_low_cov( const count_t &dp )
 { 
 	for (size_t s=0; s<sample.size();++s) sample[s].masked=((sample[s].masked)|(count(sample[s])<=dp));
 }
+
+std::ostream& operator<< (std::ostream& out, const Locus& x) {
+	for (size_t s=0; s<x.sample.size();++s) {
+		out << '\t' << x.sample[s];
+	}
+	return out;
+};
+

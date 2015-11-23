@@ -1,8 +1,8 @@
-#include "PopLD.h"
+#include "linkage.h"
 
 /*
 
-Program PopLD.cc to estimate linkage disequilibrium (LD) between 
+Program linkage.cc to estimate linkage disequilibrium (LD) between 
 polymorphic sites from high-throughput sequencing data of multiple 
 diploid individuals from a population by a maximum-likelihood (ML) method.
 Random union of gametes is assumed in the estimation.  In addition,
@@ -71,9 +71,6 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double N_i, int ml
 	double t_best_D;	// temporarily stores ML estimate of D
 	double Dmin, Dmax, adj_Dmin, adj_Dmax;
 
-	// printf("Entered the function\n");
-	// printf("best_p: %f\tmononuc_count_1[1][1]: %d\tcov1[1]: %d\n", best_p, mononuc_count_1[1][1], cov1[1]);
-	// Estimate the LD coefficient D between the polymorphic sites
 	maxll = -FLT_MAX;	
 	// Find the minimum and maximum possible values of D given the estimated allele frequencies
 	if ( best_p*best_q <= (1.0-best_p)*(1.0-best_q) ) {
@@ -318,10 +315,11 @@ int PopLD(int argc, char *argv[])
 {
 
 	/* All the variables that can be set from the command line */
-
+/*
 	std::string infile="";
 	std::string outfile="";
-	int max_d = INT_MAX;
+	id1_t max_d = INT_MAX;
+	my_float_t poly_ll;
 
 	env_t env;
 	env.setname("mapgd popld");
@@ -332,6 +330,7 @@ int PopLD(int argc, char *argv[])
 	env.optional_arg('i',"in", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdin).");
 	env.optional_arg('o',"out", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdout).");
 	env.optional_arg('m',"max_d",   &max_d,		&arg_setint, 	"an error occured while setting the name of the output file.", "the maximum value fo the distance between polymorphic sites.\n");
+	env.optional_arg('l',"polyll",  &poly_ll,	&arg_setfloat_t,"an error occured while setting the name of the output file.", "the minimum value fo the delta ll value of a polymorphic sites.\n");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message.");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version.");
 
@@ -363,48 +362,21 @@ int PopLD(int argc, char *argv[])
 	fprintf(outstream, "scaffold\tsite 1\tsite 2\tdistance\tbest_D\tbest_D'\tbest_D2\tbest_r2\tadj_best_D\tadj_best_D'\tadj_best_D2\tadj_best_r2\n");
 	// printf("scaffold\tsite 1\tsite 2\tdistance\tbest_D\tbest_D'\tbest_D2\tbest_r2\tadj_best_D\tadj_best_D'\tadj_best_D2\tadj_best_r2\n");
 
-	int t_site;				// temporarily stores the coordinate
-	double t_best_Maf, t_best_error;	// temporarily stores major-allele frequency estimates and error rates
-	double pol_llstat, HWE_llstat;
 	string t_quartet;
-	vector <string> quartet[nsample+1];
-	vector <int> site;
-	vector <double> best_Maf;
-	vector <double> best_error;
 	int ig;
-	string scaffold;
-	string ref_nuc;
-	int t_mlNuc1, t_mlNuc2;
-	int pop_cov;
-	vector <int> mlNuc1, mlNuc2;
 	int num_pol_sites;
 
-	// Read the main data
-	site.clear();
-	mlNuc1.clear();
-	mlNuc2.clear();
-	best_Maf.clear();
-	best_error.clear();
-	for (ig = 1; ig <= nsample; ig++) {
-		quartet[ig].clear();
+	std::vector <allele_stat> mle;
+	std::vector <Locus> loci;
+
+	while ( pro.read(buffer_site)!=EOF ){
+		if(buffer_site.mle.poly_ll>poly_ll){
+			loci.push_back(buffer_site.?);
+			allele_stat.push_back(buffer_site.mle);
+		}
 	}
 
-	/*
-	while ( getline(inputFile, line) ) {
-		istringstream ss(line);
-		ss >> scaffold >> t_site >> ref_nuc >> t_mlNuc1 >> t_mlNuc2 >> pop_cov >> t_best_Maf >> t_best_error >> pol_llstat >> HWE_llstat;
-		site.push_back(t_site);
-		mlNuc1.push_back(t_mlNuc1);
-		mlNuc2.push_back(t_mlNuc2);
-		best_Maf.push_back(t_best_Maf);
-		best_error.push_back(t_best_error);
-		for (ig = 1; ig <= nsample; ig++) {
-			ss >> t_quartet;
-			quartet[ig].push_back(t_quartet);
-		}
-	}*/
-
-	num_pol_sites = best_Maf.size();
+	num_pol_sites = loci.size();
 	printf("%d polymorphic sites to be analyzed\n", num_pol_sites);		
 	
 	int eg, sg;
@@ -422,106 +394,10 @@ int PopLD(int argc, char *argv[])
                 	}
 			string quartet_2[nsample+1];
 			int jg, kg, lg, mg;
-			int dist_sites, test_dis, mononuc_count_1[nsample+1][5], mononuc_count_2[nsample+1][5];
-			int cov1[nsample+1], cov2[nsample+1];
-			double ind_N_i, N_i;
-			int size_quartet_1, size_quartet_2, count_nuc, digit, num_digit[5];
-			// printf("sg: %d\ttg: %d\n", sg, tg);
-			test_dis = 1;
-			// printf("Inside the loop\n");
-			if (test_dis == 1) {
-				for (ig = 1; ig <= nsample; ig++) {
-					quartet_2[ig] = quartet[ig].at(tg);
-				}
-				// printf("site_1: %d\tbest_p: %f\tsite_2: %d\tbest_q: %f\n", site.at(sg), best_Maf.at(sg), site.at(tg), best_Maf.at(tg));
-				dist_sites = site.at(tg) - site.at(sg);
-				// printf("sg: %d\ttg: %d\tdis_sites: %d\n", sg, tg, dist_sites);
-				if (dist_sites > max_d) {
-					test_dis = 0;
-				}
-				if (test_dis == 1) {
+			int dist_sites, test_dis;
+				dist_sites = this_locus->? - that_locus->?;
+				if (this_locus->?-that_locus < ?) {
 					// printf("dist_sites: %d\n", dist_sites);
-					N_i = 0.0;
-					for (ig = 1; ig <= nsample; ig++) {
-						size_quartet_1 = quartet_1[ig].size();
-                                        	jg = 1;
-                                        	digit = 0;
-                                        	for (kg = 0; kg < size_quartet_1; kg++) {
-                                                	if ( quartet_1[ig].at(kg) == '/') {
-                                                        	mg = pow(10,digit-1);
-                                                        	count_nuc = 0;
-                                                        	lg = 0;
-                                                        	while (lg <= digit-1) {
-                                                                	count_nuc = count_nuc + mg*num_digit[lg];
-                                                                	mg = mg/10;
-                                                                	num_digit[lg] = 0;
-                                                                	lg = lg + 1;
-                                                        	}
-                                                        	mononuc_count_1[ig][jg] = count_nuc;
-                                                        	jg = jg + 1;
-                                                        	count_nuc = 0;
-                                                        	digit = 0;
-                                                	} else {
-                                                        	num_digit[digit] = quartet_1[ig].at(kg) - '0';
-                                                        	digit = digit + 1;
-                                                	}
-                                                	if (kg == size_quartet_1 - 1) {
-                                                        	mg = pow(10,digit-1);
-                                                        	count_nuc = 0;
-                                                        	lg = 0;
-                                                        	while (lg <= digit-1) {
-                                                                	count_nuc = count_nuc + mg*num_digit[lg];
-                                                                	mg = mg/10;
-                                                                	num_digit[lg] = 0;
-                                                                	lg = lg + 1;
-                                                        	}
-                                                        	mononuc_count_1[ig][jg] = count_nuc;
-                                                        	jg = 1;
-                                                	}
-                                        	}
-                                        	size_quartet_2 = quartet_2[ig].size();
-                                        	jg = 1;
-                                        	digit = 0;
-                                        	for (kg = 0; kg < size_quartet_2; kg++) {
-                                                	if ( quartet_2[ig].at(kg) == '/') {
-                                                        	mg = pow(10,digit-1);
-                                                        	count_nuc = 0;
-                                                        	lg = 0;
-                                                        	while (lg <= digit-1) {
-                                                                	count_nuc = count_nuc + mg*num_digit[lg];
-                                                                	mg = mg/10;
-                                                                	num_digit[lg] = 0;
-                                                                	lg = lg + 1;
-                                                        	}
-                                                        	mononuc_count_2[ig][jg] = count_nuc;
-                                                        	jg = jg + 1;
-                                                        	count_nuc = 0;
-                                                        	digit = 0;
-                                                	} else {
-                                                        	num_digit[digit] = quartet_2[ig].at(kg) - '0';
-                                                        	digit = digit + 1;
-                                                	}
-                                                	if (kg == size_quartet_2 - 1) {
-                                                        	mg = pow(10,digit-1);
-                                                        	count_nuc = 0;
-                                                        	lg = 0;
-								while (lg <= digit-1) {
-                                                                	count_nuc = count_nuc + mg*num_digit[lg];
-                                                                	mg = mg/10;
-                                                                	num_digit[lg] = 0;
-                                                                	lg = lg + 1;
-                                                        	}
-                                                        	mononuc_count_2[ig][jg] = count_nuc;
-                                                        	jg = 1;
-                                                	}
-                                        	}
-                                        	cov1[ig] = mononuc_count_1[ig][1] + mononuc_count_1[ig][2] + mononuc_count_1[ig][3] + mononuc_count_1[ig][4];
-                                        	cov2[ig] = mononuc_count_2[ig][1] + mononuc_count_2[ig][2] + mononuc_count_2[ig][3] + mononuc_count_2[ig][4];
-                                        	ind_N_i = ( 1.0-pow( 0.5,(double)cov1[ig] ) )*pow( 0.5,(double)(cov2[ig]+1.0) ) + pow( 0.5,(double)(cov1[ig]+1.0) )*( 1.0-pow(0.5,(double)cov2[ig]) ) + ( 1.0-pow(0.5,(double)cov1[ig]) )*( 1.0-pow(0.5,(double)cov2[ig]) );
-                                        	N_i = N_i + ind_N_i;
-                                	} // End of the loop over the individuals 
-					// printf("Exited from the loop\n");
-					// Estimate the LD coefficient D between the polymorphic sites 
 					est[tg-sg-1] = estimate_D(num_pol_sites, sg, tg, N_i, mlNuc1.at(sg), mlNuc2.at(sg), mlNuc1.at(tg), mlNuc2.at(tg), best_Maf.at(sg), best_Maf.at(tg), best_error.at(sg), best_error.at(tg), nsample, mononuc_count_1, mononuc_count_2, cov1, cov2);
 				}
 			}	
@@ -531,11 +407,10 @@ int PopLD(int argc, char *argv[])
                         // Print out the results
 			int dist_sites = site.at(eg+sg+1) - site.at(sg);
 			if (dist_sites <= max_d) {
-				// printf("%s\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].best_D, est[eg].best_Dprime, est[eg].best_D2, est[eg].best_r2, est[eg].adj_best_D, est[eg].adj_best_Dprime, est[eg].adj_best_D2, est[eg].adj_best_r2);
 				fprintf(outstream, "%s\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].best_D, est[eg].best_Dprime, est[eg].best_D2, est[eg].best_r2, est[eg].adj_best_D, est[eg].adj_best_Dprime, est[eg].adj_best_D2, est[eg].adj_best_r2);
 			}
 		}
 	} // End of the loop over the first polymorphic sites
-	
+	*/
 	return 0;
 };

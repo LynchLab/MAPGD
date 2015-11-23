@@ -74,4 +74,5 @@ public:
 	void mask_low_cov(const count_t &dp);							//!< Mask site with coverage stricktly lt dp;
 };
 
+std::ostream& operator<< (std::ostream& out, const Locus& x);
 #endif

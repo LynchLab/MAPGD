@@ -3,6 +3,7 @@
 
 #include "typedef.h"
 #include <cstring> 
+#include <iostream>
 
 /// A class that stores quartet information.
 /*! 
@@ -63,4 +64,6 @@ void unmask(quartet_t&);
 //writet(stream, quartet_t&);
 //writet(stream, quartet_t&);
 
+
+std::ostream& operator<< (std::ostream& out, const quartet& q);
 #endif

@@ -330,8 +330,9 @@ count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <
 	return 	excluded;
 }
 
-count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch){
 
+
+count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch){
 
 	a.MM=1.0;
 	a.Mm=0.0;

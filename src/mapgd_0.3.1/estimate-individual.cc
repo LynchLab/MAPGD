@@ -112,6 +112,7 @@ int estimateInd(int argc, char *argv[])
 	std::string outfilepro;
 
 	bool verbose=false;
+	bool ldformat=false;
 	bool quite=false;
 	bool noheader=false;
 	float_t EMLMIN=0.001;
@@ -148,8 +149,8 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('g',"goodfit", &MINGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
 	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
-	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "maximum number of sites to be analyzed (default All sites)");
 	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
+	env.flag(	'L',"ldformat", &ldformat,	&flag_set, 	"takes no argument", "makes output compatible with popld command.");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
@@ -205,7 +206,7 @@ int estimateInd(int argc, char *argv[])
 
 
 	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
-	if (not (noheader) ){
+	if (not (noheader) && not (ldformat) ){
 			std::string id1="id1\t";
 			switch (pro.get_columns()) {
 				case 5:
@@ -216,8 +217,10 @@ int estimateInd(int argc, char *argv[])
 					*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tunbiased_f\tMM\tMm\tmm\tunbiased_h\tpoly_ll\thwe_ll\tgof\tef_chrm\tN\tN_cut\tmodel_ll" << std::endl;
 				break;
 			}	
+	} else if (ldformat) {
+		std::string id1="id1\t";
+		*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\terror\tpoly_ll\thwe_ll\t" << std::endl;
 	}
-	
 	pro.maskall();							//Turn off the ability to read data from all clones by default. 
 
 	if ( ind.size()==0 ) { 						//Iff the vector ind (which should list the clones to 
@@ -283,9 +286,17 @@ int estimateInd(int argc, char *argv[])
                 	// Now print everything to the *out stream, which could be a file or the stdout. 
 			//TODO move this over into a formated file.
 			//?
-			if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
-				*out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
-				*out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
+			if (ldformat){
+				if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
+					*out << std::fixed << std::setprecision(4) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
+					if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
+					*out << std::fixed << std::setprecision(0) << buffer_mle[x].coverage << std::setprecision(4) << '\t' << buffer_mle[x].freq << '\t' << buffer_mle[x].error << '\t' << buffer_mle[x].monoll << '\t' << buffer_mle[x].hwell << buffer_site[x] << std::endl;
+				}
+			} else {
+				if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
+					*out << std::fixed << std::setprecision(4) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
+					*out << std::fixed << std::setprecision(4) << buffer_mle[x] << std::endl;
+				}
 			}
 			if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
 			if (pro_out.is_open() ){
@@ -297,7 +308,7 @@ int estimateInd(int argc, char *argv[])
 		all_read+=readed;
 		if (all_read>stop){break;}
 	}
-	for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.get_sample_name(ind[x]) << ":" << sum_gofs[x]/(float_t(gofs_read[x])) << std::endl;
+	if ( not(ldformat) && not(noheader) ) { for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.get_sample_name(ind[x]) << ":" << sum_gofs[x]/(float_t(gofs_read[x])) << std::endl; }
 	pro.close();
 	if (outFile.is_open()) outFile.close();		//Closes outFile iff outFile is open.
 	if (pro_out.is_open()) pro_out.close();		//Closes pro_out iff pro_out is open.

@@ -269,7 +269,7 @@ void printVersion(env_t env){
 
 
 void printHelp(env_t env){
-	printf("Usage: %s [OPTIONS] [COMMAND]\n\n", env.name);
+	printf("usage: %s <command> [<args>]\n\n", env.name);
 	printf("%s version %s written by %s\n", env.name, env.version, env.author);
  	printf("%s\n\n", env.description);
 
