@@ -1,3 +1,3 @@
-int write_command (int argc, char *argv[]){
+int read_command (int argc, char *argv[]){
 	return 0;
 };

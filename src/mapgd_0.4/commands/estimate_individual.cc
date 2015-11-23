@@ -158,7 +158,7 @@ int estimate_individual(int argc, char *argv[])
 				}
 				if(estimate_me) {
 					this_locus=(locus *)fetch(in_row[c], locus_key);			//get a locus pointer with locus_key.
-					estimate(this_locus, out_row[c], model, MIN, EMLMIN, MINGOF, MAXPITCH);//estiamte me.
+					estimate(this_locus, out_row[c], model, MIN, EMLMIN, MINGOF, MAXPITCH);	//estiamte me.
 				}
 			}
 

@@ -16,10 +16,10 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName){
 key::key(){
 	memset(name_, 0, 255);	// this key has no name.
 	memset(desc_, 0, 255);	// this key has no name.
-	begin_=NULL;		// the data this key refernces is stored at NULL.
+	begin_=NULL;		// the data this key references is stored at NULL.
 	delete_=false;		// if this key is deconstructed, then it won't free any memory.
 	size_=0;		// if this key is called, then 0 bytes will be read from the data stream.
-	offset_=0;		// the data for this key stats 0 bytes after the begging of a row.
+	offset_=0;		// the data for this key stats 0 bytes after the beginning of a row.
 	keyid_=nokey;
 	typeid_=nokey;		// a nonsense type id.
 }
