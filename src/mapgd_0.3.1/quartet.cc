@@ -13,7 +13,7 @@ void mask(quartet_t &q){
 }
 
 std::ostream& operator<< (std::ostream& out, const quartet& q) {
-	if (not(q.masked) ) out << q.base[0] << '/' << q.base[1] << '/' << q.base[2] << '/' << q.base[3]; 
+	if (not(q.masked) ) out << int(q.base[0]) << '/' << int(q.base[1]) << '/' << int(q.base[2]) << '/' << int(q.base[3]); 
 	else out << "0/0/0/0"; 
         return out;
 };

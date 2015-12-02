@@ -769,20 +769,8 @@ int profile::writet(const Locus &thissite){
 		};
 		*out << decodeid1(thissite.id1);
 		for (size_t x=0; x < thissite.sample.size(); ++x){
-			if (thissite.sample[x].masked){
-				*out << delim_column;
-				*out << 0 << delim_quartet;
-				*out << 0 << delim_quartet;
-				*out << 0 << delim_quartet;
-				*out << 0;
-			}
-			else {
-				*out << delim_column;
-				*out << thissite.sample[x].base[0] << delim_quartet;
-				*out << thissite.sample[x].base[1] << delim_quartet;
-				*out << thissite.sample[x].base[2] << delim_quartet;
-				*out << thissite.sample[x].base[3];
-			}
+			*out << delim_column;
+			*out << thissite.sample[x];
 		};
 		*out << std::endl;
 		site_=thissite;
@@ -790,20 +778,8 @@ int profile::writet(const Locus &thissite){
 	case 6:
 		*out << decodeid0(thissite.id0) << delim_column << decodeid1(thissite.id1);
 		for (size_t x=0; x < thissite.sample.size(); ++x){
-			if (thissite.sample[x].masked){
-				*out << delim_column;
-				*out << 0 << delim_quartet;
-				*out << 0 << delim_quartet;
-				*out << 0 << delim_quartet;
-				*out << 0;
-			}
-			else {
-				*out << delim_column;
-				*out << thissite.sample[x].base[0] << delim_quartet;
-				*out << thissite.sample[x].base[1] << delim_quartet;
-				*out << thissite.sample[x].base[2] << delim_quartet;
-				*out << thissite.sample[x].base[3];
-			}
+			*out << delim_column;
+			*out << thissite.sample[x];
 		};
 		*out << std::endl;	
 		site_=thissite;
@@ -811,20 +787,8 @@ int profile::writet(const Locus &thissite){
 	case 7: 
 		*out << decodeid0(thissite.id0) << delim_column << decodeid1(thissite.id1) << delim_column << decodeextraid(thissite.get_extraid(0), 0);
 		for (size_t x=0; x < thissite.sample.size(); ++x){
-			if (thissite.sample[x].masked){
-				*out << delim_column;
-				*out << 0 << delim_quartet;
-				*out << 0 << delim_quartet;
-				*out << 0 << delim_quartet;
-				*out << 0;
-			}
-			else {
-				*out << delim_column;
-				*out << thissite.sample[x].base[0] << delim_quartet;
-				*out << thissite.sample[x].base[1] << delim_quartet;
-				*out << thissite.sample[x].base[2] << delim_quartet;
-				*out << thissite.sample[x].base[3];
-			}
+			*out << delim_column;
+			*out << thissite.sample[x];
 		};
 		*out << std::endl;	
 		site_=thissite;
