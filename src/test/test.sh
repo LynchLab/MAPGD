@@ -20,6 +20,10 @@ else
 fi
 }
 
+header="pA1.header"
+
+mp2="mpileup-2.txt"
+mp1="mpileup-1.txt"
 tmf="takahiro.txt"
 lmp="mpileup-l.txt"
 smp="mpileup-s.txt"
@@ -193,6 +197,32 @@ rm -f $a.out
 echo -n "$mapgd proview -i $smp $lmp > $a.out		"
 timeout 5s $mapgd proview -i $smp $lmp > $a.out 
 testa
+
+msg="error catching"
+a="proview"
+size=9
+rm -f $a.out
+echo -n "$mapgd proview -i $mp2 $mp1 > $a.out		"
+timeout 5s $mapgd proview -i $mp2 $mp1 > $a.out 
+testa
+
+msg="merge -H"
+a="proview"
+size=33
+rm -f $a.out
+echo -n "$mapgd proview -i $mp2 $mp1 -H $header > $a.out		"
+timeout 5s $mapgd proview -i $mp2 $mp1 -H $header > $a.out 
+testa
+
+msg="genotype"
+a="genotype"
+size=34
+rm -f $a.out
+echo -n "$mapgd genotype -i  > $a.out		"
+timeout 5s $genotype -i $mp2 $mp1 -H $header > $a.out 
+testa
+
+
 
 echo -n "SPEED TEST ... "
 

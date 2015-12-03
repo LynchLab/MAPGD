@@ -154,12 +154,12 @@ int proview(int argc, char *argv[])
 		header.open(headerfile.c_str(),  std::fstream::in);
 		index.from_sam_header( header );
 		for (size_t x=0; x<index.get_sizes().size(); x++) out.encodeid0(index.get_string(x) );
-		out.set_id0(0);
+		out.set_id0(UINT16_MAX);
 		out.set_id1(1);
 	} 
 	else {
-		out.set_id0(-1);
-		out.set_id1(-1);	//set the ids of out to -1 for syncronization purposes.
+		out.set_id0(UINT16_MAX);
+		out.set_id1(1);	//set the ids of out to -1 for syncronization purposes.
 	}
 	for (size_t x=0; x<in.size(); x++){ in[x]->read(); }
 
@@ -195,10 +195,9 @@ int proview(int argc, char *argv[])
 			} else {
 				if (out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
 					if (in[x]->get_id1()<site.get_id1() && in[x]->is_open() ) {
-						std::cerr << in[x]->get_id1() << '\t' << site.get_id1() << '\n';
 						std::cerr << __FILE__ << ":" << __LINE__ << ": in[x]->get_id1() out of order. Exiting\n"; exit(0);
 					}
-					read_scaffold=true;
+					if(in[x]->is_open() ) read_scaffold=true;
 				}
 				while (it_in!=end_in){ 
 					*it=0;
@@ -208,7 +207,7 @@ int proview(int argc, char *argv[])
 			} 
 			if (in[x]->is_open() ) go=true;
 		}
-		if (read_site || print_all ){
+		if (read_site || print_all  && site.get_id0()!=UINT16_MAX){
 			site.unmaskall();
 			if (bernhard){
 				Locus L=site;
@@ -219,7 +218,8 @@ int proview(int argc, char *argv[])
 		}
 		if (!read_scaffold){
 			if (not (index.is_open() ) ) {
-				site.set_id0(site.get_id0()+1);
+				if (site.get_id0()!=UINT16_MAX-1) site.set_id0(site.get_id0()+1);
+				else {std::cerr << __FILE__ << ":" << __LINE__ << ": maximum scaffold count reached. Exiting\n"; exit(0); }
 				site.set_id1(1);
 			}
 			else site.set_id1(site.get_id1()+1);
