@@ -214,6 +214,14 @@ echo -n "$mapgd proview -i $mp2 $mp1 -H $header > $a.out		"
 timeout 5s $mapgd proview -i $mp2 $mp1 -H $header > $a.out 
 testa
 
+msg="popld"
+a="popld"
+size=33
+rm -f $a.out
+echo -n "$mapgd popld -i $ldf  > $a.out		"
+timeout 5s $mapgd popld -i $ldf > $a.out 
+testa
+
 msg="genotype"
 a="genotype"
 size=34
