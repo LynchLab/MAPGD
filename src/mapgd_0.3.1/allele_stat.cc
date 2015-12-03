@@ -46,8 +46,8 @@ std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 		out << std::setw(2);
 		out << x.efc << x.delim;
 		out << std::fixed << std::setprecision(0);
-		out << x.N << x.delim;
-		out << x.excluded << x.delim;
+		out << int(x.N) << x.delim;
+		out << int(x.excluded) << x.delim;
 		out << std::fixed << std::setprecision(4);
 		out << x.ll;
 	} else {
