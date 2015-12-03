@@ -7,6 +7,7 @@
 
 int main (int argc, char *argv[]){
 	std::cerr << "row this_row\n";
+	table ;
 	row this_row(std::cin);
 	std::cerr << "get_row\n";
 	int x=10;

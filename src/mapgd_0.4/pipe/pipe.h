@@ -97,6 +97,18 @@ public:
 	const char * table(void) const;
 };
 
+class table
+{
+private:
+	std::string table_name_;			//!< name of the table to which the row belongs
+	std::list <key> keys_;				//!< list of keys (none of which have size set to 0)
+	std::map <const std::string, key *> key_map;	//!< a hash table of key names.
+public:
+	table(std::string table_name, sqlite3 *);			//!< initilizes a row with a list of keys.
+	key get_key(const std::string &name) const;			//!< returns a key from the hash table.
+	void * write(sqlite3 *, const row &);
+};
+
 inline void * fetch(const row &this_row, const key &this_key)
 {
 	return this_row.begin_+this_key.offset_;
