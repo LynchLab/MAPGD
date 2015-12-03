@@ -194,7 +194,10 @@ int proview(int argc, char *argv[])
 				if (in[x]->read()==EOF ) in[x]->close();
 			} else {
 				if (out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
-					if (in[x]->get_id1()<site.get_id1() && in[x]->is_open() ) {std::cerr << __FILE__ << ":" << __LINE__ << ": in[x]->get_id1() out of order. Exiting\n"; exit(0);}
+					if (in[x]->get_id1()<site.get_id1() && in[x]->is_open() ) {
+						std::cerr << in[x]->get_id1() << '\t' << site.get_id1() << '\n';
+						std::cerr << __FILE__ << ":" << __LINE__ << ": in[x]->get_id1() out of order. Exiting\n"; exit(0);
+					}
 					read_scaffold=true;
 				}
 				while (it_in!=end_in){ 

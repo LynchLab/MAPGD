@@ -121,8 +121,8 @@ int estimateInd(int argc, char *argv[])
 	float_t MINGOF=2.00;
 	count_t MAXPITCH=96;
 
-	count_t skip=0;
-	count_t stop=-1;
+	id1_t skip=0;
+	id1_t stop=UINT32_MAX;
 
 	std::vector <size_t> ind;
 

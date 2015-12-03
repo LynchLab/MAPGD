@@ -23,8 +23,8 @@ int main (int argc, char* argv[])
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "Prints the program version");
 
 	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "Prints data in the '.pro' file quartet format");
-	env.command(	' ',"frequency",&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");
-	env.command(	' ',"compare", 	&comparePooled, 		"an error occured while calling cp", "Compares allele frequencies between populations using pooled data");
+	env.command(	' ',"ep",&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");
+	env.command(	' ',"cp", 	&comparePooled, 		"an error occured while calling cp", "Compares allele frequencies between populations using pooled data");
 
 	env.command(	' ',"ei", 	&estimateInd,	 		"an error occured while calling ei", "Estimates allelel frequencies using individual data");
 

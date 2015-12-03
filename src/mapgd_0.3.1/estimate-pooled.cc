@@ -187,10 +187,10 @@ int estimatePooled(int argc, char *argv[])
                         *out << std::fixed << std::setprecision(7) << pro.getids(line) << '\t' << line.getname(0) << '\t' << line.getname_gt(1) << '\t';
                         for (size_t x=0; x<pop.size(); ++x){
                                 if ( line.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t' << 0.0 << '\t' << 0.0 << '\t';
-                                else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t' << llstatc[x]<< '\t' << line.getcoverage(pop[x]) <<'\t';
+                                else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t' << llstatc[x]<< '\t' << int(line.getcoverage(pop[x])) <<'\t';
                         };
                         /* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
-                        *out << line.getcoverage() << '\t' << site.error << std::endl;
+                        *out << int(line.getcoverage()) << '\t' << site.error << std::endl;
                 };
 
 	}

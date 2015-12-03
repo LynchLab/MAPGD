@@ -728,6 +728,7 @@ int profile::write(const Locus &site){
 }
 
 int profile::writeb (const Locus &thissite){
+	char extraid;
 	if (out==NULL){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": attempted write when no ostream was open." << std::endl;
 		exit(UNEXPECTED);
@@ -744,7 +745,8 @@ int profile::writeb (const Locus &thissite){
                 case 7:
                         out->write((char *)&thissite.id0, sizeof(id0_t) );
 			out->write((char *)&thissite.id1, sizeof(id1_t) );
-			out->write((char *)thissite.extraid[0], sizeof(char) );
+			extraid=thissite.get_extraid(0);
+			out->write((char *)&extraid, sizeof(char) );
 			for (unsigned int x=0; x<samples_; ++x) out->write((char *)thissite.sample[x].base, 4*sizeof(count_t) );
                 break;
                 default:
