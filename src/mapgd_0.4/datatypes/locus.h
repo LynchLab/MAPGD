@@ -44,7 +44,7 @@ public:
 	quartet_t & get_quartet(const size_t &s);		//!< returns the s'th quartet at the locus.
 
 	/*MASKING*/
-	size_t maskedcount(void) const;			//!< returns the count of the number of individuals/populations that are masked.
+	size_t maskedcount(void) const;				//!< returns the count of the number of individuals/populations that are masked.
 
 	void maskall(void);					//!< mask all individuals/populations.
 	void unmaskall(void);					//!< unmask all lines
@@ -62,9 +62,10 @@ public:
 	std::vector <quartet_t>::iterator end(void) {return sample_.end();};		//!< return an iterator to the quartet_t s stored at this locus.
 
 	std::vector <quartet_t>::const_iterator begin(void) const {return sample_.begin();};	//!< return an iterator to the quartet_t s stored at this locus.
-	std::vector <quartet_t>::const_iterator end(void) const {return sample_.end();};		//!< return an iterator to the quartet_t s stored at this locus.
+	std::vector <quartet_t>::const_iterator end(void) const {return sample_.end();};	//!< return an iterator to the quartet_t s stored at this locus.
 
-	//ostream& operator<<(ostream& output, const Point& p);
+	ostream& operator<<(ostream& output, const locus& l);
+	istream& operator>>(istream& input, locus& l);
 };
 
 #endif
