@@ -11,11 +11,21 @@
 
 <body style="background: white; font-family: Helvetica">
 
-<h1>Hello SyntaxHighlighter</h1>
+<h1>Accessing the database</h1>
 <pre class="brush: js;">
-function helloSyntaxHighlighter()
+#include locus.h
+#include typedefs.h
+
+int main(int argc, char* [] argv)
 {
-	return "hi!";
+	uint64_t cov;	// an unisigned 64 bit integer
+	id1_t sites;	// id1_t specifies
+	for (Locus locus; std::cin;) {
+		std::cin >> locus;
+		cov+=locus.get_cov();
+	}
+	std::cout << cov;
+	return 0;
 }
 </pre>
 
