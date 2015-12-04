@@ -911,9 +911,16 @@ std::string profile::getids(void)
 	return str;
 };
 
+void pad_string(std::string &str, const size_t x)
+{
+	if(x > str.size() ) str.append(x-str.size(), ' ');
+}
+
 std::string profile::getids(const Locus &site)
 {
-	std::string str=decodeid0(site.id0)+'\t'+decodeid1(site.id1);
+	std::string str=decodeid0(site.id0);
+	pad_string(str, 14);
+	str+='\t'+decodeid1(site.id1);
 	for (unsigned int x=0; x<site.extraid.size(); ++x){
 		str+='\t'+decodeextraid(site.extraid[x], x);
 	};

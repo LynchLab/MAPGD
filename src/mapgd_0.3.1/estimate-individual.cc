@@ -218,8 +218,10 @@ int estimateInd(int argc, char *argv[])
 				break;
 			}	
 	} else if (ldformat) {
-		std::string id1="id1\t";
-		*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\terror\tpoly_ll\thwe_ll\t" << std::endl;
+		std::string id1="id1           ";
+		*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\terror\tpoly_ll\thwe_ll\t";
+		for (size_t y=0;y<pro.size(); ++y) *out << pro.get_sample_name(y) << '\t';
+		*out << std::endl;
 	}
 	pro.maskall();							//Turn off the ability to read data from all clones by default. 
 
