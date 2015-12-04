@@ -2,17 +2,23 @@
 #define QUARTET_H_
 
 #include "../typedef.h"
+#include <iostream>
 #include <cstring> 
 
 /// A structure that stores quartet information.
 typedef struct quartet {
 	count_t base[5];	//!< The count of the number of occurnaces of bases. 
 				//What nucleotieds this cout represents is stored at the locus. 
+
 	bool masked;		//!< A flag that indicates whether or not functions should use information from this quartet_t.
 				// Functions may ignore this flag if such behavior is desired. 
 	
+	char delim;		//!< A flag that indicates whether or not functions should use information from this quartet_t.
+				// Functions may ignore this flag if such behavior is desired. 
+
 	/// The default constructor unmasks the site and zeros the base counts.
-	quartet (){		
+	quartet (){
+		delim='\\';		
 		masked=false;	
 		memset(base, 0, 5*sizeof(count_t) );
 	}
@@ -53,5 +59,8 @@ void mask(quartet_t&);
 
 /// sets masked to false
 void unmask(quartet_t&);
+
+std::ostream& operator<<(std::ostream& output, const quartet& q);
+std::istream& operator>>(std::istream& input, quartet& q);
 
 #endif

@@ -13,6 +13,7 @@ class locus {
 private:	
 	gt_t sorted_[5];								//!< an array to allow sorted access to quartets.
 	std::vector <quartet_t> sample_;						//!< the five bases A/C/G/T/N;
+	char delim;
 public:
 	size_t quartet_size(void) const {return sample_.size();};				//!< returns the number of quartet_t stored at locus.
 
@@ -64,8 +65,11 @@ public:
 	std::vector <quartet_t>::const_iterator begin(void) const {return sample_.begin();};	//!< return an iterator to the quartet_t s stored at this locus.
 	std::vector <quartet_t>::const_iterator end(void) const {return sample_.end();};	//!< return an iterator to the quartet_t s stored at this locus.
 
-	ostream& operator<<(ostream& output, const locus& l);
-	istream& operator>>(istream& input, locus& l);
+	friend std::ostream& operator<<(std::ostream& output, const locus& l);
+	friend std::istream& operator>>(std::istream& input, locus& l);
 };
+
+std::ostream& operator<<(std::ostream& output, const locus& l);
+std::istream& operator>>(std::istream& input, locus& l);
 
 #endif

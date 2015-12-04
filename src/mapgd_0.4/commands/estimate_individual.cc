@@ -89,7 +89,7 @@ int estimate_individual(int argc, char *argv[])
 	std::string infile="";
 	std::string outfile="";
 
-	table in, out, env;
+//	table in, out, env;
 
 	bool verbose=false;
 	bool quite=false;

@@ -9,6 +9,7 @@ locus::locus(void){
 ///This form of the constructor initalizes locus with size sample_s.
 locus::locus(const size_t &size){
 	sample_.assign(size, quartet() );
+	delim='\t';
 	memcpy(sorted_, locus::defaultorder, sizeof(gt_t)*5);		
 }
 
@@ -201,4 +202,20 @@ void locus::resize(const size_t &c)
 void locus::mask_low_cov( const count_t &dp )
 { 
 	for (size_t s=0; s<sample_.size();++s) sample_[s].masked=(count(sample_[s])<dp);
+}
+
+
+std::ostream& operator<<(std::ostream& output, const locus& l)
+{
+	for (size_t s=0; s<l.sample_.size(); ++s) output << l.sample_[s] << l.delim;
+	return output;
+}
+
+std::istream& operator>>(std::istream& input, locus& l)
+{
+	for (size_t s=0; s<l.sample_.size(); ++s) {
+		input >> l.sample_[s];
+		input.ignore(1, l.delim);
+	}
+	return input;
 }
