@@ -179,9 +179,9 @@ while(True):
 									next_site=line[site]
 								break
 					else:
-						COV_SUM+=int(line[pop_coverage])
+						COV_SUM+=float(line[pop_coverage])
 						COV_N+=1
-						SUM_N+=int(line[N_included])
+						SUM_N+=float(line[N_included])
 						AVG_N=float(SUM_N)/float(COV_N) 
 						print round(float(COV_SUM)/float(COV_N), 2), round(float(COV_SUM)/float(COV_N)/AVG_N, 2)
 	while (True):
