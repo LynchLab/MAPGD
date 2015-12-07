@@ -9,8 +9,10 @@ parser.add_argument('-p', metavar='--maf', type=float, default=0.0,
                    help='minimum allele frequency for analysis')
 parser.add_argument('-P', metavar='--max-maf', type=float, default=0.5, 
                    help='maximum allele frequency for analysis')
-parser.add_argument('-z', metavar='--zmin', type=float, default=0.0,
+parser.add_argument('-z', metavar='--zmin', type=float, default=-sys.float_info.max,
                    help='minimum z-score for a site')
+parser.add_argument('-N', metavar='--nmax', type=float, default=0.0,
+                   help='maximum number of excluded sites')
 parser.add_argument('-l', metavar='--minll', type=float, default=0.0,
                    help='minimum ll-score for a site (analogous to minQ)')
 parser.add_argument('-c', metavar='--cmin', type=int, default=0,
@@ -64,6 +66,9 @@ best_h=14
 pol_llstat=15
 HWE_llstat=16
 Z_score=17
+N_included=19
+N_excluded=20
+
 
 atoi={'A':0, 'C':1, 'G':2, 'T':3, '.':5}
 
@@ -142,6 +147,7 @@ name={}
 
 COV_SUM=0
 COV_N=0
+SUM_N=0
 
 HEADER=True
 
@@ -165,15 +171,19 @@ while(True):
 			if float(line[pol_llstat])>=args.l:
 				if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
 					if not (COVERAGE):
-						if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
-							this=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
-							next_scaffold=line[scaffold]
-							next_site=line[site]
-							break
+						if float(line[N_excluded])<=args.nmax:
+							if float(line[Z_score])>=args.zmin:
+								if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
+									this=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
+									next_scaffold=line[scaffold]
+									next_site=line[site]
+								break
 					else:
 						COV_SUM+=int(line[pop_coverage])
 						COV_N+=1
-						print float(COV_SUM)/float(COV_N)
+						SUM_N+=int(line[N_included])
+						AVG_N=float(SUM_N)/float(COV_N) 
+						print round(float(COV_SUM)/float(COV_N), 2), round(float(COV_SUM)/float(COV_N)/AVG_N, 2)
 	while (True):
 		line=proFile.readline().split()
 		if line[0][0]=="@":

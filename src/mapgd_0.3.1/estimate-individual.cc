@@ -260,13 +260,8 @@ int estimateInd(int argc, char *argv[])
 				}
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
-			//		for (count_t x=0; x<ind.size(); x++){
-				//		std::cout << ind[x] << ",";
-					//}
 					buffer_site[c].maskall();
 					buffer_site[c].unmask(ind);
-					//std::cout << "::" << buffer_site[c].maskedcount() << std::endl;
-					//} 
 
 					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
 					#ifdef PRAGMA
@@ -275,8 +270,8 @@ int estimateInd(int argc, char *argv[])
 					if (2*(buffer_mle[c].ll-buffer_mle[c].monoll)>=22){
 						for (size_t i=0; i<sum_gofs.size(); i++){
 							//if (?){
-								sum_gofs[i]+=gofs[i];
-								if (gofs[i]!=0) gofs_read[i]++;
+							sum_gofs[i]+=gofs[i];
+							if (gofs[i]!=0) gofs_read[i]++;
 							//}
 						}
 					}
