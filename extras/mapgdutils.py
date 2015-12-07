@@ -182,8 +182,9 @@ while(True):
 						COV_SUM+=float(line[pop_coverage])
 						COV_N+=1
 						SUM_N+=float(line[N_included])
-						AVG_N=float(SUM_N)/float(COV_N) 
-						print round(float(COV_SUM)/float(COV_N), 2), round(float(COV_SUM)/float(COV_N)/AVG_N, 2)
+						if COV_N>0 and SUM_N>0:
+							AVG_N=float(SUM_N)/float(COV_N) 
+							print round(float(COV_SUM)/float(COV_N), 2), round(float(COV_SUM)/float(COV_N)/AVG_N, 2)
 	while (True):
 		line=proFile.readline().split()
 		if line[0][0]=="@":
