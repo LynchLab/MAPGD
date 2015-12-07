@@ -10,7 +10,7 @@ CXX=g++
 
 
 #>! TODO ORGANIZE THESE!!
-OBJS=	../datatypes/row.o \
+OBJS=	../datatypes/pipe.o \
 	../datatypes/formats.o \
 	../datatypes/key.o \
 	../datatypes/base_keys.o \

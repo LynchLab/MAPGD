@@ -67,6 +67,10 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& output, const locus& l);
 	friend std::istream& operator>>(std::istream& input, locus& l);
+
+	/*IO*/
+	write(std::ostream&);
+	read(std::istream&);
 };
 
 std::ostream& operator<<(std::ostream& output, const locus& l);
