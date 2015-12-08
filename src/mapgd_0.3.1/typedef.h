@@ -10,7 +10,7 @@
 #include <cstdlib>		//Becuse why not?
 #include <math.h>		//Included for float_t.
 
-typedef uint8_t count_t;	//Should be used to specify deapth of coverage only.  
+typedef uint16_t count_t;	//Should be used to specify deapth of coverage only.  
 				//Once it is fixed it should be changed ot uint8_t or uint16_t.
 
 typedef long double real_t;	//most ?
