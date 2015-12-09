@@ -177,7 +177,7 @@ while(True):
 									this=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
 									next_scaffold=line[scaffold]
 									next_site=line[site]
-								break
+									break
 					else:
 						COV_SUM+=float(line[pop_coverage])
 						COV_N+=1
