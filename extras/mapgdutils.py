@@ -171,8 +171,8 @@ while(True):
 			if float(line[pol_llstat])>=args.l:
 				if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
 					if not (COVERAGE):
-						if float(line[N_excluded])<=args.nmax:
-							if float(line[Z_score])>=args.zmin:
+						if float(line[N_excluded])<=args.N:
+							if float(line[Z_score])>=args.z:
 								if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
 									this=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
 									next_scaffold=line[scaffold]

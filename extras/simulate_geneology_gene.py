@@ -4,9 +4,9 @@ import os
 import math
 
 Pfreq=0.85
-SIZE=5
+SIZE=100
 bp=1
-GEN=5
+GEN=50
 
 gdir="graphs/"
 
@@ -167,6 +167,7 @@ A=individual("C", E, F[-1][3])
 
 count = [[ [0,0,0] for x in range(3)] for y in range(SIZE*2+1)]
 
+quit()
 a=0
 
 LIM=10

@@ -6,18 +6,18 @@ import math
 Pfreq=0.2
 SIZE=80
 bp=1
-GEN=1
+GEN=SIZE*2
 
-File=open("sim/seq.gcf", 'w')
-File05=open("sim/seq05.gcf", 'w')
-File10=open("sim/seq10.gcf", 'w')
-File15=open("sim/seq15.gcf", 'w')
-File20=open("sim/seq20.gcf", 'w')
-File25=open("sim/seq25.gcf", 'w')
-File30=open("sim/seq30.gcf", 'w')
-File35=open("sim/seq35.gcf", 'w')
-File40=open("sim/seq40.gcf", 'w')
-File45=open("sim/seq45.gcf", 'w')
+#File=open("sim/seq.gcf", 'w')
+#File05=open("sim/seq05.gcf", 'w')
+#File10=open("sim/seq10.gcf", 'w')
+#File15=open("sim/seq15.gcf", 'w')
+#File20=open("sim/seq20.gcf", 'w')
+#File25=open("sim/seq25.gcf", 'w')
+#File30=open("sim/seq30.gcf", 'w')
+#File35=open("sim/seq35.gcf", 'w')
+#File40=open("sim/seq40.gcf", 'w')
+#File45=open("sim/seq45.gcf", 'w')
 
 def seq(File, P, e, F, N):
 	global File2
@@ -158,12 +158,14 @@ for y in range(1, GEN):
 			if x==SIZE-1 :
 				w=SIZE-1
 			
-		#if y==GEN-1:
-		#	z=random.randint(0, SIZE-1)
-		#	w=random.randint(0, SIZE-1)
+		if y==GEN-1:
+			z=random.randint(0, SIZE-1)
+			w=random.randint(0, SIZE-1)
 		#	z=(x+2)%50
 		#	w=(x+2)%50+50
 		#	ZZ=10000
+		z=random.randint(0, SIZE-1)
+		w=random.randint(0, SIZE-1)
 		F[y].append(individual("F", F[y-1][z], F[y-1][w]))
 		if y==1:
 			if ( not(F[0][z].labeled) ):
@@ -173,16 +175,17 @@ for y in range(1, GEN):
 				Q=float(get_freq(F[0]) )/float(2*SIZE)
 				F[0][w].labeled=True
 		F[y][x].labeled=True
-		digraph_head.append("F"+str(y-1)+"_"+str(z)+" -> F"+str(y)+"_"+str(x)+";\n")
-		digraph_head.append("F"+str(y-1)+"_"+str(w)+" -> F"+str(y)+"_"+str(x)+";\n")
+		if (y>GEN-2):
+			digraph_head.append("F"+str(y-1)+"_"+str(z)+" -> F"+str(y)+"_"+str(x)+";\n")
+			digraph_head.append("F"+str(y-1)+"_"+str(w)+" -> F"+str(y)+"_"+str(x)+";\n")
 
-E=individual("E", F[-1][0], F[-1][1])
-B=individual("B", F[-1][2], F[-1][3])
+#E=individual("E", F[-1][0], F[-1][1])
+#B=individual("B", F[-1][2], F[-1][3])
 #H=individual("H", E, E)
-A=individual("A", E, B)
-D=individual("D", E, B)
-C=individual("C", A, A)
-G=individual("G", D, F[-1][4])
+#A=individual("A", E, B)
+#D=individual("D", E, B)
+#C=individual("C", A, A)
+#G=individual("G", D, F[-1][4])
 
 #SPEC=[E, B, A, D, C, G]
 SPEC=[]
@@ -191,10 +194,10 @@ count = [[ [0,0,0] for x in range(3)] for y in range(SIZE*2+1)]
 
 a=0
 
-LIM=50000
+LIM=10
 
 while a<LIM:
-	if a%1000==0:
+	if a%100==0:
 		print a
 
 	for y in range(0, GEN):
@@ -226,39 +229,40 @@ while a<LIM:
 #	E.Den[Q]+=1.
 #	E.Num[Q]=E.Num[Q]*(E.Den[Q]-1.)/E.Den[Q]+f(E.gen, float(Q)/float(SIZE*2) )*1./E.Den[Q]
 
-	count[get_freq(F[-1])][C.gen][D.gen]+=1
+#	count[get_freq(F[-1])][C.gen][D.gen]+=1
 
-	Qf=min(float(Q)/float(SIZE*2), float(SIZE*2-Q)/float(SIZE*2) )
+#	Qf=min(float(Q)/float(SIZE*2), float(SIZE*2-Q)/float(SIZE*2) )
 
-	seq(File, Pfreq, 0.01, SPEC+F[-1], 50)
-	if (Qf == 0.05 ):
-		seq(File05, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
-	elif (Qf <=0.10 ):
-		seq(File10, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.15 ):
-		seq(File15, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.20 ):
-		seq(File20, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.25 ):
-		seq(File25, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.30 ):
-		seq(File30, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.35 ):
-		seq(File35, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.40 ):
-		seq(File40, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
-	elif (Qf <=0.45 ):
-		seq(File45, float(Q)/float(SIZE*2), 0.01, [C, D, E]+F[-1], 50)
+#	if (Qf > 0.05 and Qf< 0.45 ):
+#		seq(File, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	if (Qf == 0.05 ):
+#		seq(File05, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	elif (Qf <=0.10 ):
+#		seq(File10, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	elif (Qf <=0.15 ):
+#		seq(File15, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	elif (Qf <=0.20 ):
+#		seq(File20, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	elif (Qf <=0.25 ):
+#		seq(File25, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	elif (Qf <=0.30 ):
+#		seq(File30, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	elif (Qf <=0.35 ):
+#		seq(File35, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	elif (Qf <=0.40 ):
+#		seq(File40, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
+#	elif (Qf <=0.45 ):
+#		seq(File45, float(Q)/float(SIZE*2), 0.01, F[-1], 50)
 
 	if a==LIM-1:
 		for Q in range(1, SIZE):
 			digraph=open("graphs/temp"+format(Q, '03')+".gv", 'w')
 			digraph.write(''.join(digraph_head) )
-			for y in range(0, GEN):
+			for y in range(GEN-2, GEN):
 				for x in range(0, SIZE):
 					if F[y][x].labeled:
 						digraph.write("\"F"+str(y)+"_"+str(x)+"\" [label=\"\" fillcolor="+color(F[y][x].Num[Q])+", style=filled];\n" )
-			digraph.write("label=\"q="+"{0:.2f}".format(float(Q)/float(SIZE*2))+"\";\n")
+#			digraph.write("label=\"q="+"{0:.2f}".format(float(Q)/float(SIZE*2))+"\";\n")
 #			digraph.write("\"a\" [fillcolor="+color(C.Num[Q])+", style=filled];" )
 #			digraph.write("\"b\" [fillcolor="+color(D.Num[Q])+", style=filled];" )
 #			digraph.write("\"c\" [fillcolor="+color(E.Num[Q])+", style=filled];" )
@@ -271,6 +275,7 @@ while a<LIM:
 			digraph.write("}\n")
 			digraph.close()
 			os.system("dot -T png graphs/temp"+format(Q, '03')+".gv > graphs/file"+format(Q, '03')+".png ")
+quit()
 print C.Num
 print D.Num
 print E.Num
