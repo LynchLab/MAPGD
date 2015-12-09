@@ -187,12 +187,14 @@ while(True):
 							print round(float(COV_SUM)/float(COV_N), 2), round(float(COV_SUM)/float(COV_N)/AVG_N, 2)
 	while (True):
 		line=proFile.readline().split()
-		if line[0][0]=="@":
-			if line[0]=="@ID":
+		if (HEADER):
+			if line[0][0]=="@":
+				if line[0]=="@ID":
+					for x in range(4, len(line) ):
+						name[str(x-4)]=line[x]
+			if line[0]=="scaffold":
 				for x in range(4, len(line) ):
 					name[str(x-4)]=line[x]
-			continue
-		if (HEADER):
 			if(GENOTYPE):
 				out=[]
 				for x in range(3, len(line) ):
