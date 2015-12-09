@@ -193,8 +193,8 @@ while(True):
 					for x in range(4, len(line) ):
 						name[str(x-4)]=line[x]
 			if line[0]=="scaffold":
-				for x in range(4, len(line) ):
-					name[str(x-4)]=line[x]
+				for x in range(3, len(line) ):
+					name[str(x-3)]=line[x]
 			if(GENOTYPE):
 				out=[]
 				for x in range(3, len(line) ):
