@@ -192,17 +192,31 @@ while(True):
 				if line[0]=="@ID":
 					for x in range(4, len(line) ):
 						name[str(x-4)]=line[x]
+                                if line[0]=="@PR":
+                                        continue
+                                if line[0]=="@ID":
+                                        for x in range(4, len(line) ):
+                                                name[str(x-4)]=line[x]
+                                if(GENOTYPE):
+                                        out=[]
+                                        for x in range(4, len(line) ):
+                                                out.append(name[str(x-4)]+"_MM")
+                                                out.append(name[str(x-4)]+"_Mm")
+                                                out.append(name[str(x-4)]+"_mm")
+                                                out.append(name[str(x-4)]+"_N")
+                                        print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
+
 			if line[0]=="scaffold":
 				for x in range(3, len(line) ):
 					name[str(x-3)]=line[x]
-			if(GENOTYPE):
-				out=[]
-				for x in range(3, len(line) ):
-					out.append(name[str(x-3)]+"_MM")
-					out.append(name[str(x-3)]+"_Mm")
-					out.append(name[str(x-3)]+"_mm")
-					out.append(name[str(x-3)]+"_N")
-				print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
+				if(GENOTYPE):
+					out=[]
+					for x in range(3, len(line) ):
+						out.append(name[str(x-3)]+"_MM")
+						out.append(name[str(x-3)]+"_Mm")
+						out.append(name[str(x-3)]+"_mm")
+						out.append(name[str(x-3)]+"_N")
+					print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
 			elif(HET or F):
 				out=[]
 				for x in range(3, len(line) ):
