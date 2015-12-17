@@ -189,9 +189,6 @@ while(True):
 		line=proFile.readline().split()
 		if (HEADER):
 			if line[0][0]=="@":
-				if line[0]=="@ID":
-					for x in range(4, len(line) ):
-						name[str(x-4)]=line[x]
                                 if line[0]=="@PR":
                                         continue
                                 if line[0]=="@ID":
