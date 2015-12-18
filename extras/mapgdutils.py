@@ -165,7 +165,7 @@ while(True):
 			if line[best_error]=="." or line[best_error]=="*" or line[best_error]=="NA":
 				continue
 		except:
-			print "could not parse line ", line
+			print "@"+sys.argv[0]+" error: could not parse line ", line
 			exit(0)
 		if float(line[best_error])<=args.e:
 			if float(line[pol_llstat])>=args.l:
