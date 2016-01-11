@@ -287,7 +287,7 @@ int estimateInd(int argc, char *argv[])
 				if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
 					*out << std::fixed << std::setprecision(4) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
 					if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
-					*out << std::fixed << std::setprecision(0) << buffer_mle[x].coverage << std::setprecision(4) << '\t' << buffer_mle[x].freq << '\t' << buffer_mle[x].error << '\t' << buffer_mle[x].monoll << '\t' << buffer_mle[x].hwell << buffer_site[x] << std::endl;
+					*out << std::fixed << std::setprecision(0) << buffer_mle[x].coverage << std::setprecision(4) << '\t' << buffer_mle[x].freq << '\t' << buffer_mle[x].error << '\t' << (buffer_mle[x].ll-buffer_mle[x].monoll)*2 << '\t' << (buffer_mle[x].ll-buffer_mle[x].hwell)*2 << buffer_site[x] << std::endl;
 				}
 			} else {
 				if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){

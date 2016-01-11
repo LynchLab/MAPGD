@@ -149,9 +149,9 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p){
 
 	while(it!=end){
 		if (!it->masked){
-			E0=logMM+lnMM_.lnprob_approx(it->base);
-			E1=logMm+lnMm_.lnprob_approx(it->base);
-			E2=logmm+lnmm_.lnprob_approx(it->base);
+			E0=logMM+lnMM_.lnprob(it->base);
+			E1=logMm+lnMm_.lnprob(it->base);
+			E2=logmm+lnmm_.lnprob(it->base);
 	
 			if(E0>E2){
 				if(E0>E1) sumll+=logl(expl(E1-E0)+expl(E2-E0)+1.)+E0;
@@ -179,9 +179,9 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 
 	float_t E[3];
 
-	E[0]=logMM+lnMM_.lnprob(quartet.base);
-	E[1]=logMm+lnMm_.lnprob(quartet.base);
-	E[2]=logmm+lnmm_.lnprob(quartet.base);
+	E[0]=logMM+lnMM_.lnprob_approx(quartet.base);
+	E[1]=logMm+lnMm_.lnprob_approx(quartet.base);
+	E[2]=logmm+lnmm_.lnprob_approx(quartet.base);
 
 	float_t ll;
 
@@ -255,6 +255,7 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 
 			if (V>0.001) {
 				Z=(O-E)/sqrt(V);
+				//std::cerr << E << "/sqrt("<< V << ")=" << Z << ", ";
 				(*gof)=Z;
 				Num+=Z;
 				Den+=1;

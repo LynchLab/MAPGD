@@ -313,6 +313,7 @@ FILE *outstream;
 
 int PopLD(int argc, char *argv[])
 {
+
 	/* All the variables that can be set from the command line */
 	/*
 
@@ -395,7 +396,7 @@ int PopLD(int argc, char *argv[])
 			string quartet_2[nsample+1];
 			int jg, kg, lg, mg;
 			int dist_sites, test_dis;
-				dist_sites = this_locus->bp - that_locus->?;
+				dist_sites = this_locus->? - that_locus->?;
 				if (this_locus->?-that_locus < ?) {
 					// printf("dist_sites: %d\n", dist_sites);
 					est[tg-sg-1] = estimate_D(num_pol_sites, sg, tg, N_i, mlNuc1.at(sg), mlNuc2.at(sg), mlNuc1.at(tg), mlNuc2.at(tg), best_Maf.at(sg), best_Maf.at(tg), best_error.at(sg), best_error.at(tg), nsample, mononuc_count_1, mononuc_count_2, cov1, cov2);

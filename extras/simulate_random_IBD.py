@@ -1,8 +1,22 @@
+#!/usr/bin/python
 import random
 import math
 import numpy
 import sys
 from scipy.stats import triang
+
+import argparse
+
+parser = argparse.ArgumentParser(description='Makes the files test.txt and test2.txt for IBD simulations.')
+parser.add_argument('-N', metavar='--number', type=int, default=5000,
+                   help='number of SNPs')
+parser.add_argument('-c', metavar='--cov', type=float, default=10,
+                   help='simulated deapth of coverage')
+parser.add_argument('-s', metavar='--sigma', type=float, default=0.0,
+                   help='simulated sampling error')
+args = parser.parse_args()
+
+
 
 def getMs (P, S):
 	FA, FC, r, sA, sC, z1, z2=S
@@ -76,10 +90,10 @@ for z in range (0, 11):
 
 skipped=0
 
-MAX=int(sys.argv[3])
-N1=float(sys.argv[1])
-N2=float(sys.argv[1])
-sigma=float(sys.argv[2])
+MAX=args.N
+N1=args.c
+N2=args.c
+sigma=args.s
 
 MINP=0.1
 MAXP=0.4
@@ -88,7 +102,6 @@ while ( not ( test(S) ) ):
 	S=[random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5 ]
 	for x in range(0, random.randint(0, 6) ):
 		S[Z[x]]=0
-S=0, 0, 0.25, 0, 0, 0, 0.25
 FC, FA, r, sC, sA, z1, z2=S
 for x in range(0, MAX):
 	P=0
@@ -193,5 +206,5 @@ for x in range(0, MAX):
 	File.write( '\t'.join(map(str, [-MM1+norm1, -Mm1+norm1, -mm1+norm1, N1, -MM2+norm2, -Mm2+norm2, -mm2+norm2, N2, P] ) )+'\n')
 	File2.write( '\t'.join(map(str, [-MM1+norm1, -Mm1+norm1, -mm1+norm1, N1, -MM2+norm2, -Mm2+norm2, -mm2+norm2, N2] ) )+'\n')
 File.close()
-
-print  FA, FC, r, sA, sC, z1, z2
+dig=4
+print  round(FA, dig), round(FC, dig), round(r, dig), round(sA, dig), round(sC, dig), round(z1, dig), round(z2, dig)
