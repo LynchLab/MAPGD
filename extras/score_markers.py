@@ -62,7 +62,7 @@ for x in range(0, 96):
 	Pulex.append(0)
 	Pulicaria.append(0)
 
-print sites.keys()
+#print sites.keys()
 
 for line in File:
 	line=line.split()

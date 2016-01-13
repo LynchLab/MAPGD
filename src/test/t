@@ -1,7 +1,0 @@
-id1		id2	ref	major	minor	cov	M	m	error	null_e	f	MM	Mm	mm	h	poly_ll	hwe_ll	gof	ef_chrm	N	N_cut	model_ll
-scaffold_name 	1	C	C	G	150	0.6000	0.4000	0.0060	0.3600	0.2778	0.4000	0.4000	0.2000	0.5333	169.9450	0.0675	-4.5142	10.0000	5	0	-27.5278
-@sample_1:0.5232
-@sample_2:-0.7434
-@sample_3:-4.3285
-@sample_4:-5.0805
-@sameple_5:-0.4648

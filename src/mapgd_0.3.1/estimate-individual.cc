@@ -55,7 +55,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
 		rexc=maximize_grid(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-//		rexc=maximize_newton(site, mle, model, gofs, MIN, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+	//	rexc=maximize_newton(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 	}
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
@@ -207,7 +207,7 @@ int estimateInd(int argc, char *argv[])
 
 	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
 	if (not (noheader) && not (ldformat) ){
-			std::string id1="id1\t";
+			std::string id1="id1           ";
 			switch (pro.get_columns()) {
 				case 5:
 				case 6:
@@ -219,7 +219,15 @@ int estimateInd(int argc, char *argv[])
 			}	
 	} else if (ldformat) {
 		std::string id1="id1           ";
-		*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\terror\tpoly_ll\thwe_ll";
+		switch (pro.get_columns()) {
+			case 5:
+			case 6:
+				*out << id1 << "\tid2\tmajor\tminor\tcov\tM\terror\tpoly_ll\thwe_ll";
+			break;
+			case 7:
+				*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\terror\tpoly_ll\thwe_ll";
+			break;
+		}
 		for (size_t y=0;y<pro.size(); ++y) *out << '\t' << pro.get_sample_name(y);
 		*out << std::endl;
 	}

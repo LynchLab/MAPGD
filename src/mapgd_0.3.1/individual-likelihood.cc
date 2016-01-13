@@ -1,5 +1,6 @@
 #include "individual-likelihood.h"
 #include <list>
+
 /* Written by Matthew Ackerman.*/
 
 /*calculates the 'effective number of chromosomes' in a sample. This number isn't used for anything right now.*/
@@ -95,8 +96,7 @@ count_t init_params(Locus &site, allele_stat &a, const float_t &minerr){
 	return 1;
 }
 
-
-count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const count_t &maxpitch){
+count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch){
 
 	float_t J[3][3];		//The Jacobian/Hessian.
         float_t iJ[3][3]; 		//Inverse of the Jacobian/Hessian.
@@ -109,10 +109,32 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
 	count_t iter=0;			//counts the number of iterations to let us know if we have a failure to converge.
 
-	if(a.error==0) a.error=0.005;
+	float_t MM=a.MM, Mm=a.Mm, mm=a.mm, p=a.freq, F=a.freq, E, q=1-a.freq;
+//	a.f=log( (1.+p/(1.-p) )/(a.f+p/(1-p) )-1.);
+//	a.f=log( (1.+(1.-p)/p )/(0.2+(1.-p)/p )-1.);
+//	MM=pow(p, 2)+p*q*F;
+//	Mm=2*p*q*(1-F);
+//	mm=pow(q, 2)+p*q*F;
 
-        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || isnan(R[0]) || isnan(R[1]) || isnan(R[2]) ) && iter<200){
+	a.freq=Mm;
+	a.f=MM/(MM+mm);
 
+
+	if (a.freq==1.) a.freq-=0.00001;
+	if (a.f==1.) a.f-=0.00001;
+	if (a.freq==0.) a.freq+=0.00001;
+	if (a.f==0.) a.f+=0.00001;
+	if (a.error==0.5) a.error-=0.00001;
+	if (a.error==0.0) a.error+=0.00001;
+	a.f=log(1./a.f-1.);
+	a.freq=log(1./a.freq-1.);
+	a.error=log(0.5/a.error-1.);
+
+	float_t deltalnL=10, maxlnL=DBL_MAX;
+
+        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || isnan(R[0]) || isnan(R[1]) || isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
+
+//		std::cerr << a.freq << ":" << a.f << ":" << a.error << std::endl;
 		++iter;
  
 		memset(J[0], 0, sizeof(float_t)*3);
@@ -138,10 +160,10 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
                         ++it;
                 };
+		deltalnL=(maxlnL-sumlnL);
+		maxlnL=sumlnL;
 /*		Check my matrix algebra.
 		
-		std::cout << "==\n";
-
 		J[0][0]=0; J[0][1]=3; J[0][2]=6;
 		J[1][0]=1; J[1][1]=4; J[1][2]=7;
 		J[2][0]=1; J[2][1]=5; J[2][2]=8;
@@ -175,49 +197,91 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
                 R[0]=(R[0]*iJ[0][0]+R[1]*iJ[0][1]+R[2]*iJ[0][2]);
                 R[1]=(R[0]*iJ[1][0]+R[1]*iJ[1][1]+R[2]*iJ[1][2]);
                 R[2]=(R[0]*iJ[2][0]+R[1]*iJ[2][1]+R[2]*iJ[2][2]);
-	
-	       	std::cout << iter <<" Pi= " << a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ": " << sumlnL << " : " << sizeof(float_t)  << " : "<< model.loglikelihood(site, a) << std::endl;
+
+
+
+		p=a.freq;
+		F=a.f;
+		E=a.error;
+
+	        a.error=0.5/(1.+exp(a.error) );
+	        a.freq=1./(1.+exp(a.freq) );
+	        a.f=1./(1.+exp(a.f) );
+
+	        a.MM=(1.-a.freq)*a.f;
+	        a.Mm=a.freq;
+	        a.mm=(1.-a.freq)*(1.-a.f);
+
+	        a.freq=a.MM+a.Mm/2.;
+	        a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
+
+	       	std::cerr << iter <<" Pi= " <<  a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << R[0]+R[1]+R[2] << ": lnL=" << sumlnL << " : lnL="<< model.loglikelihood(site, a) << std::endl;
+
+		a.f=F;
+		a.freq=p;
+		a.error=E;
 
 		//BOUNDS CHECKS.
-		/*
-		if (a.freq-R[0]>1.0) a.freq=1-(1-a.freq)/2.;
-                else if (a.freq-R[0]<0) a.freq/=2.0;
-		else a.freq-=R[0];
+		
+		float_t B= 5.1-float_t(iter)*0.025;
+//		std::cerr << "(" << B << ")" << std::endl;
 
-		if (a.error-R[1]>0.25) a.error=0.25-(0.25-a.error)/2.;
-                else if (a.error-R[1]<0) a.error/=2.0;
-		else a.error-=R[1];
+		if (fabs(R[0])>B){
+			if(R[0]>0) R[0]=B;
+			else R[0]=-B;
+		}
+		if (fabs(R[1])>B){
+			if(R[1]>0) R[1]=B;
+			else R[1]=-B;
+		}
+		if (fabs(R[2])>B){
+			if(R[2]>0) R[2]=B;
+			else R[2]=-B;
+		}
 
-		lim=-pow( (1-a.freq), 2)/(a.freq*(1-a.freq) );
-		if (a.f-R[2]>1.0) a.f=1-(1-a.f)/2.;
-                else if (a.f-R[2]<lim) a.f=lim+(lim-a.f)/2.;
-		else a.f-=R[2];*/
 		a.freq-=R[0];
 		a.error-=R[1];
 		a.f-=R[2];
+	
+/*		p=1./(1.+exp(a.freq) );
+		q=std::min(p, 1.-p);
+		F=2./(1+exp(a.f) )-1.;
+		if (F<-q/(1-q) ){
+			a.f=log(2./(-q/(1-q)+1.)-1.);
+		}*/
         };
 
-        a.MM=pow(a.freq,2)+a.f*(a.freq*(1-a.freq) );
-        a.Mm=2*(1-a.f)*(a.freq*(1-a.freq) );
-        a.mm=pow(1-a.freq,2)+a.f*(a.freq*(1-a.freq) );
+	a.error=0.5/(1.+exp(a.error) );
+	a.freq=1./(1.+exp(a.freq) );
+	a.f=1./(1.+exp(a.f) );
+
+        a.MM=(1.-a.freq)*a.f;
+        a.Mm=a.freq;
+        a.mm=(1.-a.freq)*(1.-a.f);
+
+	a.freq=a.MM+a.Mm/2.;
+	a.f=(a.freq*(1.-a.freq)-a.Mm )/(a.freq*(1-a.freq) );
+
 	a.coverage=site.getcoverage();
 
 	count_t excluded=0;
 
-	excluded=site.maskedcount();
+        excluded=site.maskedcount();
 	std::vector <float_t> temp_gofs(site.sample.size());
 	a.gof=model.goodness_of_fit(site, a, temp_gofs, maxgof);
+        a.efc=efc(site);
+
 	if (iter==200) {
 		std::cerr << "Failure to maximize " << iter << " " << a << "\n";
-		init_params(site, a, 0);
-		return maximize_grid(site, a, model, gofs, maxgof, maxpitch);
+//		init_params(site, a, 0);
+//		return maximize_grid(site, a, model, gofs, maxgof, maxpitch);
 	}
-	return 0;
 	if ( a.gof<maxgof) {
 		if (excluded==maxpitch){
 			for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
 			return excluded;
 		}
+                a.N-=1;
 		return maximize_newton(site, a, model, gofs, maxgof, maxpitch);
 	};
 	for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];

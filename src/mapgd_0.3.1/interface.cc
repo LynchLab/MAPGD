@@ -296,7 +296,7 @@ void printHelp(env_t env){
 	std::list <flag_t>::iterator flag=env.flags.begin();
 	std::list <flag_t>::iterator flag_end=env.flags.end();
 	while (flag!=flag_end){
-		if (strlen(flag->lopt)>6)
+		if (strlen(flag->lopt)>5)
 			printf("\t-%c\t--%s\t%s\n", flag->opt, flag->lopt, flag->umsg);
 		else
 			printf("\t-%c\t--%s\t\t%s\n", flag->opt, flag->lopt, flag->umsg);
