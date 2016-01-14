@@ -13,6 +13,6 @@
 #include "estimate-fst.h"
 #include "relatedness.h"
 #include "proview.h"
-#include "linkage.h"
+#include "PopLD.h"
 
 #endif

@@ -35,7 +35,7 @@ float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,
 /// Estimates a number of summary statistics from short read sequences.
 /**
  */
-allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH){
+allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton){
 
 	allele_stat mle, temp;					//allele_stat is a basic structure that containes all the summary statistics for
 								//an allele. It gets passed around a lot, and a may turn it into a class that has
@@ -55,7 +55,8 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
 		rexc=maximize_grid(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
-	//	rexc=maximize_newton(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		if (newton) 
+		rexc=maximize_newton(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//the NR maximization
 	}
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
@@ -115,6 +116,8 @@ int estimateInd(int argc, char *argv[])
 	bool ldformat=false;
 	bool quite=false;
 	bool noheader=false;
+	bool newton=false;
+
 	float_t EMLMIN=0.001;
 	count_t MIN=4;
 	float_t A=0.00;
@@ -150,6 +153,7 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
 	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
+	env.flag(	'n',"newton", 	&newton,	&flag_set, 	"takes no argument", "use newton-raphson likelihood maximization (slow but accurate).");
 	env.flag(	'L',"ldformat", &ldformat,	&flag_set, 	"takes no argument", "makes output compatible with popld command.");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
@@ -184,7 +188,7 @@ int estimateInd(int argc, char *argv[])
 
 	//else out.open('w', CSV);				//Iff no filename has been set for outfile, pgdfile prints to stdout.
 
-	count_t outc=6;
+	count_t outc=7;
 	char cdel='\t';
 	char qdel='/';
 	bool binary=false;
@@ -271,7 +275,7 @@ int estimateInd(int argc, char *argv[])
 					buffer_site[c].maskall();
 					buffer_site[c].unmask(ind);
 
-					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
+					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton);
 					#ifdef PRAGMA
 					#pragma omp critical
 					#endif

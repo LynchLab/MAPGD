@@ -116,19 +116,32 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 //	Mm=2*p*q*(1-F);
 //	mm=pow(q, 2)+p*q*F;
 
+	if (mm==0){
+		if (Mm>MM) {mm+=0.01; Mm-=0.01;}
+		else {mm+=0.01; MM-=0.01;}
+	};
+	if (Mm==0){
+		if (mm>MM) {Mm+=0.01; mm-=0.01;}
+		else {Mm+=0.01; MM-=0.01;}
+	};
+	if (MM==0){
+		if (Mm>mm) {MM+=0.01; Mm-=0.01;}
+		else {MM+=0.01; mm-=0.01;}
+	};
+
 	a.freq=Mm;
 	a.f=MM/(MM+mm);
 
 
-	if (a.freq==1.) a.freq-=0.00001;
-	if (a.f==1.) a.f-=0.00001;
-	if (a.freq==0.) a.freq+=0.00001;
-	if (a.f==0.) a.f+=0.00001;
-	if (a.error==0.5) a.error-=0.00001;
-	if (a.error==0.0) a.error+=0.00001;
+	if (a.freq==1.) a.freq-=0.000001;
+	if (a.f==1.) a.f-=0.000001;
+	if (a.freq==0.) a.freq+=0.000001;
+	if (a.f==0.) a.f+=0.000001;
+	if (a.error==0.5) a.error-=0.0000000001;
+	if (a.error==0.0) a.error+=0.0000000001;
 	a.f=log(1./a.f-1.);
 	a.freq=log(1./a.freq-1.);
-	a.error=log(0.5/a.error-1.);
+	a.error=log(0.75/a.error-1.);
 
 	float_t deltalnL=10, maxlnL=DBL_MAX;
 
@@ -160,7 +173,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
                         ++it;
                 };
-		deltalnL=(maxlnL-sumlnL);
+		deltalnL=(maxlnL-sumlnL)+1;
 		maxlnL=sumlnL;
 /*		Check my matrix algebra.
 		
@@ -204,7 +217,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		F=a.f;
 		E=a.error;
 
-	        a.error=0.5/(1.+exp(a.error) );
+	        a.error=0.75/(1.+exp(a.error) );
 	        a.freq=1./(1.+exp(a.freq) );
 	        a.f=1./(1.+exp(a.f) );
 
@@ -215,6 +228,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 	        a.freq=a.MM+a.Mm/2.;
 	        a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
 
+	       	std::cerr << "P:" << p << ", " << F << ", " << E << std::endl;
 	       	std::cerr << iter <<" Pi= " <<  a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << R[0]+R[1]+R[2] << ": lnL=" << sumlnL << " : lnL="<< model.loglikelihood(site, a) << std::endl;
 
 		a.f=F;
@@ -223,10 +237,11 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
 		//BOUNDS CHECKS.
 		
-		float_t B= 5.1-float_t(iter)*0.025;
+		float_t B= 5.1-float_t(iter)*0.015;
 //		std::cerr << "(" << B << ")" << std::endl;
+//	       	std::cerr << "R:" << R[0] << ", " << R[1] << ", " << R[2] << std::endl;
 
-		if (fabs(R[0])>B){
+/*		if (fabs(R[0])>B){
 			if(R[0]>0) R[0]=B;
 			else R[0]=-B;
 		}
@@ -237,7 +252,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		if (fabs(R[2])>B){
 			if(R[2]>0) R[2]=B;
 			else R[2]=-B;
-		}
+		}*/
 
 		a.freq-=R[0];
 		a.error-=R[1];
@@ -251,7 +266,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		}*/
         };
 
-	a.error=0.5/(1.+exp(a.error) );
+	a.error=0.75/(1.+exp(a.error) );
 	a.freq=1./(1.+exp(a.freq) );
 	a.f=1./(1.+exp(a.f) );
 
@@ -260,7 +275,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
         a.mm=(1.-a.freq)*(1.-a.f);
 
 	a.freq=a.MM+a.Mm/2.;
-	a.f=(a.freq*(1.-a.freq)-a.Mm )/(a.freq*(1-a.freq) );
+	a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
 
 	a.coverage=site.getcoverage();
 
@@ -407,6 +422,7 @@ count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::ve
 	//These are both undefined...
 	a.f=0;
 	a.gof=0;		
+	float_t excluded=site.maskedcount();
 
-	return 0;
+	return excluded;
 }

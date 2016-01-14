@@ -31,7 +31,7 @@ lnch=sympy.Symbol('lnch');
 #H01=2.*h*(1.-h)*(1.-F)*( ( ( (1.- e)/2.+( e/6.) )**(M+m) )*( ( e/3.)**(E) ) )#-0.00001
 #H11=( (1.-h)**2.+h*(1.-h)*F)*( ( (1.-e)**m )*( (e/3.)**(M+E) ) )#-0.00001 
 
-pe=0.5/(1+sympy.exp(e) )
+pe=0.75/(1+sympy.exp(e) )
 
 H=1./(1.+sympy.exp(h) )
 P=1./(1.+sympy.exp(F) )
@@ -40,12 +40,13 @@ P=1./(1.+sympy.exp(F) )
 #pF=-h/(1-h)+(1+h/(1-h) )/(1+sympy.exp(F) )
 #pF=-(1-h)/(h)+(1+(1-h)/(h) )/(1+sympy.exp(F) )
 
-H00=(1-H)*P*( ( (1.-pe)**M)*((pe/3.)**(m+E) ) ) 
+H00=(1-H)*P*( ( (1.-pe)**M)*((pe/3.)**(m+E) ) )
 H01=H*( ( ( (1.-pe)/2.+(pe/6.) )**(M+m) )*( (pe/3.)**(E) ) )#-0.00001
 H11=(1-H)*(1-P)*( ( (1.-pe)**m )*( (pe/3.)**(M+E) ) )#-0.00001 
 
 #The log likelihood equation
-lnL=sympy.log( H00+H01+H11 )
+lnL=sympy.log( H00+H01+H11 )-(e**2+h**2+F**2)/100000000.0
+#lnL=-e**2-h**2-F**2
 
 system_eq=[]
 

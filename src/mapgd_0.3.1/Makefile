@@ -33,7 +33,7 @@ OBJS=	mapgd.o \
 	stream-tools.o \
 	models.o \
 	estimate-fst.o \
-	linkage.o \
+	PopLD.o \
 	relatedness.o \
 	file-index.o
 
