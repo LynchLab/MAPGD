@@ -116,6 +116,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 //	Mm=2*p*q*(1-F);
 //	mm=pow(q, 2)+p*q*F;
 
+/*
 	if (mm==0){
 		if (Mm>MM) {mm+=0.01; Mm-=0.01;}
 		else {mm+=0.01; MM-=0.01;}
@@ -127,7 +128,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 	if (MM==0){
 		if (Mm>mm) {MM+=0.01; Mm-=0.01;}
 		else {MM+=0.01; mm-=0.01;}
-	};
+	};*/
 
 	a.freq=Mm;
 	a.f=MM/(MM+mm);
@@ -241,7 +242,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 //		std::cerr << "(" << B << ")" << std::endl;
 //	       	std::cerr << "R:" << R[0] << ", " << R[1] << ", " << R[2] << std::endl;
 
-/*		if (fabs(R[0])>B){
+		if (fabs(R[0])>B){
 			if(R[0]>0) R[0]=B;
 			else R[0]=-B;
 		}
@@ -252,7 +253,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		if (fabs(R[2])>B){
 			if(R[2]>0) R[2]=B;
 			else R[2]=-B;
-		}*/
+		}
 
 		a.freq-=R[0];
 		a.error-=R[1];

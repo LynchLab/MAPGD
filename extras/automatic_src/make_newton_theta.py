@@ -45,7 +45,7 @@ H01=H*( ( ( (1.-pe)/2.+(pe/6.) )**(M+m) )*( (pe/3.)**(E) ) )#-0.00001
 H11=(1-H)*(1-P)*( ( (1.-pe)**m )*( (pe/3.)**(M+E) ) )#-0.00001 
 
 #The log likelihood equation
-lnL=sympy.log( H00+H01+H11 )-(e**2+h**2+F**2)/100000000.0
+lnL=sympy.log( H00+H01+H11 )#-(e**2+h**2+F**2)/100000000000.0
 #lnL=-e**2-h**2-F**2
 
 system_eq=[]
@@ -75,7 +75,7 @@ for x in range(0, 3):
 		print "\tconst float_t m=q.base[a.minor];"
 		print "\tconst float_t E=q.base[a.e1]+q.base[a.e2];"
 		sys.stdout.write("\treturn ")
-		print_ccode(sympy.diff(system_eq[x], params[y]) )
+		print_ccode(sympy.diff(system_eq[x], params[y]))
 		print ";\n}\n"
 print "inline float_t lnL_NR (const quartet_t &q, const allele_stat &a) {"
 print "\tconst float_t M=q.base[a.major];"
