@@ -1,4 +1,4 @@
-﻿##MAPGD version 0.3
+﻿##MAPGD version 0.4
 
 [<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip) [(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
 
