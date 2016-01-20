@@ -1,4 +1,6 @@
-﻿##MAPGD version 0.4
+﻿##This readme is being update and does not currently accurately describe the program.
+
+##MAPGD version 0.4
 
 [<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip) [(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
 
@@ -18,19 +20,11 @@
 #####[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
-<b> VERSION 0.4 </b>
-
-Development of version 0.4 is nearly complete. Version 0.4 will move over to using an SQL database for storing data, which should result in performance increases when processing large files. Development of the 0.3 version has been stopped, although I will still perform major bug fixes if anyone tells me about bugs. 
-
 <h3> Introduction </h3>
 
 MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data, and provides minimum MSE estimators of these statistics on low coverage sequence. Although other tools, such as vcftools, give similar allele frequency estimates with less computational investment when coverage is high, other programs continue exhibt poor performance on IBD estiamtes eveb at high coverage.
 
 <h5> FAQ </h5>
-
-<b> Why don't you use a vcf format? </b>
-
-We intend to implement read/writing in the vcf/bcf format as quickly as possible to increase the compatibility of our program with existing tools. 
 
 <b> Why don't you provide information on indels? </b>
 
