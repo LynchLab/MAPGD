@@ -50,7 +50,7 @@ fi
 msg="    "
 
 #commands 
-commands=("proview ep cp ei")  
+commands=("proview pool allele")  
 
 a="proview"
 
@@ -64,41 +64,40 @@ testa
 
 done
 
-a="ei"
+a="allele"
 
 for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$gcfheader))
-echo -n "cat $format | $mapgd $a > $a.out					"
+echo -n "cat $format | $mapgd $a > $a.out				"
 timeout 30s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
 done
 
-a="ep"
+a="pool"
 
 for format in ${formats[@]}; do
 msg="$format"
 rm -f $a.out
 size=$(($long+$vcfheader))
-echo -n "cat $format | $mapgd $a > $a.out					"
+echo -n "cat $format | $mapgd $a > $a.out				"
 timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
 testa
 
 done
 
-a="cp"
-
-for format in ${formats[@]}; do
-msg="$format"
-rm -f $a.out
-size=$(($long+$vcfheader))
-echo -n "cat $format | $mapgd $a > $a.out					"
-timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
-testa
-
-done
+#a="cp"
+#for format in ${formats[@]}; do
+#msg="$format"
+#rm -f $a.out
+#size=$(($long+$vcfheader))
+#echo -n "cat $format | $mapgd $a > $a.out					"
+#timeout 10s bash -c "cat $format | $mapgd $a > $a.out"
+#testa
+#
+#done
 
 msg="-i  "
 rm -f $a.out
@@ -131,21 +130,21 @@ testa
 msg="-c 5"
 size=$(($short+$proheader+1))
 rm -f $a.out
-echo -n "$mapgd proview -i $smp -c 5 -o $a.out				"
+echo -n "$mapgd proview -i $smp -c 5 -o $a.out			"
 timeout 5s $mapgd proview -i $smp -c 5 -o $a.out
 testa
 
 msg="-c 6"
 size=$(($short+$proheader))
 rm -f $a.out
-echo -n "$mapgd proview -i $smp -c 6 -o $a.out				"
+echo -n "$mapgd proview -i $smp -c 6 -o $a.out			"
 timeout 5s $mapgd proview -i $smp -c 6 -o $a.out
 testa
 
 msg="-c 7"
 size=$(($short+$proheader))
 rm -f $a.out
-echo -n "$mapgd proview -i $smp -c 7 -o $a.out				"
+echo -n "$mapgd proview -i $smp -c 7 -o $a.out			"
 timeout 5s $mapgd proview -i $smp -c 7 > $a.out
 testa
 
@@ -159,76 +158,85 @@ testa
 
 msg="	"
 
-a="ep"
+a="pool"
 size=$(($short+$vcfheader))
 rm -f $a.out
-echo -n "$mapgd ep -i $smp -o $a.out					"
-timeout 5s $mapgd ep -i $smp -o $a.out
+echo -n "$mapgd $a -i $smp -o $a.out				"
+timeout 5s $mapgd $a -i $smp -o $a.out
 testa
 
-a="cp"
-size=$(($short+$vcfheader))
-rm -f $a.out
-echo -n "$mapgd cp -i $smp -o $a.out					"
-timeout 5s $mapgd cp -i $smp -o $a.out
-testa
+#a="cp"
+#size=$(($short+$vcfheader))
+#rm -f $a.out
+#echo -n "$mapgd cp -i $smp -o $a.out					"
+#timeout 5s $mapgd cp -i $smp -o $a.out
+#testa
 
-a="ei"
+a="allele"
 msg="-p "
 size=$(($short+$proheader))
 rm -f $a.out
-echo -n "$mapgd ei -i $smp -p $a.out -o temp.out			"
-timeout 10s $mapgd ei -i $smp -p $a.out -o temp.out
+echo -n "$mapgd $a -i $smp -p $a.out -o temp.out		"
+timeout 10s $mapgd $a -i $smp -p $a.out -o temp.out
 testa
 rm -f temp.out
 
 msg="	"
-a="ei"
+a="allele"
 size=$(($short+$gcfheader))
 rm -f $a.out
-echo -n "$mapgd ei -i $smp -o $a.out					"
-timeout 10s $mapgd ei -i $smp -o $a.out
+echo -n "$mapgd $a -i $smp -o $a.out				"
+timeout 10s $mapgd $a -i $smp -o $a.out
 testa
 
 msg="merge "
 a="proview"
 size=$(($long+$proheader))
 rm -f $a.out
-echo -n "$mapgd proview -i $smp $lmp > $a.out		"
-timeout 5s $mapgd proview -i $smp $lmp > $a.out 
+echo -n "$mapgd $a -i $smp $lmp > $a.out		"
+timeout 5s $mapgd $a -i $smp $lmp > $a.out 
 testa
 
 msg="error catching"
 a="proview"
 size=9
 rm -f $a.out
-echo -n "$mapgd proview -i $mp2 $mp1 > $a.out		"
-timeout 5s $mapgd proview -i $mp2 $mp1 > $a.out 
+echo -n "$mapgd $a -i $mp2 $mp1 > $a.out		"
+timeout 5s $mapgd $a -i $mp2 $mp1 > $a.out 
 testa
 
 msg="merge -H"
 a="proview"
 size=33
 rm -f $a.out
-echo -n "$mapgd proview -i $mp2 $mp1 -H $header > $a.out		"
-timeout 5s $mapgd proview -i $mp2 $mp1 -H $header > $a.out 
-testa
-
-msg="popld"
-a="popld"
-size=33
-rm -f $a.out
-echo -n "$mapgd popld -i $ldf  > $a.out		"
-timeout 5s $mapgd popld -i $ldf > $a.out 
+echo -n "$mapgd $a -i $mp2 $mp1 -H $header > $a.out		"
+timeout 5s $mapgd $a -i $mp2 $mp1 -H $header > $a.out 
 testa
 
 msg="genotype"
 a="genotype"
 size=34
 rm -f $a.out
-echo -n "$mapgd genotype -i  > $a.out		"
-timeout 5s $genotype -i $mp2 $mp1 -H $header > $a.out 
+echo -n "$mapgd allele -i $mp1 | $mapgd $a > $a.out		"
+timeout 5s $mapgd allele $mp1 | $mapgd $a > $a.out
 testa
+
+msg="convert"
+a="convert"
+size=34
+rm -f $a.out
+echo -n "$mapgd $a -i  > $a.out		"
+timeout 5s $mapgd $a -i $mp2 $mp1 > $a.out 
+testa
+
+msg="linkage"
+a="linkage"
+size=33
+rm -f $a.out
+echo -n "$mapgd $a -i $ldf  > $a.out		"
+timeout 5s $mapgd $a -i $ldf > $a.out 
+testa
+
 
 
 

@@ -26,8 +26,6 @@ int main (int argc, char* argv[])
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "Prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "Prints the program version");
 
-	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "Prints data in the '.pro' file quartet format");
-	env.command(	' ',"pool",	&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");
 	env.command(	' ',"cp", 	&comparePooled, 		"an error occured while calling cp", "Compares allele frequencies between populations using pooled data");
 
 	env.command(	' ',"allele", 	&estimateInd,	 		"an error occured while calling ei", "Estimates allelel frequencies using individual data");
@@ -37,7 +35,9 @@ int main (int argc, char* argv[])
 //	env.command(	' ',"filter",	&filter,	 		"an error occured while calling filter", "Estimates linkage disequilibrium between loci.");
 //	env.command(	' ',"vcf",	&vcf,		 		"an error occured while calling vcf", "Convert output to vcf format.");
 
-//	env.command(	' ',"linkage", 	&PopLD,	 			"an error occured while calling fst", "Estimates linkage disequilibrium between loci");
+	env.command(	' ',"linkage", 	&PopLD,	 			"an error occured while calling fst", "Estimates linkage disequilibrium between loci");
+	env.command(	' ',"pool",	&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");
+	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "Prints data in the '.pro' file quartet format");
 
 //	env.command(	' ',"relatedness",&estimateRel,	 		"an error occured while calling er", "Estimates the pairwise relatedness of individuals");
 //	env.command(	' ',"calc", 	&calcInd,	 		"an error occured while calling calc", "print log likelihood of ...");

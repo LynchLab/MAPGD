@@ -1,5 +1,5 @@
-SUBDIRS=mapgd_0.3 interfaces
-VER=0.3.2
+SUBDIRS=mapgd_0.4 interfaces
+VER=0.4
 NAME=mapgd
 DEBIAN=0
 UBUNTU=1

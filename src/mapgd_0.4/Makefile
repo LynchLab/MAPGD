@@ -6,7 +6,7 @@ STD=-std=c++0x
 GLOBAL=/usr/local/bin
 LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
-VERSION=-D VERSION=\"0.4.0\"
+VERSION=-D VERSION=\"0.4\"
 CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fopenmp
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
@@ -32,12 +32,12 @@ OBJS=allele_stat.o \
 	pooled-likelihood.o \
 	proview.o \
 	pro-file.o \
+	PopLD.o \
 	quartet.o \
 	stream-tools.o \
 	readtable.o \
 	convert.o \
 	mapgd.o
-#	PopLD.o \
 
 all: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) 

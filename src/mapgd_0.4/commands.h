@@ -17,6 +17,6 @@
 #include "relatedness.h"
 #include "proview.h"
 #include "convert.h"
-//#include "PopLD.h"
+#include "PopLD.h"
 
 #endif
