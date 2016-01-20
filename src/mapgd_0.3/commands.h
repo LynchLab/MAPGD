@@ -7,12 +7,16 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
+#define PRAGMA
+//#define DEBUG
+
 #include "compare-pooled.h"
 #include "estimate-pooled.h"
 #include "estimate-individual.h"
 #include "estimate-fst.h"
 #include "relatedness.h"
 #include "proview.h"
-#include "PopLD.h"
+#include "convert.h"
+//#include "PopLD.h"
 
 #endif

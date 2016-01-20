@@ -198,8 +198,7 @@ size=rml.getsize(args.bcf[0])
 
 R=[]
 
-print "total sites, line A, min, max, line C, min, max, success, e, dll, fA, dll, fC, dll, r, dll, sAC, dll, sCA, dll, z1, dll, z2, dll, null_ll, fit_ll, max_P, time"
-#sys.stdout.flush()
+print "total sites, line X, min, max, line Y, min, max, success, e, dll, f_X, dll, f_Y, dll, r_XY, dll, gamma_XY, dll, gamma_YX, dll, delta, dll, Delta, dll, null_ll, best_ll, time"
 
 model=Model
 

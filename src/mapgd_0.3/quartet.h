@@ -12,12 +12,14 @@
 typedef struct quartet {
 	count_t base[5];	//!< The count of the number of occurnaces of bases. What nucleotieds this cout represents is stored at the Locus. 
 	bool masked;		//!< A flag that indicates whether or not functions should use information from this quartet_t. Functions may ignore this flag if such behavior is desired. 
+	char delim;
 	
 	/*! The default constructor unmaskeds the site and zeros the base counts.
 	 */
 	quartet (){		
 		masked=false;	
 		memset(base, 0, 5*sizeof(count_t) );
+		delim='\t';
 	}
 	
 	/*! This constructor explicitly sets the counts of A, C, G, T, and N and unmasked the site.
@@ -44,7 +46,7 @@ typedef struct quartet {
 		return quartet(base[0]+x.base[0], base[1]+x.base[1], base[2]+x.base[2], base[3]+x.base[3], base[4]+x.base[4]);
 	}
 
-	/*! This operator copies the array count_t to base. mask is left untouched.
+	/*! This operator copies the array count_t to base. Mask and delimiter is left untouched.
 	 */
 	quartet& operator=(const count_t& x) {
 		memset (base, x, 5*sizeof(count_t) );
@@ -63,7 +65,6 @@ void unmask(quartet_t&);
 
 //writet(stream, quartet_t&);
 //writet(stream, quartet_t&);
-
 
 std::ostream& operator<< (std::ostream& out, const quartet& q);
 #endif

@@ -119,7 +119,7 @@ int proview(int argc, char *argv[])
 	out.setsamples(samples);
 	out.setcolumns(outc);
 	out.set_delim_column(cdel);
-	out.set_delim_quartet(qdel);
+	out.set_delim_quartet('\t');
 
 	count_t z=0;
 

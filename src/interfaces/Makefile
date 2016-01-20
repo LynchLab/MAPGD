@@ -1,4 +1,4 @@
-SUBDIRS=pyer convert
+SUBDIRS=pyer
 VER=0.3.1
 NAME=mapgd
 

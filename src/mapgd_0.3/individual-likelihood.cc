@@ -201,6 +201,8 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		//THE DETERMINENT
 		det=J[0][0]*iJ[0][0]+J[0][1]*iJ[1][0]+J[0][2]*iJ[2][0];
 
+		std::cerr << det << std::endl;
+		//if (det<0.00001) det=0.00001;
 
 		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
 		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;
@@ -231,6 +233,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
 	       	std::cerr << "P:" << p << ", " << F << ", " << E << std::endl;
 	       	std::cerr << iter <<" Pi= " <<  a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << R[0]+R[1]+R[2] << ": lnL=" << sumlnL << " : lnL="<< model.loglikelihood(site, a) << std::endl;
+		std::cerr << ( pow(p,4)+pow(F,4)+pow(E,4) )/160000.0 << std::endl;
 
 		a.f=F;
 		a.freq=p;

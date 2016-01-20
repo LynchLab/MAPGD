@@ -113,9 +113,9 @@ def likelihoods_emperical(calls, major, minor, error, p, pMM, pMm, pmm):
         [E1, E2, E3]=sorted([MM, Mm, mm])
 	try:
 	        N=math.log(math.exp(E1)+math.exp(E2)+math.exp(E3) )
-		return [-MM+N, -Mm+N, -mm+N, n]
+		return [round(-MM+N, 2), round(-Mm+N, 2), round(-mm+N, 2), n]
 	except:
-		return [1/3,1/3,1/3, 0]
+		return [round(1/3, 2), round(1/3, 2), round(1/3, 2), 0]
 
 	
 name={}
@@ -155,6 +155,9 @@ HEADER=True
 while(True):
 	while(True):
 		line=mapFile.readline().split()
+		#print len(line)
+		if len(line)==0:
+			break
 		try:
 			if line[0]=="scaffold" or line[0]=="id1":
 				continue
@@ -167,14 +170,25 @@ while(True):
 		except:
 			print "@"+sys.argv[0]+" error: could not parse line ", line
 			exit(0)
-		if float(line[best_error])<=args.e:
-			if float(line[pol_llstat])>=args.l:
-				if float(line[best_q])<=args.P and float(line[best_q])>=args.p:
+		shift=0
+		if len(line)==21:
+			shift=-1
+			
+		#print line[best_error+shift]
+		if float(line[best_error+shift])<=args.e:
+		#	print "good error"
+			if float(line[pol_llstat+shift])>=args.l:
+		#		print "good ll"
+				if float(line[best_q+shift])<=args.P and float(line[best_q+shift])>=args.p:
+		#			print "good P"
 					if not (COVERAGE):
-						if float(line[N_excluded])<=args.N:
-							if float(line[Z_score])>=args.z:
-								if float(line[pop_coverage])>=args.c and float(line[pop_coverage])<=args.C:
-									this=[line[major_allele], line[minor_allele], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
+						if float(line[N_excluded+shift])<=args.N:
+		#					print "good N_exclude"
+							if float(line[Z_score+shift])>=args.z:
+		#						print "good Z"
+								if float(line[pop_coverage+shift])>=args.c and float(line[pop_coverage+shift])<=args.C:
+		#							print "good coverage"
+									this=[line[major_allele+shift], line[minor_allele+shift], line[best_p], line[best_error], line[best_MM], line[best_Mm], line[best_mm]]
 									next_scaffold=line[scaffold]
 									next_site=line[site]
 									break
@@ -187,6 +201,8 @@ while(True):
 							print round(float(COV_SUM)/float(COV_N), 2), round(float(COV_SUM)/float(COV_N)/AVG_N, 2)
 	while (True):
 		line=proFile.readline().split()
+		if len(line)==0:
+			quit(0)
 		if (HEADER):
 			if line[0][0]=="@":
                                 if line[0]=="@PR":
@@ -197,10 +213,10 @@ while(True):
                                 if(GENOTYPE):
                                         out=[]
                                         for x in range(4, len(line) ):
-                                                out.append(name[str(x-4)]+"_MM")
-                                                out.append(name[str(x-4)]+"_Mm")
-                                                out.append(name[str(x-4)]+"_mm")
-                                                out.append(name[str(x-4)]+"_N")
+                                        	out.append(name[str(x-4)])
+                                        #        out.append(name[str(x-4)]+"_Mm")
+                                        #        out.append(name[str(x-4)]+"_mm")
+                                        #        out.append(name[str(x-4)]+"_N")
                                         print "@scaffold\tbp\tmajor\tminor\tM\terror\t"+'\t'.join(map(str, out) )
 
 			if line[0]=="scaffold":
@@ -227,7 +243,7 @@ while(True):
 			for x in range(3, len(line) ):
 				calls=map(int, line[x].split('/') )
 				if (GENOTYPE):
-					out+=(likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ))
+					out+=['/'.join(map(str, likelihoods_emperical(calls, atoi[this[0]], atoi[this[1]], float(this[3]), float(this[2]), float(this[4]), float(this[5]), float(this[6]) ) ) )]
 				elif (HET):
 					M=atoi[this[0]]
 					m=atoi[this[1]]
@@ -246,6 +262,6 @@ while(True):
 					else:
 						out.append('.')	
 					#f=1-(f-1)
-			print '\t'.join(map(str, out) )
+			print '\t'.join(out)
 		break
 

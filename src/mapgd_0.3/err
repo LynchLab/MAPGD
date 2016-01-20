@@ -1,0 +1,17 @@
+readtable.cc: In function ‘void streamtable(const char*, const char*)’:
+readtable.cc:61:21: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for (int x=6; x<6+SIZE; ++x){
+                     ^
+readtable.cc: In function ‘table_t readtable(const char*)’:
+readtable.cc:123:24: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if (column.size()==6+SIZE) {
+                        ^
+mapgd.cc: In function ‘int main(int, char**)’:
+mapgd.cc:34:142: error: invalid conversion from ‘PAIRGL (*)(POPGL&, size_t, size_t, ll_t, ll_t, ll_t, ll_t) {aka std::tuple<long double, long double, long double, long double, long double, long double, long double> (*)(POPGL&, unsigned int, unsigned int, long double, long double, long double, long double)}’ to ‘int (*)(int, char**)’ [-fpermissive]
+  env.command( ' ',"convert",  &convert,    "an error occured while calling convert", "Converts plain text genotype files into binary format.");
+                                                                                                                                              ^
+In file included from mapgd.cc:5:0:
+interface.h:188:7: error:   initializing argument 3 of ‘void env_t::command(char, char*, int (*)(int, char**), char*, char*)’ [-fpermissive]
+  void command (char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_)
+       ^
+make: *** [mapgd.o] Error 1

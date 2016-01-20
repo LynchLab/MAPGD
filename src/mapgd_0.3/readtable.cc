@@ -3,7 +3,6 @@
 #include <fstream>
 #include <cstdio>
 #include <iostream>
-#include <boost/tokenizer.hpp>
 
 #include  "readtable.h"
 
@@ -19,13 +18,13 @@ void streamtable(const char *inname, const char *outname){
 	ifstream in;
 	ofstream out;
 
-	string buffer;
-	string token;
 	in.open(inname);
 	out.open(outname, ios::binary);
 
 	if (!in.is_open()) {cerr << "cannot open " << inname << endl; exit(1);};
+//		for (?) { cerr << __FILE__ << ":" << __LINE__ << ":" << " error parsing " << inname << " : " << buffer << endl; exit(1);};
 	if (!out.is_open()) {cerr << "cannot open " << outname << endl; exit(1);};
+//		for (?) { cerr << __FILE__ << ":" << __LINE__ << ":" << " error parsing " << inname << " : " << buffer << endl; exit(1);};
 
 	//our first order of buisness is to figure out the number of coloumns in the file;
 	ll_t MM, Mm, mm, P;
@@ -34,29 +33,43 @@ void streamtable(const char *inname, const char *outname){
 	size_t SIZE;
 	bool first=true;
 
+        std::string buffer;
+        std::vector <std::string> column;
+	std::vector <std::string> G;
+	// args, arg;
+
 	POPGL pgl;
-	cerr << "Starting\n";
+	getline(in, buffer);
+	
+	column=split(buffer, '\t');
+	std::vector <std::string> names(column.begin()+6, column.end() );
+	SIZE=names.size();
+	
 	while (!in.eof()){
 		getline(in, buffer);
 		if (buffer[0]=='@') {
-			cerr << "Skipping\n";
 			continue;
 		}
 		if (in.eof() ) break;
-   		boost::tokenizer<> tok(buffer);
-		boost::char_separator<char> sep("\t");
-		boost::tokenizer<boost::char_separator<char> > tokens(buffer, sep);
-		boost::tokenizer<boost::char_separator<char> >::iterator t=tokens.begin();
-		for (int x=0; x<4; ++x) ++t; if (t==tokens.end() ) { cerr << "error parsing " << inname << " : " <<buffer << endl; exit(1);};
-		P=atof(t->c_str());
+		P=atof(column[5].c_str() ); //or 4!
 		pgl.P=P;
-		for (int x=0; x<2; ++x) ++t; if (t==tokens.end() ) { cerr << "error parsing " << inname << " : " << buffer << endl; exit(1);};
-		while (t!=tokens.end() ){
-			MM=atof(t->c_str()); ++t; if (t==tokens.end() ) { cerr << "error parsing " << inname << " : " << buffer << endl; exit(1);};
-			Mm=atof(t->c_str()); ++t; if (t==tokens.end() ) { cerr << "error parsing " << inname << " : " << buffer << endl; exit(1);};
-			mm=atof(t->c_str()); ++t; if (t==tokens.end() ) { cerr << "error parsing " << inname << " : " << buffer << endl; exit(1);};
-			N=atoi(t->c_str()); ++t;
-			pgl.add(MM, Mm, mm, N);
+		column=split(buffer, '\t');
+		if (column.size()!=6+SIZE) {
+			std::cerr << __FILE__ << ":" << __LINE__ << ":" << " error parsing " << inname << " : " << buffer << std::endl; 
+			exit(0);
+		}
+		for (int x=6; x<6+SIZE; ++x){
+			G=split(column[x], '/');
+			if (G.size()==4) {
+				MM=atof(G[0].c_str());
+				Mm=atof(G[1].c_str());
+				mm=atof(G[2].c_str());
+				N=atoi(G[3].c_str());
+				pgl.add(MM, Mm, mm, N);
+			} else {
+				std::cerr << __FILE__ << ":" << __LINE__ << ":" << " error parsing " << inname << " : " << buffer << std::endl; 
+				exit(0);
+			}
 		}
 		if (first) {
 			SIZE=pgl.gl.size();
@@ -78,8 +91,7 @@ void streamtable(const char *inname, const char *outname){
 
 table_t readtable(const char *filename){
 	ifstream file;
-	string buffer;
-	string token;
+
 	file.open(filename);
 	table_t table;
 	
@@ -87,24 +99,44 @@ table_t readtable(const char *filename){
 
 	//our first order of buisness is to figure out the number of coloumns in the file;
 	ll_t MM, Mm, mm, P;
+
+        std::string buffer;
+        std::vector <std::string> column;
+	std::vector <std::string> G;
+	//args, arg;
+
 	size_t N;
 	POPGL pgl;
+
+	column=split(buffer, '\t');
+	std::vector <std::string> names(column.begin()+6, column.end() );
+	int SIZE=names.size();
+
 	while (!file.eof()){
 		getline(file,buffer);
 		if (file.eof() ) break;
-   		boost::tokenizer<> tok(buffer);
-		boost::char_separator<char> sep("\t");
-		boost::tokenizer<boost::char_separator<char> > tokens(buffer, sep);
-		boost::tokenizer<boost::char_separator<char> >::iterator t=tokens.begin();
-		for (int x=0; x<4; ++x) ++t; if (t==tokens.end() ) { cerr << "error parsing " << filename << endl; exit(1);};
-		P=atof(t->c_str());
+
+		P=atof(column[5].c_str() );	//or 4!
 		pgl.P=P;
-		for (int x=0; x<2; ++x) ++t; if (t==tokens.end() ) { cerr << "error parsing " << filename << endl; exit(1);};
-		while (t!=tokens.end() ){
-			MM=atof(t->c_str()); ++t; if (t==tokens.end() ) { cerr << "error parsing " << filename << endl; exit(1);};
-			Mm=atof(t->c_str()); ++t; if (t==tokens.end() ) { cerr << "error parsing " << filename << endl; exit(1);};
-			mm=atof(t->c_str()); ++t; if (t==tokens.end() ) { cerr << "error parsing " << filename << endl; exit(1);};
-			N=atoi(t->c_str()); ++t;
+		column=split(buffer, '\t');
+
+		if (column.size()!=6+SIZE) {
+			std::cerr << __FILE__ << ":" << __LINE__ << ":" << " error parsing " << filename << " : " << buffer << std::endl; 
+			exit(0);
+		}
+
+		for (int x=6; x<6+SIZE; ++x){
+			G=split(column[x], '/');
+			if (G.size()==4) {
+				MM=atof(G[0].c_str() );
+				Mm=atof(G[1].c_str() );
+				mm=atof(G[2].c_str() );
+				N=atoi(G[3].c_str() );
+				pgl.add(MM, Mm, mm, N);
+			} else {
+				std::cerr << __FILE__ << ":" << __LINE__ << ":" << " error parsing " << filename << " : " << buffer << std::endl; 
+				exit(0);
+			}
 			pgl.add(MM, Mm, mm, N);
 		}
 		table.push_back(POPGL(pgl));

@@ -1,10 +1,6 @@
 #ifndef TYPEDEF_H_
 #define TYPEDEF_H_
 
-#define VERSION	"0.4"		//Since binary compatibility will likely depend on having the sizes defined in this file stay
-				//constant, the version number needs to be incremented whenever anything in this file changes.
-				//The program should always be able to open files after VERSION 1.0
-
 #include <cstddef>		//Included for ?
 #include <stdint.h>		//Included for uint32_t, uint16_t
 #include <cstdlib>		//Becuse why not?
@@ -23,5 +19,10 @@ typedef int64_t id1_off_t;	//specifies an offset		specifies a distance between b
 				//				able to adress -id1_t to +id1_t.
 	
 typedef uint8_t gt_t;		//specifies a genotype.		limit 128.
+
+#define CNT_MAX	65536
+#define ID0_MAX	65536
+#define ID1_MAX	4294967296
+#define	GT_MAX	256
 
 #endif

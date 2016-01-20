@@ -22,7 +22,6 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 #include "estimate-individual.h"
 
 #define BUFFER_SIZE 500
-#define PRAGMA
 
 /*
 float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,  models &model){

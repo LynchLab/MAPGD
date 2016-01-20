@@ -3,6 +3,7 @@
 
 #include <list>
 #include "genotype.h"
+#include "stream-tools.h"
 #include <map>        
 
 typedef std::vector<POPGL> table_t;

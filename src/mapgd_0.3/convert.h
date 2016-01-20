@@ -3,7 +3,9 @@
 
 #include "readtable.h"
 #include "genotype.h"
+#include "interface.h"
 #include <list>
 
-void convert_file(const char *filename1,const char *filename2);
+int convert(int argc, char *argv[]);
+
 #endif

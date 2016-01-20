@@ -45,7 +45,7 @@ H01=H*( ( ( (1.-pe)/2.+(pe/6.) )**(M+m) )*( (pe/3.)**(E) ) )#-0.00001
 H11=(1-H)*(1-P)*( ( (1.-pe)**m )*( (pe/3.)**(M+E) ) )#-0.00001 
 
 #The log likelihood equation
-lnL=sympy.log( H00+H01+H11 )#-(e**2+h**2+F**2)/100000000000.0
+lnL=sympy.log( H00+H01+H11 )-(e**6+h**6+F**6)/64000000.0
 #lnL=-e**2-h**2-F**2
 
 system_eq=[]
