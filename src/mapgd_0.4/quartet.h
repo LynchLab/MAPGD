@@ -19,7 +19,7 @@ typedef struct quartet {
 	quartet (){		
 		masked=false;	
 		memset(base, 0, 5*sizeof(count_t) );
-		delim='\t';
+		delim='/';
 	}
 	
 	/*! This constructor explicitly sets the counts of A, C, G, T, and N and unmasked the site.
