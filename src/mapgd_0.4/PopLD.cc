@@ -1,4 +1,4 @@
-// Updated on 01/19/16
+// Updated on 01/22/16
 
 #include "PopLD.h"
 
@@ -506,6 +506,7 @@ int PopLD(int argc, char *argv[])
 		} else if (s_mlNuc1 == "T") {
                         t_mlNuc1 = 4;
 		} else {
+			t_mlNuc1 = 0;
 			fprintf(stderr, "Problem in the major-allele designation found at site %d on scaffold %s\n", t_site, scaffold.c_str());
 		}
 		if (s_mlNuc2 == "A") {
@@ -516,7 +517,11 @@ int PopLD(int argc, char *argv[])
                         t_mlNuc2 = 3;
                 } else if (s_mlNuc2 == "T") {
                         t_mlNuc2 = 4;
+		} else if (s_mlNuc2 == ".") {
+			t_mlNuc2 = 0;
+			fprintf(stderr, "Identity of the minor allele ambiguous at site %d on scaffold %s\n", t_site, scaffold.c_str());
                 } else {
+			t_mlNuc2 = 0;
                         fprintf(stderr, "Problem in the minor-allele designation found at site %d on scaffold %s\n", t_site, scaffold.c_str());
                 }
 		site.push_back(t_site);
@@ -564,7 +569,7 @@ int PopLD(int argc, char *argv[])
 				if (dist_sites > max_d) {
 					test_dis = 0;
 				}
-				if (test_dis == 1) {
+				if (test_dis == 1 && mlNuc1.at(sg)*mlNuc2.at(sg)*mlNuc1.at(tg)*mlNuc2.at(tg) != 0) {
 					// printf("dist_sites: %d\n", dist_sites);
 					Ni = 0.0;
 					for (ig = 1; ig <= nsample; ig++) {
@@ -660,16 +665,20 @@ int PopLD(int argc, char *argv[])
                         // Print out the results
 			int dist_sites = site.at(eg+sg+1) - site.at(sg);
 			if (dist_sites <= max_d) {
-				if (est[eg].Ni >= min_Ni) {
-					if (est[eg].llstat != -10000000000.0) {
-						// printf("%s\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].best_D, est[eg].best_Dprime, est[eg].best_D2, est[eg].best_r2, est[eg].adj_best_D, est[eg].adj_best_Dprime, est[eg].adj_best_D2, est[eg].adj_best_r2, est[eg].Ni, est[eg].llstat);
-						fprintf(outstream, "%s\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].best_D, est[eg].best_Dprime, est[eg].best_D2, est[eg].best_r2, est[eg].adj_best_D, est[eg].adj_best_Dprime, est[eg].adj_best_D2, est[eg].adj_best_r2, est[eg].Ni, est[eg].llstat);
+				if (mlNuc1.at(sg)*mlNuc2.at(sg)*mlNuc1.at(eg+sg+1)*mlNuc2.at(eg+sg+1) != 0) {
+					if (est[eg].Ni >= min_Ni) {
+						if (est[eg].llstat != -10000000000.0) {
+							// printf("%s\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].best_D, est[eg].best_Dprime, est[eg].best_D2, est[eg].best_r2, est[eg].adj_best_D, est[eg].adj_best_Dprime, est[eg].adj_best_D2, est[eg].adj_best_r2, est[eg].Ni, est[eg].llstat);
+							fprintf(outstream, "%s\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].best_D, est[eg].best_Dprime, est[eg].best_D2, est[eg].best_r2, est[eg].adj_best_D, est[eg].adj_best_Dprime, est[eg].adj_best_D2, est[eg].adj_best_r2, est[eg].Ni, est[eg].llstat);
+						} else {
+							fprintf(stderr, "ML estimates not found for sites %d and %d on %s\n", site.at(sg), site.at(eg+sg+1), scaffold.c_str());
+							fprintf(outstream, "%s\t%d\t%d\t%d\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\t%f\tNA\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].Ni);
+						}
 					} else {
-						fprintf(stderr, "ML estimates not found for sites %d and %d on %s\n", site.at(sg), site.at(eg+sg+1), scaffold.c_str());
 						fprintf(outstream, "%s\t%d\t%d\t%d\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\t%f\tNA\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].Ni);
 					}
 				} else {
-					fprintf(outstream, "%s\t%d\t%d\t%d\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\t%f\tNA\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].Ni);
+					fprintf(outstream, "%s\t%d\t%d\t%d\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\tNA\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites);
 				}
 			}
 		}
