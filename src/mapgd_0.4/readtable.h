@@ -6,11 +6,11 @@
 #include "stream-tools.h"
 #include <map>        
 
-typedef std::vector<POPGL> table_t;
+typedef std::vector<population_genotypes> table_t;
 
 table_t readtable(const char *filename);
 table_t readbin(const char *filename);
-std::map <PAIRGL, size_t> readcounts(const char *filename, size_t a, size_t b, size_t s);
+std::map <genotype_pair, size_t> readcounts(const char *filename, size_t a, size_t b, size_t s);
 void writebin(table_t table, const char *filename);
 void streamtable(const char *, const char *);
 #endif 

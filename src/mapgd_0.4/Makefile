@@ -6,22 +6,26 @@ STD=-std=c++0x
 GLOBAL=/usr/local/bin
 LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
-VERSION=-D VERSION=\"0.4\"
+VERSION=-D VERSION=\"0.4.1\"
 CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fopenmp
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
+OBJDIR=obj
 CXX=g++
 
 
 #>! TODO ORGANIZE THESE!!
 
 OBJS=allele_stat.o \
+	base.o \
 	binomial.o \
+	clone_gof.o \
 	convert.o \
 	compare-pooled.o \
 	estimate-individual.o \
 	estimate-pooled.o \
 	file-index.o \
+	filter.o \
 	genotype.o \
 	individual-likelihood.o \
 	interface.o \
@@ -29,15 +33,19 @@ OBJS=allele_stat.o \
 	locus.o \
 	newton-method-theta.o \
 	models.o \
+	map2genotype.o \
 	pooled-likelihood.o \
-	proview.o \
+	proview-new.o \
 	pro-file.o \
 	PopLD.o \
 	quartet.o \
 	stream-tools.o \
 	readtable.o \
 	convert.o \
+	map-file.o \
 	mapgd.o
+
+#	proview.o \
 
 all: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) 
@@ -45,7 +53,7 @@ all: $(OBJS)
 noomp: CXXFLAGS:=$(NOOMP) $(STD) $(MODE) $(WARNINGS)
 noomp: all
 
-debug: CXXFLAGS:=$(DEBUG) $(STD) $(MODE) $(WARNINGS)
+debug: CXXFLAGS:=$(DEBUG) $(VERSION) $(STD) $(MODE) $(WARNINGS)
 debug: all
 
 install: all

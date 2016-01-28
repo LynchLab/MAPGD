@@ -10,7 +10,6 @@
 #include "quartet.h"
 #include "locus.h"
 #include "population.h"	//FORMALLY allele_stat.
-//#include 		//
 #include "genotype.h"
 
 #endif 

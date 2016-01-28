@@ -15,9 +15,11 @@
 
 #include "interface.h" 
 #include "pro-file.h" 
+#include "map-file.h"
 #include "individual-likelihood.h"
 #include "likelihood.h"
 #include "genotype.h"
+#include "clone_gof.h"
 
 int estimateInd(int, char **);
 allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const size_t &MAXPITCH);

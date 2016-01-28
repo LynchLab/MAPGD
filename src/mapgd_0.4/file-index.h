@@ -18,10 +18,10 @@
 //#include "datatypes/row.h"
 
 /// An interface that transforms pairs of name and position keys into record numbers.
-/* file_index should always be used to re designate pairs of keys into a single record
+/* File_index should always be used to re designate pairs of keys into a single record
  * number. 
  */
-class file_index{
+class File_index{
 
 private:
 	/// a hash table to store pairs of strings and the numeral associated with them.
@@ -30,8 +30,11 @@ private:
 	/// the keys to the hash table id0_str_.
 	std::vector <std::string> id0_;	
 			
-	/// the sizes of the rows in bytes.
+	/// the number of bp per scaffold.
 	std::vector <id1_t> size_;				
+
+	// the cumulative number of bp per scaffold.
+	std::vector <id1_t> cumulative_size_;	
 
 	/// the last numberical id returned by an decodeid0 querry. Initilized to 0-1.
 	id0_t last_id0_;						
@@ -45,13 +48,17 @@ private:
 	//gap gaps_; //You know what? F$%# it. It will make our files 20% larger, do I really care that much?
 
 public:
-	file_index();						
+	File_index();						
+	File_index(std::vector<std::string>) : File_index(){};						
 
 	/// returns the number of rows until a row with id0, id1.
 	id1_off_t get_offset (const std::string &, const id1_t &) const;	
 
 	/// returns the record number corresponding to id0, id1.
-	id1_off_t get_rowid (const std::string &, const id1_t &) const;	
+	id1_t get_rowid (const std::string &, const id1_t &) const;	
+
+	/// returns the record number corresponding to id0, id1.
+	id1_t get_rowid (const id0_t &, const id1_t &) const;	
 
 	/// returns the id0 corresponding to string.
 	id0_t get_id0 (const std::string &) const;	
@@ -86,25 +93,43 @@ public:
 	/// get the size of scaffold blarg.
 	id1_t get_size (const id0_t &) const;
 
+	/// get the size of scaffold blarg.
+	id1_t get_size (const std::string &) const;
+
+	/// get the sum of all size less than or equal to id0.
+	id1_t get_cumulative_size (const id0_t &) const;
+
+	/// get the sum of all size less than or equal to id0.
+	id1_t get_cumulative_size (const std::string &) const;
+
 	/// get the size of the last scaffold which has been read from. returns map_file::noid on error.
 	id1_t get_last_size (void);				
 
 	/// get the size of the next scaffold to be read. returns map_file::noid on error.
 	id1_t get_next_size (void);				
 
-	/// read in a file_index (strictly text mode).
+	/// read in a File_index (strictly text mode).
 	int read_index(std::istream &);				
 
 	/// read in a file index from a sam header.
-	int from_sam_header(std::istream &);
+	std::istream & from_sam_header(std::istream &);
 
-	/// write out a file_index
+	/// write out a File_index
 	int write_index(std::ostream &);			
 
 	/// not implemented. Do not use.
-	file_index & operator=(const file_index&);
+	File_index & operator=(const File_index&);
 
 	bool is_open(void) const;
+
+	std::string header(void) const;
+	static const std::string file_name;
+	static const std::string table_name;
+	size_t size(void) const;
+
+	friend std::ostream& operator<< (std::ostream&, const File_index&);	//!< use the << operator to write File_index.
+	friend std::istream& operator>> (std::istream&, File_index&);		//!< use the >> operator to read File_index.
 };
+
 
 #endif 

@@ -43,8 +43,9 @@ inline std::vector<std::string> split(const std::string &s, const char &delim)
 	return split(line_out, ' ');
 }*/
 
-/// Takes a string and returns a vector with two elements, split on first. 
-/* For example, if the string "A,B,C , D" is given, then {"A", "B,C , D"} is returned.
+/// Takes a string and returns a vector with two elements, split by the delimiter.
+/* For example, if the string "A,B,C , D" is given, and a delimiter ',' is used
+ * to split the string, then {"A", "B,C , D"} is returned.
  */
 
 /// An overloaded decleartion of split_first.
@@ -52,8 +53,9 @@ inline std::vector<std::string> split_first(std::istream &in, const char &delim)
 {
 	std::string first, second;
 	std::getline(in, first, delim);
-	std::getline(in, second); 
-	return std::vector <std::string> {first, second};
+	std::getline(in, second);
+	if (second.size()!=0) return std::vector <std::string> {first, second};
+	else return std::vector <std::string> {first};
 }
 
 inline std::vector<std::string> split_first(const std::string &s, const char &delim)
@@ -63,13 +65,29 @@ inline std::vector<std::string> split_first(const std::string &s, const char &de
 	return split_first(ss, delim);
 }
 
-/// Writes a vector out in a format . . . 
-/* For example . . .
- */ 
-/*
-inline int write(iterator <const std:string> &key, <const std::string> &str, const char &delim)
+/// Takes a string and returns a vector with two elements, split by the delimiter.
+/* For example, if the string "A,B,C , D" is given, and a delimiter ',' is used
+ * to split the string, then {"A,B,C "," D"} is returned.
+ */
+
+/// An overloaded decleartion of split_first.
+inline std::vector<std::string> split_last(std::istream &in, const char &delim)
 {
-	//SANITIZE STR!!
-	out << key << delim << str;
-}*/
+	std::string line;
+	getline(in, line);
+	size_t pos=line.rfind(delim);
+	size_t end=line.size();
+//	std::cerr << pos << ", " << end << std::endl;
+	if (pos!= std::string::npos ) return std::vector <std::string> {line.substr(0, pos), line.substr(pos, end)};
+	else return std::vector <std::string> {line};
+
+}
+
+inline std::vector<std::string> split_last(const std::string &s, const char &delim)
+{
+	std::stringstream ss;
+	ss << s;
+	return split_last(ss, delim);
+}
+
 #endif

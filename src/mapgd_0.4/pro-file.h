@@ -43,7 +43,6 @@ private:
 //private variables should be initialized by reading the header...
 	std::map <std::string, count_t> id0_str;
 	std::vector <std::string> id0;
-	file_index index;
 
 	std::vector <std::string> extraids;		//!< extra ids associated with the quartet. (ref base identiy?).	
 
@@ -71,6 +70,7 @@ private:
 	size_t *samples_;				// the number of samples (i.e. different individuals or populations) in the profile.
 	std::vector <float_t> sample_gof_;		// the number of samples (i.e. different individuals or populations) in the profile.
 public:
+	File_index index;
 	const float_t getsample_property(const count_t &) const;
 	const std::string get_sample_name(const count_t &) const;
 	char control;					//!< a variable that controls switches in the binary read/write mode.
@@ -100,6 +100,7 @@ public:
 	int set_column_name(const size_t&, const std::string&);
 	const std::string get_column_name(const size_t&) const;
 	profile_header & operator=(const profile_header&); //!< I don't think the copy makes sense. . . 
+	void set_index(File_index &in){index=in;};
 	
 	void clear(void);
 };
@@ -204,6 +205,8 @@ public:
 	int set_sample_name(const count_t&, const std::string &);
 	int set_sample_name(const std::string &);
 
+	void set_index(File_index &in){header_.set_index(in);};
+	File_index get_index(void){return header_.index;};
 	const std::string get_sample_name(const count_t &) const;
 
 	/*a set of functions for converting the string information read in text mode into count_t and vice versa.*/
@@ -251,6 +254,7 @@ public:
 
 	void header(void) {noheader_=false;};		//!< If header is true pro-file will expect a file to have a header...
 
+	id1_t get_pos (void) const {return 100;};	//!< Returns the current position.
 	//locus
 
 	Locus & get_locus(void) {return site_;};	//!< Returns the current Locus.

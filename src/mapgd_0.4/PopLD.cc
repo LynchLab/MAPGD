@@ -79,7 +79,7 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlN
 	// printf("best_p: %f\tmononuc_count_1[1][1]: %d\tcov1[1]: %d\n", best_p, mononuc_count_1[1][1], cov1[1]);
 	// Estimate the LD coefficient D between the polymorphic sites
 	est[tg-sg-1].Ni = Ni;
-	maxll = -10000000000.0;	
+	maxll = -FLT_MAX;	
 	// Find the minimum and maximum possible values of D given the estimated allele frequencies
 	if ( best_p*best_q <= (1.0-best_p)*(1.0-best_q) ) {
 		Dmin = -best_p*best_q;
@@ -298,7 +298,7 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlN
 		}
 	
 	} // End the loop over the LD coefficients D
-	if (maxll > -10000000000.0) {
+	if (maxll > -FLT_MAX) {
 		// Calculate the LD measures
 		est[tg-sg-1].best_D = t_best_D;
         	if (est[tg-sg-1].best_D >= 0) {
@@ -331,7 +331,7 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlN
 		}
 		est[tg-sg-1].llstat = 2.0*(maxll - null_llhood);
 	} else {	// ML estimate not found
-		est[tg-sg-1].llstat = -10000000000.0;
+		est[tg-sg-1].llstat = -FLT_MAX;
 	}
 	return(est[tg-sg-1]);
 }
@@ -394,7 +394,7 @@ int PopLD(int argc, char *argv[])
 	// Default values of the options
 	const char* in_file_name = {"In_PopLD.txt"};
 	const char* out_file_name = {"Out_PopLD.txt"};
-	int max_d = 2000000000;
+	int max_d = INT_MAX;
 	double min_Ni = 10.0;
 	int print_help = 0;
 
@@ -539,9 +539,13 @@ int PopLD(int argc, char *argv[])
 	
 		vector <estimate> est(num_pol_sites-sg-1);
 		est.clear();
+		#ifdef PRAGMA
 		#pragma omp parallel for private(ig, quartet_1) 
+		#endif
 		for (int tg=sg+1; tg<num_pol_sites; tg++) {
+			#ifdef PRAGMA
 			#pragma omp critical
+			#endif
 			for (ig = 1; ig <= nsample; ig++) {
                         	quartet_1[ig] = quartet[ig].at(sg);
                 	}
@@ -661,7 +665,7 @@ int PopLD(int argc, char *argv[])
 			int dist_sites = site.at(eg+sg+1) - site.at(sg);
 			if (dist_sites <= max_d) {
 				if (est[eg].Ni >= min_Ni) {
-					if (est[eg].llstat != -10000000000.0) {
+					if (est[eg].llstat != -FLT_MAX) {
 						// printf("%s\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].best_D, est[eg].best_Dprime, est[eg].best_D2, est[eg].best_r2, est[eg].adj_best_D, est[eg].adj_best_Dprime, est[eg].adj_best_D2, est[eg].adj_best_r2, est[eg].Ni, est[eg].llstat);
 						fprintf(outstream, "%s\t%d\t%d\t%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n", scaffold.c_str(), site.at(sg), site.at(eg+sg+1), dist_sites, est[eg].best_D, est[eg].best_Dprime, est[eg].best_D2, est[eg].best_r2, est[eg].adj_best_D, est[eg].adj_best_Dprime, est[eg].adj_best_D2, est[eg].adj_best_r2, est[eg].Ni, est[eg].llstat);
 					} else {

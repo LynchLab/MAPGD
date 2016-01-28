@@ -109,9 +109,9 @@ profile_header::~profile_header(void){ column_names.clear(); }
 int profile_header::setsamples(const count_t &samples) {
 	*samples_=samples;
 	column_names.clear();
-	if (*columns_==6 or *columns_==7) column_names.push_back("scaffold");
-	column_names.push_back("pos");
-	if (*columns_==7) column_names.push_back("ref");
+	if (*columns_==6 or *columns_==7) column_names.push_back("ID0");
+	column_names.push_back("ID1");
+	if (*columns_==7) column_names.push_back("REF");
 
 	for (unsigned int x=0; x<*samples_; ++x){
 		column_names.push_back("sample_"+std::to_string( (unsigned long long int)(x+1) ) );
@@ -129,10 +129,10 @@ int profile::copyheader(const profile &pro){
 
 int profile_header::setcolumns(const count_t &x) {
 	if (column_names.size()==0) setsamples(0);
-	if (*columns_==5 and x==6){column_names.insert(column_names.begin(), "scaffold");}
-	if (*columns_==5 and x==7){column_names.insert(column_names.begin(), "scaffold"); column_names.insert(column_names.begin()+2, "ref");}
+	if (*columns_==5 and x==6){column_names.insert(column_names.begin(), "ID0");}
+	if (*columns_==5 and x==7){column_names.insert(column_names.begin(), "ID0"); column_names.insert(column_names.begin()+2, "REF");}
 	if (*columns_==6 and x==5){column_names.erase(column_names.begin() );}
-	if (*columns_==6 and x==7){column_names.insert(column_names.begin()+2, "ref");}
+	if (*columns_==6 and x==7){column_names.insert(column_names.begin()+2, "REF");}
 	if (*columns_==7 and x==5){column_names.erase(column_names.begin() ); column_names.erase(column_names.begin()+1);}
 	if (*columns_==7 and x==6){column_names.erase(column_names.begin()+2);}
 	*columns_=x;
@@ -257,6 +257,7 @@ int profile_header::writeheader(std::ostream *out){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": attempted writeheader when no ostream was open." << std::endl;
 		exit(UNEXPECTED);
 	};
+	*out << index;
 	//Headers should contain the following feilds:
 	//The version number of proview used to create the file,
 	//The number of columns in the file
@@ -266,7 +267,7 @@ int profile_header::writeheader(std::ostream *out){
 	std::vector <std::string> column;
 	bool notdone_=true;
 	while(notdone_){
-		*out << "@PR" << *delim_column << "VN:" << VER << *delim_column << "CN:" << *columns_ << *delim_column << "SN:" << *samples_ << *delim_column<< "MD:" << *binary_ <<std::endl;
+		*out << "@PR" << *delim_column << "VN:" << VERSION << *delim_column << "CN:" << *columns_ << *delim_column << "SN:" << *samples_ << *delim_column<< "MD:" << *binary_ <<std::endl;
 		*out << "@ID";
 		for (unsigned int x=0; x<column_names.size(); ++x)
 			*out << *delim_column << column_names[x];

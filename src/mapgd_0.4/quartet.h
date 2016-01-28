@@ -2,8 +2,10 @@
 #define QUARTET_H_
 
 #include "typedef.h"
+#include <sstream>
 #include <cstring> 
 #include <iostream>
+#include <iomanip> 
 
 /// A class that stores quartet information.
 /*! 
@@ -19,7 +21,7 @@ typedef struct quartet {
 	quartet (){		
 		masked=false;	
 		memset(base, 0, 5*sizeof(count_t) );
-		delim='\t';
+		delim='/';
 	}
 	
 	/*! This constructor explicitly sets the counts of A, C, G, T, and N and unmasked the site.
@@ -67,4 +69,5 @@ void unmask(quartet_t&);
 //writet(stream, quartet_t&);
 
 std::ostream& operator<< (std::ostream& out, const quartet& q);
+std::istream& operator>> (std::istream& in, quartet& q);
 #endif

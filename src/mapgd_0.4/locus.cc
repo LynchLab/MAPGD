@@ -1,40 +1,64 @@
 #include "locus.h"
 
-/*! \brief Locus is initialized to id0=0, id1=0, and set to contain 0 samples.
-*/	
-Locus::Locus(void){
-	sample.clear();
-	id0=0;
-	id1=0;	
-};
+const std::string Locus::file_name=".pro";
+const std::string Locus::table_name="QUARTETS";
+const gt_t Locus::default_order[5] = {0,1,2,3,4};
 
 /*! \brief Locus is initialized to id0=0, id1=0, and set to contain 0 samples.
 */	
-Locus::Locus(count_t size){
-	sample.assign(size, quartet() );
+Locus::Locus(void)
+{
+	sample.clear();
+	sample_names_.clear();
 	id0=0;
 	id1=0;	
+	ref.base=4;
+}
+
+/*! \brief Locus is initialized to id0=0, id1=0, and set to contain 0 samples.
+*/	
+Locus::Locus(const count_t &size)
+{
+	sample.assign(size, quartet() );
+	sample_names_=std::vector<std::string> (size);
+	id0=0;
+	id1=0;	
+	ref.base=4;
+}
+
+Locus::Locus(const std::vector<std::string> &column_names)
+{
+	sample_names_=std::vector<std::string> (&column_names[3], &column_names.back()+1 );
+	sample.assign(sample_names_.size(), quartet() );
+	id0=0;
+	id1=0;
+	ref.base=4;
 }
 
 Locus & Locus::operator =(const Locus& rhs){
-        sample=rhs.sample; 	
+	memcpy(sorted_, Locus::default_order, 5*sizeof(gt_t) );
+	sample.clear();
+        sample=rhs.sample; 
+	sample_names_.clear();
+	sample_names_=rhs.sample_names_;
         id0=rhs.id0;
 	id1=rhs.id1;  
-        extraid=rhs.extraid;   
 	return *this;
 }
 
-Locus & Locus::operator+=(const Locus &rhs) {
+Locus & Locus::operator+=(const Locus &rhs) 
+{
 	if (rhs.id0==this->id0 && rhs.id1==this->id1 ){
 		sample.reserve( sample.size() + rhs.sample.size() ); // preallocate memory
 		sample.insert( sample.end(), rhs.sample.begin(), rhs.sample.end() );
 		return *this;
 	}
-	std::cerr << "operator undefined for different loci.\n";
+	std::cerr << __FILE__ << ":" << __LINE__ << "operator undefined for different loci.\n";
 	return *this;
 }
 
-const Locus Locus::operator +(const Locus& rhs) const {
+const Locus Locus::operator +(const Locus& rhs) const 
+{
 	return Locus (*this) += rhs;
 }
 
@@ -53,7 +77,8 @@ void Locus::unmask(count_t a){
 
 
 /// Unmask all the quartets at this locus.
-void Locus::unmaskall(void){
+void Locus::unmaskall(void)
+{
 	for (size_t s=0; s<sample.size();++s){
 		sample[s].masked=false;
 	}
@@ -61,14 +86,16 @@ void Locus::unmaskall(void){
 
 
 /// Mask all the quartets at this locus.
-void Locus::maskall(void){
+void Locus::maskall(void)
+{
 	for (size_t s=0; s<sample.size();++s){
 		sample[s].masked=true;
 	};
 }
 
 /// Unmask all the quartets in the populations in the vector.
-void Locus::unmask(const std::vector <size_t> &s){
+void Locus::unmask(const std::vector <size_t> &s)
+{
 	for (size_t s_=0; s_<s.size(); ++s_){
 		if (s_>=sample.size() ) {std::cerr << __FILE__ << ":" << __LINE__ << ":attempted to unmask a non-existent quartet. Exiting."; exit(0); };
 		sample[ s[s_] ].masked=false;
@@ -77,19 +104,20 @@ void Locus::unmask(const std::vector <size_t> &s){
 
 
 /// Mask all the quartets in the populations in the vector.
-void Locus::mask(const std::vector <size_t> &s){
+void Locus::mask(const std::vector <size_t> &s)
+{
 	for (size_t s_=0; s_<s.size();++s_){
 		if (s_>=sample.size() ) {std::cerr << __FILE__ << ":" << __LINE__ << ":attempted to mask a non-existent quartet. Exiting."; exit(0); };
 		sample[s_].masked=true;
 	};
-};
+}
 
 count_t Locus::maskedcount(void) const
 {
 	count_t count=0;
 	for(std::vector<quartet>::const_iterator it = sample.begin(); it != sample.end(); ++it) if (it->masked) count++;
 	return count;
-};
+}
 
 void Locus::sort(void)
 {
@@ -166,7 +194,7 @@ count_t Locus::getcoverage(count_t s) const
 				sample[s].base[2]+
 				sample[s].base[3];
 	else {
-		std::cerr << "mapgd:locus.cc:137: Attempted to access a non-existent sample." << std::endl;
+		std::cerr << "mapgd:" << __FILE__ << ":" << __LINE__ << ": Attempted to access a non-existent sample." << std::endl;
 		exit(0);
 	};
 }
@@ -227,10 +255,103 @@ void Locus::mask_low_cov( const count_t &dp )
 	for (size_t s=0; s<sample.size();++s) sample[s].masked=((sample[s].masked)|(count(sample[s])<=dp));
 }
 
-std::ostream& operator<< (std::ostream& out, const Locus& x) {
+std::ostream& operator << (std::ostream& out, const Locus& x)
+{
+	out << x.id1 << '\t' << x.ref;
 	for (size_t s=0; s<x.sample.size();++s) {
 		out << '\t' << x.sample[s];
 	}
 	return out;
-};
+}
 
+std::istream& operator >> (std::istream& in, Locus& x)
+{
+	memcpy(x.sorted_, Locus::default_order, 5*sizeof(gt_t) );
+
+	std::string line;
+	std::getline(in, line);
+	std::stringstream line_stream(line);
+
+	line_stream >> x.id1;
+	line_stream >> x.ref;
+
+	for (size_t s=0; s<x.sample.size();++s) {
+		line_stream >> x.sample[s];
+	}
+	return in;
+}
+
+std::istream& mpileup (std::istream& in, Locus& x)
+{
+	in >> x.id1 >> x.ref;
+
+	std::string line;
+	std::vector <std::string> column;
+	std::vector <std::string>::iterator column_it=column.begin();
+
+	in.get();
+	getline(in, line);
+	column=split(line, '\t');
+	
+	for (size_t s=0; s<x.sample.size();++s) {
+		memset(x.sample[s].base, 0, sizeof(count_t)*5 );
+		scan(x, column[s*3+1], x.sample[s] );
+	}
+	return in;
+}
+	
+std::string Locus::header(void) const
+{
+	std::string line="@ID0       \tID1\tREF";
+	for (size_t s=0; s<sample_names_.size(); ++s) {
+		line+=('\t'+sample_names_[s]);
+	}
+	line+='\n';
+	return line;
+}
+
+size_t Locus::size(void) const
+{
+        std::vector <quartet_t> sample;                 //!< The five bases A/C/G/T/N;
+//        std::vector <count_t> extraid;                  //!< extra ids associated with the quartet. (ref base identiy?).
+
+        id0_t id0;
+        id1_t id1;
+	return sizeof(count_t)*(5+extraid.size() )+sizeof(quartet_t)*sample.size()+sizeof(id0_t)+sizeof(id1_t);
+}
+
+void scan(const Locus & site, const std::string &str, quartet_t &q)
+{
+	size_t skip;
+	std::string number;
+	std::string::const_iterator it=str.begin();
+	std::string::const_iterator end=str.end();
+	size_t lim=0;
+	while (it!=end) {
+		if (*it == '^') {it++; if(it==end) break; it++; continue;}
+		if (*it == '$' || *it=='*') {it++; continue;}
+		else if (*it == '+' || *it == '-') {
+			number = "";
+			it++;
+			while(isdigit(*it) ) {
+				number.push_back(*it); 
+				it++; 
+			}
+			lim=atoi(number.c_str() );
+ 			for(skip=0; skip<lim; ++skip) it++;
+			continue;
+    		} else if(*it == ',' || *it=='.') {
+			q.base[site.ref.base]++;
+			#ifdef DEBUG
+				if (site.ref.base==5) {
+					std::cerr << __FILE__ << ":" << __LINE__ << ": no reference nucleotide set.\n";
+				}
+			#endif 
+		} else {
+			q.base[Base::ctob(*it)]++;
+		}
+		it++;
+	}
+}
+
+	

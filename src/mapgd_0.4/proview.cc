@@ -24,7 +24,6 @@ int proview(int argc, char *argv[])
 	bool noheader=false;
 	bool binary=false;
 	bool bernhard=false;
-	bool split=false;
 
 	count_t outc=7;
 	count_t inC=0;
@@ -33,9 +32,8 @@ int proview(int argc, char *argv[])
 	args.min=4;
 	args.pvalue=0.001;
 
-//	??
-
 	std::vector <std::string> infiles;
+	std::string namefile="";
 	int sample=-1;
 	std::string outfile="";
 	std::string headerfile="";
@@ -47,16 +45,16 @@ int proview(int argc, char *argv[])
 	env.setdescription("prints data in the '.pro' file quartet format");
 	
 	env.optional_arg('m',"minimum",	 &args.min, 	&arg_setint, 	"an error occured", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
-	env.optional_arg('q',"qdel",	&qdel,		&arg_setchar, 	"an error occured", "sets the output quartet delimiter (default tab)");
+	env.optional_arg('q',"qdel",	&qdel,		&arg_setchar, 	"an error occured", "sets the output quartet delimiter (default '/')");
 	env.optional_arg('d',"cdel",	&cdel,		&arg_setchar, 	"an error occured", "sets the output column delimiter (default tab)");
 	env.optional_arg('c',"column",	&outc,	 	&arg_setint, 	"an error occured", "sets the number of column in the output (default 6)");
 
-	env.optional_arg('C',"incolumn",	&inC,	 	&arg_setint, 	"an error occured", "overides the default number of column assumed for the input (default )");
+	env.optional_arg('C',"incolumn",&inC,	 	&arg_setint, 	"an error occured", "overides the default number of column assumed for the input.");
 	env.optional_arg('i',"input",	&infiles,	&arg_setvectorstr,
 									"an error occured", "sets the input file (default stdin). If multiple input files given, the default behavior is to merge the files.");
 	env.optional_arg('I',"sample",	&sample, 	&arg_setint,	"an error occured", "limit output to sample N.");
 	env.optional_arg('H',"header",	&headerfile, 	&arg_setstr, 	"an error occured", "use a SAM header file.");
-	env.optional_arg('n',"names",	&headerfile, 	&arg_setstr, 	"an error occured", "a tab delimited file with sample name\tfile name pairs.");
+	env.optional_arg('n',"names",	&namefile, 	&arg_setstr, 	"an error occured", "a tab delimited file with sample name 'tab' file name pairs.");
 	env.optional_arg('o',"output",	&outfile,	&arg_setstr, 	"an error occured", "sets the output file (default stdout)");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
@@ -66,7 +64,6 @@ int proview(int argc, char *argv[])
 	env.flag(	'N',"noheader",	&noheader, 	&flag_set, 	"an error occured", "don't print a header.");
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
-
 
 	if (bernhard) { 
 		outc=5; 
@@ -92,6 +89,23 @@ int proview(int argc, char *argv[])
 			if (inC!=0) in[x]->setcolumns(inC);
 			samples+=in[x]->size();
 			in[x]->set_sample_name(infiles[x]);
+		}
+	} else if (namefile!="") {
+		std::fstream temp;
+		temp.open(namefile);
+		if (!temp.is_open() ) {printUsage(env); exit(0);}
+		std::string line;
+		std::vector <std::string> columns;
+		while(getline(temp, line) ){
+			if (line[0]!='@'){
+				columns=split(line, '\t');
+				in.push_back(new profile);
+				in.back()->open(columns[0].c_str(), std::fstream::in);
+				if (!in.back()->is_open() ) {printUsage(env); exit(0);}
+				if (inC!=0) in.back()->setcolumns(inC);
+				samples+=in.back()->size();
+				for (size_t y=1; y<columns.size(); ++y) in.back()->set_sample_name(y-1, columns[y]);
+			}
 		}
 	} else {
 		in.push_back(new profile);
@@ -119,14 +133,13 @@ int proview(int argc, char *argv[])
 	out.setsamples(samples);
 	out.setcolumns(outc);
 	out.set_delim_column(cdel);
-	out.set_delim_quartet('\t');
+	out.set_delim_quartet('/');
 
 	count_t z=0;
 
 	//change to iterator...
 
 	size_t thissample=0;
-
 
 	if (sample==-1){
 		for (size_t x=0; x<in.size(); x++){		//copies the sample names from the in file(s) to out.
@@ -145,23 +158,26 @@ int proview(int argc, char *argv[])
 		}
 	}
 
-	if (!noheader) out.writeheader();		//writes a header iff noheader is not set.
-	else out.noheader();
 
-	file_index index;
+	File_index index;
+
 	if (headerfile.size()!=0) {
 		std::fstream header;
 		header.open(headerfile.c_str(),  std::fstream::in);
 		index.from_sam_header( header );
 		for (size_t x=0; x<index.get_sizes().size(); x++) out.encodeid0(index.get_string(x) );
-		out.set_id0(UINT16_MAX);
+		out.set_id0(0);
 		out.set_id1(1);
+		out.set_index(index);
 	} 
 	else {
-		out.set_id0(UINT16_MAX);
+		out.set_id0(ID0_MAX);
 		out.set_id1(1);	//set the ids of out to -1 for syncronization purposes.
 	}
 	for (size_t x=0; x<in.size(); x++){ in[x]->read(); }
+
+	if (!noheader) out.writeheader();		//writes a header iff noheader is not set.
+	else out.noheader();
 
 	bool go=true;
 	bool read_site=false;
@@ -207,7 +223,7 @@ int proview(int argc, char *argv[])
 			} 
 			if (in[x]->is_open() ) go=true;
 		}
-		if (read_site || print_all  && site.get_id0()!=UINT16_MAX){
+		if (read_site || print_all  && site.get_id0()!=ID0_MAX){
 			site.unmaskall();
 			if (bernhard){
 				Locus L=site;
@@ -218,7 +234,7 @@ int proview(int argc, char *argv[])
 		}
 		if (!read_scaffold){
 			if (not (index.is_open() ) ) {
-				if (site.get_id0()!=UINT16_MAX-1) site.set_id0(site.get_id0()+1);
+				if (site.get_id0()!=ID0_MAX-1) site.set_id0(site.get_id0()+1);
 				else {std::cerr << __FILE__ << ":" << __LINE__ << ": maximum scaffold count reached. Exiting\n"; exit(0); }
 				site.set_id1(1);
 			}

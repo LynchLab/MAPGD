@@ -17,6 +17,10 @@
 #include "relatedness.h"
 #include "proview.h"
 #include "convert.h"
+#include "filter.h"
+#include "map2genotype.h"
 #include "PopLD.h"
+#include "readsql.h"
+#include "writesql.h"
 
 #endif

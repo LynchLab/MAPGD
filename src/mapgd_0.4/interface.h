@@ -77,6 +77,15 @@ class arg_t {
 		umsg="umsg unset";
 		set=false;
 	};
+	/*arg_t(void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_){
+		opt='';
+		lopt="";
+		parm=parm_;
+		func=func_;
+		emsg=emsg_;
+		umsg=umsg_;
+		set=false;
+	};*/
 	arg_t(char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_){
 		opt=opt_;
 		lopt=lopt_;
@@ -131,19 +140,22 @@ class com_t {
  *
  */
 class env_t{
-	private:
-	public:
+private:
+public:
 	void setname(const char *c)
 	{
 		name=c;
 	};
+
 	void setver(const char *c)
 	{
 		version=c;
 	};
+
 	void setauthor(const char *c){
 		author=c;
 	};
+
 	void setdescription(const char *c){
 		description=c;
 	};
@@ -172,6 +184,12 @@ class env_t{
 	{
 		args.push_back(arg_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 	};
+
+/*	void positional_arg (void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
+	{
+		args.push_back(arg_t(parm_, func_, emsg_, umsg_) );
+	};*/
+
 
 	/*!	\breif adds an required argument to the list of arguments accepted by the program. -1 is returned by parsargs when required arguments are not provided*/
 	void required_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
@@ -216,6 +234,7 @@ class env_t{
 	void close(void);
 };
 
+void Usage(env_t);
 /*!	\breif parses the command line arguments. 
  *
  *	Returens 0 if all went well, -1 the rest of the time.

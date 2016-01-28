@@ -45,20 +45,25 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 								 //(when that constructor is writen). I'm a little concerned that
 								 //allele_stat has gotten too bloated, but . . . 
 	mle.N=0;
+	mle.id0=site.id0;
+	mle.id1=site.id1;
+	mle.ref=site.ref.base;
+	mle.major=4;
+	mle.minor=4;
 
 	site.mask_low_cov(MIN-1);
 	count_t texc=site.maskedcount(), rexc;
 	rexc=texc;
 
 	if (init_params(site, mle, EMLMIN) ){		//If >90% of reads agree, then assume a homozygote,
-								//otherwise, assume heterozygote.
+							//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
 		rexc=maximize_grid(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 		if (newton) 
 		rexc=maximize_newton(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//the NR maximization
 	}
 	else
-		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
+		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);//trim bad clones and re-fit the model.
 	}
 
 	mle.excluded=rexc-texc;
@@ -99,6 +104,10 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	temp.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
 	temp.mm=pow(1.-mle.freq, 2);				//?
 	mle.hwell=model.loglikelihood(site, temp);		//?
+	if (site.getcount(0)==site.getcount(1) ){
+		mle.major=4;
+		mle.minor=4;
+	} else if (site.getcount(1)==site.getcount(2) ) mle.minor==4;
 	return mle;
 }
 
@@ -110,6 +119,7 @@ int estimateInd(int argc, char *argv[])
 	std::string infile="";
 	std::string outfile="";
 	std::string outfilepro;
+	std::string indexname="";
 
 	bool verbose=false;
 	bool ldformat=false;
@@ -133,21 +143,21 @@ int estimateInd(int argc, char *argv[])
 
 
 	env_t env;
-	env.setname("mapgd ei");
+	env.setname("mapgd allele");
 	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman and Takahiro Maruki");
 	env.setdescription("Uses a maximum likelihood approach to estimate population genomic statistics from an individually 'labeled' population.");
 
 	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdout).");
 	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
-	env.optional_arg('p',"out-pro", &outfilepro,	&arg_setstr, 	"an error occured while setting the name of the output file.", "name of a 'cleaned' pro file (default none).");
+	env.optional_arg('p',"outpro", &outfilepro,	&arg_setstr, 	"an error occured while setting the name of the output file.", "name of a 'cleaned' pro file (default none).");
 	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "the individuals to be used in estimates.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).");
 	env.optional_arg('m',"minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
 
 //	env.optional_arg('c',"columns", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "number of columsn in profile (if applicable).");
 
+	env.optional_arg('H',"header", &indexname, 	&arg_setstr, 	"please provide an str.", "the name of a .idx file storing scaffold infomation");
 	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
-	env.optional_arg('a',"alpha", 	&A, 		&arg_setfloat_t, "please provide a float.", "cut-off value for printing polymorphic sites (default 0.0).");
 	env.optional_arg('g',"goodfit", &MINGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
 	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
@@ -161,28 +171,24 @@ int estimateInd(int argc, char *argv[])
 
 	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
-	profile pro, pro_out;		//profile is a fairly complete class that lets us read and write from pro files, 
-					//which are files containing set of read 'quartets' that specify the number of 
-					//A,C,G and T read at some specific location in a genome. See proFile.h for more info.
+	Indexed_file <allele_stat> map_out;
+	Indexed_file <Locus> pro_in, pro_out;
+	
+	allele_stat allele_out;
+	Locus locus_out, locus_in;
 
-	//gcfile out;
 	std::ostream *out=&std::cout;
-	std::ofstream outFile;
 
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
-		pro.open(infile.c_str(), std::fstream::in);	
-		if (!pro.is_open() ) {				//try to open a profile of that name.
+		pro_in.open(infile.c_str(), std::fstream::in);	
+		if (!pro_in.is_open() ) {				//try to open a profile of that name.
 			printUsage(env);			//Print help message on failure.
 		} 
+		locus_in=pro_in.read_header();
 	}
 	else {
-		pro.open(std::fstream::in);			//Iff no filename has been set for infile, open profile from stdin.
-	};
-
-	if (outfile.size()!=0) {
-		outFile.open(outfile.c_str(), std::fstream::out);
-		if (!outFile.is_open() ) printUsage(env);
-		out=&outFile;
+		pro_in.open(std::fstream::in);			//Iff no filename has been set for infile, open profile from stdin.
+		locus_in=pro_in.read_header();
 	};
 
 	//else out.open('w', CSV);				//Iff no filename has been set for outfile, pgdfile prints to stdout.
@@ -191,6 +197,7 @@ int estimateInd(int argc, char *argv[])
 	char cdel='\t';
 	char qdel='/';
 	bool binary=false;
+
 	if (outfilepro.size()!=0) {				//Same sort of stuff for the outf
 		if (binary) {
 			pro_out.open(outfilepro.c_str(), std::fstream::out | std::fstream::binary);
@@ -199,54 +206,39 @@ int estimateInd(int argc, char *argv[])
 			pro_out.open(outfilepro.c_str(), std::fstream::out);
 			if (!pro_out.is_open() ) {printUsage(env); exit(0);}
 		}
-		pro_out.setsamples(pro.size() );
-		pro_out.setcolumns(outc);
-		pro_out.set_delim_column(cdel);
-		pro_out.set_delim_quartet(qdel);
-		for (size_t y=0;y<pro.size(); ++y) pro_out.set_sample_name(y, pro.get_sample_name(y) );
-		if (not (noheader) ) pro_out.writeheader();
+		locus_out.set_sample_names(locus_in.get_sample_names() );
+		pro_out.set_index(pro_in.get_index() );
+		pro_out.write_header(locus_out);
 	};
 
 
 	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
-	if (not (noheader) && not (ldformat) ){
-			std::string id1="id1           ";
-			switch (pro.get_columns()) {
-				case 5:
-				case 6:
-					*out << id1 << "\tid2\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpoly_ll\thwe_ll\tgof\tef_chrm\tN\tN_cut\tmodel_ll" << std::endl;
-				break;
-				case 7:
-					*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\tm\terror\tnull_e\tf\tMM\tMm\tmm\th\tpoly_ll\thwe_ll\tgof\tef_chrm\tN\tN_cut\tmodel_ll" << std::endl;
-				break;
-			}	
-	} else if (ldformat) {
-		std::string id1="id1           ";
-		switch (pro.get_columns()) {
-			case 5:
-			case 6:
-				*out << id1 << "\tid2\tmajor\tminor\tcov\tM\terror\tpoly_ll\thwe_ll";
-			break;
-			case 7:
-				*out << id1 << "\tid2\tref\tmajor\tminor\tcov\tM\terror\tpoly_ll\thwe_ll";
-			break;
-		}
-		for (size_t y=0;y<pro.size(); ++y) *out << '\t' << pro.get_sample_name(y);
-		*out << std::endl;
-	}
-	pro.maskall();							//Turn off the ability to read data from all clones by default. 
+	locus_in.maskall();						//Turn off the ability to read data from all clones by default. 
 
 	if ( ind.size()==0 ) { 						//Iff the vector ind (which should list the clones to 
 		ind.clear();						//be read from the .pro file) is empty, then 
-		for (count_t x=0; x<pro.size(); ++x) ind.push_back(x);  //put every clone in the vector ind.
+		for (count_t x=0; x<locus_in.get_sample_names().size(); ++x) ind.push_back(x);  //put every clone in the vector ind.
 	};
 
 	std::vector <float_t> sum_gofs(ind.size() );
 	std::vector <float_t> gofs_read(ind.size() );
+
 	models model;
+
+	if (outfile.size()!=0) {
+		map_out.open(outfile.c_str(), std::fstream::out);
+		if (!map_out.is_open() ) printUsage(env);
+	} else 	map_out.open(std::fstream::out);
+
 	allele_stat buffer_mle[BUFFER_SIZE]; 
-	Locus buffer_site[BUFFER_SIZE];
+	Locus buffer_locus[BUFFER_SIZE];
+	std::fill_n(buffer_locus, BUFFER_SIZE, locus_in);
+
+	map_out.set_index(pro_in.get_index() );
+	map_out.write_header(buffer_mle[0]);
+
 	uint32_t all_read=0;
+
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
 		uint32_t c=0, readed=0;
 		bool estimate_me=1;
@@ -262,8 +254,8 @@ int estimateInd(int argc, char *argv[])
 				#pragma omp critical
 				#endif
 				{
-					c=readed;				//Turn on the ability to read data from all clones in 
-					if(pro.read(buffer_site[c])!=EOF){
+					c=readed;		//Turn on the ability to read data from all clones in 
+					if(pro_in.read(buffer_locus[c]).good() ){
 						readed++;	//reads the next line of the pro file. pro.read() retuerns 0
 						estimate_me=1;
 					}
@@ -271,19 +263,17 @@ int estimateInd(int argc, char *argv[])
 				}
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
-					buffer_site[c].maskall();
-					buffer_site[c].unmask(ind);
+		//			buffer_locus[c].unmaskall();
+					buffer_locus[c].unmask(ind);
 
-					buffer_mle[c]=estimate (buffer_site[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton);
+					buffer_mle[c]=estimate (buffer_locus[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton);
 					#ifdef PRAGMA
 					#pragma omp critical
 					#endif
 					if (2*(buffer_mle[c].ll-buffer_mle[c].monoll)>=22){
 						for (size_t i=0; i<sum_gofs.size(); i++){
-							//if (?){
 							sum_gofs[i]+=gofs[i];
 							if (gofs[i]!=0) gofs_read[i]++;
-							//}
 						}
 					}
 				}
@@ -291,34 +281,25 @@ int estimateInd(int argc, char *argv[])
 
 		}
                 for (uint32_t x=0; x<readed; ++x){
-                	// Now print everything to the *out stream, which could be a file or the stdout. 
-			//TODO move this over into a formated file.
-			//?
-			if (ldformat){
-				if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
-					*out << std::fixed << std::setprecision(4) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
-					if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
-					*out << std::fixed << std::setprecision(0) << buffer_mle[x].coverage << std::setprecision(4) << '\t' << buffer_mle[x].freq << '\t' << buffer_mle[x].error << '\t' << (buffer_mle[x].ll-buffer_mle[x].monoll)*2 << '\t' << (buffer_mle[x].ll-buffer_mle[x].hwell)*2 << buffer_site[x] << std::endl;
-				}
-			} else {
-				if (2*(buffer_mle[x].ll-buffer_mle[x].monoll)>=A){
-					*out << std::fixed << std::setprecision(4) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
-					*out << std::fixed << std::setprecision(4) << buffer_mle[x] << std::endl;
-				}
-			}
-			if (buffer_mle[x].gof<-MINGOF) buffer_site[x].maskall(); 
+			map_out.write(buffer_mle[x]);
+			if (buffer_mle[x].gof<-MINGOF) buffer_locus[x].maskall(); 
 			if (pro_out.is_open() ){
-				buffer_site[x].id0=pro_out.encodeid0(pro.decodeid0(buffer_site[x].id0) );
-				pro_out.write(buffer_site[x]);
+				pro_out.write(buffer_locus[x]);
 			}
 		}
 		if (readed!=BUFFER_SIZE){break;}
 		all_read+=readed;
 		if (all_read>stop){break;}
 	}
-	if ( not(ldformat) && not(noheader) ) { for (size_t x=0; x<ind.size(); ++x)  *out << "@" << pro.get_sample_name(ind[x]) << ":" << sum_gofs[x]/(float_t(gofs_read[x])) << std::endl; }
-	pro.close();
-	if (outFile.is_open()) outFile.close();		//Closes outFile iff outFile is open.
+	map_out.close();
+	if ( not(noheader) ) {
+		Flat_file <Clone_gof> gof_file;
+		gof_file.open_append(map_out);
+		gof_file.write_header(Clone_gof() );
+		for (size_t x=0; x<ind.size(); ++x) gof_file.write(Clone_gof(locus_in.get_sample_names()[ind[x]], sum_gofs[x]/(float_t(gofs_read[x]) ) ) );
+		gof_file.close();
+	}
+	pro_in.close();
 	if (pro_out.is_open()) pro_out.close();		//Closes pro_out iff pro_out is open.
 	return 0;					//Since everything worked, return 0!.
 }

@@ -14,6 +14,7 @@
 #include "stream-tools.h"
 #include "pro-file.h"
 #include "file-index.h"
+#include "map-file.h"
 
 #include <math.h>
 #include <vector>

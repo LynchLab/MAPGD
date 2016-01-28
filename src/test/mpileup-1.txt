@@ -1,2 +1,6 @@
 scaffold_1	2	A	6	...cg^9,	FCF:DD
+scaffold_1	3	A	6	...cg^9,	FCF:DD
+scaffold_1	5	C	6	...ag^9,	FCF:DD
+scaffold_1	6	C	6	...ag^9,	FCF:DD
 scaffold_3	2	C	6	...ag^9,	FCF:DD
+scaffold_3	4	C	6	...ag^9,	FCF:DD

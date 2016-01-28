@@ -20,9 +20,9 @@ typedef int64_t id1_off_t;	//specifies an offset		specifies a distance between b
 	
 typedef uint8_t gt_t;		//specifies a genotype.		limit 128.
 
-#define CNT_MAX	65536
-#define ID0_MAX	65536
-#define ID1_MAX	4294967296
-#define	GT_MAX	256
+#define CNT_MAX	65535
+#define ID0_MAX	65535
+#define ID1_MAX	4294967295
+#define	GT_MAX	255
 
 #endif

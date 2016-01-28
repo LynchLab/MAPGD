@@ -9,7 +9,7 @@
 using namespace std;
 
 const unsigned char MIN_QUAL = '!';
-ll_t max(ll_t a, ll_t b){
+float_t max(float_t a, float_t b){
 	if (a>b) return a;
 	else return b;
 }; 
@@ -27,7 +27,7 @@ void streamtable(const char *inname, const char *outname){
 //		for (?) { cerr << __FILE__ << ":" << __LINE__ << ":" << " error parsing " << inname << " : " << buffer << endl; exit(1);};
 
 	//our first order of buisness is to figure out the number of coloumns in the file;
-	ll_t MM, Mm, mm, P;
+	float_t MM, Mm, mm, m;
 	size_t N;
 
 	size_t SIZE;
@@ -38,7 +38,7 @@ void streamtable(const char *inname, const char *outname){
 	std::vector <std::string> G;
 	// args, arg;
 
-	POPGL pgl;
+	population_genotypes pgl;
 	getline(in, buffer);
 	
 	column=split(buffer, '\t');
@@ -51,8 +51,8 @@ void streamtable(const char *inname, const char *outname){
 			continue;
 		}
 		if (in.eof() ) break;
-		P=atof(column[5].c_str() ); //or 4!
-		pgl.P=P;
+		m=atof(column[5].c_str() ); //or 4!
+		pgl.m=m;
 		column=split(buffer, '\t');
 		if (column.size()!=6+SIZE) {
 			std::cerr << __FILE__ << ":" << __LINE__ << ":" << " error parsing " << inname << " : " << buffer << std::endl; 
@@ -72,16 +72,16 @@ void streamtable(const char *inname, const char *outname){
 			}
 		}
 		if (first) {
-			SIZE=pgl.gl.size();
+			SIZE=pgl.likelihoods.size();
 			out.write((char *)&SIZE,sizeof(size_t) ); 
 			first=false;
 		}
-		out.write((char *)&pgl.P,sizeof(ll_t) );
+		out.write((char *)&pgl.m,sizeof(float_t) );
 		for (size_t x=0; x<SIZE; x++){
-			out.write((char *)&pgl.gl[x].lMM,sizeof(ll_t) );
-			out.write((char *)&pgl.gl[x].lMm,sizeof(ll_t) );
-			out.write((char *)&pgl.gl[x].lmm,sizeof(ll_t) );
-			out.write((char *)&pgl.gl[x].N,sizeof(size_t) );
+			out.write((char *)&pgl.likelihoods[x].lMM,sizeof(float_t) );
+			out.write((char *)&pgl.likelihoods[x].lMm,sizeof(float_t) );
+			out.write((char *)&pgl.likelihoods[x].lmm,sizeof(float_t) );
+			out.write((char *)&pgl.likelihoods[x].N,sizeof(size_t) );
 		};
 		pgl.clear(); 
 		buffer="";
@@ -98,7 +98,7 @@ table_t readtable(const char *filename){
 	if (!file.is_open()) {cerr << "cannot open " << filename << endl; exit(1);};
 
 	//our first order of buisness is to figure out the number of coloumns in the file;
-	ll_t MM, Mm, mm, P;
+	float_t MM, Mm, mm, m;
 
         std::string buffer;
         std::vector <std::string> column;
@@ -106,7 +106,7 @@ table_t readtable(const char *filename){
 	//args, arg;
 
 	size_t N;
-	POPGL pgl;
+	population_genotypes pgl;
 
 	column=split(buffer, '\t');
 	std::vector <std::string> names(column.begin()+6, column.end() );
@@ -116,8 +116,8 @@ table_t readtable(const char *filename){
 		getline(file,buffer);
 		if (file.eof() ) break;
 
-		P=atof(column[5].c_str() );	//or 4!
-		pgl.P=P;
+		m=atof(column[5].c_str() );	//or 4!
+		pgl.m=m;
 		column=split(buffer, '\t');
 
 		if (column.size()!=6+SIZE) {
@@ -139,7 +139,7 @@ table_t readtable(const char *filename){
 			}
 			pgl.add(MM, Mm, mm, N);
 		}
-		table.push_back(POPGL(pgl));
+		table.push_back(population_genotypes(pgl));
 		pgl.clear(); 
 		buffer="";
 	};
@@ -154,43 +154,43 @@ table_t readbin(const char *filename){
 	
 	if (!file.is_open()) {cerr << "cannot open " << filename << endl; exit(1);};
 
-	ll_t MM, Mm, mm;
+	float_t MM, Mm, mm;
 	size_t N, SIZE;
 	file.read((char *)&SIZE,sizeof(size_t) );
-	POPGL pgl;
+	population_genotypes pgl;
 	while (!file.eof()){
-		file.read((char *)&pgl.P,sizeof(ll_t) );
+		file.read((char *)&pgl.m,sizeof(float_t) );
 		for (size_t x=0; x<SIZE; ++x){
-			file.read((char *)&MM,sizeof(ll_t) );
-			file.read((char *)&Mm,sizeof(ll_t) );
-			file.read((char *)&mm,sizeof(ll_t) );
+			file.read((char *)&MM,sizeof(float_t) );
+			file.read((char *)&Mm,sizeof(float_t) );
+			file.read((char *)&mm,sizeof(float_t) );
 			file.read((char *)&N,sizeof(size_t) );
 			pgl.add(MM, Mm, mm, N);
 		}
-		table.push_back(POPGL(pgl));
+		table.push_back(population_genotypes(pgl));
 		pgl.clear(); 
 	};
 	return table;
 };
 
-std::map<PAIRGL, size_t> readcounts(const char *filename, size_t a, size_t b, size_t s){
-	std::map<PAIRGL, size_t> counts;
+std::map<genotype_pair, size_t> readcounts(const char *filename, size_t a, size_t b, size_t s){
+	std::map<genotype_pair, size_t> counts;
 	ifstream file;
 	file.open(filename, ios::binary);
 	
 	if (!file.is_open()) {cerr << "cannot open " << filename << endl; exit(1);};
 
 
-	ll_t MM, Mm, mm, AN=0, BN=0, tN=0, sampled=0;
+	float_t MM, Mm, mm, AN=0, BN=0, tN=0, sampled=0;
 	size_t SIZE, N;
 	file.read((char *)&SIZE,sizeof(size_t) );
-	POPGL pgl;
+	population_genotypes pgl;
 	while (!file.eof()){
-		file.read((char *)&pgl.P,sizeof(ll_t) );
+		file.read((char *)&pgl.m,sizeof(float_t) );
 		for (size_t x=0; x<SIZE; ++x){
-			file.read((char *)&MM,sizeof(ll_t) );
-			file.read((char *)&Mm,sizeof(ll_t) );
-			file.read((char *)&mm,sizeof(ll_t) );
+			file.read((char *)&MM,sizeof(float_t) );
+			file.read((char *)&Mm,sizeof(float_t) );
+			file.read((char *)&mm,sizeof(float_t) );
 			file.read((char *)&N,sizeof(size_t) );
 			if (x==a) AN+=N;
 			if (x==b) BN+=N;
@@ -201,21 +201,21 @@ std::map<PAIRGL, size_t> readcounts(const char *filename, size_t a, size_t b, si
 	file.open(filename, ios::binary);
 
         file.read((char *)&SIZE,sizeof(size_t) );
-	ll_t amin=max(AN/tN/2., 1), amax=AN*2./tN, bmin=max(BN/tN/2., 1), bmax=BN*2./tN;
+	float_t amin=max(AN/tN/2., 1), amax=AN*2./tN, bmin=max(BN/tN/2., 1), bmax=BN*2./tN;
 	if (amax<6 || bmax<6){
 		cout << "Sampled: " << sampled << "(" << a << ":" << amin << "-" << amax << ", " << b << ":" << bmin << "-" << bmax << ") ";
 		return counts;
 	}
         while (!file.eof()){
-                file.read((char *)&pgl.P,sizeof(ll_t) );
+                file.read((char *)&pgl.m,sizeof(float_t) );
                 for (size_t x=0; x<SIZE; ++x){
-                        file.read((char *)&MM,sizeof(ll_t) );
-                        file.read((char *)&Mm,sizeof(ll_t) );
-                        file.read((char *)&mm,sizeof(ll_t) );
+                        file.read((char *)&MM,sizeof(float_t) );
+                        file.read((char *)&Mm,sizeof(float_t) );
+                        file.read((char *)&mm,sizeof(float_t) );
                         file.read((char *)&N,sizeof(size_t) );
                         pgl.add(MM, Mm, mm, N);
                 }
-                if (pgl.gl[a].N>amin && pgl.gl[a].N<amax && pgl.gl[b].N>bmin && pgl.gl[b].N<bmax){sampled++; counts[PAIRGL (pgl.gl[a].lMM, pgl.gl[a].lMm, pgl.gl[a].lmm, pgl.gl[b].lMM, pgl.gl[b].lMm, pgl.gl[b].lmm, pgl.P)]+=1;}
+                if (pgl.likelihoods[a].N>amin && pgl.likelihoods[a].N<amax && pgl.likelihoods[b].N>bmin && pgl.likelihoods[b].N<bmax){sampled++; counts[genotype_pair (pgl.likelihoods[a].lMM, pgl.likelihoods[a].lMm, pgl.likelihoods[a].lmm, pgl.likelihoods[b].lMM, pgl.likelihoods[b].lMm, pgl.likelihoods[b].lmm, pgl.m)]+=1;}
                 pgl.clear(); 
    		if (sampled==s && s!=0) break;
         };
@@ -237,14 +237,14 @@ void writebin(table_t table, const char *filename){
 	table_t::iterator it=table.begin();
 	table_t::iterator end=table.end();
 	file.write((char *)&SIZE,sizeof(size_t) );
-	POPGL pgl;
+	population_genotypes pgl;
 	while (it!=end){
-		file.write((char *)&it->P,sizeof(ll_t) );
+		file.write((char *)&it->m,sizeof(float_t) );
 		for (size_t x=0; x<SIZE; ++x){
-			file.write((char *)&it->gl[x].lMM,sizeof(ll_t) );
-			file.write((char *)&it->gl[x].lMm,sizeof(ll_t) );
-			file.write((char *)&it->gl[x].lmm,sizeof(ll_t) );
-			file.write((char *)&it->gl[x].N,sizeof(size_t) );
+			file.write((char *)&it->likelihoods[x].lMM,sizeof(float_t) );
+			file.write((char *)&it->likelihoods[x].lMm,sizeof(float_t) );
+			file.write((char *)&it->likelihoods[x].lmm,sizeof(float_t) );
+			file.write((char *)&it->likelihoods[x].N,sizeof(count_t) );
 		}
 		it++;
 	};

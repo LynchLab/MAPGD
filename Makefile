@@ -11,6 +11,10 @@ noomp:
 	$(MAKE) -C $(SUBDIRS) noomp
 .PHONY: noomp 
 
+docs: 
+	$(MAKE) -C $(SUBDIRS) docs
+.PHONY: docs
+
 dist: 
 	$(MAKE) -C $(SUBDIRS) dist
 .PHONY: dist
