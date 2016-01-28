@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <typeinfo>
 
 #include "stream-tools.h"
 #include "typedef.h"
