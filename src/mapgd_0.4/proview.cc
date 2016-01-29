@@ -43,218 +43,112 @@ int proview(int argc, char *argv[])
 	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman and Bernhard Haubold");
 	env.setdescription("prints data in the '.pro' file quartet format");
-	
 	env.optional_arg('m',"minimum",	 &args.min, 	&arg_setint, 	"an error occured", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
 	env.optional_arg('q',"qdel",	&qdel,		&arg_setchar, 	"an error occured", "sets the output quartet delimiter (default '/')");
 	env.optional_arg('d',"cdel",	&cdel,		&arg_setchar, 	"an error occured", "sets the output column delimiter (default tab)");
-	env.optional_arg('c',"column",	&outc,	 	&arg_setint, 	"an error occured", "sets the number of column in the output (default 6)");
-
-	env.optional_arg('C',"incolumn",&inC,	 	&arg_setint, 	"an error occured", "overides the default number of column assumed for the input.");
-	env.optional_arg('i',"input",	&infiles,	&arg_setvectorstr,
-									"an error occured", "sets the input file (default stdin). If multiple input files given, the default behavior is to merge the files.");
-	env.optional_arg('I',"sample",	&sample, 	&arg_setint,	"an error occured", "limit output to sample N.");
-	env.optional_arg('H',"header",	&headerfile, 	&arg_setstr, 	"an error occured", "use a SAM header file.");
 	env.optional_arg('n',"names",	&namefile, 	&arg_setstr, 	"an error occured", "a tab delimited file with sample name 'tab' file name pairs.");
 	env.optional_arg('o',"output",	&outfile,	&arg_setstr, 	"an error occured", "sets the output file (default stdout)");
+	env.optional_arg('I',"index",	&headerfile,	&arg_setstr, 	"an error occured", "sets the index file (required to use mpileup)");
+	env.optional_arg('i', "input",	&infiles,	&arg_setvectorstr, 	"an error occured", "sets the index file (required to use mpileup)");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
-	env.flag(	'P',"pro",	&args.pro, 	&flag_set, 	"an error occured", "input is in the pro format");
 	env.flag(	'b',"binary",	&binary, 	&flag_set, 	"an error occured", "output in a binary format");
-	env.flag(	'B',"bernhard",	&bernhard, 	&flag_set, 	"an error occured", "print in mlRho compatibility mode.");
-	env.flag(	'N',"noheader",	&noheader, 	&flag_set, 	"an error occured", "don't print a header.");
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
 
-	if (bernhard) { 
-		outc=5; 
-		noheader=true; 
-		qdel='\t'; 
-		if(sample==-1) sample=1;
-	} 
-
-	if ( outc!=6 && outc!=5 && outc!=7 ) {std::cerr << __FILE__ << ":" << __LINE__ << ": columns must be 5, 6 or 7 (e.g. -c 5).\n"; exit(0);}
-
 	//Setting up the input/output
 
-	profile out;			//the output profile
-	std::vector <profile *> in;	//the input profile(s)
+	Indexed_file <Locus> out_file;			//the output profile
+//	std::vector <Indexed_file <Locus> *> in_files;	//the input profile(s)
+	std::vector <Mpileup_file <Locus> *> in_files;	//the input profile(s)
 
-	count_t samples=0;
-
-	if (infiles.size()!=0){
-		for (size_t x=0; x<infiles.size(); x++){
-			in.push_back(new profile);
-			in[x]->open(infiles[x].c_str(), std::fstream::in);
-			if (!in[x]->is_open() ) {printUsage(env); exit(0);}
-			if (inC!=0) in[x]->setcolumns(inC);
-			samples+=in[x]->size();
-			in[x]->set_sample_name(infiles[x]);
-		}
-	} else if (namefile!="") {
-		std::fstream temp;
-		temp.open(namefile);
-		if (!temp.is_open() ) {printUsage(env); exit(0);}
-		std::string line;
-		std::vector <std::string> columns;
-		while(getline(temp, line) ){
-			if (line[0]!='@'){
-				columns=split(line, '\t');
-				in.push_back(new profile);
-				in.back()->open(columns[0].c_str(), std::fstream::in);
-				if (!in.back()->is_open() ) {printUsage(env); exit(0);}
-				if (inC!=0) in.back()->setcolumns(inC);
-				samples+=in.back()->size();
-				for (size_t y=1; y<columns.size(); ++y) in.back()->set_sample_name(y-1, columns[y]);
-			}
-		}
-	} else {
-		in.push_back(new profile);
-		in[0]->open(std::fstream::in);
-		if (!in[0]->is_open() ) {printUsage(env); exit(0);}
-		if (inC!=0) in[0]->setcolumns(inC);
-		samples+=in[0]->size();
-		
-	}
-
-	if (binary) {
-		if (outfile.size()!=0) {
-			out.open(outfile.c_str(), std::fstream::out | std::fstream::binary);
-			if (!out.is_open() ) {printUsage(env); exit(0);} 
-		}
-		else out.open(std::fstream::out | std::fstream::binary);
-	} else {
-		if (outfile.size()!=0) {
-			out.open(outfile.c_str(), std::fstream::out);
-			if (!out.is_open() ) {printUsage(env); exit(0);} 
-		}
-		else out.open(std::fstream::out);
-	}
-
-	out.setsamples(samples);
-	out.setcolumns(outc);
-	out.set_delim_column(cdel);
-	out.set_delim_quartet('/');
-
-	count_t z=0;
-
-	//change to iterator...
-
-	size_t thissample=0;
-
-	if (sample==-1){
-		for (size_t x=0; x<in.size(); x++){		//copies the sample names from the in file(s) to out.
-			for (size_t y=0;y<in[x]->size(); ++y){
-				out.set_sample_name(z, in[x]->get_sample_name(y) );
-				z++;
-			}
-		}
-	}
-	else {
-		for (size_t x=0; x<in.size(); x++){		//copies the sample names from the in file(s) to out.
-			for (size_t y=0;y<in[x]->size(); ++y){
-			++thissample;
-			if (thissample==sample) out.set_sample_name(0, in[x]->get_sample_name(y) );
-			}
-		}
-	}
-
+	std::vector <Locus> in_locus;
+	Locus out_locus;
 
 	File_index index;
 
-	if (headerfile.size()!=0) {
-		std::fstream header;
-		header.open(headerfile.c_str(),  std::fstream::in);
-		index.from_sam_header( header );
-		for (size_t x=0; x<index.get_sizes().size(); x++) out.encodeid0(index.get_string(x) );
-		out.set_id0(0);
-		out.set_id1(1);
-		out.set_index(index);
-	} 
-	else {
-		out.set_id0(ID0_MAX);
-		out.set_id1(1);	//set the ids of out to -1 for syncronization purposes.
+        if (headerfile.size()!=0) {
+                std::fstream header;
+                header.open(headerfile.c_str(),  std::fstream::in);
+                index.from_sam_header( header );
+                out_file.set_index(index);
+        }
+
+	std::vector <std::string> sample_names;
+	
+	for (size_t x=0; x<infiles.size(); ++x) {
+		in_files.push_back(new Mpileup_file <Locus>);
+		if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), std::fstream::in);
+		else in_files.back()->open(std::fstream::in);
+		in_locus.push_back( in_files.back()->read_header() );
+		for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
+			sample_names.push_back( std::string("sample_")  );//insert(std::end(sample_names), std::begin(in_locus.back().get_sample_names() ), std::end(in_locus.back().get_sample_names() ) );
+		}
+                in_files[x]->set_index(index);
+		if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
 	}
-	for (size_t x=0; x<in.size(); x++){ in[x]->read(); }
 
-	if (!noheader) out.writeheader();		//writes a header iff noheader is not set.
-	else out.noheader();
 
-	bool go=true;
-	bool read_site=false;
-	bool read_scaffold=false;
-	bool print_all=true;
+	out_locus.set_sample_names(sample_names);
+        out_file.set_index(index);
+	if (outfile.size()==0) out_file.open(std::fstream::out);
+	else out_file.open(outfile.c_str(), std::fstream::out);
+	out_file.write_header(out_locus);
 
-	if (!index.is_open() ) print_all=false;
+	out_locus.id0=0; out_locus.id1=1;	
+	bool print_all=true, go=true, read_site=false;
 
-	Locus site=out.get_locus();
 
 	while(go){
-		std::vector <quartet_t>::iterator it=site.begin();
-		std::vector <quartet_t>::iterator end=site.end();
-		go=false;
+		out_locus.ref.base=4;
+
+		std::vector <quartet_t>::iterator it=out_locus.begin();
+		std::vector <quartet_t>::iterator end=out_locus.end();
+
 		read_site=false;
-		read_scaffold=false;
-		site.set_extraid(4, 0);
-		for (size_t x=0; x<in.size(); x++){
-			std::vector <quartet_t>::iterator it_in=in[x]->begin();
-			std::vector <quartet_t>::iterator end_in=in[x]->end();	
-			if (in[x]->get_id1()==site.get_id1() && out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
-				site.set_extraid(in[x]->get_extraid(0), 0);
+		
+		for (size_t x=0; x<in_files.size(); x++){
+
+			std::vector <quartet_t>::iterator it_in=in_locus[x].begin();
+			std::vector <quartet_t>::iterator end_in=in_locus[x].end();	
+
+			out_locus.ref.base=4;
+			out_file.get_pos(out_locus);
+			in_files[0]->get_pos(in_locus[0]);
+			if ( in_files[x]->is_open()  && in_files[x]->get_pos(in_locus[x])==out_file.get_pos(out_locus) ){
+				read_site=true;
+				if(in_locus[x].ref.base!=4) out_locus.ref=in_locus[x].ref.base;
 				while (it_in!=end_in){
 					*it=*it_in;
 					it++;
 					it_in++;
 				}
-				read_site=true;
-				read_scaffold=true;
-				if (in[x]->read()==EOF ) in[x]->close();
+				if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
 			} else {
-				if (out.encodeid0(in[x]->decodeid0(in[x]->get_id0()))==site.get_id0() ){
-					if (in[x]->get_id1()<site.get_id1() && in[x]->is_open() ) {
-						std::cerr << __FILE__ << ":" << __LINE__ << ": in[x]->get_id1() out of order. Exiting\n"; exit(0);
-					}
-					if(in[x]->is_open() ) read_scaffold=true;
-				}
 				while (it_in!=end_in){ 
 					*it=0;
 					it++;
 					it_in++;
 				}
-			} 
-			if (in[x]->is_open() ) go=true;
-		}
-		if (read_site || print_all  && site.get_id0()!=ID0_MAX){
-			site.unmaskall();
-			if (bernhard){
-				Locus L=site;
-				L.resize(1);
-				L.set_quartet(site.get_quartet(sample), 0);
-				out.write(L);
-			} else out.write(site);
-		}
-		if (!read_scaffold){
-			if (not (index.is_open() ) ) {
-				if (site.get_id0()!=ID0_MAX-1) site.set_id0(site.get_id0()+1);
-				else {std::cerr << __FILE__ << ":" << __LINE__ << ": maximum scaffold count reached. Exiting\n"; exit(0); }
-				site.set_id1(1);
 			}
-			else site.set_id1(site.get_id1()+1);
-		} else {
-			site.set_id1(site.get_id1()+1);
 		}
-		if (index.is_open() ) {
-			if (site.get_id1()>index.get_size(site.get_id0() ) ) {
-				site.set_id0(site.get_id0()+1);
-				site.set_id1(1);
-			}
-			if (site.get_id0()<index.get_sizes().size() ) go=true;
-			else go=false;
+		if ( read_site || print_all ){
+			out_locus.unmaskall();
+			out_file.write(out_locus);
 		}
+		out_locus.set_id1(out_locus.get_id1()+1);
+		if (out_locus.get_id1()>index.get_size(out_locus.get_id0() ) ) {
+			out_locus.set_id0(out_locus.get_id0()+1);
+			out_locus.set_id1(1);
+		}
+		if (out_locus.get_id0()<index.get_sizes().size() ) go=true;
+		else go=false;
+	
 	};
-	out.close();
-	for (size_t x=0; x<in.size(); ++x) {
-		in[x]->close(); 
-		delete in[x];
+	out_file.close();
+	for (size_t x=0; x<in_files.size(); ++x) {
+		in_files[x]->close(); 
+		delete in_files[x];
 	}
 	env.close();
 	return 0;

@@ -1,0 +1,26 @@
+relatedness_data.cc: In function ‘std::istream& operator>>(std::istream&, Relatedness&)’:
+relatedness_data.cc:38:19: error: ‘class Relatedness’ has no member named ‘null_ll_’
+  stream_line >> x.null_ll_ ;
+                   ^
+relatedness_data.cc:39:19: error: ‘class Relatedness’ has no member named ‘max_ll_’
+  stream_line >> x.max_ll_ ;
+                   ^
+relatedness_data.cc: In function ‘std::ostream& operator<<(std::ostream&, const Relatedness&)’:
+relatedness_data.cc:44:17: error: ‘delim’ was not declared in this scope
+  out << x.X_ << delim;
+                 ^
+relatedness_data.cc:60:11: error: ‘const class Relatedness’ has no member named ‘null_ll_’
+  out << x.null_ll_ << delim;
+           ^
+relatedness_data.cc:61:11: error: ‘const class Relatedness’ has no member named ‘max_ll_’
+  out << x.max_ll_ << delim;
+           ^
+relatedness_data.cc: In member function ‘size_t Relatedness::size() const’:
+relatedness_data.cc:70:46: error: ‘Y_size’ was not declared in this scope
+  return sizeof(float_t)*16+(X_.size()+Y_size())*sizeof(char);
+                                              ^
+relatedness_data.cc:71:1: error: control reaches end of non-void function [-Werror=return-type]
+ }
+ ^
+cc1plus: some warnings being treated as errors
+make: *** [relatedness_data.o] Error 1

@@ -4,10 +4,13 @@
 #define ALLELE_STAT_H
 
 #include <iostream>
-#include "typedef.h"
-#include "pro-file.h"
-#include <cfloat>
 #include <iomanip>
+#include <cfloat>
+#include <sstream>
+#include <vector>
+
+#include "typedef.h"
+#include "base.h"
 
 ///	A class to store population specific information. May be moved over to population.
 /** This is likely to become some form of container to handel moving data into and out of rows of map file.

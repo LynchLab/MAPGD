@@ -242,15 +242,15 @@ int estimateInd(int argc, char *argv[])
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
 		uint32_t c=0, readed=0;
 		bool estimate_me=1;
-		#ifdef PRAGMA
+		#ifndef NOOMP
 		#pragma omp parallel private(c, model, estimate_me) 
 		#endif
 		{
-			#ifdef PRAGMA
+			#ifndef NOOMP
 			#pragma omp for
 			#endif
 			for (uint32_t x=0; x<BUFFER_SIZE; ++x){
-				#ifdef PRAGMA
+				#ifndef NOOMP
 				#pragma omp critical
 				#endif
 				{
@@ -267,7 +267,7 @@ int estimateInd(int argc, char *argv[])
 					buffer_locus[c].unmask(ind);
 
 					buffer_mle[c]=estimate (buffer_locus[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton);
-					#ifdef PRAGMA
+					#ifndef NOOMP
 					#pragma omp critical
 					#endif
 					if (2*(buffer_mle[c].ll-buffer_mle[c].monoll)>=22){
@@ -291,12 +291,12 @@ int estimateInd(int argc, char *argv[])
 		all_read+=readed;
 		if (all_read>stop){break;}
 	}
-	map_out.close();
+	map_out.close_table();
 	if ( not(noheader) ) {
-		Flat_file <Clone_gof> gof_file;
+		Flat_file <Sample_gof> gof_file;
 		gof_file.open_append(map_out);
-		gof_file.write_header(Clone_gof() );
-		for (size_t x=0; x<ind.size(); ++x) gof_file.write(Clone_gof(locus_in.get_sample_names()[ind[x]], sum_gofs[x]/(float_t(gofs_read[x]) ) ) );
+		gof_file.write_header(Sample_gof() );
+		for (size_t x=0; x<ind.size(); ++x) gof_file.write(Sample_gof(locus_in.get_sample_names()[ind[x]], sum_gofs[x]/(float_t(gofs_read[x]) ) ) );
 		gof_file.close();
 	}
 	pro_in.close();

@@ -16,7 +16,7 @@ int filter(int argc, char *argv[])
 	bool binary=false;
 
 	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_hwell=FLT_MAX, min_hwell=-1, min_freq=0, max_freq=0.5, min_gof=-2.;
-	count_t max_coverage=CNT_MAX, min_coverage=4, max_pitch=1;
+	int max_coverage=CNT_MAX, min_coverage=4, max_pitch=1;
 
 	env_t env;
 	env.setname("mapgd filter");
@@ -29,7 +29,7 @@ int filter(int argc, char *argv[])
 	env.optional_arg('o',"output", 	&out_file, 	&arg_setstr, 	"please provide an int.", "the name of an output file (default std::cout).");
 
 	env.optional_arg('c',"mincoverage", &min_coverage, 	&arg_setint, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
-	env.optional_arg('C',"mincoverage", &max_coverage, 	&arg_setint,	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
+	env.optional_arg('C',"maxcoverage", &max_coverage, 	&arg_setint,	"please provide an int.", "max coverage for an individual at a site for an individual to be used (defualt CNT_MAX).");
 	env.optional_arg('p',"minpoly", &min_polyll, 	&arg_setfloat_t, "please provide a float.", "minimum log likelihood of polymorphism (default 0.0).");
 	env.optional_arg('P',"maxpoly", &max_polyll, 	&arg_setfloat_t, "please provide a float.", "maximum log likelihood of polymorphism (default none).");
 	env.optional_arg('f',"minhwe", 	&min_hwell,	&arg_setfloat_t, "please provide a float.", "minimum log likelihood of Hardy-Weinberg disequilibrium (default 0.0).");
@@ -47,9 +47,12 @@ int filter(int argc, char *argv[])
 	float_t polyll, hwell;
 	allele_stat s;
 	Indexed_file <allele_stat> map_in, map_out;
+	
+	if (in_file.size()==0)	map_in.open(std::fstream::in);
+	else map_in.open(in_file.c_str(), std::fstream::in);
 
-	map_in.open(std::fstream::in);
-	map_out.open(std::fstream::out);
+	if (out_file.size()==0)	map_out.open(std::fstream::out);
+	else map_out.open(out_file.c_str(), std::fstream::out);
 
 	s=map_in.read_header();
 
@@ -58,10 +61,22 @@ int filter(int argc, char *argv[])
 
 	map_in.read(s);
 
-	while( !map_in.eof() ){
+	while( map_in.is_open() ){
 		hwell=(s.ll-s.hwell)*2, polyll=(s.ll-s.monoll)*2;
 		float_t m=s.mm+s.Mm/2.;
-		if (polyll < max_polyll && hwell < max_hwell && s.error < error_max && s.f > f_min && s.f < f_max && m > min_freq && m < max_freq && polyll > min_polyll && hwell > min_hwell && s.gof > min_gof && s.efc > min_efc && s.coverage > min_coverage && s.coverage < max_coverage && s.excluded < max_pitch) map_out.write(s);
+		if (s.coverage==0){
+			if (min_coverage==0) map_out.write(s);
+		} else {
+			if (polyll >= min_polyll){ 
+			if (hwell >= min_hwell && hwell <= max_hwell){
+			if (s.error <= error_max){
+			if (s.f >= f_min && s.f <= f_max){
+			if (m >= min_freq && m <= max_freq){
+			if (s.gof >= min_gof){
+			if (s.efc >= min_efc){
+			if (s.coverage >= min_coverage && s.coverage <= max_coverage){
+			if (s.excluded <= max_pitch) map_out.write(s);
+		}}}}}}}}}
 		map_in.read(s);
 	}
 	map_out.close();

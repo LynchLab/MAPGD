@@ -17,36 +17,38 @@ public :
 	count_t N;							//!< total depth of coverage.
 	genotype(const float_t &MM, const float_t &Mm, const float_t &mm, const count_t &N);	//!< constructor.
 	genotype();							//!< constructor.
+	genotype & operator= (const genotype&);
 };
+
 std::ostream& operator<< (std::ostream& out, const genotype& x);
 std::istream& operator>> (std::istream& in, genotype& x);
 
 class population_genotypes{
 private:
-	std::vector <genotype>::iterator igl;	//!<
-	std::vector <std::string> sample_names_;
-	bool frozen;				//!< ?
+	std::vector <genotype>::iterator igl_;		//!< an iterator to allow us to iterate over the likelihoods.
+	std::vector <std::string> sample_names_;	//!< a vector of sample names.
+	bool frozen;					//!< a flag to indicate that no more samples will be added 
 public:
 	std::vector <genotype> likelihoods;		//!< genotypic likelihood
 	std::vector <std::string> sample_names;		//!< genotypic likelihood
 
-	count_t major;
-	count_t minor;
+	gt_t major;					//!< identity of the major allele
+	gt_t minor;					//!< identity of the minor allele
 	float_t m;					//!< minor allele frequency
-	id0_t id0;
-	id1_t id1;
+	id0_t id0;					//!< scaffold number
+	id1_t id1;					//!< location on scaffold
 
-	population_genotypes();				//!< constructor.
-	population_genotypes(std::vector <std::string>);
-	population_genotypes(const population_genotypes & popgl);		//!< constructor.
+	population_genotypes();					//!< simple constructor.
+	population_genotypes(std::vector <std::string>);	//!< constructor needed by map-file. String should be coloumn names. 
+	population_genotypes(const population_genotypes &); 	//!< constructor using a population_genotype
 	~population_genotypes();				//!< destructor.
-	size_t size() const;				//!< 
-	void add(const genotype &likelihood);			//!< append a likelihood.
-	void add(const float_t &lMM, const float_t &lMm, const float_t &lmm, const count_t &N);
-	void clear();
-	std::string header(void) const;
-	static const std::string table_name;
-	static const std::string file_name;
+	size_t size() const;					//!< Returns the number of samples.
+	void add(const genotype &likelihood);			//!< append a sample to the likelihood.
+	void add(const float_t &lMM, const float_t &lMm, const float_t &lmm, const count_t &N); //!< append a sample to the likelihood.
+	void clear();						//!< clear likelihoods.
+	std::string header(void) const;				//!< print header.
+	static const std::string table_name;			//!< destination table in Db.
+	static const std::string file_name;			//!< defualt file extention.
 	inline std::vector <std::string> get_sample_names(void) const {return sample_names_;};		//!< names of the samples sequenced.
 	inline void set_sample_names(const std::vector <std::string>& sample_names) {
 		sample_names_=sample_names;
@@ -57,8 +59,6 @@ public:
 std::ostream& operator<< (std::ostream& out, const population_genotypes& x);
 std::istream& operator>> (std::istream& in, population_genotypes& x);
 
-
-
-typedef std::tuple <float_t, float_t, float_t, float_t, float_t, float_t, float_t> genotype_pair; 
-genotype_pair convert(population_genotypes&, const count_t &, const count_t &, const float_t &, const float_t &, const float_t &, const float_t &ll_t);
+typedef std::tuple <float_t, float_t, float_t, float_t, float_t, float_t, float_t> Genotype_pair; 
+Genotype_pair convert(const genotype &, const genotype &, const float_t &, const uint8_t &);
 #endif  

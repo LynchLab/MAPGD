@@ -3,7 +3,6 @@
 
 #include "typedef.h"
 #include "interface.h"
-#include "pro-file.h"
 #include "likelihood.h"
 #include "genotype.h"
 
@@ -15,7 +14,11 @@
 #include <math.h>
 #include <vector>
 #include <algorithm>
+#include <limits.h>
+
+#ifndef NOOMP
 #include <omp.h>
+#endif 
 
 int PopLD(int, char **);
 

@@ -129,7 +129,8 @@ std::vector <id1_t> File_index::get_sizes (void)
 	return size_;				
 }	
 
-std::ostream& operator << (std::ostream& out, const File_index& f){
+std::ostream& operator << (std::ostream& out, const File_index& f)
+{
 	char delim_='\t';
 	if (f.id0_.size()>0) out << f.id0_[0] << delim_ << f.size_[0];
 	for (size_t x=1; x<f.id0_.size(); ++x){
@@ -139,7 +140,8 @@ std::ostream& operator << (std::ostream& out, const File_index& f){
 	return out;
 }
 
-std::istream& operator >> (std::istream& in, File_index& f){
+std::istream& operator >> (std::istream& in, File_index& f)
+{
 	std::string scaffold_name; 
 	id1_t length;
 //	char endl;
@@ -156,10 +158,12 @@ std::istream& operator >> (std::istream& in, File_index& f){
 	return in;
 }
 
-std::string File_index::header(void) const{
+std::string File_index::header(void) const
+{
 	return "@NAME          \tLENGTH\n";
-};
+}
 	
-size_t File_index::size(void) const{
+size_t File_index::size(void) const
+{
 	return 2;
-};
+}

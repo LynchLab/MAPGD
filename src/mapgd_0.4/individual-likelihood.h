@@ -2,15 +2,14 @@
 #define _INDIVIDUAL_LIKELIHOOD_H_
 
 #include <math.h>
+#include <iomanip>      // std::setprecision
+#include <cfloat>
 
 #include "lnmultinomial.h"
 #include "allele_stat.h"
 #include "newton-method-theta.h"
 #include "models.h"
 
-#include "pro-file.h"
-#include <iomanip>      // std::setprecision
-#include <cfloat>
 
 
 

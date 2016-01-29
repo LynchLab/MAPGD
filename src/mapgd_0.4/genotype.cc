@@ -27,7 +27,7 @@ population_genotypes::population_genotypes(){frozen=false;};
 population_genotypes::population_genotypes(const population_genotypes &poplikelihoods){
 	likelihoods=poplikelihoods.likelihoods;
 	m=poplikelihoods.m;
-	igl=poplikelihoods.igl;
+	igl_=poplikelihoods.igl_;
 	frozen=poplikelihoods.frozen;
 }
 
@@ -41,8 +41,8 @@ size_t population_genotypes::size() const{
 
 void population_genotypes::add(const genotype &_gl){
 	if (frozen){
-		*igl=_gl;
-		igl++;
+		*igl_=_gl;
+		igl_++;
 	} else {
 		likelihoods.push_back(_gl);	
 	};
@@ -50,8 +50,8 @@ void population_genotypes::add(const genotype &_gl){
 
 void population_genotypes::add(const float_t &lMM, const float_t &lMm, const float_t &lmm, const count_t &lN){
 	if (frozen){
-		*igl=genotype(lMM, lMm, lmm, lN);
-		igl++;
+		*igl_=genotype(lMM, lMm, lmm, lN);
+		igl_++;
 	} else {
 		likelihoods.push_back(genotype(lMM, lMm, lmm, lN));	
 	};
@@ -59,14 +59,12 @@ void population_genotypes::add(const float_t &lMM, const float_t &lMm, const flo
 
 void population_genotypes::clear(){
 	frozen=true;
-	igl=likelihoods.begin();
+	igl_=likelihoods.begin();
 }
 
-genotype_pair convert(const population_genotypes& popgl, const count_t &a, count_t &b, const float_t &ma, const float_t &Ma, const float_t &mb, const float_t &Mb){
-	if ((popgl.likelihoods[a].N>=ma) && (popgl.likelihoods[a].N<=Ma) && (popgl.likelihoods[b].N>=mb) && (popgl.likelihoods[b].N<=Mb) ){
-		return genotype_pair (popgl.likelihoods[a].lMM, popgl.likelihoods[a].lMm, popgl.likelihoods[a].lmm, popgl.likelihoods[b].lMM, popgl.likelihoods[b].lMm, popgl.likelihoods[b].lmm, popgl.m);
-	}
-	else return genotype_pair (0, 0, 0, 0, 0, 0, 0);
+Genotype_pair convert(const genotype &x, const genotype &y, const float_t &m, const uint8_t &precision){
+	float_t T=pow(10, precision);
+	return Genotype_pair ( roundf(x.lMM * T) / T, roundf(x.lMm*T)/T, roundf(x.lmm*T)/T, roundf(y.lMM*T)/T, roundf(y.lMm*T)/T, round(y.lmm*T)/T, round(m*T)/T);
 }
 
 std::string population_genotypes::header(void) const{
@@ -81,9 +79,17 @@ std::string population_genotypes::header(void) const{
 	return line;
 }
 
+genotype & genotype::operator= (const genotype& rhs){
+	lMM=rhs.lMM;
+	lMm=rhs.lMm;
+	lmm=rhs.lmm;						//!< Major Major, Major minor, minor minor
+	N=rhs.N;						//!< total depth of coverage.
+	return *this;
+}
+
 std::ostream& operator<< (std::ostream& out, const population_genotypes& x)
 {
-	out << x.id0 << '\t' << x.id1;
+	out << x.id0 << '\t' << x.id1 << '\t' << x.m;
 	std::vector <genotype>::const_iterator s_it=x.likelihoods.cbegin(), end=x.likelihoods.cend();
 //	std::vector <genotype>                      likelihoods;		//!< genotypic likelihood
 	while(s_it!=end){
@@ -95,6 +101,8 @@ std::ostream& operator<< (std::ostream& out, const population_genotypes& x)
 
 std::istream& operator>> (std::istream& in, population_genotypes& x)
 {
+//	getline
+//	out << x.id0 << '\t' << x.id1 << '\t' << x.m;
 	return in;
 }
 

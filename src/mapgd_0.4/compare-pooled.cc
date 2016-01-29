@@ -36,28 +36,30 @@ int comparePooled(int argc, char *argv[])
 	if ( parsargs(argc, argv, env) ) printUsage(env);
 	if ( !env.required_set() ) printUsage(env);
 
-	std::ostream *out;
-	std::ofstream outFile;
-	out=&std::cout;
-
-	profile pro;
-	allele_stat site;
+	Indexed_file <Locus> in_pro;
+	Locus in_locus;
+	Indexed_file <allele_stat> out_map;
+	Locus out_allele;
 
 	/* Open the input file. */
 
 	if (infile.size()!=0) {
-		pro.open(infile.c_str(), std::fstream::in);
-		if (not (pro.is_open() ) ) printUsage(env);
+		in_pro.open(infile.c_str(), std::fstream::in);
+		if (not (in_pro.is_open() ) ) printUsage(env);
 	} else {
-		pro.open(std::fstream::in);
+		in_pro.open(std::fstream::in);
 	}
+	in_locus=in_pro.read_header();
 
 	/* Open the output file. */
 	if (outfile.size()!=0) {
-		outFile.open(outfile.c_str(), std::fstream::out);
-		if (!outFile) printUsage(env);
-		out=&outFile;
+		out_map.open(outfile.c_str(), std::fstream::out);
+		if (!out_map.is_open() ) printUsage(env);
+	} else {
+		out_map.open(std::fstream::out);
 	}
+
+	out_allele=in_pro.read_header();
 
 	/* ************************************************************************************************************ */
 

@@ -13,9 +13,11 @@
 #include "typedef.h"
 #include "stream-tools.h"
 #include "allele_stat.h"
+#include "locus.h"
 #include "genotype.h"
-#include "clone_gof.h"
+#include "sample_gof.h"
 #include "file-index.h"
+#include "relatedness_data.h"
 
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 
@@ -33,6 +35,7 @@
 class Base_file {
 protected:
 	bool open_;	//!< indicates whether the profile opened succesfully
+	bool table_open_;	//!< indicates whether the profile opened succesfully
 
 	char delim_column_;	//!< The delimiter which seperates columns
 

@@ -1,3 +1,0 @@
-@PR	VN:2	CN:7	SN:5	MD:0
-@ID	scaffold	pos	ref	sample_1	sample_2	sample_3	sample_4	sameple_5	sample_6	sample_7	sample_8
-scaffold_name	1	C	0/0/30/0	0/0/30/0	0/30/0/0	0/30/0/0	0/10/0/10

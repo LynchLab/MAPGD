@@ -74,8 +74,8 @@ int map2genotype(int argc, char *argv[])
 	Indexed_file <population_genotypes> gcf_out;
 
 	/* Open input files based on file name*/
-	map_in.open_no_extention(mapname.c_str(), std::fstream::in);
-	pro_in.open_no_extention(proname.c_str(), std::fstream::in);
+	map_in.open(mapname.c_str(), std::fstream::in);
+	pro_in.open(proname.c_str(), std::fstream::in);
 
 	/* Just open the output file to std::cout*/
 	gcf_out.open(std::fstream::out);
@@ -86,18 +86,13 @@ int map2genotype(int argc, char *argv[])
 	allele_stat map_record;
 	population_genotypes gcf_record;
 
-	std::cerr << "1!\n";
 	/* Read the headers of the files */
 	map_record=map_in.read_header();	
 	pro_record=pro_in.read_header();	
 
-	std::cerr << "2!\n";
-
 	/* Set the sample names for the gcf file from the sample names in the pro_file*/
 	gcf_record.set_sample_names(pro_record.get_sample_names() );
 	gcf_out.set_index(map_in.get_index() );
-
-	std::cerr << "3!\n";
 
 	/* Write the header */
 	gcf_out.write_header(gcf_record);
@@ -105,13 +100,12 @@ int map2genotype(int argc, char *argv[])
 	id1_t map_pos;	
 	map_in.read(map_record);
 	
-	std::cerr << "HI!\n";
-	while(!map_in.eof() ){
+	while(map_in.is_open() ){
 	/* a read/write cycle */
 		map_pos=map_in.get_pos(map_record);
 		while(pro_in.get_pos(pro_record)<map_pos && !pro_in.eof() ){
 			pro_in.read(pro_record);
-			std::cerr << pro_record << std::endl;
+//			std::cerr << pro_record << std::endl;
 		}
 		if (map_pos==pro_in.get_pos(pro_record) ){
 			get_genotypes(map_record, pro_record, gcf_record);

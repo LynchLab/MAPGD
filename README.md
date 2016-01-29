@@ -10,19 +10,21 @@
 ####[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
 #####[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
 #####[Changes](https://github.com/LynchLab/MAPGD#-changes-)
+#####[Installation](https://github.com/LynchLab/MAPGD#-installation-)
 ####Basic Usage
 #####[Commands](https://github.com/LynchLab/MAPGD#-commands-)
 #####[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
 #####[Examples](https://github.com/LynchLab/MAPGD#-examples-)
-#####[Linux or Mac users](https://github.com/LynchLab/MAPGD#-linux-or-mac-users-)
 ####Misc.
 #####[Extras](https://github.com/LynchLab/MAPGD#-extras-)
 #####[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
+#####[Mason](https://github.com/LynchLab/MAPGD#-Mason-)
+#####[Karst](https://github.com/LynchLab/MAPGD#-karst-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
 <h3> Introduction </h3>
 
-MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data, and provides minimum MSE estimators of these statistics on low coverage sequence. Although other tools, such as vcftools, give similar allele frequency estimates with less computational investment when coverage is high, other programs continue exhibt poor performance on IBD estiamtes eveb at high coverage.
+MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium, linkage disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data or for the analysis of pooled data (where many individuals are used to prepare a single sample). Although other tools may give similar statistical estimates with less computational investment when coverage is high, the IBD estimates of other programs may not converge even at high coverage.
 
 <h5> FAQ </h5>
 
@@ -36,7 +38,7 @@ Typical benchmarks with 16 threads on a 2.6 GHz put us at around 18,000 sites a 
 
 <b> Help, I can't get the program to compile. </b>
 
-MAPGD has been written using the gnu C++11 style, but I've attempted to minimize my reliance on the newer features of the C++ in the hopes that older styles of C++ will have greater cross-platfrom compatibility. However, I have not yet made a systematic examination of mapgd's cross-platform copmpatibility. I have compiled mapgd on :
+MAPGD has requires a compiler that complies with the C++11 guidelines, however, I am happy to work with you to ensure that MAPGD can run on a wide variety of systems. I have compiled MAPGD on:
 
 * Ubuntu Linux, 14.04
 
@@ -46,15 +48,15 @@ MAPGD has been written using the gnu C++11 style, but I've attempted to minimize
 
 * OS X Yosemite.
 
-To compile on OS X, you need to type 'make noomp' because the default OS X does compiler does not support openmp. I sould have this fixed shortly, after which OS X users can get back to typing 'make' like eveyone else, but it may be a few weeks before that makes it to the top of the TODO list. 
+To compile on OS X, you need to type 'make noomp' because the default OS X does compiler does not support openmp.  
  
-Version 0.1 will compile on windows 32 and 64 bit versions IIRC, but getting current versions of mapgd working on windows is near the bottom of the TODO list.
+Version 0.1 will compile on windows 32 and 64 bit versions, but getting current versions of MAPGD working on windows is near the bottom of the TODO list.
 
 Long story short: If you have problems, please please please e-mail me, and I will work to get it to compile for you as quickly as I can. 
 
 <b> Help, the program keeps crashing/hanging </b>
  
-The first thing you should do is e-mail me (for contact infromation type 'mapgd -h'). There are a few known issues that may not be properly fixed in the near future. First off, mapgd has problems merging ddifferent mpileup files into a single .pro file when some of the mpileup files have missing scaffolds. Ultimately we hope to address this by reading directly from bam files which have headers containing scaffold name and size informatoin, however, until this is implemented you can print the header with the 'samtools view -H FILENAME.bam > FILENAME-header.bam' command, and then give this header to mapgd with the 'mapgd proview -H FILENAME-header.bam -i \*.mpileup' command. 
+The first thing you should do is e-mail me (for contact infromation type 'mapgd -h'). I will open a bug report and we can begin discussing how to fix the program. 
 
 <b> How can I help? </b>
 
@@ -88,46 +90,147 @@ Finally show me your changes by typing.
 
 <h5> Changes </h5>
 
-Changes to the interface have been made to better conform to [POSIX](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html) guidelines:
-The the syntax of the -p option (which specifies the populations to be analyzed) has been changed from a space delimited list to a comma delimited list. See the -h option from more information.
-
-The default behavior of the cp and ep commands bas been changed to read and write to the stdin and stdout (respectively).
-
-The ability to specify input and output files with the -i and -o options may be deprecated in the near future. Because files within the program are unbuffered, reading and writing is quite slow and you will see significant gains in performance using i/o redirection. 
-
-Headers have been added to .pro files to preserve information about input files and aid with compatibility as development continues. Additionally, the last line of .pro files now list the total number of lines in the file. 
+There have been a lot changes from 0.3. The format of input and output files has changed, and previous formats are no longer supported. The name of the 'ei' command has been changed to allele, and the 'ep' and 'cp' are now both part of the 'pooled' command. A standard file interface has been created (map-file) which handels all our reading and writing needs. The pro-file interface has been depricated.  
  
-All .pro files w/o headers are assumed to have been generated by the program [GFE](https://github.com/Takahiro-Maruki/Package-GFE) written by Takahiro-Maruki.
-
 <h5> Commands </h5>
 
-<b>The ep, cp and allele commands</b>: These commands use a maximum-likelihood (ML) procedure to estimate allele-frequencies from the numbers of the four nucleotides (quartets) observed at individual genomic sites. For each site, the major and minor nucleotides are identified, their frequencies are estimated by ML.
+Mapgd currently implements the following commands:
+* allele                Estimates allele frequencies using individual data
+* filter                Filter sites in '.map' files
+* genotype              Calculate genotype probabilities for individuals
+* linkage               Estimates linkage disequilibrium between loci
+* pooled                Estimates allele frequencies using pooled data
+* proview               Prints data in the '.pro' file quartet format
+* relatedness           Estimates the 7 IBD coefficients 
+* vcf                   Converts output to the popular vcf format
 
-The ep (estimate-pooled) command estimates whether a site is significantly polymorphic within a population; The cp (compare-pooled) command estimates whether the frequency of major alleles at a site differ between two sample population; and the allele (estimate-individual) command estimates whether a site is significantly polymorphic within a population where individuals have been labeled before sequencing;
+In the near future we hope to implement the commands:
+* read			Reads from an SQL database	
+* write			Writes to an SQL database
 
-The designated major nucleotide is simply the one with the highest rank, and the minor nucleotide is the one with the second highest rank. If the top three ranks are all equal, the site is treated as unresolvable, with both major and minor nucleotides designated in the output by a \*.
+Each command has a number of options that can be examined by the -h option. For example, to get a short help message you can type: 
 
-If the second and third ranks are equal but lower than the major-nucleotide count, the site is treated as monomorphic, with the minor nucleotide again designated by a \*.
+	matthew@Ne:~$mapgd allele -h
+	usage: mapgd allele  [--input] [--output] [--outpro] [--individuals] [--minerror] ... 
 
-The ep and allele commands are useful to distinguish between sites that may appear polymorphic because of sequencing errors and sites that are truly polymorphic, and the cp command is useful to determine whether sampling and sequencing errors can explain differences in estimates of allele frequencies, or whether allele frequencies differ between population samples.
+	mapgd allele version 0.4.1 written by Matthew Ackerman and Takahiro Maruki
+	Uses a maximum likelihood approach to estimate population genomic statistics from an individually 'labeled' population.
 
-<b> The proview command </b>: A number of related file formats which we dub '.pro' file formats are accepted by mapgd.
+	Options:
+	  -i, --input		the input file for the program (default stdout).
+	  -o, --output		the output file for the program (default stdin).
+	  -p, --outpro		name of a 'cleaned' pro file (default none).
+	  -I, --individuals	the individuals to be used in estimates.
+				a comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).
+	  -m, --minerror	prior estimate of the error rate (defualt 0.001).
+	  -H, --header		the name of a .idx file storing scaffold infomation
+	  -M, --mincoverage	minimum coverage for an individual at a site for an individual to be used (defualt 4).
+	  -g, --goodfit		cut-off value for the goodness of fit statistic (defaults 2.0).
+	  -N, --number		cut-off value for number of bad individuals needed before a site is removed entirely (default 4).
+	  -S, --skip		number of sites to skip before analysis begins (default 0).
+	  -H, --noheader	disables printing a headerline.
+	  -n, --newton		use newton-raphson likelihood maximization (slow but accurate).
+	  -h, --help		prints this message
+	  -v, --version		prints the program version
+
+More detailed documentation for each command is being produced, and will be availible shortly. 
 
 <h5> Input/Output </h5>
 
-<b> DEVELOPMENT NOTE </b> I'm working on shifting over all input and output to tab seperated files whos columns all begin with a key listed in key.txt. This is to move towards a paradigm where data is stored in an SQL database, and each command retrieves data from this database. 
+<b> Header lines </b> Ever file begins with two header lines, each begining with the '@' character. The first header line list the name of the table in the SQL database, along with the version of MAPGD used to create the table. The second header list the value stored in each column of the table. 
 
-<b> .pro files </b> The most basic input file is a plain text file consists of three tab delimited columns : The first column is an arbitrary string which identifier a genomic region (e.g., a scaffold), the second column is an integer number specifying the location of a site on that scaffold, and the final column contains four integer values separated by '/'s representing the number of times an A, C, G, and T was observed at the site (respectively). The string-integer pair must be unique.  
+The Table bellow lists potential column labels with their discriptision. It also lists the type of value stored in each column. This information is provided for developers, but will not be important unless you are writing a program which directly uses the binary output of mapgd.
+
+| Label	  | mapgd type 	| Description 							|
+|:--------|:------------|:-------------------------------------------------------------:|
+| KEY  	  | char[7] 	| a unique label for data stored in columns			|
+| TYPE    | char[7] 	| the type of data stored in KEY columns			|
+| DESC 	  | std::string	| string  a verbal description of data stored by the key	|
+| GENOPRB | Genotype	| A set of three genotypic probabilities			|
+| GENOTYP | gt\_t  	| genotype code							|
+| MJ\_FREQ| float\_t	| frequency of the major allele					|
+| MN\_FREQ| float\_t	| frequency of the minor allele					|
+| MM\_FREQ| float\_t	| frequency of the major major genotype				|
+| Mm\_FREQ| float\_t	| frequency of the major minor genotype				|
+| mm\_FREQ| float\_t	| frequency of the minor minor genotype				|
+| NULL\_ER| float\_t	| error rate assuming monomorphism				|
+| ERRROR  | float\_t	| maximum likelihood error rate					|
+| HETERO  | float\_t	| heterozygosity of a site					|
+| POLY\_LR| float\_t 	| log likelihood ratio of best fit/monomorphic			|
+| HWE\_LR | float\_t 	| log likelihood ratio of best fit/Hardy Weinburg eqaulibrium	|
+| SMPNUM  | size\_t	| sample number							|
+| SMPNAME | size\_t	| sample name							|
+| SCFNAME | id0\_t 	| the name of a scaffold, a ? numbered region of DNA.		|
+| POS     | id1\_t   	| position							|
+| COVRAG  | count\_t 	| depth of coverage at a site					|
+| IND\_TOT| size\_t 	| number of samples with data					|
+| IND\_INC| size\_t	| number of individuals used in a calculation			|
+| IND\_CUT| size\_t	| number of individuals excluded from a caclculation 		|
+| EF\_CHRM| float\_t	| the effective number of chromosomes at a site			|
+| SOMATIC | bool	| a flag to indicate that the record is a somatic mutation	|
+| VALID   | bool	| a flag to indicate that a record has been validated?		|
+| STRNDBS | float\_t	| strand bias at this position					|
+| MAPQ0	  | count\_t	| number of MAPQ==0 reads covering this position		|
+| HAPMAP2 | bool	| membership in hapmap2						|
+| END     | size\_t	| ending row of a variant described by this record		|
+| ANCSTRL | gt\_t	| ancestral allele						|
+| GOF	  | float\_t	| goodness of fit value						|
+| DEFAULT | bool	| a flag to indicate that a record represents a default value	|
+| QUART   | Quartet	| a set of counts of nucleotides at a position 			|
+| LENGTH  | id1\_t	| The length of a scaffold					|
+| VERSION | std::string	| The version of mapgd used to make a file			|
+
+Header lines can also contain an arbitrary (sanitized) string, which serves as a sample name, if appropriate. Below are example headers from each of the types of files produced by mapgd. 
+
+<b> .idx files </b>
+
+	@NAME:SCAFFOLDS	VERSION:0.4.1
+	@SCFNAME       	LENGTH
+
+file that list the name and size of all the scaffolds in a referance genome. This file can be obtained from a .bam file using the samtools view -H command, and reformating the samtools header with the 'sam2idx' command. Idx files are automatically generated when running the proview command.
+Index files store the length (LENGTH) of each scaffold (SCFNAME) in the genome. This information is stored in a table named SCAFFOLDS in the database.
+
+<b> .gof files </b>
+
+	@NAME:SAMPLE	VERSION:0.4.1
+	@SMPNAME	GOF
+
+Generated by the allele command. This short file list 'Goodness of fit' values for each sample in the population. These values can be used for filtering out samlpes that have been cross contaminated. 
+.gof files store the goodness of fit score (GOF) for each sample (SMPNAME) in the population. This information is stored in a table named SAMPLE in the database.
+
+<b> .map files </b> 
+
+	@NAME:POSITIONS	VERSION:0.4.1
+	@SCFNAME    	POS	REF	MAJOR	MINOR	COVERAG	MJ\_FREQ	MN\_FREQ	ERROR	NULL\_ER	F\_STAT	MM\_FREQ	Mm\_FREQ	mm\_FREQ	HETERO	POLY\_LR	HWE\_LR	GOF	EF\_CHRM	IND\_INC	IND\_CUT	BEST\_LL
+
+The output for genotypic frequency estiamtes obtained with the allele command. This file storages test statistics for polymorphism and Hardy-Weinberg disequilibrium, as well as a small number of statistics which may prove useful for filtering variants, such as sequencing error rate and population depth of coverage.
+
+.pro files store the goodness of fit score (GOF) for each sample (SMPNAME) in the population. This information is stored in a table named SAMPLE in the database.
+
+| TABLES 	|
+|:--------------|:-----:|
+| SCAFFOLDS	|
+| POSITIONS	|
+| SAMPLE	|
+| REGIONS	|
+| SAMPLE\_PAIRS	|
+
+<b> .pro files </b> 
+
+	@NAME:QUARTETS	VERSION:0.4.1
+	@SCFNAME       	POS	REF	PA-001		PA-002		PA-003		...
+	scaffold\_1	1	A	000/000/000/000	001/000/000/002	004/000/000/000
+
+The most basic input file is a plain text file consists of three tab delimited columns : The first column is an arbitrary string which identifier a genomic region (e.g., a scaffold), the second column is an integer number specifying the location of a site on that scaffold, and the final column contains four integer values separated by '/'s representing the number of times an A, C, G, and T was observed at the site (respectively). The string-integer pair must be unique.  
 
 We call this file format the .pro file format. Files in this format can be generated from mpileup files (that have been made without the -s and -O options by samtools mpileup) using the command "mapgd proview" 
 
 If more than one bam file was used in the construction of the mpileup file, then these files will each appear as additional columns in the .pro File. The column names in mapgd default to the filename used to generate the column, and if more than one column is generated from a file, then the columns are numbered sequenctially. Additionally, if multiple .pro or mpileup files are given as input to any command (proview included) these files can be merged for analysis (e.g “mapgd proview -i \*.mpileup” prints a merged pro file to the standard out).
- 
-<b> .map files </b> A standard for the output of the estimation commands (ei and ep) is evolving, and has been temporarily dubbed '.map'. This file is intended for the storage of any population level statistics, such as test statistics for polymorphism and Hardy-Weinberg disequilibrium, as well as a small number of statistics which may prove useful for filtering variants, such as sequencing error rate and population depth of coverage.
 
-<b> The output of ep commands: </b> Columns 1 and 2 are site identifiers (ID1 and ID2); 3 and 4 designate major and minor nucleotides (major and minor); 
-For each population in the sample four columns are printed : a major allele frequency (freq\_P), test statistic for polymorphism (ll\_poly), test statistic for fixed for the minor allele (ll\_fixed), and coverage;
-The final coloumn is the maximum likelihood estimate of the error rate (Error).
+<b> .gcf files </b> The output of the genotype command. This stores the -log likelihood values that an individual is each of the three possible genotypes (Major Major, Major minor or minor minor) at each locus. 
+
+<b> .rel files </b> The output of the relatedness command. This file stores the 7 genotypic correlation coefficents for all pairs of individuals and some log likelihood ratio test statistics. 
+
 
 Under the assumption of a chi-square distribution for the test statistic with one degree of freedom, significance at the 0.05, 0.01, 0.001 levels requires that the likelihood-ratio test statistic exceed 3.841, 6.635, and 10.827, respectively. 
 
@@ -262,6 +365,10 @@ The program can be installed for all users of a computer by typing:
 	sudo make install
 
 Scripts for both Linux and Mac users are present in the top level directory, or the program can be run by typing "mapgd ep -i FILENAME" where FILENAME is the a .pro file.
+
+Some Apple users may not have developmental tools installed. To install them please type
+
+	xcode --install
 
 <h3> Bigred2 </h3>
 

@@ -616,7 +616,10 @@ sample_stats readcounts (const char *filename, size_t a, size_t b, size_t s){
 	                        file.read((char *)&N,sizeof(size_t) );
 	                        pgl.add(MM, Mm, mm, N);
 	                }
-	                if (pgl.gl[a].N>sample.amin && pgl.gl[a].N<sample.amax && pgl.gl[b].N>sample.bmin && pgl.gl[b].N<sample.bmax){sample.sampled++; sample.counts[PAIRGL (pgl.gl[a].lMM, pgl.gl[a].lMm, pgl.gl[a].lmm, pgl.gl[b].lMM, pgl.gl[b].lMm, pgl.gl[b].lmm, pgl.P)]+=1;}
+	                if (pgl.gl[a].N>sample.amin && pgl.gl[a].N<sample.amax && pgl.gl[b].N>sample.bmin && pgl.gl[b].N<sample.bmax){
+				sample.sampled++; 
+				sample.counts[PAIRGL (pgl.gl[a].lMM, pgl.gl[a].lMm, pgl.gl[a].lmm, pgl.gl[b].lMM, pgl.gl[b].lMm, pgl.gl[b].lmm, pgl.P)]+=1;
+			}
 	                pgl.clear(); 
 	   		if (sample.sampled==s && s!=0) break;
 	        };

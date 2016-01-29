@@ -12,7 +12,9 @@ void mask(quartet_t &q){
 	q.masked=true;
 }
 
-std::ostream& operator<< (std::ostream& out, const quartet& q) {
+//TODO fix these up to make them prettier
+std::ostream& operator<< (std::ostream& out, const quartet& q) 
+{
 	if (not(q.masked) ){ 
 		out << std::setfill('0') << std::setw(3) << int(q.base[0]);
 		out << q.delim;
@@ -24,9 +26,11 @@ std::ostream& operator<< (std::ostream& out, const quartet& q) {
 	}
 	else out << "000" << q.delim << "000" << q.delim << "000" << q.delim << "000"; 
         return out;
-};
+}
 
-std::istream& operator >> (std::istream& in, quartet& q) {
+//TODO fix these up to make them prettier
+std::istream& operator >> (std::istream& in, quartet& q) 
+{
 	std::string line;
 	getline(in, line, '/');
 	q.base[0]=atoi(line.c_str() );
@@ -37,4 +41,4 @@ std::istream& operator >> (std::istream& in, quartet& q) {
 	getline(in, line, '\t');
 	q.base[3]=atoi(line.c_str() );
         return in;
-};
+}

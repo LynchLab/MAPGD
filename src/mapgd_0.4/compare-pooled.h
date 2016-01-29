@@ -3,11 +3,13 @@
  */
 #ifndef _COMPAREPOOLED_H_
 #define _COMPAREPOOLED_H_
-#include "pro-file.h"
+
 #include <iomanip>
+#include <iostream>
+
 #include "interface.h"
 #include "compare-pooled.h"
 #include "pooled-likelihood.h"
-#include <iostream>
+
 int comparePooled(int argc, char *argv[]);
 #endif

@@ -9,17 +9,15 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-
-#include "interface.h"
-#include "stream-tools.h"
-#include "pro-file.h"
-#include "file-index.h"
-#include "map-file.h"
-
 #include <math.h>
 #include <vector>
 #include <iostream>
 #include <fstream>
+
+#include "interface.h"
+#include "stream-tools.h"
+#include "map-file.h"
+#include "locus.h"
 
 #define SQRT2	1.41421356237
 
@@ -33,14 +31,5 @@ struct Args{
 
 /*! \breif executes the proview command.*/
 int proview(int argc, char *argv[]);
-
-/*! \breif Depricated?*/
-void readheader(int *dic, Args, std::istream*, profile &);
-
-/*! \breif Depricated?*/
-int readline(int *dic, Args, std::istream*, profile &);
-
-/*! \breif Bernhard's scanCol function. Nice and fast.*/
-void scanCol(const std::string &, const int *, quartet_t &, const char &);
 
 #endif

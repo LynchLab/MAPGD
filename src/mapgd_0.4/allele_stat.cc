@@ -32,27 +32,31 @@ using namespace std;
 
 std::istream& operator >> (std::istream& in, allele_stat& x) {
 	std::string line, temp;
-	char c;
-	in >> x.id1;
-	in >> c; x.ref=Base::ctob(c);
-	in >> c; x.major=Base::ctob(c);
-	in >> c; x.minor=Base::ctob(c);
-	in >> x.coverage;
-	in >> x.freq >> temp >> x.error >> x.null_error >> x.f;
-	in >> x.MM >> x.Mm >> x.mm;
-	in >> temp;
-	in >> x.monoll;
-	in >> x.hwell;
-	in >> x.gof;
-	in >> x.efc;
-	in >> x.N;
-	in >> x.excluded;
-	in >> x.ll;
 	std::getline(in, line);
-	x.ref=4;
-	x.monoll=x.ll-x.monoll/2.;
-	x.hwell=x.ll-x.hwell/2.;
-	x.f-=1./(2.*x.N-1.);
+	std::stringstream line_stream(line);
+
+	char c;
+	line_stream >> x.id1;
+	line_stream >> c; x.ref=Base::ctob(c);
+	line_stream >> c; x.major=Base::ctob(c);
+	line_stream >> c; x.minor=Base::ctob(c);
+	line_stream >> x.coverage;
+	//if (x.coverage>0){
+		line_stream >> x.freq >> temp >> x.error >> x.null_error >> x.f;
+		line_stream >> x.MM >> x.Mm >> x.mm;
+		line_stream >> temp;
+		line_stream >> x.monoll;
+		line_stream >> x.hwell;
+		line_stream >> x.gof;
+		line_stream >> x.efc;
+		line_stream >> x.N;
+		line_stream >> x.excluded;
+		line_stream >> x.ll;
+		x.monoll=x.ll-x.monoll/2.;
+		x.hwell=x.ll-x.hwell/2.;
+		x.f-=1./(2.*x.N-1.);
+	//} else {
+	//}
 	return in;
 }
 

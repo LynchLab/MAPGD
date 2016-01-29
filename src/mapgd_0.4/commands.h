@@ -7,20 +7,17 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
-#define PRAGMA
-//#define DEBUG
-
-#include "compare-pooled.h"
-#include "estimate-pooled.h"
+//#include "compare-pooled.h"
+//#include "estimate-pooled.h"
 #include "estimate-individual.h"
 #include "estimate-fst.h"
 #include "relatedness.h"
 #include "proview.h"
-#include "convert.h"
+//#include "convert.h"
 #include "filter.h"
 #include "map2genotype.h"
 #include "PopLD.h"
-#include "readsql.h"
-#include "writesql.h"
+//#include "sql/readsql.h"
+//#include "sql/writesql.h"
 
 #endif

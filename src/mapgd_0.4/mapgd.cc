@@ -27,13 +27,13 @@ int main (int argc, char* argv[])
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "Prints the program version");			//DONE
 
 	env.command(	' ',"allele", 	&estimateInd,	 		"an error occured while calling ei", "Estimates allelel frequencies using individual data");		//DONE
-	env.command(	' ',"cp", 	&comparePooled, 		"an error occured while calling cp", "Compares allele frequencies between populations using pooled data");	//DONE
+//	env.command(	' ',"cp", 	&comparePooled, 		"an error occured while calling cp", "Compares allele frequencies between populations using pooled data");	//DONE
 	env.command(	' ',"filter",	&filter,	 		"an error occured while calling filter", "Filter sites in '.map' files");			 	//DONE
 	env.command(	' ',"genotype",	&map2genotype,	 		"an error occured while calling genotype", "Calculate genotype probabilities for individuals"); 	//DONE
 //	env.command(	' ',"vcf",	&vcf,		 		"an error occured while calling vcf", "Convert output to vcf format.");					//TODO
 	env.command(	' ',"linkage", 	&PopLD,	 			"an error occured while calling fst", "Estimates linkage disequilibrium between loci");			//TODO
-	env.command(	' ',"pool",	&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");			//DONE
-	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "Prints data in the '.pro' file quartet format");		//TODO
+//	env.command(	' ',"pool",	&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");			//DONE
+	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
 
 //	env.command(	' ',"read", 	&readsql, 			"an error occured while calling proview", "Reads data from the SQL database");				//TODO
 //	env.command(	' ',"relatedness",&estimateRel,	 		"an error occured while calling er", "Estimates the pairwise relatedness of individuals");		//TODO

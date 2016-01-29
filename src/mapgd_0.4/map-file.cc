@@ -107,7 +107,7 @@ void Data_file<T>::open_header(Base_file &file){
 template <class T>
 void Data_file<T>::open_append(Base_file &file)
 {
-	if(file.is_open() ) file.close();
+//	if(file.is_open() ) file.close();
 	if (file.openmode() & std::fstream::in){
 		if(file.filename().size()!=0) this->open(file.filename().c_str(), std::fstream::in);
 		else this->open(std::fstream::in);
@@ -366,8 +366,9 @@ bool Base_file::eof(void){
 template class Data_file <allele_stat>;
 template class Data_file <population_genotypes>;
 template class Data_file <Locus>;
-template class Data_file <Clone_gof>;
+template class Data_file <Sample_gof>;
 template class Data_file <File_index>;
+template class Data_file <Relatedness>;
 
 template class Indexed_file <allele_stat>;
 template class Indexed_file <population_genotypes>;
@@ -376,7 +377,8 @@ template class Indexed_file <Locus>;
 template class Flat_file <allele_stat>;
 template class Flat_file <population_genotypes>;
 template class Flat_file <Locus>;
-template class Flat_file <Clone_gof>;
+template class Flat_file <Sample_gof>;
 template class Flat_file <File_index>;
+template class Flat_file <Relatedness>;
 
 template class Mpileup_file <Locus>;
