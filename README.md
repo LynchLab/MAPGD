@@ -15,19 +15,53 @@
 #####[Commands](https://github.com/LynchLab/MAPGD#-commands-)
 #####[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
 #####[Formating the Input](https://github.com/LynchLab/MAPGD#-formating-the-input-)
-#####[Examples](https://github.com/LynchLab/MAPGD#-examples-)
+#####[Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-)
 ####Misc.
-#####[Extras](https://github.com/LynchLab/MAPGD#-extras-)
-#####[Bigred2](https://github.com/LynchLab/MAPGD#-bigred2-)
-#####[Mason](https://github.com/LynchLab/MAPGD#-Mason-)
-#####[Karst](https://github.com/LynchLab/MAPGD#-karst-)
+#####[IU users](https://github.com/LynchLab/MAPGD#-notes-for-indiana-university-users-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
-<h3> Introduction </h3>
+<h2> Introduction </h2>
 
 MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium, linkage disequilibrium and identity by descent (IBD) coefficients from population genomic data using a statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data or for the analysis of pooled data (where many individuals are used to prepare a single sample).  
 
-<h5> FAQ </h5>
+<h2> Quick start </h2>
+
+After clicking the "Download MAPGD.zip" button you will be prompted to save or open the file MAPGD-master.zip. Save this this file to the directory of your choice, then go to this directory in a terminal, for example /home/matthew/Downloads/
+
+Then type:
+
+	unzip MAPGD.zip
+	cd MAPGD-master/
+	make
+
+The program can be installed for all users of a computer by typing:
+
+	sudo make install
+
+You will be prompted for your super-user password. If you do not have a super-user password for the system on which you are installing the software, you can type:
+
+	make install DESTDIR=~/bin/
+
+This will install the software in the ~/bin/ directory which should allow you to use the software by simply typing 'mapgd'. If not, add the following line to your .bashrc file:
+
+	PATH=$PATH:~/bin
+
+Mac users may not have developmental tools installed by default. If you receive certain errors (that I forgot to write down) please type:
+
+	xcode --install (*I think)
+
+and then type:
+
+	make noomp.
+
+A quick test to make sure everything is working correctly can be conducted by typing:
+
+	make test
+
+This will output a substantial number of lines ending in PASS or FAIL to your terminal. Ideally all of the lines should say PASS. 
+
+	apt-get mapgd
+<h2> FAQ </h2>
 
 <b> Why don't you provide information on indels? </b>
 
@@ -89,48 +123,12 @@ Finally show me your changes by typing.
 
 	git push
 
-<h5> Changes </h5>
+<h2> Changes </h2>
 
 There have been a lot changes from 0.3. The format of input and output files has changed, and previous formats are no longer supported. The name of the 'ei' command has been changed to allele, and the 'ep' and 'cp' are now both part of the 'pooled' command. A standard file interface has been created (map-file) which handles all our reading and writing needs. The pro-file interface has been deprecated.  
 
-<h3> Quick start </h3>
-After clicking the "Download MAPGD.zip" button you will be prompted to save or open the file MAPGD-master.zip. Save this this file to the directory of your choice, then go to this directory in a terminal, for example /home/matthew/Downloads/
 
-Then type:
-
-	unzip MAPGD.zip
-	cd MAPGD-master/
-	make
-
-The program can be installed for all users of a computer by typing:
-
-	sudo make install
-
-You will be prompted for your super-user password. If you do not have a super-user password for the system on which you are installing the software, you can type:
-
-	make install DESTDIR=~/bin/
-
-This will install the software in the ~/bin/ directory which should allow you to use the software by simply typing 'mapgd'. If not, add the following line to your .bashrc file:
-
-	PATH=$PATH:~/bin
-
-Mac users may not have developmental tools installed by default. If you receive certain errors (that I forgot to write down) please type:
-
-	xcode --install (*I think)
-
-and then type:
-
-	make noomp.
-
-A quick test to make sure everything is working correctly can be conducted by typing:
-
-	make test
-
-This will output a substantial number of lines ending in PASS or FAIL to your terminal. Ideally all of the lines should say PASS. 
-
-	apt-get mapgd
-
-<h3> Commands </h3>
+<h2> Commands </h2>
 
 Mapgd currently implements the following commands:
 
@@ -179,7 +177,7 @@ Each command has a number of options that can be examined by the -h option. For 
 
 More detailed documentation for each command is being produced, and will be available shortly. 
 
-<h3> Input/Output </h3>
+<h2> Input/Output </h2>
 
 <b> Header lines </b> Ever file begins with two header lines, each beginning with the '@' character. The first header line list the name of the table in the SQL database, along with the version of MAPGD used to create the table. The second header list the value stored in each column of the table. 
 
@@ -260,11 +258,12 @@ MAPGD includes the ability to direct all output to an SQL database. This decreas
 | REGIONS	|
 | SAMPLE\_PAIRS	|
 
-<h5> Log-likelihood ratio statistics </h5>
+<h2> Log-likelihood ratio statistics </h2>
 
 Most of the commands in mapgd report log-likelihood ratio statistics. These statistics should be chi-square distributed. The number of degrees of freedom of the statistic depend on the number of parameters being estimated. In the case of pooled population data there is one degree of freedom, for the allele polymorphic statistic there are two, and for the Hardy-Weinberg equilibrium statistic there is one. For the relatedness statistics there is one degree of freedom for each parameter, and seven degrees of freedom between the best-fit and null statistic. Significance at the 0.05, 0.01, 0.001 levels requires that the likelihood-ratio test statistic exceed 3.841, 6.635, and 10.827, respectively. Please consider including a correction for multiple testing if you wish to limit the number of type I errors in your data set. Other critical values can be obtained in R by typing : chisq(VALUE, df=DEGREES OF FREEDOM).  
 
-<h4> Extras </h4>
+<h2> Extras </h2>
+
 <h6> pedigree_calc.py </h6>A simple script to predict the coefficients of IBD from merlin formated pedigree files.
 <h6> simulate_genomic_study.sh </h6> A script that generates raw reads from a population and a reference file. This script was used to compare the performance of mapgd with similar programs. 
 <h6> make_bordyen_theta.py  </h6> A script to automatically generate some source code for minimization. The code does not work correctly. 
@@ -273,7 +272,7 @@ Most of the commands in mapgd report log-likelihood ratio statistics. These stat
 <h6> marker.txt </h6> A list of 30,000 some odd markers for asexuality that were found in Tucker et al.
 <h6> score_markers.py </h6> A script to record the % of makers in a file that and individual has. Usage python score\_markers.py marker.txt GENOTYPES.gcf.
 
-<h3> Example Analysis </h3>
+<h2> Example Analysis </h2>
 
 To begin any of these analyses, a ".pro" file must be created from a mpileup file. This is done with the proview command, which needs one or more mpileup files and a single index file.
 
@@ -332,7 +331,7 @@ To download samtools please visit http://www.htslib.org/
 
 Windows is currently unsupported, but you may try to compile the code and fix it yourself. I have tried to refrain from using any platform specific libraries, so it may not be too much work.
 
-<h3> Notes for Indiana University users </h3>
+<h2> Notes for Indiana University users </h2>
 When submitting PBS scripts please *make sure to specify the number of threads to use with the ppn option* 
 
 	#PBS -l ppn=16
@@ -357,7 +356,7 @@ and
 
 Ackerman, M. S., P. Johri, K. Spitze and M. Lynch, 2015  A general statistical model for coefficients of relatedness and its application to the analysis of population-genomic data. In prep. 
 
-<h4> Copyright </h4>
+<h3> Copyright </h3>
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
