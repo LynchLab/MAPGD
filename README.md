@@ -57,7 +57,7 @@ The current version mapgd does not compile on windows.
 
 <b> Help, the program keeps crashing/hanging </b>
  
-The first thing you should do is e-mail me (for contact infromation type 'mapgd -h'). I will open a bug report and we can begin discussing how to fix the program. 
+The first thing you should do is e-mail me (for contact information type 'mapgd -h'). I will open a bug report and we can begin discussing how to fix the program. 
 
 <b> How can I help? </b>
 
@@ -91,7 +91,7 @@ Finally show me your changes by typing.
 
 <h5> Changes </h5>
 
-There have been a lot changes from 0.3. The format of input and output files has changed, and previous formats are no longer supported. The name of the 'ei' command has been changed to allele, and the 'ep' and 'cp' are now both part of the 'pooled' command. A standard file interface has been created (map-file) which handels all our reading and writing needs. The pro-file interface has been depricated.  
+There have been a lot changes from 0.3. The format of input and output files has changed, and previous formats are no longer supported. The name of the 'ei' command has been changed to allele, and the 'ep' and 'cp' are now both part of the 'pooled' command. A standard file interface has been created (map-file) which handles all our reading and writing needs. The pro-file interface has been deprecated.  
 
 <h3> Quick start </h3>
 After clicking the "Download MAPGD.zip" button you will be prompted to save or open the file MAPGD-master.zip. Save this this file to the directory of your choice, then go to this directory in a terminal, for example /home/matthew/Downloads/
@@ -110,11 +110,11 @@ You will be prompted for your super-user password. If you do not have a super-us
 
 	make install DESTDIR=~/bin/
 
-This will install the software in the ~/bin/ directory which should allow you to use the software by simply typing 'mapgd'. If not, add the folling line to your .bashrc file:
+This will install the software in the ~/bin/ directory which should allow you to use the software by simply typing 'mapgd'. If not, add the following line to your .bashrc file:
 
 	PATH=$PATH:~/bin
 
-Mac users may not have developmental tools installed by default. If you recieve certain errors (that I forgot to write down) please type:
+Mac users may not have developmental tools installed by default. If you receive certain errors (that I forgot to write down) please type:
 
 	xcode --install (*I think)
 
@@ -165,10 +165,10 @@ Each command has a number of options that can be examined by the -h option. For 
 	  -o, --output		the output file for the program (default stdin).
 	  -p, --outpro		name of a 'cleaned' pro file (default none).
 	  -I, --individuals	the individuals to be used in estimates.
-				a comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).
+				a comma seperated list containing no spaces, and the format X-Y can be used to specify a range (default ALL).
 	  -m, --minerror	prior estimate of the error rate (defualt 0.001).
 	  -H, --header		the name of a .idx file storing scaffold infomation
-	  -M, --mincoverage	minimum coverage for an individual at a site for an individual to be used (defualt 4).
+	  -M, --mincoverage	minimum coverage for an individual at a site for an individual to be used (default 4).
 	  -g, --goodfit		cut-off value for the goodness of fit statistic (defaults 2.0).
 	  -N, --number		cut-off value for number of bad individuals needed before a site is removed entirely (default 4).
 	  -S, --skip		number of sites to skip before analysis begins (default 0).
@@ -177,13 +177,13 @@ Each command has a number of options that can be examined by the -h option. For 
 	  -h, --help		prints this message
 	  -v, --version		prints the program version
 
-More detailed documentation for each command is being produced, and will be availible shortly. 
+More detailed documentation for each command is being produced, and will be available shortly. 
 
 <h3> Input/Output </h3>
 
-<b> Header lines </b> Ever file begins with two header lines, each begining with the '@' character. The first header line list the name of the table in the SQL database, along with the version of MAPGD used to create the table. The second header list the value stored in each column of the table. 
+<b> Header lines </b> Ever file begins with two header lines, each beginning with the '@' character. The first header line list the name of the table in the SQL database, along with the version of MAPGD used to create the table. The second header list the value stored in each column of the table. 
 
-The Table bellow lists some of the labels with their descriptions. It also lists the type of value stored in each column, but this will not be important for you unless you are writing a program which directly uses the binary output of mapgd. For a complete list of Lables and types see the file keys.txt in the source directory.
+The Table bellow lists some of the labels with their descriptions. It also lists the type of value stored in each column, but this will not be important for you unless you are writing a program which directly uses the binary output of mapgd. For a complete list of Labels and types see the file keys.txt in the source directory.
 
 | Label	  | mapgd type 	| Description 							|
 |:--------|:------------|:-------------------------------------------------------------:|
@@ -196,14 +196,14 @@ The Table bellow lists some of the labels with their descriptions. It also lists
 | ERRROR  | float\_t	| maximum likelihood error rate					|
 | HETERO  | float\_t	| heterozygosity of a site					|
 | POLY\_LR| float\_t 	| log likelihood ratio of best fit/monomorphic			|
-| HWE\_LR | float\_t 	| log likelihood ratio of best fit/Hardy Weinburg eqaulibrium	|
+| HWE\_LR | float\_t 	| log likelihood ratio of best fit/Hardy–Weinberg  equilibrium	|
 | SMPNUM  | size\_t	| sample number							|
 | SMPNAME | size\_t	| sample name							|
-| SCFNAME | id0\_t 	| the name of a scaffold, a ? numbered region of DNA.		|
+| SCFNAME | id0\_t 	| the name of a scaffold, region of DNA				|
 | POS     | id1\_t   	| position							|
 | COVRAG  | count\_t 	| depth of coverage at a site					|
 | IND\_INC| size\_t	| number of individuals used in a calculation			|
-| IND\_CUT| size\_t	| number of individuals excluded from a caclculation 		|
+| IND\_CUT| size\_t	| number of individuals excluded from a calculation 		|
 | EF\_CHRM| float\_t	| the effective number of chromosomes at a site			|
 | GOF	  | float\_t	| goodness of fit value						|
 | LENGTH  | id1\_t	| The length of a scaffold					|
@@ -216,14 +216,14 @@ Header lines can also contain an arbitrary (sanitized) string, which serves as a
 	@NAME:SCAFFOLDS	VERSION:0.4.1
 	@SCFNAME       	LENGTH
 
-<b>.idx</b> files list the name and size of all the scaffolds in a referance genome. This file can be obtained from a .bam file using the samtools view -H command and reformating the samtools header with the 'sam2idx' command. Idx files are automatically generated when running the proview command.
+<b>.idx</b> files list the name and size of all the scaffolds in a reference genome. This file can be obtained from a .bam file using the samtools view -H command and reformatting the samtools header with the 'sam2idx' command. Idx files are automatically generated when running the proview command.
 
 <b> .gof files </b>
 
 	@NAME:SAMPLE	VERSION:0.4.1
 	@SMPNAME	GOF
 
-<b>.gof</b> files are generated by the allele command. These short files list 'Goodness of fit' values for each sample in the population. These values can be used for filtering out samlpes that have been cross contaminated. 
+<b>.gof</b> files are generated by the allele command. These short files list 'Goodness of fit' values for each sample in the population. These values can be used for filtering out samples that have been cross contaminated. 
 
 <b> .map files </b> 
 
@@ -238,19 +238,19 @@ Header lines can also contain an arbitrary (sanitized) string, which serves as a
 	@SCFNAME       	POS	REF	PA-001		PA-002		PA-003		...
 	scaffold\_1	1	A	000/000/000/000	001/000/000/002	004/000/000/000
 
-<b>.pro</b> files are the most basic input file for mapgd. These are plain text files containting three or more tab delimited columns. The first column is an arbitrary string which identifier a genomic region (e.g., a scaffold), the second column is an integer number specifying the location of a site on that scaffold, and the remaining column(s) contains four integer values separated by '/'s representing the number of times an A, C, G, and T was observed at the site (respectively).
+<b>.pro</b> files are the most basic input file for mapgd. These are plain text files containing three or more tab delimited columns. The first column is an arbitrary string which identifier a genomic region (e.g., a scaffold), the second column is an integer number specifying the location of a site on that scaffold, and the remaining column(s) contains four integer values separated by '/'s representing the number of times an A, C, G, and T was observed at the site (respectively).
 
 We call this file format the .pro file format. Files in this format can be generated from mpileup files (that have been made without the -s and -O options by samtools mpileup) using the command "mapgd proview" 
 
-If more than one bam file was used in the construction of the mpileup file, then these files will each appear as additional columns in the .pro File. The column names in mapgd default to the filename used to generate the column, and if more than one column is generated from a file, then the columns are numbered sequenctially. Additionally, if multiple .pro or mpileup files are given as input to any command (proview included) these files can be merged for analysis (e.g "mapgd proview -i \*.mpileup" prints a merged pro file to the standard out). In order to preserve sample names for analysis, a ...
+If more than one bam file was used in the construction of the mpileup file, then these files will each appear as additional columns in the .pro File. The column names in mapgd default to the filename used to generate the column, and if more than one column is generated from a file, then the columns are numbered sequentially. Additionally, if multiple .pro or mpileup files are given as input to any command (proview included) these files can be merged for analysis (e.g "mapgd proview -i \*.mpileup" prints a merged pro file to the standard out). In order to preserve sample names for analysis, a ...
 
 <b> .gcf files </b> The output of the genotype command. This stores the -log likelihood values that an individual is each of the three possible genotypes (Major Major, Major minor or minor minor) at each locus. 
 
-<b> .rel files </b> The output of the relatedness command. This file stores the 7 genotypic correlation coefficents for all pairs of individuals and some log likelihood ratio test statistics. 
+<b> .rel files </b> The output of the relatedness command. This file stores the 7 genotypic correlation coefficients for all pairs of individuals and some log likelihood ratio test statistics. 
 
 <h3> The SQL database </h3>
 
-MAPGD includes the ability to dirrect all output to an SQL database. This decreases storage space by elminating redundant information from files (such as the initial position lable in all indexed files) as well as decreasing the nbumber of seperate files saved to disk. Currently the tables are:
+MAPGD includes the ability to direct all output to an SQL database. This decreases storage space by eliminating redundant information from files (such as the initial position label in all indexed files) as well as decreasing the number of separate files saved to disk. Currently the tables are:
 
 | TABLES 	|
 |:-------------:|
@@ -262,7 +262,7 @@ MAPGD includes the ability to dirrect all output to an SQL database. This decrea
 
 <h5> Log-likelihood ratio statistics </h5>
 
-Most of the commands in mapgd report log-likelihood ratio statistics. These statistics should be chi-square distributed. The number of degress of freedom of the statistic depend on the number of parameters being estimated. In the case of pooled population data there is one degree of freedom, for the allele polymorphic statistic there are two, and for the Hardy-Weinburg equalibirum statistic there is one. For the releatedness statistics there is one degree of freedom for each parameter, and seven degrees of freedom between the best-fit and null statisitc. Significance at the 0.05, 0.01, 0.001 levels requires that the likelihood-ratio test statistic exceed 3.841, 6.635, and 10.827, respectively. Please consider including a correction for multiple testing if you wish to limit the number of type I errors in your data set. Other critical values can be obtained in R by typing : qchisq(VALUE, df=DEGREES OF FREEDOM).  
+Most of the commands in mapgd report log-likelihood ratio statistics. These statistics should be chi-square distributed. The number of degrees of freedom of the statistic depend on the number of parameters being estimated. In the case of pooled population data there is one degree of freedom, for the allele polymorphic statistic there are two, and for the Hardy-Weinberg equilibrium statistic there is one. For the relatedness statistics there is one degree of freedom for each parameter, and seven degrees of freedom between the best-fit and null statistic. Significance at the 0.05, 0.01, 0.001 levels requires that the likelihood-ratio test statistic exceed 3.841, 6.635, and 10.827, respectively. Please consider including a correction for multiple testing if you wish to limit the number of type I errors in your data set. Other critical values can be obtained in R by typing : chisq(VALUE, df=DEGREES OF FREEDOM).  
 
 <h4> Extras </h4>
 <h6> pedigree_calc.py </h6>A simple script to predict the coefficients of IBD from merlin formated pedigree files.
@@ -270,7 +270,7 @@ Most of the commands in mapgd report log-likelihood ratio statistics. These stat
 <h6> make_bordyen_theta.py  </h6> A script to automatically generate some source code for minimization. The code does not work correctly. 
 <h6> make_newton_rho.py </h6>  A script to automatically generate some source code for minimization. The code does not work correctly.
 <h6> make_newton_theta.py </h6> A script to automatically generate some source code for minimization. The code doe not work correctly.
-<h6> marker.txt </h6> A list of 30,000 some odd markers for asexuallity that were found in Tucker et al.
+<h6> marker.txt </h6> A list of 30,000 some odd markers for asexuality that were found in Tucker et al.
 <h6> score_markers.py </h6> A script to record the % of makers in a file that and individual has. Usage python score\_markers.py marker.txt GENOTYPES.gcf.
 
 <h3> Example Analysis </h3>
@@ -287,11 +287,11 @@ For example, if the sequencing center gives you two files called "seq1.fastq" an
 
 You would then type some similar commands to map reads from seq2 to the same reference.
 
-Next the data have to be converted into some format the mapgd can read. This is dones by creating an 'mpileup' file with samtools:
+Next the data have to be converted into some format the mapgd can read. This is done by creating an 'mpileup' file with samtools:
 
 	samtools mpileup -q 25 -Q 25 -B seq1.sort.bam seq2.sort.bam > population.mpileup
 
-geting the samfile header by typing:
+getting the samfile header by typing:
 
 	samtools view -H seq1.sort.bam > seq1.header
 
@@ -307,13 +307,13 @@ Alternatively, if the .pro file contains individual data you will want to run th
 
 	mapgd allele -i metapopulation.pro -o population1_allelfrequencies.map
 
-One advantage of the above work flow is that each of the files can be inspect vissualy to explore the data. If you do not need to do this then it will be faster to create binary data and use I/O redirection.
+One advantage of the above work flow is that each of the files can be inspect visually to explore the data. If you do not need to do this then it will be faster to create binary data and use I/O redirection.
 
 <h5> The above work flow using  I/O redirection </h5>
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -B -H seq1.header | mapgd allele -p 1,2 -B | mapgd filter -p 6 -o allelefrequency.txt
 
-In the case where the allele command has been used the files can be further analized to estimate the seven IBD coefficients.
+In the case where the allele command has been used the files can be further analyzed to estimate the seven genotypic correlation coefficients.
 
 	mapgd genotype -p allelefrequency.pro -m allelefrequency.map | mapgd filter -p 10 -e 0.01 -c 50 -C 200 > population.gcf
 	relatedness.py population.gcf
@@ -333,7 +333,7 @@ To download samtools please visit http://www.htslib.org/
 Windows is currently unsupported, but you may try to compile the code and fix it yourself. I have tried to refrain from using any platform specific libraries, so it may not be too much work.
 
 <h3> Notes for Indiana University users </h3>
-When submiting PBS scripts please *make sure to specify the number of threads to use with the ppn option* 
+When submitting PBS scripts please *make sure to specify the number of threads to use with the ppn option* 
 
 	#PBS -l ppn=16
 
@@ -343,11 +343,11 @@ When submiting PBS scripts please *make sure to specify the number of threads to
 
 	module load intel
 
-though, this may be uneccisary with version 0.4 of the program.
+though, this may be unnecessary with version 0.4 of the program.
 
 <h3> References </h3>
 
-Ackerman, M. S., T. Maruki and M. Lynch. "MAPGD a program for the maximum likelihood analysis of popualtion data." In prep.
+Ackerman, M. S., T. Maruki and M. Lynch. "MAPGD a program for the maximum likelihood analysis of population data." In prep.
 
 The statistical methods implemented in MAPGD have previously been published in:
 

@@ -56,10 +56,7 @@ int proview(int argc, char *argv[])
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
 
-	//Setting up the input/output
-
 	Indexed_file <Locus> out_file;			//the output profile
-//	std::vector <Indexed_file <Locus> *> in_files;	//the input profile(s)
 	std::vector <Mpileup_file <Locus> *> in_files;	//the input profile(s)
 
 	std::vector <Locus> in_locus;
@@ -74,20 +71,43 @@ int proview(int argc, char *argv[])
                 out_file.set_index(index);
         }
 
+	if (index.get_sizes().size()==0) {
+		std::cerr << __FILE__ << ":" << __LINE__ << ". error: no scaffolds in index file. Exiting.\n";
+		exit(0);
+	}
+
 	std::vector <std::string> sample_names;
-	
-	for (size_t x=0; x<infiles.size(); ++x) {
+	size_t sample_numbers=0;
+
+	if (infiles.size()!=0){	
+		for (size_t x=0; x<infiles.size(); ++x) {
+			in_files.push_back(new Mpileup_file <Locus>);
+			if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), std::fstream::in);
+			else in_files.back()->open(std::fstream::in);
+			in_locus.push_back( in_files.back()->read_header() );
+			for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
+				sample_names.push_back( std::string("sample_")  );//insert(std::end(sample_names), std::begin(in_locus.back().get_sample_names() ), std::end(in_locus.back().get_sample_names() ) );
+			}
+			sample_numbers+=in_locus.back().get_sample_names().size();
+              	 	in_files[x]->set_index(index);
+			if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
+		}
+	} else 	{
 		in_files.push_back(new Mpileup_file <Locus>);
-		if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), std::fstream::in);
-		else in_files.back()->open(std::fstream::in);
+		in_files.back()->open(std::fstream::in);
 		in_locus.push_back( in_files.back()->read_header() );
 		for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
 			sample_names.push_back( std::string("sample_")  );//insert(std::end(sample_names), std::begin(in_locus.back().get_sample_names() ), std::end(in_locus.back().get_sample_names() ) );
 		}
-                in_files[x]->set_index(index);
-		if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
+                in_files[0]->set_index(index);
+		sample_numbers+=in_locus.back().get_sample_names().size();
+		if (in_files[0]->read(in_locus[0]).eof() ) in_files[0]->close();
 	}
 
+	if (sample_numbers==0) {
+		std::cerr << __FILE__ << ":" << __LINE__ << ". error: no mpileup files opened. Exiting.\n";
+		exit(0);
+	}
 
 	out_locus.set_sample_names(sample_names);
         out_file.set_index(index);
@@ -97,7 +117,6 @@ int proview(int argc, char *argv[])
 
 	out_locus.id0=0; out_locus.id1=1;	
 	bool print_all=true, go=true, read_site=false;
-
 
 	while(go){
 		out_locus.ref.base=4;

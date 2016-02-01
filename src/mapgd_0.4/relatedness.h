@@ -18,6 +18,6 @@ void inc_theta(Relatedness &, const Genotype_pair &, const size_t &);
 void inc_gamma(Relatedness &, const Genotype_pair &, const size_t &);
 void inc_Delta(Relatedness &, const Genotype_pair &, const size_t &);
 
-int relatedness(int, char **);
+int estimateRel(int argc, char *argv[]);
 
 #endif 

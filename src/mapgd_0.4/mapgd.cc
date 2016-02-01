@@ -34,10 +34,10 @@ int main (int argc, char* argv[])
 	env.command(	' ',"linkage", 	&PopLD,	 			"an error occured while calling fst", "Estimates linkage disequilibrium between loci");			//TODO
 //	env.command(	' ',"pool",	&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");			//DONE
 	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
+	env.command(	' ',"relatedness",&estimateRel,	 		"an error occured while calling er", "Estimates the pairwise relatedness of individuals");		//TODO
 	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occured while calling genotype", "Reformats a sam header file to a idx file"); 		//DONE
 
 //	env.command(	' ',"read", 	&readsql, 			"an error occured while calling proview", "Reads data from the SQL database");				//TODO
-//	env.command(	' ',"relatedness",&estimateRel,	 		"an error occured while calling er", "Estimates the pairwise relatedness of individuals");		//TODO
 //	env.command(	' ',"write", 	&writesql, 			"an error occured while calling proview", "Writes data to the SQL database");				//TODO
 
 //	env.command(	' ',"mlrho", 	&mlrho, 			"an error occured while calling proview", "Runs mlrho");						//TODO
