@@ -9,12 +9,12 @@
 ###Contents 
 ####[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
 #####[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
-#####[Changes](https://github.com/LynchLab/MAPGD#-changes-)
 #####[Quick start](https://github.com/LynchLab/MAPGD#-quick-start-)
+#####[Changes](https://github.com/LynchLab/MAPGD#-changes-)
 ####Basic Usage
 #####[Commands](https://github.com/LynchLab/MAPGD#-commands-)
 #####[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
-#####[Formating the Input](https://github.com/LynchLab/MAPGD#-formating-the-input-)
+#####[Log-likelihood ratios](https://github.com/LynchLab/MAPGD#-log-likelihood-ratio-statistics-)
 #####[Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-)
 ####Misc.
 #####[IU users](https://github.com/LynchLab/MAPGD#-notes-for-indiana-university-users-)
