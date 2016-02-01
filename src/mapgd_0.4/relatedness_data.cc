@@ -79,3 +79,27 @@ std::string Relatedness::header(void) const {
 size_t Relatedness::size(void) const {
 	return sizeof(float_t)*16+(X_.size()+Y_.size())*sizeof(char);
 }
+
+void Relatedness::clear(void)
+{
+	X_=""; //!< the name of the first (X) sample in the compairison.
+	Y_=""; //!< the name of the second (Y) sample in the compairison.
+
+	zero();
+}
+void Relatedness::zero(void)
+{
+	sites=0;    //!< the number of sites analyzed.
+
+	float_t e_X_[8], e_X_ll=0;
+	float_t e_Y_[8], e_Y_ll=0;
+	float_t f_X_=0, f_X_ll=0;
+	float_t f_Y_=0, f_Y_ll=0;
+	theta_XY_=0, theta_XY_ll=0;
+	gamma_XY_=0, gamma_XY_ll=0;
+	gamma_YX_=0, gamma_YX_ll=0;
+	delta_XY_=0, delta_XY_ll=0;
+	Delta_XY_=0, Delta_XY_ll=0;
+	null_ll_=0, max_ll_=0;
+}
+void Relatedness::zero(void);  //!< zeros statistics, but doesn't set names to empty.

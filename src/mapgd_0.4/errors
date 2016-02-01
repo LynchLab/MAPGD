@@ -1,0 +1,44 @@
+relatedness.cc: In function ‘void inc_gamma(Relatedness&, const Genotype_pair&, size_t)’:
+relatedness.cc:83:157: error: ‘r’ was not declared in this scope
+   rel.gamma_XY_+=( 2.*(exp(-pair.X_Mm-pair.Y_Mm)/8.+exp(-pair.X_MM-pair.Y_Mm)/2.+exp(-pair.X_Mm-pair.Y_MM)/4.+exp(-pair.X_MM-pair.Y_MM) )-pow(P,3)-P*(1-P)*(r*(1+2*P)+FA*P+P/(1-P) ) )/(P*(1-P) )/(0.5-P)/2*count;
+                                                                                                                                                             ^
+relatedness.cc:83:167: error: ‘FA’ was not declared in this scope
+   rel.gamma_XY_+=( 2.*(exp(-pair.X_Mm-pair.Y_Mm)/8.+exp(-pair.X_MM-pair.Y_Mm)/2.+exp(-pair.X_Mm-pair.Y_MM)/4.+exp(-pair.X_MM-pair.Y_MM) )-pow(P,3)-P*(1-P)*(r*(1+2*P)+FA*P+P/(1-P) ) )/(P*(1-P) )/(0.5-P)/2*count;
+                                                                                                                                                                       ^
+relatedness.cc:84:170: error: ‘FC’ was not declared in this scope
+   rel.gamma_YX_+=( 2.*(exp(-pair.X_Mm-pair.Y_Mm)/8.+exp(-pair.X_MM-pair.Y_Mm)/4.+exp(-pair.X_Mm-pair.Y_MM)/2.+exp(-pair.X_MM-pair.Y_MM) )-pow(P,3)-P*(1.-P)*(r*(1.+2.*P)+FC*P+P/(1.-P) ) )/(P*(1.-P) )/(0.5-P)/2.*count;
+                                                                                                                                                                          ^
+relatedness.cc: In function ‘int estimateRel(int, char**)’:
+relatedness.cc:144:20: error: no match for ‘operator=’ (operand types are ‘std::map<Genotype_pair, unsigned int>’ and ‘std::map<std::tuple<long double, long double, long double, long double, long double, long double, long double>, unsigned int>’)
+    hashed_genotypes=hash_genotypes(gcf_in, x, y);
+                    ^
+relatedness.cc:144:20: note: candidates are:
+In file included from /usr/include/c++/4.8/map:61:0,
+                 from map-file.h:7,
+                 from relatedness.h:12,
+                 from relatedness.cc:1:
+/usr/include/c++/4.8/bits/stl_map.h:264:7: note: std::map<_Key, _Tp, _Compare, _Alloc>& std::map<_Key, _Tp, _Compare, _Alloc>::operator=(const std::map<_Key, _Tp, _Compare, _Alloc>&) [with _Key = Genotype_pair; _Tp = unsigned int; _Compare = std::less<Genotype_pair>; _Alloc = std::allocator<std::pair<const Genotype_pair, unsigned int> >]
+       operator=(const map& __x)
+       ^
+/usr/include/c++/4.8/bits/stl_map.h:264:7: note:   no known conversion for argument 1 from ‘std::map<std::tuple<long double, long double, long double, long double, long double, long double, long double>, unsigned int>’ to ‘const std::map<Genotype_pair, unsigned int>&’
+/usr/include/c++/4.8/bits/stl_map.h:279:7: note: std::map<_Key, _Tp, _Compare, _Alloc>& std::map<_Key, _Tp, _Compare, _Alloc>::operator=(std::map<_Key, _Tp, _Compare, _Alloc>&&) [with _Key = Genotype_pair; _Tp = unsigned int; _Compare = std::less<Genotype_pair>; _Alloc = std::allocator<std::pair<const Genotype_pair, unsigned int> >]
+       operator=(map&& __x)
+       ^
+/usr/include/c++/4.8/bits/stl_map.h:279:7: note:   no known conversion for argument 1 from ‘std::map<std::tuple<long double, long double, long double, long double, long double, long double, long double>, unsigned int>’ to ‘std::map<Genotype_pair, unsigned int>&&’
+/usr/include/c++/4.8/bits/stl_map.h:300:7: note: std::map<_Key, _Tp, _Compare, _Alloc>& std::map<_Key, _Tp, _Compare, _Alloc>::operator=(std::initializer_list<std::pair<const _Key, _Tp> >) [with _Key = Genotype_pair; _Tp = unsigned int; _Compare = std::less<Genotype_pair>; _Alloc = std::allocator<std::pair<const Genotype_pair, unsigned int> >]
+       operator=(initializer_list<value_type> __l)
+       ^
+/usr/include/c++/4.8/bits/stl_map.h:300:7: note:   no known conversion for argument 1 from ‘std::map<std::tuple<long double, long double, long double, long double, long double, long double, long double>, unsigned int>’ to ‘std::initializer_list<std::pair<const Genotype_pair, unsigned int> >’
+relatedness.cc:145:39: error: invalid initialization of reference of type ‘std::map<std::tuple<long double, long double, long double, long double, long double, long double, long double>, unsigned int>&’ from expression of type ‘std::map<Genotype_pair, unsigned int>’
+    set_e(relatedness, hashed_genotypes);
+                                       ^
+relatedness.cc:18:6: error: in passing argument 2 of ‘void set_e(Relatedness&, std::map<std::tuple<long double, long double, long double, long double, long double, long double, long double>, unsigned int>&)’
+ void set_e(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
+      ^
+relatedness.cc:146:43: error: invalid initialization of reference of type ‘std::map<std::tuple<long double, long double, long double, long double, long double, long double, long double>, unsigned int>&’ from expression of type ‘std::map<Genotype_pair, unsigned int>’
+    gestimate(relatedness, hashed_genotypes);
+                                           ^
+relatedness.cc:23:6: error: in passing argument 2 of ‘void gestimate(Relatedness&, std::map<std::tuple<long double, long double, long double, long double, long double, long double, long double>, unsigned int>&)’
+ void gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &counts)
+      ^
+make: *** [relatedness.o] Error 1

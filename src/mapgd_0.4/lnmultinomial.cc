@@ -27,7 +27,8 @@ lnmultinomial::lnmultinomial (float_t* s, const count_t& size)
 
 /* \breif  . . .	
  */
-lnmultinomial::lnmultinomial (const count_t &size){
+lnmultinomial::lnmultinomial (const count_t &size)
+{
 	size_=size;
 	lnp_=new float_t[size_];
 	lnfact_vector.clear();
@@ -35,7 +36,8 @@ lnmultinomial::lnmultinomial (const count_t &size){
 
 /* \breif . . .	
  */
-lnmultinomial::lnmultinomial (void){
+lnmultinomial::lnmultinomial (void)
+{
 	size_=4;
 	lnp_=new float_t[size_];
 	lnfact_vector.clear();
@@ -43,7 +45,8 @@ lnmultinomial::lnmultinomial (void){
 
 /* \breif  . . .	
  */
-lnmultinomial::~lnmultinomial (void){
+lnmultinomial::~lnmultinomial (void)
+{
 	delete [] lnp_;
 	lnfact_vector.clear();
 };
@@ -60,7 +63,8 @@ void lnmultinomial::set(void (*fn)(allele_stat const &, float_t *), allele_stat 
 
 /* \breif . . .	
  */
-void lnmultinomial::set(float_t *s){
+void lnmultinomial::set(float_t *s)
+{
 	delete [] lnp_;
 	lnp_=new float_t[size_];
 	float_t *end=s+size_, *it=s, *lit=lnp_;
@@ -137,7 +141,8 @@ float_t lnmultinomial::lnmultinomcoef(const count_t *s){
 	return std::numeric_limits<double>::quiet_NaN();
  }
 
-float_t lnmultinomial::lnfact(const count_t &s){
+float_t lnmultinomial::lnfact(const count_t &s)
+{
 	if (lnfact_vector.size()==0) {lnfact_vector.push_back(log(1) ); lnfact_vector.push_back(log(1) );}
 	for (size_t x=lnfact_vector.size(); x<=s; x++) lnfact_vector.push_back(lnfact_vector[x-1]+log(x) ); 
 	return lnfact_vector[s];
@@ -149,14 +154,16 @@ struct sort_second {
 };
 
 
-std::vector <std::pair <count_t, float_t> > sort (const float_t *a, const count_t &n){
+std::vector <std::pair <count_t, float_t> > sort (const float_t *a, const count_t &n)
+{
 	std::vector <std::pair <count_t, float_t> > sorted;
 	for (size_t x=0; x<n; ++x) { sorted.push_back( std::pair <count_t, float_t> (x, a[x]) ); };
 	std::sort(sorted.begin(), sorted.end(), sort_second() );
 	return sorted;
-};
+}
 
-std::vector <std::pair <count_t, count_t> > sort (const count_t *a, const count_t &n){
+std::vector <std::pair <count_t, count_t> > sort (const count_t *a, const count_t &n)
+{
 	std::vector <std::pair <count_t, count_t> > sorted;
 	for (size_t x=0; x<n; ++x) { sorted.push_back( std::pair <count_t, count_t> (x, a[x]) ); };
 	std::sort(sorted.begin(), sorted.end(), sort_second() );

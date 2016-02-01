@@ -107,7 +107,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	if (site.getcount(0)==site.getcount(1) ){
 		mle.major=4;
 		mle.minor=4;
-	} else if (site.getcount(1)==site.getcount(2) ) mle.minor==4;
+	} else if (site.getcount(1)==site.getcount(2) ) mle.minor=4;
 	return mle;
 }
 
@@ -129,7 +129,6 @@ int estimateInd(int argc, char *argv[])
 
 	float_t EMLMIN=0.001;
 	count_t MIN=4;
-	float_t A=0.00;
 	float_t MINGOF=2.00;
 	count_t MAXPITCH=96;
 
@@ -177,8 +176,6 @@ int estimateInd(int argc, char *argv[])
 	allele_stat allele_out;
 	Locus locus_out, locus_in;
 
-	std::ostream *out=&std::cout;
-
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
 		pro_in.open(infile.c_str(), std::fstream::in);	
 		if (!pro_in.is_open() ) {				//try to open a profile of that name.
@@ -193,9 +190,6 @@ int estimateInd(int argc, char *argv[])
 
 	//else out.open('w', CSV);				//Iff no filename has been set for outfile, pgdfile prints to stdout.
 
-	count_t outc=7;
-	char cdel='\t';
-	char qdel='/';
 	bool binary=false;
 
 	if (outfilepro.size()!=0) {				//Same sort of stuff for the outf

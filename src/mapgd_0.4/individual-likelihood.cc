@@ -5,7 +5,8 @@
 
 /*calculates the 'effective number of chromosomes' in a sample. This number isn't used for anything right now.*/
 
-float_t efc (const Locus &site){
+float_t efc (const Locus &site)
+{
 	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
 
@@ -18,11 +19,11 @@ float_t efc (const Locus &site){
 		++it;
 	}
 	return ec;
-};
+}
 
 //Intilaizes the parameters of the ... returns 0 on succesful excecution, returns 1 if there is am...
-count_t init_params(Locus &site, allele_stat &a, const float_t &minerr){
-
+count_t init_params(Locus &site, allele_stat &a, const float_t &minerr)
+{
 	a.coverage=site.getcoverage();
 
 	std::vector <quartet_t>::iterator it=site.sample.begin(); 
@@ -96,8 +97,8 @@ count_t init_params(Locus &site, allele_stat &a, const float_t &minerr){
 	return 1;
 }
 
-count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch){
-
+count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
+{
 	float_t J[3][3];		//The Jacobian/Hessian.
         float_t iJ[3][3]; 		//Inverse of the Jacobian/Hessian.
 	float_t R[3]={100,100,100};	//The 'residual'. Th
@@ -148,7 +149,6 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
         while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || isnan(R[0]) || isnan(R[1]) || isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
 
-//		std::cerr << a.freq << ":" << a.f << ":" << a.error << std::endl;
 		++iter;
  
 		memset(J[0], 0, sizeof(float_t)*3);
@@ -208,13 +208,9 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;
 		iJ[2][0]/=det; iJ[2][1]/=det; iJ[2][2]/=det;
 
-//		std::cout << R[0] << "*" << iJ[0][0] << std::endl;
-
                 R[0]=(R[0]*iJ[0][0]+R[1]*iJ[0][1]+R[2]*iJ[0][2]);
                 R[1]=(R[0]*iJ[1][0]+R[1]*iJ[1][1]+R[2]*iJ[1][2]);
                 R[2]=(R[0]*iJ[2][0]+R[1]*iJ[2][1]+R[2]*iJ[2][2]);
-
-
 
 		p=a.freq;
 		F=a.f;
@@ -242,8 +238,6 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		//BOUNDS CHECKS.
 		
 		float_t B= 5.1-float_t(iter)*0.015;
-//		std::cerr << "(" << B << ")" << std::endl;
-//	       	std::cerr << "R:" << R[0] << ", " << R[1] << ", " << R[2] << std::endl;
 
 		if (fabs(R[0])>B){
 			if(R[0]>0) R[0]=B;
@@ -262,12 +256,6 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 		a.error-=R[1];
 		a.f-=R[2];
 	
-/*		p=1./(1.+exp(a.freq) );
-		q=std::min(p, 1.-p);
-		F=2./(1+exp(a.f) )-1.;
-		if (F<-q/(1-q) ){
-			a.f=log(2./(-q/(1-q)+1.)-1.);
-		}*/
         };
 
 	a.error=0.75/(1.+exp(a.error) );
@@ -308,8 +296,8 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 }
 
 /* Uses a grid method to maximize the likelihood equations.*/
-count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &MINGOF, const size_t &maxpitch){
-
+count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &MINGOF, const size_t &maxpitch)
+{
 	count_t N_=a.N;
 	count_t P_=a.MM*N_;
 	count_t H_=a.Mm*N_;
@@ -413,10 +401,8 @@ count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <
 	return 	excluded;
 }
 
-
-
-count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch){
-
+count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
+{
 	a.MM=1.0;
 	a.Mm=0.0;
 	a.mm=0.0;

@@ -119,7 +119,7 @@ std::ostream& operator<< (std::ostream& out, const allele_stat& x) {
 		out << 0.;
 	};
 	return out;
-};
+}
 
 allele_stat & allele_stat::operator=(const allele_stat & x) {
 	if (this != &x) { 
@@ -149,7 +149,7 @@ allele_stat & allele_stat::operator=(const allele_stat & x) {
 		delim=x.delim;
 	}
 	return *this;
-};
+}
 	
 std::string allele_stat::header(void) const {
 	return "@ID0    \tID1\tREF\tMAJOR\tMINOR\tCOVERAG\tMJ_FREQ\tMN_FREQ\tERROR\tNULL_ER\tF_STAT\tMM_FREQ\tMm_FREQ\tmm_FREQ\tHETERO\tPOLY_LR\tHWE_LR\tGOF\tEF_CHRM\tIND_INC\tIND_CUT\tBEST_LL\n"; 

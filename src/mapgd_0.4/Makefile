@@ -4,7 +4,7 @@
 
 MODE=-O3
 STD=-std=c++11
-GLOBAL=/usr/local/bin
+DESTDIR=/usr/local/bin
 LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 VERSION=-D VERSION=\"0.4.1\"
@@ -45,6 +45,7 @@ OBJS=allele_stat.o \
 	quartet.o \
 	relatedness.o \
 	relatedness_data.o \
+	sam2idx.o \
 	sample_gof.o \
 	stream-tools.o
 
@@ -53,6 +54,7 @@ OBJS=allele_stat.o \
 	estimate-pooled.o \
 	readtable.o \
 	convert.o \
+	sql\db_api.o \
 
 all: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) 
@@ -64,7 +66,7 @@ debug: CXXFLAGS:=$(DEBUG) $(VERSION) $(STD) $(MODE) $(WARNINGS)
 debug: all
 
 install: all
-	sudo install -m 0755 $(LOCAL) $(GLOBAL)
+	install -m 0755 $(LOCAL) $(DESTDIR)
 .PHONY: install
 	
 clean:

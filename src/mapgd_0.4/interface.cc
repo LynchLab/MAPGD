@@ -58,10 +58,9 @@ int arg_setvectorint(int argc, char **argv, void *parm)
 				std::vector<std::string> intpair=split(elems[x], '-');
 				if (intpair.size()==2){
 					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
-						for (size_t y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
+						for (int y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
 							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
 								v->push_back(y-1);
-							//	std::cout << "pusshing back" << y << std::endl;
 							}
 						};
 					} else {
@@ -89,7 +88,7 @@ int arg_setint(int argc, char **argv, void *parm)
 	} 
 	std::cerr << "arg_setint:error parsing " << argv[1] << std::endl;
 	exit(1);
-};
+}
 
 //TODO Comment
 int arg_set2int(int argc, char **argv, void *parm)
@@ -101,7 +100,7 @@ int arg_set2int(int argc, char **argv, void *parm)
 			return 3;
 		} return argc+1;
 	} exit(1);
-};
+}
 
 
 //TODO Comment
@@ -111,7 +110,7 @@ int arg_setchar(int argc, char **argv, void *parm)
 		*(char *)(parm)=argv[1][0];
 		return 2;
 	} exit(1);	
-};
+}
 
 //TODO Comment
 int arg_setstr(int argc, char **argv, void *parm)
@@ -120,8 +119,7 @@ int arg_setstr(int argc, char **argv, void *parm)
                 *(std::string *)(parm)=argv[1];
                 return 2;
         } exit(1);
-};
-
+}
 
 //TODO Comment
 int arg_setc_str(int argc, char **argv, void *parm)
@@ -130,7 +128,7 @@ int arg_setc_str(int argc, char **argv, void *parm)
 		*(char **)(parm)=argv[1];
 		return 2;
 	} exit(1);	
-};
+}
 
 //TODO Comment
 int arg_setfloat_t(int argc, char **argv, void *parm)
@@ -139,7 +137,7 @@ int arg_setfloat_t(int argc, char **argv, void *parm)
 		*(float_t *)(parm)=atof(argv[1]);
 		return 2;
 	} exit(1);	
-};
+}
 
 
 //TODO Comment
@@ -154,7 +152,7 @@ int flag_version(void *parm)
 {
 	printVersion(*(env_t *) parm);
 	return 0;
-};
+}
 
 
 //TODO Comment
@@ -162,21 +160,21 @@ int flag_help(void *parm)
 {
 	printHelp(*(env_t *) parm);
 	return 0;
-};
+}
 
 //TODO Comment
 int flag_usage(void *parm)
 {
 	printUsage(*(env_t *) parm);
 	return 0;
-};
+}
 
 //TODO Comment
 int arg_error(int argc, char **argv, void *parm)
 {
 	std::cerr << "error: option functor unset\n";
 	return 1;
-};
+}
 
 /* The main command line argument parsing routine */
 
@@ -273,7 +271,7 @@ int parsargs(int argc, char *argv[], env_t env)
 	};
 	if (env.commands.size()!=0) return -1;
 	return 0;
-};
+}
 
 void printVersion(env_t env){
 	printf("%s version %s written by %s\n", env.name, env.version, env.author);
@@ -353,4 +351,3 @@ void env_t::close(void){
 	required_args.clear();
 	required_coms.clear();
 }
-

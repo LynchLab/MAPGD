@@ -11,7 +11,8 @@ File_index::File_index()
 	open_=false;
 }
 
-File_index & File_index::operator =(const File_index& arg){
+File_index & File_index::operator =(const File_index& arg)
+{
         id0_str_=arg.id0_str_;
 	cumulative_size_=arg.cumulative_size_;
         id0_=arg.id0_;
@@ -22,23 +23,27 @@ File_index & File_index::operator =(const File_index& arg){
 }
 
 
-id1_t File_index::get_rowid (const id0_t &id0, const id1_t &id1) const{
+id1_t File_index::get_rowid (const id0_t &id0, const id1_t &id1) const
+{
 	if (id1<=get_size(id0) ) return get_cumulative_size(id0)+id1;
 	std::cerr << __FILE__ << ":" << __LINE__ << ": attempt to access positions outside of scaffold.\n";
 	exit(0);
 	return get_cumulative_size(id0)+id1;
 }	
 
-id1_t File_index::get_rowid (const std::string &id0_str, const id1_t &id1) const{
+id1_t File_index::get_rowid (const std::string &id0_str, const id1_t &id1) const
+{
 	return get_rowid(get_id0(id0_str), id1);
 }
 
 
-std::string File_index::get_string(const id0_t &id0) const{
+std::string File_index::get_string(const id0_t &id0) const
+{
 	return id0_[id0];
 }
 
-id0_t File_index::get_id0 (const std::string &id0_str) const{
+id0_t File_index::get_id0 (const std::string &id0_str) const
+{
 	std::map <std::string,id0_t>::const_iterator it;
 	it=id0_str_.find(id0_str);
 	if ( it!=id0_str_.end() ) return it->second;
@@ -47,29 +52,33 @@ id0_t File_index::get_id0 (const std::string &id0_str) const{
 	return ID0_MAX;
 }
 
-bool File_index::is_open (void) const{
+bool File_index::is_open (void) const
+{
 	return open_;
-};
+}
 
-id1_t File_index::get_size (const id0_t &id0) const{
+id1_t File_index::get_size (const id0_t &id0) const
+{
 	if ( id0<size_.size() ) return size_[id0];	
 	std::cerr << __FILE__ << ":" << __LINE__ << ": scaffold does not exist.\n";
 	exit(0);
 	return ID0_MAX;
-};
+}
 
-id1_t File_index::get_cumulative_size (const id0_t &id0) const{
+id1_t File_index::get_cumulative_size (const id0_t &id0) const
+{
 	if ( id0<cumulative_size_.size() ) return cumulative_size_[id0];
 	std::cerr << __FILE__ << ":" << __LINE__ << ":" << " no scaffold with id0=" << id0 << " exists.\n";
 	exit(0);
 	return ID0_MAX;
-};
+}
 
-id1_t File_index::get_cumulative_size (const std::string &id0_str) const{
+id1_t File_index::get_cumulative_size (const std::string &id0_str) const
+{
 	if ( get_id0(id0_str)<cumulative_size_.size() ) return cumulative_size_[get_id0(id0_str)];
 	std::cerr << __FILE__ << ":" << __LINE__ << ": scaffold does not exist.\n";
 	return ID0_MAX;
-};
+}
 
 
 std::istream& File_index::from_sam_header(std::istream &in)
@@ -144,7 +153,6 @@ std::istream& operator >> (std::istream& in, File_index& f)
 {
 	std::string scaffold_name; 
 	id1_t length;
-//	char endl;
 	in >> scaffold_name;
 	while (scaffold_name!="@END_TABLE"){
 		in >> length;
