@@ -1,16 +1,18 @@
 #include "map-file.h"
 
-Base_file::Base_file(void){
+Base_file::Base_file(void)
+{
 	open_=false;
 	read_=false;
 	write_=false;
 	delim_column_='\t';
 	binary_=false;
 	filename_="";
-};	
+}
 
 template <class T>
-void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mode){
+void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mode)
+{
 	std::vector<std::string> line;
 	line=split_last(filename, '.');
 	if (line.back()==T::file_name) filename_=line[0];
@@ -42,7 +44,8 @@ void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mod
 	open_=true;
 }
 
-void Base_file::open_no_extention(const char* filename, const std::ios_base::openmode &mode){
+void Base_file::open_no_extention(const char* filename, const std::ios_base::openmode &mode)
+{
 	filename_=filename;
 	if (open_){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
@@ -92,7 +95,8 @@ void Base_file::open(const std::ios_base::openmode &mode)
 }
 
 template <class T>
-void Data_file<T>::open_header(Base_file &file){
+void Data_file<T>::open_header(Base_file &file)
+{
 	if (file.openmode() & std::fstream::in){
 		if(file.filename().size()!=0) this->open(file.filename().c_str(), std::fstream::in);
 		else this->open(std::fstream::in);
@@ -366,6 +370,7 @@ bool Base_file::eof(void){
 template class Data_file <allele_stat>;
 template class Data_file <population_genotypes>;
 template class Data_file <Locus>;
+template class Data_file <Pooled_data>;
 template class Data_file <Sample_gof>;
 template class Data_file <File_index>;
 template class Data_file <Relatedness>;
@@ -373,10 +378,12 @@ template class Data_file <Relatedness>;
 template class Indexed_file <allele_stat>;
 template class Indexed_file <population_genotypes>;
 template class Indexed_file <Locus>;
+template class Indexed_file <Pooled_data>;
 
 template class Flat_file <allele_stat>;
 template class Flat_file <population_genotypes>;
 template class Flat_file <Locus>;
+template class Flat_file <Pooled_data>;
 template class Flat_file <Sample_gof>;
 template class Flat_file <File_index>;
 template class Flat_file <Relatedness>;

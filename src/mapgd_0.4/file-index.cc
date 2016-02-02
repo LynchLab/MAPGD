@@ -6,7 +6,7 @@ const std::string File_index::table_name="SCAFFOLDS";
 File_index::File_index()
 {
 	cumulative_size_.push_back(0);
-	id0_t last_id0_=-1;						
+	last_id0_=-1;						
 	std::string last_id0_str_="";
 	open_=false;
 }
@@ -118,7 +118,6 @@ std::istream& File_index::from_sam_header(std::istream &in)
 
 int File_index::write_index(std::ostream &out)
 {
-	id1_t length;
 	char delim_='\t';
 	std::string line, sn, ln;
 	if (&out==NULL){

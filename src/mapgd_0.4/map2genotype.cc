@@ -6,8 +6,9 @@ command filter:
 
 #include "map2genotype.h"
 
-//All these 
-genotype baysian_genotype(const int &major, const int &minor, const float_t &freq, const float_t &error, const quartet_t &quart){
+//This should probably be changed over to a likelihood model class
+genotype baysian_genotype(const int &major, const int &minor, const float_t &freq, const float_t &error, const quartet_t &quart)
+{
 	float_t lMM, lMm, lmm, N;
 
 	N=count(quart);
@@ -29,9 +30,10 @@ genotype baysian_genotype(const int &major, const int &minor, const float_t &fre
 	lmm=-lmm+norm;
 
 	return genotype(lMM, lMm, lmm, N);	
-};
+}
 
-void get_genotypes(const allele_stat &allele, const Locus &locus, population_genotypes &genotypes ){
+void get_genotypes(const allele_stat &allele, const Locus &locus, population_genotypes &genotypes )
+{
 	std::vector <genotype>::iterator l_it=genotypes.likelihoods.begin();
 	std::vector <quartet_t>::const_iterator q_it=locus.cbegin(), q_end=locus.cend();
 	while (q_it != q_end){

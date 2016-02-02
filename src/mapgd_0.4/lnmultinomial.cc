@@ -49,8 +49,7 @@ lnmultinomial::~lnmultinomial (void)
 {
 	delete [] lnp_;
 	lnfact_vector.clear();
-};
-
+}
 
 /* \breif  . . .	
  */

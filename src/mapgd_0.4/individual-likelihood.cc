@@ -110,7 +110,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 
 	count_t iter=0;			//counts the number of iterations to let us know if we have a failure to converge.
 
-	float_t MM=a.MM, Mm=a.Mm, mm=a.mm, p=a.freq, F=a.freq, E, q=1-a.freq;
+	float_t MM=a.MM, Mm=a.Mm, mm=a.mm, p=a.freq, F=a.freq, E;//, q=1-a.freq;
 //	a.f=log( (1.+p/(1.-p) )/(a.f+p/(1-p) )-1.);
 //	a.f=log( (1.+(1.-p)/p )/(0.2+(1.-p)/p )-1.);
 //	MM=pow(p, 2)+p*q*F;

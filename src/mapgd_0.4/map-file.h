@@ -18,6 +18,7 @@
 #include "sample_gof.h"
 #include "file-index.h"
 #include "relatedness_data.h"
+#include "pooled_data.h"
 
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 

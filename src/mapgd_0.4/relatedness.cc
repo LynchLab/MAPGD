@@ -17,6 +17,7 @@ std::map <Genotype_pair_tuple, size_t> hash_genotypes (Indexed_file <population_
 /*Does a regression of allele frequency of the samples on the popualtion allele frequency*/
 void set_e(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
 {
+
 }
 
 /*Guess starting values of relatedness for the maximization procedure*/
@@ -92,6 +93,7 @@ void inc_Delta(Relatedness &rel, const Genotype_pair &pair, const size_t &count)
 /*Maximizes the relatedness*/
 void maximize(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
 {
+
 }
 
 

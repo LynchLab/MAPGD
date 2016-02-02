@@ -9,8 +9,9 @@
 #include <iomanip>
 
 #include "interface.h" 
-#include "pro-file.h" 
+#include "map-file.h"
 #include "pooled-likelihood.h"
+#include "pooled_data.h"
 
 int estimatePooled(int, char **);
 allele_stat estimate(quartet_t);

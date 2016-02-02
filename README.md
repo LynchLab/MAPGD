@@ -1,6 +1,4 @@
-﻿##This readme is being update and does not currently accurately describe the program.
-
-##MAPGD version 0.4
+﻿##MAPGD version 0.4
 
 [<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip) [(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
 
@@ -22,7 +20,7 @@
 
 <h2> Introduction </h2>
 
-MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium, linkage disequilibrium and identity by descent (IBD) coefficients from population genomic data using a statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data or for the analysis of pooled data (where many individuals are used to prepare a single sample).  
+MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium, linkage disequilibrium and identity-by-descent (IBD) coefficients from population genomic data using a statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data or for the analysis of pooled data (where many individuals are used to prepare a single sample).  
 
 <h2> Quick start </h2>
 
@@ -60,7 +58,8 @@ A quick test to make sure everything is working correctly can be conducted by ty
 
 This will output a substantial number of lines ending in PASS or FAIL to your terminal. Ideally all of the lines should say PASS. 
 
-	apt-get mapgd
+Mapgd works a number of [commands](https://github.com/LynchLab/MAPGD#-commands-) each with their own associated help. Generally you will start by creating mapileup files with samtools mpileup command, converting these mpileup files to the pro format with mapgd's proview command, and then begining your analysis. Running the script "make\_and\_align\_reads.sh" in the src\test\ directory will simulate a genomics study and then run mapgd on the simulated data. You may also want to look at an [Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-).
+
 <h2> FAQ </h2>
 
 <b> Why don't you provide information on indels? </b>
@@ -135,13 +134,13 @@ Mapgd currently implements the following commands:
 	allele                Estimates allele frequencies using individual data
 	filter                Filter sites in '.map' files
 	genotype              Calculate genotype probabilities for individuals
+	pool                  Estimates allele frequencies using pooled data*
 	proview               Prints data in the '.pro' file quartet format
 	sam2idx               Reformats a sam header to an idx used by mapgd.
 
 Working in previous version, but currently broken:
 
 	linkage               Estimates linkage disequilibrium between loci
-	pooled                Estimates allele frequencies using pooled data*
 	relatedness           Estimates the 7 IBD coefficients 
 
 In the near future we hope to implement the commands:
@@ -191,7 +190,7 @@ The Table bellow lists some of the labels with their descriptions. It also lists
 | Mm\_FREQ| float\_t	| frequency of the major minor genotype				|
 | mm\_FREQ| float\_t	| frequency of the minor minor genotype				|
 | NULL\_ER| float\_t	| error rate assuming monomorphism				|
-| ERRROR  | float\_t	| maximum likelihood error rate					|
+| ERROR   | float\_t	| maximum likelihood error rate					|
 | HETERO  | float\_t	| heterozygosity of a site					|
 | POLY\_LR| float\_t 	| log likelihood ratio of best fit/monomorphic			|
 | HWE\_LR | float\_t 	| log likelihood ratio of best fit/Hardy–Weinberg  equilibrium	|
@@ -207,7 +206,7 @@ The Table bellow lists some of the labels with their descriptions. It also lists
 | LENGTH  | id1\_t	| The length of a scaffold					|
 | VERSION | std::string	| The version of mapgd used to make a file			|
 
-Header lines can also contain an arbitrary (sanitized) string, which serves as a sample name, if appropriate. Below are example headers from each of the types of files produced by mapgd. 
+Header lines can also contain an arbitrary (sanitized) string, which serves as a sample name, if appropriate. Bellow are example headers from each of the types of files produced by mapgd. 
 
 <b> .idx files </b>
 
@@ -226,7 +225,7 @@ Header lines can also contain an arbitrary (sanitized) string, which serves as a
 <b> .map files </b> 
 
 	@NAME:POSITIONS	VERSION:0.4.1
-	@SCFNAME    	POS	REF	MAJOR	MINOR	COVERAG	MJ\_FREQ	MN\_FREQ	ERROR	NULL\_ER	F\_STAT	MM\_FREQ	Mm\_FREQ	mm\_FREQ	HETERO	POLY\_LR	HWE\_LR	GOF	EF\_CHRM	IND\_INC	IND\_CUT	BEST\_LL
+	@SCFNAME    	POS	REF	MAJOR	MINOR	COVERAG	MJ_FREQ	MN_FREQ	ERROR	NULL_ER	F_STAT	MM_FREQ	Mm_FREQ	mm_FREQ	HETERO	POLY_LR	HWE_LR	GOF	EF_CHRM	IND_INC	IND_CUT	BEST_LL
 
 <b>.map</b> files contain a list of estimated genotypic frequency obtained with the allele command. These files store test statistics for polymorphism and Hardy-Weinberg disequilibrium, as well as a small number of statistics which may prove useful for filtering variants, such as sequencing error rate and population depth of coverage.
 
@@ -245,6 +244,9 @@ If more than one bam file was used in the construction of the mpileup file, then
 <b> .gcf files </b> The output of the genotype command. This stores the -log likelihood values that an individual is each of the three possible genotypes (Major Major, Major minor or minor minor) at each locus. 
 
 <b> .rel files </b> The output of the relatedness command. This file stores the 7 genotypic correlation coefficients for all pairs of individuals and some log likelihood ratio test statistics. 
+
+<b> .pol files </b> The output of the pooled command. This stores the -log likelihood values that an individual is each of the three possible genotypes (Major Major, Major minor or minor minor) at each locus. 
+
 
 <h3> The SQL database </h3>
 
@@ -310,7 +312,7 @@ One advantage of the above work flow is that each of the files can be inspect vi
 
 <h5> The above work flow using  I/O redirection </h5>
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
-	| mapgd proview -B -H seq1.header | mapgd allele -p 1,2 -B | mapgd filter -p 6 -o allelefrequency.txt
+	| mapgd proview -H seq1.header | mapgd allele | mapgd filter -p 6 -o allelefrequency.map
 
 In the case where the allele command has been used the files can be further analyzed to estimate the seven genotypic correlation coefficients.
 

@@ -19,10 +19,10 @@ models& models::operator=(const models& rhs){
 	}
 
 	return *this;
-};  
+}  
 
-models::models(void){
-
+models::models(void)
+{
 	lnMM_=lnmultinomial(4);
 	lnMm_=lnmultinomial(4);
 	lnmm_=lnmultinomial(4);
@@ -32,14 +32,16 @@ models::models(void){
 	lnmmP_=lnmultinomial(2);
 }
 
-models::~models(void){
+models::~models(void)
+{
 }
 
 
 /*! \breif The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
-void MMmodelP(const allele_stat &a, float_t *l){ 	 
+void MMmodelP(const allele_stat &a, float_t *l)
+{ 	 
 	if(a.error<=0){
 		l[0]=0;
 		l[1]=-FLT_MAX;
@@ -50,12 +52,13 @@ void MMmodelP(const allele_stat &a, float_t *l){
 		l[0]=logl(1.-a.error);
 		l[1]=logl(a.error);
 	}					 	
-};
+}
 
 /*! \breif The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
-void mmmodelP(const allele_stat &a, float_t *l){	//Dito, assuming [m]ajor [m]inor.
+void mmmodelP(const allele_stat &a, float_t *l)		//Dito, assuming [m]ajor [m]inor.
+{
 	if(a.error<=0){
 		l[0]=-FLT_MAX;
 		l[1]=0;
@@ -66,12 +69,13 @@ void mmmodelP(const allele_stat &a, float_t *l){	//Dito, assuming [m]ajor [m]ino
 		l[0]=logl(a.error/3.);
 		l[1]=logl(1-a.error/3.);
 	}					 	
-};
+}
 
 /*! \breif The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
-void MmmodelP(const allele_stat &a, float_t *l){ 	//[M]ajor [m]inor.
+void MmmodelP(const allele_stat &a, float_t *l) 	//[M]ajor [m]inor.
+{
 	if(a.error<=0){
 		l[0]=logl(0.5);
 		l[1]=logl(0.5);
@@ -82,12 +86,13 @@ void MmmodelP(const allele_stat &a, float_t *l){ 	//[M]ajor [m]inor.
 		l[0]=logl(0.5*(1.-a.error)+0.5*a.error/3.);
 		l[1]=logl(0.5*(1.-a.error/3.)+0.5*a.error);
 	}					 	
-};
+}
 
 /*! \breif The probabilities used for fitting in the maximum likelihood grid search.
  *	(Major Major)
  */ 	
-void MMmodel(const allele_stat &a, float_t *prob){		
+void MMmodel(const allele_stat &a, float_t *prob)
+{		
 	float_t e3=logl(a.error/3.);		//e3 : the error rate over three. I.e. If an error occurs, it has a 1/3 chance
 						// of going to a particular base.
 	if (a.error==0) e3=-FLT_MAX;		// If the error rate is zero we want to set 1/3 of the logl of error rate 
@@ -100,23 +105,25 @@ void MMmodel(const allele_stat &a, float_t *prob){
 	if (a.error==1.) prob[a.major]=-FLT_MAX;
 
 //	std::cout << "ln(1-e)" << prob[a.major] << std::endl;
-};
+}
 
 /*! \breif The probabilities used for fitting in the maximum likelihood grid search.
  *	(minor minor)
  */
-void mmmodel(const allele_stat &a, float_t *l){	
+void mmmodel(const allele_stat &a, float_t *l)
+{	
 	float_t e3=logl(a.error/3.);
 	if (a.error==0.) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
 	l[a.minor]=logl(1.-a.error);
 	if (a.error==1.) l[a.minor]=-FLT_MAX;
-};
+}
 
 /*! \breif The probabilities used for fitting in the maximum likelihood grid search.
  *	(Major minor)
  */
-void Mmmodel(const allele_stat &a, float_t *l){		//Dito.
+void Mmmodel(const allele_stat &a, float_t *l)		//Dito.
+{
 	float_t e3=logl(a.error/3.);
 	if (a.error==0.) e3=-FLT_MAX;
 	l[0]=e3; l[1]=e3; l[2]=e3; l[3]=e3;
@@ -127,10 +134,11 @@ void Mmmodel(const allele_stat &a, float_t *l){		//Dito.
 		l[a.major]=-FLT_MAX;
 		l[a.minor]=-FLT_MAX;
 	};
-};
+}
 
 /// A function that calculates the logl likelihood of a set of observations. 
-float_t models::loglikelihood(const Locus &site, const allele_stat &p){
+float_t models::loglikelihood(const Locus &site, const allele_stat &p)
+{
 
 	float_t sumll=0;
 
@@ -167,7 +175,8 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p){
 }
 
 /*! \Breif DONT USE THIS!!! TODO FIX IT!. */
-float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population){
+float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population)
+{
 
 	lnMM_.set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
 	lnMm_.set(&Mmmodel, population);  //observing a particular quartet given that the individual has the MM, Mm or mm genotype.
@@ -203,7 +212,8 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 }
 
 //THE goodness of fit calcualtion.
-float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::vector <float_t> &gofs, const float_t &MINGOF){
+float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::vector <float_t> &gofs, const float_t &MINGOF)
+{
 	float_t Num=0., Den=0., E, V, O, thisgof, clone_mingof=FLT_MAX;
 	std::vector <float_t>::iterator gof=gofs.begin();
 
@@ -240,7 +250,7 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 
 			E=0; V=0;	//The [E]xpectation and [V]arriance.
 
-			for (size_t x=0; x<N_+1; ++x){
+			for (count_t x=0; x<N_+1; ++x){
 				count1[0]=x;			
 				count1[1]=N_-x;			
 
@@ -275,5 +285,3 @@ float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::ve
 	}
 	return thisgof;
 }
-
-

@@ -27,6 +27,7 @@ OBJS=allele_stat.o \
 	base.o \
 	binomial.o \
 	estimate-individual.o \
+	estimate-pooled.o \
 	file-index.o \
 	filter.o \
 	genotype.o \
@@ -39,6 +40,7 @@ OBJS=allele_stat.o \
 	map-file.o \
 	models.o \
 	map2genotype.o \
+	pooled_data.o \
 	pooled-likelihood.o \
 	proview.o \
 	PopLD.o \
@@ -51,7 +53,6 @@ OBJS=allele_stat.o \
 
 #	proview.o \
 	compare-pooled.o \
-	estimate-pooled.o \
 	readtable.o \
 	convert.o \
 	sql\db_api.o \

@@ -29,7 +29,7 @@ Output File: two columns of site identifiers; major allele; minor allele; major-
 int estimatePooled(int argc, char *argv[])
 {
 
-	/* variables that can be set from the command line */
+	/* variables that can be set from the command locus */
 	std::string infile="";
 	std::string outfile="";
 
@@ -58,18 +58,31 @@ int estimatePooled(int argc, char *argv[])
 	env.flag(	'V',"verbose", 	&verbose,	&flag_set, 	"an error occured", "prints more information while the command is running");
 	env.flag(	'q',"quite", 	&quite,		&flag_set, 	"an error occured", "prints less information while the command is running");
 
-	/* gets any command line options */
+	/* gets any command locus options */
 	if ( parsargs(argc, argv, env) ) printUsage(env);
 	/* Point to the input and output files. */
 
 
-	std::ostream *out;
-	std::ofstream outFile;
-	out=&std::cout;
-	profile pro;
+	Indexed_file <Pooled_data> out_pooled;
+	Indexed_file <Locus> in_locus;
+	Pooled_data site;
 
-	if (infile.size()!=0) { pro.open(infile.c_str(), std::fstream::in); if (!pro.is_open() ) {printUsage(env);} }
-	else pro.open(std::fstream::in);
+	if (infile.size()!=0) { 
+		in_locus.open(infile.c_str(), std::fstream::in); 
+	} else {
+		in_locus.open(std::fstream::in);
+	}
+
+	if (outfile.size()!=0) {
+		out_pooled.open(outfile.c_str(), std::ofstream::out);
+	} else {
+		out_pooled.open(std::fstream::out);
+	}
+
+	Locus locus=in_locus.read_header();
+	out_pooled.set_index(in_locus.get_index() );
+	site.set_sample_names(locus.get_sample_names() );
+	out_pooled.write_header(site);
 
 	float_t pmaj=0, maxll=0;					/* fraction of putative major reads among the total of major and minor */
 	float_t popN=0, eml=0;						/* maximum-likelihood estimates of the error rate, null error rate, and major-allele frequency */
@@ -77,26 +90,16 @@ int estimatePooled(int argc, char *argv[])
 
 	/* Open the output and input files. */
 
-	if (outfile.size()!=0) {
-		outFile.open(outfile.c_str(), std::ofstream::out);
-		if (!outFile) printUsage(env);
-		out=&outFile;
-	};
-
-
-	pro.maskall();
-
 	if ( pop.size()==0 ) { 
 		pop.clear();
-		for (size_t x=0; x<pro.size(); ++x) pop.push_back(x);
+		for (size_t x=0; x<locus.get_sample_names().size(); ++x) pop.push_back(x);
 	};
 
-	for (size_t x=0; x<pop.size(); ++x) unmask(pro.get_locus().get_quartet(pop[x]) );
+	std::cerr << "Locus size " << locus.size() << std::endl;
 
-	*out << "id1\t\tid2\tmajor\tminor\t";
-	for (size_t x=0; x<pop.size(); ++x) *out << "Freq_P\tll_poly\tll_fixed\tcov\t";
-	*out << "\tTotcov\tError" << std::endl;
-	/* Start inputting and analyzing the data line by line. */
+	for (size_t x=0; x<pop.size(); ++x) unmask(locus.get_quartet(pop[x]) );
+
+	/* Start inputting and analyzing the data locus by locus. */
 	/* The profile format can contain quartets for many populations and these populations need to be
 	 * iterated across.
 	 */
@@ -109,54 +112,56 @@ int estimatePooled(int argc, char *argv[])
 	llstatc=new float_t[pop.size()];	//
 
 	lnmultinomial multi(4);			//a class for our probability function (which is just a multinomial distribution).
-	allele_stat site;
-	Locus line;
 
-	while (pro.read(line)!=EOF ){
+	while(in_locus.read(locus).good() ){
 		//sorts the reads at the site from most frequenct (0) to least frequenct (3) (at metapopulation level);
 
 		/* Calculate the ML estimates of the major / minor allele frequencies and the error rate. */
-                line.sort();
+                locus.sort();
 
-		site.major=line.getindex(0);
-		site.minor=line.getindex(1);
+		site.id0=locus.id0;
+		site.id1=locus.id1;
+
+		site.coverage=locus.getcoverage();
+
+		site.major.base=locus.getindex(0);
+		site.minor.base=locus.getindex(1);
 
                 /* 3) CALCULATE THE LIKELIHOOD OF THE POOLED POPULATION DATA. */
 
                 /* Calculate the ML estimates of the major pooled allele frequency and the error rate. */
-		popN=line.getcoverage();
+		popN=locus.getcoverage();
 
-                site.error= (float_t) ( popN - line.getcount(0) ) / ( (float_t) popN );
-		site.error= (float_t) (line.getcoverage()-line.getcount(0)-line.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
+                site.error= (float_t) ( popN - locus.getcount(0) ) / ( (float_t) popN );
 
 		if (site.error<EMLMIN) site.error=EMLMIN;
 
-		multi.set(&monomorphicmodel, site);
+		multi.set(&monomorphicmodel, site.to_allele_stat(0) );
 
-                for (size_t x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(line.get_quartet(pop[x]).base );
+                for (size_t x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
-		site.error= (float_t) (line.getcoverage()-line.getcount(0)-line.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
+		site.error= (float_t) (locus.getcoverage()-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
 
 		if (site.error<EMLMIN) site.error=EMLMIN;
 
                 /* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 
-		multi.set(&fixedmorphicmodel, site);
-                for (size_t x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(line.get_quartet(pop[x]).base );
+		multi.set(&fixedmorphicmodel, site.to_allele_stat(0) );
+                for (size_t x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
                 /* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF monomorphism */
 
                 for (size_t x=0; x<pop.size(); ++x) {
-                        pmaj = (float_t) line.getcount(pop[x],0) / (float_t) ( line.getcount(pop[x], 1) + line.getcount(pop[x],0) );
+                        pmaj = (float_t) locus.getcount(pop[x],0) / (float_t) ( locus.getcount(pop[x], 1) + locus.getcount(pop[x],0) );
 			
                         pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
                         pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
 			if (pmlP[x]<0) pmlP[x]=0.;
 			if (pmlP[x]>1) pmlP[x]=1.;
 
-			site.freq=pmlP[x];
-			multi.set(&polymorphicmodel, site);
-                        llhoodP[x]=multi.lnprob(line.get_quartet(pop[x]).base );
+			site.p[x]=pmlP[x];
+			multi.set(&polymorphicmodel, site.to_allele_stat(x) );
+                        llhoodP[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
                 };
 
                 /* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
@@ -180,19 +185,15 @@ int estimatePooled(int argc, char *argv[])
                         };*/
                         llstat[x] = (2.0 * (llhoodP[x] - llhoodM[x]) );
                         llstatc[x] = (2.0 * (llhoodP[x] - llhoodF[x]) );
+			site.polyll[x]=llstat[x];
+			site.majorll[x]=llhoodM[x];
+			site.minorll[x]=llstatc[x];
                         if (llstat[x]>maxll) maxll=llstat[x];
                 };
 
                 if (maxll>=a){
-                        *out << std::fixed << std::setprecision(7) << pro.getids(line) << '\t' << line.getname(0) << '\t' << line.getname_gt(1) << '\t';
-                        for (size_t x=0; x<pop.size(); ++x){
-                                if ( line.getcoverage(pop[x])==0) *out << std::fixed << std::setprecision(7) << "NA" << '\t' << 0.0 << '\t' << 0.0 << '\t' << 0.0 << '\t';
-                                else *out << std::fixed << std::setprecision(7) << pmlP[x] <<'\t' << llstat[x] << '\t' << llstatc[x]<< '\t' << int(line.getcoverage(pop[x])) <<'\t';
-                        };
-                        /* Significance at the 0.05, 0.01, 0.001 levels requires the statistic, with 1 degrees of freedom, to exceed 3.841, 6.635, and 10.827, respectively. */
-                        *out << int(line.getcoverage()) << '\t' << site.error << std::endl;
+			out_pooled.write(site);
                 };
-
 	}
         delete [] llhoodP;
         delete [] llhoodF;
@@ -200,7 +201,7 @@ int estimatePooled(int argc, char *argv[])
         delete [] pmlP;
         delete [] llstat;
         delete [] llstatc;
-	if (outFile.is_open()) outFile.close();
+	out_pooled.close();
 	/* Ends the computations when the end of file is reached. */
 	exit(0);
 }

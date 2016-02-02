@@ -312,11 +312,6 @@ std::string Locus::header(void) const
 
 size_t Locus::size(void) const
 {
-        std::vector <quartet_t> sample;                 //!< The five bases A/C/G/T/N;
-//        std::vector <count_t> extraid;                  //!< extra ids associated with the quartet. (ref base identiy?).
-
-        id0_t id0;
-        id1_t id1;
 	return sizeof(count_t)*(5+extraid.size() )+sizeof(quartet_t)*sample.size()+sizeof(id0_t)+sizeof(id1_t);
 }
 
