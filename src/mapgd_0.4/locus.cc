@@ -23,7 +23,7 @@ Locus::Locus(const count_t &size)
 	sample_names_.clear();//=std::vector<std::string> (size);
 	char buffer[21];
 	for (size_t x=0; x<size; ++x){
-		snprintf(buffer, 20, "Sample_%d", x);
+		snprintf(buffer, 20, "Sample_%d", x+1);
 		sample_names_.push_back(std::string(buffer) );
 	}
 	id0=0;

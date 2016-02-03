@@ -2,6 +2,8 @@
 #define QUARTET_H_
 
 #include "typedef.h"
+#include "base.h"
+
 #include <sstream>
 #include <cstring> 
 #include <iostream>
@@ -53,6 +55,14 @@ typedef struct quartet {
 	quartet& operator=(const count_t& x) {
 		memset (base, x, 5*sizeof(count_t) );
 		return *this;
+	}
+	
+	count_t operator[](const gt_t &x) const {
+		return base[x]; 
+	}
+
+	count_t operator[](const Base &x) const {
+		return base[x.base]; 
 	}
 } quartet_t;
 

@@ -64,8 +64,8 @@ std::istream& operator >> (std::istream& in, Pooled_data& x)
 	for (size_t s=0; s<x.names_.size();++s) {
 		line_stream >> x.p[s];
 		line_stream >> x.polyll[s];
-		line_stream >> x.majorll[s];
 		line_stream >> x.minorll[s];
+		line_stream >> x.majorll[s];
 	}
 	return in;
 }
@@ -81,12 +81,13 @@ std::ostream& operator<< (std::ostream& out, const Pooled_data& x)
 
 	for (size_t s=0; s<x.names_.size(); ++s) {
 		if (!isnan(x.p[s]) ){
+	//		out << std::setprecision(1);
 			out << x.p[s] << '/';
 			out << x.polyll[s] << '/';
-			out << x.majorll[s] << '/';
-			out << x.minorll[s] << '\t';
+			out << x.minorll[s] << '/';
+			out << x.majorll[s] << '\t';
 		} else {
-			out << "./././.\t";
+			out << ".../.../.../...\t";
 		}
 	}
 	return out;
@@ -94,7 +95,7 @@ std::ostream& operator<< (std::ostream& out, const Pooled_data& x)
 
 std::string Pooled_data::header(void) const 
 {
-	std::string line="@SCFNAME       \tPOS\tMAJOR\tMINRO\tCOVRAG\tERROR";
+	std::string line="@SCFNAME       \tPOS\tMAJOR\tMINOR\tCOVRAG\tERROR";
 	for (size_t s=0; s<names_.size(); ++s) {
 		line+=('\t'+names_[s]);
 	}

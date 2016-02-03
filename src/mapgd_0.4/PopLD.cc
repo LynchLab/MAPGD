@@ -29,8 +29,6 @@ struct estimate
 	double llstat;		// test statistic for examining the statistical significance of LD
 };
 
-extern struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlNuc1_1, int mlNuc2_1, int mlNuc1_2, int mlNuc2_2, double best_p, double best_q, double best_error_1, double best_error_2, int nsample, int mononuc_count_1[][5], int mononuc_count_2[][5], int *cov1, int *cov2);
-
 /****************************** estimate_D() *******************************/
 /** Function for estimating the LD coefficient D                          **/
 /** Returns the ML estimate of D, its minimum and maximum possivle values **/
@@ -63,9 +61,9 @@ extern struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, 
 /** Returns:                                                              **/
 /** ML estimates of LD measures                                           **/
 /***************************************************************************/
-struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlNuc1_1, int mlNuc2_1, int mlNuc1_2, int mlNuc2_2, double best_p, double best_q, double best_error_1, double best_error_2, int nsample, int mononuc_count_1[][5], int mononuc_count_2[][5], int *cov1, int *cov2)
+estimate estimate_D(double Ni, int mlNuc1_1, int mlNuc2_1, int mlNuc1_2, int mlNuc2_2, double best_p, double best_q, double best_error_1, double best_error_2, int nsample, int mononuc_count_1[][5], int mononuc_count_2[][5], int *cov1, int *cov2)
 {
-	vector <estimate> est(num_pol_sites-sg-1);
+	estimate est;
 	int mlNuc3_1, mlNuc4_1, mlNuc3_2, mlNuc4_2;
 	double maxll, third_best_error_1, prob_mononuc1[11][5], third_best_error_2, prob_mononuc2[11][5];
 	double size_grid_D, mlD, prob_geno[11];
@@ -78,7 +76,7 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlN
 	// printf("Entered the function\n");
 	// printf("best_p: %f\tmononuc_count_1[1][1]: %d\tcov1[1]: %d\n", best_p, mononuc_count_1[1][1], cov1[1]);
 	// Estimate the LD coefficient D between the polymorphic sites
-	est[tg-sg-1].Ni = Ni;
+	est.Ni = Ni;
 	maxll = -FLT_MAX;	
 	// Find the minimum and maximum possible values of D given the estimated allele frequencies
 	if ( best_p*best_q <= (1.0-best_p)*(1.0-best_q) ) {
@@ -300,40 +298,40 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlN
 	} // End the loop over the LD coefficients D
 	if (maxll > -FLT_MAX) {
 		// Calculate the LD measures
-		est[tg-sg-1].best_D = t_best_D;
-        	if (est[tg-sg-1].best_D >= 0) {
-        		est[tg-sg-1].best_Dprime = est[tg-sg-1].best_D/Dmax;
+		est.best_D = t_best_D;
+        	if (est.best_D >= 0) {
+        		est.best_Dprime = est.best_D/Dmax;
         	} else {
-                	est[tg-sg-1].best_Dprime = -est[tg-sg-1].best_D/Dmin;
+                	est.best_Dprime = -est.best_D/Dmin;
         	}
-		if (est[tg-sg-1].best_Dprime > 1.0) {
-			est[tg-sg-1].best_Dprime = 1.0;
-		} else if (est[tg-sg-1].best_Dprime < -1.0) {
-			est[tg-sg-1].best_Dprime = -1.0;
+		if (est.best_Dprime > 1.0) {
+			est.best_Dprime = 1.0;
+		} else if (est.best_Dprime < -1.0) {
+			est.best_Dprime = -1.0;
 		}
-        	est[tg-sg-1].best_D2 = pow(est[tg-sg-1].best_D,2.0);
-        	est[tg-sg-1].best_r2 = est[tg-sg-1].best_D2/( best_p*(1.0-best_p)*best_q*(1.0-best_q) );
+        	est.best_D2 = pow(est.best_D,2.0);
+        	est.best_r2 = est.best_D2/( best_p*(1.0-best_p)*best_q*(1.0-best_q) );
         	// Adjust the biases of the LD measures
-        	est[tg-sg-1].adj_best_D = ( Ni/(Ni-1.0) )*est[tg-sg-1].best_D;
-        	if (est[tg-sg-1].best_D >= 0) {
+        	est.adj_best_D = ( Ni/(Ni-1.0) )*est.best_D;
+        	if (est.best_D >= 0) {
         		adj_Dmax = ( Ni/(Ni-1.0) )*Dmax;
-                	est[tg-sg-1].adj_best_Dprime = est[tg-sg-1].adj_best_D/adj_Dmax;
+                	est.adj_best_Dprime = est.adj_best_D/adj_Dmax;
         	} else {
                 	adj_Dmin = ( Ni/(Ni-1.0) )*Dmin;
-                	est[tg-sg-1].adj_best_Dprime = -est[tg-sg-1].adj_best_D/adj_Dmin;
+                	est.adj_best_Dprime = -est.adj_best_D/adj_Dmin;
         	}
-		est[tg-sg-1].adj_best_D2 = pow(est[tg-sg-1].adj_best_D,2.0);
-		est[tg-sg-1].adj_best_r2 = est[tg-sg-1].adj_best_D2/( best_p*(1.0-best_p)*best_q*(1.0-best_q) ) - 1.0/( (double)Ni );
-		// printf("sg: %d\ttg: %d\tbest_D: %f\n", sg, tg, est[tg-sg-1].best_D);
+		est.adj_best_D2 = pow(est.adj_best_D,2.0);
+		est.adj_best_r2 = est.adj_best_D2/( best_p*(1.0-best_p)*best_q*(1.0-best_q) ) - 1.0/( (double)Ni );
+		// printf("sg: %d\ttg: %d\tbest_D: %f\n", sg, tg, est.best_D);
 		// Calculate the likelihood-ratio test statistic
 		if (null_llhood >= maxll) {
 			maxll = null_llhood;
 		}
-		est[tg-sg-1].llstat = 2.0*(maxll - null_llhood);
+		est.llstat = 2.0*(maxll - null_llhood);
 	} else {	// ML estimate not found
-		est[tg-sg-1].llstat = -FLT_MAX;
+		est.llstat = -FLT_MAX;
 	}
-	return(est[tg-sg-1]);
+	return(est);
 }
 	
 // point to the input and output files
@@ -648,7 +646,7 @@ int PopLD(int argc, char *argv[])
 					// printf("Exited from the loop\n");
 					if (Ni >= min_Ni) {
 						// Estimate the LD coefficient D between the polymorphic sites 
-						est[tg-sg-1] = estimate_D(num_pol_sites, sg, tg, Ni, mlNuc1.at(sg), mlNuc2.at(sg), mlNuc1.at(tg), mlNuc2.at(tg), best_Maf.at(sg), best_Maf.at(tg), best_error.at(sg), best_error.at(tg), nsample, mononuc_count_1, mononuc_count_2, cov1, cov2);
+						est[tg-sg-1] = estimate_D(Ni, mlNuc1.at(sg), mlNuc2.at(sg), mlNuc1.at(tg), mlNuc2.at(tg), best_Maf.at(sg), best_Maf.at(tg), best_error.at(sg), best_error.at(tg), nsample, mononuc_count_1, mononuc_count_2, cov1, cov2);
 					} else {
 						est[tg-sg-1].Ni = Ni;
 					}

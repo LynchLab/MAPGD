@@ -5,7 +5,8 @@
 #include "interface.h"
 #include "likelihood.h"
 #include "genotype.h"
-
+#include "locus.h"
+#include "map-file.h"
 
 #include <iostream>
 #include <string.h>

@@ -35,7 +35,7 @@ int estimatePooled(int argc, char *argv[])
 
 	bool verbose=false;
 	bool quite=false;
-	float_t EMLMIN=0.00;
+	float_t EMLMIN=0.001;
 	float_t a=0.00;
 
 	std::vector <int> pop;
@@ -125,37 +125,30 @@ int estimatePooled(int argc, char *argv[])
 		site.major.base=locus.getindex(0);
 		site.minor.base=locus.getindex(1);
 
-                /* 3) CALCULATE THE LIKELIHOOD OF THE POOLED POPULATION DATA. */
-
                 /* Calculate the ML estimates of the major pooled allele frequency and the error rate. */
 		popN=locus.getcoverage();
 
-                site.error= (float_t) ( popN - locus.getcount(0) ) / ( (float_t) popN );
-
-		if (site.error<EMLMIN) site.error=EMLMIN;
-
-		multi.set(&monomorphicmodel, site.to_allele_stat(0) );
-
-                for (size_t x=0; x<pop.size(); ++x) llhoodM[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
-
-		site.error= (float_t) (locus.getcoverage()-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.*(float_t) popN ) ;
-
+		site.error= (float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
 		if (site.error<EMLMIN) site.error=EMLMIN;
 
                 /* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 
-		multi.set(&fixedmorphicmodel, site.to_allele_stat(0) );
-                for (size_t x=0; x<pop.size(); ++x) llhoodF[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
-
-                /* 4) CALCULATE THE LIKELIHOOD UNDER THE ASSUMPTION OF monomorphism */
-
                 for (size_t x=0; x<pop.size(); ++x) {
-                        pmaj = (float_t) locus.getcount(pop[x],0) / (float_t) ( locus.getcount(pop[x], 1) + locus.getcount(pop[x],0) );
-			
+			eml=site.error;
+
+                        pmaj = (float_t) locus.getcount(pop[x],0) / (float_t) ( locus.getcount(pop[x], 1) + locus.getcount(pop[x],0) );	
+
                         pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
                         pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
+
 			if (pmlP[x]<0) pmlP[x]=0.;
 			if (pmlP[x]>1) pmlP[x]=1.;
+
+			multi.set(&fixedmorphicmodel, site.to_allele_stat(x) );
+                        llhoodF[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
+
+			multi.set(&monomorphicmodel, site.to_allele_stat(x) );
+                        llhoodM[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
 			site.p[x]=pmlP[x];
 			multi.set(&polymorphicmodel, site.to_allele_stat(x) );
@@ -181,12 +174,10 @@ int estimatePooled(int argc, char *argv[])
 					llhoodFS+=llhoodF[y];
 				};
                         };*/
-                        llstat[x] = (2.0 * (llhoodP[x] - llhoodM[x]) );
-                        llstatc[x] = (2.0 * (llhoodP[x] - llhoodF[x]) );
-			site.polyll[x]=llstat[x];
-			site.majorll[x]=llhoodM[x];
-			site.minorll[x]=llstatc[x];
-                        if (llstat[x]>maxll) maxll=llstat[x];
+			site.polyll[x] =(2.0 * (llhoodP[x] - llhoodM[x]) );
+			site.majorll[x]=(2.0 * (llhoodM[x] - llhoodF[x]) );
+			site.minorll[x]=(2.0 * (llhoodP[x] - llhoodF[x]) );
+                        if (site.polyll[x]>maxll) maxll=site.polyll[x];
                 };
 
                 if (maxll>=a){

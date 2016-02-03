@@ -17,19 +17,20 @@ using namespace std;
 
 struct estimate
 {
-	double best_D;		// ML estimate of D
-	double best_Dprime;	// ML estimate of D'
-	double best_D2;		// ML estimate of D2
-	double best_r2;		// ML estimate o r2
-	double adj_best_D;	// Bias-adjusted ML estimate of D
-	double adj_best_Dprime;	// Bias-adjusted ML estimate of D'
-	double adj_best_D2;	// Bias-adjusted ML estimate of D2
-	double adj_best_r2;	// Bias-adjusted ML estimate o r2
-	double Ni;		// Effective sample size
-	double llstat;		// test statistic for examining the statistical significance of LD
+	float_t best_D;		// ML estimate of D
+	float_t best_Dprime;	// ML estimate of D'
+	float_t best_D2;		// ML estimate of D2
+	float_t best_r2;		// ML estimate o r2
+	float_t adj_best_D;	// Bias-adjusted ML estimate of D
+	float_t adj_best_Dprime;	// Bias-adjusted ML estimate of D'
+	float_t adj_best_D2;	// Bias-adjusted ML estimate of D2
+	float_t adj_best_r2;	// Bias-adjusted ML estimate o r2
+	float_t Ni;		// Effective sample size
+	float_t llstat;		// test statistic for examining the statistical significance of LD
 };
 
-extern struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlNuc1_1, int mlNuc2_1, int mlNuc1_2, int mlNuc2_2, double best_p, double best_q, double best_error_1, double best_error_2, int nsample, int mononuc_count_1[][5], int mononuc_count_2[][5], int *cov1, int *cov2);
+//extern struct estimate estimate_D(int num_pol_sites, int sg, int tg, float_t Ni, int mlNuc1_1, int mlNuc2_1, int mlNuc1_2, int mlNuc2_2, float_t best_p, float_t best_q, float_t best_error_1, float_t best_error_2, int nsample, int mononuc_count_1[][5], int mononuc_count_2[][5], int *cov1, int *cov2);
+
 
 /****************************** estimate_D() *******************************/
 /** Function for estimating the LD coefficient D                          **/
@@ -63,22 +64,28 @@ extern struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, 
 /** Returns:                                                              **/
 /** ML estimates of LD measures                                           **/
 /***************************************************************************/
-struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlNuc1_1, int mlNuc2_1, int mlNuc1_2, int mlNuc2_2, double best_p, double best_q, double best_error_1, double best_error_2, int nsample, int mononuc_count_1[][5], int mononuc_count_2[][5], int *cov1, int *cov2)
+estimate estimate_D (const float_t &Ni, const gt_t &mlNuc1_1, const gt_t &mlNuc2_1, const gt_t &mlNuc1_2, const gt_t &mlNuc2_2, float_t &best_p, float_t &best_q, float_t &best_error_1, float_t &best_error_2, const count_t &nsample, const quartet &mononuc_count_1, const quartet &mononuc_count_2, const count_t *cov1, const count_t *cov2)
 {
-	vector <estimate> est(num_pol_sites-sg-1);
-	int mlNuc3_1, mlNuc4_1, mlNuc3_2, mlNuc4_2;
-	double maxll, third_best_error_1, prob_mononuc1[11][5], third_best_error_2, prob_mononuc2[11][5];
-	double size_grid_D, mlD, prob_geno[11];
+	estimate est;
+	gt_t mlNuc3_1, mlNuc4_1, mlNuc3_2, mlNuc4_2;
+	float_t maxll, third_best_error_1, prob_mononuc1[11][5], third_best_error_2, prob_mononuc2[11][5];
+	float_t size_grid_D, mlD, prob_geno[11];
 	int max_mdg, mdg, mgg;
-	double llhood, prob_obs_mononuc1[nsample+1], prob_obs_mononuc2[nsample+1], prob_all_obs[nsample+1], null_llhood;
+	float_t llhood, null_llhood;
+	float_t *prob_obs_mononuc1, *prob_obs_mononuc2, *prob_all_obs;
+
+	*prob_obs_mononuc1=new float_t[nsample+1];
+	*prob_obs_mononuc2=new float_t[nsample+1];
+	*prob_all_obs=new float_t[nsample+1];
+	
 	int mig, ml_mc_1[nsample+1][5], ml_mc_2[nsample+1][5];
-	double t_best_D;	// temporarily stores ML estimate of D
-	double Dmin, Dmax, adj_Dmin, adj_Dmax;
+	float_t t_best_D;	// temporarily stores ML estimate of D
+	float_t Dmin, Dmax, adj_Dmin, adj_Dmax;
 
 	// printf("Entered the function\n");
 	// printf("best_p: %f\tmononuc_count_1[1][1]: %d\tcov1[1]: %d\n", best_p, mononuc_count_1[1][1], cov1[1]);
 	// Estimate the LD coefficient D between the polymorphic sites
-	est[tg-sg-1].Ni = Ni;
+	est.Ni = Ni;
 	maxll = -FLT_MAX;	
 	// Find the minimum and maximum possible values of D given the estimated allele frequencies
 	if ( best_p*best_q <= (1.0-best_p)*(1.0-best_q) ) {
@@ -300,40 +307,40 @@ struct estimate estimate_D(int num_pol_sites, int sg, int tg, double Ni, int mlN
 	} // End the loop over the LD coefficients D
 	if (maxll > -FLT_MAX) {
 		// Calculate the LD measures
-		est[tg-sg-1].best_D = t_best_D;
-        	if (est[tg-sg-1].best_D >= 0) {
-        		est[tg-sg-1].best_Dprime = est[tg-sg-1].best_D/Dmax;
+		est.best_D = t_best_D;
+        	if (est.best_D >= 0) {
+        		est.best_Dprime = est.best_D/Dmax;
         	} else {
-                	est[tg-sg-1].best_Dprime = -est[tg-sg-1].best_D/Dmin;
+                	est.best_Dprime = -est.best_D/Dmin;
         	}
-		if (est[tg-sg-1].best_Dprime > 1.0) {
-			est[tg-sg-1].best_Dprime = 1.0;
-		} else if (est[tg-sg-1].best_Dprime < -1.0) {
-			est[tg-sg-1].best_Dprime = -1.0;
+		if (est.best_Dprime > 1.0) {
+			est.best_Dprime = 1.0;
+		} else if (est.best_Dprime < -1.0) {
+			est.best_Dprime = -1.0;
 		}
-        	est[tg-sg-1].best_D2 = pow(est[tg-sg-1].best_D,2.0);
-        	est[tg-sg-1].best_r2 = est[tg-sg-1].best_D2/( best_p*(1.0-best_p)*best_q*(1.0-best_q) );
+        	est.best_D2 = pow(est.best_D,2.0);
+        	est.best_r2 = est.best_D2/( best_p*(1.0-best_p)*best_q*(1.0-best_q) );
         	// Adjust the biases of the LD measures
-        	est[tg-sg-1].adj_best_D = ( Ni/(Ni-1.0) )*est[tg-sg-1].best_D;
-        	if (est[tg-sg-1].best_D >= 0) {
+        	est.adj_best_D = ( Ni/(Ni-1.0) )*est.best_D;
+        	if (est.best_D >= 0) {
         		adj_Dmax = ( Ni/(Ni-1.0) )*Dmax;
-                	est[tg-sg-1].adj_best_Dprime = est[tg-sg-1].adj_best_D/adj_Dmax;
+                	est.adj_best_Dprime = est.adj_best_D/adj_Dmax;
         	} else {
                 	adj_Dmin = ( Ni/(Ni-1.0) )*Dmin;
-                	est[tg-sg-1].adj_best_Dprime = -est[tg-sg-1].adj_best_D/adj_Dmin;
+                	est.adj_best_Dprime = -est.adj_best_D/adj_Dmin;
         	}
-		est[tg-sg-1].adj_best_D2 = pow(est[tg-sg-1].adj_best_D,2.0);
-		est[tg-sg-1].adj_best_r2 = est[tg-sg-1].adj_best_D2/( best_p*(1.0-best_p)*best_q*(1.0-best_q) ) - 1.0/( (double)Ni );
-		// printf("sg: %d\ttg: %d\tbest_D: %f\n", sg, tg, est[tg-sg-1].best_D);
+		est.adj_best_D2 = pow(est.adj_best_D,2.0);
+		est.adj_best_r2 = est.adj_best_D2/( best_p*(1.0-best_p)*best_q*(1.0-best_q) ) - 1.0/( (double)Ni );
+		// printf("sg: %d\ttg: %d\tbest_D: %f\n", sg, tg, est.best_D);
 		// Calculate the likelihood-ratio test statistic
 		if (null_llhood >= maxll) {
 			maxll = null_llhood;
 		}
-		est[tg-sg-1].llstat = 2.0*(maxll - null_llhood);
+		est.llstat = 2.0*(maxll - null_llhood);
 	} else {	// ML estimate not found
-		est[tg-sg-1].llstat = -FLT_MAX;
+		est.llstat = -FLT_MAX;
 	}
-	return(est[tg-sg-1]);
+	return(est);
 }
 	
 // point to the input and output files
@@ -437,41 +444,49 @@ int PopLD(int argc, char *argv[])
 		printf("min_Ni: %f\n", min_Ni);
 	}
 
-	string line;	// String buffer
-
 	Indexed_file <allele_stat> in_map;
 	Indexed_file <Locus> in_pro;
 
-	in_map.open(in_file_name.c_str(), std::fstream::in);	// Try to open the input file
-	in_pro.open(in_file_name.c_str(), std::fstream::in);	// Try to open the input file
+	in_map.open(in_file_name.c_str(), std::ios::in);	// Try to open the input file
+	in_pro.open(in_file_name.c_str(), std::ios::in);	// Try to open the input file
 	
 	Indexed_file <Linkage_stat> lds_out;
 	
 	Locus locus_buffer[BUFFER_SIZE];
 	allele_stat allele_buffer[BUFFER_SIZE];
 
-	for (x=0; x<num_pol_sites; x++) {
-	
+	linkage_data linkage_buffer[?]; //TODO
+
+	num_pol_sites? //TODO
+
+	while (x<BUFFER_SIZE && in_map.is_open() ){
+		while (pro_in.get_pos(locus)<in_map.get_pos(allele) ){
+				pro_in.read(locus);
+		}
+		if (pro_in.get_pos(locus)==in_map.get_pos(allele) {
+			locus_buffer[x]=locus; 
+			allele_buffer[x]=allele; 
+		}
+		in_map.read(allele);
+		++x;
+	}
+	for (size_t sg=0; sg<BUFFER_SIZE; sg++) {
+		
 		#ifndef NOOMP
 		#pragma omp parallel for private(x, quartet_1) 
 		#endif
-		for (int y=x+1; y<num_pol_sites; x++) {
-			#ifndef NOOMP
-			#pragma omp critical
-			#endif
-			if (test_dis == 1) {
-				dist_sites = pro_in.get_pos(site2) - pro_in.get_pos(site1);
-				if (dist_sites > max_d) {
-					if ( count_sites(site2, site1) >= min_Ni) {
-						// Estimate the LD coefficient D between the polymorphic sites 
-						//TODO dont deleate this
-						linkage_buffer[tg-sg-1] = estimate_D(num_pol_sites, sg, tg, Ni, mlNuc1.at(sg), mlNuc2.at(sg), mlNuc1.at(tg), mlNuc2.at(tg), best_Maf.at(sg), best_Maf.at(tg), best_error.at(sg), best_error.at(tg), nsample, mononuc_count_1, mononuc_count_2, cov1, cov2);
-					} 
-				}
-			}	
-		} // End of the loop over the second polymorphic sites
-		lds_out.write(linkage[]);
-	} // End of the loop over the first polymorphic sites
-	
+		for (size_t tg=sg+1; tg<num_pol_sites; tg++) {
+			Ni=const_sites(site1, site2);
+			dist_sites = pro_in.get_pos(site2) - pro_in.get_pos(site1);
+			if (dist_sites <= max_d && Ni >= min_Ni) {
+				// Estimate the LD coefficient D between the polymorphic sites 
+				//TODO dont deleate this
+				linkage_buffer[tg-sg-1] = estimate_D(Ni, allele_buffer[sg].major, allele_buffer[sg].minor, allele_buffer[tg].major, allele_buffer[tg].minor, allele_buffer[sg].freq, allele_buffer[tg].freq, allele_bffuer[sg].error, allele_buffer[tg].error, nsample <-FIXIT, locus_buffer[sg].get_quartets(), locus_buffer[tg].get_quartetes(), locus_buffer[sg].getcount(), locus_buffer[tg].getcount());
+			} 
+		}
+	}	
+	for (??){ //TODO
+		lds_out.write(linkage_buffer[x]);
+	}
 	return 0;
 };
