@@ -58,7 +58,27 @@ A quick test to make sure everything is working correctly can be conducted by ty
 
 This will output a substantial number of lines ending in PASS or FAIL to your terminal. Ideally all of the lines should say PASS. 
 
-Mapgd works a number of [commands](https://github.com/LynchLab/MAPGD#-commands-) each with their own associated help. Generally you will start by creating mapileup files with samtools mpileup command, converting these mpileup files to the pro format with mapgd's proview command, and then begining your analysis. Running the script "make\_and\_align\_reads.sh" in the src\test\ directory will simulate a genomics study and then run mapgd on the simulated data. You may also want to look at an [Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-).
+Mapgd works a number of [commands](https://github.com/LynchLab/MAPGD#-commands-) each with their own associated help.
+
+ Generally you will start by creating mpileup files with samtools mpileup command, converting these mpileup files to the pro format with mapgd's proview command, and then beginning your analysis. Running the script "make\_and\_align\_reads.sh" in the src\test\ directory will simulate a genomics study and then run mapgd on the simulated data. You may also want to look at an [Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-).
+
+For analyzing individual labeled data you will probably want a command like this:
+
+	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	| mapgd proview -H seq1.header | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 -o allelefrequency-filtered.map
+
+And for analyzing pooled data you will probably want a command like this:
+
+	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	| mapgd proview -H seq1.header | mapgd pool -a 22 -o allelefrequency-filtered.pol
+
+In the case where the allele command is being used to estimated the seven genotypic correlation coefficients named pipes can be used for the I/O redirection.
+	
+	mkfifo map;
+	mkfifo pro;
+	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map;
+	mapgd genotype -p pro -m map | relatedness.py -o population.rel
 
 <h2> FAQ </h2>
 
@@ -256,9 +276,9 @@ The output of the relatedness command. This file stores the 7 genotypic correlat
 	@SCFNAME       	POS	MAJOR	MINRO	COVRAG	ERROR	Sample_0	Sample_1	Sample_2	Sample_3	Sample_4	Sample_5	Sample_6	Sample_7
 	scaffold_3	1	T	A	3	0.001	.../.../.../...	0.6/0.3/24./28.	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	
 
-The output of the pooled command. This stores best estimates of allele frequenceis and log likelihood ratio test for polymorphism and fixed substitutions at each locus. The log likelihood ratios are Polymorphic/Fixed Major, Polymorphic/Fixed Minor, Fixed Major/Fixed Minor. Because polymorphism has one more free parameter than the fixed states, log likelihood ratios for polymorphism will always be possitive. For the Fixed Major vs. Fixed Minor, the statistic can be either positive (in which case it is more likely that the sample is fixed for the Major allele) or negative (in which case it is more likely that the sample is fixed for the minor allele. 
+The output of the pooled command. This stores best estimates of allele frequencies and log likelihood ratio test for polymorphism and fixed substitutions at each locus. The log likelihood ratios are Polymorphic/Fixed Major, Polymorphic/Fixed Minor, Fixed Major/Fixed Minor. Because polymorphism has one more free parameter than the fixed states, log likelihood ratios for polymorphism will always be positive. For the Fixed Major vs. Fixed Minor, the statistic can be either positive (in which case it is more likely that the sample is fixed for the Major allele) or negative (in which case it is more likely that the sample is fixed for the minor allele. 
 
-So, for example, in Sample\_1, the maximum likelihood estimate of the allele frequency is 0.6, but the log likelhood ratio test against against the fixed major allele is only 0.3, which is not significant. 
+So, for example, in Sample\_1, the maximum likelihood estimate of the allele frequency is 0.6, but the log likelihood ratio test against against the fixed major allele is only 0.3, which is not significant. 
 <h3> The SQL database </h3>
 
 MAPGD includes the ability to direct all output to an SQL database. This decreases storage space by eliminating redundant information from files (such as the initial position label in all indexed files) as well as decreasing the number of separate files saved to disk. Currently the tables are:
@@ -323,12 +343,12 @@ One advantage of the above work flow is that each of the files can be inspect vi
 
 <h5> The above work flow using  I/O redirection </h5>
 
-For anlalizing individual labled data you will probably want a command like this:
+For analyzing individual labeled data you will probably want a command like this:
 
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 -o allelefrequency-filtered.map
 
-And for anlalyzing pooled data you will probably want a command like this:
+And for analyzing pooled data you will probably want a command like this:
 
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | mapgd pool -a 22 -o allelefrequency-filtered.pol
