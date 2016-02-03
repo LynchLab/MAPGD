@@ -1,8 +1,8 @@
 /* TODO: Implement.
  * 
  */
-#ifndef MAP_FILE_H_
-#define MAP_FILE_H_	
+#ifndef _MAP_FILE_H_
+#define _MAP_FILE_H_	
 
 #include <map>
 #include <string>
@@ -12,13 +12,19 @@
 #include "stream-tools.h"
 #include "typedef.h"
 #include "stream-tools.h"
+#include "file-index.h"
+
+
+/* These should all be included from the objects using this code, but I'm not 
+ * linking things correctly right now.
+ */
 #include "allele_stat.h"
 #include "locus.h"
 #include "genotype.h"
 #include "sample_gof.h"
-#include "file-index.h"
 #include "relatedness_data.h"
 #include "pooled_data.h"
+#include "data_types/sample_name.h"
 
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 
@@ -231,5 +237,7 @@ public:
 	using Indexed_file<T>::write_header;	//!< Writes a file header.
 	T read_header(void);			//!< Reads a file header.
 };
+
+//#include "map-file.hxx"
 
 #endif

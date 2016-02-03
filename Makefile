@@ -12,11 +12,10 @@ noomp:
 .PHONY: noomp 
 
 docs: 
-docs: SUBDIRS:=docs
 	$(MAKE) -C $(SUBDIRS) docs
 .PHONY: docs
 
-dist: SUBDIRS:=debian 
+dist: 
 	$(MAKE) -C $(SUBDIRS) dist
 .PHONY: dist
 	

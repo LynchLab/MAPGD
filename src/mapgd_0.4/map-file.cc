@@ -341,6 +341,10 @@ void Indexed_file<T>::write_header(const T &data){
 	}
 	Flat_file <File_index> index;
 	index.open_header(*this);
+	if (!index.is_open() ) {
+		std::cerr << __FILE__ << ":" << __LINE__ << " cannot  open for writing. Exiting \n";
+		exit(0);
+	}
 	index.write_header(file_index_);
 	index.write(file_index_);
 	index.close_table();
@@ -367,6 +371,7 @@ bool Base_file::eof(void){
 	else return true;
 }
 
+
 template class Data_file <allele_stat>;
 template class Data_file <population_genotypes>;
 template class Data_file <Locus>;
@@ -374,6 +379,7 @@ template class Data_file <Pooled_data>;
 template class Data_file <Sample_gof>;
 template class Data_file <File_index>;
 template class Data_file <Relatedness>;
+template class Data_file <Sample_name>;
 
 template class Indexed_file <allele_stat>;
 template class Indexed_file <population_genotypes>;
@@ -387,5 +393,7 @@ template class Flat_file <Pooled_data>;
 template class Flat_file <Sample_gof>;
 template class Flat_file <File_index>;
 template class Flat_file <Relatedness>;
+template class Flat_file <Sample_name>;
 
 template class Mpileup_file <Locus>;
+

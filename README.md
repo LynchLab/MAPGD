@@ -6,8 +6,8 @@
 
 ###Contents 
 ####[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
-#####[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
 #####[Quick start](https://github.com/LynchLab/MAPGD#-quick-start-)
+#####[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
 #####[Changes](https://github.com/LynchLab/MAPGD#-changes-)
 ####Basic Usage
 #####[Commands](https://github.com/LynchLab/MAPGD#-commands-)

@@ -67,6 +67,7 @@ int map2genotype(int argc, char *argv[])
 	env.required_arg('p',"pro", &proname, 	&arg_setstr, "please provide a float.", "tne name of the pro file.");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
+	env.flag(	'b', "binary", &binary, 	&flag_set, 	"an error occured while displaying the version message.", "binary output");
 
 	if (parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
@@ -76,11 +77,11 @@ int map2genotype(int argc, char *argv[])
 	Indexed_file <population_genotypes> gcf_out;
 
 	/* Open input files based on file name*/
-	map_in.open(mapname.c_str(), std::fstream::in);
-	pro_in.open(proname.c_str(), std::fstream::in);
+	map_in.open(mapname.c_str(), std::ios::in);
+	pro_in.open(proname.c_str(), std::ios::in);
 
 	/* Just open the output file to std::cout*/
-	gcf_out.open(std::fstream::out);
+	gcf_out.open(binary ? std::ios::out | std::ios::binary : std::ios::out);
 
 	/* We need one instance of each of the classes for reading and 
 	 * writing to files */
@@ -115,6 +116,7 @@ int map2genotype(int argc, char *argv[])
 		}
 		map_in.read(map_record);
 	}
+	gcf_out.close();
 
 	return 0;					//Since everything worked, return 0!.
 }

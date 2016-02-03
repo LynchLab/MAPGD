@@ -12,16 +12,16 @@ A program for maximum\-likelihood analysis of population genomic data.
 Please direction questions to matthew.s.ackerman@gmail.com
 .SS "Commands:"
 .TP
-proview
+view
 prints data in the '.pro' file quartet format
 .TP
-ep
+allele
 estimates allele frequencies using pooled data
 .TP
-cp
+pool
 compares allele frequencies between populations using pooled data
 .TP
-ei
+filter
 estimates allelel frequencies using individual data
 .SH OPTIONS
 .TP

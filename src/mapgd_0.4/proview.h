@@ -18,6 +18,7 @@
 #include "stream-tools.h"
 #include "map-file.h"
 #include "locus.h"
+#include "data_types/sample_name.h"
 
 #define SQRT2	1.41421356237
 

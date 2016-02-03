@@ -20,7 +20,7 @@ int sam2idx(int argc, char *argv[])
 	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman");
 	env.setdescription("convert a sam header file into an idx file.");
-	env.optional_arg('I',"index",	&headerfile,	&arg_setstr, 	"an error occured", "sets the index file (required to use mpileup)");
+	env.optional_arg('H',"header",	&headerfile,	&arg_setstr, 	"an error occured", "sets the index file (required to use mpileup)");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
 
@@ -33,7 +33,9 @@ int sam2idx(int argc, char *argv[])
                 std::fstream header;
                 header.open(headerfile.c_str(),  std::fstream::in);
                 index.from_sam_header( header );
-        }
+        } else {
+                index.from_sam_header( std::cin );
+	}
 
 	index_file.open(std::fstream::out);
 	index_file.write_header(index);

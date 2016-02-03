@@ -19,6 +19,6 @@
 #include "PopLD.h"
 #include "sam2idx.h"
 //#include "sql/readsql.h"
-//#include "sql/writesql.h"
+#include "sql/writesql.h"
 
 #endif

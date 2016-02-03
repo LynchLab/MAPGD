@@ -12,6 +12,8 @@
 #include "map-file.h"
 #include "pooled-likelihood.h"
 #include "pooled_data.h"
+#include "locus.h"
+#include "allele_stat.h"
 
 int estimatePooled(int, char **);
 allele_stat estimate(quartet_t);

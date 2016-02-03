@@ -1,5 +1,5 @@
-#ifndef STREAMTOOLS_H_
-#define STREAMTOOLS_H_
+#ifndef _STREAMTOOLS_H_
+#define _STREAMTOOLS_H_
 
 #include <vector>
 #include <iostream>
@@ -77,7 +77,6 @@ inline std::vector<std::string> split_last(std::istream &in, const char &delim)
 	getline(in, line);
 	size_t pos=line.rfind(delim);
 	size_t end=line.size();
-//	std::cerr << pos << ", " << end << std::endl;
 	if (pos!= std::string::npos ) return std::vector <std::string> {line.substr(0, pos), line.substr(pos, end)};
 	else return std::vector <std::string> {line};
 
@@ -89,5 +88,14 @@ inline std::vector<std::string> split_last(const std::string &s, const char &del
 	ss << s;
 	return split_last(ss, delim);
 }
+/*
+inline std::string stringprintf(const std::string &s, ...)
+{
+	va_list ap;
+	va_start(ap, n_args);
+//	int max=va_arg(ap, ?);
+//	f
+	
+}*/
 
 #endif

@@ -1,22 +1,19 @@
-SUBDIRS=mapgd_0.4 interfaces
+SUBDIRS=mapgd_0.4
 VER=0.4
 NAME=mapgd
 DEBIAN=0
 UBUNTU=1
 
-.PHONY: subdirs $(SUBDIRS)
-
-subdirs: $(SUBDIRS)
-
 $(SUBDIRS):
 	$(MAKE) -C $@
+.PHONY: $(SUBDIRS)
 
 all: $(SUBDIRS)
 .PHONY: all
 
 noomp: 
 	$(MAKE) -C $(SUBDIRS) noomp
-.PHONY: noomp 
+.PHONY: noomp
 
 dist: docs 
 	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
@@ -26,7 +23,7 @@ dist: docs
 .PHONY: dist
 
 docs: 
-	doxygen doxygen.conf
+	( cat doxygen.conf ; echo "PROJECT_NUMBER=$(VER)" ) | doxygen -
 .PHONY: docs
 	
 test: all

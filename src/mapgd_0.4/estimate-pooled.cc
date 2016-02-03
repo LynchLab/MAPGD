@@ -95,8 +95,6 @@ int estimatePooled(int argc, char *argv[])
 		for (size_t x=0; x<locus.get_sample_names().size(); ++x) pop.push_back(x);
 	};
 
-	std::cerr << "Locus size " << locus.size() << std::endl;
-
 	for (size_t x=0; x<pop.size(); ++x) unmask(locus.get_quartet(pop[x]) );
 
 	/* Start inputting and analyzing the data locus by locus. */

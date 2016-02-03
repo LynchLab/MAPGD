@@ -9,6 +9,7 @@ LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 VERSION=-D VERSION=\"0.4.1\"
 CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fopenmp -fno-exceptions -pedantic
+LDLIBS=-l sqlite3
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
 OBJDIR=obj
@@ -26,6 +27,7 @@ CXX=g++
 OBJS=allele_stat.o \
 	base.o \
 	binomial.o \
+	data_types/data.o \
 	estimate-individual.o \
 	estimate-pooled.o \
 	file-index.o \
@@ -36,10 +38,10 @@ OBJS=allele_stat.o \
 	lnmultinomial.o \
 	locus.o \
 	newton-method-theta.o \
-	mapgd.o \
-	map-file.o \
-	models.o \
 	map2genotype.o \
+	map-file.o \
+	mapgd.o \
+	models.o \
 	pooled_data.o \
 	pooled-likelihood.o \
 	proview.o \
@@ -49,16 +51,18 @@ OBJS=allele_stat.o \
 	relatedness_data.o \
 	sam2idx.o \
 	sample_gof.o \
-	stream-tools.o
+	data_types/sample_name.o \
+	stream-tools.o \
+	sql/db_api.o \
+	sql/writesql.o 
 
 #	proview.o \
 	compare-pooled.o \
 	readtable.o \
 	convert.o \
-	sql\db_api.o \
 
-all: $(OBJS)
-	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) 
+all: $(OBJS) map-file.h 
+	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
 
 noomp: CXXFLAGS:=$(NOOMP) $(VERSION) $(STD) $(MODE) $(WARNINGS)
 noomp: all
@@ -68,10 +72,13 @@ debug: all
 
 install: all
 	install -m 0755 $(LOCAL) $(DESTDIR)
+#	install ? $(MANDIR)/man1/
 .PHONY: install
 	
 clean:
 	rm -f *.o
+	rm -f data_types/*.o
+	rm -f sql/*.o
 	rm -f ../../bin/*
 .PHONY: clean
 

@@ -76,13 +76,18 @@ std::ostream& operator<< (std::ostream& out, const Pooled_data& x)
 	out << x.major << x.delim;
 	out << x.minor << x.delim;
 	out << x.coverage << x.delim;
-	out << x.error << x.delim;
+	if (x.coverage!=0) out << x.error << x.delim;
+	else out << '.' << x.delim;
 
 	for (size_t s=0; s<x.names_.size(); ++s) {
-		out << x.p[s] << '/';
-		out << x.polyll[s] << '/';
-		out << x.majorll[s] << '/';
-		out << x.minorll[s] << '\t';
+		if (!isnan(x.p[s]) ){
+			out << x.p[s] << '/';
+			out << x.polyll[s] << '/';
+			out << x.majorll[s] << '/';
+			out << x.minorll[s] << '\t';
+		} else {
+			out << "./././.\t";
+		}
 	}
 	return out;
 }

@@ -20,7 +20,12 @@ Locus::Locus(void)
 Locus::Locus(const count_t &size)
 {
 	sample.assign(size, quartet() );
-	sample_names_=std::vector<std::string> (size);
+	sample_names_.clear();//=std::vector<std::string> (size);
+	char buffer[21];
+	for (size_t x=0; x<size; ++x){
+		snprintf(buffer, 20, "Sample_%d", x);
+		sample_names_.push_back(std::string(buffer) );
+	}
 	id0=0;
 	id1=0;	
 	ref.base=4;
