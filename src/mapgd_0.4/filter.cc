@@ -23,7 +23,7 @@ int filter(int argc, char *argv[])
 	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman");
 	env.setdescription("Filter sites in '.map' files based on criteria.");
-	env.optional_arg('m',"maxerror", &error_max, 	&arg_setfloat_t, "please provide a float.", "maximum error of a site (default 0.1).");
+	env.optional_arg('E',"maxerror", &error_max, 	&arg_setfloat_t, "please provide a float.", "maximum error of a site (default 0.1).");
 	
 	env.optional_arg('i',"input", 	&in_file, 	&arg_setstr, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
 	env.optional_arg('o',"output", 	&out_file, 	&arg_setstr, 	"please provide an int.", "the name of an output file (default std::cout).");

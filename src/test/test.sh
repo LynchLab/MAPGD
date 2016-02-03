@@ -115,3 +115,11 @@ $mapgd filter -i temp -o temp-filtered
 echo -n "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out								"
 timeout 5s bash -c "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out"
 testa
+
+samtools mpileup -q 25 -Q 25 -B fastq/*.sort.bam | mapgd proview -H output/simulated-header.txt | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200
+
+#mkfifo map
+#mkfifo pro
+#samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam | mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -e 0.01 -c 50 -C 200 > map
+#mapgd genotype -p pro -m map | relatedness.py population.gcf
+

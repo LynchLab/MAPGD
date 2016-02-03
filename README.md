@@ -254,11 +254,11 @@ The output of the relatedness command. This file stores the 7 genotypic correlat
 
 	@NAME:SAMPLE	VERSION:0.4.1	FORMAT:TEXT
 	@SCFNAME       	POS	MAJOR	MINRO	COVRAG	ERROR	Sample_0	Sample_1	Sample_2	Sample_3	Sample_4	Sample_5	Sample_6	Sample_7
-	scaffold_3	1	T	A	3	0.001	.../.../.../...	0.6/12./16./28.	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	
+	scaffold_3	1	T	A	3	0.001	.../.../.../...	0.6/0.3/24./28.	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	
 
 The output of the pooled command. This stores best estimates of allele frequenceis and log likelihood ratio test for polymorphism and fixed substitutions at each locus. The log likelihood ratios are Polymorphic/Fixed Major, Polymorphic/Fixed Minor, Fixed Major/Fixed Minor. Because polymorphism has one more free parameter than the fixed states, log likelihood ratios for polymorphism will always be possitive. For the Fixed Major vs. Fixed Minor, the statistic can be either positive (in which case it is more likely that the sample is fixed for the Major allele) or negative (in which case it is more likely that the sample is fixed for the minor allele. 
 
-
+So, for example, in Sample\_1, the maximum likelihood estimate of the allele frequency is 0.6, but the log likelhood ratio test against against the fixed major allele is only 0.3, which is not significant. 
 <h3> The SQL database </h3>
 
 MAPGD includes the ability to direct all output to an SQL database. This decreases storage space by eliminating redundant information from files (such as the initial position label in all indexed files) as well as decreasing the number of separate files saved to disk. Currently the tables are:
@@ -309,11 +309,11 @@ getting the samfile header by typing:
 
 and then converted the mpileup file to a .pro file: 
 
-	mapgd proview -i metapopulation.pileup -I seq1.header > metapopulation.pro
+	mapgd proview -i metapopulation.pileup -H seq1.header > metapopulation.pro
 
 If the .pro file contains pooled (e.g. individuals cannot be distinguished) data you will want to run the pooled command:  
 
-	mapgd pooled -i metapopulation.pro -o population1_allelfrequencies.map
+	mapgd pool -i metapopulation.pro -o population1_allelfrequencies.map
 
 Alternatively, if the .pro file contains individual data you will want to run the allele command:
 
@@ -322,13 +322,24 @@ Alternatively, if the .pro file contains individual data you will want to run th
 One advantage of the above work flow is that each of the files can be inspect visually to explore the data. If you do not need to do this then it will be faster to create binary data and use I/O redirection.
 
 <h5> The above work flow using  I/O redirection </h5>
+
+For anlalizing individual labled data you will probably want a command like this:
+
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
-	| mapgd proview -H seq1.header | mapgd allele | mapgd filter -p 6 -o allelefrequency.map
+	| mapgd proview -H seq1.header | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 -o allelefrequency-filtered.map
 
-In the case where the allele command has been used the files can be further analyzed to estimate the seven genotypic correlation coefficients.
+And for anlalyzing pooled data you will probably want a command like this:
 
-	mapgd genotype -p allelefrequency.pro -m allelefrequency.map | mapgd filter -p 10 -e 0.01 -c 50 -C 200 > population.gcf
-	relatedness.py population.gcf
+	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	| mapgd proview -H seq1.header | mapgd pool -a 22 -o allelefrequency-filtered.pol
+
+In the case where the allele command is being used to estimated the seven genotypic correlation coefficients named pipes can be used for the I/O redirection.
+	
+	mkfifo map;
+	mkfifo pro;
+	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map;
+	mapgd genotype -p pro -m map | relatedness.py -o population.rel
 
 <h5> Other Useful Programs </h5>
 
