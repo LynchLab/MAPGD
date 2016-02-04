@@ -20,16 +20,9 @@ int proview(int argc, char *argv[])
 	/* default values for arguments */
 	Args args;
 
-	char cdel='\t';
-	char qdel='/';
-
-	bool noheader=false;
 	bool out_binary=false;
 	bool in_pro=false;
 	bool bernhard=false;
-
-	count_t outc=7;
-	count_t inC=0;
 
 	args.pro=false;
 	args.min=4;
@@ -37,7 +30,6 @@ int proview(int argc, char *argv[])
 
 	std::vector <std::string> infiles;
 	std::string namefile="";
-	int sample=-1;
 	std::string outfile="";
 	std::string headerfile="";
 
@@ -54,6 +46,7 @@ int proview(int argc, char *argv[])
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 	env.flag(	'b',"binary",	&out_binary, 	&flag_set, 	"an error occured", "output in a binary format");
+	env.flag(	'r',"mlrho",	&bernhard, 	&flag_set, 	"an error occured", "output in mlrho format");
 	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occured", "input is in pro format");
 
 	if (parsargs(argc, argv, env)!=0) exit(0);

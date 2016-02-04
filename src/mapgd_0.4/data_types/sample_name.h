@@ -29,7 +29,7 @@ public:
 	static const std::string file_name;				//!< The dafualt extention for files.
 	static const std::string table_name;				//!< Destination table in Db.
 
-	std::string header(void) const;
+	const std::string header(void) const;
 	size_t size(void) const;
 
 	friend std::ostream& operator<< (std::ostream&, const Sample_name&);	//!< use the << operator to write allele_stat.

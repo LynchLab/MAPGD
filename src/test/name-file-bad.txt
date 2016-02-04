@@ -1,5 +1,5 @@
-@TABLE_NAME	FILES
+@NAME:FILES	
 @FILE_NAME	SAMPLE_NAME	...
-mpileup-1.txt	PA-0001
-mpileup-2.txt	PA-0002	PA-0003
+m'pileup-1.txt	PA-0001
+m'pileup-2.txt	PA-0002	PA-0003
 spitze.txt	PA-0004	PA-0005	PA-0006	PA-0007	PA-0008	PA-0009	PA-0010	

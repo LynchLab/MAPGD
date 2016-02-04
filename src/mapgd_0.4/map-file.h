@@ -133,6 +133,8 @@ public :
 //	using Base_file::close;
 	void open(const char *, const std::ios_base::openmode &);//!< The function that opens a indexed_file (if file).
 
+	~Data_file(){};
+
 	/*! \brief Appends to a file.
 	 *
 	 * If there is a Flat_file open, it is imediately closed. 
@@ -180,6 +182,7 @@ private:
 
 public:
 	using Data_file<T>::open;
+	~Flat_file(){};
 	void write_header(const T&);		//!< Writes a file header.
 	T read_header(void);			//!< Reads a file header.
 };
@@ -201,6 +204,7 @@ public:
 	using Data_file<T>::open;
 
 	void set_index(const File_index&);	//!< Sets the File_index.		
+	~Indexed_file(){};
 
 	File_index get_index(void) const;	//!< Returns the File_index.
 

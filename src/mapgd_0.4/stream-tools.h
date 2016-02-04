@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 /// Takes a stream/string and returns a vector with one element for each field.
 /* 
@@ -88,6 +89,22 @@ inline std::vector<std::string> split_last(const std::string &s, const char &del
 	ss << s;
 	return split_last(ss, delim);
 }
+
+inline std::string sanitize (std::string &s){
+	std::replace( s.begin(), s.end(), '\'', '"' );
+	std::replace( s.begin(), s.end(), '>', ' ' );
+	std::replace( s.begin(), s.end(), '<', ' ' );
+	return s;
+}
+
+inline std::string sanitize (const std::string &s){
+	std::string r=s;
+	std::replace( r.begin(), r.end(), '\'', '"' );
+	std::replace( r.begin(), r.end(), '>', ' ' );
+	std::replace( r.begin(), r.end(), '<', ' ' );
+	return r;
+}
+
 /*
 inline std::string stringprintf(const std::string &s, ...)
 {

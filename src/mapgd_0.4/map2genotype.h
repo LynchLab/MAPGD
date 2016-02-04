@@ -1,5 +1,5 @@
 #ifndef _MAP2GENOTYPE_H_
-#define _MAP2GENOTPYE_H_
+#define _MAP2GENOTYPE_H_
 
 #include <vector>
 

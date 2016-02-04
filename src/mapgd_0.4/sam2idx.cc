@@ -11,8 +11,6 @@ int sam2idx(int argc, char *argv[])
 
 	/* All the variables that can be set from the command line */
 
-	bool binary=false;
-
 	std::string headerfile="";
 
 	env_t env;

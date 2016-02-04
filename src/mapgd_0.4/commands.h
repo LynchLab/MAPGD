@@ -16,7 +16,7 @@
 //#include "convert.h"
 #include "filter.h"
 #include "map2genotype.h"
-#include "PopLD.h"
+//#include "PopLD.h"
 #include "sam2idx.h"
 //#include "sql/readsql.h"
 #include "sql/writesql.h"

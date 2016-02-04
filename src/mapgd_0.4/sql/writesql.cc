@@ -24,7 +24,7 @@ int writesql(int argc, char *argv[])
 	if (parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
 	sqlite3 *db;
-	char *error_message=0;
+//	char *error_message=0;
 	int rc;
 
 	rc = sqlite3_open(db_name.c_str(), &db);

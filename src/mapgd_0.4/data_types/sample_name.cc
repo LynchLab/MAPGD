@@ -39,7 +39,7 @@ std::ostream& operator<< (std::ostream& out, const Sample_name& x)
 	return out;
 }
 
-std::string Sample_name::header(void) const 
+const std::string Sample_name::header(void) const 
 {
 	return "@FILNAME\tSMPNAME\t...\n";
 }
@@ -56,10 +56,10 @@ const std::string Sample_name::sql_values(void) const {
         char return_buffer[255]={0};
 	char *write_ptr=return_buffer;
         std::vector <std::string>::const_iterator it=sample_names.begin();
-	if (it!=sample_names.end() ) write_ptr+=snprintf(return_buffer, 255, "(%s,%s)", mpileup_name.c_str(), it->c_str() );
+	if (it!=sample_names.end() ) write_ptr+=snprintf(return_buffer, 255, "('%s','%s')", sanitize(mpileup_name).c_str(), sanitize(*it).c_str() );
 	++it;
        	while(it!=sample_names.end() ){
-		write_ptr+=snprintf(write_ptr, 255-int(write_ptr)+int(return_buffer), ", (%s,%s)", mpileup_name.c_str(), it->c_str() );
+		write_ptr+=snprintf(write_ptr, 255-(int)(write_ptr-return_buffer), ", ('%s','%s')", sanitize(mpileup_name).c_str(), sanitize(*it).c_str() );
                 ++it;
         }
 	return std::string(return_buffer);

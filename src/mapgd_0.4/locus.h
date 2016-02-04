@@ -6,10 +6,11 @@
 #include "quartet.h"
 #include "base.h"
 #include "stream-tools.h"
-//#include "pro-file.h"
+#include "data_types/data.h"
 
 /* This is the record stored in a pro file*/
 
+//class Locus : public virtual Data{
 class Locus {
 private:
 	std::vector <std::string> sample_names_;		//!< names of the samples sequenced.

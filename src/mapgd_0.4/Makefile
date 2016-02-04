@@ -45,7 +45,6 @@ OBJS=allele_stat.o \
 	pooled_data.o \
 	pooled-likelihood.o \
 	proview.o \
-	PopLD.o \
 	quartet.o \
 	relatedness.o \
 	relatedness_data.o \
@@ -60,8 +59,9 @@ OBJS=allele_stat.o \
 	compare-pooled.o \
 	readtable.o \
 	convert.o \
+	PopLD.o \
 
-all: $(OBJS) map-file.h 
+all: $(OBJS)  
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
