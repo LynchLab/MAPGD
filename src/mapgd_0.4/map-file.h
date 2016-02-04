@@ -125,6 +125,7 @@ protected :
 
 	using Base_file::out_;//(const std::ios_base::openmode &);
 	using Base_file::in_;//(const std::ios_base::openmode &);
+	using Base_file::binary_;//(const std::ios_base::openmode &);
 
 public :
 	using Base_file::open;//(const std::ios_base::openmode &);
@@ -175,6 +176,7 @@ private:
 	using Data_file<T>::out_;	//(const std::ios_base::openmode &);
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
 	using Base_file::write_;	//(const std::ios_base::openmode &);
+	using Base_file::binary_;//(const std::ios_base::openmode &);
 
 public:
 	using Data_file<T>::open;
@@ -193,6 +195,7 @@ protected:
 	using Data_file<T>::out_;	//(const std::ios_base::openmode &);
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
 	using Base_file::write_;	//(const std::ios_base::openmode &);
+	using Base_file::binary_;//(const std::ios_base::openmode &);
 
 public:
 	using Data_file<T>::open;

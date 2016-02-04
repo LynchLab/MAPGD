@@ -63,6 +63,7 @@ OBJS=allele_stat.o \
 
 all: $(OBJS) map-file.h 
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
+	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
 noomp: CXXFLAGS:=$(NOOMP) $(VERSION) $(STD) $(MODE) $(WARNINGS)
 noomp: all
@@ -80,5 +81,6 @@ clean:
 	rm -f data_types/*.o
 	rm -f sql/*.o
 	rm -f ../../bin/*
+	rm -f ~/bin/mapgd
 .PHONY: clean
 

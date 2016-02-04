@@ -268,7 +268,9 @@ bool Base_file::is_open(void) const{
 template <class T>
 void Flat_file<T>::write_header(const T &data){
 	if (write_) {
-		*out_ << "@NAME:" << T::table_name << '\t' <<"VERSION:" << VERSION <<std::endl;
+		*out_ << "@NAME:" << T::table_name << '\t' <<"VERSION:" << VERSION << '\t';
+		if (binary_) *out_ << "FORMAT:BINARY" << std::endl;
+		else *out_ << "FORMAT:TEXT" << std::endl;
 		*out_ << data.header();
 	} else {
 		std::cerr << __FILE__ << ":" << __LINE__ << ": file not open for writing. Exiting.\n"; exit(0);
@@ -348,7 +350,9 @@ void Indexed_file<T>::write_header(const T &data){
 	index.write_header(file_index_);
 	index.write(file_index_);
 	index.close_table();
-	*out_ << "@NAME:" << T::table_name << '\t' <<"VERSION:" << VERSION <<std::endl;
+	*out_ << "@NAME:" << T::table_name << '\t' <<"VERSION:" << VERSION << '\t';
+	if (binary_) *out_ << "FORMAT:BINARY" << std::endl;
+	else *out_ << "FORMAT:TEXT" << std::endl;
 	*out_ << data.header();
 }
 

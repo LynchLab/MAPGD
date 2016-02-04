@@ -44,8 +44,33 @@ std::string Sample_name::header(void) const
 	return "@FILNAME\tSMPNAME\t...\n";
 }
 
+const std::string Sample_name::sql_header(void) const {
+	return "FILNAME varchar(255), SMPNAME varchar(255)";
+}
+const std::string Sample_name::sql_values(void) const {
+        char return_buffer[255]={0};
+        std::vector <std::string>::const_iterator it=sample_names.begin();
+	if (it!=sample_names.end() ) snprintf(return_buffer, 255, "(%s,%s)", mpileup_name.c_str(), it->c_str() );
+	++it;
+       /* while(it!=sample_names.end() ){
+		snprintf(return_buffer, 255, "%s, (%s,%s)", mpileup_name.c_str(), it->c_str() );
+                ++it;
+        }*/
+	return std::string(return_buffer);
+}
+
 size_t Sample_name::size(void) const 
 {
 	//Oh, lets just have a segfault cause I'm bored.
 	return sizeof(float_t)+sizeof(char)+mpileup_name.size()*sizeof(char);
+}
+
+const std::string Sample_name::get_file_name(void) const
+{
+	return file_name;
+}
+
+const std::string Sample_name::get_table_name(void) const
+{
+	return table_name;
 }

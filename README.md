@@ -252,8 +252,8 @@ Header lines can also contain an arbitrary (sanitized) string, which serves as a
 <b> .pro files </b> 
 
 	@NAME:QUARTETS	VERSION:0.4.1	FORMAT:TEXT
-	@SCFNAME       	POS	REF	PA-001		PA-002		PA-003		...
-	scaffold\_1	1	A	000/000/000/000	001/000/000/002	004/000/000/000
+	@SCFNAME       	POS	REF	PA-001          PA-002          PA-003          ...
+	scaffold_1	1	A	000/000/000/000	001/000/000/002	004/000/000/000
 
 <b>.pro</b> files are the most basic input file for mapgd. These are plain text files containing three or more tab delimited columns. The first column is an arbitrary string which identifier a genomic region (e.g., a scaffold), the second column is an integer number specifying the location of a site on that scaffold, and the remaining column(s) contains four integer values separated by '/'s representing the number of times an A, C, G, and T was observed at the site (respectively).
 
@@ -267,14 +267,13 @@ The output of the genotype command. This stores the -log likelihood values that 
 
 <b> .rel files </b> 
 
-
 The output of the relatedness command. This file stores the 7 genotypic correlation coefficients for all pairs of individuals and some log likelihood ratio test statistics. 
 
 <b> .pol files </b> 
 
 	@NAME:SAMPLE	VERSION:0.4.1	FORMAT:TEXT
-	@SCFNAME       	POS	MAJOR	MINRO	COVRAG	ERROR	Sample_0	Sample_1	Sample_2	Sample_3	Sample_4	Sample_5	Sample_6	Sample_7
-	scaffold_3	1	T	A	3	0.001	.../.../.../...	0.6/0.3/24./28.	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	
+	@SCFNAME       	POS	MAJOR	MINOR	COVRAG	ERROR	Sample_0        Sample_1        Sample_2        Sample_3        Sample_4        Sample_5        Sample_6        Sample_7
+	scaffold_3	1       T       A       3       0.001   .../.../.../... 0.6/0.3/24./28.	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	
 
 The output of the pooled command. This stores best estimates of allele frequencies and log likelihood ratio test for polymorphism and fixed substitutions at each locus. The log likelihood ratios are Polymorphic/Fixed Major, Polymorphic/Fixed Minor, Fixed Major/Fixed Minor. Because polymorphism has one more free parameter than the fixed states, log likelihood ratios for polymorphism will always be positive. For the Fixed Major vs. Fixed Minor, the statistic can be either positive (in which case it is more likely that the sample is fixed for the Major allele) or negative (in which case it is more likely that the sample is fixed for the minor allele. 
 

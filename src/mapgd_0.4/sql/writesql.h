@@ -3,6 +3,8 @@
 
 #include "../interface.h"
 #include "db_api.h"
+#include "../datatypes.h"
+#include "../map-file.h"
 
 int writesql(int argc, char *argv[]);
 #endif
