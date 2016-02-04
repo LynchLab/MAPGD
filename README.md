@@ -11,18 +11,22 @@
 #####[Changes](https://github.com/LynchLab/MAPGD#-changes-)
 ####Basic Usage
 #####[Commands](https://github.com/LynchLab/MAPGD#-commands-)
+#####[Common Options](https://github.com/LynchLab/MAPGD#-common-options-)
 #####[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
 #####[Log-likelihood ratios](https://github.com/LynchLab/MAPGD#-log-likelihood-ratio-statistics-)
 #####[Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-)
+#####[Other Useful Programs](https://github.com/LynchLab/MAPGD#-other-useful-programs-)
 ####Misc.
 #####[IU users](https://github.com/LynchLab/MAPGD#-notes-for-indiana-university-users-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
 <h2> Introduction </h2>
 
-MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium, linkage disequilibrium and identity-by-descent (IBD) coefficients from population genomic data using a statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data or for the analysis of pooled data (where many individuals are used to prepare a single sample).  
+MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium, linkage disequilibrium and identity-by-descent (IBD) coefficients from population genomic data using a statistically rigorous maximum likelihood approach. It is primarily useful for the analysis of low coverage population genomic data or for the analysis of pooled data (where many individuals are used to prepare a single sample).
 
 <h2> Quick start </h2>
+
+<h6>Installation</h6>
 
 After clicking the "Download MAPGD.zip" button you will be prompted to save or open the file MAPGD-master.zip. Save this this file to the directory of your choice, then go to this directory in a terminal, for example /home/matthew/Downloads/
 
@@ -44,19 +48,20 @@ This will install the software in the ~/bin/ directory which should allow you to
 
 	PATH=$PATH:~/bin
 
-Mac users may not have developmental tools installed by default. If you receive certain errors (that I forgot to write down) please type:
-
-	xcode --install (*I think)
-
-and then type:
-
-	make noomp.
-
 A quick test to make sure everything is working correctly can be conducted by typing:
 
 	make test
 
-This will output a substantial number of lines ending in PASS or FAIL to your terminal. Ideally all of the lines should say PASS. 
+<h6>Mac installation</h6>
+
+Mac users may not have developmental tools installed by default, or you may not have agreed to the xcode licence. You may have to install and configure xcode before using mapgd.
+Once you have xcode you can type:
+
+	make noomp.
+
+This will output a of lines ending in PASS or FAIL to your terminal. Ideally all of the lines should say PASS. 
+
+<h6> Using mapgd </h6>
 
 Mapgd works a number of [commands](https://github.com/LynchLab/MAPGD#-commands-) each with their own associated help.
 
@@ -196,11 +201,18 @@ Each command has a number of options that can be examined by the -h option. For 
 
 More detailed documentation for each command is being produced, and will be available shortly. 
 
+<h2> Common Options </h2>
+
+<b>-o	--output \<FILENAME\> </b> When this option is specified, and output file(s) with name FILENAME will be created, with appropriate extentions (see ). This option can be useful for looking at the output of commands, which is typically proceeded with a long list of scaffold names and lengths. However, when the <b>-o</b> option is specified, the main data and the sam-header are put into seperate files, making the data easier to read.
+
+<b> [FILENAME] </b> this option is specified, and output file(s) with name FILENAME will be created, with appropriate extentions (see ). This option can be useful for looking at the output of commands, which is typically proceeded with a long list of scaffold names and lengths. However, when the <b>-o</b> option is specified, the main data and the sam-header are put into seperate files, making the data easier to read.
+
+
 <h2> Input/Output </h2>
 
-<b> Header lines </b> Ever file begins with two header lines, each beginning with the '@' character. The first header line list the name of the table in the SQL database, along with the version of MAPGD used to create the table. The second header list the value stored in each column of the table. 
+<b> Header lines </b> Ever file begins with two header lines, each beginning with the '@' character. The first header line list the name of the table in the SQL database in which data may be stored, along with the version of MAPGD used to create the table, and some formating information. The second header list the value stored in each column of the table. 
 
-The Table bellow lists some of the labels with their descriptions. It also lists the type of value stored in each column, but this will not be important for you unless you are writing a program which directly uses the binary output of mapgd. For a complete list of Labels and types see the file keys.txt in the source directory.
+The table below lists some of the labels with their descriptions. It also lists the type of value stored in each column, but this will not be important for you unless you are writing a program which directly uses the binary output of mapgd. For a complete list of Labels and types see the file keys.txt in the source directory.
 
 | Label	  | mapgd type 	| Description 							|
 |:--------|:------------|:-------------------------------------------------------------:|
@@ -215,8 +227,8 @@ The Table bellow lists some of the labels with their descriptions. It also lists
 | POLY\_LR| float\_t 	| log likelihood ratio of best fit/monomorphic			|
 | HWE\_LR | float\_t 	| log likelihood ratio of best fit/Hardy–Weinberg  equilibrium	|
 | SMPNUM  | size\_t	| sample number							|
-| SMPNAME | size\_t	| sample name							|
-| SCFNAME | id0\_t 	| the name of a scaffold, region of DNA				|
+| SMPNAME | std::string	| sample name							|
+| SCFNAME | std::string	| the name of a scaffold, region of DNA				|
 | POS     | id1\_t   	| position							|
 | COVRAG  | count\_t 	| depth of coverage at a site					|
 | IND\_INC| size\_t	| number of individuals used in a calculation			|
@@ -226,7 +238,7 @@ The Table bellow lists some of the labels with their descriptions. It also lists
 | LENGTH  | id1\_t	| The length of a scaffold					|
 | VERSION | std::string	| The version of mapgd used to make a file			|
 
-Header lines can also contain an arbitrary (sanitized) string, which serves as a sample name, if appropriate. Bellow are example headers from each of the types of files produced by mapgd. 
+Header lines can also contain an arbitrary (sanitized) string, which serves as a sample name, if appropriate. Below are example headers from each of the types of files produced by mapgd. 
 
 <b> .idx files </b>
 
@@ -252,8 +264,8 @@ Header lines can also contain an arbitrary (sanitized) string, which serves as a
 <b> .pro files </b> 
 
 	@NAME:QUARTETS	VERSION:0.4.1	FORMAT:TEXT
-	@SCFNAME       	POS	REF	PA-001          PA-002          PA-003          ...
-	scaffold_1	1	A	000/000/000/000	001/000/000/002	004/000/000/000
+	@SCFNAME       	POS     REF     PA-001          PA-002          PA-003          ...
+	scaffold_1      1       A       000/000/000/000 001/000/000/002 004/000/000/000
 
 <b>.pro</b> files are the most basic input file for mapgd. These are plain text files containing three or more tab delimited columns. The first column is an arbitrary string which identifier a genomic region (e.g., a scaffold), the second column is an integer number specifying the location of a site on that scaffold, and the remaining column(s) contains four integer values separated by '/'s representing the number of times an A, C, G, and T was observed at the site (respectively).
 
@@ -272,8 +284,8 @@ The output of the relatedness command. This file stores the 7 genotypic correlat
 <b> .pol files </b> 
 
 	@NAME:SAMPLE	VERSION:0.4.1	FORMAT:TEXT
-	@SCFNAME       	POS	MAJOR	MINOR	COVRAG	ERROR	Sample_0        Sample_1        Sample_2        Sample_3        Sample_4        Sample_5        Sample_6        Sample_7
-	scaffold_3	1       T       A       3       0.001   .../.../.../... 0.6/0.3/24./28.	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	
+	@SCFNAME       	POS     MAJOR   MINOR   COVRAG  ERROR   Sample_0        Sample_1        Sample_2        Sample_3        Sample_4        Sample_5        Sample_6        Sample_7
+	scaffold_3      1       T       A       3       0.001   .../.../.../... 0.6/0.3/24./28.	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	.../.../.../...	
 
 The output of the pooled command. This stores best estimates of allele frequencies and log likelihood ratio test for polymorphism and fixed substitutions at each locus. The log likelihood ratios are Polymorphic/Fixed Major, Polymorphic/Fixed Minor, Fixed Major/Fixed Minor. Because polymorphism has one more free parameter than the fixed states, log likelihood ratios for polymorphism will always be positive. For the Fixed Major vs. Fixed Minor, the statistic can be either positive (in which case it is more likely that the sample is fixed for the Major allele) or negative (in which case it is more likely that the sample is fixed for the minor allele. 
 
@@ -360,7 +372,7 @@ In the case where the allele command is being used to estimated the seven genoty
 	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map;
 	mapgd genotype -p pro -m map | relatedness.py -o population.rel
 
-<h5> Other Useful Programs </h5>
+<h3> Other Useful Programs </h3>
 
 This program is intended for use with ".pro" described in the previous section. A slightly modified version of the program sam2pro, written by Bernhard Haubold, is included in this package and can be run by typing "mapgd proview". Programs for converting other file formats to ".pro" files are available in stand alone form http://guanine.evolbio.mpg.de/mlRho/
 
@@ -397,13 +409,17 @@ When submitting PBS scripts please *make sure to specify the number of threads t
 
 Ackerman, M. S., T. Maruki and M. Lynch. "MAPGD a program for the maximum likelihood analysis of population data." In prep.
 
-The statistical methods implemented in MAPGD have previously been published in:
+For output of the allele command please cite:
 
-Maruki, T., and M. Lynch. 2015  "Genotype-Frequency Estimation from High-Throughput Sequencing Data." Genetics 201.2: 473-486.
+	Maruki, T., and M. Lynch. 2015  "Genotype-Frequency Estimation from High-Throughput Sequencing Data." Genetics 201.2: 473-486.
 
-and
+For output of the pool command please cite:
 
-Ackerman, M. S., P. Johri, K. Spitze and M. Lynch, 2015  A general statistical model for coefficients of relatedness and its application to the analysis of population-genomic data. In prep. 
+	Lynch, M., D. Bost, S. Wilson, T. Maruki, and S. Harrison. 2014  "Population-Genetic Inference from Pooled-Sequencing Data." Genome Biol Evol 6:1210-1218.
+
+For output of the relatedness command plase cite:
+
+	Ackerman, M. S., P. Johri, K. Spitze and M. Lynch, 2015  A general statistical model for coefficients of relatedness and its application to the analysis of population-genomic data. In prep. 
 
 <h3> Copyright </h3>
 

@@ -127,6 +127,7 @@ allele_stat & allele_stat::operator=(const allele_stat & x) {
 		delim=x.delim;
 		id0=x.id0;
 		id1=x.id1;
+		ref=x.ref;
 		excluded=x.excluded;
 		freq=x.freq;
 		minor=x.minor;		

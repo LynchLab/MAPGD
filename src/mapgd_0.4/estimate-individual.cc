@@ -36,6 +36,15 @@ float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,
  */
 allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton){
 
+#ifdef MPI
+	MPI_Init(&argc, &argv);
+
+	int numtasks, taskid;
+	MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
+	MPI_Comm_rank(MPI_COMM_WORLD, &taskid);
+#endif
+
+
 	allele_stat mle, temp;					//allele_stat is a basic structure that containes all the summary statistics for
 								//an allele. It gets passed around a lot, and a may turn it into a class that has
 								//some basic read and write methods.
@@ -110,6 +119,61 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 	} else if (site.getcount(1)==site.getcount(2) ) mle.minor=4;
 	return mle;
 }
+
+#ifdef MPI
+void write(std::ostream& out, uint32_t readed, profile& pro, profile& pro_out, allele_stat* buffer_mle, Locus* buffer_site, float MINGOF, float_t A)
+{
+	for (uint32_t x = 0; x < readed; ++x) {
+		// Now print everything to the *out stream, which could be a file or the stdout. 
+		//TODO move this over into a formated file.
+		//?
+		if (2 * (buffer_mle[x].ll - buffer_mle[x].monoll) >= A) {
+			out << std::fixed << std::setprecision(6) << pro.getids(buffer_site[x]) << '\t' << buffer_site[x].getname(0) << '\t' << buffer_site[x].getname_gt(1) << '\t';
+			out << std::fixed << std::setprecision(6) << buffer_mle[x] << std::endl;
+		}
+		if (buffer_mle[x].gof < -MINGOF) buffer_site[x].maskall();
+		if (pro_out.is_open()) {
+			buffer_site[x].id0 = pro_out.encodeid0(pro.decodeid0(buffer_site[x].id0));
+			pro_out.write(buffer_site[x]);
+		}
+	}
+}
+
+bool mpi_select(int lineid, int taskid, int num_tasks)
+{
+	lineid = lineid % (BUFFER_SIZE*num_tasks);
+	return lineid >= taskid*BUFFER_SIZE && lineid < (taskid + 1)*BUFFER_SIZE;
+}
+
+std::string mpi_recieve_string(int rank)
+{
+	MPI_Status status;
+	MPI_Probe(rank, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+	int count;
+	MPI_Get_count(&status, MPI_CHAR, &count);
+	char *buf = new char[count];
+	MPI_Recv(buf, count, MPI_CHAR, rank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	std::string result(buf, count);
+	delete[] buf;
+	return result;
+}
+
+void do_estimate(allele_stat* buffer_mle, Locus& buffer_site, models& model, std::vector<int>& ind,
+	std::vector <float_t>& sum_gofs, std::vector <float_t>& gofs_read, count_t MIN, float_t EMLMIN, float_t MINGOF,
+	count_t MAXPITCH)
+{
+	std::vector <float_t> gofs(ind.size());
+	buffer_site.unmaskall();
+	*buffer_mle = estimate(buffer_site, model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
+	if (2 * (buffer_mle->ll - buffer_mle->monoll) >= 22) {
+		for (size_t i = 0; i < sum_gofs.size(); i++) {
+			sum_gofs[i] += gofs[i];
+			if (gofs[i] != 0) gofs_read[i]++;
+		}
+	}
+
+}
+#endif
 
 int estimateInd(int argc, char *argv[])
 {

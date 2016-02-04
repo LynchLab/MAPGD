@@ -24,42 +24,46 @@ CXX=g++
 
 #>! TODO ORGANIZE THESE!!
 
+COMMANDS=mapgd.o \
+	estimate-individual.o \
+	genotype.o \
+	estimate-pooled.o \
+	sam2idx.o \
+	proview.o \
+	interface.o \
+	map2genotype.o \
+	relatedness.o \
+	sql/writesql.o 
+	
+
 OBJS=allele_stat.o \
 	base.o \
 	binomial.o \
 	data_types/data.o \
-	estimate-individual.o \
-	estimate-pooled.o \
 	file-index.o \
 	filter.o \
-	genotype.o \
 	individual-likelihood.o \
-	interface.o \
 	lnmultinomial.o \
 	locus.o \
 	newton-method-theta.o \
-	map2genotype.o \
 	map-file.o \
-	mapgd.o \
 	models.o \
 	pooled_data.o \
 	pooled-likelihood.o \
-	proview.o \
 	quartet.o \
-	relatedness.o \
 	relatedness_data.o \
-	sam2idx.o \
 	sample_gof.o \
 	data_types/sample_name.o \
 	stream-tools.o \
-	sql/db_api.o \
-	sql/writesql.o 
+	sql/db_api.o 
 
 #	proview.o \
 	compare-pooled.o \
 	readtable.o \
 	convert.o \
 	PopLD.o \
+
+OBJS+=$(COMMANDS)
 
 all: $(OBJS)  
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)

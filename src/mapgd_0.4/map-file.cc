@@ -8,39 +8,53 @@ Base_file::Base_file(void)
 	delim_column_='\t';
 	binary_=false;
 	filename_="";
+	concatenated_=false;
 }
 
 template <class T>
 void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mode)
 {
 	std::vector<std::string> line;
-	line=split_last(filename, '.');
-	if (line.back()==T::file_name) filename_=line[0];
-	else filename_=filename;
+	filename_=filename;
 	if (open_){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
 	}
-	if ( mode & std::fstream::in ){
+	if ( mode & std::ios::in ){
+		line=split_last(filename, '.');
+		if (line.back()!=T::file_name) {
+			concatenated_=true;
+			this->open_no_extention(filename, mode);
+			open_=true;
+			if (mode & std::ios::binary) binary_=true;
+			return;
+		} else {
+			concatenated_=false;
+			filename_=line[0];
+		}
+	} else {
+		concatenated_=false;
+	} 
+	if ( mode & std::ios::in ){
 		in_file_.open( (filename_+T::file_name).c_str(), std::ifstream::in);
-		if (!in_file_.is_open() ){
-			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << T::file_name << " for reading (1)." << std::endl;				
+			if (!in_file_.is_open() ){
+			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename_ << T::file_name << " for reading (1)." << std::endl;				
 			exit(0);
 		};
 		in_=&in_file_;
 		read_=true;
 		openmode_=mode;
-	} else if ( mode & std::fstream::out ){
+	} else if ( mode & std::ios::out ){
 		out_file_.open( (filename_+T::file_name).c_str(), std::ofstream::out);
-		if (!out_file_.is_open() ){
-			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << T::file_name << " for writing." << std::endl;				
+			if (!out_file_.is_open() ){
+			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename_ << T::file_name << " for writing." << std::endl;				
 			exit(0);
 		};
 		out_=&out_file_;
 		write_=true;
 		openmode_=mode;
 	};
-	if (mode & std::fstream::binary) binary_=true;
+	if (mode & std::ios::binary) binary_=true;
 	open_=true;
 }
 
@@ -71,40 +85,67 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 		openmode_=mode;
 	};
 	if (mode & std::fstream::binary) binary_=true;
-	filename_="";
+//	filename_="";
 	open_=true;
 }
 
 void Base_file::open(const std::ios_base::openmode &mode)
 {
+	if ( mode & std::ios::in ) open(&std::cin, mode);
+	else if ( mode & std::ios::out) open(&std::cout, mode);
+}
+
+
+void Base_file::open(std::istream *s, const std::ios_base::openmode &mode)
+{
 	if ( open_ ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
 	}
-	if ( mode & std::fstream::in ){
-		in_=&std::cin;
+	if ( mode & std::ios::in) {
+		in_=s;
 		read_=true;
 		openmode_=mode;
-	} else if ( mode & std::fstream::out) {
-		out_=&std::cout;
+	}
+	if ( mode & std::fstream::binary) binary_=true;
+	open_=true;
+	concatenated_=true;
+}
+
+void Base_file::open(std::ostream *s, const std::ios_base::openmode &mode)
+{
+	if ( open_ ){
+		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
+		exit(0);
+	}
+	if ( mode & std::ios::out) {
+		out_=s;
 		write_=true;
 		openmode_=mode;
 	}
 	if ( mode & std::fstream::binary) binary_=true;
 	open_=true;
+	concatenated_=true;
 }
 
 template <class T>
 void Data_file<T>::open_header(Base_file &file)
 {
-	if (file.openmode() & std::fstream::in){
-		if(file.filename().size()!=0) this->open(file.filename().c_str(), std::fstream::in);
-		else this->open(std::fstream::in);
-	} else if (file.openmode() & std::fstream::out) {
-		if(file.filename().size()!=0) this->open(file.filename().c_str(), std::fstream::out);
-		else this->open(std::fstream::out);
+	openmode_=file.openmode();
+	concatenated_=file.concatenated();
+	if(file.filename().size()!=0) {
+		if (openmode_ & std::ios::in) {
+			if (concatenated_ ) this->open(file.get_in(), file.openmode() ); 
+			else this->open( (file.filename()+T::file_name).c_str(), file.openmode() );
+		}
+		else if (openmode_ & std::ios::out) {
+			if (concatenated_ ) this->open(file.get_out(), file.openmode() ); 
+			else this->open( file.filename().c_str(), file.openmode() );
+		}
+	} else {
+		this->open(file.openmode() );
 	}
-	binary_=(file.openmode() & std::fstream::binary);
+	binary_=(file.openmode() & std::ios::binary);
 	open_=true;
 }
 
@@ -114,18 +155,38 @@ void Data_file<T>::open_append(Base_file &file)
 //	if(file.is_open() ) file.close();
 	if (file.openmode() & std::fstream::in){
 		if(file.filename().size()!=0) this->open(file.filename().c_str(), std::fstream::in);
-		else this->open(std::fstream::in);
+		else this->open(std::ios::in);
 	} else if (file.openmode() & std::fstream::out) {
 		if(file.filename().size()!=0) this->open(file.filename().c_str(), std::fstream::out);
-		else this->open(std::fstream::out);
+		else this->open(std::ios::out);
 	}
 	binary_=(file.openmode() & std::fstream::binary);
 	open_=true;
 }
 
+std::istream * Base_file::get_in(void)
+{
+	return in_;
+}
+
+std::ostream * Base_file::get_out(void)
+{
+	return out_;
+}
+
 const std::fstream::openmode& Base_file::openmode(void)
 {
 	return openmode_;
+}
+
+const bool& Base_file::concatenated(void)
+{
+	return concatenated_;
+}
+
+std::streampos Base_file::tellg(void)
+{
+	return in_->tellg();
 }
 
 const std::string& Base_file::filename(void)
@@ -197,6 +258,7 @@ void Indexed_file<T>::read_text(T &data)
 		std::string line;
 		*in_ >> line;
 		if (line!="@END_TABLE") {
+			std::cerr << line << std::endl;
 			std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
 			exit(0);
 		}
@@ -305,6 +367,7 @@ T Indexed_file<T>::read_header(void)
 	file_index_=index.read_header();
 	index.read(file_index_);
 	index.close_table();
+	
 	std::string line;
 	std::vector <std::string> columns;
 	std::getline(*in_, line);

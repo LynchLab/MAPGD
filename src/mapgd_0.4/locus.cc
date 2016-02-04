@@ -276,13 +276,15 @@ std::istream& operator >> (std::istream& in, Locus& x)
 	std::string line;
 	std::getline(in, line);
 	std::stringstream line_stream(line);
-
+	
 	line_stream >> x.id1;
 	line_stream >> x.ref;
 
 	for (size_t s=0; s<x.sample.size();++s) {
 		line_stream >> x.sample[s];
 	}
+	x.unmaskall();
+
 	return in;
 }
 

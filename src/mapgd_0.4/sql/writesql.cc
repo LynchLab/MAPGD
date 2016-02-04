@@ -18,13 +18,12 @@ int writesql(int argc, char *argv[])
 	env.setauthor("Matthew Ackerman");
 	env.setdescription("writes mapgd output to an sql database.");
 	env.required_arg('d',"database", &db_name, 	&arg_setstr, 	"please provide an str.", "the name of a database storing infomation");
-	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
-	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
+	env.flag(	'v', "version",  &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
+	env.flag(	'h', "help", 	 &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
 
 	if (parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
 	sqlite3 *db;
-//	char *error_message=0;
 	int rc;
 
 	rc = sqlite3_open(db_name.c_str(), &db);

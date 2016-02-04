@@ -41,8 +41,9 @@
 
 class Base_file {
 protected:
-	bool open_;	//!< indicates whether the profile opened succesfully
+	bool open_;		//!< indicates whether the profile opened succesfully
 	bool table_open_;	//!< indicates whether the profile opened succesfully
+	bool concatenated_;	//!< indicates whether multiple tables are included in the file.
 
 	char delim_column_;	//!< The delimiter which seperates columns
 
@@ -61,11 +62,17 @@ protected:
 public:
 	const std::fstream::openmode& openmode();//1(openmode_);
 	const std::string& filename();//1(openmode_);
+	const bool& concatenated();//1(openmode_);
 
 	Base_file();				//!< default constructor
 
 	void open_no_extention(const char *, const std::ios_base::openmode &);//!< The function that opens a indexed_file (if file).
 	void open(const std::ios_base::openmode&);//!< The function that opens a indexed_file (if stdin).
+	void open(std::istream*, const std::ios_base::openmode &);//!< The function that opens a indexed_file (if stdin).
+	void open(std::ostream*, const std::ios_base::openmode &);//!< The function that opens a indexed_file (if stdin).
+
+	std::istream* get_in(void);
+	std::ostream* get_out(void);	
 
 	void close(void); //!< Close iostreams, writes tail, etc.
 	void close_table(void); //!< Ends table w/o closing iostreams.
@@ -88,7 +95,7 @@ public:
 	std::ostream& seekp(id1_t off, std::ios_base::seekdir way);	
 
 	id1_t tellp(void);		//!< Tells row number of puts. 
-	id1_t tellg(void);		//!< Tells row number of gets.
+	std::streampos tellg(void);		//!< Tells row number of gets.
 
 	/**@defgroup Formating Formating options
 	 * @{
@@ -126,6 +133,7 @@ protected :
 	using Base_file::out_;//(const std::ios_base::openmode &);
 	using Base_file::in_;//(const std::ios_base::openmode &);
 	using Base_file::binary_;//(const std::ios_base::openmode &);
+	using Base_file::concatenated_;//(const std::ios_base::openmode &);
 
 public :
 	using Base_file::open;//(const std::ios_base::openmode &);
@@ -179,6 +187,7 @@ private:
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
 	using Base_file::write_;	//(const std::ios_base::openmode &);
 	using Base_file::binary_;//(const std::ios_base::openmode &);
+	using Base_file::concatenated_;//(const std::ios_base::openmode &);
 
 public:
 	using Data_file<T>::open;
@@ -199,6 +208,7 @@ protected:
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
 	using Base_file::write_;	//(const std::ios_base::openmode &);
 	using Base_file::binary_;//(const std::ios_base::openmode &);
+	using Base_file::concatenated_;//(const std::ios_base::openmode &);
 
 public:
 	using Data_file<T>::open;

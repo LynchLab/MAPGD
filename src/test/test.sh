@@ -10,8 +10,8 @@ if [ `wc $a.out -l | cut -d  ' ' -f 1` -eq $size ]; then
 	echo " PASS"
 	rm -f $a.out
 else
-	echo  `wc $a.out -l `
-	echo  "expected $size"
+	echo `wc $a.out -l `
+	echo "expected $size"
 	echo "[$a] $msg FAIL"
 	exit
 fi
@@ -65,6 +65,20 @@ echo -n "$mapgd $a -n $name -H $header > $a.out								"
 timeout 5s bash -c "$mapgd $a -n $name -H $header > $a.out"
 testa
 
+a="proview"
+msg="proview"
+rm -f $a.out
+size=$(($pro_size+$pro_header))
+echo -n "$mapgd $a -n $name -H $header -o $a; ($a.pro)							"
+timeout 5s bash -c "$mapgd $a -n $name -H $header -o $a"
+mv $a.pro $a.out
+testa
+
+size=$(($idx_size+$idx_header))
+echo -n "$mapgd $a -n $name -H $header -o $a; ($a.idx)							"
+mv $a.idx $a.out
+testa
+
 a="allele"
 msg="allele"
 rm -f $a.out
@@ -110,16 +124,21 @@ msg="genotype"
 rm -f $a.out
 size=$(($idx_size+$idx_header+$good_size+$gcf_header))
 $mapgd proview -H $header -i $mpileup -o temp
-$mapgd allele -i temp -o temp -M 1
-$mapgd filter -i temp -o temp-filtered
+$mapgd allele -i temp.pro -o temp -M 1
+$mapgd filter -i temp.map -o temp-filtered
 echo -n "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out								"
 timeout 5s bash -c "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out"
 testa
+rm temp*
 
-samtools mpileup -q 25 -Q 25 -B fastq/*.sort.bam | mapgd proview -H output/simulated-header.txt | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200
+echo -n "$mapgd $a -p pro -m map > $a.out (fifopipes)									"
+mkfifo map
+mkfifo pro
+size=$(($idx_size+$idx_header+$good_size+$gcf_header))
+$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd filter > map &
+$mapgd genotype -p pro -m map > $a.out
+rm -f map
+rm -f pro
+testa
 
-#mkfifo map
-#mkfifo pro
-#samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam | mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -e 0.01 -c 50 -C 200 > map
-#mapgd genotype -p pro -m map | relatedness.py population.gcf
 
