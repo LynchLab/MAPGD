@@ -38,6 +38,7 @@ public:
 	const std::string get_file_name(void) const;				//!< The dafualt extention for files.
 	const std::string get_table_name(void) const;				//!< The dafualt extention for files.
 	const std::string sql_header(void) const;				//!< Destination table in Db.
+	const std::string sql_column_names(void) const;				//!< Destination table in Db.
 	const std::string sql_values(void) const;				//!< Destination table in Db.
 };
 

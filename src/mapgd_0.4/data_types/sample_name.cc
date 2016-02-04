@@ -45,17 +45,22 @@ std::string Sample_name::header(void) const
 }
 
 const std::string Sample_name::sql_header(void) const {
-	return "FILNAME varchar(255), SMPNAME varchar(255)";
+	return "(FILNAME varchar(255), SMPNAME varchar(255) )";
 }
+
+const std::string Sample_name::sql_column_names(void) const {
+	return "(FILNAME, SMPNAME)";
+}
+
 const std::string Sample_name::sql_values(void) const {
         char return_buffer[255]={0};
         std::vector <std::string>::const_iterator it=sample_names.begin();
 	if (it!=sample_names.end() ) snprintf(return_buffer, 255, "(%s,%s)", mpileup_name.c_str(), it->c_str() );
 	++it;
-       /* while(it!=sample_names.end() ){
+       	while(it!=sample_names.end() ){
 		snprintf(return_buffer, 255, "%s, (%s,%s)", mpileup_name.c_str(), it->c_str() );
                 ++it;
-        }*/
+        }
 	return std::string(return_buffer);
 }
 

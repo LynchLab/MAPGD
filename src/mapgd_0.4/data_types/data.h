@@ -26,6 +26,7 @@ public:
         std::string header(void) const {return "";};
 
         virtual const std::string sql_header(void) const {return "";};
+        virtual const std::string sql_column_names(void) const {return "";};
         virtual const std::string sql_values(void) const {return "";};
 
         size_t size(void) const {return 0;};        	//!< The size of the ? in bytes.
