@@ -4,7 +4,7 @@
 /*! \breif sets the probabilities for reads in pooled sequence at a polymorphic site.
 */
 
-void polymorphicmodel(allele_stat const &a, float_t *l)
+void polymorphicmodel(Allele const &a, float_t *l)
 {
 	float_t e3=(a.error/3.);
 	l[0]=e3;
@@ -21,7 +21,7 @@ void polymorphicmodel(allele_stat const &a, float_t *l)
 
 /*! \breif sets the probabilities for reads in pooled sequence at a site fixed for the major allele.
 */
-void monomorphicmodel(allele_stat const &a, float_t *l)
+void monomorphicmodel(Allele const &a, float_t *l)
 {
 	float_t e3=(a.error/3.);
 	l[0]=e3;
@@ -37,7 +37,7 @@ void monomorphicmodel(allele_stat const &a, float_t *l)
 
 /*! \breif sets the probabilities for reads in pooled sequence at a site fixed for the minor allele.
 */
-void fixedmorphicmodel(allele_stat const &a, float_t *l)
+void fixedmorphicmodel(Allele const &a, float_t *l)
 {
 	float_t e3=(a.error/3.);
 	l[0]=e3;

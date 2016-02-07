@@ -27,8 +27,8 @@ public:
 	std::string header(void) const;
 	size_t size(void) const;
 
-	friend std::ostream& operator<< (std::ostream&, const Sample_gof&);	//!< use the << operator to write allele_stat.
-	friend std::istream& operator>> (std::istream&, Sample_gof&);		//!< use the >> operator to read allele_stat.
+	friend std::ostream& operator<< (std::ostream&, const Sample_gof&);	//!< use the << operator to write Allele.
+	friend std::istream& operator>> (std::istream&, Sample_gof&);		//!< use the >> operator to read Allele.
 	static const std::string file_name;					//!< The dafualt extention for files.
 	static const std::string table_name;					//!< Destination table in Db.
 };

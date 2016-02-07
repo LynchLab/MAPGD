@@ -21,8 +21,8 @@ public:
 
 	gt_t base;
 
-	friend std::ostream& operator << (std::ostream&, const Base&);	//!< use the << operator to write allele_stat.
-	friend std::istream& operator >> (std::istream&, Base&);		//!< use the >> operator to read allele_stat.
+	friend std::ostream& operator << (std::ostream&, const Base&);	//!< use the << operator to write Allele.
+	friend std::istream& operator >> (std::istream&, Base&);		//!< use the >> operator to read Allele.
 
 	static char btoc(const gt_t &);
 	static gt_t ctob(const char &);

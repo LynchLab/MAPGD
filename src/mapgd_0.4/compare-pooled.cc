@@ -38,7 +38,7 @@ int comparePooled(int argc, char *argv[])
 
 	Indexed_file <Locus> in_pro;
 	Locus in_locus;
-	Indexed_file <allele_stat> out_map;
+	Indexed_file <Allele> out_map;
 	Locus out_allele;
 
 	/* Open the input file. */

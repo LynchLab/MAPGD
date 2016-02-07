@@ -2,6 +2,7 @@
 
 const std::string Sample_name::file_name=".txt";
 const std::string Sample_name::table_name="FILES";
+const Registration Sample_name::registered=Registration(Sample_name::table_name, Sample_name::create);
 
 Sample_name::Sample_name ()
 {
@@ -17,26 +18,24 @@ Sample_name::Sample_name (const std::string &name, const float_t &number)
 	delim='\t';
 }
 
-std::istream& operator >> (std::istream& in, Sample_name& x)
+void Sample_name::read (std::istream& in) 
 {
-	x.sample_names.clear();
+	sample_names.clear();
 	std::string line;
 	std::getline(in, line);
-	x.sample_names=split(line, x.delim);
-	x.mpileup_name=x.sample_names.front();
-	x.sample_names.erase(x.sample_names.begin() );
-	return in;
+	sample_names=split(line, delim);
+	mpileup_name=sample_names.front();
+	sample_names.erase(sample_names.begin() );
 }
 
-std::ostream& operator<< (std::ostream& out, const Sample_name& x) 
+void Sample_name::write(std::ostream& out) const
 {
-	out << x.mpileup_name;
-	std::vector <std::string>::const_iterator it=x.sample_names.begin();
-	while(it!=x.sample_names.end() ){
-		out << x.delim << *it;
+	out << mpileup_name;
+	std::vector <std::string>::const_iterator it=sample_names.begin();
+	while(it!=sample_names.end() ){
+		out << delim << *it;
 		++it;
 	}
-	return out;
 }
 
 const std::string Sample_name::header(void) const 
@@ -53,13 +52,13 @@ const std::string Sample_name::sql_column_names(void) const {
 }
 
 const std::string Sample_name::sql_values(void) const {
-        char return_buffer[255]={0};
+        char return_buffer[SQL_LINE_SIZE]={0};
 	char *write_ptr=return_buffer;
         std::vector <std::string>::const_iterator it=sample_names.begin();
-	if (it!=sample_names.end() ) write_ptr+=snprintf(return_buffer, 255, "('%s','%s')", sanitize(mpileup_name).c_str(), sanitize(*it).c_str() );
+	if (it!=sample_names.end() ) write_ptr+=snprintf(return_buffer, SQL_LINE_SIZE, "('%s','%s')", sanitize(mpileup_name).c_str(), sanitize(*it).c_str() );
 	++it;
        	while(it!=sample_names.end() ){
-		write_ptr+=snprintf(write_ptr, 255-(int)(write_ptr-return_buffer), ", ('%s','%s')", sanitize(mpileup_name).c_str(), sanitize(*it).c_str() );
+		write_ptr+=snprintf(write_ptr, SQL_LINE_SIZE-(int)(write_ptr-return_buffer), ", ('%s','%s')", sanitize(mpileup_name).c_str(), sanitize(*it).c_str() );
                 ++it;
         }
 	return std::string(return_buffer);

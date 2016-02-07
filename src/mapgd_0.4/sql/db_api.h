@@ -3,6 +3,7 @@
 
 #include <cstdio>
 #include "sqlite3.h"
+#include "../typedef.h"
 #include "../data_types/data.h"
 
 int call_back(void *, int, char **, char **);

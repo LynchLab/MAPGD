@@ -111,7 +111,7 @@ int estimatePooled(int argc, char *argv[])
 
 	lnmultinomial multi(4);			//a class for our probability function (which is just a multinomial distribution).
 
-	while(in_locus.read(locus).good() ){
+	while(in_locus.read(locus).table_is_open() ){
 		//sorts the reads at the site from most frequenct (0) to least frequenct (3) (at metapopulation level);
 
 		/* Calculate the ML estimates of the major / minor allele frequencies and the error rate. */
@@ -144,14 +144,14 @@ int estimatePooled(int argc, char *argv[])
 			if (pmlP[x]<0) pmlP[x]=0.;
 			if (pmlP[x]>1) pmlP[x]=1.;
 
-			multi.set(&fixedmorphicmodel, site.to_allele_stat(x) );
+			multi.set(&fixedmorphicmodel, site.to_allele(x) );
                         llhoodF[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
-			multi.set(&monomorphicmodel, site.to_allele_stat(x) );
+			multi.set(&monomorphicmodel, site.to_allele(x) );
                         llhoodM[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
 			site.p[x]=pmlP[x];
-			multi.set(&polymorphicmodel, site.to_allele_stat(x) );
+			multi.set(&polymorphicmodel, site.to_allele(x) );
                         llhoodP[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
                 };
 

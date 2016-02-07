@@ -6,7 +6,7 @@
 #include <string>
 #include "map-file.h"
 #include "interface.h"
-#include "allele_stat.h"
+#include "data_types/allele.h"
 #include "typedef.h"
 
 int filter(int argc, char *argv[]);

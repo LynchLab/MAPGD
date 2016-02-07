@@ -162,6 +162,8 @@ Mapgd currently implements the following commands:
 	pool                  Estimates allele frequencies using pooled data*
 	proview               Prints data in the '.pro' file quartet format
 	sam2idx               Reformats a sam header to an idx used by mapgd.
+	read                  Reads from an SQL database	
+	write                 Writes to an SQL database
 
 Working in previous version, but currently broken:
 
@@ -170,8 +172,6 @@ Working in previous version, but currently broken:
 
 In the near future we hope to implement the commands:
 
-	read                  Reads from an SQL database	
-	write                 Writes to an SQL database
 	vcf                   Converts output to the popular vcf format
 
 Each command has a number of options that can be examined by the -h option. For example, to get a short help message you can type: 

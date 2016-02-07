@@ -21,7 +21,7 @@ int writesql(int argc, char *argv[])
 	env.flag(	'v', "version",  &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'h', "help", 	 &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
 
-	if (parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if (parsargs(argc, argv, env)!=0) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
 	sqlite3 *db;
 	int rc;
@@ -35,14 +35,13 @@ int writesql(int argc, char *argv[])
 		fprintf(stderr, "Opened database successfully\n");
 	}
 
-	Flat_file <Sample_name> in_names;
-	in_names.open(std::ios::in);
-	Sample_name sample_name=in_names.read_header();
-	in_names.read(sample_name);
-
+	Base_file file;
+	file.open(std::ios::in);
+	Data *line=file.read_header();
+	file.read(line);
 	db_begin(db);
-	db_make_table(db, &sample_name);
-	db_insert(db, &sample_name);
+	db_make_table(db, line);
+	db_insert(db, line);
 	db_end(db);
 	sqlite3_close(db);
 	return 0;					//Since everything worked, return 0!.

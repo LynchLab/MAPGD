@@ -29,7 +29,7 @@ int estimate_fst(int argc, char *argv[])
 	std::vector <float_t> gofs(pro.size() );
 	Locus line;
 	models model;
-	allele_stat mle1, mle2, mle_both;
+	Allele mle1, mle2, mle_both;
 	
 /*	if(pro.read(line)!=EOF){
 		line.maskall();

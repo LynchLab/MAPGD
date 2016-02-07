@@ -1,5 +1,5 @@
 /* Currently likelihood calculations are all performed by a set of 'models' that we give to the "multinomial" class via the 
-   multinomial::set method. These models should be able to look at the allele_stat structure, which contains information about
+   multinomial::set method. These models should be able to look at the Allele structure, which contains information about
    the error rate at the locus and the identity of the major and minor allele, and return a set of four log probabilities of 
    observing each particular nucleotide in a given call.
 */
@@ -40,7 +40,7 @@ models::~models(void)
 /*! \breif The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
-void MMmodelP(const allele_stat &a, float_t *l)
+void MMmodelP(const Allele &a, float_t *l)
 { 	 
 	if(a.error<=0){
 		l[0]=0;
@@ -57,7 +57,7 @@ void MMmodelP(const allele_stat &a, float_t *l)
 /*! \breif The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
-void mmmodelP(const allele_stat &a, float_t *l)		//Dito, assuming [m]ajor [m]inor.
+void mmmodelP(const Allele &a, float_t *l)		//Dito, assuming [m]ajor [m]inor.
 {
 	if(a.error<=0){
 		l[0]=-FLT_MAX;
@@ -74,7 +74,7 @@ void mmmodelP(const allele_stat &a, float_t *l)		//Dito, assuming [m]ajor [m]ino
 /*! \breif The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
-void MmmodelP(const allele_stat &a, float_t *l) 	//[M]ajor [m]inor.
+void MmmodelP(const Allele &a, float_t *l) 	//[M]ajor [m]inor.
 {
 	if(a.error<=0){
 		l[0]=logl(0.5);
@@ -91,7 +91,7 @@ void MmmodelP(const allele_stat &a, float_t *l) 	//[M]ajor [m]inor.
 /*! \breif The probabilities used for fitting in the maximum likelihood grid search.
  *	(Major Major)
  */ 	
-void MMmodel(const allele_stat &a, float_t *prob)
+void MMmodel(const Allele &a, float_t *prob)
 {		
 	float_t e3=logl(a.error/3.);		//e3 : the error rate over three. I.e. If an error occurs, it has a 1/3 chance
 						// of going to a particular base.
@@ -110,7 +110,7 @@ void MMmodel(const allele_stat &a, float_t *prob)
 /*! \breif The probabilities used for fitting in the maximum likelihood grid search.
  *	(minor minor)
  */
-void mmmodel(const allele_stat &a, float_t *l)
+void mmmodel(const Allele &a, float_t *l)
 {	
 	float_t e3=logl(a.error/3.);
 	if (a.error==0.) e3=-FLT_MAX;
@@ -122,7 +122,7 @@ void mmmodel(const allele_stat &a, float_t *l)
 /*! \breif The probabilities used for fitting in the maximum likelihood grid search.
  *	(Major minor)
  */
-void Mmmodel(const allele_stat &a, float_t *l)		//Dito.
+void Mmmodel(const Allele &a, float_t *l)		//Dito.
 {
 	float_t e3=logl(a.error/3.);
 	if (a.error==0.) e3=-FLT_MAX;
@@ -137,7 +137,7 @@ void Mmmodel(const allele_stat &a, float_t *l)		//Dito.
 }
 
 /// A function that calculates the logl likelihood of a set of observations. 
-float_t models::loglikelihood(const Locus &site, const allele_stat &p)
+float_t models::loglikelihood(const Locus &site, const Allele &p)
 {
 
 	float_t sumll=0;
@@ -175,7 +175,7 @@ float_t models::loglikelihood(const Locus &site, const allele_stat &p)
 }
 
 /*! \Breif DONT USE THIS!!! TODO FIX IT!. */
-float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &population)
+float_t models::genotypelikelihood(quartet_t const &quartet, const Allele &population)
 {
 
 	lnMM_.set(&MMmodel, population);	//Lets initialize the multinomial distributions that will tell us the probability of  
@@ -212,7 +212,7 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const allele_stat &
 }
 
 //THE goodness of fit calcualtion.
-float_t models::goodness_of_fit (Locus &site, const allele_stat &allele, std::vector <float_t> &gofs, const float_t &MINGOF)
+float_t models::goodness_of_fit (Locus &site, const Allele &allele, std::vector <float_t> &gofs, const float_t &MINGOF)
 {
 	float_t Num=0., Den=0., E, V, O, thisgof, clone_mingof=FLT_MAX;
 	std::vector <float_t>::iterator gof=gofs.begin();

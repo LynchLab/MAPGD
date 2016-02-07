@@ -32,7 +32,7 @@ genotype baysian_genotype(const int &major, const int &minor, const float_t &fre
 	return genotype(lMM, lMm, lmm, N);	
 }
 
-void get_genotypes(const allele_stat &allele, const Locus &locus, population_genotypes &genotypes )
+void get_genotypes(const Allele &allele, const Locus &locus, population_genotypes &genotypes )
 {
 	std::vector <genotype>::iterator l_it=genotypes.likelihoods.begin();
 	std::vector <quartet_t>::const_iterator q_it=locus.cbegin(), q_end=locus.cend();
@@ -72,7 +72,7 @@ int map2genotype(int argc, char *argv[])
 	if (parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
 	/* The files we will need*/
-	Indexed_file <allele_stat> map_in;
+	Indexed_file <Allele> map_in;
 	Indexed_file <Locus> pro_in;
 	Indexed_file <population_genotypes> gcf_out;
 
@@ -86,7 +86,7 @@ int map2genotype(int argc, char *argv[])
 	/* We need one instance of each of the classes for reading and 
 	 * writing to files */
 	Locus pro_record;
-	allele_stat map_record;
+	Allele map_record;
 	population_genotypes gcf_record;
 
 	/* Read the headers of the files */
@@ -103,7 +103,7 @@ int map2genotype(int argc, char *argv[])
 	id1_t map_pos;	
 	map_in.read(map_record);
 	
-	while(map_in.is_open() ){
+	while(map_in.table_is_open() ){
 	/* a read/write cycle */
 		map_pos=map_in.get_pos(map_record);
 		while(pro_in.get_pos(pro_record)<map_pos && !pro_in.eof() ){

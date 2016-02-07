@@ -4,13 +4,13 @@
  *	are performed, and may become to large over time. TODO: implement automatic look-up table purging. 
  *
  *  Currently likelihood calculations are all performed by a set of 'models' that we give to the "multinomial" class via the 
- *  multinomial::set method. These models should be able to look at the allele_stat structure, which contains information about
+ *  multinomial::set method. These models should be able to look at the Allele structure, which contains information about
  *  the error rate at the locus and the identity of the major and minor allele, and return a set of four log probabilities of 
  *  observing each particular nucleotide in a given call.
 */	
 
 #include "lnmultinomial.h"
-#include "allele_stat.h"
+#include "data_types/allele.h"
 #include "typedef.h"
 #include "quartet.h"
 #include "locus.h"
@@ -29,20 +29,20 @@ public:
 	models(void);
 	~models(void);
 
-	/// Gets the log likelihood of the observations at Locus, given allele_stat.
-	float_t loglikelihood(const Locus &, const allele_stat &);
+	/// Gets the log likelihood of the observations at Locus, given Allele.
+	float_t loglikelihood(const Locus &, const Allele &);
 
-	/// Gets the log likelihood of the observations at Locus, given allele_stat.
-	float_t goodness_of_fit (Locus &, const allele_stat &, std::vector <float_t> &, const float_t &);
+	/// Gets the log likelihood of the observations at Locus, given Allele.
+	float_t goodness_of_fit (Locus &, const Allele &, std::vector <float_t> &, const float_t &);
 
 	/// breif Initilizes the ? for goodness of fit calculations.
-	void init_gof(const count_t *, const allele_stat &);
+	void init_gof(const count_t *, const Allele &);
 
 	/// Returns the likelihood of a ?? goodness of fit... blah blah blah.
-	float_t get_gof(const count_t *, const allele_stat &);
+	float_t get_gof(const count_t *, const Allele &);
 
 	/// Clalculates genotypic likelihoods. Not implement, may be depricated.
-	float_t genotypelikelihood(const quartet_t &, const allele_stat &);
+	float_t genotypelikelihood(const quartet_t &, const Allele &);
 
 	/// Clalculates goodness of fit likelihoods.
 	inline float_t lnL(const float_t &logMM, const float_t &logMm, const float &logmm, const count_t *count){
@@ -65,15 +65,15 @@ public:
 };
 
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous minor.*/
-float_t *mmModel(allele_stat *);
+float_t *mmModel(Allele *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: heterozygous.*/
-float_t *MmModel(allele_stat *);
+float_t *MmModel(Allele *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous major.*/
-float_t *MMModel(allele_stat *);
+float_t *MMModel(Allele *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous minor.*/
-float_t *mmModelP(allele_stat *);
+float_t *mmModelP(Allele *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: heterozygous.*/
-float_t *MmModelP(allele_stat *);
+float_t *MmModelP(Allele *);
 /*! \breif A functor to set probabilities in the lnmultinomial members of model: homozygous major.*/
-float_t *MMModelP(allele_stat *);
+float_t *MMModelP(Allele *);
 #endif

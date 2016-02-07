@@ -45,8 +45,8 @@ int filter(int argc, char *argv[])
 	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
 	float_t polyll, hwell;
-	allele_stat s;
-	Indexed_file <allele_stat> map_in, map_out;
+	Allele s;
+	Indexed_file <Allele> map_in, map_out;
 	
 	if (in_file.size()==0)	map_in.open(std::fstream::in);
 	else map_in.open(in_file.c_str(), std::fstream::in);
@@ -61,7 +61,7 @@ int filter(int argc, char *argv[])
 
 	map_in.read(s);
 
-	while( map_in.is_open() ){
+	while( map_in.table_is_open() ){
 		hwell=(s.ll-s.hwell)*2, polyll=(s.ll-s.monoll)*2;
 		float_t m=s.mm+s.Mm/2.;
 		if (s.coverage==0){

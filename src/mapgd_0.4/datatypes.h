@@ -10,9 +10,9 @@
 
 #include "quartet.h"
 #include "locus.h"
-#include "allele_stat.h"	//FORMALLY allele_stat.
-#include "pooled_data.h"	//FORMALLY allele_stat.
-#include "data_types/sample_name.h"	//FORMALLY allele_stat.
+#include "data_types/allele.h"	//FORMALLY Allele.
+#include "pooled_data.h"	//FORMALLY Allele.
+#include "data_types/sample_name.h"	//FORMALLY Allele.
 #include "genotype.h"
 
 #endif 

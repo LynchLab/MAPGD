@@ -36,7 +36,7 @@ COMMANDS=mapgd.o \
 	sql/writesql.o 
 	
 
-OBJS=allele_stat.o \
+OBJS=data_types/allele.o \
 	base.o \
 	binomial.o \
 	data_types/data.o \

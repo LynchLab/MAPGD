@@ -131,6 +131,18 @@ timeout 5s bash -c "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out"
 testa
 rm temp*
 
+a="genotype"
+msg="genotype"
+rm -f $a.out
+size=$(($idx_size+$idx_header+$good_size+$gcf_header))
+$mapgd proview -H $header -i $mpileup > temp_pro.out
+$mapgd allele -i temp_pro.out -M 1 > temp_map.out
+$mapgd filter -i temp_map.out > temp_map_filtered.out
+echo -n "$mapgd $a -p temp_pro.out -m temp_map_filtered.out > $a.out							"
+timeout 5s bash -c "$mapgd $a -p temp_pro.out -m temp_map_filtered.out > $a.out"
+testa
+rm temp*
+
 echo -n "$mapgd $a -p pro -m map > $a.out (fifopipes)									"
 mkfifo map
 mkfifo pro
@@ -140,5 +152,3 @@ $mapgd genotype -p pro -m map > $a.out
 rm -f map
 rm -f pro
 testa
-
-

@@ -109,9 +109,9 @@ size_t Pooled_data::size(void) const
 	return sizeof(float_t)+sizeof(char)+names_.size()*sizeof(char);
 }
 	
-allele_stat Pooled_data::to_allele_stat(const size_t & x)
+Allele Pooled_data::to_allele(const size_t & x)
 {
-	allele_stat a;
+	Allele a;
         a.id0=id0;             //!< the scaffold identifer of the allele.
         a.id1=id1;             //!< the bp location of the allele.
         a.freq=p[x];           //!< frequency of major allele.

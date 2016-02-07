@@ -24,7 +24,7 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 #define BUFFER_SIZE 500
 
 /*
-float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,  models &model){
+float_t compare (Allele mle1, Allele mle2, Locus &site1, Locus &site2,  models &model){
 	Locus site3=site1+site2;
 	alele_stat mle3;
 	maximize_grid(site3, mle3, model, gofs, MIN, MAXGOF, MAXPITCH+texc);
@@ -34,7 +34,7 @@ float_t compare (allele_stat mle1, allele_stat mle2, Locus &site1, Locus &site2,
 /// Estimates a number of summary statistics from short read sequences.
 /**
  */
-allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton){
+Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton){
 
 #ifdef MPI
 	MPI_Init(&argc, &argv);
@@ -45,14 +45,14 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 #endif
 
 
-	allele_stat mle, temp;					//allele_stat is a basic structure that containes all the summary statistics for
+	Allele mle, temp;					//Allele is a basic structure that containes all the summary statistics for
 								//an allele. It gets passed around a lot, and a may turn it into a class that has
 								//some basic read and write methods.
 
 	mle.gof=0; mle.efc=0; mle.MM=0; mle.Mm=0; mle.mm=0; 	 //Initialize a bunch of summary statics as 0. 
-								 //This should be moved over to the constructor of allele_stat 
+								 //This should be moved over to the constructor of Allele 
 								 //(when that constructor is writen). I'm a little concerned that
-								 //allele_stat has gotten too bloated, but . . . 
+								 //Allele has gotten too bloated, but . . . 
 	mle.N=0;
 	mle.id0=site.id0;
 	mle.id1=site.id1;
@@ -121,7 +121,7 @@ allele_stat estimate (Locus &site, models &model, std::vector<float_t> &gofs, co
 }
 
 #ifdef MPI
-void write(std::ostream& out, uint32_t readed, profile& pro, profile& pro_out, allele_stat* buffer_mle, Locus* buffer_site, float MINGOF, float_t A)
+void write(std::ostream& out, uint32_t readed, profile& pro, profile& pro_out, Allele* buffer_mle, Locus* buffer_site, float MINGOF, float_t A)
 {
 	for (uint32_t x = 0; x < readed; ++x) {
 		// Now print everything to the *out stream, which could be a file or the stdout. 
@@ -158,7 +158,7 @@ std::string mpi_recieve_string(int rank)
 	return result;
 }
 
-void do_estimate(allele_stat* buffer_mle, Locus& buffer_site, models& model, std::vector<int>& ind,
+void do_estimate(Allele* buffer_mle, Locus& buffer_site, models& model, std::vector<int>& ind,
 	std::vector <float_t>& sum_gofs, std::vector <float_t>& gofs_read, count_t MIN, float_t EMLMIN, float_t MINGOF,
 	count_t MAXPITCH)
 {
@@ -234,10 +234,10 @@ int estimateInd(int argc, char *argv[])
 
 	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
-	Indexed_file <allele_stat> map_out;
+	Indexed_file <Allele> map_out;
 	Indexed_file <Locus> pro_in, pro_out;
 	
-	allele_stat allele_out;
+	Allele allele_out;
 	Locus locus_out, locus_in;
 
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
@@ -270,7 +270,7 @@ int estimateInd(int argc, char *argv[])
 	};
 
 
-	/* this is the basic header of our outfile, should probably be moved over to a method in allele_stat.*/
+	/* this is the basic header of our outfile, should probably be moved over to a method in Allele.*/
 	locus_in.maskall();						//Turn off the ability to read data from all clones by default. 
 
 	if ( ind.size()==0 ) { 						//Iff the vector ind (which should list the clones to 
@@ -288,7 +288,7 @@ int estimateInd(int argc, char *argv[])
 		if (!map_out.is_open() ) printUsage(env);
 	} else 	map_out.open(std::fstream::out);
 
-	allele_stat buffer_mle[BUFFER_SIZE]; 
+	Allele buffer_mle[BUFFER_SIZE]; 
 	Locus buffer_locus[BUFFER_SIZE];
 	std::fill_n(buffer_locus, BUFFER_SIZE, locus_in);
 
@@ -299,7 +299,7 @@ int estimateInd(int argc, char *argv[])
 
 	while (true){			//reads the next line of the pro file. pro.read() retuerns 0
 		uint32_t c=0, readed=0;
-		bool estimate_me=1;
+		bool estimate_me=true;
 		#ifndef NOOMP
 		#pragma omp parallel private(c, model, estimate_me) 
 		#endif
@@ -313,7 +313,7 @@ int estimateInd(int argc, char *argv[])
 				#endif
 				{
 					c=readed;		//Turn on the ability to read data from all clones in 
-					if(pro_in.read(buffer_locus[c]).good() ){
+					if(pro_in.read(buffer_locus[c]).table_is_open() ){
 						readed++;	//reads the next line of the pro file. pro.read() retuerns 0
 						estimate_me=1;
 					}
@@ -352,7 +352,7 @@ int estimateInd(int argc, char *argv[])
 	map_out.close_table();
 	if ( not(noheader) ) {
 		Flat_file <Sample_gof> gof_file;
-		gof_file.open_append(map_out);
+		gof_file.open_from(map_out);
 		gof_file.write_header(Sample_gof() );
 		for (size_t x=0; x<ind.size(); ++x) gof_file.write(Sample_gof(locus_in.get_sample_names()[ind[x]], sum_gofs[x]/(float_t(gofs_read[x]) ) ) );
 		gof_file.close();

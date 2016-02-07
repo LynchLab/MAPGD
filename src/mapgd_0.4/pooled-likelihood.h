@@ -2,11 +2,11 @@
 #define POOLEDLIKELIHOOD_H_
 
 #include "lnmultinomial.h"
-#include "allele_stat.h"
+#include "data_types/allele.h"
 #include <math.h>
 
-void polymorphicmodel(allele_stat const &, float_t *);
-void monomorphicmodel(allele_stat const &, float_t *);
-void fixedmorphicmodel(allele_stat const &, float_t *);
+void polymorphicmodel(Allele const &, float_t *);
+void monomorphicmodel(Allele const &, float_t *);
+void fixedmorphicmodel(Allele const &, float_t *);
 
 #endif

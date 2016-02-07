@@ -6,5 +6,10 @@
 #include "../datatypes.h"
 #include "../map-file.h"
 
+//! Writes Data classes to an SQL database
+/*! @ingroup Command 
+ *  Writes Data classes to an SQL database.
+ */
 int writesql(int argc, char *argv[]);
+
 #endif

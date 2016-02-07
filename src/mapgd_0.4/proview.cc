@@ -81,7 +81,7 @@ int proview(int argc, char *argv[])
 		Sample_name name_file;
 		in_names.open(namefile.c_str(), std::ios::in);
 		name_file=in_names.read_header();
-		while (in_names.read(name_file).good() ){
+		while (in_names.read(name_file).table_is_open() ){
 			in_files.push_back(new Mpileup_file <Locus>);
 			in_files.back()->open_no_extention(name_file.mpileup_name.c_str(), std::ios::in);
 			in_locus.push_back( in_files.back()->read_header() );

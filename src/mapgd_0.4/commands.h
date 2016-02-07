@@ -4,6 +4,13 @@
  * name space. Save the children. I don't know. 
 */
 
+
+
+/** @defgroup Command Mapgd commands
+ *  These are the basic commands that can be called by the main mapgd 
+ *  program.
+ */
+ 
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 

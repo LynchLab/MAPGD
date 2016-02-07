@@ -10,7 +10,7 @@
 
 #include "typedef.h"
 #include "base.h"
-#include "allele_stat.h"
+#include "data_types/allele.h"
 
 ///	A class to store population specific information. May be moved over to population.
 /** This is likely to become some form of container to handel moving data into and out of rows of map file.
@@ -34,15 +34,15 @@ public:
 	Pooled_data();	
 	Pooled_data(const std::vector <std::string> &);
 	
-	allele_stat to_allele_stat(const size_t &);
+	Allele to_allele(const size_t &);
 
 	void set_sample_names(const std::vector <std::string> &);
 
 	std::string header(void) const;
 	size_t size(void) const;
 
-	friend std::ostream& operator<< (std::ostream&, const Pooled_data&);	//!< use the << operator to write allele_stat.
-	friend std::istream& operator>> (std::istream&, Pooled_data&);		//!< use the >> operator to read allele_stat.
+	friend std::ostream& operator<< (std::ostream&, const Pooled_data&);	//!< use the << operator to write Allele.
+	friend std::istream& operator>> (std::istream&, Pooled_data&);		//!< use the >> operator to read Allele.
 	static const std::string file_name;					//!< The dafualt extention for files.
 	static const std::string table_name;					//!< Destination table in Db.
 };

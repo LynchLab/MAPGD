@@ -12,7 +12,7 @@ int main (int argc, char *argv[]){
 	count_t l[4];
 	float_t tP;
 	float_t E=0, V=0;
-	allele_stat a;
+	Allele a;
 	models model;
 
 	a.error=0.01;

@@ -13,7 +13,7 @@
 #include <limits>	// std::numeric_limits
 
 #include "typedef.h"
-#include "allele_stat.h"
+#include "data_types/allele.h"
 
 /* \breif information that should be passed to vcf files.
  */
@@ -34,7 +34,7 @@ public:
 
 	void set (float_t*);				//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
 	void set (float_t, float_t, float_t, float_t);	//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
-	void set(void (*)(const allele_stat&, float_t *), const allele_stat&);
+	void set(void (*)(const Allele&, float_t *), const Allele&);
 
 	float_t lnprob(const count_t*) ;		//!< returns the probabiltiy of the multinomial distribution . . .
 	float_t lnprob_approx(const count_t*);		//!< returns the probabiltiy of the multinomial distribution . . .

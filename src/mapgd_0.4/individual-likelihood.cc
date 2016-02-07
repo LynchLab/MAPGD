@@ -22,7 +22,7 @@ float_t efc (const Locus &site)
 }
 
 //Intilaizes the parameters of the ... returns 0 on succesful excecution, returns 1 if there is am...
-count_t init_params(Locus &site, allele_stat &a, const float_t &minerr)
+count_t init_params(Locus &site, Allele &a, const float_t &minerr)
 {
 	a.coverage=site.getcoverage();
 
@@ -97,7 +97,7 @@ count_t init_params(Locus &site, allele_stat &a, const float_t &minerr)
 	return 1;
 }
 
-count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
+count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
 {
 	float_t J[3][3];		//The Jacobian/Hessian.
         float_t iJ[3][3]; 		//Inverse of the Jacobian/Hessian.
@@ -296,7 +296,7 @@ count_t maximize_newton (Locus &site, allele_stat &a, models &model, std::vector
 }
 
 /* Uses a grid method to maximize the likelihood equations.*/
-count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &MINGOF, const size_t &maxpitch)
+count_t maximize_grid (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &MINGOF, const size_t &maxpitch)
 {
 	count_t N_=a.N;
 	count_t P_=a.MM*N_;
@@ -401,7 +401,7 @@ count_t maximize_grid (Locus &site, allele_stat &a, models &model, std::vector <
 	return 	excluded;
 }
 
-count_t maximize_analytical (Locus &site, allele_stat &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
+count_t maximize_analytical (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
 {
 	a.MM=1.0;
 	a.Mm=0.0;

@@ -41,7 +41,7 @@ int comparePooled(int argc, char *argv[])
 	out=&std::cout;
 
 	profile pro;
-	allele_stat site;
+	Allele site;
 
 	/* Open the input file. */
 

@@ -17,13 +17,20 @@
  */
 class Sample_name : public virtual Data { 
 private:
+	void read(std::istream& str);
+	///! the write function must be ? by the child class.
+	void write(std::ostream& str) const;
+	static const Registration registered;
+	static Data * create(const std::vector <std::string> & Columns){
+		return new Sample_name(Columns);
+	};
 public:
 	char delim;		//!< the delimiter used when reading/writing the class in text mode.	
 	std::string mpileup_name;
 	std::vector <std::string> sample_names;
 
 	Sample_name();	
-	Sample_name(std::vector <std::string>) : Sample_name(){};	
+	Sample_name(const std::vector <std::string> &) : Sample_name(){};	
 	Sample_name(const std::string &, const float_t &);	
 
 	static const std::string file_name;				//!< The dafualt extention for files.
@@ -31,9 +38,6 @@ public:
 
 	const std::string header(void) const;
 	size_t size(void) const;
-
-	friend std::ostream& operator<< (std::ostream&, const Sample_name&);	//!< use the << operator to write allele_stat.
-	friend std::istream& operator>> (std::istream&, Sample_name&);		//!< use the >> operator to read allele_stat.
 
 	const std::string get_file_name(void) const;				//!< The dafualt extention for files.
 	const std::string get_table_name(void) const;				//!< The dafualt extention for files.

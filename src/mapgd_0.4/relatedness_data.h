@@ -48,8 +48,8 @@ public:
 	void clear(void); //!< zeros statistics and sets names to empty.
 	void zero(void);  //!< zeros statistics, but doesn't set names to empty.
 
-	friend std::ostream& operator<< (std::ostream&, const Relatedness&);	//!< use the << operator to write allele_stat.
-	friend std::istream& operator>> (std::istream&, Relatedness&);		//!< use the >> operator to read allele_stat.
+	friend std::ostream& operator<< (std::ostream&, const Relatedness&);	//!< use the << operator to write Allele.
+	friend std::istream& operator>> (std::istream&, Relatedness&);		//!< use the >> operator to read Allele.
 	static const std::string file_name;					//!< The dafualt extention for files.
 	static const std::string table_name;					//!< Destination table in Db.
 };

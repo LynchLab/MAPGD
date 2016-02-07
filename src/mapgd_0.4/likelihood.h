@@ -2,6 +2,6 @@
 #define LIKEILIHOOD_H_
 
 #include "lnmultinomial.h"
-#include "allele_stat.h"
+#include "data_types/allele.h"
 
 #endif

@@ -444,7 +444,7 @@ int PopLD(int argc, char *argv[])
 		printf("min_Ni: %f\n", min_Ni);
 	}
 
-	Indexed_file <allele_stat> in_map;
+	Indexed_file <Allele> in_map;
 	Indexed_file <Locus> in_pro;
 
 	in_map.open(in_file_name.c_str(), std::ios::in);	// Try to open the input file
@@ -453,7 +453,7 @@ int PopLD(int argc, char *argv[])
 	Indexed_file <Linkage_stat> lds_out;
 	
 	Locus locus_buffer[BUFFER_SIZE];
-	allele_stat allele_buffer[BUFFER_SIZE];
+	Allele allele_buffer[BUFFER_SIZE];
 
 	linkage_data linkage_buffer[?]; //TODO
 

@@ -5,7 +5,7 @@
 
 #include "interface.h"
 #include "genotype.h"
-#include "allele_stat.h"
+#include "data_types/allele.h"
 #include "map-file.h"
 #include "typedef.h"
 #include "quartet.h"
