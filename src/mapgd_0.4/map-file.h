@@ -43,6 +43,7 @@ protected:
 
 	///! indicates whether the iostream opened succesfully
 	bool open_;		
+
 	///! indicates whether the header has been read succesfully
 	/*   Since all tables begin with a header, 
 	 *   Base_file::read(Data *) will return NULL before until 
@@ -50,6 +51,7 @@ protected:
 	 *   the header.
 	 */
 	bool table_open_;	
+
 	///! indicates whether multiple tables are included in the file
 	bool concatenated_;	
 
@@ -79,8 +81,10 @@ public:
 	///! Opens a Base_file to the cin/cout.
 	void open(const std::ios_base::openmode&);
 	///! Opens a Base_file to an istream.
+	void open(std::iostream*, const std::ios_base::openmode &);
+	///! Opens a Base_file to an istream.
 	void open(std::istream*, const std::ios_base::openmode &);
-	///! Opens a Base_file to an ostream.
+	///! Opens a Base_file to an istream.
 	void open(std::ostream*, const std::ios_base::openmode &);
 
 	///! returns the istream.
@@ -102,8 +106,13 @@ public:
   	 */
 	///! Reterns a pointer to a new instance of the derived data class.
 	Data *read_header(void);	
+
 	///! Reads from the istream.
+	/*   
+	 *
+	 */
 	Base_file& read(Data *);	
+
 	///! Writes to the ostream.	
 	Base_file& write(Data *);	
 

@@ -13,24 +13,24 @@ of the two polymorphic sites of interest.
 
 */
 
+//TODO some performance profiling on buffer sizes.
+#define BUFFER 1000
+
 using namespace std;
 
 struct estimate
 {
-	float_t best_D;		// ML estimate of D
-	float_t best_Dprime;	// ML estimate of D'
-	float_t best_D2;		// ML estimate of D2
-	float_t best_r2;		// ML estimate o r2
-	float_t adj_best_D;	// Bias-adjusted ML estimate of D
-	float_t adj_best_Dprime;	// Bias-adjusted ML estimate of D'
-	float_t adj_best_D2;	// Bias-adjusted ML estimate of D2
-	float_t adj_best_r2;	// Bias-adjusted ML estimate o r2
-	float_t Ni;		// Effective sample size
-	float_t llstat;		// test statistic for examining the statistical significance of LD
+	float_t best_D;		//! ML estimate of D
+	float_t best_Dprime;	//! ML estimate of D'
+	float_t best_D2;	//! ML estimate of D2
+	float_t best_r2;	//! ML estimate o r2
+	float_t adj_best_D;	//! Bias-adjusted ML estimate of D
+	float_t adj_best_Dprime;//! Bias-adjusted ML estimate of D'
+	float_t adj_best_D2;	//! Bias-adjusted ML estimate of D2
+	float_t adj_best_r2;	//! Bias-adjusted ML estimate o r2
+	float_t Ni;		//! Effective sample size
+	float_t llstat;		//! test statistic for examining the statistical significance of LD
 };
-
-//extern struct estimate estimate_D(int num_pol_sites, int sg, int tg, float_t Ni, int mlNuc1_1, int mlNuc2_1, int mlNuc1_2, int mlNuc2_2, float_t best_p, float_t best_q, float_t best_error_1, float_t best_error_2, int nsample, int mononuc_count_1[][5], int mononuc_count_2[][5], int *cov1, int *cov2);
-
 
 /****************************** estimate_D() *******************************/
 /** Function for estimating the LD coefficient D                          **/
@@ -399,7 +399,6 @@ int PopLD(int argc, char *argv[])
 	*/
 	
 	// Default values of the options
-	const char* in_file_name = {"In_PopLD.txt"};
 	const char* out_file_name = {"Out_PopLD.txt"};
 	int max_d = INT_MAX;
 	double min_Ni = 10.0;
@@ -411,8 +410,6 @@ int PopLD(int argc, char *argv[])
 	while( (argz<argc) && (argv[argz][0] == '-') ) {
 		if (strcmp(argv[argz], "-h") == 0) {
 			print_help = 1;
-		} else if (strcmp(argv[argz], "-in") == 0) {
-			in_file_name = argv[++argz];
 		} else if (strcmp(argv[argz], "-out") == 0) {
 			out_file_name = argv[++argz];
 		} else if (strcmp(argv[argz], "-max_d") == 0) {
@@ -429,7 +426,6 @@ int PopLD(int argc, char *argv[])
 	if (print_help) {	// print error/usage message ?
 		fprintf(stderr, "USAGE: %s {<options>}\n", argv[0]);
 		fprintf(stderr, "	options: -h: print the usage message\n");
-		fprintf(stderr, "	-in <s>: specify the input file name\n");
 		fprintf(stderr, "       -out <s>: specify the output file name\n");
 		fprintf(stderr, "	-max_d <d>: specify the maximum value of the distance between polymorphic sites allowed for estimating LD\n");
 		fprintf(stderr, "       -min_Ni <f>: specify the minimum effective sample size required for estimating LD\n");
@@ -444,49 +440,42 @@ int PopLD(int argc, char *argv[])
 		printf("min_Ni: %f\n", min_Ni);
 	}
 
-	Indexed_file <Allele> in_map;
-	Indexed_file <Locus> in_pro;
+	Indexed_file <Allele> in_map1, in_map2;
+	Indexed_file <Locus> in_pro1, in_pro2;
 
-	in_map.open(in_file_name.c_str(), std::ios::in);	// Try to open the input file
-	in_pro.open(in_file_name.c_str(), std::ios::in);	// Try to open the input file
+	in_map1.open(std::ios::in);	// Try to open the input file
+	in_pro1.open(std::ios::in);	// Try to open the input file
+	in_map2.open(std::ios::in);	// Try to open the input file
+	in_pro2.open(std::ios::in);	// Try to open the input file
 	
 	Indexed_file <Linkage_stat> lds_out;
 	
-	Locus locus_buffer[BUFFER_SIZE];
-	Allele allele_buffer[BUFFER_SIZE];
+	Locus locus_buffer1[BUFFER_SIZE];
+	Allele allele_buffer1[BUFFER_SIZE];
+	Locus locus_buffer2[BUFFER_SIZE];
+	Allele allele_buffer2[BUFFER_SIZE];
 
-	linkage_data linkage_buffer[?]; //TODO
+	linkage_data linkage_buffer[BUFFER_SIZE]; //TODO
 
-	num_pol_sites? //TODO
+	#ifndef NOOMP
+	#pragma omp parallel for private(x) 
+	#endif
+	for (size_t x=0; x<BUFFER_SIZE; x++) {
 
-	while (x<BUFFER_SIZE && in_map.is_open() ){
-		while (pro_in.get_pos(locus)<in_map.get_pos(allele) ){
-				pro_in.read(locus);
-		}
-		if (pro_in.get_pos(locus)==in_map.get_pos(allele) {
-			locus_buffer[x]=locus; 
-			allele_buffer[x]=allele; 
-		}
-		in_map.read(allele);
-		++x;
+		in_pro1.read(locus_buffer1[x]);
+		in_map1.read(allele_buffer1[x]);
+		in_pro2.read(locus_buffer2[x]);
+		in_map2.read(allele_buffer2[x]);
+
+		Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
+		if ( Ni >= min_Ni ) {
+			// Estimate the LD coefficient D between the polymorphic sites 
+			//TODO dont deleate this
+			linkage_buffer[x] = estimate_D(Ni, allele_buffer1[x].major, allele_buffer1[x].minor, allele_buffer2[x].major, allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_bffuer1[x].error, allele_buffer2[x].error, nsample <-FIXIT, locus_buffer1[x].get_quartets(), locus_buffer2[x].get_quartetes(), locus_buffer1[x].getcount(), locus_buffer2[x].getcount());
+		} 
 	}
-	for (size_t sg=0; sg<BUFFER_SIZE; sg++) {
-		
-		#ifndef NOOMP
-		#pragma omp parallel for private(x, quartet_1) 
-		#endif
-		for (size_t tg=sg+1; tg<num_pol_sites; tg++) {
-			Ni=const_sites(site1, site2);
-			dist_sites = pro_in.get_pos(site2) - pro_in.get_pos(site1);
-			if (dist_sites <= max_d && Ni >= min_Ni) {
-				// Estimate the LD coefficient D between the polymorphic sites 
-				//TODO dont deleate this
-				linkage_buffer[tg-sg-1] = estimate_D(Ni, allele_buffer[sg].major, allele_buffer[sg].minor, allele_buffer[tg].major, allele_buffer[tg].minor, allele_buffer[sg].freq, allele_buffer[tg].freq, allele_bffuer[sg].error, allele_buffer[tg].error, nsample <-FIXIT, locus_buffer[sg].get_quartets(), locus_buffer[tg].get_quartetes(), locus_buffer[sg].getcount(), locus_buffer[tg].getcount());
-			} 
-		}
-	}	
-	for (??){ //TODO
-		lds_out.write(linkage_buffer[x]);
+	for (size_t c=0; c<read; ++c){ //TODO
+		lds_out.write(linkage_buffer[c]);
 	}
 	return 0;
 };

@@ -18,10 +18,10 @@ genotype::genotype(const float_t &MM, const float_t &Mm, const float_t &mm, cons
 	N=lN;
 }
 	
-population_genotypes::population_genotypes(std::vector <std::string> column_names)
+population_genotypes::population_genotypes(const std::vector <std::string> &column_names)
 {
-	sample_names=column_names;
-	likelihoods.resize(sample_names.size() );
+	sample_names_=std::vector <std::string> (column_names.cbegin()+3, column_names.cend() );
+	likelihoods.resize(sample_names_.size() );
 }
 
 population_genotypes::population_genotypes()
@@ -29,12 +29,9 @@ population_genotypes::population_genotypes()
 	frozen=false;
 }
 
-population_genotypes::population_genotypes(const population_genotypes &poplikelihoods)
+population_genotypes::population_genotypes(const population_genotypes &rhs)
 {
-	likelihoods=poplikelihoods.likelihoods;
-	m=poplikelihoods.m;
-	igl_=poplikelihoods.igl_;
-	frozen=poplikelihoods.frozen;
+	*this=rhs;
 }
 
 population_genotypes::~population_genotypes(){}
@@ -80,7 +77,7 @@ Genotype_pair_tuple convert(const genotype &x, const genotype &y, const float_t 
 
 std::string population_genotypes::header(void) const
 {
-	std::string line="@SCFNAME\tPOS";
+	std::string line="@SCFNAME\tPOS\tMN_FREQ";
 	std::vector <std::string>::const_iterator s_it=sample_names_.cbegin(), end=sample_names_.cend();
 	while(s_it!=end){
 		line+='\t';	
@@ -102,9 +99,8 @@ genotype & genotype::operator= (const genotype& rhs)
 
 std::ostream& operator<< (std::ostream& out, const population_genotypes& x)
 {
-	out << x.id0 << '\t' << x.id1 << '\t' << x.m;
+	out << x.id1 << '\t' << x.m;
 	std::vector <genotype>::const_iterator s_it=x.likelihoods.cbegin(), end=x.likelihoods.cend();
-//	std::vector <genotype>                      likelihoods;		//!< genotypic likelihood
 	while(s_it!=end){
 		out << '\t' << *s_it;
 		s_it++;	
@@ -112,10 +108,18 @@ std::ostream& operator<< (std::ostream& out, const population_genotypes& x)
 	return out;
 }
 
-std::istream& operator>> (std::istream& in, population_genotypes& x)
+std::istream& operator >> (std::istream& in, population_genotypes& x)
 {
-//	getline
-//	out << x.id0 << '\t' << x.id1 << '\t' << x.m;
+        std::string line;
+        std::getline(in, line);
+        std::stringstream line_stream(line);
+
+	line_stream >> x.id1 >> x.m;
+	std::vector <genotype>::iterator s_it=x.likelihoods.begin(), end=x.likelihoods.end();
+	while(s_it!=end){
+		line_stream >> *s_it;
+		s_it++;
+	}	
 	return in;
 }
 
@@ -127,8 +131,16 @@ std::ostream& operator<< (std::ostream& out, const genotype& x)
 
 std::istream& operator>> (std::istream& in, genotype& x)
 {
-	in >> x.lMM >> x.lMm >> x.lmm >> x.N;
-	return in;
+	std::string line;
+	getline(in, line, '/');
+	x.lMM=std::stof(line);
+	getline(in, line, '/');
+	x.lMm=std::stof(line);
+	getline(in, line, '/');
+	x.lmm=std::stof(line);
+	getline(in, line, '\t');
+	x.N=std::stoi(line);
+        return in;
 }
 
 Genotype_pair::Genotype_pair(const float_t &X_MM_, const float_t &X_Mm_, const float_t &X_mm_, const float_t &Y_MM_, const float_t &Y_Mm_, const float_t &Y_mm_, const float_t &m_)
@@ -151,4 +163,20 @@ Genotype_pair_tuple Genotype_pair::to_tuple(const Genotype_pair &pair)
 Genotype_pair Genotype_pair::from_tuple(const Genotype_pair_tuple &t)
 {
 	return Genotype_pair (std::get<0>(t),std::get<1>(t), std::get<2>(t), std::get<3>(t), std::get<4>(t), std::get<5>(t), std::get<6>(t) );
+}
+
+population_genotypes & population_genotypes::operator= (const population_genotypes& rhs)
+{
+	sample_names_=rhs.sample_names_;	//!< a vector of sample names.
+	frozen=rhs.frozen;					//!< a flag to indicate that no more samples will be added 
+
+	likelihoods=rhs.likelihoods;		//!< genotypic likelihood
+	igl_=likelihoods.begin();			//!< an iterator to allow us to iterate over the likelihoods.
+
+	major=rhs.major;				//!< identity of the major allele
+	minor=rhs.minor;				//!< identity of the minor allele
+	m=rhs.m;					//!< minor allele frequency
+	id0=rhs.id0;					//!< scaffold number
+	id1=rhs.id0;					//!< location on scaffold
+	return *this;
 }

@@ -4,9 +4,10 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-
 #include <iostream>
 #include <iomanip>
+
+#include <gsl/gsl_multimin.h>
 
 #include "interface.h" 
 #include "map-file.h"

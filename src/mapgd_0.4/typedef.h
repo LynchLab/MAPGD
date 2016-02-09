@@ -16,7 +16,6 @@ typedef uint16_t id0_t;		//specifies scaffold. 		limits to 65,536 scaffolds.
 typedef uint32_t id1_t;		//specifies bp locations.	limits to 4,294,967,296 bp per scaffold.
 
 typedef int64_t id1_off_t;	//specifies an offset		specifies a distance between bp, must be
-				//				able to adress -id1_t to +id1_t.
 	
 typedef uint8_t gt_t;		//specifies a genotype.		limit 128.
 

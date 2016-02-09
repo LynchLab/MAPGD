@@ -95,6 +95,28 @@ void Base_file::open(const std::ios_base::openmode &mode)
 }
 
 
+void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)
+{
+	if ( open_ ){
+		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
+		exit(0);
+	}
+	if ( mode & std::ios::in) {
+		in_=s;
+		read_=true;
+		openmode_=mode;
+	}
+	if ( mode & std::ios::out) {
+		out_=s;
+		write_=true;
+		openmode_=mode;
+	}
+	if ( mode & std::ios::binary) binary_=true;
+	open_=true;
+	concatenated_=true;
+	std::cerr << "opened in concatenated mode\n";
+}
+
 void Base_file::open(std::istream *s, const std::ios_base::openmode &mode)
 {
 	if ( open_ ){
@@ -132,17 +154,17 @@ void Data_file<T>::open_from(Base_file &file)
 {
 	if (file.table_is_open() ) file.close_table();
 	if (file.openmode() & std::ios::in){
-		if(file.filename().size()!=0) {
-			if(file.concatenated() ) this->open(file.get_in(), file.openmode() );
-			else this->open_extention(file.filename().c_str(), file.openmode() );
-		}
-		else this->open(std::ios::in);
+//		if(file.filename().size()!=0) {
+		if(file.concatenated() ) this->open(file.get_in(), file.openmode() );
+		else this->open_extention(file.filename().c_str(), file.openmode() );
+//		}
+//		else this->open(std::ios::in);
 	} else if (file.openmode() & std::ios::out) {
-		if(file.filename().size()!=0) {
-			if(file.concatenated() ) this->open(file.get_out(), file.openmode() );
-			else this->open_extention(file.filename().c_str(), file.openmode() );
-		}
-		else this->open(std::ios::out);
+//		if(file.filename().size()!=0) {
+		if(file.concatenated() ) this->open(file.get_out(), file.openmode() );
+		else this->open_extention(file.filename().c_str(), file.openmode() );
+//		}
+//		else this->open(std::ios::out);
 	}
 	binary_=(file.openmode() & std::ios::binary);
 	open_=true;

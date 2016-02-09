@@ -4,6 +4,8 @@
 #include <list>
 #include <vector>
 #include <tuple>
+#include <sstream>
+
 #include "typedef.h"
 
 /** @brief genotypic likelihoods.
@@ -20,8 +22,8 @@ public :
 	genotype & operator= (const genotype&);
 };
 
-std::ostream& operator<< (std::ostream& out, const genotype& x);
-std::istream& operator>> (std::istream& in, genotype& x);
+std::ostream& operator << (std::ostream& out, const genotype& x);
+std::istream& operator >> (std::istream& in, genotype& x);
 
 class population_genotypes{
 private:
@@ -30,7 +32,6 @@ private:
 	bool frozen;					//!< a flag to indicate that no more samples will be added 
 public:
 	std::vector <genotype> likelihoods;		//!< genotypic likelihood
-	std::vector <std::string> sample_names;		//!< genotypic likelihood
 
 	gt_t major;					//!< identity of the major allele
 	gt_t minor;					//!< identity of the minor allele
@@ -39,7 +40,7 @@ public:
 	id1_t id1;					//!< location on scaffold
 
 	population_genotypes();					//!< simple constructor.
-	population_genotypes(std::vector <std::string>);	//!< constructor needed by map-file. String should be coloumn names. 
+	population_genotypes(const std::vector <std::string> &);//!< constructor needed by map-file. String should be coloumn names. 
 	population_genotypes(const population_genotypes &); 	//!< constructor using a population_genotype
 	~population_genotypes();				//!< destructor.
 	size_t size() const;					//!< Returns the number of samples.
@@ -54,6 +55,8 @@ public:
 		sample_names_=sample_names;
 		likelihoods.resize(sample_names.size() );
 	};		//!< names of the samples sequenced.
+
+	population_genotypes & operator= (const population_genotypes&);
 };
 
 std::ostream& operator<< (std::ostream& out, const population_genotypes& x);

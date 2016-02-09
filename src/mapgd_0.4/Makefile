@@ -9,7 +9,7 @@ LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 VERSION=-D VERSION=\"0.4.1\"
 CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fopenmp -fno-exceptions -pedantic
-LDLIBS=-l sqlite3
+LDLIBS=-l sqlite3 -lgsl -lgslcblas -lm
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
 OBJDIR=obj
