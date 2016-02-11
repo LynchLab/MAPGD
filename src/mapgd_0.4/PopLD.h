@@ -8,6 +8,8 @@
 #include "locus.h"
 #include "map-file.h"
 
+#include "datatypes.h"
+
 #include <iostream>
 #include <string.h>
 #include <fstream>

@@ -123,9 +123,12 @@ a="genotype"
 msg="genotype"
 rm -f $a.out
 size=$(($idx_size+$idx_header+$good_size+$gcf_header))
-$mapgd proview -H $header -i $mpileup -o temp
+echo "$mapgd proview -H $header -i $mpileup -o temp	 								"
+$mapgd proview -H $header -i $mpileup -o temp 
+echo "$mapgd allele -i temp.pro -o temp -M 1		 								"
 $mapgd allele -i temp.pro -o temp -M 1
-$mapgd filter -i temp.map -o temp-filtered
+echo "$mapgd filter -i temp.map -o temp-filtered	 								"
+$mapgd filter -i temp.map -o temp-filtered 
 echo -n "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out								"
 timeout 5s bash -c "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out"
 testa
@@ -135,8 +138,11 @@ a="genotype"
 msg="genotype"
 rm -f $a.out
 size=$(($idx_size+$idx_header+$good_size+$gcf_header))
+echo "$mapgd proview -H $header -i $mpileup > temp_pro.out 								"
 $mapgd proview -H $header -i $mpileup > temp_pro.out
+echo "$mapgd allele -i temp_pro.out -M 1 > temp_map.out 								"
 $mapgd allele -i temp_pro.out -M 1 > temp_map.out
+echo "$mapgd filter -i temp_map.out > temp_map_filtered.out 								"
 $mapgd filter -i temp_map.out > temp_map_filtered.out
 echo -n "$mapgd $a -p temp_pro.out -m temp_map_filtered.out > $a.out							"
 timeout 5s bash -c "$mapgd $a -p temp_pro.out -m temp_map_filtered.out > $a.out"

@@ -1,3 +1,6 @@
+//TODO I think this may be an over complicated mess that I made to deal with something that was basically a non-issue. It may all need to be purged.
+
+
 /* Currently likelihood calculations are all performed by a set of 'models' that we give to the "multinomial" class via the 
    multinomial::set method. These models should be able to look at the Allele structure, which contains information about
    the error rate at the locus and the identity of the major and minor allele, and return a set of four log probabilities of 

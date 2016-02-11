@@ -8,14 +8,16 @@ std::map <Genotype_pair_tuple, size_t> hash_genotypes (const std::stringstream &
 	std::cerr << "about to reading genotypes\n";
 	std::stringstream fb_copy(file_buffer.str() );
 	
-	Indexed_file <population_genotypes> gcf_in; 	// Open the file with genotypic probabilities.
+	Indexed_file <Population> gcf_in; 	// Open the file with genotypic probabilities.
 	gcf_in.open(&fb_copy, std::ios::in );
-	population_genotypes genotypes=gcf_in.read_header();
+	Population genotypes=gcf_in.read_header();
 	std::map <Genotype_pair_tuple, size_t> counts;
 	std::cerr << "reading genotypes\n";
 	while(gcf_in.table_is_open() ){
 		gcf_in.read(genotypes);
-		counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 2)]+=1;
+		if (genotypes.likelihoods[x].N>1 && genotypes.likelihoods[y].N>1 ){
+			counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 2)]+=1;
+		}
 	}
 	std::cerr << "done genotypes\n";
 	return counts;
@@ -63,7 +65,14 @@ void gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> 
                 inc_Delta(relatedness, pair, it->second);
                 ++(it);
         }
-	relatedness.Delta_XY_/=N;
+	relatedness.f_X_=0;
+	relatedness.f_Y_=0;
+	relatedness.theta_XY_=0;
+	relatedness.gamma_XY_=0;
+	relatedness.gamma_YX_=0;
+
+	relatedness.Delta_XY_=0;
+	relatedness.delta_XY_=0;
 }
 
 void inc_f(Relatedness &rel, const Genotype_pair &pair, const size_t &count){
@@ -99,6 +108,119 @@ inc_Delta (Relatedness &rel, const Genotype_pair &pair, const size_t &count)
 
 }
 
+float_t
+get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count) 
+{
+	/*This is the basic likelihood model that we are fitting. It essentially calculates the correlation coefficents
+	for the first four moments of the joint distribution. The math needs to be cleaned up here. For now it is typed
+	up to minimize the chance of typos. a, b, c and d are r.v. representing the presence (1) or absence of (0) of
+	the Major allele in the haploid genomes of idividuals A (for a and b) and C (c and d). A is the r.v. defined as
+	A~(a+b)/2 and C~(c+d)/2. Generally what we are doing here is calculating the expectations (e.g. E_A2) of the 
+	joint distributions and using that to calculate the joint distribution itself. Problems can occur when 
+	correlation coefficents are less than zero, becuase the probabilites of various observations (e.g. mm1mm2) can 
+	become negative. These probabilities are forced to be zero, which may be a little arbitrary, but it seems to 
+	work.*/
+
+
+	float_t P, mm1mm2, Mm1mm2, MM1mm2, mm1Mm2, Mm1Mm2, MM1Mm2, mm1MM2, Mm1MM2, MM1MM2;
+
+	P=pair.m;//1.-pair.m;
+
+	if (P==0) return 0;	
+	float_t e=0;
+	
+	/*This comes from the inverse matrix of the one used to calculate the moments.*/
+	
+	float_t A=P;//+e(P)*P; 		//mean major allele frequency in A
+	float_t C=P;//-e(P)*P; 		//mean major allele frequency in C
+	float_t Va=A*(1.-A);	//variance of the two haploid genomes of A 
+	float_t Vc=C*(1.-C);	// "   "	"	" 	"     of B
+	float_t Sa=sqrt(Va);	//standard deviation of haploid genomes A
+	float_t Sc=sqrt(Vc);	// and "	"	"	"	C.
+
+//	ll_t E_A2  =   (FA      *Va+2.*pow(A,2.)+Va)/2.; //Expectation of A^2
+	float_t E_A2  =(rel.f_X_*Va+2.*pow(A,2.)+Va)/2.; //Expectation of A^2
+//	ll_t E_C2  =   (FC*      Vc+2.*pow(C,2.)+Vc)/2.; //
+	float_t E_C2  =(rel.f_Y_*Vc+2.*pow(C,2.)+Vc)/2.; //
+//	ll_t E_AC  =   r            *Sa*Sc+A*C;
+	float_t E_AC  =rel.theta_XY_*Sa*Sc+A*C;
+//	ll_t ga   =(1.-2.*A)/Sa;
+	float_t ga=(1.-2.*A)/Sa;
+//	ll_t    gc=(1.-2.*C)/Sc;
+	float_t gc=(1.-2.*C)/Sc;
+//	ll_t E_A2C =   (sA           *Va*Sc*ga+A*A*C+Va*(r*            (1+2.*A)+FA      *C+C/(1-C) ) )/2.;
+	float_t E_A2C =(rel.gamma_XY_*Va*Sc*ga+A*A*C+Va*(rel.theta_XY_*(1+2.*A)+rel.f_X_*C+C/(1-C) ) )/2.;
+//	ll_t E_AC2 =   (sC           *Vc*Sa*gc+C*C*A+Vc*(r            *(1+2.*C)+FC      *A+A/(1-A) ) )/2.;
+	float_t E_AC2 =(rel.gamma_YX_*Vc*Sa*gc+C*C*A+Vc*(rel.theta_XY_*(1+2.*C)+rel.f_Y_*A+A/(1-A) ) )/2.;
+//	ll_t ka=   1./(1.-A)+1./A-3.;
+	float_t ka=1./(1.-A)+1./A-3.;
+//	ll_t kc=   1./(1.-C)+1./C-3.;
+	float_t kc=1./(1.-C)+1./C-3.;
+//	ll_t E_A2C2=   (z1*           sqrt(ka*kc)+z2           )*Va*Vc+A*A*C*C+FA*      Va*C*C+FC      *Vc*A*A+4*r            *Sa*Sc*A*A+C*2*sA           *Va*Sc*ga+2*A*sC           *Vc*Sa*gc;
+	float_t E_A2C2=(rel.Delta_XY_*sqrt(ka*kc)+rel.delta_XY_)*Va*Vc+A*A*C*C+rel.f_X_*Va*C*C+rel.f_Y_*Vc*A*A+4*rel.theta_XY_*Sa*Sc*A*A+C*2*rel.gamma_XY_*Va*Sc*ga+2*A*rel.gamma_YX_*Vc*Sa*gc;
+
+	/*This comes from the inverse matrix of the one used to calculate the moments.*/
+
+	mm1mm2=1-6*P+0.0*e+2*E_A2+2*E_C2+8.0*E_AC-4*E_A2C-4*E_AC2+1*E_A2C2;
+	Mm1mm2=0+4*P+2.0*e-4*E_A2+0*E_C2-10.*E_AC+8*E_A2C+4*E_AC2-2*E_A2C2;
+	MM1mm2=0-1*P-0.5*e+2*E_A2+0*E_C2+2.0*E_AC-4*E_A2C-0*E_AC2+1*E_A2C2;
+	mm1Mm2=0+4*P-2.0*e+0*E_A2-4*E_C2-10.*E_AC+4*E_A2C+8*E_AC2-2*E_A2C2;
+	Mm1Mm2=0+0*P+0.0*e+0*E_A2+0*E_C2+12.*E_AC-8*E_A2C-8*E_AC2+4*E_A2C2;
+	MM1Mm2=0+0*P+0.0*e+0*E_A2+0*E_C2-2.0*E_AC+4*E_A2C+0*E_AC2-2*E_A2C2;
+	mm1MM2=0-1*P+0.5*e+0*E_A2+2*E_C2+2.0*E_AC+0*E_A2C-4*E_AC2+1*E_A2C2;
+	Mm1MM2=0+0*P+0.0*e+0*E_A2+0*E_C2-2.0*E_AC+0*E_A2C+4*E_AC2-2*E_A2C2;
+	MM1MM2=0+0*P+0.0*e+0*E_A2+0*E_C2+0.0*E_AC+0*E_A2C+0*E_AC2+1*E_A2C2;
+
+
+	if (mm1mm2<0 or mm1mm2>1) mm1mm2=0;
+	if (Mm1mm2<0 or Mm1mm2>1) Mm1mm2=0; 
+	if (MM1mm2<0 or MM1mm2>1) MM1mm2=0; 
+	if (mm1Mm2<0 or mm1Mm2>1) mm1Mm2=0; 
+	if (Mm1Mm2<0 or Mm1Mm2>1) Mm1Mm2=0;
+	if (MM1Mm2<0 or MM1Mm2>1) MM1Mm2=0;
+	if (mm1MM2<0 or mm1MM2>1) mm1MM2=0;
+	if (Mm1MM2<0 or Mm1MM2>1) Mm1MM2=0;
+	if (MM1MM2<0 or MM1MM2>1) MM1MM2=0;
+
+	float_t S=pow(mm1mm2+Mm1mm2+MM1mm2+mm1Mm2+Mm1Mm2+MM1Mm2+mm1MM2+Mm1MM2+MM1MM2, 2);
+
+	if(S>1){
+		mm1mm2/=S;
+		Mm1mm2/=S;
+		MM1mm2/=S;
+		mm1Mm2/=S;
+		Mm1Mm2/=S;
+		MM1Mm2/=S;
+		mm1MM2/=S;
+		Mm1MM2/=S;
+		MM1MM2/=S;
+	};
+	
+	float_t E[9];
+
+        if (mm1mm2>0) E[0]=log(mm1mm2)-pair.X_mm-pair.Y_mm;
+     	else E[0]=-FLT_MAX;
+	if (Mm1Mm2>0) E[1]=log(Mm1Mm2)-pair.X_Mm-pair.Y_Mm;
+     	else E[1]=-FLT_MAX;
+        if (MM1MM2>0) E[2]=log(MM1MM2)-pair.X_MM-pair.Y_MM;
+     	else E[2]=-FLT_MAX;
+        if (mm1Mm2>0) E[3]=log(mm1Mm2)-pair.X_mm-pair.Y_Mm;
+     	else E[3]=-FLT_MAX;
+        if (MM1Mm2>0) E[4]=log(MM1Mm2)-pair.X_MM-pair.Y_Mm;
+     	else E[4]=-FLT_MAX;
+        if (Mm1mm2>0) E[5]=log(Mm1mm2)-pair.X_Mm-pair.Y_mm;
+     	else E[5]=-FLT_MAX;
+        if (Mm1MM2>0) E[6]=log(Mm1MM2)-pair.X_Mm-pair.Y_MM;
+     	else E[6]=-FLT_MAX;
+        if (mm1MM2>0) E[7]=log(mm1MM2)-pair.X_mm-pair.Y_MM;
+     	else E[7]=-FLT_MAX;
+        if (MM1mm2>0) E[8]=log(MM1mm2)-pair.X_MM-pair.Y_mm;
+     	else E[8]=-FLT_MAX;
+
+	std::sort(E, E+9);
+
+	return (log(1+exp(E[0]-E[8])+exp(E[1]-E[8])+exp(E[2]-E[8])+exp(E[3]-E[8])+exp(E[4]-E[8])+exp(E[5]-E[8])+exp(E[6]-E[8])+exp(E[7]-E[8]) )+E[8] )*count;
+}
 double
 rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 {
@@ -115,7 +237,7 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	rel.Delta_XY_ = gsl_vector_get(v, 5);
 	rel.delta_XY_ = gsl_vector_get(v, 6);
 	
-	double ll=0;
+	float_t ll=0;
 	
 	std::map<Genotype_pair_tuple, size_t>::iterator it=hashed_genotypes_p->begin();
 	std::map<Genotype_pair_tuple, size_t>::iterator end=hashed_genotypes_p->end();
@@ -123,14 +245,16 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	while(it!=end){
 		first=Genotype_pair::from_tuple(it->first);
 		count=it->second;
-		ll+=log((rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) + rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) + pow(first.m, 4) - pow(first.m, 3)*(first.m - 1)*(rel.f_X_ + rel.f_Y_ + 4*rel.theta_XY_) + first.m*(2*rel.gamma_XY_ + 2*rel.gamma_YX_)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m))*exp(-first.X_MM)*exp(-first.Y_MM) + (rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) + rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - first.m*pow(first.m - 1, 3)*(rel.f_X_ + rel.f_Y_ + 4*rel.theta_XY_) + (2*rel.gamma_XY_ + 2*rel.gamma_YX_)*(first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) + pow(first.m - 1, 4))*exp(-first.X_mm)*exp(-first.Y_mm) + (4*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) + 4*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) + 4*pow(first.m, 2)*pow(first.m - 1, 2) - first.m*(first.m - 1)*(4*rel.f_X_*first.m*(first.m - 1) + 4*rel.f_Y_*first.m*(first.m - 1) + 4*rel.theta_XY_*(pow(first.m, 2) + 2*first.m*(first.m - 1) + pow(first.m - 1, 2))) + (4*rel.gamma_XY_ + 4*rel.gamma_YX_)*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m))*exp(-first.X_Mm)*exp(-first.Y_Mm) - (2*rel.gamma_XY_*first.m*(-2*pow(first.m, 3) + 3*pow(first.m, 2) - first.m) + 2*rel.gamma_YX_*(first.m - 1)*(-2*pow(first.m, 3) + 3*pow(first.m, 2) - first.m) - rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - pow(first.m, 2)*pow(first.m - 1, 2) + first.m*(first.m - 1)*(rel.f_X_*pow(first.m, 2) + rel.f_Y_*pow(first.m - 1, 2) + 4*rel.theta_XY_*first.m*(first.m - 1)))*exp(-first.Y_MM)*exp(-first.X_mm) + (-4*rel.gamma_XY_*first.m*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.gamma_YX_*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - 2*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) + pow(first.m, 3)*(-2*first.m + 2) + first.m*(first.m - 1)*(2*rel.f_X_*pow(first.m, 2) + 2*rel.f_Y_*first.m*(first.m - 1) + 4*rel.theta_XY_*(pow(first.m, 2) + first.m*(first.m - 1))))*exp(-first.Y_MM)*exp(-first.X_Mm) - (2*rel.gamma_XY_*(first.m - 1)*(-2*pow(first.m, 3) + 3*pow(first.m, 2) - first.m) + 2*rel.gamma_YX_*first.m*(-2*pow(first.m, 3) + 3*pow(first.m, 2) - first.m) - rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - pow(first.m, 2)*pow(first.m - 1, 2) + first.m*(first.m - 1)*(rel.f_X_*pow(first.m - 1, 2) + rel.f_Y_*pow(first.m, 2) + 4*rel.theta_XY_*first.m*(first.m - 1)))*exp(-first.X_MM)*exp(-first.Y_mm) + (-4*rel.gamma_XY_*(first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.gamma_YX_*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - 2*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - 2*first.m*pow(first.m - 1, 3) + first.m*(first.m - 1)*(2*rel.f_X_*pow(first.m - 1, 2) + 2*rel.f_Y_*first.m*(first.m - 1) + 4*rel.theta_XY_*(first.m*(first.m - 1) + pow(first.m - 1, 2))))*exp(-first.X_Mm)*exp(-first.Y_mm) + (-2*rel.gamma_XY_*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 4*rel.gamma_YX_*first.m*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - 2*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) + pow(first.m, 3)*(-2*first.m + 2) + first.m*(first.m - 1)*(2*rel.f_X_*first.m*(first.m - 1) + 2*rel.f_Y_*pow(first.m, 2) + 4*rel.theta_XY_*(pow(first.m, 2) + first.m*(first.m - 1))))*exp(-first.X_MM)*exp(-first.Y_Mm) + (-2*rel.gamma_XY_*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 4*rel.gamma_YX_*(first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - 2*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - 2*first.m*pow(first.m - 1, 3) + first.m*(first.m - 1)*(2*rel.f_X_*first.m*(first.m - 1) + 2*rel.f_Y_*pow(first.m - 1, 2) + 4*rel.theta_XY_*(first.m*(first.m - 1) + pow(first.m - 1, 2))))*exp(-first.Y_Mm)*exp(-first.X_mm))
-*count;
-	
-	if ( isnan(ll) ) break;
-	++it;
+		ll+=get_ll(rel, first, count);
+//log((rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) + rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) + pow(first.m, 4) - pow(first.m, 3)*(first.m - 1)*(rel.f_X_ + rel.f_Y_ + 4*rel.theta_XY_) + first.m*(2*rel.gamma_XY_ + 2*rel.gamma_YX_)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m))*exp(-first.X_MM)*exp(-first.Y_MM) + (rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) + rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - first.m*pow(first.m - 1, 3)*(rel.f_X_ + rel.f_Y_ + 4*rel.theta_XY_) + (2*rel.gamma_XY_ + 2*rel.gamma_YX_)*(first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) + pow(first.m - 1, 4))*exp(-first.X_mm)*exp(-first.Y_mm) + (4*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) + 4*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) + 4*pow(first.m, 2)*pow(first.m - 1, 2) - first.m*(first.m - 1)*(4*rel.f_X_*first.m*(first.m - 1) + 4*rel.f_Y_*first.m*(first.m - 1) + 4*rel.theta_XY_*(pow(first.m, 2) + 2*first.m*(first.m - 1) + pow(first.m - 1, 2))) + (4*rel.gamma_XY_ + 4*rel.gamma_YX_)*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m))*exp(-first.X_Mm)*exp(-first.Y_Mm) - (2*rel.gamma_XY_*first.m*(-2*pow(first.m, 3) + 3*pow(first.m, 2) - first.m) + 2*rel.gamma_YX_*(first.m - 1)*(-2*pow(first.m, 3) + 3*pow(first.m, 2) - first.m) - rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - pow(first.m, 2)*pow(first.m - 1, 2) + first.m*(first.m - 1)*(rel.f_X_*pow(first.m, 2) + rel.f_Y_*pow(first.m - 1, 2) + 4*rel.theta_XY_*first.m*(first.m - 1)))*exp(-first.Y_MM)*exp(-first.X_mm) + (-4*rel.gamma_XY_*first.m*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.gamma_YX_*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - 2*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) + pow(first.m, 3)*(-2*first.m + 2) + first.m*(first.m - 1)*(2*rel.f_X_*pow(first.m, 2) + 2*rel.f_Y_*first.m*(first.m - 1) + 4*rel.theta_XY_*(pow(first.m, 2) + first.m*(first.m - 1))))*exp(-first.Y_MM)*exp(-first.X_Mm) - (2*rel.gamma_XY_*(first.m - 1)*(-2*pow(first.m, 3) + 3*pow(first.m, 2) - first.m) + 2*rel.gamma_YX_*first.m*(-2*pow(first.m, 3) + 3*pow(first.m, 2) - first.m) - rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - pow(first.m, 2)*pow(first.m - 1, 2) + first.m*(first.m - 1)*(rel.f_X_*pow(first.m - 1, 2) + rel.f_Y_*pow(first.m, 2) + 4*rel.theta_XY_*first.m*(first.m - 1)))*exp(-first.X_MM)*exp(-first.Y_mm) + (-4*rel.gamma_XY_*(first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.gamma_YX_*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - 2*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - 2*first.m*pow(first.m - 1, 3) + first.m*(first.m - 1)*(2*rel.f_X_*pow(first.m - 1, 2) + 2*rel.f_Y_*first.m*(first.m - 1) + 4*rel.theta_XY_*(first.m*(first.m - 1) + pow(first.m - 1, 2))))*exp(-first.X_Mm)*exp(-first.Y_mm) + (-2*rel.gamma_XY_*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 4*rel.gamma_YX_*first.m*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - 2*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) + pow(first.m, 3)*(-2*first.m + 2) + first.m*(first.m - 1)*(2*rel.f_X_*first.m*(first.m - 1) + 2*rel.f_Y_*pow(first.m, 2) + 4*rel.theta_XY_*(pow(first.m, 2) + first.m*(first.m - 1))))*exp(-first.X_MM)*exp(-first.Y_Mm) + (-2*rel.gamma_XY_*(2*first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 4*rel.gamma_YX_*(first.m - 1)*(2*pow(first.m, 3) - 3*pow(first.m, 2) + first.m) - 2*rel.delta_XY_*(-6*pow(first.m, 4) + 12*pow(first.m, 3) + 3*pow(first.m, 2)*pow(first.m - 1, 2) - 7*pow(first.m, 2) + first.m) - 2*rel.Delta_XY_*pow(first.m, 2)*pow(first.m - 1, 2) - 2*first.m*pow(first.m - 1, 3) + first.m*(first.m - 1)*(2*rel.f_X_*first.m*(first.m - 1) + 2*rel.f_Y_*pow(first.m - 1, 2) + 4*rel.theta_XY_*(first.m*(first.m - 1) + pow(first.m - 1, 2))))*exp(-first.Y_Mm)*exp(-first.X_mm))
+//*float_t(count);
+		if ( isnan(ll) ) break;
+		++it;
 	}
-	return ll;
+	if (isnan(ll) ) return FLT_MAX;
+	return -double(ll);
 }
+
 
 /*Maximizes the relatedness*/
 void 
@@ -163,15 +287,12 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	gsl_vector_set_all(ss,0.25);	
 
 	gsl_func.n=7;
-	std::cerr << "HI1\n";
+
 	gsl_func.f = rel_ll;
 	gsl_func.params=&hashed_genotypes;
 
-	std::cerr << "HI2\n";
-
 	s = gsl_multimin_fminimizer_alloc (T, 7);
 	gsl_multimin_fminimizer_set (s, &gsl_func, x, ss);
-
 
 	do {
 		iter++;
@@ -184,20 +305,15 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 
 		if (status == GSL_SUCCESS) printf ("converged to minimum at\n");
 
-		printf ("%5d %10.3e %10.3e f() = %7.3f size = %.3f\n", 
-			iter,
- 			gsl_vector_get (s->x, 0), 
-			gsl_vector_get (s->x, 1), 
-			s->fval, size);
-	}  while (status == GSL_CONTINUE && iter < 100);
+	}  while (status == GSL_CONTINUE && iter < 200);
 
-	rel.f_X_ = gsl_vector_get(x, 0);
-	rel.f_Y_ = gsl_vector_get(x, 1);
-	rel.theta_XY_ = gsl_vector_get(x, 2);
-	rel.gamma_XY_ = gsl_vector_get(x, 3);
-	rel.gamma_YX_ = gsl_vector_get(x, 4);
-	rel.Delta_XY_ = gsl_vector_get(x, 5);
-	rel.delta_XY_ = gsl_vector_get(x, 6);
+	rel.f_X_ = gsl_vector_get(s->x, 0);
+	rel.f_Y_ = gsl_vector_get(s->x, 1);
+	rel.theta_XY_ = gsl_vector_get(s->x, 2);
+	rel.gamma_XY_ = gsl_vector_get(s->x, 3);
+	rel.gamma_YX_ = gsl_vector_get(s->x, 4);
+	rel.Delta_XY_ = gsl_vector_get(s->x, 5);
+	rel.delta_XY_ = gsl_vector_get(s->x, 6);
 }
 
 
@@ -222,14 +338,14 @@ int estimateRel(int argc, char *argv[])
 
 	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
 
-	Indexed_file <population_genotypes> gcf_in; 	// Open the file with genotypic probabilities.
-	Indexed_file <population_genotypes> gcf_mem; 	// the in memory gcf_file.
+	Indexed_file <Population> gcf_in; 	// Open the file with genotypic probabilities.
+	Indexed_file <Population> gcf_mem; 	// the in memory gcf_file.
 	std::stringstream file_buffer;
 
 	Flat_file <Relatedness> rel_out; 		// Open a file for output.
 
 	Relatedness relatedness;			//The class to read to
-	population_genotypes genotype;			//The class to write from
+	Population genotype;			//The class to write from
 
 	if (gcf_name.size()!=0)
 		gcf_in.open(gcf_name.c_str(), std::ios::in);
@@ -240,8 +356,10 @@ int estimateRel(int argc, char *argv[])
 		rel_out.open(rel_name.c_str(), std::ios::out);
 	else
 		rel_out.open(std::ios::out);
-
+	
 	genotype=gcf_in.read_header();			//This gives us the sample names.
+
+	std::cerr << "read from header\n";
 
 	gcf_mem.open(&file_buffer, std::ios::out );
 	gcf_mem.set_index(gcf_in.get_index() );
@@ -259,7 +377,8 @@ int estimateRel(int argc, char *argv[])
 	
 	size_t sample_size=genotype.get_sample_names().size();
 
-	for (size_t x=0; x<sample_size; ++x){
+	//TODO Fixit
+	for (size_t x=1; x<sample_size; ++x){
 		for (size_t y=x+1; y<sample_size; ++y){
 			relatedness.set_X_name(genotype.get_sample_names()[x]);
 			relatedness.set_Y_name(genotype.get_sample_names()[y]);

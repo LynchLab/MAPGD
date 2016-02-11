@@ -6,6 +6,11 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <stdio.h>
+
+#ifdef POSIX
+#include <sys/poll.h>
+#endif 
 
 /// Takes a stream/string and returns a vector with one element for each field.
 /* 
@@ -105,14 +110,9 @@ inline std::string sanitize (const std::string &s){
 	return r;
 }
 
-/*
-inline std::string stringprintf(const std::string &s, ...)
-{
-	va_list ap;
-	va_start(ap, n_args);
-//	int max=va_arg(ap, ?);
-//	f
-	
-}*/
+#ifdef POSIX
+//Test a stream to see if it is open
+bool check_stream(std::istream *);
+#endif
 
 #endif

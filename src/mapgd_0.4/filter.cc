@@ -28,14 +28,14 @@ int filter(int argc, char *argv[])
 	env.optional_arg('i',"input", 	&in_file, 	&arg_setstr, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
 	env.optional_arg('o',"output", 	&out_file, 	&arg_setstr, 	"please provide an int.", "the name of an output file (default std::cout).");
 
-	env.optional_arg('c',"mincoverage", &min_coverage, 	&arg_setint, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
-	env.optional_arg('C',"maxcoverage", &max_coverage, 	&arg_setint,	"please provide an int.", "max coverage for an individual at a site for an individual to be used (defualt CNT_MAX).");
-	env.optional_arg('p',"minpoly", &min_polyll, 	&arg_setfloat_t, "please provide a float.", "minimum log likelihood of polymorphism (default 0.0).");
-	env.optional_arg('P',"maxpoly", &max_polyll, 	&arg_setfloat_t, "please provide a float.", "maximum log likelihood of polymorphism (default none).");
-	env.optional_arg('f',"minhwe", 	&min_hwell,	&arg_setfloat_t, "please provide a float.", "minimum log likelihood of Hardy-Weinberg disequilibrium (default 0.0).");
-	env.optional_arg('F',"maxhwe", 	&max_hwell,	&arg_setfloat_t, "please provide a float.", "maximum log likelihood of Hardy-Weinberg disequilibrium (defalt none).");
-	env.optional_arg('q',"minminor", &min_freq, 	&arg_setfloat_t, "please provide a float.", "minimum frequency of minor allele (default 0.0).");
-	env.optional_arg('Q',"maxminor", &max_freq, 	&arg_setfloat_t, "please provide a float.", "maximum frequency of minor allele (default 0.5).");
+	env.optional_arg('c',"min-cov", &min_coverage, 	&arg_setint, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
+	env.optional_arg('C',"max-cov", &max_coverage, 	&arg_setint,	"please provide an int.", "max coverage for an individual at a site for an individual to be used (defualt CNT_MAX).");
+	env.optional_arg('p',"min-poly", &min_polyll, 	&arg_setfloat_t, "please provide a float.", "minimum log likelihood of polymorphism (default 0.0).");
+	env.optional_arg('P',"max-poly", &max_polyll, 	&arg_setfloat_t, "please provide a float.", "maximum log likelihood of polymorphism (default none).");
+	env.optional_arg('f',"min-hwe", 	&min_hwell,	&arg_setfloat_t, "please provide a float.", "minimum log likelihood of Hardy-Weinberg disequilibrium (default 0.0).");
+	env.optional_arg('F',"max-hwe", 	&max_hwell,	&arg_setfloat_t, "please provide a float.", "maximum log likelihood of Hardy-Weinberg disequilibrium (defalt none).");
+	env.optional_arg('q',"min-maf", &min_freq, 	&arg_setfloat_t, "please provide a float.", "minimum frequency of minor allele (default 0.0).");
+	env.optional_arg('Q',"max-maf", &max_freq, 	&arg_setfloat_t, "please provide a float.", "maximum frequency of minor allele (default 0.5).");
 	env.optional_arg('g',"goodfit", &min_gof,	&arg_setfloat_t, "please provide a float.", "maximum -log (p-value) that a site is bad---not corrected for multiple test (defaults 2.0).");
 	env.optional_arg('N',"number", 	&max_pitch,	&arg_setint, 	"please provide an int.", "maximum number of individuals rejected by 'mapgd allele' (default 0.0).");
 	env.flag(	'b',"binary", 	&binary,	&flag_set, 	"please provide an int.", "output in binary mode (fast).");

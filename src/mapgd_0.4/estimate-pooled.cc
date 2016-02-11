@@ -117,8 +117,7 @@ int estimatePooled(int argc, char *argv[])
 		/* Calculate the ML estimates of the major / minor allele frequencies and the error rate. */
                 locus.sort();
 
-		site.id0=locus.id0;
-		site.id1=locus.id1;
+		site.set_abs_pos(locus.get_abs_pos() );
 
 		site.coverage=locus.getcoverage();
 

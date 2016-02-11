@@ -12,6 +12,7 @@
 #include "interface.h" 
 #include "map-file.h"
 #include "genotype.h"
+#include "genotype_pair.h"
 #include "relatedness_data.h"
 
 void inc_f(Relatedness &, const Genotype_pair &, const size_t &);

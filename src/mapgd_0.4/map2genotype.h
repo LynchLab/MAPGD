@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "interface.h"
-#include "genotype.h"
-#include "data_types/allele.h"
+#include "population.h"
+#include "allele.h"
 #include "map-file.h"
 #include "typedef.h"
 #include "quartet.h"

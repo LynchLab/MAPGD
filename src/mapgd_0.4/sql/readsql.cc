@@ -38,12 +38,20 @@ int writesql(int argc, char *argv[])
 	Base_file file;
 	file.open(std::ios::in);
 	Data *line=file.read_header();
+	File_index index;
 	while(file.is_open() ){
 		db_begin(db);
 		db_make_table(db, line);
-		while (file.table_is_open() ){
-			file.read(line);
-			db_insert(db, line);
+		if (file.indexed() ){
+			while (file.table_is_open() ){
+				file.read(line);
+				db_insert(db, line);
+			}
+		} else {
+			while (file.table_is_open() ){
+				file.read_indexed(index, line);
+				db_insert(db, line);
+			}
 		}
 		db_end(db);
 		line=file.read_header();

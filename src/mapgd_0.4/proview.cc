@@ -52,6 +52,7 @@ int proview(int argc, char *argv[])
 	if (parsargs(argc, argv, env)!=0) exit(0);
 
 	Indexed_file <Locus> out_file;			//the output profile
+
 	std::vector <Mpileup_file <Locus> *> in_files;	//the input profile(s)
 //	std::vector <Indexed_file <Locus> *> in_files;	//the input profile(s)
 
@@ -62,7 +63,7 @@ int proview(int argc, char *argv[])
 
         if (headerfile.size()!=0) {
                 std::fstream header;
-                header.open(headerfile.c_str(),  std::ios::in);
+                header.open(headerfile.c_str(),  ios::in);
                 index.from_sam_header( header );
                 out_file.set_index(index);
         }
@@ -72,6 +73,7 @@ int proview(int argc, char *argv[])
 		exit(0);
 	}
 
+
 	std::vector <std::string> sample_names;
 
 	size_t sample_numbers=0;
@@ -79,11 +81,11 @@ int proview(int argc, char *argv[])
 	if (namefile.size()!=0) {
 		Flat_file <Sample_name> in_names;
 		Sample_name name_file;
-		in_names.open(namefile.c_str(), std::ios::in);
+		in_names.open(namefile.c_str(), ios::in);
 		name_file=in_names.read_header();
 		while (in_names.read(name_file).table_is_open() ){
 			in_files.push_back(new Mpileup_file <Locus>);
-			in_files.back()->open_no_extention(name_file.mpileup_name.c_str(), std::ios::in);
+			in_files.back()->open_no_extention(name_file.mpileup_name.c_str(), ios::in);
 			in_locus.push_back( in_files.back()->read_header() );
 			if (name_file.sample_names.size()!=in_locus.back().get_sample_names().size() ){
 				std::cerr << __FILE__ << ":" << __LINE__ << ". error: Name file does not name the correct number of samples. Exiting.\n";
@@ -101,8 +103,8 @@ int proview(int argc, char *argv[])
 	} else	if (infiles.size()!=0){	
 		for (size_t x=0; x<infiles.size(); ++x) {
 			in_files.push_back(new Mpileup_file <Locus>);
-			if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), std::ios::in);
-			else in_files.back()->open(std::ios::in);
+			if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), ios::in);
+			else in_files.back()->open(ios::in);
 			in_locus.push_back( in_files.back()->read_header() );
 
 			for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
@@ -115,7 +117,7 @@ int proview(int argc, char *argv[])
 		}
 	} else 	{
 		in_files.push_back(new Mpileup_file <Locus>);
-		in_files.back()->open(std::ios::in);
+		in_files.back()->open(ios::in);
 		in_locus.push_back( in_files.back()->read_header() );
 		for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
 			sample_names.push_back(in_locus.back().get_sample_names()[y]);
@@ -131,13 +133,13 @@ int proview(int argc, char *argv[])
 		exit(0);
 	}
 
-	out_locus.set_sample_names(sample_names);
-        out_file.set_index(index);
 	if (outfile.size()==0) out_file.open( out_binary ? ios::out | ios::binary : ios::out );
 	else out_file.open(outfile.c_str(), out_binary ? ios::out | ios::binary : ios::out );
+	out_locus.set_sample_names(sample_names);
+	out_file.set_index(index);
 	out_file.write_header(out_locus);
 
-	out_locus.id0=0; out_locus.id1=1;	
+	out_locus.set_abs_pos(1);
 	bool print_all=true, go=true, read_site=false;
 
 	while(go){
@@ -164,7 +166,9 @@ int proview(int argc, char *argv[])
 					it++;
 					it_in++;
 				}
-				if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
+				if (in_files[x]->read(in_locus[x]).eof() ){
+					 in_files[x]->close();
+				}
 			} else {
 				while (it_in!=end_in){ 
 					*it=0;
@@ -177,12 +181,8 @@ int proview(int argc, char *argv[])
 			out_locus.unmaskall();
 			out_file.write(out_locus);
 		}
-		out_locus.set_id1(out_locus.get_id1()+1);
-		if (out_locus.get_id1()>index.get_size(out_locus.get_id0() ) ) {
-			out_locus.set_id0(out_locus.get_id0()+1);
-			out_locus.set_id1(1);
-		}
-		if (out_locus.get_id0()<index.get_sizes().size() ) go=true;
+		out_locus.set_abs_pos(out_locus.get_abs_pos()+1);
+		if (out_locus.get_abs_pos()<=index.get_reference_size() ) go=true;
 		else go=false;
 	
 	};

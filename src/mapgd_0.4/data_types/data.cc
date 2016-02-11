@@ -54,3 +54,12 @@ Registration::~Registration ()
 }
 
 
+id1_t Indexed_data::get_abs_pos (void) const
+{
+	return abs_pos_;
+}
+
+void Indexed_data::set_abs_pos (const id1_t &new_pos)
+{
+	abs_pos_=new_pos;
+}

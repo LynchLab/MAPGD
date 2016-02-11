@@ -6,8 +6,9 @@ command filter:
 
 #include "map2genotype.h"
 
-//This should probably be changed over to a likelihood model class
-genotype baysian_genotype(const int &major, const int &minor, const float_t &freq, const float_t &error, const quartet_t &quart)
+//This should probably be changed over to a likelihood model class and be a static method of genotype
+Genotype 
+baysian_genotype(const int &major, const int &minor, const float_t &freq, const float_t &error, const quartet_t &quart)
 {
 	float_t lMM, lMm, lmm, N;
 
@@ -20,21 +21,31 @@ genotype baysian_genotype(const int &major, const int &minor, const float_t &fre
 	float_t not_correct=log(error/3.);
 
 	lMM=M*ln_homozygous_correct+not_correct*(m+E);
-	lmm=(M+m)*ln_heterozygous_correct+not_correct*(E);
+	lmm=(M+m)*ln_heterozygous_correct+not_correct*(E)-log(1.01);
 	lmm=m*ln_homozygous_correct+not_correct*(M+E);
+
+/*	MM=M*lnc+notc*(m+E)
+	Mm=(M+m)*lnch+notc*(E)-math.log(1.01)
+	mm=m*lnc+notc*(M+E)*/
 
 	float_t norm=log(exp(lMM)+exp(lMm)+exp(lmm) );
 
-	lMM=-lMM+norm;
-	lMm=-lMm+norm;
-	lmm=-lmm+norm;
+	if (N>0){
+		lMM=norm-lMM;
+		lMm=norm-lMm;
+		lmm=norm-lmm;
+	} else {
+		lMM=log(1/3);
+		lMm=log(1/3);
+		lmm=log(1/3);
+	}
 
-	return genotype(lMM, lMm, lmm, N);	
+	return Genotype(lMM, lMm, lmm, N);	
 }
 
-void get_genotypes(const Allele &allele, const Locus &locus, population_genotypes &genotypes )
+void get_genotypes(const Allele &allele, const Locus &locus, Population &genotypes )
 {
-	std::vector <genotype>::iterator l_it=genotypes.likelihoods.begin();
+	std::vector <Genotype>::iterator l_it=genotypes.likelihoods.begin();
 	std::vector <quartet_t>::const_iterator q_it=locus.cbegin(), q_end=locus.cend();
 	while (q_it != q_end){
 		*l_it=baysian_genotype(allele.major, allele.minor, allele.freq, allele.error, *q_it);
@@ -44,8 +55,7 @@ void get_genotypes(const Allele &allele, const Locus &locus, population_genotype
 	genotypes.m=1.-allele.freq;
 	genotypes.major=allele.major;
 	genotypes.minor=allele.minor;
-	genotypes.id0=allele.id0;
-	genotypes.id1=allele.id1;
+	genotypes.set_abs_pos(allele.get_abs_pos() );
 } 
  
 
@@ -74,7 +84,7 @@ int map2genotype(int argc, char *argv[])
 	/* The files we will need*/
 	Indexed_file <Allele> map_in;
 	Indexed_file <Locus> pro_in;
-	Indexed_file <population_genotypes> gcf_out;
+	Indexed_file <Population> gcf_out;
 
 	/* Open input files based on file name*/
 	map_in.open(mapname.c_str(), std::ios::in);
@@ -87,7 +97,7 @@ int map2genotype(int argc, char *argv[])
 	 * writing to files */
 	Locus pro_record;
 	Allele map_record;
-	population_genotypes gcf_record;
+	Population gcf_record;
 
 	/* Read the headers of the files */
 	map_record=map_in.read_header();	

@@ -54,8 +54,7 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 								 //(when that constructor is writen). I'm a little concerned that
 								 //Allele has gotten too bloated, but . . . 
 	mle.N=0;
-	mle.id0=site.id0;
-	mle.id1=site.id1;
+	mle.set_abs_pos(site.get_abs_pos() );
 	mle.ref=site.ref.base;
 	mle.major=4;
 	mle.minor=4;
@@ -158,9 +157,11 @@ std::string mpi_recieve_string(int rank)
 	return result;
 }
 
-void do_estimate(Allele* buffer_mle, Locus& buffer_site, models& model, std::vector<int>& ind,
-	std::vector <float_t>& sum_gofs, std::vector <float_t>& gofs_read, count_t MIN, float_t EMLMIN, float_t MINGOF,
-	count_t MAXPITCH)
+void 
+do_estimate(Allele* buffer_mle, Locus& buffer_site, models& model, 
+	std::vector<int>& ind, std::vector <float_t>& sum_gofs, 
+	std::vector <float_t>& gofs_read, count_t MIN, float_t EMLMIN, 
+	float_t MINGOF, count_t MAXPITCH)
 {
 	std::vector <float_t> gofs(ind.size());
 	buffer_site.unmaskall();
@@ -203,7 +204,6 @@ int estimateInd(int argc, char *argv[])
 
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
 	//std::cerr "If you are using .... please cite ...."
-
 
 	env_t env;
 	env.setname("mapgd allele");
@@ -251,8 +251,12 @@ int estimateInd(int argc, char *argv[])
 		pro_in.open(std::fstream::in);			//Iff no filename has been set for infile, open profile from stdin.
 		locus_in=pro_in.read_header();
 	};
+	if (!pro_in.table_is_open() ) 
+	{
+		fprintf(stderr, "%s:%d. Error: cannot open file.\n",__FILE__, __LINE__);
+		exit(0);
+	}
 
-	//else out.open('w', CSV);				//Iff no filename has been set for outfile, pgdfile prints to stdout.
 
 	bool binary=false;
 
@@ -284,7 +288,7 @@ int estimateInd(int argc, char *argv[])
 	models model;
 
 	if (outfile.size()!=0) {
-		map_out.open(outfile.c_str(), std::fstream::out);
+		map_out.open(outfile.c_str(), std::ios::out);
 		if (!map_out.is_open() ) printUsage(env);
 	} else 	map_out.open(std::fstream::out);
 

@@ -70,12 +70,16 @@ Mapgd works a number of [commands](https://github.com/LynchLab/MAPGD#-commands-)
 For analyzing individual labeled data you will probably want a command like this:
 
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
-	| mapgd proview -H seq1.header | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 -o allelefrequency-filtered.map
+	| mapgd proview -H seq1.header | mapgd allele 
+	| mapgd filter -p 22 -E 0.01 -c 50 -C 200 -o allelefrequency-filtered.map
+The filter command will limit the output to sites where the log-likelihood ratio of polymorphism is greater than 22 (-p 22), the error rate is less than 0.01 (-E 0.01) and the population coverage is between 50 and 200. 
 
 And for analyzing pooled data you will probably want a command like this:
 
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | mapgd pool -a 22 -o allelefrequency-filtered.pol
+
+The -a option will limit the output to sites where the log-likelihood ratio of polymorphism is greater than 22, which is a relatively stringent criteria.
 
 In the case where the allele command is being used to estimated the seven genotypic correlation coefficients named pipes can be used for the I/O redirection.
 	
@@ -83,7 +87,14 @@ In the case where the allele command is being used to estimated the seven genoty
 	mkfifo pro;
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map;
-	mapgd genotype -p pro -m map | relatedness.py -o population.rel
+	mapgd genotype -p pro -m map | mapgd relatedness > population-rel.out
+
+If you are interested in the linkage disequilibrium between sites, you will need to use the SQL database to prepare the input file. Don't panic though, this is easier than it sounds. The command mapgd read takes an SQL query, and we want to print all pairs of sites that are separated by less than some distance (let say 20 bp):
+	
+	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	| mapgd proview -H seq1.header | mapgd pool -a 22 | mapgd write -d my_database.db;
+	mapgd read -q "f.pos IN (select r.pos from ALLELE r where distance(r.pos, f.pos)<=20 GROUP by f.pos" > linkage.in
+	cat linkage.in | mapgd linkage > linkage.out
 
 <h2> FAQ </h2>
 
@@ -163,12 +174,12 @@ Mapgd currently implements the following commands:
 	proview               Prints data in the '.pro' file quartet format
 	sam2idx               Reformats a sam header to an idx used by mapgd.
 	read                  Reads from an SQL database	
+	relatedness           Estimates the 7 IBD coefficients 
 	write                 Writes to an SQL database
 
 Working in previous version, but currently broken:
 
 	linkage               Estimates linkage disequilibrium between loci
-	relatedness           Estimates the 7 IBD coefficients 
 
 In the near future we hope to implement the commands:
 
@@ -292,15 +303,17 @@ The output of the pooled command. This stores best estimates of allele frequenci
 So, for example, in Sample\_1, the maximum likelihood estimate of the allele frequency is 0.6, but the log likelihood ratio test against against the fixed major allele is only 0.3, which is not significant. 
 <h3> The SQL database </h3>
 
-MAPGD includes the ability to direct all output to an SQL database. This decreases storage space by eliminating redundant information from files (such as the initial position label in all indexed files) as well as decreasing the number of separate files saved to disk. Currently the tables are:
+MAPGD includes the ability to direct all output to an SQL database. This decrease storage space by eliminating redundant information from files (such as the initial position label in all indexed files) as well as decreasing the number of separate files saved to disk. Currently the tables are:
 
-| TABLES 	|
-|:-------------:|
-| SCAFFOLDS	|
-| POSITIONS	|
-| SAMPLE	|
-| REGIONS	|
+| TABLES 	| Data 	 | Primary Keys |
+|:--------------|:-------|:------------:|
+| SCAFFOLDS	|	 |
+| POSITIONS	|	 |			|
+| SAMPLE	|	 |			|
+| REGIONS	|	 |Scaffold, Start, Stop	|
 | SAMPLE\_PAIRS	|
+
+In order to 
 
 <h2> Log-likelihood ratio statistics </h2>
 

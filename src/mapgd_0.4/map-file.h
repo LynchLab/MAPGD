@@ -18,13 +18,15 @@
 /* These should all be included from the objects using this code, but I'm not 
  * linking things correctly right now.
  */
-#include "data_types/allele.h"
+#include "allele.h"
+#include "linkage_data.h"
 #include "locus.h"
 #include "genotype.h"
 #include "sample_gof.h"
 #include "relatedness_data.h"
+#include "population.h"
 #include "pooled_data.h"
-#include "data_types/sample_name.h"
+#include "sample_name.h"
 
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 
@@ -39,12 +41,13 @@
  *
  */
 class Base_file {
+private:
 protected:
 
-	///! indicates whether the iostream opened succesfully
+	//! indicates whether the iostream opened succesfully
 	bool open_;		
 
-	///! indicates whether the header has been read succesfully
+	//! indicates whether the header has been read succesfully
 	/*   Since all tables begin with a header, 
 	 *   Base_file::read(Data *) will return NULL before until 
 	 *   read_header has been called and moved the iostream past 
@@ -52,75 +55,84 @@ protected:
 	 */
 	bool table_open_;	
 
-	///! indicates whether multiple tables are included in the file
+	//! indicates whether multiple tables are included in the file
 	bool concatenated_;	
 
-	///! The delimiter which seperates columns
+	//! The delimiter which seperates columns
 	char delim_column_;	
 
 	bool read_;		//!< File is open for reading.
 	bool write_;		//!< File is open for writing.
 	bool binary_;		//!< Binary mode flag. 
+	bool indexed_;		//!< Indexed mode flag.
 
 	std::istream *in_;	//!< All data is read from in.
 	std::ostream *out_;	//!< All data is writen is writen to out.
 
-	std::string filename_;	//!< The name of the file if opened.
 	std::fstream file_;	//!< The file to read data from.
 
+	//! stores information about the mode in which the file was opened.
 	std::ios::openmode openmode_;
+	std::string filename_;	//!< The name of the file if opened.
 public:
+	//! returns the open mode.
 	const std::fstream::openmode& openmode();
+	//! returns the filename.
 	const std::string& filename();		
-	const bool& concatenated();		
+	//! returns the concatenated flag.
+	const bool & concatenated();		
 
-	Base_file();				//!< default constructor
+	Base_file();		//!< default constructor
 
-	///! The function that opens a indexed_file (if file).
-	void open_no_extention(const char *, const std::ios_base::openmode &);
-	///! Opens a Base_file to the cin/cout.
-	void open(const std::ios_base::openmode&);
-	///! Opens a Base_file to an istream.
+	//! The function that opens a indexed_file (if file).
+	void open_no_extention(const char *, const std::ios::openmode &);
+	//! Opens a Base_file to the cin/cout.
+	void open(const std::ios::openmode&);
+	//! Opens a Base_file to an istream.
 	void open(std::iostream*, const std::ios_base::openmode &);
-	///! Opens a Base_file to an istream.
+	//! Opens a Base_file to an istream.
 	void open(std::istream*, const std::ios_base::openmode &);
-	///! Opens a Base_file to an istream.
+	//! Opens a Base_file to an istream.
 	void open(std::ostream*, const std::ios_base::openmode &);
 
-	///! returns the istream.
+	//! returns the istream.
 	std::istream* get_in(void);
-	///! returns the ostream.
+	//! returns the ostream.
 	std::ostream* get_out(void);	
 
-	///! Close iostreams, writes tail, etc.
+	//! Close iostreams, writes tail, etc.
 	void close(void); 
-	///! Ends table w/o closing iostreams.
+	//! Ends table w/o closing iostreams.
 	void close_table(void); 
-	///! Returns true iff Base_file is open.
+	//! Returns true iff Base_file is open.
 	bool is_open(void) const;
-	///! Returns true iff a table is open in Base_file.
+	//! Returns true iff a table is open in Base_file.
 	bool table_is_open(void) const;
+	//! Returns true iff a table is open in binary mode.
+	bool binary(void) const;
 
 	/** @defgroup BasicIO Basic IO operations
 	 * @{
   	 */
-	///! Reterns a pointer to a new instance of the derived data class.
+	//! Reterns a pointer to a new instance of the derived data class.
 	Data *read_header(void);	
 
-	///! Reads from the istream.
+	//! Reads from the istream.
 	/*   
 	 *
 	 */
 	Base_file& read(Data *);	
+	Base_file& read(File_index &, Data *);	
 
-	///! Writes to the ostream.	
+	//! Writes to the ostream.	
 	Base_file& write(Data *);	
+	Base_file& write(File_index &, Data *);	
 
-	///! sets in and out (for reading and writing) to possition pos.	
+	//! sets in and out (for reading and writing) to possition pos.	
 	void seek(const std::streampos &pos);		
-	///! sets in (for reading) to possition pos.
+	//! sets in (for reading) to possition pos.
 	void seekg(const std::streampos &pos);		
-	///! sets out (for writing) to possition pos.
+	//! sets out (for writing) to possition pos.
 	void seekp(const std::streampos &pos);		
 
 	void seek(std::streampos pos, std::ios_base::seekdir way);	//!< TODO		
@@ -134,9 +146,9 @@ public:
 	/**@defgroup Formating Formating options
 	 * @{
 	 */
-	///! Sets the delimiter that seperates columns. Only used in text mode.
+	//! Sets the delimiter that seperates columns. Only used in text mode.
 	void set_delim (const char&);				
-	///! Gest the delimiter that seperates columns. Only used in text mode.
+	//! Gest the delimiter that seperates columns. Only used in text mode.
 	const char & get_delim (const char&) const;		
 	/** @} */
 
@@ -165,20 +177,37 @@ protected :
 
 	using Base_file::out_;
 	using Base_file::in_;
-	using Base_file::binary_;
-	using Base_file::concatenated_;
-	using Base_file::table_open_;
 
-public :
+	using Base_file::open_;
+	using Base_file::table_open_;
+	using Base_file::read_;
+	using Base_file::write_;
+	using Base_file::delim_column_;
+	using Base_file::binary_;
+	using Base_file::filename_;
+	using Base_file::concatenated_;
+	using Base_file::indexed_;
+public:
+	Data_file<T>(){
+		open_=false;
+		table_open_=false;
+		read_=false;
+		write_=false;
+		delim_column_='\t';
+		binary_=false;
+		filename_="";
+		concatenated_=false;
+		indexed_=false;
+	};			//!< default constructor
 	using Base_file::open;
 
-	///! The function that opens a indexed_file (if file).
+	///! The function that opens a Data_file (if file).
 	void open(const char *, const std::ios_base::openmode &);
 
 	///! Doesn't check extnetion.
 	void open_extention(const char *, const std::ios_base::openmode &);
 
-	~Data_file(){};
+//	~Data_file(){};
 
 	///! Appends to a file.
 	/*!
@@ -228,7 +257,7 @@ private:
 
 public:
 	using Data_file<T>::open;
-	~Flat_file(){};
+//	~Flat_file(){};
 	void write_header(const T&);		//!< Writes a file header.
 	T read_header(void);			//!< Reads a file header.
 };
@@ -247,6 +276,7 @@ protected:
 	using Base_file::binary_;//(const std::ios_base::openmode &);
 	using Base_file::table_open_;
 	using Base_file::concatenated_;//(const std::ios_base::openmode &);
+	using Base_file::filename_;
 
 public:
 	using Data_file<T>::open;
@@ -278,7 +308,27 @@ private:
 	using Indexed_file<T>::out_;	//(const std::ios_base::openmode &);
 	using Indexed_file<T>::in_;	//(const std::ios_base::openmode &);
 
+	using Base_file::open_;
+/*	using Base_file::table_open_;
+	using Base_file::read_;
+	using Base_file::write_;
+	using Base_file::delim_column_;
+	using Base_file::binary_;
+	using Base_file::filename_;
+	using Base_file::concatenated_;
+	using Base_file::indexed_;*/
 public:
+/*	Mpileup_file(){
+		open_=false;
+		table_open_=false;
+		read_=false;
+		write_=false;
+		delim_column_='\t';
+		binary_=false;
+		filename_="";
+		concatenated_=false;
+		indexed_=false;
+	};			//!< default constructor*/
 	using Indexed_file<T>::open;
 	using Indexed_file<T>::set_index;	//!< Sets the File_index.		
 	using Indexed_file<T>::get_index;	//!< Returns the File_index.

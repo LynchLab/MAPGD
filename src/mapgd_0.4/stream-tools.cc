@@ -2,3 +2,12 @@
 
 #include "stream-tools.h"
 
+#ifdef POSIX
+
+bool 
+check_stream(std::istream *s)
+{
+	return false;
+	return true;
+}
+#endif

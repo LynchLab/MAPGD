@@ -10,6 +10,7 @@ Base_file::Base_file(void)
 	binary_=false;
 	filename_="";
 	concatenated_=false;
+	indexed_=false;
 }
 
 
@@ -19,7 +20,7 @@ template <class T>
 void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mode)
 {
 	std::vector<std::string> line;
-	filename_=filename;
+	filename_=std::string(filename);
 	if (open_){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
@@ -30,10 +31,10 @@ void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mod
 		if (line.back()!=T::file_name) {
 #ifdef DEBUG
 			std::cerr << line.back() << "!=" << T::file_name;
-			std::cerr << " opening in concatenated mode\n";
+			std::cerr << "opening " << filename_ << " in concatenated mode\n";
 #endif
 			concatenated_=true;
-			this->open_no_extention(filename, mode);
+			open_no_extention(filename, mode);
 			return;
 		} else {
 			concatenated_=false;
@@ -43,7 +44,7 @@ void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mod
 		concatenated_=false;
 	} 
 #ifdef DEBUG
-	std::cerr << " opening in split mode\n";
+	std::cerr << "opening "<< filename_ <<" in split mode\n";
 #endif 
 	open_extention(filename_.c_str(), mode);
 }
@@ -51,20 +52,26 @@ void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mod
 template <class T>
 void Data_file<T>::open_extention(const char* filename, const std::ios_base::openmode &mode)
 {
-	filename_=filename+T::file_name;
-	open_no_extention(filename_.c_str(), mode);
-	filename_=filename;
+	if (filename_.size()==0) filename_=std::string(filename);
+	std::string temp_filename=std::string(filename)+T::file_name;
+#ifdef DEBUG
+	std::cerr << "opening "<< temp_filename <<"\n";
+#endif 
+	open_no_extention(temp_filename.c_str(), mode);
 }
 
 void Base_file::open_no_extention(const char* filename, const std::ios_base::openmode &mode)
 {
-	filename_=filename;
+	if (filename_.size()==0) filename_=std::string(filename);
+#ifdef DEBUG
+	std::cerr << "opening "<< filename <<"\n";
+#endif 
 	if (open_){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
 	}
 	if ( mode & std::ios::in ){
-		file_.open( (filename_).c_str(), std::ios::in);
+		file_.open( filename, std::ios::in);
 		if (!file_.is_open() ){
 			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
 			std::cerr << "Error: " << strerror(errno) << std::endl;
@@ -74,7 +81,7 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 		read_=true;
 		openmode_=mode;
 	} else if ( mode & std::ios::out ){
-		file_.open( (filename_).c_str(), std::ios::out);
+		file_.open( filename, std::ios::out);
 		if (!file_.is_open() ){
 			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for writing." << std::endl;
 			std::cerr << "Error: " << strerror(errno) << std::endl;
@@ -97,6 +104,12 @@ void Base_file::open(const std::ios_base::openmode &mode)
 
 void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)
 {
+	#ifdef POSIX
+	if (check_stream(s) ){
+		std::cerr << __FILE__ << ":" << __LINE__ << ": iostream is empty. Exiting." << std::endl;
+		exit(0);
+	}
+	#endif
 	if ( open_ ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
@@ -114,11 +127,16 @@ void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)
 	if ( mode & std::ios::binary) binary_=true;
 	open_=true;
 	concatenated_=true;
-	std::cerr << "opened in concatenated mode\n";
 }
 
 void Base_file::open(std::istream *s, const std::ios_base::openmode &mode)
 {
+	#ifdef POSIX
+	if (check_stream(s) ){
+		std::cerr << __FILE__ << ":" << __LINE__ << ": iostream is empty. Exiting." << std::endl;
+		exit(0);
+	}
+	#endif
 	if ( open_ ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
@@ -240,12 +258,13 @@ void Base_file::close(void)
 template <class T>
 id1_t Indexed_file<T>::get_pos(const T &data) const 
 {
-	return file_index_.get_rowid(data.id0, data.id1);
+	return data.get_abs_pos();
 }
 
-Base_file& Base_file::read(Data *data)
+Base_file& Base_file::read(Data * data)
 {
 	if (!open_){
+		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open. The methods Base_file::open() and Base_file::read_header(Data *) should be called.";
 		return *this;
 	}
 	if (read_){
@@ -260,7 +279,8 @@ Base_file& Base_file::read(Data *data)
 					std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
 					exit(0);
 				}
-				this->close();
+				this->close_table();
+				return *this;
 			}
 			*in_ >> *data;
 		}
@@ -311,7 +331,9 @@ template <class T>
 void Indexed_file<T>::read_text(T &data)
 {
 	//TODO Check for table_open instead?
+	id1_t pos;
 	std::string scaffold;
+	if (!table_open_) return;
 	if (in_->peek()=='@') {
 		std::string line;
 		*in_ >> line;
@@ -327,13 +349,9 @@ void Indexed_file<T>::read_text(T &data)
 		}
 	} else {
 		*in_ >> scaffold;
-		if (scaffold.size()==0) in_->setstate(std::ios::failbit);
-		if (!(in_->good() ) ) {
-			this->close();
-		} else {
-			data.id0=file_index_.get_id0(scaffold);
-			*in_ >> data;
-		}
+		*in_ >> pos;
+		*in_ >> data;
+		data.set_abs_pos(file_index_.get_abs_pos(scaffold, pos) );
 	}
 }
 
@@ -342,11 +360,13 @@ void Mpileup_file<T>::read_text(T &data)
 {
 	//TODO Check for table_open instead?
 	std::string scaffold;
+	id1_t pos;
 	*in_ >> scaffold;
+	*in_ >> pos;
 	if (!in_->good() ) {
 		this->close();
 	} else {
-		data.id0=file_index_.get_id0(scaffold);
+		data.set_abs_pos(file_index_.get_abs_pos(scaffold, pos) );
 		mpileup(*in_, data);
 		if (in_->eof() ) this->close();
 	}
@@ -367,7 +387,7 @@ void Flat_file<T>::write_text(const T &data)
 template <class T>
 void Indexed_file<T>::write_text(const T &data)
 {
-	*out_ << file_index_.get_string(data.id0) << '\t' << data << std::endl;
+	*out_ << file_index_.get_string(file_index_.get_id0(data.get_abs_pos()) ) << '\t' << file_index_.get_id1(data.get_abs_pos() ) << '\t' << data << std::endl;
 }
 
 
@@ -416,13 +436,14 @@ Data *Base_file::read_header(void)
 	std::vector <std::string> columns, pair;
 	std::getline(*in_, line);
 	columns=split(line, '\t');
-	if (columns.size()>0){
+	if (columns.size()>2){
 		pair=split(columns[0], ':');
 		if (pair.size()==2) {
 			if (pair[0]!="@NAME"){
 				std::cerr << __FILE__ << ":" << __LINE__ << ": file cannot open properly. Exiting.\n"; 
 				exit(0);
 			}
+			binary_=(columns[2]!="FORMAT:TEXT");
 			std::getline(*in_, line);
 			columns=split(line, '\t');
 			Data *data=Data::new_from_str(pair[1], columns);
@@ -433,6 +454,11 @@ Data *Base_file::read_header(void)
 			exit(0);
 		}
 	}
+	close();
+	//This seems dangerous to me. The std::in doesn't seem to be reporting that it is eof when it is eof, thus, I am infering that it is 
+	//eof from its failure to return a line. I really may need to go over to poll/status  
+	if (line=="") return NULL;
+	std::cerr << line << std::endl;
 	std::cerr << __FILE__ << ":" << __LINE__ << ": file cannot open properly. Exiting.\n"; 
 	exit(0);
 }
@@ -444,8 +470,9 @@ T Flat_file<T>::read_header(void)
 	std::vector <std::string> columns;
 	std::getline(*in_, line);
 	columns=split(line, '\t');
-	if (columns.size()>0){
+	if (columns.size()>2){
 		if (columns[0]=="@NAME:"+T::table_name ){
+			binary_=(columns[2]!="FORMAT:TEXT");
 			std::getline(*in_, line);
 			columns=split(line, '\t');
 			T data(columns);
@@ -454,8 +481,9 @@ T Flat_file<T>::read_header(void)
 		}
 		std::cerr << __FILE__ << ":" << __LINE__ << " attempted to open incorrect header.\n"; 
 	}
+	table_open_=false;
 	std::cerr << __FILE__ << ":" << __LINE__ << " could not initilize " << typeid(T).name() <<"\n";
-	T data(columns);
+	T data;
 	return data;
 }
 
@@ -472,8 +500,9 @@ T Indexed_file<T>::read_header(void)
 	std::vector <std::string> columns;
 	std::getline(*in_, line);
 	columns=split(line, '\t');
-	if (columns.size()>0){
+	if (columns.size()>2){
 		if (columns[0]=="@NAME:"+T::table_name){
+			binary_=(columns[2]!="FORMAT:TEXT");
 			std::getline(*in_, line);
 			columns=split(line, '\t');
 			T data(columns);
@@ -485,7 +514,7 @@ T Indexed_file<T>::read_header(void)
 		std::cerr << T::table_name << std::endl;
 	}
 	std::cerr << __FILE__ << ":" << __LINE__ << " could not initilize " << typeid(T).name() << "\n";
-	T data(columns);
+	T data;
 	table_open_=false;
 	return data;
 }
@@ -498,17 +527,25 @@ T Mpileup_file<T>::read_header(void)
 	std::getline(*in_, line);
 	columns=split(line, '\t');
 	T data( (columns.size()-3.)/3. );	//TODO FIX IMEDIATELY!! (TOMORROW).
-//	T data( (columns.size()-2.)/3. );
+	in_->putback('\n');
+	for(std::string::iterator c=line.end(); (c--)!=line.begin();) {
+		in_->putback(*c);
+	}
 	return data;
 }
 
 template <class T>
-void Indexed_file<T>::write_header(const T &data){
+void Indexed_file<T>::write_header(const T &data)
+{
 	if (!write_) {
 		std::cerr << __FILE__ << ":" << __LINE__ << " file not open for writing. Exiting \n";
 		exit(0);
 	}
 	Flat_file <File_index> index;
+#ifdef DEBUG
+	std::cerr << filename_ << std::endl;
+	std::cerr << this->filename() << std::endl;
+#endif
 	index.open_from(*this);
 	if (!index.is_open() ) {
 		std::cerr << __FILE__ << ":" << __LINE__ << " cannot  open for writing. Exiting \n";
@@ -525,16 +562,19 @@ void Indexed_file<T>::write_header(const T &data){
 }
 
 template <class T>
-void Indexed_file<T>::set_index(const File_index &index){
+void Indexed_file<T>::set_index(const File_index &index)
+{
 	file_index_=index;
 }
 
 template <class T>
-File_index Indexed_file<T>::get_index(void) const{
+File_index Indexed_file<T>::get_index(void) const
+{
 	return file_index_;
 }
 
-bool Base_file::eof(void){
+bool Base_file::eof(void)
+{
 	if (open_){
 		if (read_) return in_->eof();
 		else if (write_) return out_->eof();
@@ -543,9 +583,14 @@ bool Base_file::eof(void){
 	else return true;
 }
 
+bool Base_file::binary(void) const
+{
+	return binary_;
+}
+
 
 template class Data_file <Allele>;
-template class Data_file <population_genotypes>;
+template class Data_file <Population>;
 template class Data_file <Locus>;
 template class Data_file <Pooled_data>;
 template class Data_file <Sample_gof>;
@@ -554,12 +599,15 @@ template class Data_file <Relatedness>;
 template class Data_file <Sample_name>;
 
 template class Indexed_file <Allele>;
-template class Indexed_file <population_genotypes>;
+template class Indexed_file <Population>;
 template class Indexed_file <Locus>;
 template class Indexed_file <Pooled_data>;
 
+template class Flat_file <Linkage>;
+template class Data_file <Linkage>;
+
 template class Flat_file <Allele>;
-template class Flat_file <population_genotypes>;
+template class Flat_file <Population>;
 template class Flat_file <Locus>;
 template class Flat_file <Pooled_data>;
 template class Flat_file <Sample_gof>;

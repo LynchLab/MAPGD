@@ -16,7 +16,7 @@
 ///	A class to store population specific information. May be moved over to population.
 /** This is likely to become some form of container to handel moving data into and out of rows of map file.
  */
-class Allele : public Data { 
+class Allele : public Indexed_data { 
 private:
 	void read(std::istream& str);
 	///! the write function must be ? by the child class.
@@ -27,9 +27,6 @@ private:
 	};
 public:
 	char delim;		//!< the delimiter used when reading/writing the class in text mode.	
-
-	id0_t id0;		//!< the scaffold identifer of the allele.
-	id1_t id1;		//!< the bp location of the allele.
 
 	count_t excluded;	//!< A count of the number of samples that were excluded due to filtering criteria.
 	bool pooled;		//!< Infered from pooled or labeled sequencing?

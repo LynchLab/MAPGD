@@ -14,7 +14,7 @@ int sam2idx(int argc, char *argv[])
 	std::string headerfile="";
 
 	env_t env;
-	env.setname("mapgd genotype");
+	env.setname("mapgd sam2idx");
 	env.setver(VERSION);
 	env.setauthor("Matthew Ackerman");
 	env.setdescription("convert a sam header file into an idx file.");

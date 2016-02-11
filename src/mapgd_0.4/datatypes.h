@@ -14,5 +14,6 @@
 #include "pooled_data.h"	//FORMALLY Allele.
 #include "data_types/sample_name.h"	//FORMALLY Allele.
 #include "genotype.h"
+#include "data_types/linkage_data.h"
 
 #endif 

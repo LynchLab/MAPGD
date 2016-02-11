@@ -5,8 +5,7 @@ const std::string Allele::table_name="GENOME";//!< The destination table in the 
 const Registration Allele::registered=Registration(Allele::table_name, Allele::create);
 
 Allele::Allele (void){
-	id0=0;
-	id1=0;
+	abs_pos_=0;
 	ref=4;
 	major=4;
 	minor=4;
@@ -36,7 +35,6 @@ void Allele::read(std::istream& in) {
 	std::getline(in, line);
 	std::stringstream line_stream(line);
 	char c;
-	line_stream >> id1;
 	line_stream >> c; ref=Base::ctob(c);
 	line_stream >> c; major=Base::ctob(c);
 	line_stream >> c; minor=Base::ctob(c);
@@ -60,7 +58,6 @@ void Allele::read(std::istream& in) {
 
 void Allele::write (std::ostream& out) const {
 	if (coverage>0){
-		out << id1 <<  delim;
 		out << Base::btoc(ref) <<  delim;
 		out << Base::btoc(major) <<  delim;
 		out << Base::btoc(minor) <<  delim;
@@ -89,7 +86,6 @@ void Allele::write (std::ostream& out) const {
 		out << std::fixed << std::setprecision(4);
 		out << ll;
 	} else {
-		out << id1 <<  delim;
 		out << Base::btoc(ref) <<  delim;
 		out << Base::btoc(major) <<  delim;
 		out << Base::btoc(minor) <<  delim;
@@ -122,8 +118,7 @@ Allele & Allele::operator=(const Allele & x) {
 	if (this != &x) { 
 		pooled=x.pooled;
 		delim=x.delim;
-		id0=x.id0;
-		id1=x.id1;
+		abs_pos_=x.abs_pos_;
 		ref=x.ref;
 		excluded=x.excluded;
 		freq=x.freq;
@@ -159,19 +154,18 @@ size_t Allele::size() const{
 
 //We can just squeak Paris Japonica in with 38 bits.
 const std::string Allele::sql_header(void) const {
-        return "(SCAFNUM INTEGER, POS INTEGER, REF INTEGER, MAJOR INTEGER, MINOR INTEGER, COVERAG INTEGER, MM_FREQ REAL, Mm_FREQ REAL, POLY_LR REAL, HWE_LR REAL, GOF REAL, EF_CHRM REAL, IND_INC INTEGER, IND_CUT INTEGER, BEST_LL REAL)";
+        return "(POS int NOT NULL PRIMARY KEY, REF INTEGER, MAJOR INTEGER, MINOR INTEGER, COVERAG INTEGER, MM_FREQ REAL, Mm_FREQ REAL, POLY_LR REAL, HWE_LR REAL, GOF REAL, EF_CHRM REAL, IND_INC INTEGER, IND_CUT INTEGER, BEST_LL REAL)";
 }
 
 const std::string Allele::sql_column_names(void) const {
-        return "(SCAFNUM, POS, REF, MAJOR, MINOR, COVERAG, MM_FREQ, Mm_FREQ, POLY_LR, HWE_LR, GOF, EF_CHRM, IND_INC, IND_CUT, BEST_LL)";
+        return "(POS, REF, MAJOR, MINOR, COVERAG, MM_FREQ, Mm_FREQ, POLY_LR, HWE_LR, GOF, EF_CHRM, IND_INC, IND_CUT, BEST_LL)";
 }
 
 const std::string Allele::sql_values(void) const {
         char return_buffer[SQL_LINE_SIZE]={0};
         char *write_ptr=return_buffer;
-	snprintf(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %d, %f, %f, %f, %f, %f, %f, %d, %d, %f)",
-	id0,
-	id1,
+	snprintf(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %Lf, %Lf, %Lf, %Lf, %Lf, %Lf, %d, %d, %Lf)",
+	abs_pos_,
 	ref,
 	major,
 	minor,

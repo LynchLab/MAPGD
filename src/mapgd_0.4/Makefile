@@ -2,13 +2,15 @@
 #c90 c89 c99 c9x c11 c1x gnu90 gnu89 gnu99 gnu9x gnu11 gnu1x c++98 c++03 gnu++98 gnu++03 c++11 c++0x gnu++11 gnu++0x c++1y gnu++1y
 #Right now I need c++11 to support constructor delegation, which I like a lot.
 
-MODE=-O3
+#MODE=-O3
 STD=-std=c++11
 DESTDIR=/usr/local/bin
 LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 VERSION=-D VERSION=\"0.4.1\"
-CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fopenmp -fno-exceptions -pedantic
+POSIX=-D POSIX
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./sql
+CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fopenmp -fno-exceptions -pedantic $(INCLUDE)
 LDLIBS=-l sqlite3 -lgsl -lgslcblas -lm
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
@@ -26,34 +28,37 @@ CXX=g++
 
 COMMANDS=mapgd.o \
 	estimate-individual.o \
-	genotype.o \
 	estimate-pooled.o \
 	sam2idx.o \
 	proview.o \
 	interface.o \
 	map2genotype.o \
 	relatedness.o \
-	sql/writesql.o 
-	
+	sql/writesql.o 	
 
-OBJS=data_types/allele.o \
-	base.o \
+OBJS=	base.o \
 	binomial.o \
+	data_types/allele.o \
 	data_types/data.o \
-	file-index.o \
+	data_types/file-index.o \
+	data_types/linkage_data.o \
+	data_types/pooled_data.o \
+	data_types/population.o \
+	data_types/sample_gof.o \
+	data_types/relatedness_data.o \
+	data_types/locus.o \
+	data_types/sample_name.o \
 	filter.o \
 	individual-likelihood.o \
 	lnmultinomial.o \
-	locus.o \
 	newton-method-theta.o \
 	map-file.o \
 	models.o \
-	pooled_data.o \
 	pooled-likelihood.o \
-	quartet.o \
-	relatedness_data.o \
-	sample_gof.o \
-	data_types/sample_name.o \
+	PopLD.o \
+	raw/genotype.o \
+	raw/quartet.o \
+	raw/genotype_pair.o \
 	stream-tools.o \
 	sql/db_api.o 
 
@@ -69,10 +74,10 @@ all: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
-noomp: CXXFLAGS:=$(NOOMP) $(VERSION) $(STD) $(MODE) $(WARNINGS)
+noomp: CXXFLAGS:=$(CXXFLAGS) $(NOOMP)
 noomp: all
 
-debug: CXXFLAGS:=$(DEBUG) $(VERSION) $(STD) $(MODE) $(WARNINGS)
+debug: CXXFLAGS:=$(CXXFLAGS) $(DEBUG)
 debug: all
 
 install: all

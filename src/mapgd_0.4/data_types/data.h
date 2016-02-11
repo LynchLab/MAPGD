@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include "../typedef.h"
 
 //! A class which can be written as flat text file or into an SQL database.
 /*! Data can be written in a plain text representation (the overloaded 
@@ -39,6 +40,16 @@ public:
 	//!< The size of the class in bytes.
         virtual size_t size(void) const {return 0;};        	
 	static Data * new_from_str (const std::string &, const std::vector<std::string> &);
+};
+
+class Indexed_data : public virtual Data {
+protected:
+	id1_t abs_pos_;
+public:
+	Indexed_data(){};
+	Indexed_data(std::vector <std::string> &){};
+	id1_t get_abs_pos (void) const;
+	void set_abs_pos (const id1_t &);
 };
 
 //! A static initilizer for every translation unit.
