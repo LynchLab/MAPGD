@@ -24,10 +24,11 @@ idx="spitze.idx"
 idx_pro="spitze.txt"
 pro_binary="spitze.bin"
 name="name-file.txt"
+unicode="name-file-unicode.txt"
 
 formats=($mpileup)
 
-pop=96			#number of individuals in population
+pop=8			#number of individuals in population
 idx_header=3		#Size of pro header
 pro_header=3		#Size of pro header
 vcf_header=3		#Size of vcf header
@@ -157,4 +158,35 @@ $mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd fi
 $mapgd genotype -p pro -m map > $a.out
 rm -f map
 rm -f pro
+testa
+
+a="relatedness"
+msg="relatedness"
+echo -n "cat genotype.out | $mapgd $a > $a.out 									"
+mkfifo map
+mkfifo pro
+size=$(($pop*($pop-1)/2+3))
+$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd filter > map &
+$mapgd genotype -p pro -m map | $mapgd relatedness > $a.out
+rm -f map
+rm -f pro
+testa
+
+a="unicode"
+msg="unicode"
+size=$(($pop*($pop-1)/2+3))
+$mapgd proview -H $header -n $unicode > temp_pro.out
+$mapgd allele -i temp_pro.out -M 1 > temp_allele.out
+$mapgd genotype -p temp_pro.out -m temp_allele.out > temp_genotype.out
+$mapgd relatedness -i temp_genotype.out > $a.out
+quit
+#testa
+#rm -f temp*
+
+a="write"
+msg="write/read"
+rm -f test.db
+echo "cat spitze.idx | $mapgd write -d test.db 									"
+echo -n "$mapgd read -d test.db -t INDEX										"
+rm -f test.db
 testa

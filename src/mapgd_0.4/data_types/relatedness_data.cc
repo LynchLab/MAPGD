@@ -76,7 +76,7 @@ Relatedness::write (std::ostream& out) const
 }
 
 std::string Relatedness::header(void) const {
-	return "@SAMPLE_X\tSAMPLE_Y\tf_X\tf_X_ll\tf_Y\tf_Y_ll\ttheta\ttheta_ll\tgamma_XY\tgamma_XY_ll\tgamma_YX\tgamma_YX_ll\tdelta\tdelta_ll\tDelta\tDelta_ll\tnull_ll\tfit\n";
+	return "@SAMPLE_X\tSAMPLE_Y\tf_X\tf_X_ll\tf_Y\tf_Y_ll\tθ_XY\tθ_ll\tγ_XY\tγ_XY_ll\tγ_YX\tγ_YX_ll\tδ\tδ_ll\tΔ\tΔ_ll\tnull_ll\tfit\n";
 }
 
 size_t Relatedness::size(void) const {

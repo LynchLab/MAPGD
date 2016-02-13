@@ -34,10 +34,10 @@ int proview(int argc, char *argv[])
 	std::string headerfile="";
 
 	env_t env;
-	env.setname("mapgd proview");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman and Bernhard Haubold");
-	env.setdescription("prints data in the '.pro' file quartet format");
+	env.set_name("mapgd proview");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman and Bernhard Haubold");
+	env.set_description("prints data in the '.pro' file quartet format");
 	env.required_arg('H',"header",	&headerfile,	&arg_setstr, 	"an error occured", "sets the index file (required to use mpileup)");
 	env.optional_arg('m',"minimum",	 &args.min, 	&arg_setint, 	"an error occured", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
 	env.optional_arg('n',"names",	&namefile, 	&arg_setstr, 	"an error occured", "a tab delimited file with sample name 'tab' file name pairs.");

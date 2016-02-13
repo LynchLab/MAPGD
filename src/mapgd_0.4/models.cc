@@ -277,6 +277,8 @@ float_t models::goodness_of_fit (Locus &site, const Allele &allele, std::vector 
 				clone_mingof=(*gof);
 				maxgof_ptr=&(*it);
 			};
+		} else {
+			(*gof)=0;
 		}
 		++it;
 		++gof;

@@ -1,15 +1,16 @@
 #ifndef _FILE_INDEX_H_
 #define _FILE_INDEX_H_
 
-
-//these need to be moved ...
-
 #include <iostream>
 #include <map>
 #include <vector>
 #include <stdio.h>	
-#include <cstring>	//memcpy
+#include <cstring>
 #include <string>
+
+#ifndef NOSQLITE
+#include "sqlite3.h"
+#endif 
 
 #include "stream-tools.h"
 #include "typedef.h"
@@ -135,6 +136,17 @@ public:
 	void write (std::ostream&) const;	
 	//! use the >> operator to read File_index.
 	void read (std::istream&);	
+
+	const std::string get_file_name() const {return File_index::file_name;};
+        const std::string get_table_name() const {return File_index::table_name;};
+	//! returns the string needed to create an SQL table.
+	const std::string sql_header(void) const;		
+	//! returns the column names (SQL).
+	const std::string sql_column_names(void) const;		
+	//! returns the column values (SQL).
+	const std::string sql_values(void) const;
+	//! binds data to sqlite3_stmt.
+	void sql_read(std::istream &) override;
 };
 
 #endif 

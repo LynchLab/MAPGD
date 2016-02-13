@@ -5,21 +5,18 @@
 //Moved to inmemory
 std::map <Genotype_pair_tuple, size_t> hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)
 {
-	std::cerr << "about to reading genotypes\n";
 	std::stringstream fb_copy(file_buffer.str() );
 	
 	Indexed_file <Population> gcf_in; 	// Open the file with genotypic probabilities.
 	gcf_in.open(&fb_copy, std::ios::in );
 	Population genotypes=gcf_in.read_header();
 	std::map <Genotype_pair_tuple, size_t> counts;
-	std::cerr << "reading genotypes\n";
 	while(gcf_in.table_is_open() ){
 		gcf_in.read(genotypes);
 		if (genotypes.likelihoods[x].N>1 && genotypes.likelihoods[y].N>1 ){
 			counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 2)]+=1;
 		}
 	}
-	std::cerr << "done genotypes\n";
 	return counts;
 }
 
@@ -327,16 +324,16 @@ int estimateRel(int argc, char *argv[])
 	std::string gcf_name="", rel_name="";
 
 	env_t env;
-	env.setname("mapgd relatedness");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman");
-	env.setdescription("Uses a maximum likelihood approach to estimate pairwise relatedness.");
+	env.set_name("mapgd relatedness");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman");
+	env.set_description("Uses a maximum likelihood approach to estimate pairwise relatedness.");
 
 	env.optional_arg('i', "input", 	&gcf_name,	&arg_setstr, 	"an error occured while displaying the help message.", "input file name (default stdout)");
 	env.optional_arg('o', "output", &rel_name,	&arg_setstr, 	"an error occured while displaying the help message.", "output file name (default stdin)");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 
-	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 
 	Indexed_file <Population> gcf_in; 	// Open the file with genotypic probabilities.
 	Indexed_file <Population> gcf_mem; 	// the in memory gcf_file.
@@ -359,8 +356,6 @@ int estimateRel(int argc, char *argv[])
 	
 	genotype=gcf_in.read_header();			//This gives us the sample names.
 
-	std::cerr << "read from header\n";
-
 	gcf_mem.open(&file_buffer, std::ios::out );
 	gcf_mem.set_index(gcf_in.get_index() );
 	gcf_mem.write_header(genotype);
@@ -378,7 +373,7 @@ int estimateRel(int argc, char *argv[])
 	size_t sample_size=genotype.get_sample_names().size();
 
 	//TODO Fixit
-	for (size_t x=1; x<sample_size; ++x){
+	for (size_t x=0; x<sample_size; ++x){
 		for (size_t y=x+1; y<sample_size; ++y){
 			relatedness.set_X_name(genotype.get_sample_names()[x]);
 			relatedness.set_Y_name(genotype.get_sample_names()[y]);
@@ -389,6 +384,6 @@ int estimateRel(int argc, char *argv[])
 			rel_out.write(relatedness);
 		}
 	}
-
+	rel_out.close();
 	return 0;					//Since everything worked, return 0!.
 }

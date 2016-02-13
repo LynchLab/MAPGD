@@ -43,10 +43,10 @@ int estimatePooled(int argc, char *argv[])
 	/* sets up the help messages and options */
 
 	env_t env;
-	env.setname("mapgd ep");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman and Michael Lynch");
-	env.setdescription("Uses a maximum likelihood approach to estimates allele frequencies in pooled population genomic data");
+	env.set_name("mapgd ep");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman and Michael Lynch");
+	env.set_description("Uses a maximum likelihood approach to estimates allele frequencies in pooled population genomic data");
 
 	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file", "sets the input file for the program (default 'datain.txt')");
 	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file", "sets the output file for the program (default 'dataout.txt')");
@@ -59,7 +59,7 @@ int estimatePooled(int argc, char *argv[])
 	env.flag(	'q',"quite", 	&quite,		&flag_set, 	"an error occured", "prints less information while the command is running");
 
 	/* gets any command locus options */
-	if ( parsargs(argc, argv, env) ) printUsage(env);
+	if ( parsargs(argc, argv, env) ) print_usage(env);
 	/* Point to the input and output files. */
 
 

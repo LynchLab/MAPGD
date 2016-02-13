@@ -9,8 +9,8 @@
 #include <sstream>
 #include <vector>
 
-#include "../typedef.h"
-#include "../base.h"
+#include "typedef.h"
+#include "base.h"
 #include "data.h"
 
 ///	A class to store population specific information. May be moved over to population.
@@ -75,7 +75,7 @@ public:
 
 	const std::string get_file_name(void) const;				//!< The dafualt extention for files.
 	const std::string get_table_name(void) const;				//!< The dafualt extention for files.
-	const std::string sql_header() const;
+	const std::string sql_header(void) const;
 	const std::string sql_column_names(void) const;
 	const std::string sql_values(void) const;
 	 // @}

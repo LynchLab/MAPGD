@@ -1,6 +1,8 @@
 #include "data.h"
 
-//! A 
+const std::string Data::file_name=".txt";//!< The destination table in the Db.
+const std::string Data::table_name="NONE";//!< The destination table in the Db.
+
 static int nifty_counter=0; 
 
 std::map <std::string, Data*(*)(const std::vector <std::string> &) > m_data_ctor;
@@ -21,6 +23,14 @@ Registry_initalizer::~Registry_initalizer()
 Data* Data::new_from_str(const std::string &Name, const std::vector<std::string> &columns)
 {
 	return m_data_ctor[Name](columns);
+}
+	
+void 
+Data::sql_read(std::istream &in)
+{
+	std::string line;
+	std::getline(in, line);
+	std::cerr << line << std::endl;
 }
 
 std::istream& operator >> (std::istream& in, Data &data)

@@ -1,0 +1,4 @@
+@NAME:FILES	VERSION:0.4	FORMAT:TEXT
+@FILE_NAME	SAMPLE_NAME	...
+spitze-mpileup.txt	גדול	偉大	素晴らしいです	great	μεγάλος	skvelý	большой	큰
+@END_TABLE

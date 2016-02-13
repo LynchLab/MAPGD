@@ -5,7 +5,8 @@
 #include <string>
 #include <map>
 #include <iostream>
-#include "../typedef.h"
+
+#include "typedef.h"
 
 //! A class which can be written as flat text file or into an SQL database.
 /*! Data can be written in a plain text representation (the overloaded 
@@ -19,6 +20,9 @@
  *
  */
 class Data {
+private:
+	static const std::string file_name;
+	static const std::string table_name;
 protected:
 	///! the read function must be ? by the child class.
 	virtual void read(std::istream& str)  = 0;
@@ -27,12 +31,15 @@ protected:
 public:
 	Data(){};
 	Data(std::vector <std::string> &){};
-//      virtual const std::string header(void) const {return "";};
-	virtual const std::string get_file_name() const {return "";};
-        virtual const std::string get_table_name() const{return "";};
+	virtual const std::string get_file_name() const {return this->file_name;};
+        virtual const std::string get_table_name() const {return this->table_name;};
+
         virtual const std::string sql_header(void) const {return "";};
         virtual const std::string sql_column_names(void) const {return "";};
 	virtual const std::string sql_values(void) const {return "";};
+
+	virtual void sql_read(std::istream &);
+
 	///! use the << operator to write Data in text mode.
 	friend std::ostream& operator << (std::ostream&, const Data &);	
 	///! use the >> operator to read Data in text mode.

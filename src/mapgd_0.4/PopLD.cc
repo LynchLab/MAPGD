@@ -369,10 +369,10 @@ int PopLD(int argc, char *argv[])
 
 
 	env_t env;
-	env.setname("mapgd ld");
-	env.setver(VERSION);
-	env.setauthor("Takahiro Maruki");
-	env.setdescription("Uses a maximum likelihood approach to estimate gametic phase disequalibrium from population data.");
+	env.set_name("mapgd ld");
+	env.set_version(VERSION);
+	env.set_author("Takahiro Maruki");
+	env.set_author("Uses a maximum likelihood approach to estimate gametic phase disequalibrium from population data.");
 
 	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdout).");
 	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
@@ -392,7 +392,7 @@ int PopLD(int argc, char *argv[])
 	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
 	env.flag(	'q', "quite", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
 
-	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 	*/
 	
 	// Default values of the options

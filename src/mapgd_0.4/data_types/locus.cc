@@ -176,18 +176,6 @@ Locus::swap(count_t x, count_t y)
 	std::swap(sorted_[x], sorted_[y]);
 }
 
-id1_t
-Locus::get_abs_pos(void) const
-{
-	return abs_pos_;
-}
-
-void
-Locus::set_abs_pos(const id1_t &pos)
-{
-	abs_pos_=pos;
-}
-
 count_t 
 Locus::getcount(count_t s, count_t c) const
 {
@@ -271,22 +259,6 @@ Locus::resize(const size_t &c)
 	sample.resize(c);
 }
 
-/// gets extraid c. Which I believe we have defined as char.
-count_t 
-Locus::get_extraid(const size_t &c) const 
-{
-	if (extraid.size()>c) return extraid[c];
-	else return 5;
-}
-
-/// sets extraid c to v.
-void 
-Locus::set_extraid(const count_t &v, const size_t &c)
-{
-	while(extraid.size()<=c) extraid.push_back(0);
-	extraid[c]=v;
-}
-
 void
 Locus::mask_low_cov( const count_t &dp )
 {
@@ -319,12 +291,12 @@ Locus::read (std::istream &in)
 	for (std::vector <quartet_t>::iterator s=sample.begin(); s<sample.end(); s++) {
 		line_stream >> *s;
 	}
-
 	//We do not save mask states, so all data read in is unmasked
 	unmaskall();				
 }
 
-std::istream& mpileup (std::istream& in, Locus& x)
+std::istream &
+mpileup (std::istream& in, Locus& x)
 {
 	std::string line;
 	std::vector <std::string> column;
@@ -343,7 +315,8 @@ std::istream& mpileup (std::istream& in, Locus& x)
 	return in;
 }
 	
-std::string Locus::header(void) const
+std::string 
+Locus::header(void) const
 {
 	std::string line="@ID0       \tID1\tREF";
 	for (size_t s=0; s<sample_names_.size(); ++s) {
@@ -353,9 +326,10 @@ std::string Locus::header(void) const
 	return line;
 }
 
-size_t Locus::size(void) const
+size_t
+Locus::size(void) const
 {
-	return sizeof(count_t)*(5+extraid.size() )+sizeof(quartet_t)*sample.size()+sizeof(id1_t);
+	return sizeof(count_t)*(5)+sizeof(quartet_t)*sample.size()+sizeof(id1_t);
 }
 
 void scan(const Locus & site, const std::string &str, quartet_t &q)
@@ -392,4 +366,74 @@ void scan(const Locus & site, const std::string &str, quartet_t &q)
 	}
 }
 
-	
+const std::string 
+Locus::sql_header(void) const {
+	return "(ABS_POS int, SMPNUM int, A int, C int, G int, T int, PRIMARY KEY (ABS_POS, SMPNUM) )";
+}
+
+const std::string 
+Locus::sql_column_names(void) const {
+	return "(ABS_POS, SMPNUM, A, C, G, T)";
+}
+
+void
+Locus::sql_read(std::istream &in)
+{
+	std::string line;
+	//remove characters from the in stream until a new line.
+	std::getline(in, line);
+	std::stringstream line_stream(line);
+	line_stream >> abs_pos_;
+	id1_t this_pos=abs_pos_;
+	count_t smpnum;
+	uint8_t A,C,G,T;
+	do{
+		line_stream >> smpnum;
+		line_stream >> A;
+		line_stream >> C;
+		line_stream >> G;
+		line_stream >> T;
+		sample[smpnum]=quartet(A,C,G,T,0);
+		line_stream >> abs_pos_;
+	} while (abs_pos_==this_pos);
+	//We do not save mask states, so all data read in is unmasked
+	unmaskall();				
+} 
+
+const std::string 
+Locus::sql_values(void) const {
+        char return_buffer[SQL_LINE_SIZE]={0};
+	char *write_ptr=return_buffer;
+	std::vector<quartet>::const_iterator it=cbegin(), end=cend();
+	int x=0;
+
+	write_ptr+=snprintf(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %d)", 
+       		abs_pos_,
+		++x,
+		(*(it++))[0],
+		(*it)[1],
+		(*it)[2],
+		(*it)[3]);
+	while (it!=end) {
+		write_ptr+=snprintf(write_ptr, SQL_LINE_SIZE, ", (%d, %d, %d, %d, %d, %d)", 
+       		abs_pos_,
+		++x,
+		(*(it++))[0],
+		(*it)[1],
+		(*it)[2],
+		(*it)[3]);
+        }
+	return std::string(return_buffer);
+}
+
+const std::string
+Locus::get_file_name(void) const
+{
+	return Locus::file_name;
+}
+
+const std::string
+Locus::get_table_name(void) const
+{
+	return Locus::table_name;
+}

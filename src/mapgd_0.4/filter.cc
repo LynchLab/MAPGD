@@ -19,10 +19,10 @@ int filter(int argc, char *argv[])
 	int max_coverage=CNT_MAX, min_coverage=4, max_pitch=1;
 
 	env_t env;
-	env.setname("mapgd filter");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman");
-	env.setdescription("Filter sites in '.map' files based on criteria.");
+	env.set_name("mapgd filter");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman");
+	env.set_description("Filter sites in '.map' files based on criteria.");
 	env.optional_arg('E',"maxerror", &error_max, 	&arg_setfloat_t, "please provide a float.", "maximum error of a site (default 0.1).");
 	
 	env.optional_arg('i',"input", 	&in_file, 	&arg_setstr, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
@@ -42,7 +42,7 @@ int filter(int argc, char *argv[])
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 
-	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 
 	float_t polyll, hwell;
 	Allele s;

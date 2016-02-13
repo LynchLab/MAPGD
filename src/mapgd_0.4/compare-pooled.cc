@@ -13,11 +13,11 @@ int comparePooled(int argc, char *argv[])
 
 	std::vector <int> pop;
 
-	env.setname("mapgd cp");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman and Micheal Lynch");
+	env.set_name("mapgd cp");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman and Micheal Lynch");
 
-	env.setdescription("compares allele frequencies between pooled population genomic data.");
+	env.set_author("compares allele frequencies between pooled population genomic data.");
 
 	env.optional_arg('m',"minerror", &EMLMIN, &arg_setfloat_t, "please provide an interger", "sets minimum");
 	env.optional_arg('M',"MAX", &s, &arg_setint, "please provide an interger", "sets maximum");
@@ -33,8 +33,8 @@ int comparePooled(int argc, char *argv[])
 	env.flag('h',"help", &env, &flag_help, "an error occured while displaying the help mesaage", "prints this message");
 	env.flag('v',"version", &env, &flag_version, "an error occured while displaying the version mesaage", "prints the program version");
 
-	if ( parsargs(argc, argv, env) ) printUsage(env);
-	if ( !env.required_set() ) printUsage(env);
+	if ( parsargs(argc, argv, env) ) print_usage(env);
+	if ( !env.required_set() ) print_usage(env);
 
 	Indexed_file <Locus> in_pro;
 	Locus in_locus;
@@ -45,7 +45,7 @@ int comparePooled(int argc, char *argv[])
 
 	if (infile.size()!=0) {
 		in_pro.open(infile.c_str(), std::fstream::in);
-		if (not (in_pro.is_open() ) ) printUsage(env);
+		if (not (in_pro.is_open() ) ) print_usage(env);
 	} else {
 		in_pro.open(std::fstream::in);
 	}
@@ -54,7 +54,7 @@ int comparePooled(int argc, char *argv[])
 	/* Open the output file. */
 	if (outfile.size()!=0) {
 		out_map.open(outfile.c_str(), std::fstream::out);
-		if (!out_map.is_open() ) printUsage(env);
+		if (!out_map.is_open() ) print_usage(env);
 	} else {
 		out_map.open(std::fstream::out);
 	}

@@ -1,0 +1,19 @@
+DECLARE @SQL NVARCHAR(MAX) = ''
+SELECT  @SQL = @SQL + ',' + QUOTENAME(Rownumber)
+FROM    (   SELECT  DISTINCT ROW_NUMBER() OVER(PARTITION BY Ref, Name ORDER BY Link) [RowNumber]
+            FROM    QUARTETS
+        ) d
+
+SET @SQL = 'SELECT  *
+            FROM    (   SELECT  Ref, 
+                                name, 
+                                Link, 
+                                ROW_NUMBER() OVER(PARTITION BY Ref, Name ORDER BY Link) [RowNumber]
+                        FROM    QUARTETS
+                    ) data
+                    PIVOT
+                    (   MAX(Link)
+                        FOR RowNumber IN (' + STUFF(@SQL, 1, 1, '') + ')
+                    ) pvt'
+
+EXECUTE SP_EXECUTESQL @SQL

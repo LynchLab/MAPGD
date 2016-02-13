@@ -9,28 +9,51 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <iostream>
-#include "interface.h"
 #include <vector>
 #include <list>
 #include <algorithm>
-#include "stream-tools.h"
 #include <cmath>
+
+#include "interface.h"
+#include "stream-tools.h"
 
 /* @Breif : A command parser that uses functors. 
 * 
 *  Tis' a silly thing.
 */
 
-/*@Breif : tells you whether a string is an int */
-bool isint(const char *c)
+/* @Breif : tells you whether a string is an int */
+bool 
+isint(const char *c)
 {
 	const char *s=c;
 	while (*c !=0 && std::isdigit(*c)) ++c;
 	return (*c==0 && c!=s);
 }
 
+//! Makes sure that the usage message isn't longer than 79 char.
+const char *
+format_usage(const char *message, const size_t &padding)
+{
+	std::string unformated_line(message);
+	std::string formated_lines;
+	std::string::iterator word;
+	while(unformated_line.size()>(79-padding) ){
+		word=unformated_line.begin()+(79-padding);
+		while (word!=unformated_line.begin() && *word!=' ') word--;
+	//	*word='\n';
+		formated_lines.insert(formated_lines.end(), unformated_line.begin(), word);
+		formated_lines.insert(formated_lines.end(), 1, '\n');
+		formated_lines.insert(formated_lines.end(), padding, ' ');
+		unformated_line.erase(unformated_line.begin(), word+1);
+	}
+	formated_lines.insert(formated_lines.end(), unformated_line.begin(), unformated_line.end() );
+	return formated_lines.c_str();
+}
+
 /*@Brief : sets a vector of strings from a string*/
-int arg_setvectorstr(int argc, char **argv, void *parm)
+int 
+arg_setvectorstr(int argc, char **argv, void *parm)
 {
 	int n=1;
 	std::vector <std::string> *v=(std::vector <std::string> *)(parm);
@@ -42,7 +65,7 @@ int arg_setvectorstr(int argc, char **argv, void *parm)
 		if ( n+1==argc) return n+1;
 		++n;
 	} 
-	std::cerr << "arg_setvectorstr: error parsing " << argv[1] << std::endl;
+	std::cerr << __FILE__ << ":" << __LINE__ << ": error parsing " << argv[1] << std::endl;
 	exit(1);
 }
 
@@ -150,22 +173,22 @@ int flag_set(void *parm)
 //TODO Comment
 int flag_version(void *parm)
 {
-	printVersion(*(env_t *) parm);
+	print_version(*(env_t *) parm);
 	return 0;
 }
 
 
-//TODO Comment
+//! prints the long help statment to stdout (print_help).
 int flag_help(void *parm)
 {
-	printHelp(*(env_t *) parm);
+	print_help(*(env_t *) parm);
 	return 0;
 }
 
 //TODO Comment
 int flag_usage(void *parm)
 {
-	printUsage(*(env_t *) parm);
+	print_usage(*(env_t *) parm);
 	return 0;
 }
 
@@ -178,7 +201,8 @@ int arg_error(int argc, char **argv, void *parm)
 
 /* The main command line argument parsing routine */
 
-int parsargs(int argc, char *argv[], env_t env)
+int 
+parsargs(int argc, char *argv[], env_t &env)
 {
 	int optind=1; 
 	char *optopt; 
@@ -201,7 +225,6 @@ int parsargs(int argc, char *argv[], env_t env)
 					while(arg!=arg_end){
 						if (*optopt==arg->opt){
 							optind+=arg->func(argc-optind, argv+optind, arg->parm);
-							//std::cout << optind << "::" << argc << '\n';
 							arg->set=true;
 							break;
 						} ++arg;
@@ -212,7 +235,6 @@ int parsargs(int argc, char *argv[], env_t env)
 								if (*optopt==flag->opt){
 									flag->func(flag->parm);
 									optopt++;
-									//arg->set=true;
 									break;
 								};
 								++flag;
@@ -270,10 +292,10 @@ int parsargs(int argc, char *argv[], env_t env)
 		};
 	};
 	if (env.commands.size()!=0) return -1;
-	return 0;
+	return env.required_set()!=1;
 }
 
-void printVersion(env_t env){
+void print_version(env_t env){
 	printf("%s version %s written by %s\n", env.name, env.version, env.author);
 	exit(0);
 }
@@ -285,60 +307,89 @@ void Usage(env_t env, FILE *out){
 	size_t x=0;
 	if (env.commands.size()!=0) fprintf(out, "usage: %s <command> [<args>]\n\n", env.name);
 	else {
+		std::list <flag_t>::iterator flag=env.flags.begin();
+		std::list <flag_t>::iterator f_end=env.flags.end();
+		while (flag!=f_end){
+			all_flags+=flag->opt;
+			flag++;
+		}
 		std::list <arg_t>::iterator arg=env.args.begin();
 		std::list <arg_t>::iterator end=env.args.end();
 		while (arg!=end){
-			optional_args+=" [--";
-			optional_args+=arg->lopt;
-			optional_args+="]";
+			if (!arg->required) {
+				if (x<6){
+					optional_args+=" [--";
+					optional_args+=arg->lopt;
+					optional_args+=" ";
+					optional_args+="VALUE";//arg->operand_type;
+					optional_args+="]";
+					if (x==3) {optional_args+=" ...";}
+				}
+			} else {
+				required_args+=" <--";
+				required_args+=arg->lopt;
+				required_args+=" ";
+				required_args+="VALUE";//arg->operand_type;
+				required_args+=">";
+			}
 			++arg;
 			++x;
-			if (x==5) {optional_args+=" ..."; arg=end;}
 		}
-		fprintf(out, "usage: %s%s %s %s\n\n", env.name, all_flags.c_str(), optional_args.c_str(), required_args.c_str());
+		optional_args+=required_args;
+		if (env.flags.size()!=0) {
+			fprintf(out, "usage: %s -%s %s\n\n", env.name, all_flags.c_str(), format_usage(optional_args.c_str(),8) );
+		} else {
+			fprintf(out, "usage: %s %s\n\n", env.name, all_flags.c_str(), format_usage(optional_args.c_str(),8) );
+		}
 	}
 }
 
-void printHelp(env_t env){
+void 
+print_help(env_t env)
+{
 	Usage(env, stdout);
 
 	printf("%s version %s written by %s\n", env.name, env.version, env.author);
- 	printf("%s\n\n", env.description);
+ 	printf("%s\n\n", format_usage(env.description, 0) );
 
 	std::list <com_t>::iterator com=env.commands.begin();
 	std::list <com_t>::iterator com_end=env.commands.end();
 	if (env.commands.size()!=0) printf("Commands:\n");
 	while (com!=com_end){
+		//TODO Better length formating.
 		if (strlen(com->lopt)>5)
-			printf("  %s\t\t%s\n", com->lopt, com->umsg);
+			printf("  %s\t\t%s\n", com->lopt, format_usage(com->umsg, 24) );
 		else
-			printf("  %s\t\t\t%s\n", com->lopt, com->umsg);
+			printf("  %s\t\t\t%s\n", com->lopt, format_usage(com->umsg, 24) );
 		++com;
 	}
 	std::list <arg_t>::iterator arg=env.args.begin();
 	std::list <arg_t>::iterator end=env.args.end();
 	printf("Options:\n");
 	while (arg!=end){
+		//TODO Better length formating.
 		if (strlen(arg->lopt)>7)
-			printf("  -%c, --%s\t%s\n", arg->opt, arg->lopt, arg->umsg);
+			printf("  -%c, --%s\t%s\n", arg->opt, arg->lopt, format_usage(arg->umsg, 24) );
 		else
-			printf("  -%c, --%s\t\t%s\n", arg->opt, arg->lopt, arg->umsg);
+			printf("  -%c, --%s\t\t%s\n", arg->opt, arg->lopt, format_usage(arg->umsg, 24) );
 		++arg;
 	}
 	std::list <flag_t>::iterator flag=env.flags.begin();
 	std::list <flag_t>::iterator flag_end=env.flags.end();
+	printf("Flags:\n");
 	while (flag!=flag_end){
+		//TODO Better length formating.
 		if (strlen(flag->lopt)>7)
-			printf("  -%c, --%s\t%s\n", flag->opt, flag->lopt, flag->umsg);
+			printf("  -%c, --%s\t%s\n", flag->opt, flag->lopt, format_usage(flag->umsg, 24) );
 		else
-			printf("  -%c, --%s\t\t%s\n", flag->opt, flag->lopt, flag->umsg);
+			printf("  -%c, --%s\t\t%s\n", flag->opt, flag->lopt, format_usage(flag->umsg, 24) );
 		++flag;
 	}
 	exit(0);
 }
 
 
-void printUsage(env_t env){
+void print_usage(env_t env){
 	Usage(env, stderr);
 	fprintf(stderr, "Try '%s --help' for more information.\n", env.name);
 	exit(0);

@@ -206,15 +206,15 @@ int estimateInd(int argc, char *argv[])
 	//std::cerr "If you are using .... please cite ...."
 
 	env_t env;
-	env.setname("mapgd allele");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman and Takahiro Maruki");
-	env.setdescription("Uses a maximum likelihood approach to estimate population genomic statistics from an individually 'labeled' population.");
+	env.set_name("mapgd allele");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman and Takahiro Maruki");
+	env.set_description("Uses a maximum likelihood approach to estimate population genomic statistics from an individually 'labeled' population.");
 
 	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdout).");
 	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
 	env.optional_arg('p',"outpro", &outfilepro,	&arg_setstr, 	"an error occured while setting the name of the output file.", "name of a 'cleaned' pro file (default none).");
-	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "the individuals to be used in estimates.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).");
+	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "the individuals to be used in estimates. A comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).");
 	env.optional_arg('m',"minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
 
 //	env.optional_arg('c',"columns", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "number of columsn in profile (if applicable).");
@@ -232,7 +232,7 @@ int estimateInd(int argc, char *argv[])
 	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
 	env.flag(	'q', "quiet", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
 
-	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 
 	Indexed_file <Allele> map_out;
 	Indexed_file <Locus> pro_in, pro_out;
@@ -243,7 +243,7 @@ int estimateInd(int argc, char *argv[])
 	if (infile.size()!=0) {					//Iff a filename has been set for infile
 		pro_in.open(infile.c_str(), std::fstream::in);	
 		if (!pro_in.is_open() ) {				//try to open a profile of that name.
-			printUsage(env);			//Print help message on failure.
+			print_usage(env);			//Print help message on failure.
 		} 
 		locus_in=pro_in.read_header();
 	}
@@ -263,10 +263,10 @@ int estimateInd(int argc, char *argv[])
 	if (outfilepro.size()!=0) {				//Same sort of stuff for the outf
 		if (binary) {
 			pro_out.open(outfilepro.c_str(), std::fstream::out | std::fstream::binary);
-			if (!pro_out.is_open() ) {printUsage(env); exit(0);}
+			if (!pro_out.is_open() ) {print_usage(env); exit(0);}
 		} else {
 			pro_out.open(outfilepro.c_str(), std::fstream::out);
-			if (!pro_out.is_open() ) {printUsage(env); exit(0);}
+			if (!pro_out.is_open() ) {print_usage(env); exit(0);}
 		}
 		locus_out.set_sample_names(locus_in.get_sample_names() );
 		pro_out.set_index(pro_in.get_index() );
@@ -289,7 +289,7 @@ int estimateInd(int argc, char *argv[])
 
 	if (outfile.size()!=0) {
 		map_out.open(outfile.c_str(), std::ios::out);
-		if (!map_out.is_open() ) printUsage(env);
+		if (!map_out.is_open() ) print_usage(env);
 	} else 	map_out.open(std::fstream::out);
 
 	Allele buffer_mle[BUFFER_SIZE]; 

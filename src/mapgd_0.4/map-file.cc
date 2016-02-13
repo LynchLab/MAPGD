@@ -13,6 +13,11 @@ Base_file::Base_file(void)
 	indexed_=false;
 }
 
+bool 
+Base_file::indexed(void)
+{
+	return indexed_;
+}
 
 
 //This seriously needs to be cleaned up.
@@ -25,7 +30,6 @@ void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mod
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
 	}
-	//Checking extention
 	if ( mode & std::ios::in ){
 		line=split_last(filename, '.');
 		if (line.back()!=T::file_name) {
@@ -131,12 +135,12 @@ void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)
 
 void Base_file::open(std::istream *s, const std::ios_base::openmode &mode)
 {
-	#ifdef POSIX
+#ifdef POSIX
 	if (check_stream(s) ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": iostream is empty. Exiting." << std::endl;
 		exit(0);
 	}
-	#endif
+#endif
 	if ( open_ ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
@@ -240,6 +244,9 @@ void Base_file::open_table(void)
 }*/
 
 void Base_file::close_table(void){
+#ifdef DEBUG
+	std::cerr << "Closing table " << filename_ << std::endl;
+#endif
 	if (write_ && open_) *out_ << "@END_TABLE\n";
 	table_open_=false;
 }
@@ -261,9 +268,10 @@ id1_t Indexed_file<T>::get_pos(const T &data) const
 	return data.get_abs_pos();
 }
 
-Base_file& Base_file::read(Data * data)
+Base_file & 
+Base_file::read(Data *data)
 {
-	if (!open_){
+	if (!table_open_){
 		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open. The methods Base_file::open() and Base_file::read_header(Data *) should be called.";
 		return *this;
 	}
@@ -274,15 +282,68 @@ Base_file& Base_file::read(Data * data)
 		else {
 			if (in_->peek()=='@') {
 				std::string line;
-				*in_ >> line;
+				std::getline(*in_, line);
 				if (line!="@END_TABLE") {
 					std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
 					exit(0);
 				}
-				this->close_table();
-				return *this;
+				if (!concatenated_) {
+					this->close();
+				} else {
+					this->close_table();
+				}
+			} else *in_ >> *data;
+#ifdef SAFER
+			if (in_->peek()=='\n') {
+				std::cerr << __FILE__<< ":" <<__LINE__ << ": line not parsed correctly.";
+				in_->get();
 			}
-			*in_ >> *data;
+#endif
+		}
+	} else {
+		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open. The methods Base_file::open() and Base_file::read_header(Data *) should be called.";
+	}
+	return *this;
+}
+
+Base_file &
+Base_file::read(File_index &index, Indexed_data *data)
+{
+	std::string scaffold;
+	id1_t pos;
+	if (!table_open_){
+		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open. The methods Base_file::open() and Base_file::read_header(Data *) should be called.";
+		return *this;
+	}
+	if (read_){
+		if (binary_){
+			in_->read( (char *) data, data->size() );
+		}
+		else {
+			if (in_->peek()=='@') {
+				std::string line;
+				std::getline(*in_, line);
+				if (line!="@END_TABLE") {
+					std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
+					exit(0);
+				}
+				if (!concatenated_) {
+					this->close();
+				} else {
+					this->close_table();
+				}
+			} else {
+				*in_ >> scaffold;
+				*in_ >> pos;
+				*in_ >> *data;
+				data->set_abs_pos(index.get_abs_pos(scaffold, pos) );
+			}
+#ifdef SAFER
+			if (in_->peek()=='\n') {
+				std::cerr << __FILE__<< ":" <<__LINE__ << ": line not parsed correctly.";
+				in_->get();
+			}
+#endif
 		}
 	} else {
 		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open. The methods Base_file::open() and Base_file::read_header(Data *) should be called.";
@@ -293,8 +354,7 @@ Base_file& Base_file::read(Data * data)
 template <class T>
 Data_file<T>& Data_file<T>::read(T &data)
 {
-	//TODO Check for table_open instead?
-	if (!open_){
+	if (!table_open_ ){
 		return *this;
 	}
 	if (read_){
@@ -303,17 +363,19 @@ Data_file<T>& Data_file<T>::read(T &data)
 	} else {
 		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open for reading. The methods Flat_file<type>::open() and Flat_file<type>::read_header(<type>) should be called.";
 	}
-//	if (!in_->good() ) { std::cerr << __FILE__ << ":" << __LINE__ << ": unexpected error reading file. Exiting.\n"; exit(0);};
 	return *this;
 }
 
 template <class T>
 void Flat_file<T>::read_text(T &data)
 {
-	//TODO Check for table_open instead?
+	if (!in_->good() ) {
+		std::cerr << "an error has occured durring reading.\n";
+		exit(0);
+	}
 	if (in_->peek()=='@') {
 		std::string line;
-		*in_ >> line;
+		std::getline(*in_, line);
 		if (line!="@END_TABLE") {
 			std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
 			exit(0);
@@ -333,7 +395,10 @@ void Indexed_file<T>::read_text(T &data)
 	//TODO Check for table_open instead?
 	id1_t pos;
 	std::string scaffold;
-	if (!table_open_) return;
+	if (!in_->good() ) {
+		std::cerr << "an error has occured durring reading.\n";
+		exit(0);
+	}
 	if (in_->peek()=='@') {
 		std::string line;
 		*in_ >> line;
@@ -348,6 +413,9 @@ void Indexed_file<T>::read_text(T &data)
 			this->close_table();
 		}
 	} else {
+#ifdef DEBUG
+		std::cerr << (char)(in_->peek()) << std::endl;
+#endif
 		*in_ >> scaffold;
 		*in_ >> pos;
 		*in_ >> data;
@@ -420,9 +488,11 @@ template <class T>
 void Flat_file<T>::write_header(const T &data)
 {
 	if (write_) {
-		*out_ << "@NAME:" << T::table_name << '\t' <<"VERSION:" << VERSION << '\t';
-		if (binary_) *out_ << "FORMAT:BINARY" << std::endl;
-		else *out_ << "FORMAT:TEXT" << std::endl;
+		*out_ << "@NAME:" << T::table_name << "\tVERSION:" << VERSION;
+		if (binary_) *out_ << "\tFORMAT:BINARY";
+		else *out_ << "\tFORMAT:TEXT";
+		if (concatenated_) *out_ << "\tCONCATENATED";
+		*out_ << std::endl;
 		*out_ << data.header();
 		table_open_=true;
 	} else {
@@ -444,6 +514,8 @@ Data *Base_file::read_header(void)
 				exit(0);
 			}
 			binary_=(columns[2]!="FORMAT:TEXT");
+			concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
+			indexed_=std::find(columns.begin(), columns.end(), "INDEXED")!=columns.end();
 			std::getline(*in_, line);
 			columns=split(line, '\t');
 			Data *data=Data::new_from_str(pair[1], columns);
@@ -493,16 +565,25 @@ T Indexed_file<T>::read_header(void)
 	Flat_file <File_index> index;
 	index.open_from(*this);
 	file_index_=index.read_header();
-	index.read(file_index_);
-	index.close_table();
+	while(index.table_is_open() ){
+		index.read(file_index_);
+	}
 	
 	std::string line;
 	std::vector <std::string> columns;
+#ifdef DEBUG
+	std::cerr << in_->peek() << std::endl;
+#endif
+	/*while(in_->peek()!='@' && in_->good() ){
+		std::getline(*in_, line);
+		std::cerr << line << std::endl;
+	}*/
 	std::getline(*in_, line);
+	
 	columns=split(line, '\t');
 	if (columns.size()>2){
 		if (columns[0]=="@NAME:"+T::table_name){
-			binary_=(columns[2]!="FORMAT:TEXT");
+			//binary_=(columns[2]!="FORMAT:TEXT");
 			std::getline(*in_, line);
 			columns=split(line, '\t');
 			T data(columns);
@@ -514,6 +595,7 @@ T Indexed_file<T>::read_header(void)
 		std::cerr << T::table_name << std::endl;
 	}
 	std::cerr << __FILE__ << ":" << __LINE__ << " could not initilize " << typeid(T).name() << "\n";
+	std::cerr << line << std::endl;
 	T data;
 	table_open_=false;
 	return data;
@@ -531,6 +613,7 @@ T Mpileup_file<T>::read_header(void)
 	for(std::string::iterator c=line.end(); (c--)!=line.begin();) {
 		in_->putback(*c);
 	}
+	table_open_=true;
 	return data;
 }
 
@@ -543,8 +626,8 @@ void Indexed_file<T>::write_header(const T &data)
 	}
 	Flat_file <File_index> index;
 #ifdef DEBUG
-	std::cerr << filename_ << std::endl;
-	std::cerr << this->filename() << std::endl;
+	std::cerr << "Writing header of " << filename_ << std::endl;
+	std::cerr << "aka: " << this->filename() << std::endl;
 #endif
 	index.open_from(*this);
 	if (!index.is_open() ) {
@@ -554,9 +637,11 @@ void Indexed_file<T>::write_header(const T &data)
 	index.write_header(file_index_);
 	index.write(file_index_);
 	index.close_table();
-	*out_ << "@NAME:" << T::table_name << '\t' <<"VERSION:" << VERSION << '\t';
-	if (binary_) *out_ << "FORMAT:BINARY" << std::endl;
-	else *out_ << "FORMAT:TEXT" << std::endl;
+	*out_ << "@NAME:" << T::table_name << "\tVERSION:" << VERSION;
+	if (binary_) *out_ << "\tFORMAT:BINARY";
+	else *out_ << "\tFORMAT:TEXT";
+	if (concatenated_) *out_ << "\tCONCATENATED";
+	*out_ << "\tINDEXED\n";
 	*out_ << data.header();
 	table_open_=true;
 }

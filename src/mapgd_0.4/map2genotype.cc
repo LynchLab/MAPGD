@@ -10,6 +10,7 @@ command filter:
 Genotype 
 baysian_genotype(const int &major, const int &minor, const float_t &freq, const float_t &error, const quartet_t &quart)
 {
+
 	float_t lMM, lMm, lmm, N;
 
 	N=count(quart);
@@ -21,26 +22,27 @@ baysian_genotype(const int &major, const int &minor, const float_t &freq, const 
 	float_t not_correct=log(error/3.);
 
 	lMM=M*ln_homozygous_correct+not_correct*(m+E);
-	lmm=(M+m)*ln_heterozygous_correct+not_correct*(E)-log(1.01);
+	lmm=(M+m)*ln_heterozygous_correct+not_correct*(E)-log(1.001);
 	lmm=m*ln_homozygous_correct+not_correct*(M+E);
 
-/*	MM=M*lnc+notc*(m+E)
-	Mm=(M+m)*lnch+notc*(E)-math.log(1.01)
-	mm=m*lnc+notc*(M+E)*/
+//	MM=M*lnc+notc*(m+E)
+//	Mm=(M+m)*lnch+notc*(E)-math.log(1.01)
+//	mm=m*lnc+notc*(M+E)/
 
 	float_t norm=log(exp(lMM)+exp(lMm)+exp(lmm) );
 
-	if (N>0){
+	if (N>0.01){
 		lMM=norm-lMM;
 		lMm=norm-lMm;
 		lmm=norm-lmm;
 	} else {
-		lMM=log(1/3);
-		lMm=log(1/3);
-		lmm=log(1/3);
+		lMM=-log(1./3.);
+		lMm=-log(1./3.);
+		lmm=-log(1./3.);
 	}
 
 	return Genotype(lMM, lMm, lmm, N);	
+//	return Genotype(lMM, lMm, lmm, 0);	
 }
 
 void get_genotypes(const Allele &allele, const Locus &locus, Population &genotypes )
@@ -69,17 +71,17 @@ int map2genotype(int argc, char *argv[])
 	std::string mapname="", proname="";
 
 	env_t env;
-	env.setname("mapgd genotype");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman");
-	env.setdescription("convert a map and pro file to an individual genotype file.");
+	env.set_name("mapgd genotype");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman");
+	env.set_description("convert a map and pro file to an individual genotype file.");
 	env.required_arg('m',"map", &mapname, 	&arg_setstr, "please provide a float.", "the name of the map file.");
 	env.required_arg('p',"pro", &proname, 	&arg_setstr, "please provide a float.", "tne name of the pro file.");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'b', "binary", &binary, 	&flag_set, 	"an error occured while displaying the version message.", "binary output");
 
-	if (parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if (parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 
 	/* The files we will need*/
 	Indexed_file <Allele> map_in;

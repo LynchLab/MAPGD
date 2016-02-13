@@ -56,7 +56,9 @@ typedef struct quartet {
 		memset (base, x, 5*sizeof(count_t) );
 		return *this;
 	}
-
+/*	count_t operator[](const int &x) const {
+		return base[x]; 
+	}*/
 	count_t operator[](const gt_t &x) const {
 		return base[x]; 
 	}

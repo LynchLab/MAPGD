@@ -14,15 +14,15 @@ int sam2idx(int argc, char *argv[])
 	std::string headerfile="";
 
 	env_t env;
-	env.setname("mapgd sam2idx");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman");
-	env.setdescription("convert a sam header file into an idx file.");
+	env.set_name("mapgd sam2idx");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman");
+	env.set_description("Converts a sam header file into an idx file.");
 	env.optional_arg('H',"header",	&headerfile,	&arg_setstr, 	"an error occured", "sets the index file (required to use mpileup)");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
 
-	if (parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if (parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 
 	Flat_file <File_index> index_file;
         File_index index;

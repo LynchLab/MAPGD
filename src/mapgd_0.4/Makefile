@@ -2,7 +2,7 @@
 #c90 c89 c99 c9x c11 c1x gnu90 gnu89 gnu99 gnu9x gnu11 gnu1x c++98 c++03 gnu++98 gnu++03 c++11 c++0x gnu++11 gnu++0x c++1y gnu++1y
 #Right now I need c++11 to support constructor delegation, which I like a lot.
 
-#MODE=-O3
+MODE=-O3
 STD=-std=c++11
 DESTDIR=/usr/local/bin
 LOCAL=../../bin/mapgd
@@ -34,7 +34,8 @@ COMMANDS=mapgd.o \
 	interface.o \
 	map2genotype.o \
 	relatedness.o \
-	sql/writesql.o 	
+	sql/writesql.o \
+	sql/readsql.o 	
 
 OBJS=	base.o \
 	binomial.o \
@@ -74,6 +75,12 @@ all: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
+DATA_SOURCE=data_types\*.cc
+
+data.h:
+	@echo "updating data_types"
+	touch $(DATA_SOURCE)
+
 noomp: CXXFLAGS:=$(CXXFLAGS) $(NOOMP)
 noomp: all
 
@@ -92,4 +99,3 @@ clean:
 	rm -f ../../bin/*
 	rm -f ~/bin/mapgd
 .PHONY: clean
-

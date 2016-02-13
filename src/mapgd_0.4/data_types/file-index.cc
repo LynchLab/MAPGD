@@ -187,16 +187,20 @@ File_index::read (std::istream& in)
 {
 	std::string scaffold_name; 
 	id1_t length;
-	in >> scaffold_name;
-	while (scaffold_name!="@END_TABLE"){
-		in >> length;
-		size_.push_back(length);
-		cumulative_size_.push_back(cumulative_size_.back()+length);
-		id0_str_[scaffold_name]=id0_.size();
-		id0_.push_back(scaffold_name);
-		in >> scaffold_name;
+	std::string line;
+	if (in.good() ){
+		while ( in.peek()!='@' && in.good() ) {
+			std::getline(in, line);
+			std::stringstream stream_line(line);
+			stream_line >> scaffold_name;
+			stream_line >> length;
+			size_.push_back(length);
+			cumulative_size_.push_back(cumulative_size_.back()+length);
+			id0_str_[scaffold_name]=id0_.size();
+			id0_.push_back(scaffold_name);
+		} 
 	}
-	in.get();
+	
 }
 
 std::string 
@@ -209,4 +213,51 @@ size_t
 File_index::size(void) const
 {
 	return 2;
+}
+
+const std::string 
+File_index::sql_header(void) const {
+	return "(SCFNAME varchar(255), START int, STOP int)";
+}
+
+const std::string 
+File_index::sql_column_names(void) const {
+	return "(SCFNAME, STOP, START)";
+}
+
+const std::string 
+File_index::sql_values(void) const {
+        char return_buffer[SQL_LINE_SIZE]={0};
+	char *write_ptr=return_buffer;
+	std::vector<std::string>::const_iterator id0_it=id0_.cbegin(), end=id0_.cend();
+	std::vector<id1_t>::const_iterator size_it=cumulative_size_.cbegin();
+
+	write_ptr+=snprintf(return_buffer, SQL_LINE_SIZE, "('%s','%d', '%d')", 
+       		(id0_it++)->c_str(),
+		*(++size_it),
+		*size_it );
+	while (id0_it!=end) {
+		write_ptr+=snprintf(write_ptr, SQL_LINE_SIZE, ", ('%s','%d', '%d')", 
+       		(id0_it++)->c_str(),
+		*(++size_it),
+		*size_it);
+        }
+	return std::string(return_buffer);
+}
+
+void
+File_index::sql_read (std::istream &in) 
+{	
+	std::string scaffold_name;
+	id1_t start, stop, length;
+	in >> scaffold_name;
+	in >> start;
+	in >> stop;
+	length=stop-start;
+	size_.push_back(length);
+	cumulative_size_.push_back(cumulative_size_.back()+length);
+	id0_str_[scaffold_name]=id0_.size();
+	id0_.push_back(scaffold_name);
+	//just want to read till the new line, not doing much else.
+	std::getline(in, scaffold_name);
 }

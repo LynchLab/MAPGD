@@ -411,7 +411,8 @@ count_t maximize_analytical (Locus &site, Allele &a, models &model, std::vector 
 
 	//These are both undefined...
 	a.f=0;
-	a.gof=0;		
+	a.gof=0;
+	a.minor=4;
 	float_t excluded=site.maskedcount();
 
 	return excluded;

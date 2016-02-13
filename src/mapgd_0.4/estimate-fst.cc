@@ -10,15 +10,15 @@ int estimate_fst(int argc, char *argv[])
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
 
 	env_t env;
-	env.setname("mapgd fst");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman and Takahiro Maruki");
-	env.setdescription("Uses a maximum likelihood approach to estimate fst between population.");
+	env.set_name("mapgd fst");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman and Takahiro Maruki");
+	env.set_author("Uses a maximum likelihood approach to estimate fst between population.");
 
 	env.required_arg('1',"individuals", &pop1, 	&arg_setvectorint, "please provide a list of integers", "the individuals in population 1.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt 1).");
 	env.required_arg('2',"individuals", &pop2, 	&arg_setvectorint, "please provide a list of integers", "the individuals in population 2.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt 2).");
 
-	if ( parsargs(argc, argv, env) ) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 
 	profile pro;		//profile is a fairly complete class that lets us read and write from pro files, 
 				//which are files containing set of read 'quartets' that specify the number of 

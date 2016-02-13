@@ -122,7 +122,7 @@ public:
 	 *
 	 */
 	Base_file& read(Data *);	
-	Base_file& read(File_index &, Data *);	
+	Base_file& read(File_index &, Indexed_data *);	
 
 	//! Writes to the ostream.	
 	Base_file& write(Data *);	
@@ -162,6 +162,7 @@ public:
 	 */
 	size_t size(void) const; 
 	bool eof(void);
+	bool indexed(void);
 
 };
 
@@ -188,17 +189,6 @@ protected :
 	using Base_file::concatenated_;
 	using Base_file::indexed_;
 public:
-	Data_file<T>(){
-		open_=false;
-		table_open_=false;
-		read_=false;
-		write_=false;
-		delim_column_='\t';
-		binary_=false;
-		filename_="";
-		concatenated_=false;
-		indexed_=false;
-	};			//!< default constructor
 	using Base_file::open;
 
 	///! The function that opens a Data_file (if file).
@@ -309,14 +299,7 @@ private:
 	using Indexed_file<T>::in_;	//(const std::ios_base::openmode &);
 
 	using Base_file::open_;
-/*	using Base_file::table_open_;
-	using Base_file::read_;
-	using Base_file::write_;
-	using Base_file::delim_column_;
-	using Base_file::binary_;
-	using Base_file::filename_;
-	using Base_file::concatenated_;
-	using Base_file::indexed_;*/
+	using Base_file::table_open_;
 public:
 /*	Mpileup_file(){
 		open_=false;

@@ -15,17 +15,18 @@
 class Locus : virtual public Indexed_data{
 private:
 	std::vector <std::string> sample_names_;		//!< names of the samples sequenced.
-	id1_t abs_pos_;
+	using Indexed_data::abs_pos_;
 	static const Registration registered;
 	static Data * create(const std::vector <std::string> & Columns){
 		return new Locus(Columns);
 	}
+	void write (std::ostream& out) const;
+	void read (std::istream& in);
 public:
 	/* these need to be changed to private */
 	gt_t sorted_[5];				//!< an array to allow sorted access to quartets.
 	
 	std::vector <quartet_t> sample;			//!< The five bases A/C/G/T/N;
-	std::vector <count_t> extraid;			//!< extra ids associated with the quartet. (ref base identity?).
 
 	Base ref;
 	static const gt_t default_order[5];
@@ -87,8 +88,8 @@ public:
 	/** @} */
 
 
-	id1_t get_abs_pos(void) const;			//!< Get the absolute position of the Locus.
-	void set_abs_pos(const id1_t &);		//!< Set the absolute position of the Locus.
+	using Indexed_data::get_abs_pos;		//!< Get the absolute position of the Locus.
+	using Indexed_data::set_abs_pos;		//!< Set the absolute position of the Locus.
 	void resize(const size_t &);			//!< Change the number of quartet_t s at the Locus.
 
 	/* @defgroup iterators Iterators
@@ -141,9 +142,14 @@ public:
 	static const std::string file_name;
 	static const std::string table_name;
 
-	void write (std::ostream& out) const;
-	void read (std::istream& in);
+	const std::string get_file_name(void) const;
+	const std::string get_table_name(void) const;
 
+	const std::string sql_header(void) const;				
+	const std::string sql_column_names(void) const;				
+	const std::string sql_values(void) const;				
+
+	void sql_read(std::istream &) override;
 	/** @}*/
 	
 	friend std::istream& mpileup (std::istream& in, Locus& x);

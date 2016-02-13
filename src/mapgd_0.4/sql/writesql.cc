@@ -13,15 +13,15 @@ int writesql(int argc, char *argv[])
 	/* All the variables that can be set from the command line */
 
 	env_t env;
-	env.setname("mapgd writesql");
-	env.setver(VERSION);
-	env.setauthor("Matthew Ackerman");
-	env.setdescription("writes mapgd output to an sql database.");
-	env.required_arg('d',"database", &db_name, 	&arg_setstr, 	"please provide an str.", "the name of a database storing infomation");
-	env.flag(	'v', "version",  &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
-	env.flag(	'h', "help", 	 &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
+	env.set_name("mapgd writesql");
+	env.set_version(VERSION);
+	env.set_author("Matthew Ackerman");
+	env.set_description("writes mapgd output to an sql database.");
+	env.required_arg('d',"database", &db_name, 	&arg_setstr, 	"please provide an str.", "the name of destination database");
+	env.flag(	'v', "version",  &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
+	env.flag(	'h', "help", 	 &env, 		&flag_help, 	"an error occurred while displaying the version message.", "prints the program version");
 
-	if (parsargs(argc, argv, env)!=0) printUsage(env); //Gets all the command line options, and prints usage on failure.
+	if (parsargs(argc, argv, env)!=0) print_usage(env); //Gets all the command line options, and prints usage on failure.
 
 	sqlite3 *db;
 	int rc;
@@ -36,16 +36,34 @@ int writesql(int argc, char *argv[])
 	}
 
 	Base_file file;
+	File_index index;
 	file.open(std::ios::in);
 	Data *line=file.read_header();
 
 	while(file.is_open() ){
 		db_begin(db);
 		db_make_table(db, line);
-		file.read(line);
-		while (file.table_is_open() ){
-			db_insert(db, line);
-			file.read(line);
+		if (line->get_table_name()==File_index::table_name) {
+			file.read(&index);
+			while (file.table_is_open() ){
+				db_insert(db, &index);
+				file.read(&index);
+			}
+		} else {
+			if (file.indexed() ){
+				Indexed_data *indexed_line=dynamic_cast <Indexed_data *> (line);
+				file.read(index, indexed_line);
+				while (file.table_is_open() ){
+					db_insert(db, line);
+					file.read(index, indexed_line);
+				}
+			} else {
+				file.read(line);
+				while (file.table_is_open() ){
+					db_insert(db, line);
+					file.read(line);
+				}
+			}
 		}
 		db_end(db);
 		line=file.read_header();
