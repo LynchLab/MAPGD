@@ -89,12 +89,13 @@ In the case where the allele command is being used to estimated the seven genoty
 	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map;
 	mapgd genotype -p pro -m map | mapgd relatedness > population-rel.out
 
-If you are interested in the linkage disequilibrium between sites, you will need to use the SQL database to prepare the input file. Don't panic though, this is easier than it sounds. The command mapgd read takes an SQL query, and we want to print all pairs of sites that are separated by less than some distance (let say 20 bp):
-	
+And linkage disequilibrium can be calculated in a similar manner:
+
+	mkfifo map;
+	mkfifo pro;
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
-	| mapgd proview -H seq1.header | mapgd pool -a 22 | mapgd write -d my_database.db;
-	mapgd read -q "f.pos IN (select r.pos from ALLELE r where distance(r.pos, f.pos)<=20 GROUP by f.pos" > linkage.in
-	cat linkage.in | mapgd linkage > linkage.out
+	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map;
+	mapgd linkage -p pro -m map > population-lnk.out
 
 <h2> FAQ </h2>
 
@@ -430,7 +431,11 @@ For output of the pool command please cite:
 
 	Lynch, M., D. Bost, S. Wilson, T. Maruki, and S. Harrison. 2014  "Population-Genetic Inference from Pooled-Sequencing Data." Genome Biol Evol 6:1210-1218.
 
-For output of the relatedness command plase cite:
+For the output of the linkage command please cite:
+	
+	Maruki, T., and M. Lynch 2014 "Genome-Wide Estimation of Linkage Disequilibrium from Population-Level High-Throughput Sequencing Data." Genetics 197: 1303-1313;
+
+For output of the relatedness command please cite:
 
 	Ackerman, M. S., P. Johri, K. Spitze and M. Lynch, 2015  A general statistical model for coefficients of relatedness and its application to the analysis of population-genomic data. In prep. 
 

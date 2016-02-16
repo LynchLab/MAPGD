@@ -111,6 +111,7 @@ clean:
 	rm -f *.o
 	rm -f data_types/*.o
 	rm -f sql/*.o
+	rm -f raw/*.o
 	rm -f ../../bin/*
 	rm -f ~/bin/mapgd
 .PHONY: clean
