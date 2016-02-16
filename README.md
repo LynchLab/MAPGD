@@ -1,10 +1,4 @@
-﻿<p align="center">
-<big>
-<big>
-  <a href="https://github.com/LynchLab/MAPGD/archive/master.zip">Download MAPGD</a>	
-</big>
-</big>
-</p>
+﻿->[#Download MAPGD]("https://github.com/LynchLab/MAPGD/archive/master.zip")<-
 
 ##MAPGD version 0.4
 
