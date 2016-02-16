@@ -1,5 +1,9 @@
 ﻿<p align="center">
+<big>
+<big>
   <a href="https://github.com/LynchLab/MAPGD/archive/master.zip">Download MAPGD</a>	
+</big>
+</big>
 </p>
 
 ##MAPGD version 0.4
