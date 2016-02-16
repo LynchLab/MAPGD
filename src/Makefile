@@ -12,7 +12,7 @@ all: $(SUBDIRS)
 .PHONY: all
 
 nosql: 
-	$(MAKE) -C $(SUBDIRS) noomp
+	$(MAKE) -C $(SUBDIRS) nosql
 .PHONY: nosql
 
 noomp: 

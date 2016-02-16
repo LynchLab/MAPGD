@@ -19,7 +19,6 @@ OBJDIR=obj
 CXX=g++
 
 #>! Just a list of flags to try at some later date.
-
 # -oFast -ffloat-store -fexcess-precision=style -ffast-math -fno-rounding-math -fno-signaling-nans
 # -fcx-limited-range -fno-math-errno -funsafe-math-optimizations -fassociative-math -freciprocal-math
 # -fassociative-math -freciprocal-math -ffinite-math-only -fno-signed-zeros -fno-trapping-math
@@ -64,28 +63,15 @@ BASE_OBJ=base.o \
 	raw/genotype.o \
 	raw/quartet.o \
 	raw/genotype_pair.o \
-	stream-tools.o \
+	stream-tools.o 
 
-#	proview.o \
-	compare-pooled.o \
-	readtable.o \
-	convert.o \
-
-#OBJS=$(COMMANDS) $(SQL_OBJ) $(BASE_OBJ)
-OBJS=$(COMMANDS) $(BASE_OBJ)
+OBJS=$(COMMANDS) $(SQL_OBJ) $(BASE_OBJ)
 
 nosql: CXXFLAGS:=$(CXXFLAGS) $(NOSQL)
-nosql: LDLIBS:=-lgsl -lgslcblas -lm
 nosql: OBJS:=$(COMMANDS) $(BASE_OBJ)
 nosql: all
-#config: SQL_LIB:=$(strip $wildcard /ext/
-#	ifeq ($OSS_CONF,)
-#		AUDIO_CFLAGS = "-I$(ALSALIBDIR) -DUSE_ALSA"
-#	else 
-#		AUDIO_CFLAGS = "-I${OSSLIBDIR} -DUSE_OSS"
-#	endif
 
-all: $(OBJS)  
+all: $(OBJS)
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 

@@ -1,6 +1,8 @@
-﻿##MAPGD version 0.4
+﻿#[<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip) 
 
-[<b>Download MAPGD.zip</b>](https://github.com/LynchLab/MAPGD/archive/master.zip) [(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
+##MAPGD version 0.4
+
+[(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
 
 [<b>Visit the MAPGD development page</b>](https://lynchlab.github.io/MAPGD/)
 
@@ -425,19 +427,19 @@ Ackerman, M. S., T. Maruki and M. Lynch. "MAPGD a program for the maximum likeli
 
 For output of the allele command please cite:
 
-	Maruki, T., and M. Lynch. 2015  "Genotype-Frequency Estimation from High-Throughput Sequencing Data." Genetics 201.2: 473-486.
+Maruki, T., and M. Lynch. 2015  "Genotype-Frequency Estimation from High-Throughput Sequencing Data." Genetics 201.2: 473-486.
 
 For output of the pool command please cite:
 
-	Lynch, M., D. Bost, S. Wilson, T. Maruki, and S. Harrison. 2014  "Population-Genetic Inference from Pooled-Sequencing Data." Genome Biol Evol 6:1210-1218.
+Lynch, M., D. Bost, S. Wilson, T. Maruki, and S. Harrison. 2014  "Population-Genetic Inference from Pooled-Sequencing Data." Genome Biol Evol 6:1210-1218.
 
 For the output of the linkage command please cite:
 	
-	Maruki, T., and M. Lynch 2014 "Genome-Wide Estimation of Linkage Disequilibrium from Population-Level High-Throughput Sequencing Data." Genetics 197: 1303-1313;
+Maruki, T., and M. Lynch 2014 "Genome-Wide Estimation of Linkage Disequilibrium from Population-Level High-Throughput Sequencing Data." Genetics 197: 1303-1313;
 
 For output of the relatedness command please cite:
 
-	Ackerman, M. S., P. Johri, K. Spitze and M. Lynch, 2015  A general statistical model for coefficients of relatedness and its application to the analysis of population-genomic data. In prep. 
+Ackerman, M. S., P. Johri, K. Spitze and M. Lynch, 2015  A general statistical model for coefficients of relatedness and its application to the analysis of population-genomic data. In prep. 
 
 <h3> Copyright </h3>
 

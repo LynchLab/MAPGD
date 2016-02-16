@@ -450,73 +450,75 @@ int PopLD(int argc, char *argv[])
 		std::cerr << pro_in.get_pos(* (e_locus++) ) << ", " << map_in.get_pos(*(e_allele++) ) << std::endl;
 	}*/
 
-	while (read<BUFFER_SIZE && map_in.table_is_open() ) {
-		size_t number;
-		id1_t pos1=locus1.get_abs_pos();
-		id1_t pos2=locus2.get_abs_pos();
-		if ( (pos2-pos1)<max_d) {
-			if ( (pos2-pos1)>min_dist ) {
-				number=count_sites(locus1, locus2);
-				if ( number >= min_number ) {
-					locus_buffer1[read]=locus1;
-					allele_buffer1[read]=allele1;
-					locus_buffer2[read]=locus2;
-					allele_buffer2[read]=allele2;
-					read++;
+	while (map_in.table_is_open() ){
+		while (read<BUFFER_SIZE && map_in.table_is_open() ) {
+			size_t number;
+			id1_t pos1=locus1.get_abs_pos();
+			id1_t pos2=locus2.get_abs_pos();
+			if ( (pos2-pos1)<max_d) {
+				if ( (pos2-pos1)>min_dist ) {
+					number=count_sites(locus1, locus2);
+					if ( number >= min_number ) {
+						locus_buffer1[read]=locus1;
+						allele_buffer1[read]=allele1;
+						locus_buffer2[read]=locus2;
+						allele_buffer2[read]=allele2;
+						read++;
+					}
+				}
+			} else { 
+				s_locus++;
+				s_allele++;
+				if (s_locus!=end_locus && e_locus!=end_locus){
+					locus1=*s_locus;
+					allele1=*s_allele;
+					e_locus=s_locus;
+					e_allele=s_allele;
+					locus_list.pop_front();
+					allele_list.pop_front();
+				} else {
+					e_allele=end_allele;
 				}
 			}
-		} else { 
-			s_locus++;
-			s_allele++;
-			if (s_locus!=end_locus && e_locus!=end_locus){
-				locus1=*s_locus;
-				allele1=*s_allele;
-				e_locus=s_locus;
-				e_allele=s_allele;
-				locus_list.pop_front();
-				allele_list.pop_front();
+			if (e_allele!=end_allele) {
+				locus2=*(e_locus);
+				allele2=*(e_allele);
+				e_locus++;
+				e_allele++;
 			} else {
-				e_allele=end_allele;
+				std::list <Locus>::iterator new_locus=e_locus;
+				std::list <Allele>::iterator new_allele=e_allele;
+				new_locus--;
+				new_allele--;
+				locus_list.insert(e_locus, BUFFER_SIZE, locus1);
+				allele_list.insert(e_allele, BUFFER_SIZE, allele1);
+				end_allele=allele_list.end();
+				end_locus=locus_list.end();
+				//std::cerr << end_locus << "-"  << new_locus << std::endl;
+				while(new_locus!=end_locus){
+					pro_in.read( *(new_locus) );
+						map_in.read( *(new_allele) );
+					id1_t map_pos=map_in.get_pos(*new_allele);
+					while(pro_in.get_pos(*new_locus)<map_pos && pro_in.table_is_open() ) 
+						pro_in.read(*new_locus);
+					new_locus++;
+					new_allele++;
+				}
 			}
 		}
-		if (e_allele!=end_allele) {
-			locus2=*(e_locus);
-			allele2=*(e_allele);
-			e_locus++;
-			e_allele++;
-		} else {
-			std::list <Locus>::iterator new_locus=e_locus;
-			std::list <Allele>::iterator new_allele=e_allele;
-			new_locus--;
-			new_allele--;
-			locus_list.insert(e_locus, BUFFER_SIZE, locus1);
-			allele_list.insert(e_allele, BUFFER_SIZE, allele1);
-			end_allele=allele_list.end();
-			end_locus=locus_list.end();
-			//std::cerr << end_locus << "-"  << new_locus << std::endl;
-			while(new_locus!=end_locus){
-				pro_in.read( *(new_locus) );
-				map_in.read( *(new_allele) );
-				id1_t map_pos=map_in.get_pos(*new_allele);
-				while(pro_in.get_pos(*new_locus)<map_pos && pro_in.table_is_open() ) 
-					pro_in.read(*new_locus);
-				new_locus++;
-				new_allele++;
-			}
+	
+		#ifndef NOOMP
+		#pragma omp for
+		#endif
+		for (uint32_t x=0; x<read; ++x){
+			size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
+			// Estimate the LD coefficient D between the polymorphic sites 
+			//TODO dont deleate this
+			linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major, (uint8_t)allele_buffer1[x].minor, (uint8_t)allele_buffer2[x].major, (uint8_t)allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
 		}
-	}
-
-	#ifndef NOOMP
-	#pragma omp for
-	#endif
-	for (uint32_t x=0; x<read; ++x){
-		size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
-		// Estimate the LD coefficient D between the polymorphic sites 
-		//TODO dont deleate this
-		linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major, (uint8_t)allele_buffer1[x].minor, (uint8_t)allele_buffer2[x].major, (uint8_t)allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
-	}
-	for (size_t c=0; c<read; ++c){ //TODO
-		ld_out.write(linkage_buffer[c]);
+		for (size_t c=0; c<read; ++c){ //TODO
+			ld_out.write(linkage_buffer[c]);
+		}
 	}
 	return 0;
 }

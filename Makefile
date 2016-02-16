@@ -4,12 +4,12 @@ $(SUBDIRS):
 	$(MAKE) -C $@
 .PHONY: $(SUBDIRS) 
 
-all: $(SUBDIRS)
-.PHONY: all
-
 nosql: 
 	$(MAKE) -C $(SUBDIRS) nosql
 .PHONY: nosql
+
+all: $(SUBDIRS)
+.PHONY: all
 
 noomp: 
 	$(MAKE) -C $(SUBDIRS) noomp
