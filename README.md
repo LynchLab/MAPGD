@@ -1,4 +1,4 @@
-﻿->[#Download MAPGD]("https://github.com/LynchLab/MAPGD/archive/master.zip")<-
+﻿[Download MAPGD]("https://github.com/LynchLab/MAPGD/archive/master.zip")
 
 ##MAPGD version 0.4
 
