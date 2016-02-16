@@ -7,7 +7,7 @@
 #include "genotype.h"
 #include "locus.h"
 #include "map-file.h"
-
+#include "circular_list.h"
 #include "datatypes.h"
 
 #include <iostream>
@@ -16,6 +16,7 @@
 #include <sstream>
 #include <math.h>
 #include <vector>
+#include <queue>
 #include <algorithm>
 #include <limits.h>
 

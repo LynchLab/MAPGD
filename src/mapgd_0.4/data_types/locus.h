@@ -80,16 +80,17 @@ public:
 	 * Functions that were once used, but are no longer usful.
 	 * @{
 	 */
-	char getname( const count_t &) const;		//!< Get the nucleotide represented by the count at the N'th indexed quartet_t.
-	char getname_gt( const count_t &) const;	//!< Get the nucleotide represented by the count at the N'th indexed quartet_t, return * if the count equals the N+1 indexed quartet.
-	count_t get_extraid(const size_t &) const;	//!< Get the extraid of the Locus. Used to represent the reference call.
-	void set_extraid(const count_t &, const size_t &);	//!< Set the extraid of the Locus. Just used to represent the reference call. 
+//	char getname( const count_t &) const;		//!< Get the nucleotide represented by the count at the N'th indexed quartet_t.
+//	char getname_gt( const count_t &) const;	//!< Get the nucleotide represented by the count at the N'th indexed quartet_t, return * if the count equals the N+1 indexed quartet.
+//	count_t get_extraid(const size_t &) const;	//!< Get the extraid of the Locus. Used to represent the reference call.
+//	void set_extraid(const count_t &, const size_t &);	//!< Set the extraid of the Locus. Just used to represent the reference call. 
 	/* this will definetly by dropped */
 	/** @} */
 
 
 	using Indexed_data::get_abs_pos;		//!< Get the absolute position of the Locus.
 	using Indexed_data::set_abs_pos;		//!< Set the absolute position of the Locus.
+
 	void resize(const size_t &);			//!< Change the number of quartet_t s at the Locus.
 
 	/* @defgroup iterators Iterators

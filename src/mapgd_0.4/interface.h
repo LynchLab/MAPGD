@@ -76,7 +76,8 @@ class flag_t {
 		emsg="emsg unset";
 		umsg="umsg unset";
 	};
-	flag_t (char opt_, char* lopt_, void *parm_, int (*func_)(void *), char *emsg_, char*umsg_){
+
+	flag_t (char opt_, char* lopt_, void *parm_, int (*func_)(void *), char *emsg_, char *umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		func=func_;
@@ -84,6 +85,7 @@ class flag_t {
 		emsg=emsg_;
 		umsg=umsg_;
 	};
+
 	bool set;	//!< flag toggles whether option has been set.
 	char opt;	//!< the option name.
 	char *lopt;	//!< the long option name.
@@ -100,6 +102,7 @@ class flag_t {
 class arg_t {
 	private:
 	public:
+
 	arg_t(){
 		opt='?';
 		lopt="error";
@@ -112,12 +115,11 @@ class arg_t {
 	};
 
 	arg_t(const char opt_, 
-		char* lopt_, 
-		void * parm_, 
+		char *lopt_, 
+		void *parm_, 
 		int (*func_)(int, char **, void *), 
 		char *emsg_, 
-		char*umsg_){
-
+		char *umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		parm=parm_;
@@ -127,7 +129,26 @@ class arg_t {
 		set=false;
 		required=false;
 		operand_type="none";
-	};
+	}
+	
+	/*
+	template <class Type>
+	arg_t(const char opt_, 
+		char *lopt_, 
+		Type &parm_, 
+		char *emsg_, 
+		char *umsg_){
+//		std::is_const<Type>::value
+		opt=opt_;
+		lopt=lopt_;
+		parm=parm_;
+		func=func_;
+		emsg=emsg_;
+		umsg=umsg_;
+		set=false;
+		required=false;
+		operand_type="none";
+	};*/
 
 	bool set;   //!< flag toggles whether option has been set.
 	bool required;

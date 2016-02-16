@@ -11,6 +11,10 @@ $(SUBDIRS):
 all: $(SUBDIRS)
 .PHONY: all
 
+nosql: 
+	$(MAKE) -C $(SUBDIRS) noomp
+.PHONY: nosql
+
 noomp: 
 	$(MAKE) -C $(SUBDIRS) noomp
 .PHONY: noomp

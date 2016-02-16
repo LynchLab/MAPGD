@@ -70,7 +70,8 @@ arg_setvectorstr(int argc, char **argv, void *parm)
 }
 
 /*@Breif : sets a vector of ints from a string. */
-int arg_setvectorint(int argc, char **argv, void *parm)
+int
+arg_setvectorint(int argc, char **argv, void *parm)
 {
 	std::vector <size_t> *v=(std::vector <size_t> *)(parm);
 	if (argc>1){
@@ -101,7 +102,8 @@ int arg_setvectorint(int argc, char **argv, void *parm)
 }
 
 //TODO Comment
-int arg_setint(int argc, char **argv, void *parm)
+int
+arg_setint(int argc, char **argv, void *parm)
 {
 	if (argc>1){
 		if (isint(argv[1])){
@@ -114,7 +116,8 @@ int arg_setint(int argc, char **argv, void *parm)
 }
 
 //TODO Comment
-int arg_set2int(int argc, char **argv, void *parm)
+int
+arg_set2int(int argc, char **argv, void *parm)
 {
 	if (argc>2){
 		if (isint(argv[1]) && isint(argv[2]) ){
@@ -127,7 +130,8 @@ int arg_set2int(int argc, char **argv, void *parm)
 
 
 //TODO Comment
-int arg_setchar(int argc, char **argv, void *parm)
+int
+arg_setchar(int argc, char **argv, void *parm)
 {
 	if (argc>1){
 		*(char *)(parm)=argv[1][0];
@@ -136,7 +140,8 @@ int arg_setchar(int argc, char **argv, void *parm)
 }
 
 //TODO Comment
-int arg_setstr(int argc, char **argv, void *parm)
+int
+arg_setstr(int argc, char **argv, void *parm)
 {
         if (argc>1){
                 *(std::string *)(parm)=argv[1];
@@ -145,7 +150,8 @@ int arg_setstr(int argc, char **argv, void *parm)
 }
 
 //TODO Comment
-int arg_setc_str(int argc, char **argv, void *parm)
+int 
+arg_setc_str(int argc, char **argv, void *parm)
 {
 	if (argc>1){
 		*(char **)(parm)=argv[1];
@@ -154,7 +160,8 @@ int arg_setc_str(int argc, char **argv, void *parm)
 }
 
 //TODO Comment
-int arg_setfloat_t(int argc, char **argv, void *parm)
+int 
+arg_setfloat_t(int argc, char **argv, void *parm)
 {
 	if (argc>1){
 		*(float_t *)(parm)=atof(argv[1]);
@@ -164,14 +171,16 @@ int arg_setfloat_t(int argc, char **argv, void *parm)
 
 
 //TODO Comment
-int flag_set(void *parm)
+int 
+flag_set(void *parm)
 {
 	*(bool *)(parm)=!(*(bool *)(parm));
 	return 0;
 }
 
 //TODO Comment
-int flag_version(void *parm)
+int 
+flag_version(void *parm)
 {
 	print_version(*(env_t *) parm);
 	return 0;
@@ -179,21 +188,24 @@ int flag_version(void *parm)
 
 
 //! prints the long help statment to stdout (print_help).
-int flag_help(void *parm)
+int
+flag_help(void *parm)
 {
 	print_help(*(env_t *) parm);
 	return 0;
 }
 
 //TODO Comment
-int flag_usage(void *parm)
+int
+flag_usage(void *parm)
 {
 	print_usage(*(env_t *) parm);
 	return 0;
 }
 
 //TODO Comment
-int arg_error(int argc, char **argv, void *parm)
+int
+arg_error(int argc, char **argv, void *parm)
 {
 	std::cerr << "error: option functor unset\n";
 	return 1;

@@ -15,14 +15,15 @@ baysian_genotype(const int &major, const int &minor, const float_t &freq, const 
 
 	N=count(quart);
 
-	count_t M=quart.base[major], m=quart.base[minor], E=N-M-m;
+	float_t M=quart.base[major], m=quart.base[minor];
+	float_t E=N-M-m;
 
 	float_t ln_homozygous_correct=log(1.-error);
 	float_t ln_heterozygous_correct=log( (1.-error)/2.+error/6.);
 	float_t not_correct=log(error/3.);
 
 	lMM=M*ln_homozygous_correct+not_correct*(m+E);
-	lmm=(M+m)*ln_heterozygous_correct+not_correct*(E)-log(1.001);
+	lMm=(M+m)*ln_heterozygous_correct+not_correct*E;//#-log(1.001);
 	lmm=m*ln_homozygous_correct+not_correct*(M+E);
 
 //	MM=M*lnc+notc*(m+E)
@@ -32,16 +33,22 @@ baysian_genotype(const int &major, const int &minor, const float_t &freq, const 
 	float_t norm=log(exp(lMM)+exp(lMm)+exp(lmm) );
 
 	if (N>0.01){
-		lMM=norm-lMM;
-		lMm=norm-lMm;
-		lmm=norm-lmm;
+		lMM-=norm;
+		lMm-=norm;
+		lmm-=norm;
 	} else {
-		lMM=-log(1./3.);
-		lMm=-log(1./3.);
-		lmm=-log(1./3.);
+		lMM=log(1./3.);
+		lMm=log(1./3.);
+		lmm=log(1./3.);
 	}
 
-	return Genotype(lMM, lMm, lmm, N);	
+//	std::cerr << ln_homozygous_correct << std::endl; 
+//	std::cerr << ln_heterozygous_correct << std::endl; 
+//	std::cerr << not_correct << std::endl; 
+//	std::cerr << major << ", " << minor << ":" << quart << ", N:" << N << ", M:" <<M << ", m:"<< m  <<", E:"<< E << std::endl; 
+//	std::cerr << error << ":" << quart << ", lMM:" << lMM << ", lMm:" << lMm << ", lmm:"<< lmm  << std::endl; 
+
+	return Genotype(-lMM, -lMm, -lmm, N);	
 //	return Genotype(lMM, lMm, lmm, 0);	
 }
 
@@ -120,7 +127,6 @@ int map2genotype(int argc, char *argv[])
 		map_pos=map_in.get_pos(map_record);
 		while(pro_in.get_pos(pro_record)<map_pos && !pro_in.eof() ){
 			pro_in.read(pro_record);
-//			std::cerr << pro_record << std::endl;
 		}
 		if (map_pos==pro_in.get_pos(pro_record) ){
 			get_genotypes(map_record, pro_record, gcf_record);

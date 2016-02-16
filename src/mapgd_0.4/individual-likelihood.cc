@@ -202,7 +202,7 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 		det=J[0][0]*iJ[0][0]+J[0][1]*iJ[1][0]+J[0][2]*iJ[2][0];
 
 		std::cerr << det << std::endl;
-		//if (det<0.00001) det=0.00001;
+		if (det<0.00001) break;//det=0.00001;
 
 		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
 		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;

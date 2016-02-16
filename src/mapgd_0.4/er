@@ -1,0 +1,39 @@
+PopLD.cc: In function ‘Linkage estimate_D(const float_t&, const uint8_t&, const uint8_t&, const uint8_t&, const uint8_t&, float_t&, float_t&, float_t&, float_t&, const count_t&, const Locus&, const Locus&)’:
+PopLD.cc:328:6: error: ‘class Linkage’ has no member named ‘set_abs’
+  est.set_abs(mononuc_count_1.get_abs() );
+      ^
+PopLD.cc:328:30: error: ‘const class Locus’ has no member named ‘get_abs’
+  est.set_abs(mononuc_count_1.get_abs() );
+                              ^
+PopLD.cc:329:6: error: ‘class Linkage’ has no member named ‘set_abs_Y’
+  est.set_abs_Y(mononuc_count_2.get_abs() );
+      ^
+PopLD.cc:329:32: error: ‘const class Locus’ has no member named ‘get_abs’
+  est.set_abs_Y(mononuc_count_2.get_abs() );
+                                ^
+PopLD.cc:92:22: warning: unused variable ‘adj_Dmin’ [-Wunused-variable]
+  float_t Dmin, Dmax, adj_Dmin, adj_Dmax;
+                      ^
+PopLD.cc:92:32: warning: unused variable ‘adj_Dmax’ [-Wunused-variable]
+  float_t Dmin, Dmax, adj_Dmin, adj_Dmax;
+                                ^
+PopLD.cc: In function ‘int PopLD(int, char**)’:
+PopLD.cc:457:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if ( (pos2-pos1)<max_d) {
+                    ^
+PopLD.cc:458:21: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+    if ( (pos2-pos1)>min_dist ) {
+                     ^
+PopLD.cc:362:6: warning: unused variable ‘print_help’ [-Wunused-variable]
+  int print_help = 0;
+      ^
+PopLD.cc:381:6: warning: unused variable ‘argz’ [-Wunused-variable]
+  int argz = 1; // argument counter
+      ^
+PopLD.cc:383:8: warning: unused variable ‘out_file_name’ [-Wunused-variable]
+  char *out_file_name;
+        ^
+PopLD.cc:429:8: warning: unused variable ‘loc’ [-Wunused-variable]
+  id1_t loc=0, read=0;
+        ^
+make: *** [PopLD.o] Error 1

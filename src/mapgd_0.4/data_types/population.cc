@@ -61,6 +61,7 @@ void
 Population::write (std::ostream& out) const
 {
 	std::vector <Genotype>::const_iterator s_it=likelihoods.cbegin(), end=likelihoods.cend();
+	out << m;
 	while(s_it!=end){
 		out << '\t' << *s_it;
 		s_it++;	
@@ -73,7 +74,7 @@ Population::read (std::istream& in)
         std::string line;
         std::getline(in, line);
         std::stringstream line_stream(line);
-
+	line_stream >> m;
 	std::vector <Genotype>::iterator s_it=likelihoods.begin(), end=likelihoods.end();
 	while(s_it!=end){
 		line_stream >> *s_it;

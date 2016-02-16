@@ -14,6 +14,7 @@ CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fopenmp -fno-exceptions
 LDLIBS=-l sqlite3 -lgsl -lgslcblas -lm
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
+NOSQL=-D NOSQL
 OBJDIR=obj
 CXX=g++
 
@@ -33,11 +34,13 @@ COMMANDS=mapgd.o \
 	proview.o \
 	interface.o \
 	map2genotype.o \
-	relatedness.o \
-	sql/writesql.o \
-	sql/readsql.o 	
+	relatedness.o
 
-OBJS=	base.o \
+SQL_OBJ=sql/writesql.o \
+	sql/readsql.o \
+	sql/db_api.o 
+
+BASE_OBJ=base.o \
 	binomial.o \
 	data_types/allele.o \
 	data_types/data.o \
@@ -49,6 +52,7 @@ OBJS=	base.o \
 	data_types/relatedness_data.o \
 	data_types/locus.o \
 	data_types/sample_name.o \
+	circular_list.o \
 	filter.o \
 	individual-likelihood.o \
 	lnmultinomial.o \
@@ -61,15 +65,25 @@ OBJS=	base.o \
 	raw/quartet.o \
 	raw/genotype_pair.o \
 	stream-tools.o \
-	sql/db_api.o 
 
 #	proview.o \
 	compare-pooled.o \
 	readtable.o \
 	convert.o \
-	PopLD.o \
 
-OBJS+=$(COMMANDS)
+#OBJS=$(COMMANDS) $(SQL_OBJ) $(BASE_OBJ)
+OBJS=$(COMMANDS) $(BASE_OBJ)
+
+nosql: CXXFLAGS:=$(CXXFLAGS) $(NOSQL)
+nosql: LDLIBS:=-lgsl -lgslcblas -lm
+nosql: OBJS:=$(COMMANDS) $(BASE_OBJ)
+nosql: all
+#config: SQL_LIB:=$(strip $wildcard /ext/
+#	ifeq ($OSS_CONF,)
+#		AUDIO_CFLAGS = "-I$(ALSALIBDIR) -DUSE_ALSA"
+#	else 
+#		AUDIO_CFLAGS = "-I${OSSLIBDIR} -DUSE_OSS"
+#	endif
 
 all: $(OBJS)  
 	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
@@ -80,6 +94,7 @@ DATA_SOURCE=data_types\*.cc
 data.h:
 	@echo "updating data_types"
 	touch $(DATA_SOURCE)
+
 
 noomp: CXXFLAGS:=$(CXXFLAGS) $(NOOMP)
 noomp: all

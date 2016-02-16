@@ -14,18 +14,19 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
-//#include "compare-pooled.h"
 #include "estimate-pooled.h"
 #include "estimate-individual.h"
 #include "estimate-fst.h"
 #include "relatedness.h"
 #include "proview.h"
-//#include "convert.h"
 #include "filter.h"
 #include "map2genotype.h"
-//#include "PopLD.h"
+#include "PopLD.h"
 #include "sam2idx.h"
+
+#ifndef NOSQL
 #include "writesql.h"
 #include "readsql.h"
+#endif 
 
 #endif

@@ -95,7 +95,7 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 	est.set_Ni(Ni);
 	est.set_p(best_p);
 	est.set_q(best_q);
-	maxll = -FLT_MAX;	
+	maxll = -FLT_MAX;
 
 	// Find the minimum and maximum possible values of D given the estimated allele frequencies
 	if ( best_p*best_q <= (1.0-best_p)*(1.0-best_q) ) {
@@ -321,10 +321,12 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 		}
 	}
 	
-	// OH HELL NO!!!! You can go to hell. You can go to hell and you can die.
+	// OH HELL NO!!!! 
 	// if (null_llhood >= maxll) {
 	//	maxll = null_llhood;
 	// }
+	est.set_abs_pos(mononuc_count_1.get_abs_pos() );
+	est.set_abs_pos_y(mononuc_count_2.get_abs_pos() );
 	est.set_D(t_best_D);
 	est.set_fit(maxll);
 	est.set_null(null_llhood);
@@ -348,117 +350,69 @@ int PopLD(int argc, char *argv[])
 {
 
 	/* All the variables that can be set from the command line */
-/*
-	std::string infile="";
-	std::string outfile="";
-	std::string outfilepro;
 
-	bool verbose=false;
-	bool quite=false;
-	bool noheader=false;
-	float_t EMLMIN=0.001;
-	count_t MIN=0;
-	float_t A=0.00;
-	float_t MINGOF=2.00;
-	count_t MAXPITCH=96;
-
-	count_t skip=0;
-	count_t stop=-1;
+	std::string pro_name="";
+	std::string map_name="";
 
 	std::vector <int> ind;
 
+	int max_d = INT_MAX;
+	int min_dist=0;
+	double min_number = 10.0;
+	int print_help = 0;
 
 	env_t env;
 	env.set_name("mapgd ld");
 	env.set_version(VERSION);
 	env.set_author("Takahiro Maruki");
-	env.set_author("Uses a maximum likelihood approach to estimate gametic phase disequalibrium from population data.");
+	env.set_description("Uses a maximum likelihood approach to estimate gametic phase disequalibrium from population data.");
 
-	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdout).");
-	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
-	env.optional_arg('p',"out-pro", &outfilepro,	&arg_setstr, 	"an error occured while setting the name of the output file.", "name of a 'cleaned' pro file (default none).");
-	env.optional_arg('I',"individuals", &ind, 	&arg_setvectorint, "please provide a list of integers", "the individuals to be used in estimates.\n\t\t\t\ta comma seperated list containing no spaces, and the format X-Y can be used to specify a range (defualt ALL).");
-	env.optional_arg('m',"minerror", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "prior estimate of the error rate (defualt 0.001).");
-
-//	env.optional_arg('c',"columns", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "number of columsn in profile (if applicable).");
-
-	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
-	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
-	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
-	env.optional_arg('T',"stop", 	&stop,		&arg_setint, 	"please provide an int.", "maximum number of sites to be analyzed (default All sites)");
-	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
+	env.required_arg('p',"pro", 	&pro_name,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdout).");
+	env.required_arg('m',"map", 	&map_name,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
+	env.optional_arg('M',"min_n", 	&min_number,	&arg_setint, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
+	env.optional_arg('D',"max_d", 	&max_d,		&arg_setint, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
-	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occured while enabeling verbose excecution.", "prints more information while the command is running.");
-	env.flag(	'q', "quite", 	&quite,		&flag_set, 	"an error occured while enabeling quite execution.", "prints less information while the command is running.");
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
-	*/
 	
 	// Default values of the options
-	const char* out_file_name = {"Out_PopLD.txt"};
-	int max_d = INT_MAX;
-	double min_Ni = 10.0;
-	int print_help = 0;
 
-	int min_dist=0;
 	int argz = 1;	// argument counter
 
-	// Read the specified setting
-	while( (argz<argc) && (argv[argz][0] == '-') ) {
-		if (strcmp(argv[argz], "-h") == 0) {
-			print_help = 1;
-		} else if (strcmp(argv[argz], "-out") == 0) {
-			out_file_name = argv[++argz];
-		} else if (strcmp(argv[argz], "-max_d") == 0) {
-			sscanf(argv[++argz], "%d", &max_d);
-		} else if (strcmp(argv[argz], "-min_Ni") == 0) {
-                        sscanf(argv[++argz], "%lf", &min_Ni);
-		} else {
-			fprintf(stderr, "unknown option %s\n", argv[argz]);
-			print_help = 1;
-			break;
-		}
-		argz++;
-	}
-	if (print_help) {	// print error/usage message ?
-		fprintf(stderr, "USAGE: %s {<options>}\n", argv[0]);
-		fprintf(stderr, "	options: -h: print the usage message\n");
-		fprintf(stderr, "       -out <s>: specify the output file name\n");
-		fprintf(stderr, "	-max_d <d>: specify the maximum value of the distance between polymorphic sites allowed for estimating LD\n");
-		fprintf(stderr, "       -min_Ni <f>: specify the minimum effective sample size required for estimating LD\n");
-		exit(1);
-	}
+	char *out_file_name;
 
-	if (max_d != INT_MAX) {
-		printf("max_d: %d\n", max_d);
-	}
+	Indexed_file <Locus> pro_in;
+	Indexed_file <Allele> map_in;
 
-	if (min_Ni != 10.0) {
-		printf("min_Ni: %f\n", min_Ni);
-	}
-
-	Indexed_file <Allele> in_map1, in_map2;
-	Indexed_file <Locus> in_pro1, in_pro2;
-
-	in_map1.open(std::ios::in);	// Try to open the input file
-	in_pro1.open(std::ios::in);	// Try to open the input file
-	in_map2.open(std::ios::in);	// Try to open the input file
-	in_pro2.open(std::ios::in);	// Try to open the input file
+	map_in.open(map_name.c_str() ,std::ios::in);	// Try to open the input file
+	pro_in.open(pro_name.c_str(), std::ios::in);	// Try to open the input file
 	
-	Flat_file <Linkage> lsd_out;	// Totally a typo folks
+	Indexed_file <Linkage> ld_out;	
+	ld_out.open(std::ios::out);
 
-	Allele allele1=in_map1.read_header();
+	Allele allele1=map_in.read_header();
 	Allele allele2=allele1;	
-	Locus locus1=in_pro1.read_header();	
+	Locus locus1=pro_in.read_header();	
 	Locus locus2=locus1;	
+	ld_out.set_index(pro_in.get_index() );
+	Linkage linkage;
+	ld_out.write_header(linkage);
 
-	Linkage linkage;//=
+	/*To avoid allocating and deallocating a bunch of memory I'm using a 
+	 * circular buffer. However, probably results in little if any 
+	 * performance gain, and definitely makes things less stable. I 
+	 * apologize for any problems this creates.
+	 */
+
+	std::list <Locus> locus_list;
 
 	Locus locus_buffer1[BUFFER_SIZE];
-	Allele allele_buffer1[BUFFER_SIZE];
-
 	Locus locus_buffer2[BUFFER_SIZE];
+
+	std::list <Allele> allele_list;
+
+	Allele allele_buffer1[BUFFER_SIZE];
 	Allele allele_buffer2[BUFFER_SIZE];
 
 	std::fill_n(locus_buffer1, BUFFER_SIZE, locus1);
@@ -474,40 +428,95 @@ int PopLD(int argc, char *argv[])
 
 	id1_t loc=0, read=0;
 
-//	while ??
-	for (size_t x=0; x<BUFFER_SIZE; x++) {
-		size_t Ni;
-		for (size_t y=x+1; y<BUFFER_SIZE; y++) {
-			//locus1=?;
-			//locus2=?;
-			id1_t pos1=locus1.get_abs_pos();
-			id1_t pos2=locus2.get_abs_pos();
-			if ( (pos1-pos2)<max_d) {
-				if ( (pos1-pos2)>min_dist ) {
-					Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
-					if ( Ni >= min_Ni ) {
-						locus_buffer1[read]=locus1;
-						allele_buffer1[read]=allele1;
-						locus_buffer2[read]=locus2;
-						allele_buffer2[read]=allele2;
-						read++;
-					}
+	locus_list.insert(locus_list.end(), BUFFER_SIZE, locus1);
+	allele_list.insert(allele_list.end(), BUFFER_SIZE, allele1);
+
+	std::list <Locus>::iterator s_locus=locus_list.begin(), e_locus=locus_list.begin(), end_locus=locus_list.end();
+	std::list <Allele>::iterator s_allele=allele_list.begin(), e_allele=allele_list.begin(), end_allele=allele_list.end();
+
+	
+	while(e_allele!=end_allele){
+		pro_in.read(*(e_locus) );
+		map_in.read(*(e_allele) );
+		id1_t map_pos=map_in.get_pos(*e_allele);
+		while(pro_in.get_pos(*e_locus)<map_pos && pro_in.table_is_open() ) 
+				pro_in.read(*e_locus);
+		e_locus++;
+		e_allele++;
+	}
+	e_locus=locus_list.begin();
+	e_allele=allele_list.begin();
+	/*while(e_locus!=end_locus){
+		std::cerr << pro_in.get_pos(* (e_locus++) ) << ", " << map_in.get_pos(*(e_allele++) ) << std::endl;
+	}*/
+
+	while (read<BUFFER_SIZE && map_in.table_is_open() ) {
+		size_t number;
+		id1_t pos1=locus1.get_abs_pos();
+		id1_t pos2=locus2.get_abs_pos();
+		if ( (pos2-pos1)<max_d) {
+			if ( (pos2-pos1)>min_dist ) {
+				number=count_sites(locus1, locus2);
+				if ( number >= min_number ) {
+					locus_buffer1[read]=locus1;
+					allele_buffer1[read]=allele1;
+					locus_buffer2[read]=locus2;
+					allele_buffer2[read]=allele2;
+					read++;
 				}
-			} else break;
+			}
+		} else { 
+			s_locus++;
+			s_allele++;
+			if (s_locus!=end_locus && e_locus!=end_locus){
+				locus1=*s_locus;
+				allele1=*s_allele;
+				e_locus=s_locus;
+				e_allele=s_allele;
+				locus_list.pop_front();
+				allele_list.pop_front();
+			} else {
+				e_allele=end_allele;
+			}
+		}
+		if (e_allele!=end_allele) {
+			locus2=*(e_locus);
+			allele2=*(e_allele);
+			e_locus++;
+			e_allele++;
+		} else {
+			std::list <Locus>::iterator new_locus=e_locus;
+			std::list <Allele>::iterator new_allele=e_allele;
+			new_locus--;
+			new_allele--;
+			locus_list.insert(e_locus, BUFFER_SIZE, locus1);
+			allele_list.insert(e_allele, BUFFER_SIZE, allele1);
+			end_allele=allele_list.end();
+			end_locus=locus_list.end();
+			//std::cerr << end_locus << "-"  << new_locus << std::endl;
+			while(new_locus!=end_locus){
+				pro_in.read( *(new_locus) );
+				map_in.read( *(new_allele) );
+				id1_t map_pos=map_in.get_pos(*new_allele);
+				while(pro_in.get_pos(*new_locus)<map_pos && pro_in.table_is_open() ) 
+					pro_in.read(*new_locus);
+				new_locus++;
+				new_allele++;
+			}
 		}
 	}
+
 	#ifndef NOOMP
-	#pragma omp private (loc, read)   
+	#pragma omp for
 	#endif
-			int x=0;
-			size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
-			// Estimate the LD coefficient D between the polymorphic sites 
-			//TODO dont deleate this
-			linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major, (uint8_t)allele_buffer1[x].minor, (uint8_t)allele_buffer2[x].major, (uint8_t)allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
-//		} 
-//	}
+	for (uint32_t x=0; x<read; ++x){
+		size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
+		// Estimate the LD coefficient D between the polymorphic sites 
+		//TODO dont deleate this
+		linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major, (uint8_t)allele_buffer1[x].minor, (uint8_t)allele_buffer2[x].major, (uint8_t)allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
+	}
 	for (size_t c=0; c<read; ++c){ //TODO
-		lsd_out.write(linkage_buffer[c]);
+		ld_out.write(linkage_buffer[c]);
 	}
 	return 0;
 }

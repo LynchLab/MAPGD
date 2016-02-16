@@ -20,7 +20,18 @@ Linkage::read (std::istream& in)
 void 
 Linkage::write(std::ostream& out) const
 {
-
+	out << id1_y_ << delim;
+	out << D_ << delim;
+	out << Dprime() << delim;
+	out << Dsq() << delim;
+	out << rsq() << delim;
+	out << adj_D() << delim;
+	out << adj_Dprime() << delim;
+	out << adj_Dsq() << delim;
+	out << adj_rsq() << delim;
+	out << Ni_ << delim;
+	out << ll();
+//	out << std::endl;
 }
 
 const std::string 

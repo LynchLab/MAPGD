@@ -30,18 +30,17 @@ int main (int argc, char* argv[])
 	env.command(	' ',"filter",	&filter,	 		"an error occured while calling filter", "Filter sites in '.map' files");			 	//DONE
 	env.command(	' ',"genotype",	&map2genotype,	 		"an error occured while calling genotype", "Calculate genotype probabilities for individuals"); 	//DONE
 //	env.command(	' ',"vcf",	&vcf,		 		"an error occured while calling vcf", "Convert output to vcf format.");					//TODO
-//	env.command(	' ',"linkage", 	&PopLD,	 			"an error occured while calling fst", "Estimates linkage disequilibrium between loci");			//TODO
+	env.command(	' ',"linkage", 	&PopLD,	 			"an error occured while calling fst", "Estimates linkage disequilibrium between loci");			//DONE
 	env.command(	' ',"pool",	&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");			//DONE
 	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
 	env.command(	' ',"relatedness",&estimateRel,	 		"an error occured while calling er", "Estimates the pairwise relatedness of individuals");		//DONE
 	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occured while calling genotype", "Reformats a sam header file to a idx file"); 		//DONE
 
+#ifndef NOSQL
 	env.command(	' ',"read", 	&readsql, 			"an error occured while calling proview", "Reads data from the SQL database");				//TODO
 	env.command(	' ',"write", 	&writesql, 			"an error occured while calling proview", "Writes data to the SQL database");				//DONE
-
+#endif
 //	env.command(	' ',"mlrho", 	&mlrho, 			"an error occured while calling proview", "Runs mlrho");						//TODO
-	
-
 //	env.command(	' ',"calc", 	&calcInd,	 		"an error occured while calling calc", "print log likelihood of ...");
 //	env.command(	' ',"ci", 	&compareIndividual, 		"an error occured while calling ci", "compares allele frequencines between population using indivdual data ");
 //	env.command(	' ',"eq", 	&estimateQuality, 		"an error occured while calling eq", "estimates error rate as a function of illumina quality score");

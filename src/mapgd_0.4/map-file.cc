@@ -690,6 +690,7 @@ template class Indexed_file <Pooled_data>;
 
 template class Flat_file <Linkage>;
 template class Data_file <Linkage>;
+template class Indexed_file <Linkage>;
 
 template class Flat_file <Allele>;
 template class Flat_file <Population>;

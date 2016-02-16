@@ -222,7 +222,7 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('H',"header", &indexname, 	&arg_setstr, 	"please provide an str.", "the name of a .idx file storing scaffold infomation");
 	env.optional_arg('M',"mincoverage", &MIN, 	&arg_setint, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (defualt 4).");
 	env.optional_arg('g',"goodfit", &MINGOF,	&arg_setfloat_t, "please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
-	env.optional_arg('N',"number", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
+	env.optional_arg('N',"minnumber", 	&MAXPITCH,	&arg_setint, 	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
 	env.optional_arg('S',"skip", 	&skip,		&arg_setint, 	"please provide an int.", "number of sites to skip before analysis begins (default 0).");
 	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a headerline.");
 	env.flag(	'n',"newton", 	&newton,	&flag_set, 	"takes no argument", "use newton-raphson likelihood maximization (slow but accurate).");

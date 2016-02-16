@@ -22,7 +22,7 @@
   * skillz. It's totally a fact.
   * I'll start fixing allele stat now.  
  */
-class Linkage : public virtual Data { 
+class Linkage : public virtual Indexed_data { 
 private:
 	void read(std::istream& str);
 	///! the write function must be ? by the child class.
@@ -32,11 +32,10 @@ private:
 		return new Linkage(columns);
 	};
 	//We are comparing site X to site Y, so we need a total of four ids.
-	id0_t id0_X_;	//!< The scaffold of site X
-	id1_t id1_X_;	//!< The pos of site X
+	id0_t id0;	//!< The scaffold of site X
+	id1_t id1;	//!< The pos of site X
 
-	id0_t id0_Y_;	//!< the scaffold of site Y 
-	id1_t id1_Y_;	//!< the pos of site Y
+	id1_t id1_y_;	//!< the pos of site Y
 
 	float_t p_;		//!< freq_major site numero uno
 	float_t q_;		//!< freq_major site numero dos
@@ -46,6 +45,9 @@ private:
 	float_t fit_;		//!< fit statistic (thar be ld here!)
 	float_t null_;		//!< null statistic (i.e. no ld)
 public:
+	using Indexed_data::get_abs_pos;		//!< Get the absolute position of the Locus.
+	using Indexed_data::set_abs_pos;		//!< Set the absolute position of the Locus.
+	void set_abs_pos_y(const id1_t &pos) {id1_y_=pos;};
 	char delim;		//!< the delimiter used when reading/writing the class in text mode.	
 
 	Linkage();	
