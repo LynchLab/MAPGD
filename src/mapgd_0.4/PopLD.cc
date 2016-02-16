@@ -365,14 +365,14 @@ int PopLD(int argc, char *argv[])
 	env.set_name("mapgd ld");
 	env.set_version(VERSION);
 	env.set_author("Takahiro Maruki");
-	env.set_description("Uses a maximum likelihood approach to estimate gametic phase disequalibrium from population data.");
+	env.set_description("Uses a maximum likelihood approach to estimate gametic phase disequilibrium from population data.");
 
-	env.required_arg('p',"pro", 	&pro_name,	&arg_setstr, 	"an error occured while setting the name of the input file.", "the input file for the program (default stdout).");
-	env.required_arg('m',"map", 	&map_name,	&arg_setstr, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
-	env.optional_arg('M',"min_n", 	&min_number,	&arg_setint, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
-	env.optional_arg('D',"max_d", 	&max_d,		&arg_setint, 	"an error occured while setting the name of the output file.", "the output file for the program (default stdin).");
-	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
-	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
+	env.required_arg('p',"pro", 	&pro_name,	&arg_setstr, 	"please enter a string.", "the input 'pro' file.");
+	env.required_arg('m',"map", 	&map_name,	&arg_setstr, 	"please enter a string.", "the input 'map' file.");
+	env.optional_arg('M',"min_n", 	&min_number,	&arg_setint, 	"please enter a number.", "the minimum number of usable individuals at a site.");
+	env.optional_arg('D',"max_d", 	&max_d,		&arg_setint, 	"please enter a number.", "the maximum distance between sites.");
+	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
+	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 	
@@ -399,12 +399,6 @@ int PopLD(int argc, char *argv[])
 	Linkage linkage;
 	ld_out.write_header(linkage);
 
-	/*To avoid allocating and deallocating a bunch of memory I'm using a 
-	 * circular buffer. However, probably results in little if any 
-	 * performance gain, and definitely makes things less stable. I 
-	 * apologize for any problems this creates.
-	 */
-
 	std::list <Locus> locus_list;
 
 	Locus locus_buffer1[BUFFER_SIZE];
@@ -420,7 +414,7 @@ int PopLD(int argc, char *argv[])
 	std::fill_n(allele_buffer1, BUFFER_SIZE, allele1);
 	std::fill_n(allele_buffer2, BUFFER_SIZE, allele1);
 
-	Linkage linkage_buffer[BUFFER_SIZE]; //TODO
+	Linkage linkage_buffer[BUFFER_SIZE]; 
 
 	std::fill_n(linkage_buffer, BUFFER_SIZE, linkage);
 
@@ -446,9 +440,6 @@ int PopLD(int argc, char *argv[])
 	}
 	e_locus=locus_list.begin();
 	e_allele=allele_list.begin();
-	/*while(e_locus!=end_locus){
-		std::cerr << pro_in.get_pos(* (e_locus++) ) << ", " << map_in.get_pos(*(e_allele++) ) << std::endl;
-	}*/
 
 	while (map_in.table_is_open() ){
 		while (read<BUFFER_SIZE && map_in.table_is_open() ) {
@@ -494,7 +485,6 @@ int PopLD(int argc, char *argv[])
 				allele_list.insert(e_allele, BUFFER_SIZE, allele1);
 				end_allele=allele_list.end();
 				end_locus=locus_list.end();
-				//std::cerr << end_locus << "-"  << new_locus << std::endl;
 				while(new_locus!=end_locus){
 					pro_in.read( *(new_locus) );
 						map_in.read( *(new_allele) );
@@ -513,10 +503,9 @@ int PopLD(int argc, char *argv[])
 		for (uint32_t x=0; x<read; ++x){
 			size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
 			// Estimate the LD coefficient D between the polymorphic sites 
-			//TODO dont deleate this
 			linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major, (uint8_t)allele_buffer1[x].minor, (uint8_t)allele_buffer2[x].major, (uint8_t)allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
 		}
-		for (size_t c=0; c<read; ++c){ //TODO
+		for (size_t c=0; c<read; ++c){ 
 			ld_out.write(linkage_buffer[c]);
 		}
 	}

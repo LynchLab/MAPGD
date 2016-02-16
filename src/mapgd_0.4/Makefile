@@ -10,8 +10,8 @@ WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 VERSION=-D VERSION=\"0.4.1\"
 POSIX=-D POSIX
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./sql
-CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fopenmp -fno-exceptions -pedantic $(INCLUDE)
-LDLIBS=-l sqlite3 -lgsl -lgslcblas -lm
+CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE)
+LDLIBS=-l sqlite3 -lgsl -lgslcblas -lm -fopenmp
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
 NOSQL=-D NOSQL
@@ -26,13 +26,15 @@ CXX=g++
 
 #>! TODO ORGANIZE THESE!!
 
-COMMANDS=mapgd.o \
-	estimate-individual.o \
+MAPGD=mapgd.o
+
+COMMAND_OBJ=estimate-individual.o \
 	estimate-pooled.o \
 	sam2idx.o \
 	proview.o \
 	interface.o \
 	map2genotype.o \
+	PopLD.o \
 	relatedness.o
 
 SQL_OBJ=sql/writesql.o \
@@ -41,16 +43,6 @@ SQL_OBJ=sql/writesql.o \
 
 BASE_OBJ=base.o \
 	binomial.o \
-	data_types/allele.o \
-	data_types/data.o \
-	data_types/file-index.o \
-	data_types/linkage_data.o \
-	data_types/pooled_data.o \
-	data_types/population.o \
-	data_types/sample_gof.o \
-	data_types/relatedness_data.o \
-	data_types/locus.o \
-	data_types/sample_name.o \
 	circular_list.o \
 	filter.o \
 	individual-likelihood.o \
@@ -59,28 +51,43 @@ BASE_OBJ=base.o \
 	map-file.o \
 	models.o \
 	pooled-likelihood.o \
-	PopLD.o \
-	raw/genotype.o \
-	raw/quartet.o \
-	raw/genotype_pair.o \
 	stream-tools.o 
 
-OBJS=$(COMMANDS) $(SQL_OBJ) $(BASE_OBJ)
+DATA_OBJ=data_types/allele.o \
+	data_types/data.o \
+	data_types/file-index.o \
+	data_types/linkage_data.o \
+	data_types/pooled_data.o \
+	data_types/population.o \
+	data_types/sample_gof.o \
+	data_types/relatedness_data.o \
+	data_types/locus.o \
+	data_types/sample_name.o 
+
+RAW_OBJ=raw/genotype.o \
+	raw/quartet.o \
+	raw/genotype_pair.o 
+
+
+OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
 
 nosql: CXXFLAGS:=$(CXXFLAGS) $(NOSQL)
-nosql: OBJS:=$(COMMANDS) $(BASE_OBJ)
-nosql: all
-
-all: $(OBJS)
-	$(CXX) $^ $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
+nosql: LDLIBS:=-lgsl -lgslcblas -lm
+nosql: OBJ:=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
+nosql: $(OBJ)
+	@$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
+	@echo "\n\nMade w/o SQLite3, consider typing 'Make all'"
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
-DATA_SOURCE=data_types\*.cc
+all: $(OBJ) 
+	$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
+	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
+
+#DATA_SOURCE=data_types\*.cc
 
 data.h:
 	@echo "updating data_types"
 	touch $(DATA_SOURCE)
-
 
 noomp: CXXFLAGS:=$(CXXFLAGS) $(NOOMP)
 noomp: all
@@ -90,7 +97,6 @@ debug: all
 
 install: all
 	install -m 0755 $(LOCAL) $(DESTDIR)
-#	install ? $(MANDIR)/man1/
 .PHONY: install
 	
 clean:
