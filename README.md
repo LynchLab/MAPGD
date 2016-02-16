@@ -1,6 +1,5 @@
 ﻿<p align="center">
-  <b>Download MAPGD</b><br>
-  <a href="#">https://github.com/LynchLab/MAPGD/archive/master.zip</a> |
+  <a href="#Downlad MAPGD">https://github.com/LynchLab/MAPGD/archive/master.zip</a> |	
 </p>
 
 ##MAPGD version 0.4
