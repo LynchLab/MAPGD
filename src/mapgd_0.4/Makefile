@@ -75,19 +75,24 @@ nosql: CXXFLAGS:=$(CXXFLAGS) $(NOSQL)
 nosql: LDLIBS:=-lgsl -lgslcblas -lm
 nosql: OBJ:=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
 nosql: $(OBJ)
-	@$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
-	@echo "\n\nMade w/o SQLite3, consider typing 'Make all'"
-	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
-
-all: $(OBJ) 
 	$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
+	@echo "\n\nMade w/o sql functions, consider typing 'Make sql'"
+
+sql: $(OBJ) 
+	$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
+
+all: nosql
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
-#DATA_SOURCE=data_types\*.cc
+DATA_SOURCE=data_types\*.cc
 
-data.h:
+data.h: data_types\data.cc
 	@echo "updating data_types"
 	touch $(DATA_SOURCE)
+
+interface.h: interface.cc
+	@echo "updating commands"
+	touch $(COMMAND_SOURCE)
 
 noomp: CXXFLAGS:=$(CXXFLAGS) $(NOOMP)
 noomp: all

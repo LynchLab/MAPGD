@@ -53,7 +53,7 @@ format_usage(const char *message, const size_t &padding)
 
 /*@Brief : sets a vector of strings from a string*/
 int 
-arg_setvectorstr(int argc, char **argv, void *parm)
+arg_set_vector_str(int argc, char **argv, void *parm)
 {
 	int n=1;
 	std::vector <std::string> *v=(std::vector <std::string> *)(parm);
@@ -71,9 +71,9 @@ arg_setvectorstr(int argc, char **argv, void *parm)
 
 /*@Breif : sets a vector of ints from a string. */
 int
-arg_setvectorint(int argc, char **argv, void *parm)
+arg_set_vector_uint32(int argc, char **argv, void *parm)
 {
-	std::vector <size_t> *v=(std::vector <size_t> *)(parm);
+	std::vector <uint32_t> *v=(std::vector <uint32_t> *)(parm);
 	if (argc>1){
 		std::vector<std::string> elems=split(argv[1], ',');
 		for (size_t x=0; x<elems.size(); ++x){
@@ -82,7 +82,38 @@ arg_setvectorint(int argc, char **argv, void *parm)
 				std::vector<std::string> intpair=split(elems[x], '-');
 				if (intpair.size()==2){
 					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
-						for (int y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
+						for (int32_t y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
+							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
+								v->push_back(y-1);
+							}
+						};
+					} else {
+						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+					};
+				} else{
+					std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+				};
+			}
+		}
+		return 2;
+	} 
+	std::cerr << "arg_setvectorint: error parsing " << argv[1] << std::endl;
+	exit(1);
+}
+
+int
+arg_set_vector_uint64(int argc, char **argv, void *parm)
+{
+	std::vector <uint64_t> *v=(std::vector <uint64_t> *)(parm);
+	if (argc>1){
+		std::vector<std::string> elems=split(argv[1], ',');
+		for (size_t x=0; x<elems.size(); ++x){
+			if ( isint(elems[x].c_str() ) ) v->push_back(atol(elems[x].c_str() )-1);
+			else {
+				std::vector<std::string> intpair=split(elems[x], '-');
+				if (intpair.size()==2){
+					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
+						for (int64_t y=atol(intpair[0].c_str() ); y<=atol(intpair[1].c_str() ); ++y){
 							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
 								v->push_back(y-1);
 							}
@@ -103,13 +134,14 @@ arg_setvectorint(int argc, char **argv, void *parm)
 
 //TODO Comment
 int
-arg_setint(int argc, char **argv, void *parm)
+arg_set_int(int argc, char **argv, void *parm)
 {
 	if (argc>1){
 		if (isint(argv[1])){
 			*( (int *)(parm) )=atoi(argv[1]);
 			return 2;
-		} return argc+1;
+		} 
+		return argc+1;
 	} 
 	std::cerr << "arg_setint:error parsing " << argv[1] << std::endl;
 	exit(1);
@@ -117,21 +149,7 @@ arg_setint(int argc, char **argv, void *parm)
 
 //TODO Comment
 int
-arg_set2int(int argc, char **argv, void *parm)
-{
-	if (argc>2){
-		if (isint(argv[1]) && isint(argv[2]) ){
-			( (int *)(parm) )[0]=atoi(argv[1]);
-			( (int *)(parm) )[1]=atoi(argv[2]);
-			return 3;
-		} return argc+1;
-	} exit(1);
-}
-
-
-//TODO Comment
-int
-arg_setchar(int argc, char **argv, void *parm)
+arg_set_char(int argc, char **argv, void *parm)
 {
 	if (argc>1){
 		*(char *)(parm)=argv[1][0];
@@ -141,7 +159,7 @@ arg_setchar(int argc, char **argv, void *parm)
 
 //TODO Comment
 int
-arg_setstr(int argc, char **argv, void *parm)
+arg_set_str(int argc, char **argv, void *parm)
 {
         if (argc>1){
                 *(std::string *)(parm)=argv[1];
@@ -161,14 +179,30 @@ arg_setc_str(int argc, char **argv, void *parm)
 
 //TODO Comment
 int 
-arg_setfloat_t(int argc, char **argv, void *parm)
+arg_set_float(int argc, char **argv, void *parm)
 {
 	if (argc>1){
-		*(float_t *)(parm)=atof(argv[1]);
+		*(float *)(parm)=atof(argv[1]);
 		return 2;
 	} exit(1);	
 }
 
+int 
+arg_set_double(int argc, char **argv, void *parm)
+{
+	if (argc>1){
+		*(double *)(parm)=atof(argv[1]);
+		return 2;
+	} exit(1);	
+}
+int
+arg_set_long_double(int argc, char **argv, void *parm)
+{
+	if (argc>1){
+		*(long double *)(parm)=atof(argv[1]);
+		return 2;
+	} exit(1);	
+}
 
 //TODO Comment
 int 

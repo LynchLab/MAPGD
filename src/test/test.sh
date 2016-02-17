@@ -35,7 +35,7 @@ vcf_header=3		#Size of vcf header
 gcf_header=3		#Size of gcf header
 gof_header=3		#Size of gcf header
 pro_size=30		#number of lines in the pro file
-good_size=9		#number of lines post filtering
+good_size=10		#number of lines post filtering
 idx_size=3		#number of lines in the idx file
 gof_size=8		#number of lines in the idx file
 
@@ -168,9 +168,21 @@ mkfifo pro
 size=$(($pop*($pop-1)/2+3))
 $mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd filter > map &
 $mapgd genotype -p pro -m map | $mapgd relatedness > $a.out
+testa
 rm -f map
 rm -f pro
+
+a="linkage"
+msg="linkage"
+echo -n "cat genotype.out | $mapgd $a > $a.out 									"
+mkfifo map
+mkfifo pro
+size=$(($pop*($pop-1)/2+3))
+$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd filter > map &
+$mapgd linkage -p pro -m map > $a.out
 testa
+rm -f map
+rm -f pro
 
 a="unicode"
 msg="unicode"

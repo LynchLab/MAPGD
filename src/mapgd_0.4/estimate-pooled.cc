@@ -38,7 +38,7 @@ int estimatePooled(int argc, char *argv[])
 	float_t EMLMIN=0.001;
 	float_t a=0.00;
 
-	std::vector <int> pop;
+	std::vector <size_t> pop;
 
 	/* sets up the help messages and options */
 
@@ -48,11 +48,11 @@ int estimatePooled(int argc, char *argv[])
 	env.set_author("Matthew Ackerman and Michael Lynch");
 	env.set_description("Uses a maximum likelihood approach to estimates allele frequencies in pooled population genomic data");
 
-	env.optional_arg('i',"input", 	&infile,	&arg_setstr, 	"an error occured while setting the name of the input file", "sets the input file for the program (default 'datain.txt')");
-	env.optional_arg('o',"output", 	&outfile,	&arg_setstr, 	"an error occured while setting the name of the output file", "sets the output file for the program (default 'dataout.txt')");
-	env.optional_arg('p',"populations", &pop, &arg_setvectorint, "please provide a list of integers", "choose populations to compare");
-	env.optional_arg('m',"minerror", &EMLMIN, &arg_setfloat_t, "please provide a float", "minimum error rate.");
-	env.optional_arg('a',"alpha", &a, &arg_setfloat_t, "please provide a float", "alpha.");
+	env.optional_arg('i',"input", 	infile,	"an error occured while setting the name of the input file", "sets the input file for the program (default 'datain.txt')");
+	env.optional_arg('o',"output", 	outfile,	"an error occured while setting the name of the output file", "sets the output file for the program (default 'dataout.txt')");
+	env.optional_arg('p',"populations", pop, 	"please provide a list of integers", "choose populations to compare");
+	env.optional_arg('m',"minerror", EMLMIN, 	"please provide a float", "minimum error rate.");
+	env.optional_arg('a',"alpha",   a, 		"please provide a float", "alpha.");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 	env.flag(	'V',"verbose", 	&verbose,	&flag_set, 	"an error occured", "prints more information while the command is running");

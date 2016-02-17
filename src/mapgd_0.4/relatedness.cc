@@ -289,16 +289,8 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 		if (status) break;
 
 		size = gsl_multimin_fminimizer_size (s);
-		status = gsl_multimin_test_size (size, 1e-5);
+		status = gsl_multimin_test_size (size, 1e-4);
 
-		//std::cerr << iter << std::endl;
-		/*rel.f_X_ = gsl_vector_get(s->x, 0);
-		rel.f_Y_ = gsl_vector_get(s->x, 1);
-		rel.theta_XY_ = gsl_vector_get(s->x, 2);
-		rel.gamma_XY_ = gsl_vector_get(s->x, 3);
-		rel.gamma_YX_ = gsl_vector_get(s->x, 4);
-		rel.Delta_XY_ = gsl_vector_get(s->x, 5);
-		rel.delta_XY_ = gsl_vector_get(s->x, 6);*/
 	}  while (status == GSL_CONTINUE && iter < 600);
 
 	rel.f_X_ = gsl_vector_get(s->x, 0);
@@ -308,6 +300,8 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	rel.gamma_YX_ = gsl_vector_get(s->x, 4);
 	rel.Delta_XY_ = gsl_vector_get(s->x, 5);
 	rel.delta_XY_ = gsl_vector_get(s->x, 6);
+
+	
 }
 
 
@@ -326,8 +320,8 @@ int estimateRel(int argc, char *argv[])
 	env.set_author("Matthew Ackerman");
 	env.set_description("Uses a maximum likelihood approach to estimate pairwise relatedness.");
 
-	env.optional_arg('i', "input", 	&gcf_name,	&arg_setstr, 	"an error occured while displaying the help message.", "input file name (default stdout)");
-	env.optional_arg('o', "output", &rel_name,	&arg_setstr, 	"an error occured while displaying the help message.", "output file name (default stdin)");
+	env.optional_arg('i', "input", 	gcf_name, "an error occured while displaying the help message.", "input file name (default stdout)");
+	env.optional_arg('o', "output", rel_name, "an error occured while displaying the help message.", "output file name (default stdin)");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
@@ -378,6 +372,7 @@ int estimateRel(int argc, char *argv[])
 			relatedness.zero();
 			//gestimate(relatedness, hashed_genotypes);
 			maximize(relatedness, hashed_genotypes);
+			//get_llr(relatedness, hashed_genotypes);
 			rel_out.write(relatedness);
 		}
 	}

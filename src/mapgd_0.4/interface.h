@@ -10,6 +10,7 @@
 #ifndef _INTERFACE_H_
 #define _INTERFACE_H_
 
+#include <vector>
 #include <list>
 #include <iostream>
 #include "typedef.h"
@@ -18,32 +19,48 @@
  * @{
 */
 //! Takes a reference to a vector<string> and will fill that vector with arguments from arg [] until a string begining with '-' is found.  
-
-//!
-int arg_setvectorstr(int, char **, void *);	
+//
+int arg_set_vector_str(int, char **, void *);	
+inline int arg_set(int a, char **b, std::vector<std::string> &c){return arg_set_vector_str(a,b, &c); }
 
 //! Takes a reference to a vector<int> and calls atoi() on a comma delimited list (no white space) of integers. Ranges of the form N-M are accepted. 
 //
-int arg_setvectorint(int, char **, void *);	
+int arg_set_vector_uint64(int, char **, void *);	
+inline int arg_set(int a, char **b, std::vector<uint64_t> &c){return arg_set_vector_uint64(a,b, &c); }
+
+//! Takes a reference to a vector<int> and calls atoi() on a comma delimited list (no white space) of integers. Ranges of the form N-M are accepted. 
+//
+int arg_set_vector_uint32(int, char **, void *);	
+inline int arg_set(int a, char **b, std::vector<uint32_t> &c){return arg_set_vector_uint32(a,b, &c); }
 
 //! Takes a reference to an int and calls atoi on the field immediately following the option. 
 //! Raises errors if the field is not numeric. Returns 2 on success (representing the number of fields processed) and -1 on failure. 
-int arg_setint(int, char **, void *);		
-
-//! Takes a reference to a string and sets it to the field immediately following the option. Returns 2 on success and -1 on failure. 
-int arg_set2int(int, char **, void *);
+int arg_set_int(int, char **, void *);		
+inline int arg_set(int a, char **b, int &c){return arg_set_int(a,b, &c); }
 
 //<! Takes a reference to ...
-int arg_setstr(int, char **, void *);		
+int arg_set_str(int, char **, void *);		
+inline int arg_set(int a, char **b, std::string &c){return arg_set_str(a,b, &c); }
 
 //<! Same.
-int arg_setchar(int, char **, void *);	
+int arg_set_char(int, char **, void *);	
+inline int arg_set(int a, char **b, char &c){return arg_set_char(a,b, &c); }
 
 //<! Same.
-int arg_setfloat_t(int, char **, void *);
+int arg_set_float(int, char **, void *);
+inline int arg_set(int a, char **b, float &c){return arg_set_float(a,b, &c); }
+
+//<! Same.
+int arg_set_double(int, char **, void *);
+inline int arg_set(int a, char **b, double &c){return arg_set_double(a,b, &c); }
+
+//<! Same.
+int arg_set_long_double(int, char **, void *);
+inline int arg_set(int a, char **b, long double &c){return arg_set_long_double(a,b, &c); }
 
 //<! Same.
 int arg_setc_str(int, char **, void *);	
+int arg_set(int, char **, char **);
 /* @}
  */
 
@@ -114,6 +131,11 @@ class arg_t {
 		operand_type="none";
 	};
 
+	//! The default constructor for an argument.
+	/*! This desperately needs to be changed because passing a void pointer
+	 *  prevents the compiler from checking that we pass the right type, 
+	 *  which causes no end of problems. 
+	 */
 	arg_t(const char opt_, 
 		char *lopt_, 
 		void *parm_, 
@@ -131,24 +153,22 @@ class arg_t {
 		operand_type="none";
 	}
 	
-	/*
 	template <class Type>
 	arg_t(const char opt_, 
 		char *lopt_, 
 		Type &parm_, 
 		char *emsg_, 
 		char *umsg_){
-//		std::is_const<Type>::value
 		opt=opt_;
 		lopt=lopt_;
-		parm=parm_;
-		func=func_;
+		parm=(void *)(&parm_);
+		func=(int (*)(int, char **, void*) )( (int (*)(int, char **, Type &) )&arg_set);
 		emsg=emsg_;
 		umsg=umsg_;
 		set=false;
 		required=false;
 		operand_type="none";
-	};*/
+	}
 
 	bool set;   //!< flag toggles whether option has been set.
 	bool required;
@@ -234,13 +254,19 @@ public:
 		version="0.0";
 		author="Unkown";
 		description="Unknown purpose";
-	};
+	}
 	
 	/*!	\brief adds an optional argument to the list of arguments accepted by the program.*/
 	void optional_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
 	{
 		args.push_back(arg_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
-	};
+	}
+
+	template <class Type>
+	inline void optional_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)
+	{
+		args.push_back(arg_t(opt_, lopt_, parm_, emsg_, umsg_) );
+	}
 
 /*	void positional_arg (void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
 	{
@@ -258,7 +284,15 @@ public:
 		args.back().required=true;
 		required_args.push_back(&args.back());
 		
-	};
+	}
+
+	template <class Type>
+	void required_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)
+	{
+		args.push_back(arg_t(opt_, lopt_, parm_, emsg_, umsg_) );
+		args.back().required=true;
+		required_args.push_back(&args.back());
+	}
 
 	/*!	\brief  adds a function to be executed that can accept argc and argv [] arguments. 
 	 *
@@ -271,7 +305,7 @@ public:
 	void command (char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_)
 	{
 		commands.push_back(com_t(opt_, lopt_, func_, emsg_, umsg_) );
-	};
+	}
 
 	/*!	\brief adds a flag to the list of flags that can be accepted by the environment. 
 	 *
@@ -280,7 +314,7 @@ public:
 	void flag (char opt_, char* lopt_, void * parm_, int (*func_)(void *), char *emsg_, char*umsg_)
 	{
 		flags.push_back(flag_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
-	};
+	}
 
 	/*!	\brief Checks to see if all required arguments are set. 
 	 *
@@ -295,7 +329,7 @@ public:
 			++rarg;
 		};
 		return true;
-	};
+	}
 	void close(void);
 };
 

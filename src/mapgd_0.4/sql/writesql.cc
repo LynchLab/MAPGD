@@ -17,7 +17,7 @@ int writesql(int argc, char *argv[])
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("writes mapgd output to an sql database.");
-	env.required_arg('d',"database", &db_name, 	&arg_setstr, 	"please provide an str.", "the name of destination database");
+	env.required_arg('d',"database", db_name,"please provide an str.", "the name of destination database");
 	env.flag(	'v', "version",  &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
 	env.flag(	'h', "help", 	 &env, 		&flag_help, 	"an error occurred while displaying the version message.", "prints the program version");
 

@@ -362,15 +362,15 @@ int PopLD(int argc, char *argv[])
 	int print_help = 0;
 
 	env_t env;
-	env.set_name("mapgd ld");
+	env.set_name("mapgd linkage");
 	env.set_version(VERSION);
 	env.set_author("Takahiro Maruki");
 	env.set_description("Uses a maximum likelihood approach to estimate gametic phase disequilibrium from population data.");
 
-	env.required_arg('p',"pro", 	&pro_name,	&arg_setstr, 	"please enter a string.", "the input 'pro' file.");
-	env.required_arg('m',"map", 	&map_name,	&arg_setstr, 	"please enter a string.", "the input 'map' file.");
-	env.optional_arg('M',"min_n", 	&min_number,	&arg_setint, 	"please enter a number.", "the minimum number of usable individuals at a site.");
-	env.optional_arg('D',"max_d", 	&max_d,		&arg_setint, 	"please enter a number.", "the maximum distance between sites.");
+	env.required_arg('p',"pro", 	pro_name,	"please enter a string.", "the input 'pro' file.");
+	env.required_arg('m',"map", 	map_name,	"please enter a string.", "the input 'map' file.");
+	env.optional_arg('M',"min_n", 	min_number, 	"please enter a number.", "the minimum number of usable individuals at a site.");
+	env.optional_arg('D',"max_d", 	max_d,		"please enter a number.", "the maximum distance between sites.");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
 
@@ -395,7 +395,8 @@ int PopLD(int argc, char *argv[])
 	Allele allele2=allele1;	
 	Locus locus1=pro_in.read_header();	
 	Locus locus2=locus1;	
-	ld_out.set_index(pro_in.get_index() );
+	File_index index=pro_in.get_index();
+	ld_out.set_index(index);
 	Linkage linkage;
 	ld_out.write_header(linkage);
 
@@ -446,7 +447,11 @@ int PopLD(int argc, char *argv[])
 			size_t number;
 			id1_t pos1=locus1.get_abs_pos();
 			id1_t pos2=locus2.get_abs_pos();
-			if ( (pos2-pos1)<max_d) {
+			id0_t scf1=index.get_id0(pos1);
+			id0_t scf2=index.get_id0(pos2);
+
+
+			if ( (pos2-pos1)<max_d && scf1==scf2) {
 				if ( (pos2-pos1)>min_dist ) {
 					number=count_sites(locus1, locus2);
 					if ( number >= min_number ) {
@@ -509,5 +514,6 @@ int PopLD(int argc, char *argv[])
 			ld_out.write(linkage_buffer[c]);
 		}
 	}
+	ld_out.close();
 	return 0;
 }

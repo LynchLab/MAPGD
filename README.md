@@ -411,15 +411,19 @@ When submitting PBS scripts please *make sure to specify the number of threads t
 
 	module rm PrgEnv-cray
 	module load PrgEnv-gnu 
+	module load gsl/1.15	
 
 *Karst* may require loading
 
-	module load intel
+	module load gsl/1.15	
 
 *Mason* will require 
 
 	module rm gcc
 	module load gcc/4.9.2
+	module load gsl/1.15	
+
+Mason doesn't appear to be setting the Library paths correctly at the current time. We are investigating the problem.
 
 <h3> References </h3>
 

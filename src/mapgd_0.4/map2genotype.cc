@@ -82,8 +82,8 @@ int map2genotype(int argc, char *argv[])
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("convert a map and pro file to an individual genotype file.");
-	env.required_arg('m',"map", &mapname, 	&arg_setstr, "please provide a float.", "the name of the map file.");
-	env.required_arg('p',"pro", &proname, 	&arg_setstr, "please provide a float.", "tne name of the pro file.");
+	env.required_arg('m',"map", mapname, "please provide a real number.", "the name of the map file.");
+	env.required_arg('p',"pro", proname, "please provide a real number.", "tne name of the pro file.");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
 	env.flag(	'b', "binary", &binary, 	&flag_set, 	"an error occured while displaying the version message.", "binary output");

@@ -18,8 +18,8 @@ int readsql(int argc, char *argv[])
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("reads mapgd output from an sql database.");
-	env.required_arg('d',"database", &db_name, 	&arg_setstr, 	"please the name of a database", "the name of the database");
-	env.required_arg('q',"query", 	 &query, 	&arg_setstr, 	"please provide an str", "query");
+	env.required_arg('d',"database", db_name,"please the name of a database", "the name of the database");
+	env.required_arg('q',"query", 	 query,"please provide an str", "query");
 	env.flag(	'v', "version",  &env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 	env.flag(	'h', "help", 	 &env, 		&flag_help, 	"an error occured while displaying the version message", "prints the program version");
 

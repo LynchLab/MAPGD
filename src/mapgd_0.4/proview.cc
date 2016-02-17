@@ -38,11 +38,11 @@ int proview(int argc, char *argv[])
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman and Bernhard Haubold");
 	env.set_description("prints data in the '.pro' file quartet format");
-	env.required_arg('H',"header",	&headerfile,	&arg_setstr, 	"an error occured", "sets the index file (required to use mpileup)");
-	env.optional_arg('m',"minimum",	 &args.min, 	&arg_setint, 	"an error occured", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
-	env.optional_arg('n',"names",	&namefile, 	&arg_setstr, 	"an error occured", "a tab delimited file with sample name 'tab' file name pairs.");
-	env.optional_arg('o',"output",	&outfile,	&arg_setstr, 	"an error occured", "sets the output file (default stdout)");
-	env.optional_arg('i', "input",	&infiles,	&arg_setvectorstr, 	"an error occured", "sets the index file (required to use mpileup)");
+	env.required_arg('H',"header",	headerfile,	"an error occured", "sets the index file (required to use mpileup)");
+	env.optional_arg('m',"minimum",	args.min, 	"an error occured", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
+	env.optional_arg('n',"names",	namefile, 	"an error occured", "a tab delimited file with sample name 'tab' file name pairs.");
+	env.optional_arg('o',"output",	outfile,	"an error occured", "sets the output file (default stdout)");
+	env.optional_arg('i', "input",	infiles,	"an error occured", "sets the index file (required to use mpileup)");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
 	env.flag(	'b',"binary",	&out_binary, 	&flag_set, 	"an error occured", "output in a binary format");
@@ -106,9 +106,10 @@ int proview(int argc, char *argv[])
 			if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), ios::in);
 			else in_files.back()->open(ios::in);
 			in_locus.push_back( in_files.back()->read_header() );
-
 			for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
-				sample_names.push_back(in_locus.back().get_sample_names()[y]);
+				std::stringstream s(infiles[x]);
+				s << ":" << y;
+				sample_names.push_back( s.str().c_str() );
 			}
 //			sample_names.insert(std::end(sample_names), std::begin(in_locus.back().get_sample_names() ), std::end(in_locus.back().get_sample_names() ) );
 			sample_numbers+=in_locus.back().get_sample_names().size();
