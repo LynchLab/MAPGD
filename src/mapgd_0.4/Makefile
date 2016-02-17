@@ -7,7 +7,7 @@ STD=-std=c++11
 DESTDIR=/usr/local/bin
 LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
-MINOR=`cat VERSION`
+MINOR=`cat VERSION | cut -d '-' -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
 POSIX=-D POSIX
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./sql
@@ -102,7 +102,9 @@ debug: CXXFLAGS:=$(CXXFLAGS) $(DEBUG)
 debug: all
 
 increment:
-	echo $$(($(MINOR)+1)) > VERSION
+	echo -n $$(($(MINOR)+1)) > VERSION
+	echo -n '-' >> VERSION
+	date +%F >> VERSION
 .PHONY: increment
 
 install: all
