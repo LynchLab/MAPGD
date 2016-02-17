@@ -172,6 +172,8 @@ testa
 rm -f map
 rm -f pro
 
+exit
+
 a="linkage"
 msg="linkage"
 echo -n "cat genotype.out | $mapgd $a > $a.out 									"

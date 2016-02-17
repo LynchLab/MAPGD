@@ -19,6 +19,10 @@ noomp:
 	$(MAKE) -C $(SUBDIRS) noomp
 .PHONY: noomp
 
+increment: 
+	$(MAKE) -C $(SUBDIRS) increment
+.PHONY: increment
+
 dist: docs 
 	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
 	bzr dh-make $(NAME) $(VER) $(NAME)-$(VER).tar.gz

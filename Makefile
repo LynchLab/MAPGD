@@ -34,11 +34,16 @@ install: all
 clean:
 	$(MAKE) -C $(SUBDIRS) clean
 .PHONY: clean
+	
+increment:
+	$(MAKE) -C $(SUBDIRS) increment 
+.PHONY: clean
 
 push: 
-	$(MAKE) -C $(SUBDIRS) all
+	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) test
 	$(MAKE) -C $(SUBDIRS) clean
+	$(MAKE) -C $(SUBDIRS) increment 
 	git add -u
 	git commit
 	git push

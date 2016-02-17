@@ -7,7 +7,8 @@ STD=-std=c++11
 DESTDIR=/usr/local/bin
 LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
-VERSION=-D VERSION=\"0.4.1\"
+MINOR=`cat VERSION`
+VERSION=-D VERSION=\"0.4.$(MINOR)\"
 POSIX=-D POSIX
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./sql
 CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE)
@@ -77,7 +78,7 @@ nosql: OBJ:=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
 nosql: $(OBJ)
 	$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
 	@echo "\n\nMade w/o sql functions, consider typing 'Make sql'"
-
+	
 sql: $(OBJ) 
 	$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
 
@@ -99,6 +100,10 @@ noomp: all
 
 debug: CXXFLAGS:=$(CXXFLAGS) $(DEBUG)
 debug: all
+
+increment:
+	echo $$(($(MINOR)+1)) > VERSION
+.PHONY: increment
 
 install: all
 	install -m 0755 $(LOCAL) $(DESTDIR)
