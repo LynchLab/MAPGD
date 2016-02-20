@@ -83,10 +83,10 @@ int command_error(int, char **);
 /// A class that passes command line flags. It takes no arguments and chews only a single letter.*/
 /** TODO Write a long description you jerk!
  */
-class flag_t {
+class Flag {
 	private:
 	public:
-	flag_t(){
+	Flag(){
 		opt='?';
 		lopt="error";
 		func=&flag_error;
@@ -94,7 +94,7 @@ class flag_t {
 		umsg="umsg unset";
 	};
 
-	flag_t (char opt_, char* lopt_, void *parm_, int (*func_)(void *), char *emsg_, char *umsg_){
+	Flag (char opt_, char* lopt_, void *parm_, int (*func_)(void *), char *emsg_, char *umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		func=func_;
@@ -112,15 +112,15 @@ class flag_t {
 	char *umsg;		//!< A short description of this option to be displayed in the usage message.
 };
 
-/// A command line argument. See the interface tutorial for a demonstration of usage. 
-/*! TODO Write a long description you jerk!
+//! A command line argument. See the interface tutorial for a demonstration of usage. 
+/*  
  *
  */
-class arg_t {
+class Argument {
 	private:
 	public:
 
-	arg_t(){
+	Argument(){
 		opt='?';
 		lopt="error";
 		func=&arg_error;
@@ -136,7 +136,7 @@ class arg_t {
 	 *  prevents the compiler from checking that we pass the right type, 
 	 *  which causes no end of problems. 
 	 */
-	arg_t(const char opt_, 
+	Argument(const char opt_, 
 		char *lopt_, 
 		void *parm_, 
 		int (*func_)(int, char **, void *), 
@@ -154,7 +154,7 @@ class arg_t {
 	}
 	
 	template <class Type>
-	arg_t(const char opt_, 
+	Argument(const char opt_, 
 		char *lopt_, 
 		Type &parm_, 
 		char *emsg_, 
@@ -171,24 +171,25 @@ class arg_t {
 	}
 
 	bool set;   //!< flag toggles whether option has been set.
-	bool required;
+	bool required; //!< flag toggles whether option is required.
 	char opt;   //!< the option name.
 	char *lopt; //!< the long option name.
 	void *parm; //!< pointer to the parameter to be set.
 	int (*func)(int, char **, void *);	//!< the function to set the parameters.
 	char *emsg; //!< A short error message to display when the proper parameters aren't passed to this option.
 	char *umsg; //!< A short description of this option to be displayed in the usage message.
-	char *operand_type; //!< A short description of this option to be displayed in the usage message.
+	//! A short description of this option to be displayed in the usage message.
+	char *operand_type; 
 };
 
-///A sub-command of mapgd.
-/*! TODO Write a long description you jerk!
- *
+//! A sub-command of mapgd.
+/* These are the subcommands of mapgd. They should generally take one or more 
+ * data classes, and produce one or more data classes.
  */
-class com_t {
+class Command {
 	private:
 	public:
-	com_t(){
+	Command(){
 		opt='?';
 		lopt="error";
 		emsg="emsg unset";
@@ -196,7 +197,7 @@ class com_t {
 		umsg="umsg unset";
 		set=false;
 	};
-	com_t(char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_){
+	Command(char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		func=func_;
@@ -212,11 +213,11 @@ class com_t {
 	char *umsg;	//!< A short description of this command to be displayed in the usage and help message
 };
 
-/// A class for handling options and automatically formating --help, -h, -u and -v.
-/*! TODO Write a long description you jerk!
+//! A class for handling options and automatically formating --help, -h, -u and -v.
+/* TODO Write a long description you jerk!
  *
  */
-class env_t{
+class Environment{
 private:
 public:
 	void set_name(const char *c)
@@ -237,41 +238,52 @@ public:
 		description=c;
 	};
 
-	const char *name;				//!< the name of the command
-	const char *version;				//!< the version
-	const char *author;				//!< author
-	const char *description;			//!< a brief description of the command being executed
+	const char *name;		//!< the name of the command
+	const char *version;		//!< the version
+	const char *author;		//!< author(s)
+	const char *description;	//!< a brief description of the command being executed
+	const char *footer_;		//!< The ending text of the help menu
 
-	std::list <flag_t> flags;			//!< A list of flags that can be set
-	std::list <arg_t> args;				//!< A list of options that can be passed from the command line
-	std::list <com_t> commands;			//!< A list of sub-commands that can be called from the command line
+	std::list <Flag> flags;			//!< A list of flags that can be set
+	std::list <Argument> args;				//!< A list of options that can be passed from the command line
+	std::list <Command> commands;			//!< A list of sub-commands that can be called from the command line
 
-	std::list <arg_t *> required_args;		//!< A list of options, all of which must be set
-	std::list <com_t *> required_coms;		//!< A list of sub-commands, one of which must be run
+	std::list <Argument *> required_args;		//!< A list of options, all of which must be set
+	std::list <Argument *> positional_args;		//!< A list of options that are called in order
+	std::list <Command *> required_coms;		//!< A list of sub-commands, one of which must be run
 
-	env_t(){
-		name="Unnammed program";
+	Environment(){
+		name="Unnamed program";
 		version="0.0";
-		author="Unkown";
+		author="Unknown";
 		description="Unknown purpose";
+		footer_="Fin";
 	}
 	
 	/*!	\brief adds an optional argument to the list of arguments accepted by the program.*/
 	void optional_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
 	{
-		args.push_back(arg_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
+		args.push_back(Argument(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 	}
 
 	template <class Type>
 	inline void optional_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)
 	{
-		args.push_back(arg_t(opt_, lopt_, parm_, emsg_, umsg_) );
+		args.push_back(Argument(opt_, lopt_, parm_, emsg_, umsg_) );
 	}
 
-/*	void positional_arg (void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
+	template <class Type>
+	void positional_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)
 	{
-		args.push_back(arg_t(parm_, func_, emsg_, umsg_) );
-	};*/
+		args.push_back(Argument(opt_, lopt_, parm_, emsg_, umsg_) );
+		positional_args.push_back(&args.back() );
+	}
+	template <class Type>
+	void positional_arg (Type &parm_, char *emsg_, char*umsg_)
+	{
+		args.push_back(Argument("", "", parm_, emsg_, umsg_) );
+		positional_args.push_back(&args.back() );
+	}
 
 
 	/*!	\brief adds an required argument to the list of arguments accepted by the program. 
@@ -280,7 +292,7 @@ public:
 	 */
 	void required_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
 	{
-		args.push_back(arg_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
+		args.push_back(Argument(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 		args.back().required=true;
 		required_args.push_back(&args.back());
 		
@@ -289,7 +301,7 @@ public:
 	template <class Type>
 	void required_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)
 	{
-		args.push_back(arg_t(opt_, lopt_, parm_, emsg_, umsg_) );
+		args.push_back(Argument(opt_, lopt_, parm_, emsg_, umsg_) );
 		args.back().required=true;
 		required_args.push_back(&args.back());
 	}
@@ -304,7 +316,7 @@ public:
 	 */
 	void command (char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_)
 	{
-		commands.push_back(com_t(opt_, lopt_, func_, emsg_, umsg_) );
+		commands.push_back(Command(opt_, lopt_, func_, emsg_, umsg_) );
 	}
 
 	/*!	\brief adds a flag to the list of flags that can be accepted by the environment. 
@@ -313,7 +325,7 @@ public:
 	 */
 	void flag (char opt_, char* lopt_, void * parm_, int (*func_)(void *), char *emsg_, char*umsg_)
 	{
-		flags.push_back(flag_t(opt_, lopt_, parm_, func_, emsg_, umsg_) );
+		flags.push_back(Flag(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 	}
 
 	/*!	\brief Checks to see if all required arguments are set. 
@@ -322,35 +334,36 @@ public:
 	 */
 	bool required_set (void)
 	{
-		std::list <arg_t *>::iterator rarg=required_args.begin();
-		std::list <arg_t *>::iterator end=required_args.end();
+		std::list <Argument *>::iterator rarg=required_args.begin();
+		std::list <Argument *>::iterator end=required_args.end();
 		while(rarg!=end){
 			if(!(*rarg)->set) {std::cerr << (*rarg)->emsg << std::endl; return false;}
 			++rarg;
 		};
 		return true;
 	}
+	void set_footer(const char *);
 	void close(void);
 };
 
-void Usage(env_t);
+void Usage(Environment);
 /*!	\brief parses the command line arguments. 
  *
  *	Returns 0 if all went well, -1 the rest of the time.
  */
-int parsargs(int argc, char *argv[], env_t &env);
+int parsargs(int argc, char *argv[], Environment &env);
 
 /*!	\brief prints the automatically generated help file and exist. 
  */
-void print_help(env_t env);
+void print_help(Environment env);
 
 /*!	\brief prints the automatically generated version line. 
  */
-void print_version(env_t env);
+void print_version(Environment env);
 
 /*!	\brief prints the automatically generated usage.
  *	
  *	Currently usage is not correctly formated. Need to go back and make it more helpful.  
  */
-void print_usage(env_t env);
+void print_usage(Environment env);
 #endif 

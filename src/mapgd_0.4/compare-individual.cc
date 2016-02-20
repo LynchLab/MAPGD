@@ -5,7 +5,7 @@ int comparePooled(int argc, char *argv[])
 	std::string infile="";
 	std::string outfile="";
 
-	env_t env;
+	Environment env;
 
 	int s=0;
 	float_t a=0.0;

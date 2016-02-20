@@ -13,14 +13,14 @@ int sam2idx(int argc, char *argv[])
 
 	std::string headerfile="";
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd sam2idx");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("Converts a sam header file into an idx file.");
-	env.optional_arg('H',"header",	headerfile, 	"an error occured", "sets the index file (required to use mpileup)");
-	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occured while displaying the version message.", "prints the program version");
-	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occured while displaying the version message.", "prints the program version");
+	env.optional_arg('H',"header",	headerfile, 	"an error occurred", "sets the index file (required to use mpileup)");
+	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
+	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occurred while displaying the version message.", "prints the program version");
 
 	if (parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 

@@ -33,28 +33,27 @@ int proview(int argc, char *argv[])
 	std::string outfile="";
 	std::string headerfile="";
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd proview");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman and Bernhard Haubold");
 	env.set_description("prints data in the '.pro' file quartet format");
-	env.required_arg('H',"header",	headerfile,	"an error occured", "sets the index file (required to use mpileup)");
-	env.optional_arg('m',"minimum",	args.min, 	"an error occured", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
-	env.optional_arg('n',"names",	namefile, 	"an error occured", "a tab delimited file with sample name 'tab' file name pairs.");
-	env.optional_arg('o',"output",	outfile,	"an error occured", "sets the output file (default stdout)");
-	env.optional_arg('i', "input",	infiles,	"an error occured", "sets the index file (required to use mpileup)");
-	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "prints this message");
-	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "prints the program version");
-	env.flag(	'b',"binary",	&out_binary, 	&flag_set, 	"an error occured", "output in a binary format");
-	env.flag(	'r',"mlrho",	&bernhard, 	&flag_set, 	"an error occured", "output in mlrho format");
-	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occured", "input is in pro format");
+	env.required_arg('H',"header",	headerfile,	"You must specify an index file (-H)", "sets the index file (required to use mpileup)");
+	env.optional_arg('m',"minimum",	args.min, 	"an error occurred", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
+	env.optional_arg('n',"names",	namefile, 	"an error occurred", "a tab delimited file with sample name 'tab' file name pairs.");
+	env.optional_arg('o',"output",	outfile,	"an error occurred", "sets the output file (default stdout)");
+	env.positional_arg('i',"input",	infiles,	"No input files specified.", "the mpileup files to be used");
+	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "prints this message");
+	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "prints the program version");
+	env.flag(	'b',"binary",	&out_binary, 	&flag_set, 	"an error occurred", "output in a binary format");
+	env.flag(	'r',"mlrho",	&bernhard, 	&flag_set, 	"an error occurred", "output in mlrho format");
+	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occurred", "input is in pro format");
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
 
 	Indexed_file <Locus> out_file;			//the output profile
 
 	std::vector <Mpileup_file <Locus> *> in_files;	//the input profile(s)
-//	std::vector <Indexed_file <Locus> *> in_files;	//the input profile(s)
 
 	std::vector <Locus> in_locus;
 	Locus out_locus;
@@ -69,7 +68,7 @@ int proview(int argc, char *argv[])
         }
 
 	if (index.get_sizes().size()==0) {
-		std::cerr << __FILE__ << ":" << __LINE__ << ". error: no scaffolds in index file. Exiting.\n";
+		std::cerr << __FILE__ << ":" << __LINE__ << ". Error: no scaffolds in index file. Exiting.\n";
 		exit(0);
 	}
 
@@ -88,7 +87,7 @@ int proview(int argc, char *argv[])
 			in_files.back()->open_no_extention(name_file.mpileup_name.c_str(), ios::in);
 			in_locus.push_back( in_files.back()->read_header() );
 			if (name_file.sample_names.size()!=in_locus.back().get_sample_names().size() ){
-				std::cerr << __FILE__ << ":" << __LINE__ << ". error: Name file does not name the correct number of samples. Exiting.\n";
+				std::cerr << __FILE__ << ":" << __LINE__ << ". Error: name file does not name the correct number of samples. Exiting.\n";
 				exit(0);
 			}
 			for (size_t y=0; y<name_file.sample_names.size(); ++y){
@@ -107,8 +106,8 @@ int proview(int argc, char *argv[])
 			else in_files.back()->open(ios::in);
 			in_locus.push_back( in_files.back()->read_header() );
 			for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
-				std::stringstream s(infiles[x]);
-				s << ":" << y;
+				std::stringstream s;
+				s << split_last(infiles[x], '/').back() << ":" << y+1;
 				sample_names.push_back( s.str().c_str() );
 			}
 //			sample_names.insert(std::end(sample_names), std::begin(in_locus.back().get_sample_names() ), std::end(in_locus.back().get_sample_names() ) );
@@ -130,7 +129,8 @@ int proview(int argc, char *argv[])
 	}
 
 	if (sample_numbers==0) {
-		std::cerr << __FILE__ << ":" << __LINE__ << ". error: no mpileup files opened. Exiting.\n";
+		std::cerr << __FILE__ << ":" << __LINE__ << ". Error: no mpileup files opened. Exiting.\n";
+		std::cerr << "You can generate mpileup files with the command samtools mpileup.\n";
 		exit(0);
 	}
 

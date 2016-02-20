@@ -17,29 +17,31 @@ int main (int argc, char* argv[])
 #if defined(DEBUG)
 	std::cerr << "Warning: This version of mapgd has been compiled in debug mode, and will run slowly.\n";
 #endif
-	env_t env;
+	Environment env;
 	env.set_name("mapgd");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman, Bernard Haubold, Michael Lynch, and Takahiro Maruki.");
 	env.set_description("A program for maximum-likelihood analysis of population genomic data. Please direct questions to matthew.s.ackerman@gmail.com");
 
-	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occured while displaying the help message", "Prints this message");				//DONE
-	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occured while displaying the version message", "Prints the program version");			//DONE
-
-	env.command(	' ',"allele", 	&estimateInd,	 		"an error occured while calling ei", "Estimates allelel frequencies using individual data");		//DONE
-	env.command(	' ',"filter",	&filter,	 		"an error occured while calling filter", "Filter sites in '.map' files");			 	//DONE
-	env.command(	' ',"genotype",	&map2genotype,	 		"an error occured while calling genotype", "Calculate genotype probabilities for individuals"); 	//DONE
+	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "Prints this message");				//DONE
+	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "Prints the program version");		//DONE
+	env.command(	' ',"allele", 	&estimateInd,	 		"an error occurred while calling allele", "Estimates allele frequencies using individual data");	//DONE
+	env.command(	' ',"filter",	&filter,	 		"an error occurred while calling filter", "Filter sites in '.map' files");			 	//DONE
+	env.command(	' ',"genotype",	&map2genotype,	 		"an error occurred while calling genotype", "Calculate genotype probabilities for individuals"); 	//DONE
 //	env.command(	' ',"vcf",	&vcf,		 		"an error occured while calling vcf", "Convert output to vcf format.");					//TODO
-	env.command(	' ',"linkage", 	&PopLD,	 			"an error occured while calling fst", "Estimates linkage disequilibrium between loci");			//DONE
-	env.command(	' ',"pool",	&estimatePooled, 		"an error occured while calling ep", "Estimates allele frequencies using pooled data");			//DONE
-	env.command(	' ',"proview", 	&proview, 			"an error occured while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
-	env.command(	' ',"relatedness",&estimateRel,	 		"an error occured while calling er", "Estimates the pairwise relatedness of individuals");		//DONE
-	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occured while calling genotype", "Reformats a sam header file to a idx file"); 		//DONE
+	env.command(	' ',"linkage", 	&PopLD,	 			"an error occurred while calling linkage", "Estimates linkage disequilibrium between loci");		//DONE
+	env.command(	' ',"pool",	&estimatePooled, 		"an error occurred while calling pool", "Estimates allele frequencies using pooled data");		//DONE
+	env.command(	' ',"proview", 	&proview, 			"an error occurred while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
+	env.command(	' ',"relatedness",&estimateRel,	 		"an error occurred while calling relatedness", "Estimates the pairwise relatedness of individuals");	//DONE
+	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occurred while calling sam2idx", "Reformats a sam header file to a idx file"); 		//DONE
+	env.command(	' ',"help", 	&mapgd_help, 			"an error occurred while calling help", "Prints helpful information");					//DONE
 
 #ifndef NOSQL
-	env.command(	' ',"read", 	&readsql, 			"an error occured while calling proview", "Reads data from the SQL database");				//TODO
-	env.command(	' ',"write", 	&writesql, 			"an error occured while calling proview", "Writes data to the SQL database");				//DONE
+	env.command(	' ',"read", 	&readsql, 			"an error occurred while calling read", "Reads data from the SQL database");				//TODO
+	env.command(	' ',"write", 	&writesql, 			"an error occurred while calling write", "Writes data to the SQL database");				//DONE
 #endif
+	env.set_footer(" 'mapgd help [command]' gives specific help on a command, e.g. mapdg help genotype will show general information the genotype command, and mapgd help [COLUMN NAME] will \
+\	give information about the column names that appear in head lines of files.");
 //	env.command(	' ',"mlrho", 	&mlrho, 			"an error occured while calling proview", "Runs mlrho");						//TODO
 //	env.command(	' ',"calc", 	&calcInd,	 		"an error occured while calling calc", "print log likelihood of ...");
 //	env.command(	' ',"ci", 	&compareIndividual, 		"an error occured while calling ci", "compares allele frequencines between population using indivdual data ");

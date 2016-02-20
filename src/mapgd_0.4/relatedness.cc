@@ -2,8 +2,9 @@
 
 #define BUFFER_SIZE 500
 
-//Moved to inmemory
-std::map <Genotype_pair_tuple, size_t> hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)
+//Moved to in memory
+std::map <Genotype_pair_tuple, size_t> 
+hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)
 {
 	std::stringstream fb_copy(file_buffer.str() );
 	
@@ -21,11 +22,13 @@ std::map <Genotype_pair_tuple, size_t> hash_genotypes (const std::stringstream &
 }
 
 /*Does a regression of allele frequency of the samples on the popualtion allele frequency*/
-void set_e(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
+void 
+set_e(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
 {
 	float e;
 	e=0;
 }
+
 
 /*Guess starting values of relatedness for the maximization procedure*/
 void gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &counts)
@@ -68,7 +71,6 @@ void gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> 
 	relatedness.theta_XY_=0;
 	relatedness.gamma_XY_=0;
 	relatedness.gamma_YX_=0;
-
 	relatedness.Delta_XY_=0;
 	relatedness.delta_XY_=0;*/
 }
@@ -111,11 +113,11 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 {
 	/*This is the basic likelihood model that we are fitting. It essentially calculates the correlation coefficents
 	for the first four moments of the joint distribution. The math needs to be cleaned up here. For now it is typed
-	up to minimize the chance of typos. a, b, c and d are r.v. representing the presence (1) or absence of (0) of
-	the Major allele in the haploid genomes of idividuals A (for a and b) and C (c and d). A is the r.v. defined as
+	up to minimize the chance of typos. a, b, c and d are r.v. Representing the presence (1) or absence of (0) of
+	the Major allele in the haploid genomes of individuals A (for a and b) and C (c and d). A is the r.v. defined as
 	A~(a+b)/2 and C~(c+d)/2. Generally what we are doing here is calculating the expectations (e.g. E_A2) of the 
 	joint distributions and using that to calculate the joint distribution itself. Problems can occur when 
-	correlation coefficents are less than zero, becuase the probabilites of various observations (e.g. mm1mm2) can 
+	correlation coefficients are less than zero, because the probabilities of various observations (e.g. mm1mm2) can 
 	become negative. These probabilities are forced to be zero, which may be a little arbitrary, but it seems to 
 	work.*/
 
@@ -124,14 +126,13 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 
 	P=1-pair.m;
 
-//	std::cerr << P << " is P\n";
 	if (P==0) return 0;	
 	float_t e=0;
 	
 	/*This comes from the inverse matrix of the one used to calculate the moments.*/
 	
-	float_t A=P;//+e(P)*P; 		//mean major allele frequency in A
-	float_t C=P;//-e(P)*P; 		//mean major allele frequency in C
+	float_t A=P;//+e(P)*P; 	//mean major allele frequency in A
+	float_t C=P;//-e(P)*P; 	//mean major allele frequency in C
 	float_t Va=A*(1.-A);	//variance of the two haploid genomes of A 
 	float_t Vc=C*(1.-C);	// "   "	"	" 	"     of B
 	float_t Sa=sqrt(Va);	//standard deviation of haploid genomes A
@@ -259,10 +260,11 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 
 	/* Starting point and stepsizes. I would really prefer to do this with a 
 	 * Newton-Raphson method, which just inexplicably like more than the 
-	 * Nelder-Mead, but I'm being lasy today, or more accurately there are 
-	 * fundemental problems with setting the problem up to use the NR method.
+	 * Nelder-Mead, but I'm being lazy today, or more accurately there are 
+	 * fundamental problems with setting the problem up to use the NR method.
 	 */
 	x=gsl_vector_alloc(7);
+
 	gsl_vector_set(x, 0, rel.f_X_);
 	gsl_vector_set(x, 1, rel.f_Y_);
 	gsl_vector_set(x, 2, rel.theta_XY_);
@@ -300,10 +302,78 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	rel.gamma_YX_ = gsl_vector_get(s->x, 4);
 	rel.Delta_XY_ = gsl_vector_get(s->x, 5);
 	rel.delta_XY_ = gsl_vector_get(s->x, 6);
-
 	
+	rel.max_ll_=rel_ll(x, &hashed_genotypes);
 }
 
+void
+get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes)
+{
+	const gsl_multimin_fminimizer_type *T=gsl_multimin_fminimizer_nmsimplex2;
+	gsl_multimin_fminimizer *s=NULL;
+	gsl_vector *ss, *x;
+	gsl_multimin_function gsl_func;
+	
+	size_t iter = 0;
+	int status;
+	double size;
+
+	/* Starting point and stepsizes. I would really prefer to do this with a 
+	 * Newton-Raphson method, which just inexplicably like more than the 
+	 * Nelder-Mead, but I'm being lazy today, or more accurately there are 
+	 * fundamental problems with setting the problem up to use the NR method.
+	 */
+	for (size_t w=0; w<7; ++w) {
+
+		
+		ss=gsl_vector_alloc(6);
+		gsl_vector_set_all(ss,0.15);	
+
+		gsl_func.n=6;
+
+		gsl_func.f = rel_ll;
+		gsl_func.params=&hashed_genotypes;
+
+		s = gsl_multimin_fminimizer_alloc (T, 6);
+		gsl_multimin_fminimizer_set (s, &gsl_func, x, ss);
+
+		do {
+			iter++;
+			status = gsl_multimin_fminimizer_iterate(s);
+      
+			if (status) break;
+
+			size = gsl_multimin_fminimizer_size (s);
+			status = gsl_multimin_test_size (size, 1e-4);
+
+		}  while (status == GSL_CONTINUE && iter < 600);
+
+		switch (w) {
+			case 0:
+				rel.f_X_ll = rel_ll(x, &hashed_genotypes);
+			break;
+			case 1:
+				rel.f_Y_ll = rel_ll(x, &hashed_genotypes);
+			break;
+			case 2:
+				rel.theta_XY_ll = rel_ll(x, &hashed_genotypes);
+			break;
+			case 3:
+				rel.gamma_XY_ll = rel_ll(x, &hashed_genotypes);
+			break;
+			case 4:
+				rel.gamma_YX_ll = rel_ll(x, &hashed_genotypes);
+			break;
+			case 5:
+				rel.Delta_XY_ll = rel_ll(x, &hashed_genotypes);
+			break;
+			case 6:
+				rel.delta_XY_ll = rel_ll(x, &hashed_genotypes);
+			break;
+		}
+	}
+	
+}
 
 int estimateRel(int argc, char *argv[])
 {
@@ -314,7 +384,7 @@ int estimateRel(int argc, char *argv[])
 	std::vector <size_t> ind;*/
 	std::string gcf_name="", rel_name="";
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd relatedness");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");

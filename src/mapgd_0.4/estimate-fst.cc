@@ -9,7 +9,7 @@ int estimate_fst(int argc, char *argv[])
 
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd fst");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman and Takahiro Maruki");

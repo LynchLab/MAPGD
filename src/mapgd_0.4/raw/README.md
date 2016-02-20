@@ -1,1 +1,1 @@
-These are classes that store data, but do not implement an interface for reading our writing.
+These are data classes that do not implement the Data template, and so cannot be read or written by the map-file interface directly.

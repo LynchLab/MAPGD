@@ -361,7 +361,7 @@ int PopLD(int argc, char *argv[])
 	double min_number = 10.0;
 	int print_help = 0;
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd linkage");
 	env.set_version(VERSION);
 	env.set_author("Takahiro Maruki");

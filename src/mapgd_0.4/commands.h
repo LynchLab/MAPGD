@@ -23,6 +23,7 @@
 #include "map2genotype.h"
 #include "PopLD.h"
 #include "sam2idx.h"
+#include "mapgd-help.h"
 
 #ifndef NOSQL
 #include "writesql.h"

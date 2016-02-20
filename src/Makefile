@@ -1,8 +1,10 @@
-SUBDIRS=mapgd_0.4
 VER=0.4
+SUBDIRS=mapgd_$(VER)
 NAME=mapgd
 DEBIAN=0
 UBUNTU=1
+
+export VER 
 
 $(SUBDIRS):
 	$(MAKE) -C $@
@@ -23,7 +25,7 @@ increment:
 	$(MAKE) -C $(SUBDIRS) increment
 .PHONY: increment
 
-dist: docs 
+dist: docs
 	tar -czf $(NAME)-$(VER).tar.gz $(SUBDIRS)/*
 	bzr dh-make $(NAME) $(VER) $(NAME)-$(VER).tar.gz
 	rm -rf debian/*ex debian/*EX
@@ -31,6 +33,7 @@ dist: docs
 .PHONY: dist
 
 docs: 
+	$(MAKE) -C $(SUBDIRS) docs
 	( cat doxygen.conf ; echo "PROJECT_NUMBER=$(VER)" ) | doxygen -
 .PHONY: docs
 	
@@ -39,6 +42,6 @@ test: all
 .PHONY: test
 
 clean: 
-	-for d in $(SUBDIRS); do (cd $$d; $(MAKE) clean); done
+	$(MAKE) -C $(SUBDIRS) clean
 	rm -f $(NAME)-*.tar.gz
 .PHONY: clean

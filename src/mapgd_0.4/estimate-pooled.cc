@@ -42,7 +42,7 @@ int estimatePooled(int argc, char *argv[])
 
 	/* sets up the help messages and options */
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd ep");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman and Michael Lynch");

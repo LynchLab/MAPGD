@@ -66,17 +66,17 @@ void Data_file<T>::open_extention(const char* filename, const std::ios_base::ope
 
 void Base_file::open_no_extention(const char* filename, const std::ios_base::openmode &mode)
 {
-	if (filename_.size()==0) filename_=std::string(filename);
+	if ( filename_.size()==0 ) filename_=std::string(filename);
 #ifdef DEBUG
 	std::cerr << "opening "<< filename <<"\n";
 #endif 
-	if (open_){
+	if ( open_ ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
 	}
 	if ( mode & std::ios::in ){
 		file_.open( filename, std::ios::in);
-		if (!file_.is_open() ){
+		if ( !file_.is_open() ){
 			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
 			std::cerr << "Error: " << strerror(errno) << std::endl;
 			exit(0);
@@ -95,21 +95,21 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 		write_=true;
 		openmode_=mode;
 	};
-	if (mode & std::ios::binary) binary_=true;
+	if ( mode & std::ios::binary ) binary_=true;
 	open_=true;
 }
 
 void Base_file::open(const std::ios_base::openmode &mode)
 {
 	if ( mode & std::ios::in ) open(&std::cin, mode);
-	else if ( mode & std::ios::out) open(&std::cout, mode);
+	else if ( mode & std::ios::out ) open(&std::cout, mode);
 }
 
 
 void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)
 {
 	#ifdef POSIX
-	if (check_stream(s) ){
+	if ( check_stream(s) ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": iostream is empty. Exiting." << std::endl;
 		exit(0);
 	}
@@ -118,17 +118,17 @@ void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
 	}
-	if ( mode & std::ios::in) {
+	if ( mode & std::ios::in ) {
 		in_=s;
 		read_=true;
 		openmode_=mode;
 	}
-	if ( mode & std::ios::out) {
+	if ( mode & std::ios::out ) {
 		out_=s;
 		write_=true;
 		openmode_=mode;
 	}
-	if ( mode & std::ios::binary) binary_=true;
+	if ( mode & std::ios::binary ) binary_=true;
 	open_=true;
 	concatenated_=true;
 }
@@ -136,12 +136,12 @@ void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)
 void Base_file::open(std::istream *s, const std::ios_base::openmode &mode)
 {
 #ifdef POSIX
-	if (check_stream(s) ){
+	if (check_stream(s) ) {
 		std::cerr << __FILE__ << ":" << __LINE__ << ": iostream is empty. Exiting." << std::endl;
 		exit(0);
 	}
 #endif
-	if ( open_ ){
+	if ( open_ ) {
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
 	}
@@ -180,13 +180,11 @@ void Data_file<T>::open_from(Base_file &file)
 		if(file.concatenated() ) this->open(file.get_in(), file.openmode() );
 		else this->open_extention(file.filename().c_str(), file.openmode() );
 //		}
-//		else this->open(std::ios::in);
 	} else if (file.openmode() & std::ios::out) {
 //		if(file.filename().size()!=0) {
 		if(file.concatenated() ) this->open(file.get_out(), file.openmode() );
 		else this->open_extention(file.filename().c_str(), file.openmode() );
 //		}
-//		else this->open(std::ios::out);
 	}
 	binary_=(file.openmode() & std::ios::binary);
 	open_=true;

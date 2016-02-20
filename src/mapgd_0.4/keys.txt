@@ -13,13 +13,13 @@ CHROM	id0_t	chromosome
 ROW	size_t	row
 DP	count_t	read depth
 NS	size_t	number of samples with data
-SOMATIC	bool	a flag to indicate that the record is a somatic mutaiton
+SOMATIC	bool	a flag to indicate that the record is a somatic mutation
 VALID	bool	a flag to indicate that a record has been validated?
-SB	float_t	strand bais at this position
+SB	float_t	strand bias at this position
 MQ0	count_t	number of MAPQ==0 reads covering this position
 H2	bool	membership in hapmap2
 END	size_t	ending row of a variant described by this record
-AA	gt_t	ancestoral allele
+AA	gt_t	ancestral allele
 NCUT	size_t	the number of samples excluded because of filters
 GOF	float_t	goodness of fit value
 DEFAULT	bool	a flag to indicate that a record represents a default value

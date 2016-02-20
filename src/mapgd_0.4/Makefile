@@ -5,11 +5,12 @@
 MODE=-O3
 STD=-std=c++11
 DESTDIR=/usr/local/bin
+DOCPATH=\"$(shell pwd)../../docs/man/\"
 LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d '-' -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
-POSIX=-D POSIX
+POSIX=-D POSIX -D PATH=$(DOCPATH)
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./sql
 CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE)
 LDLIBS=-l sqlite3 -lgsl -lgslcblas -lm -fopenmp
@@ -18,7 +19,10 @@ NOOMP=-D NOOMP
 NOSQL=-D NOSQL
 OBJDIR=obj
 CXX=g++
+DOCDIR=../../docs
 
+
+SUBDIR=raw sql data_types commands
 #>! Just a list of flags to try at some later date.
 # -oFast -ffloat-store -fexcess-precision=style -ffast-math -fno-rounding-math -fno-signaling-nans
 # -fcx-limited-range -fno-math-errno -funsafe-math-optimizations -fassociative-math -freciprocal-math
@@ -29,23 +33,24 @@ CXX=g++
 
 MAPGD=mapgd.o
 
+#These all depend on interface.h
 COMMAND_OBJ=estimate-individual.o \
 	estimate-pooled.o \
+	mapgd-help.o \
 	sam2idx.o \
 	proview.o \
 	interface.o \
 	map2genotype.o \
 	PopLD.o \
+	filter.o \
 	relatedness.o
 
+#Depend on db_api
 SQL_OBJ=sql/writesql.o \
 	sql/readsql.o \
 	sql/db_api.o 
 
-BASE_OBJ=base.o \
-	binomial.o \
-	circular_list.o \
-	filter.o \
+BASE_OBJ=binomial.o \
 	individual-likelihood.o \
 	lnmultinomial.o \
 	newton-method-theta.o \
@@ -54,6 +59,7 @@ BASE_OBJ=base.o \
 	pooled-likelihood.o \
 	stream-tools.o 
 
+#These all depend on data.h
 DATA_OBJ=data_types/allele.o \
 	data_types/data.o \
 	data_types/file-index.o \
@@ -67,7 +73,8 @@ DATA_OBJ=data_types/allele.o \
 
 RAW_OBJ=raw/genotype.o \
 	raw/quartet.o \
-	raw/genotype_pair.o 
+	raw/genotype_pair.o \
+	raw/base.o 
 
 
 OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
@@ -85,9 +92,9 @@ sql: $(OBJ)
 all: nosql
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
-DATA_SOURCE=data_types\*.cc
+DATA_SOURCE=data_types/*.cc
 
-data.h: data_types\data.cc
+data.h: data_types/data.cc
 	@echo "updating data_types"
 	touch $(DATA_SOURCE)
 
@@ -110,12 +117,24 @@ increment:
 install: all
 	install -m 0755 $(LOCAL) $(DESTDIR)
 .PHONY: install
-	
+
+
+COMMAND=allele linkage proview
+
+#docs: all
+#	for COM in $(COMMAND); do \
+#		echo $(LOCAL) $$COM \$$1 > mapgd-$$COM;  \
+#		chmod 777 mapgd-$$COM;  \
+#		help2man ./mapgd-$$COM > $(DOCDIR)/man/1/mapgd-$$COM.1; \
+#	done
+#.PHONY: clean
+#	help2man
+
 clean:
 	rm -f *.o
-	rm -f data_types/*.o
-	rm -f sql/*.o
-	rm -f raw/*.o
-	rm -f ../../bin/*
-	rm -f ~/bin/mapgd
+	for DIR in $(SUBDIR); do \
+		cd $$DIR; \
+		rm -f *.o; \
+		cd ..; \
+	done
 .PHONY: clean

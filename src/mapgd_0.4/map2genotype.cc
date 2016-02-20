@@ -77,7 +77,7 @@ int map2genotype(int argc, char *argv[])
 
 	std::string mapname="", proname="";
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd genotype");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");

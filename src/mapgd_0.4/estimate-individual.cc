@@ -203,7 +203,7 @@ int estimateInd(int argc, char *argv[])
 	/* sets up the help messages and options, see the 'interface.h' for more detials. */
 	//std::cerr "If you are using .... please cite ...."
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd allele");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman and Takahiro Maruki");
@@ -231,7 +231,6 @@ int estimateInd(int argc, char *argv[])
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 
-	std::cerr << rnseed << std::endl;
 	srand(rnseed);
 
 	Indexed_file <Allele> map_out;

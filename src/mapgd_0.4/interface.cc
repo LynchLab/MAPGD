@@ -41,7 +41,6 @@ format_usage(const char *message, const size_t &padding)
 	while(unformated_line.size()>(79-padding) ){
 		word=unformated_line.begin()+(79-padding);
 		while (word!=unformated_line.begin() && *word!=' ') word--;
-	//	*word='\n';
 		formated_lines.insert(formated_lines.end(), unformated_line.begin(), word);
 		formated_lines.insert(formated_lines.end(), 1, '\n');
 		formated_lines.insert(formated_lines.end(), padding, ' ');
@@ -55,14 +54,12 @@ format_usage(const char *message, const size_t &padding)
 int 
 arg_set_vector_str(int argc, char **argv, void *parm)
 {
-	int n=1;
+	int n=0;
 	std::vector <std::string> *v=(std::vector <std::string> *)(parm);
 	while (n<argc){
-	//	std::cout << "n\n";
 		if (argv[n][0]=='-') return n;
-	//	std::cout << "pusshing " << argv[n] << std::endl;
 		v->push_back(argv[n]);
-		if ( n+1==argc) return n+1;
+		if (n+1==argc) return n+1;
 		++n;
 	} 
 	std::cerr << __FILE__ << ":" << __LINE__ << ": error parsing " << argv[1] << std::endl;
@@ -74,8 +71,8 @@ int
 arg_set_vector_uint32(int argc, char **argv, void *parm)
 {
 	std::vector <uint32_t> *v=(std::vector <uint32_t> *)(parm);
-	if (argc>1){
-		std::vector<std::string> elems=split(argv[1], ',');
+	if (argc>0){
+		std::vector<std::string> elems=split(argv[0], ',');
 		for (size_t x=0; x<elems.size(); ++x){
 			if ( isint(elems[x].c_str() ) ) v->push_back(atoi(elems[x].c_str() )-1) ;
 			else {
@@ -97,7 +94,7 @@ arg_set_vector_uint32(int argc, char **argv, void *parm)
 		}
 		return 2;
 	} 
-	std::cerr << "arg_setvectorint: error parsing " << argv[1] << std::endl;
+	std::cerr << "arg_setvectorint: error parsing " << argv[0] << std::endl;
 	exit(1);
 }
 
@@ -105,8 +102,8 @@ int
 arg_set_vector_uint64(int argc, char **argv, void *parm)
 {
 	std::vector <uint64_t> *v=(std::vector <uint64_t> *)(parm);
-	if (argc>1){
-		std::vector<std::string> elems=split(argv[1], ',');
+	if (argc>0){
+		std::vector<std::string> elems=split(argv[0], ',');
 		for (size_t x=0; x<elems.size(); ++x){
 			if ( isint(elems[x].c_str() ) ) v->push_back(atol(elems[x].c_str() )-1);
 			else {
@@ -126,7 +123,7 @@ arg_set_vector_uint64(int argc, char **argv, void *parm)
 				};
 			}
 		}
-		return 2;
+		return 1;
 	} 
 	std::cerr << "arg_setvectorint: error parsing " << argv[1] << std::endl;
 	exit(1);
@@ -136,12 +133,12 @@ arg_set_vector_uint64(int argc, char **argv, void *parm)
 int
 arg_set_int(int argc, char **argv, void *parm)
 {
-	if (argc>1){
-		if (isint(argv[1])){
-			*( (int *)(parm) )=atoi(argv[1]);
-			return 2;
+	if (argc>0){
+		if (isint(argv[0])){
+			*( (int *)(parm) )=atoi(argv[0]);
+			return 1;
 		} 
-		return argc+1;
+		return argc;
 	} 
 	std::cerr << "arg_setint:error parsing " << argv[1] << std::endl;
 	exit(1);
@@ -151,9 +148,9 @@ arg_set_int(int argc, char **argv, void *parm)
 int
 arg_set_char(int argc, char **argv, void *parm)
 {
-	if (argc>1){
-		*(char *)(parm)=argv[1][0];
-		return 2;
+	if (argc>0){
+		*(char *)(parm)=argv[0][0];
+		return 1;
 	} exit(1);	
 }
 
@@ -161,9 +158,9 @@ arg_set_char(int argc, char **argv, void *parm)
 int
 arg_set_str(int argc, char **argv, void *parm)
 {
-        if (argc>1){
-                *(std::string *)(parm)=argv[1];
-                return 2;
+        if (argc>0){
+                *(std::string *)(parm)=argv[0];
+                return 1;
         } exit(1);
 }
 
@@ -171,9 +168,9 @@ arg_set_str(int argc, char **argv, void *parm)
 int 
 arg_setc_str(int argc, char **argv, void *parm)
 {
-	if (argc>1){
-		*(char **)(parm)=argv[1];
-		return 2;
+	if (argc>0){
+		*(char **)(parm)=argv[0];
+		return 1;
 	} exit(1);	
 }
 
@@ -181,26 +178,26 @@ arg_setc_str(int argc, char **argv, void *parm)
 int 
 arg_set_float(int argc, char **argv, void *parm)
 {
-	if (argc>1){
-		*(float *)(parm)=atof(argv[1]);
-		return 2;
+	if (argc>0){
+		*(float *)(parm)=atof(argv[0]);
+		return 1;
 	} exit(1);	
 }
 
 int 
 arg_set_double(int argc, char **argv, void *parm)
 {
-	if (argc>1){
-		*(double *)(parm)=atof(argv[1]);
-		return 2;
+	if (argc>0){
+		*(double *)(parm)=atof(argv[0]);
+		return 1;
 	} exit(1);	
 }
 int
 arg_set_long_double(int argc, char **argv, void *parm)
 {
-	if (argc>1){
-		*(long double *)(parm)=atof(argv[1]);
-		return 2;
+	if (argc>0){
+		*(long double *)(parm)=atof(argv[0]);
+		return 1;
 	} exit(1);	
 }
 
@@ -216,7 +213,7 @@ flag_set(void *parm)
 int 
 flag_version(void *parm)
 {
-	print_version(*(env_t *) parm);
+	print_version(*(Environment *) parm);
 	return 0;
 }
 
@@ -225,7 +222,7 @@ flag_version(void *parm)
 int
 flag_help(void *parm)
 {
-	print_help(*(env_t *) parm);
+	print_help(*(Environment *) parm);
 	return 0;
 }
 
@@ -233,7 +230,7 @@ flag_help(void *parm)
 int
 flag_usage(void *parm)
 {
-	print_usage(*(env_t *) parm);
+	print_usage(*(Environment *) parm);
 	return 0;
 }
 
@@ -248,19 +245,22 @@ arg_error(int argc, char **argv, void *parm)
 /* The main command line argument parsing routine */
 
 int 
-parsargs(int argc, char *argv[], env_t &env)
+parsargs(int argc, char *argv[], Environment &env)
 {
 	int optind=1; 
 	char *optopt; 
 
-	std::list <arg_t>::iterator arg=env.args.begin();
-	std::list <arg_t>::iterator arg_end=env.args.end();
+	std::list <Argument>::iterator arg=env.args.begin();
+	std::list <Argument>::iterator arg_end=env.args.end();
 
-	std::list <flag_t>::iterator flag=env.flags.begin();
-	std::list <flag_t>::iterator flag_end=env.flags.end();
+	std::list <Argument *>::iterator pos=env.positional_args.begin();
+	std::list <Argument *>::iterator pos_end=env.positional_args.end();
 
-	std::list <com_t>::iterator com=env.commands.begin();
-	std::list <com_t>::iterator com_end=env.commands.end();
+	std::list <Command>::iterator com=env.commands.begin();
+	std::list <Command>::iterator com_end=env.commands.end();
+
+	std::list <Flag>::iterator flag=env.flags.begin();
+	std::list <Flag>::iterator flag_end=env.flags.end();
 
 	while (optind<argc){
 		if (argv[optind][0]=='-'){
@@ -270,6 +270,7 @@ parsargs(int argc, char *argv[], env_t &env)
 					arg=env.args.begin();
 					while(arg!=arg_end){
 						if (*optopt==arg->opt){
+							optind++;
 							optind+=arg->func(argc-optind, argv+optind, arg->parm);
 							arg->set=true;
 							break;
@@ -331,8 +332,15 @@ parsargs(int argc, char *argv[], env_t &env)
 				++com;
 			};
 			if (com==com_end) {
-				std::cerr << env.name << ":" << " invalid command -- '" << optopt << "' " << std::endl; 
-				return -1; 
+				if (pos!=pos_end){
+					optind+=(*pos)->func(argc-optind, argv+optind, (*pos)->parm);
+					optind++;
+					(*pos)->set=true;
+					pos++;
+				} else {
+					std::cerr << env.name << ":" << " invalid command -- '" << optopt << "' " << std::endl; 
+					return -1; 
+				}
 			}
 			
 		};
@@ -341,26 +349,28 @@ parsargs(int argc, char *argv[], env_t &env)
 	return env.required_set()!=1;
 }
 
-void print_version(env_t env){
+void 
+print_version(Environment env){
 	printf("%s version %s written by %s\n", env.name, env.version, env.author);
 	exit(0);
 }
 
-void Usage(env_t env, FILE *out){
+void 
+Usage(Environment env, FILE *out){
 	std::string all_flags="";
 	std::string required_args="";
 	std::string optional_args="";
 	size_t x=0;
 	if (env.commands.size()!=0) fprintf(out, "usage: %s <command> [<args>]\n\n", env.name);
 	else {
-		std::list <flag_t>::iterator flag=env.flags.begin();
-		std::list <flag_t>::iterator f_end=env.flags.end();
+		std::list <Flag>::iterator flag=env.flags.begin();
+		std::list <Flag>::iterator f_end=env.flags.end();
 		while (flag!=f_end){
 			all_flags+=flag->opt;
 			flag++;
 		}
-		std::list <arg_t>::iterator arg=env.args.begin();
-		std::list <arg_t>::iterator end=env.args.end();
+		std::list <Argument>::iterator arg=env.args.begin();
+		std::list <Argument>::iterator end=env.args.end();
 		while (arg!=end){
 			if (!arg->required) {
 				if (x<6){
@@ -391,15 +401,15 @@ void Usage(env_t env, FILE *out){
 }
 
 void 
-print_help(env_t env)
+print_help(Environment env)
 {
 	Usage(env, stdout);
 
 	printf("%s version %s written by %s\n", env.name, env.version, env.author);
  	printf("%s\n\n", format_usage(env.description, 0) );
 
-	std::list <com_t>::iterator com=env.commands.begin();
-	std::list <com_t>::iterator com_end=env.commands.end();
+	std::list <Command>::iterator com=env.commands.begin();
+	std::list <Command>::iterator com_end=env.commands.end();
 	if (env.commands.size()!=0) printf("Commands:\n");
 	while (com!=com_end){
 		//TODO Better length formating.
@@ -409,8 +419,8 @@ print_help(env_t env)
 			printf("  %s\t\t\t%s\n", com->lopt, format_usage(com->umsg, 24) );
 		++com;
 	}
-	std::list <arg_t>::iterator arg=env.args.begin();
-	std::list <arg_t>::iterator end=env.args.end();
+	std::list <Argument>::iterator arg=env.args.begin();
+	std::list <Argument>::iterator end=env.args.end();
 	printf("Options:\n");
 	while (arg!=end){
 		//TODO Better length formating.
@@ -420,8 +430,8 @@ print_help(env_t env)
 			printf("  -%c, --%s\t\t%s\n", arg->opt, arg->lopt, format_usage(arg->umsg, 24) );
 		++arg;
 	}
-	std::list <flag_t>::iterator flag=env.flags.begin();
-	std::list <flag_t>::iterator flag_end=env.flags.end();
+	std::list <Flag>::iterator flag=env.flags.begin();
+	std::list <Flag>::iterator flag_end=env.flags.end();
 	printf("Flags:\n");
 	while (flag!=flag_end){
 		//TODO Better length formating.
@@ -431,20 +441,29 @@ print_help(env_t env)
 			printf("  -%c, --%s\t\t%s\n", flag->opt, flag->lopt, format_usage(flag->umsg, 24) );
 		++flag;
 	}
+	printf("\n%s\n", format_usage(env.footer_, 0) );
 	exit(0);
 }
 
 
-void print_usage(env_t env){
+void 
+print_usage(Environment env){
 	Usage(env, stderr);
 	fprintf(stderr, "Try '%s --help' for more information.\n", env.name);
 	exit(0);
 }
 
-void env_t::close(void){
+void 
+Environment::close(void){
 	flags.clear();
 	args.clear();
 	commands.clear();
 	required_args.clear();
 	required_coms.clear();
+}
+
+void 
+Environment::set_footer(const char *str)
+{
+	footer_=str;
 }

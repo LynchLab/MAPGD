@@ -11,7 +11,7 @@ int convert(int argc, char *argv[])
         std::string filename1="";
         std::string filename2="";
 
-        env_t env;
+        Environment env;
         env.set_name("mapgd convert");
         env.set_version(VERSION);
         env.set_author("Matthew Ackerman");

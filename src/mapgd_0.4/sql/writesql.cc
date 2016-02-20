@@ -12,7 +12,7 @@ int writesql(int argc, char *argv[])
 	std::string db_name="";
 	/* All the variables that can be set from the command line */
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd writesql");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");

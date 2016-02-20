@@ -350,7 +350,7 @@ int PopLD(int argc, char *argv[])
 	std::vector <int> ind;
 
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd ld");
 	env.set_version(VERSION);
 	env.set_author("Takahiro Maruki");

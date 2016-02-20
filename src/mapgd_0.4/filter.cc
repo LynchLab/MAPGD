@@ -18,7 +18,7 @@ int filter(int argc, char *argv[])
 	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_hwell=FLT_MAX, min_hwell=-1, min_freq=0, max_freq=0.5, min_gof=-2.;
 	int max_coverage=CNT_MAX, min_coverage=4, max_pitch=1;
 
-	env_t env;
+	Environment env;
 	env.set_name("mapgd filter");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");

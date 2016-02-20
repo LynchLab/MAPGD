@@ -114,7 +114,7 @@ public:
 	/** @defgroup BasicIO Basic IO operations
 	 * @{
   	 */
-	//! Reterns a pointer to a new instance of the derived data class.
+	//! Returns a pointer to a new instance of the derived data class.
 	Data *read_header(void);	
 
 	//! Reads from the istream.
@@ -156,7 +156,7 @@ public:
 
 	/*! \brief Returns the number of rows in the file.
 	 *
-	 * Returns 0 if unkown. Note, the number of rows in the file will in 
+	 * Returns 0 if unknown. Note, the number of rows in the file will in 
 	 * general not be equal to the final position in the file_index, since
 	 * many position will be skipped. .
 	 */
@@ -166,15 +166,15 @@ public:
 
 };
 
-template <class T>
+template <class Data>
 class Data_file : public Base_file {
 private :
 protected :
-	void read_binary(T&);		//!< Read file in binary mode.		
-	void write_binary(const T&);	//!< Write in binary mode.
+	void read_binary(Data &);		//!< Read file in binary mode.		
+	void write_binary(const Data &);	//!< Write in binary mode.
 
-	virtual void read_text(T&){};
-	virtual void write_text(const T&){};
+	virtual void read_text(Data &){};
+	virtual void write_text(const Data&){};
 
 	using Base_file::out_;
 	using Base_file::in_;
@@ -194,18 +194,18 @@ public:
 	///! The function that opens a Data_file (if file).
 	void open(const char *, const std::ios_base::openmode &);
 
-	///! Doesn't check extnetion.
+	///! Doesn't check extension.
 	void open_extention(const char *, const std::ios_base::openmode &);
 
 //	~Data_file(){};
 
 	///! Appends to a file.
 	/*!
-	 * If there is a table open, it is imediately closed. 
+	 * If there is a table open, it is immediately closed. 
 	 * This is because the information that follows may no 
 	 * longer be from the previous class, and the column labels need to 
 	 * changed accordingly. If the Flat_file was not opened in 
-	 * concatenate to disk, then make a new file with the extention 
+	 * concatenate to disk, then make a new file with the extension 
 	 * T::file_name is created.
 	 */
 	void open_from(Base_file &); 
@@ -224,12 +224,12 @@ public:
 	//! Writes a row to the file and advances one row. 
 	/*! Returns the ostream.
 	 */
-	Data_file& write(const T &);
+	Data_file& write(const Data &);
 
 	//! Reads a row from the file and advances one row. 
 	/*! Returns the class.
 	 */
-	Data_file& read(T &);				
+	Data_file& read(Data &);				
 };
 
 template <class T>
