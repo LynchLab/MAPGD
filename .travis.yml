@@ -1,5 +1,3 @@
 language: c++
 deploy:
   provider: biicode
-  user: "YOUR_USER"
-  password: "YOUR_PASSWORD" # should be encrypted
