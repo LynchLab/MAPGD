@@ -217,10 +217,11 @@ More detailed documentation for each command is being produced, and will be avai
 
 <h2> Common Options </h2>
 
-<b>-o	--output \<FILENAME\> </b> When this option is specified, and output file(s) with name FILENAME will be created, with appropriate extentions (see ). This option can be useful for looking at the output of commands, which is typically proceeded with a long list of scaffold names and lengths. However, when the <b>-o</b> option is specified, the main data and the sam-header are put into seperate files, making the data easier to read.
+<b>-o	--output \<FILENAME\> </b> When this option is specified output file(s) with basename FILENAME will be created and with appropriate extensions will be added (possible file extensions are listed bellow). This option can be useful for generating files for human inspection because data will not be proceeded by a long list of scaffold names and lengths. However, several separate files will be need by some commands, which may make the management of files more difficult.
 
-<b> [FILENAME] </b> this option is specified, and output file(s) with name FILENAME will be created, with appropriate extentions (see ). This option can be useful for looking at the output of commands, which is typically proceeded with a long list of scaffold names and lengths. However, when the <b>-o</b> option is specified, the main data and the sam-header are put into seperate files, making the data easier to read.
+<b>-H	--header \<FILENAME\> </b> FILENAME will be treated as a header, and the .idx corresponding to basename will not be opened.
 
+<b>-i   --input \<FILENAME\> </b> The file FILENAME will be opened for input, rather than taking input from stdin.
 
 <h2> Input/Output </h2>
 

@@ -21,7 +21,6 @@ OBJDIR=obj
 CXX=g++
 DOCDIR=../../docs
 
-
 SUBDIR=raw sql data_types commands
 #>! Just a list of flags to try at some later date.
 # -oFast -ffloat-store -fexcess-precision=style -ffast-math -fno-rounding-math -fno-signaling-nans

@@ -15,16 +15,22 @@ void mask(quartet_t &q){
 //TODO fix these up to make them prettier
 std::ostream& operator<< (std::ostream& out, const quartet& q) 
 {
+	std::stringstream ssout;
+	std::string strout;
 	if (not(q.masked) ){ 
-		out << std::setfill('0') << std::setw(3) << int(q.base[0]);
-		out << q.delim;
-		out << std::setfill('0') << std::setw(3) << int(q.base[1]);
-		out << q.delim;
-		out << std::setfill('0') << std::setw(3) << int(q.base[2]);
-		out << q.delim;
-		out << std::setfill('0') << std::setw(3) << int(q.base[3]); 
-	}
-	else out << "000" << q.delim << "000" << q.delim << "000" << q.delim << "000"; 
+		ssout << int(q.base[0]);
+		ssout << q.delim;
+		ssout << int(q.base[1]);
+		ssout << q.delim;
+		ssout << int(q.base[2]);
+		ssout << q.delim;
+		ssout << int(q.base[3]);
+		strout=ssout.str();
+		out << strout;
+		if (strout.size()<15)
+			out << std::string(15-strout.size(), ' ');
+	}	
+	else out << "0" << q.delim << "0" << q.delim << "0" << q.delim << "0     "; 
         return out;
 }
 

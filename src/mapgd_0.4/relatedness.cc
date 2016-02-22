@@ -212,6 +212,7 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 	return (log(1+exp(E[0]-E[8])+exp(E[1]-E[8])+exp(E[2]-E[8])+exp(E[3]-E[8])+exp(E[4]-E[8])+exp(E[5]-E[8])+exp(E[6]-E[8])+exp(E[7]-E[8]) )+E[8] )*count;
 }
 
+
 double
 rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 {
@@ -243,7 +244,6 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	if (isnan(ll) ) return FLT_MAX;
 	return double(-ll);
 }
-
 
 /*Maximizes the relatedness*/
 void 
@@ -306,6 +306,29 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	rel.max_ll_=rel_ll(x, &hashed_genotypes);
 }
 
+class small_rel{
+
+	public:
+	size_t skip;
+	small_rel(size_t skip_) {
+		skip=skip_;
+	}
+	double
+	rel_ll_2 (const gsl_vector *v, void *void_hashed_genotypes_p)
+	{
+       		gsl_vector *x=gsl_vector_alloc(7);
+
+		for (size_t y=0; y<7;y++){
+			if(y==skip){
+   		     		gsl_vector_set(x, y, 0);
+			} else {
+				gsl_vector_set(x, y, gsl_vector_get(v, y-(y<=skip) ) );
+			}
+		}
+		return rel_ll(v, void_hashed_genotypes_p);
+	}
+};
+
 void
 get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes)
 {
@@ -318,6 +341,9 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 	int status;
 	double size;
 
+	std::vector <float_t> values={rel.f_X_, rel.f_Y_, rel.theta_XY_,rel.gamma_XY_,rel.gamma_YX_, rel.Delta_XY_, rel.delta_XY_};
+
+
 	/* Starting point and stepsizes. I would really prefer to do this with a 
 	 * Newton-Raphson method, which just inexplicably like more than the 
 	 * Nelder-Mead, but I'm being lazy today, or more accurately there are 
@@ -325,13 +351,22 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 	 */
 	for (size_t w=0; w<7; ++w) {
 
+		small_rel this_rel(w);
 		
 		ss=gsl_vector_alloc(6);
+		x=gsl_vector_alloc(6);
 		gsl_vector_set_all(ss,0.15);	
+
+		gsl_vector_set(x, 0, w);
+		for (size_t y=0; y<5; ++y){
+			std::cerr << y+(y>=w) << std::endl;
+			gsl_vector_set(x, y, values[y+(y>=w)]);
+		}
+		std::cerr << "done" << std::endl;
 
 		gsl_func.n=6;
 
-		gsl_func.f = rel_ll;
+//		gsl_func.f = &this_rel.rel_ll_2;
 		gsl_func.params=&hashed_genotypes;
 
 		s = gsl_multimin_fminimizer_alloc (T, 6);
@@ -380,8 +415,6 @@ int estimateRel(int argc, char *argv[])
 
 	/* All the variables that can be set from the command line */
 
-/*	std::string infile="";
-	std::vector <size_t> ind;*/
 	std::string gcf_name="", rel_name="";
 
 	Environment env;
@@ -442,7 +475,7 @@ int estimateRel(int argc, char *argv[])
 			relatedness.zero();
 			//gestimate(relatedness, hashed_genotypes);
 			maximize(relatedness, hashed_genotypes);
-			//get_llr(relatedness, hashed_genotypes);
+		//	get_llr(relatedness, hashed_genotypes);
 			rel_out.write(relatedness);
 		}
 	}
