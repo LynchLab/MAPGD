@@ -1,4 +1,5 @@
-﻿#[Download MAPGD](https://github.com/LynchLab/MAPGD/archive/master.zip)
+﻿![Travis Says](https://travis-ci.org/LynchLab/MAPGD.svg?branch=master)
+#[Download MAPGD](https://github.com/LynchLab/MAPGD/archive/master.zip)
 
 ##MAPGD version 0.4
 
