@@ -18,7 +18,7 @@ DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
 NOSQL=-D NOSQL
 OBJDIR=obj
-CXX=g++
+#CXX=g++
 DOCDIR=../../docs
 
 SUBDIR=raw sql data_types commands
