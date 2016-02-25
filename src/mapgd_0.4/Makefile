@@ -12,8 +12,8 @@ MINOR=`cat VERSION | cut -d '-' -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
 POSIX=-D POSIX -D PATH=$(DOCPATH)
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./sql
-CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE)
-LDLIBS=-l sqlite3 -lgsl -lgslcblas -lm -fopenmp
+CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -fopenmp -pedantic $(INCLUDE)
+LDLIBS=-fopenmp -l sqlite3 -lgsl -lgslcblas -lm 
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
 NOSQL=-D NOSQL

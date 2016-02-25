@@ -11,6 +11,7 @@ $(SUBDIRS):
 .PHONY: $(SUBDIRS)
 
 all: $(SUBDIRS)
+	echo $(NOOMP) $(NOSQL)
 .PHONY: all
 
 nosql: 

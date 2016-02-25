@@ -1,9 +1,16 @@
+os:
+  - linux
+  - osx
+  - windows
 language: cpp
 compiler:
   - gcc
+  - clang
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libgsl0-dev
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphviz; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y libgsl0-dev; fi
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 addons:
@@ -14,3 +21,8 @@ addons:
     - gcc-4.8
     - g++-4.8
     - clang
+matrix:
+  allow_failures:
+    - os: osx
+    - os: windows
+    - compilter: clang

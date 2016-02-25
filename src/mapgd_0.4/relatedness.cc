@@ -76,7 +76,7 @@ void gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> 
 }
 
 void inc_f(Relatedness &rel, const Genotype_pair &pair, const size_t &count){
-	float_t P=pair.m;
+	float_t P=1-pair.m;
 	float_t P2=P*P;
 	float_t var=P-P2;
 	float_t denom=pow(var, 2);
@@ -87,7 +87,7 @@ void inc_f(Relatedness &rel, const Genotype_pair &pair, const size_t &count){
 }
 
 void inc_theta(Relatedness &rel, const Genotype_pair &pair, const size_t &count){
-	float_t P=pair.m;
+	float_t P=1-pair.m;
 	if(P!=0){
 		rel.theta_XY_+=( (exp(-pair.X_Mm-pair.Y_Mm)/4.+exp(-pair.X_MM-pair.Y_Mm)/2.+exp(-pair.X_Mm-pair.Y_MM)/2.+exp(-pair.X_MM-pair.Y_MM) )-pow(P,2) )/pow(P*(1-P),2)*count;
 	};
@@ -95,7 +95,7 @@ void inc_theta(Relatedness &rel, const Genotype_pair &pair, const size_t &count)
 
 void inc_gamma(Relatedness &rel, const Genotype_pair &pair, const size_t &count)
 {
-	float_t P=pair.m;
+	float_t P=1-pair.m;
 	if(P!=0 && P!=0.5){
 		rel.gamma_XY_+=( 2.*(exp(-pair.X_Mm-pair.Y_Mm)/8.+exp(-pair.X_MM-pair.Y_Mm)/2.+exp(-pair.X_Mm-pair.Y_MM)/4.+exp(-pair.X_MM-pair.Y_MM) )-pow(P,3)-P*(1-P)*(rel.theta_XY_*(1+2*P)+rel.f_X_*P+P/(1-P) ) )/(P*(1-P) )/(0.5-P)/2*count;
 		rel.gamma_YX_+=( 2.*(exp(-pair.X_Mm-pair.Y_Mm)/8.+exp(-pair.X_MM-pair.Y_Mm)/4.+exp(-pair.X_Mm-pair.Y_MM)/2.+exp(-pair.X_MM-pair.Y_MM) )-pow(P,3)-P*(1.-P)*(rel.theta_XY_*(1.+2.*P)+rel.f_Y_*P+P/(1.-P) ) )/(P*(1.-P) )/(0.5-P)/2.*count;
@@ -217,7 +217,7 @@ double
 rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 {
 	Relatedness rel;
-	std::map <Genotype_pair_tuple, size_t> *hashed_genotypes_p=(std::map <Genotype_pair_tuple, size_t> *) void_hashed_genotypes_p;
+	std::vector < std::pair<Genotype_pair_tuple, size_t> > *hashed_genotypes_p=(std::vector <std::pair <Genotype_pair_tuple, size_t> > *) void_hashed_genotypes_p;
 	Genotype_pair first;
 	size_t count;
 
@@ -229,20 +229,21 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	rel.Delta_XY_ = gsl_vector_get(v, 5);
 	rel.delta_XY_ = gsl_vector_get(v, 6);
 	
-	float_t ll=0;
+	float_t sum=0;
 	
-	std::map<Genotype_pair_tuple, size_t>::iterator it=hashed_genotypes_p->begin();
-	std::map<Genotype_pair_tuple, size_t>::iterator end=hashed_genotypes_p->end();
+	std::pair<Genotype_pair_tuple, size_t> *pair;
+//	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
 
-	while(it!=end){
-		first=Genotype_pair::from_tuple(it->first);
-		count=it->second;
-		ll+=get_ll(rel, first, count);
-		if ( isnan(ll) ) break;
-		++it;
+	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
+	for (size_t x=0; x<hashed_genotypes_p->size(); x++){
+//	while(it!=end){
+		pair=&(*hashed_genotypes_p)[x];
+		first=Genotype_pair::from_tuple(pair->first);
+		count=pair->second;
+		sum+=get_ll(rel, first, count);
 	}
-	if (isnan(ll) ) return FLT_MAX;
-	return double(-ll);
+	if (isnan(sum) ) return FLT_MAX;
+	return double(-sum);
 }
 
 /*Maximizes the relatedness*/
@@ -250,6 +251,7 @@ void
 maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
 {
 	const gsl_multimin_fminimizer_type *T=gsl_multimin_fminimizer_nmsimplex2;
+	std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(hashed_genotypes.begin(), hashed_genotypes.end() );
 	gsl_multimin_fminimizer *s=NULL;
 	gsl_vector *ss, *x;
 	gsl_multimin_function gsl_func;
@@ -279,7 +281,7 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	gsl_func.n=7;
 
 	gsl_func.f = rel_ll;
-	gsl_func.params=&hashed_genotypes;
+	gsl_func.params=&hashed_genotypes_vector;
 
 	s = gsl_multimin_fminimizer_alloc (T, 7);
 	gsl_multimin_fminimizer_set (s, &gsl_func, x, ss);
@@ -303,7 +305,7 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	rel.Delta_XY_ = gsl_vector_get(s->x, 5);
 	rel.delta_XY_ = gsl_vector_get(s->x, 6);
 	
-	rel.max_ll_=rel_ll(x, &hashed_genotypes);
+	rel.max_ll_=rel_ll(x, &hashed_genotypes_vector);
 }
 
 class small_rel{
@@ -473,7 +475,7 @@ int estimateRel(int argc, char *argv[])
 			hashed_genotypes=hash_genotypes(file_buffer, x, y);
 			set_e(relatedness, hashed_genotypes);
 			relatedness.zero();
-			//gestimate(relatedness, hashed_genotypes);
+		//	gestimate(relatedness, hashed_genotypes);
 			maximize(relatedness, hashed_genotypes);
 		//	get_llr(relatedness, hashed_genotypes);
 			rel_out.write(relatedness);

@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(description='Makes the files test.txt and test2
 parser.add_argument('-N', metavar='--number', type=int, default=5000,
                    help='number of SNPs')
 parser.add_argument('-c', metavar='--cov', type=float, default=10,
-                   help='simulated deapth of coverage')
+                   help='simulated depth of coverage')
 parser.add_argument('-s', metavar='--sigma', type=float, default=0.0,
                    help='simulated sampling error')
 args = parser.parse_args()
@@ -103,6 +103,15 @@ while ( not ( test(S) ) ):
 	for x in range(0, random.randint(0, 6) ):
 		S[Z[x]]=0
 FC, FA, r, sC, sA, z1, z2=S
+
+File2.write( "@NAME:SCAFFOLDS	VERSION:0.4.1	FORMAT:TEXT	CONCATENATED\n")
+File2.write( "@NAME       	LENGTH\n")
+File2.write( "scaffold_1	100000\n")
+File2.write( "@END_TABLE\n")
+File2.write( "@NAME:GENOTYPES	VERSION:0.4.1	FORMAT:TEXT	CONCATENATED	INDEXED\n")
+File2.write( "@SCFNAME	POS	MN_FREQ	Sample_1	Sample_2\n")
+
+
 for x in range(0, MAX):
 	P=0
 	while(P<MINP or P>MAXP):
@@ -202,9 +211,11 @@ for x in range(0, MAX):
 	norm1=math.log(math.exp(MM1)+math.exp(Mm1)+math.exp(mm1) )
 	norm2=math.log(math.exp(MM2)+math.exp(Mm2)+math.exp(mm2) )
 
-	File2.write( '\t'.join(map(str, [1, x, "C", "A", P, e] ) )+'\t')
+	File2.write( '\t'.join(map(str, ["scaffold_1", x, 1-P] ) )+'\t')
 	File.write( '\t'.join(map(str, [-MM1+norm1, -Mm1+norm1, -mm1+norm1, N1, -MM2+norm2, -Mm2+norm2, -mm2+norm2, N2, P] ) )+'\n')
-	File2.write( '\t'.join(map(str, [-MM1+norm1, -Mm1+norm1, -mm1+norm1, N1, -MM2+norm2, -Mm2+norm2, -mm2+norm2, N2] ) )+'\n')
+	File2.write( '/'.join(map(str, [-MM1+norm1, -Mm1+norm1, -mm1+norm1, int(N1)] ) )+'\t')
+	File2.write( '/'.join(map(str, [-MM2+norm2, -Mm2+norm2, -mm2+norm2, int(N2)] ) )+'\n')
 File.close()
 dig=4
 print  round(FA, dig), round(FC, dig), round(r, dig), round(sA, dig), round(sC, dig), round(z1, dig), round(z2, dig)
+File2.write( "@END_TABLE\n")

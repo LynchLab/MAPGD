@@ -21,6 +21,10 @@
 #include "sample_gof.h"
 #include "locus.h"
 
+#ifndef NOOMP
+#include <omp.h>
+#endif
+
 #ifdef MPI
 #include <ciso646>
 #include <mpi.h>

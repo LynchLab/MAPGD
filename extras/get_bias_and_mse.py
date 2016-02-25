@@ -10,8 +10,8 @@ for y in range(0, 10000):
 	File=open("sim/temp.txt")
 	E=map(float, File.read().split()[0:11])
 	File.close()
-	os.system("../bin/convert test2.txt sim/test2.dat > /dev/null")
-	os.system("python relatedness.py --bcf sim/test2.dat -a 0 -A 0 -b 1 -B 1 > sim/temp2.txt")
+#	os.system("../bin/convert test2.txt sim/test2.dat > /dev/null")
+	os.system("cat test2.txt | ../bin/mapgd relatedness > sim/temp2.txt")
 	File=open("sim/temp2.txt")
 	File.readline()
 	O=[]

@@ -4,15 +4,16 @@ $(SUBDIRS):
 	$(MAKE) -C $@
 .PHONY: $(SUBDIRS) 
 
-nosql: 
-	$(MAKE) -C $(SUBDIRS) nosql
-.PHONY: nosql
-
 all: $(SUBDIRS)
 .PHONY: all
 
-noomp: 
-	$(MAKE) -C $(SUBDIRS) noomp
+nosql: NOSQL = 1
+nosql: all
+.PHONY: nosql
+
+
+noomp: NOOMP = 1  
+noomp: all
 .PHONY: noomp 
 
 docs: 
@@ -22,6 +23,15 @@ docs:
 dist: 
 	$(MAKE) -C $(SUBDIRS) dist
 .PHONY: dist
+
+echo:
+	echo $(HAVE_LIBM)
+	echo $(HAVE_LIBGSLCBLAS)
+.PHONY: echo
+#define HAVE_LIBM 1
+#define HAVE_LIBGSLCBLAS 1
+#define HAVE_LIBGSL 1
+
 	
 test: all
 	$(MAKE) -C $(SUBDIRS) test
