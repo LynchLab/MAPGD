@@ -1,7 +1,7 @@
 os:
   - linux
   - osx
-  - windows
+#  - windows
 language: cpp
 compiler:
   - gcc

@@ -40,8 +40,8 @@ int main (int argc, char* argv[])
 	env.command(	' ',"read", 	&readsql, 			"an error occurred while calling read", "Reads data from the SQL database");				//TODO
 	env.command(	' ',"write", 	&writesql, 			"an error occurred while calling write", "Writes data to the SQL database");				//DONE
 #endif
-	env.set_footer(" 'mapgd help [command]' gives specific help on a command, e.g. mapdg help genotype will show general information the genotype command, and mapgd help [COLUMN NAME] will \
-\	give information about the column names that appear in head lines of files.");
+	env.set_footer(" 'mapgd help [command]' will print the manual page for that command, e.g. mapdg help genotype will show general information the genotype command. mapgd help [COLUMN NAME] will \
+give information about the column names that appear in the first two lines of files.");
 //	env.command(	' ',"mlrho", 	&mlrho, 			"an error occured while calling proview", "Runs mlrho");						//TODO
 //	env.command(	' ',"calc", 	&calcInd,	 		"an error occured while calling calc", "print log likelihood of ...");
 //	env.command(	' ',"ci", 	&compareIndividual, 		"an error occured while calling ci", "compares allele frequencines between population using indivdual data ");

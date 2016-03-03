@@ -23,6 +23,7 @@ int proview(int argc, char *argv[])
 	bool out_binary=false;
 	bool in_pro=false;
 	bool bernhard=false;
+	bool noheader=false;
 
 	args.pro=false;
 	args.min=4;
@@ -47,6 +48,7 @@ int proview(int argc, char *argv[])
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "prints the program version");
 	env.flag(	'b',"binary",	&out_binary, 	&flag_set, 	"an error occurred", "output in a binary format");
 	env.flag(	'r',"mlrho",	&bernhard, 	&flag_set, 	"an error occurred", "output in mlrho format");
+	env.flag(	'N',"noheader",	&noheader,	&flag_set, 	"an error occurred", "don't print those silly '@' lines.");
 	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occurred", "input is in pro format");
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
@@ -138,7 +140,11 @@ int proview(int argc, char *argv[])
 	else out_file.open(outfile.c_str(), out_binary ? ios::out | ios::binary : ios::out );
 	out_locus.set_sample_names(sample_names);
 	out_file.set_index(index);
-	out_file.write_header(out_locus);
+	if(!noheader) {
+		out_file.write_header(out_locus);
+	} else {
+		out_file.write_header(out_locus);
+	}
 
 	out_locus.set_abs_pos(1);
 	bool print_all=true, go=true, read_site=false;
@@ -187,7 +193,7 @@ int proview(int argc, char *argv[])
 		else go=false;
 	
 	};
-	out_file.close();
+	if(!noheader) out_file.close();
 	for (size_t x=0; x<in_files.size(); ++x) {
 		in_files[x]->close(); 
 		delete in_files[x];

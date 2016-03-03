@@ -331,7 +331,7 @@ int estimateInd(int argc, char *argv[])
 					#ifndef NOOMP
 					#pragma omp critical
 					#endif
-					if (2*(buffer_mle[c].ll-buffer_mle[c].monoll)>=22){
+					if (2*(buffer_mle[c].ll-buffer_mle[c].monoll)>=22 && buffer_mle[c].gof>=-2 ){
 						for (size_t i=0; i<sum_gofs.size(); i++){
 							sum_gofs[i]+=gofs[i];
 							if (gofs[i]!=0) gofs_read[i]++;
