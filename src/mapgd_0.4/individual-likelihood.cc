@@ -147,7 +147,7 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 
 	float_t deltalnL=10, maxlnL=DBL_MAX;
 
-        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || isnan(R[0]) || isnan(R[1]) || isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
+        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || std::isnan(R[0]) || std::isnan(R[1]) || std::isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
 
 		++iter;
  

@@ -11,8 +11,10 @@ int mapgd_help(int argc, char *argv[])
 		std::cerr << "No manual entry for ''\nPlease type mapgd help [CONCEPT]\n";
 	} else {
 		char call[255];
+#ifdef POSIX
 		snprintf(call, 200, "man -M %s mapgd-%s", PATH, argv[1]);
 		return system(call);
+#endif
 	}
 	
 	return 0;					//Since everything worked, return 0!.

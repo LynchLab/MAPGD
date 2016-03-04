@@ -8,7 +8,7 @@
 #include <cstring>
 #include <string>
 
-#ifndef NOSQLITE
+#ifndef NOSQL
 #include "sqlite3.h"
 #endif 
 

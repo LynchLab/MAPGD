@@ -173,7 +173,7 @@ float_t models::loglikelihood(const Locus &site, const Allele &p)
 		}
 		++it;
 	}
-	if(isnan(sumll) ) sumll=-FLT_MAX;
+	if(std::isnan(sumll) ) sumll=-FLT_MAX;
 	return sumll;
 }
 

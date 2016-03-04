@@ -37,7 +37,7 @@ int vcf(int argc, char *argv[])
 	//std::cerr "If you are using .... please cite ...."
 
 	Environment env;
-	env.set_name("mapgd allele");
+	env.set_name("mapgd vcf");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("Convert mapgd output into a vcf file.");

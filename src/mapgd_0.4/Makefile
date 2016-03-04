@@ -6,19 +6,40 @@ MODE=-O3
 STD=-std=c++11
 DESTDIR=/usr/local/bin
 DOCPATH=\"$(shell pwd)../../docs/man/\"
-LOCAL=../../bin/mapgd
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d '-' -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
 POSIX=-D POSIX -D PATH=$(DOCPATH)
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./sql
-CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -fopenmp -pedantic $(INCLUDE)
-LDLIBS=-fopenmp -l sqlite3 -lgsl -lgslcblas -lm 
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ 
+
+#OPENMP
+LDLIBS += -fopenmp 
+
 DEBUG=-g -D DEBUG
+
 NOOMP=-D NOOMP
 NOSQL=-D NOSQL
+
 OBJDIR=obj
+
+#SQL
+INCLUDE += -I ./sql
+LDLIBS += -l sqlite3 
+
+#GSL
+LDLIBS +=-lgsl -lgslcblas -lm 
+
+#SENSIBLE COMPILER
+TARGET=../../bin/mapgd
+CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -fopenmp -pedantic $(INCLUDE)
+
 #CXX=g++
+#CROSS COMPILER:
+#CXX=i686-w64-mingw32-c++
+#TARGET=../../bin/mapgd.exe
+#CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -fopenmp -pedantic $(INCLUDE)
+
+
 DOCDIR=../../docs
 
 SUBDIR=raw sql data_types commands
@@ -77,16 +98,16 @@ RAW_OBJ=raw/genotype.o \
 
 
 OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
+#OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
 
 nosql: CXXFLAGS:=$(CXXFLAGS) $(NOSQL)
-nosql: LDLIBS:=-lgsl -lgslcblas -lm
 nosql: OBJ:=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
 nosql: $(OBJ)
-	$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
+	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
 	@echo "\n\nMade w/o sql functions, consider typing 'Make sql'"
 	
 sql: $(OBJ) 
-	$(CXX) $(OBJ) $(CXXFLAGS) -o $(LOCAL) $(LDLIBS)
+	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
 
 all: nosql
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
@@ -114,7 +135,7 @@ increment:
 .PHONY: increment
 
 install: all
-	install -m 0755 $(LOCAL) $(DESTDIR)
+	install -m 0755 $(TARGET) $(DESTDIR)
 .PHONY: install
 
 
@@ -122,7 +143,7 @@ COMMAND=allele linkage proview
 
 #docs: all
 #	for COM in $(COMMAND); do \
-#		echo $(LOCAL) $$COM \$$1 > mapgd-$$COM;  \
+#		echo $(TARGET) $$COM \$$1 > mapgd-$$COM;  \
 #		chmod 777 mapgd-$$COM;  \
 #		help2man ./mapgd-$$COM > $(DOCDIR)/man/1/mapgd-$$COM.1; \
 #	done
