@@ -2,6 +2,10 @@
 #c90 c89 c99 c9x c11 c1x gnu90 gnu89 gnu99 gnu9x gnu11 gnu1x c++98 c++03 gnu++98 gnu++03 c++11 c++0x gnu++11 gnu++0x c++1y gnu++1y
 #Right now I need c++11 to support constructor delegation, which I like a lot.
 
+#CXX=g++
+#i686-w64-mingw32-c++
+#i686-w64-mingw32-c++
+
 MODE=-O3
 STD=-std=c++11
 DESTDIR=/usr/local/bin
@@ -13,31 +17,55 @@ POSIX=-D POSIX -D PATH=$(DOCPATH)
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ 
 
 #OPENMP
-LDLIBS += -fopenmp 
+	
+CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) 
 
 DEBUG=-g -D DEBUG
 
 NOOMP=-D NOOMP
 NOSQL=-D NOSQL
+NOGSL=-D NOGSL
 
 OBJDIR=obj
 
-#SQL
-INCLUDE += -I ./sql
-LDLIBS += -l sqlite3 
+#HAVE_SQL = true
+#HAVE_LIBGSL = true
+#HAVE_OMP = true
 
-#GSL
-LDLIBS +=-lgsl -lgslcblas -lm 
+ifdef HAVE_SQL
+	INCLUDE += -I ./sql
+	LDLIBS += -l sqlite3 
+else
+	CXXFLAGS += $(NOSQL)
+endif
 
-#SENSIBLE COMPILER
-TARGET=../../bin/mapgd
-CXXFLAGS=$(VERSION) $(POSIX) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -fopenmp -pedantic $(INCLUDE)
+ifdef HAVE_OMP
+	CXXFLAGS += $(OPENMP_CXXFLAGS)
+else
+	CXXFLAGS += $(NOOMP)
+endif
 
-#CXX=g++
-#CROSS COMPILER:
-#CXX=i686-w64-mingw32-c++
-#TARGET=../../bin/mapgd.exe
-#CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -fopenmp -pedantic $(INCLUDE)
+
+ifdef HAVE_GSL
+	LDLIBS +=-lgsl -lgslcblas -lm 
+else
+	CXXFLAGS += $(NOGSL)
+endif
+
+
+ifeq ($(CXX), i686-w64-mingw32-c++)
+	TARGET=../../bin/mapgd-win32.exe
+else ifeq ($(CXX), i686-w64-mingw64-c++)
+	TARGET=../../bin/mapgd-win64.exe
+	CXXFLAGS+= $(NOGSL) -static
+else ifeq ($(CXX), clang)
+	TARGET=../../bin/mapgd
+	CXXFLAGS+= $(NOOMP)
+else
+	TARGET=../../bin/mapgd
+endif
+
+
 
 
 DOCDIR=../../docs
@@ -94,24 +122,26 @@ DATA_OBJ=data_types/allele.o \
 RAW_OBJ=raw/genotype.o \
 	raw/quartet.o \
 	raw/genotype_pair.o \
-	raw/base.o 
+	raw/base.o
+
+CONVERSION_OBJ=data_conversion/vcf_file.o
 
 
-OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
-#OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
+ifdef HAVE_SQL
+	OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ)
+else
+	OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
+endif
+
+all: $(OBJ)
+	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
+	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
 nosql: CXXFLAGS:=$(CXXFLAGS) $(NOSQL)
-nosql: OBJ:=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
 nosql: $(OBJ)
 	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
 	@echo "\n\nMade w/o sql functions, consider typing 'Make sql'"
 	
-sql: $(OBJ) 
-	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
-
-all: nosql
-	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
-
 DATA_SOURCE=data_types/*.cc
 
 data.h: data_types/data.cc

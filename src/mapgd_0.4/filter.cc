@@ -25,11 +25,11 @@ int filter(int argc, char *argv[])
 	env.set_description("Filter sites in '.map' files based on criteria.");
 	env.optional_arg('E',"max-error", error_max, "please provide a real number.", "maximum error of a site (default 0.1).");
 	
-	env.optional_arg('i',"input", 	in_file, "please provide a filename.", "minimum coverage for an individual at a site for an individual to be used (default 4).");
-	env.optional_arg('o',"output", 	out_file, "please provide a filename.", "the name of an output file (default std::cout).");
+	env.optional_arg('i',"input", 	in_file, "please provide a filename.", "the name of the input file (default stdin).");
+	env.optional_arg('o',"output", 	out_file, "please provide a filename.", "the name of an output file (default stdout).");
 
-	env.optional_arg('c',"min-cov", min_coverage, "please provide an integer.", "minimum coverage for an individual at a site for an individual to be used (default 4).");
-	env.optional_arg('C',"max-cov", max_coverage, "please provide an int.", "max coverage for an individual at a site for an individual to be used (default CNT_MAX).");
+	env.optional_arg('c',"min-cov", min_coverage, "please provide an integer.", "minimum coverage for a population at a site for the site to be used (default 4).");
+	env.optional_arg('C',"max-cov", max_coverage, "please provide an int.", "max coverage for a population at a site for the site to be used (default CNT_MAX).");
 	env.optional_arg('p',"min-poly", min_polyll, "please provide a real number.", "minimum log likelihood of polymorphism (default 0.0).");
 	env.optional_arg('P',"max-poly", max_polyll,"please provide a real number.", "maximum log likelihood of polymorphism (default none).");
 	env.optional_arg('f',"min-hwe", min_hwell, "please provide a real number.", "minimum log likelihood of Hardy-Weinberg disequilibrium (default 0.0).");

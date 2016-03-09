@@ -2,6 +2,8 @@
 
 #define BUFFER_SIZE 500
 
+#ifndef NOGSL
+
 //Moved to in memory
 std::map <Genotype_pair_tuple, size_t> 
 hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)
@@ -484,3 +486,14 @@ int estimateRel(int argc, char *argv[])
 	rel_out.close();
 	return 0;					//Since everything worked, return 0!.
 }
+#else 
+
+int 
+estimateRel(int argc, char *argv[])
+{
+	std::cerr << "This command depends on gsl, which could not be found. Please e-mail matthew.s.ackerman@gmail.com for help.\n";
+	return 0;
+}
+
+#endif 
+

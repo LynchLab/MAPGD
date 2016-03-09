@@ -1,8 +1,17 @@
 SUBDIRS=src
 
+HAVE_GSL=true
+HAVE_OMP=true
+
+
+CXX=g++
+OPENMP_CXXFLAGS=-fopenmp
+
 $(SUBDIRS):
 	$(MAKE) -C $@
 .PHONY: $(SUBDIRS) 
+
+export
 
 all: $(SUBDIRS)
 .PHONY: all
@@ -25,12 +34,10 @@ dist:
 .PHONY: dist
 
 echo:
-	echo $(HAVE_LIBM)
-	echo $(HAVE_LIBGSLCBLAS)
+	@echo HAVE_GSL $(HAVE_GSL)
+	@echo HAVE_OMP $(HAVE_OMP)
+	@echo HAVE_SQL $(HAVE_SQL)
 .PHONY: echo
-#define HAVE_LIBM 1
-#define HAVE_LIBGSLCBLAS 1
-#define HAVE_LIBGSL 1
 
 	
 test: all
