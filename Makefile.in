@@ -6,14 +6,15 @@ SUBDIRS=src
 
 CXX=@CXX@
 OPENMP_CXXFLAGS=@OPENMP_CXXFLAGS@
+	
+export
+
+all: echo 
+all: $(SUBDIRS)
 
 $(SUBDIRS):
 	$(MAKE) -C $@
 .PHONY: $(SUBDIRS) 
-
-all: $(SUBDIRS)
-	export
-.PHONY: all
 
 nosql: NOSQL = 1
 nosql: all
@@ -36,6 +37,7 @@ echo:
 	@echo HAVE_GSL $(HAVE_GSL)
 	@echo HAVE_OMP $(HAVE_OMP)
 	@echo HAVE_SQL $(HAVE_SQL)
+	@cat config.log
 .PHONY: echo
 
 	
@@ -48,6 +50,8 @@ install: all
 .PHONY: install
 
 clean:
+	rm -f config.log  
+	rm -f config.status
 	$(MAKE) -C $(SUBDIRS) clean
 .PHONY: clean
 	
@@ -59,14 +63,14 @@ push:
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) test
 	$(MAKE) -C $(SUBDIRS) clean
-	rm ~/bin/mapgd
-	unexport HAVE_GLS HAVE_SQL HAVE_OMP
+	rm -f ~/bin/mapgd
 	CXX=i686-w64-mingw32-c++
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) clean
 	CXX=x86_64-w64-mingw32-g++
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) clean
+	cp Makefile.empty Makefile
 #	$(MAKE) -C $(SUBDIRS) increment 
 	git add -u
 	git commit

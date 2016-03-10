@@ -14,6 +14,7 @@
  */
 class Base { 
 private:
+	bool masked;
 public:
 	Base();
 	Base(const char &);

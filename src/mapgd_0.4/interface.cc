@@ -68,9 +68,9 @@ arg_set_vector_str(int argc, char **argv, void *parm)
 
 /*@Breif : sets a vector of ints from a string. */
 int
-arg_set_vector_uint32(int argc, char **argv, void *parm)
+arg_set_vector_ui(int argc, char **argv, void *parm)
 {
-	std::vector <uint32_t> *v=(std::vector <uint32_t> *)(parm);
+	std::vector <unsigned int> *v=(std::vector <unsigned int> *)(parm);
 	if (argc>0){
 		std::vector<std::string> elems=split(argv[0], ',');
 		for (size_t x=0; x<elems.size(); ++x){
@@ -79,7 +79,7 @@ arg_set_vector_uint32(int argc, char **argv, void *parm)
 				std::vector<std::string> intpair=split(elems[x], '-');
 				if (intpair.size()==2){
 					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
-						for (int32_t y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
+						for (unsigned int y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
 							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
 								v->push_back(y-1);
 							}
@@ -94,14 +94,14 @@ arg_set_vector_uint32(int argc, char **argv, void *parm)
 		}
 		return 2;
 	} 
-	std::cerr << "arg_setvectorint: error parsing " << argv[0] << std::endl;
+	std::cerr << "arg_set_vector_uint32: error parsing " << argv[0] << std::endl;
 	exit(1);
 }
 
 int
-arg_set_vector_uint64(int argc, char **argv, void *parm)
+arg_set_vector_uli(int argc, char **argv, void *parm)
 {
-	std::vector <uint64_t> *v=(std::vector <uint64_t> *)(parm);
+	std::vector <unsigned long int> *v=(std::vector <unsigned long int> *)(parm);
 	if (argc>0){
 		std::vector<std::string> elems=split(argv[0], ',');
 		for (size_t x=0; x<elems.size(); ++x){
@@ -110,7 +110,7 @@ arg_set_vector_uint64(int argc, char **argv, void *parm)
 				std::vector<std::string> intpair=split(elems[x], '-');
 				if (intpair.size()==2){
 					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
-						for (int64_t y=atol(intpair[0].c_str() ); y<=atol(intpair[1].c_str() ); ++y){
+						for (unsigned long int y=atol(intpair[0].c_str() ); y<=atol(intpair[1].c_str() ); ++y){
 							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
 								v->push_back(y-1);
 							}
@@ -125,7 +125,38 @@ arg_set_vector_uint64(int argc, char **argv, void *parm)
 		}
 		return 1;
 	} 
-	std::cerr << "arg_setvectorint: error parsing " << argv[1] << std::endl;
+	std::cerr << "arg_set_vector_uint64_t: error parsing " << argv[1] << std::endl;
+	exit(1);
+}
+
+int
+arg_set_vector_ulli(int argc, char **argv, void *parm)
+{
+	std::vector <unsigned long long int> *v=(std::vector <unsigned long long int> *)(parm);
+	if (argc>0){
+		std::vector<std::string> elems=split(argv[0], ',');
+		for (size_t x=0; x<elems.size(); ++x){
+			if ( isint(elems[x].c_str() ) ) v->push_back(atol(elems[x].c_str() )-1);
+			else {
+				std::vector<std::string> intpair=split(elems[x], '-');
+				if (intpair.size()==2){
+					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
+						for (unsigned long long int y=atol(intpair[0].c_str() ); y<=atol(intpair[1].c_str() ); ++y){
+							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
+								v->push_back(y-1);
+							}
+						};
+					} else {
+						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+					};
+				} else{
+					std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+				};
+			}
+		}
+		return 1;
+	} 
+	std::cerr << "arg_set_vector_uint64_t: error parsing " << argv[1] << std::endl;
 	exit(1);
 }
 

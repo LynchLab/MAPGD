@@ -1,5 +1,6 @@
 #include "circular_list2.h"
 #include <iostream>
+#include "../typedef.h"
 
 int main (int argc, char *argv[]){
 	Circular_list<int> c_list(0);
@@ -13,5 +14,10 @@ int main (int argc, char *argv[]){
 	std::cout << "f2:" << *(++c_at) << ", " << *(++c_at) << ", " << *(++c_at) << std::endl;
 	std::cout << "r1:" << *(--c_at) << ", " << *(--c_at) << ", " << *(--c_at) << std::endl;
 	std::cout << "r2:"<< *(--c_at) << ", " << *(--c_at) << ", " << *(--c_at) << std::endl;
+
+	std::cout << "uint32_t:"<< sizeof(uint32_t) << std::endl;
+	std::cout << "uint64_t:"<< sizeof(uint64_t) << std::endl;
+	std::cout << "long unsigned int:"<< sizeof(long unsigned int) << std::endl;
+
 	return 0;
 };

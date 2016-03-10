@@ -25,18 +25,26 @@ inline int arg_set(int a, char **b, std::vector<std::string> &c){return arg_set_
 
 //! Takes a reference to a vector<int> and calls atoi() on a comma delimited list (no white space) of integers. Ranges of the form N-M are accepted. 
 //
-int arg_set_vector_uint64(int, char **, void *);	
-inline int arg_set(int a, char **b, std::vector<uint64_t> &c){return arg_set_vector_uint64(a,b, &c); }
+int arg_set_vector_uli(int, char **, void *);	
+inline int arg_set(int a, char **b, std::vector<unsigned long int> &c){return arg_set_vector_uli(a,b, &c); }
+
+int arg_set_vector_ulli(int, char **, void *);	
+inline int arg_set(int a, char **b, std::vector<unsigned long long int> &c){return arg_set_vector_ulli(a,b, &c); }
 
 //! Takes a reference to a vector<int> and calls atoi() on a comma delimited list (no white space) of integers. Ranges of the form N-M are accepted. 
 //
-int arg_set_vector_uint32(int, char **, void *);	
-inline int arg_set(int a, char **b, std::vector<uint32_t> &c){return arg_set_vector_uint32(a,b, &c); }
+int arg_set_vector_ui(int, char **, void *);	
+inline int arg_set(int a, char **b, std::vector<unsigned int> &c){return arg_set_vector_ui(a,b, &c); }
 
 //! Takes a reference to an int and calls atoi on the field immediately following the option. 
 //! Raises errors if the field is not numeric. Returns 2 on success (representing the number of fields processed) and -1 on failure. 
 int arg_set_int(int, char **, void *);		
 inline int arg_set(int a, char **b, int &c){return arg_set_int(a,b, &c); }
+
+//! Takes a reference to a vector<int> and calls atoi() on a comma delimited list (no white space) of integers. Ranges of the form N-M are accepted. 
+//
+int arg_set_vector_usi(int, char **, void *);	
+inline int arg_set(int a, char **b, std::vector<unsigned short int> &c){return arg_set_vector_usi(a,b, &c); }
 
 //<! Takes a reference to ...
 int arg_set_str(int, char **, void *);		
