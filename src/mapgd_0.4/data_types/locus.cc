@@ -262,8 +262,8 @@ Locus::resize(const size_t &c)
 void
 Locus::mask_low_cov( const count_t &dp )
 {
-	//I checked this and it is right. Ignore the warning. 
-	for (size_t s=0; s<sample.size();++s) sample[s].masked=(sample[s].masked|count(sample[s])<=dp);
+	//The parens are unneccisary, but I don't like getting compiler warnings, so.... 
+	for (size_t s=0; s<sample.size();++s) sample[s].masked=(sample[s].masked| ( count(sample[s])<=dp ) );
 }
 
 void

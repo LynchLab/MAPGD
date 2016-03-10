@@ -59,7 +59,15 @@ push:
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) test
 	$(MAKE) -C $(SUBDIRS) clean
-	$(MAKE) -C $(SUBDIRS) increment 
+	rm ~/bin/mapgd
+	unexport HAVE_GLS HAVE_SQL HAVE_OMP
+	CXX=i686-w64-mingw32-c++
+	$(MAKE) -C $(SUBDIRS) all 
+	$(MAKE) -C $(SUBDIRS) clean
+	CXX=x86_64-w64-mingw32-g++
+	$(MAKE) -C $(SUBDIRS) all 
+	$(MAKE) -C $(SUBDIRS) clean
+#	$(MAKE) -C $(SUBDIRS) increment 
 	git add -u
 	git commit
 	git push

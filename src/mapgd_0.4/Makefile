@@ -4,7 +4,7 @@
 
 #CXX=g++
 #i686-w64-mingw32-c++
-#i686-w64-mingw32-c++
+#i586-mingw32msvc-c++
 
 MODE=-O3
 STD=-std=c++11
@@ -28,45 +28,43 @@ NOGSL=-D NOGSL
 
 OBJDIR=obj
 
-#HAVE_SQL = true
-#HAVE_LIBGSL = true
-#HAVE_OMP = true
+ifeq ($(CXX), i686-w64-mingw32-c++)
+	TARGET=../../bin/mapgd-win32.exe
+	CXXFLAGS+= -static
+	HAVE_SQL=false	
+	HAVE_OMP=false
+	HAVE_GSL=false
+else ifeq ($(CXX), x86_64-w64-mingw32-g++)
+	TARGET=../../bin/mapgd-win64.exe
+	CXXFLAGS+= -static
+	HAVE_SQL=false
+	HAVE_OMP=false
+	HAVE_GSL=false
+else ifeq ($(CXX), clang)
+	TARGET=../../bin/mapgd
+	HAVE_OMP=false
+else
+	TARGET=../../bin/mapgd
+endif
 
-ifdef HAVE_SQL
+ifeq ($(HAVE_SQL), true)
 	INCLUDE += -I ./sql
 	LDLIBS += -l sqlite3 
 else
 	CXXFLAGS += $(NOSQL)
 endif
 
-ifdef HAVE_OMP
+ifeq ($(HAVE_OMP), true)
 	CXXFLAGS += $(OPENMP_CXXFLAGS)
 else
 	CXXFLAGS += $(NOOMP)
 endif
 
-
-ifdef HAVE_GSL
+ifeq ($(HAVE_GSL), true)
 	LDLIBS +=-lgsl -lgslcblas -lm 
 else
 	CXXFLAGS += $(NOGSL)
 endif
-
-
-ifeq ($(CXX), i686-w64-mingw32-c++)
-	TARGET=../../bin/mapgd-win32.exe
-else ifeq ($(CXX), i686-w64-mingw64-c++)
-	TARGET=../../bin/mapgd-win64.exe
-	CXXFLAGS+= $(NOGSL) -static
-else ifeq ($(CXX), clang)
-	TARGET=../../bin/mapgd
-	CXXFLAGS+= $(NOOMP)
-else
-	TARGET=../../bin/mapgd
-endif
-
-
-
 
 DOCDIR=../../docs
 
@@ -127,7 +125,7 @@ RAW_OBJ=raw/genotype.o \
 CONVERSION_OBJ=data_conversion/vcf_file.o
 
 
-ifdef HAVE_SQL
+ifeq ($(HAVE_SQL), true)
 	OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ)
 else
 	OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)

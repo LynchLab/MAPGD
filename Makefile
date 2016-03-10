@@ -3,23 +3,21 @@ SUBDIRS=src
 HAVE_GSL=true
 HAVE_OMP=true
 
-
 CXX=g++
 OPENMP_CXXFLAGS=-fopenmp
+
+export
 
 $(SUBDIRS):
 	$(MAKE) -C $@
 .PHONY: $(SUBDIRS) 
 
-export
-
-all: $(SUBDIRS)
+all: $(SUBDIRS) 
 .PHONY: all
 
 nosql: NOSQL = 1
 nosql: all
 .PHONY: nosql
-
 
 noomp: NOOMP = 1  
 noomp: all
@@ -60,7 +58,14 @@ push:
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) test
 	$(MAKE) -C $(SUBDIRS) clean
-	$(MAKE) -C $(SUBDIRS) increment 
+	rm -f ~/bin/mapgd
+	CXX=i686-w64-mingw32-c++
+	$(MAKE) -C $(SUBDIRS) all 
+	$(MAKE) -C $(SUBDIRS) clean
+	CXX=x86_64-w64-mingw32-g++
+	$(MAKE) -C $(SUBDIRS) all 
+	$(MAKE) -C $(SUBDIRS) clean
+#	$(MAKE) -C $(SUBDIRS) increment 
 	git add -u
 	git commit
 	git push

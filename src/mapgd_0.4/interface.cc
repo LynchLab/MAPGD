@@ -395,7 +395,7 @@ Usage(Environment env, FILE *out){
 		if (env.flags.size()!=0) {
 			fprintf(out, "usage: %s -%s %s\n\n", env.name, all_flags.c_str(), format_usage(optional_args.c_str(),8) );
 		} else {
-			fprintf(out, "usage: %s %s\n\n", env.name, all_flags.c_str(), format_usage(optional_args.c_str(),8) );
+			fprintf(out, "usage: %s %s\n\n", env.name, format_usage(optional_args.c_str(),8) );
 		}
 	}
 }

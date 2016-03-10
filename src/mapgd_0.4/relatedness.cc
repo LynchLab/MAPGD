@@ -27,8 +27,8 @@ hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const siz
 void 
 set_e(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
 {
-	float e;
-	e=0;
+//	float e;
+//	e=0;
 }
 
 
@@ -486,6 +486,7 @@ int estimateRel(int argc, char *argv[])
 	rel_out.close();
 	return 0;					//Since everything worked, return 0!.
 }
+
 #else 
 
 int 

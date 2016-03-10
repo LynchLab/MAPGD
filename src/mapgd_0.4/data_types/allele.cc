@@ -163,7 +163,7 @@ const std::string Allele::sql_column_names(void) const {
 
 const std::string Allele::sql_values(void) const {
         char return_buffer[SQL_LINE_SIZE]={0};
-        char *write_ptr=return_buffer;
+//      char *write_ptr=return_buffer;
 	snprintf(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %Lf, %Lf, %Lf, %Lf, %Lf, %Lf, %d, %d, %Lf)",
 	abs_pos_,
 	ref,

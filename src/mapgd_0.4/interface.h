@@ -59,8 +59,8 @@ int arg_set_long_double(int, char **, void *);
 inline int arg_set(int a, char **b, long double &c){return arg_set_long_double(a,b, &c); }
 
 //<! Same.
-int arg_setc_str(int, char **, void *);	
-int arg_set(int, char **, char **);
+//int arg_setc_str(int, char **, void *);	
+//int arg_set(int, char **, char **);
 /* @}
  */
 
