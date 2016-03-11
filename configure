@@ -2518,7 +2518,7 @@ then
 
 fi
 
-if test "x$ac_cv_prog_cxx_openmp" == "x"
+if test "$ac_cv_prog_cxx_openmp" != "unsupported"
 then
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: No openmp support detected" >&5
 $as_echo "$as_me: WARNING: No openmp support detected" >&2;}

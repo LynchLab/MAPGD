@@ -1,9 +1,12 @@
 #format test
 
 timeout=timeout
+wc=wc
 type timeout >/dev/null 2>&1 || { echo >&2 "timeout required but not installed.  Checking for gtimeout."; 
 timeout=gtimeout
+wc=gwc
 type gtimeout >/dev/null 2>&1 || { echo >&2 "not found, aborting."; exit 1; } }
+
 
 testa() 
 {
@@ -11,11 +14,11 @@ if [ $? -ne 0 ]; then
 	echo "[$a] produced unexpected behavior."
 	exit 1
 fi
-if [ `wc $a.out -l | cut -d  ' ' -f 1` -eq $size ]; then
+if [ `$wc $a.out -l | cut -d  ' ' -f 1` -eq $size ]; then
 	echo " PASS"
 	rm -f $a.out
 else
-	echo `wc $a.out -l `
+	echo `$wc $a.out -l `
 	echo "expected $size"
 	echo "[$a] $msg FAIL"
 	exit 1
