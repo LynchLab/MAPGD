@@ -244,7 +244,7 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 		count=pair->second;
 		sum+=get_ll(rel, first, count);
 	}
-	if (isnan(sum) ) return FLT_MAX;
+	if (std::isnan(sum) ) return FLT_MAX;
 	return double(-sum);
 }
 

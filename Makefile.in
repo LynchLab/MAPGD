@@ -9,7 +9,7 @@ OPENMP_CXXFLAGS=@OPENMP_CXXFLAGS@
 	
 export
 
-all: echo 
+all:  
 all: $(SUBDIRS)
 
 $(SUBDIRS):

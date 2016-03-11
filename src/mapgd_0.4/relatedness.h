@@ -2,6 +2,7 @@
 #define _RELATEDNESS_H_	
 
 #include <stdio.h>
+#include <cmath>
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>

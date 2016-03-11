@@ -1,6 +1,7 @@
 #ifndef _INDIVIDUAL_LIKELIHOOD_H_
 #define _INDIVIDUAL_LIKELIHOOD_H_
 
+#include <cmath>
 #include <math.h>
 #include <iomanip>      // std::setprecision
 #include <cfloat>
