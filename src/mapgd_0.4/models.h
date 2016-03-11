@@ -9,6 +9,8 @@
  *  observing each particular nucleotide in a given call.
 */	
 
+#include <cmath>
+
 #include "lnmultinomial.h"
 #include "data_types/allele.h"
 #include "typedef.h"
