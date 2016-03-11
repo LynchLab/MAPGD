@@ -19,7 +19,7 @@ then
 	AC_SUBST(HAVE_GSL, [HAVE_GSL=true])
 fi
 
-if test "x$ac_cv_prog_cxx_openmp" == "x"
+if test "$ac_cv_prog_cxx_openmp" != "unsupported"
 then
 	AC_MSG_WARN([No openmp support detected])
 else
