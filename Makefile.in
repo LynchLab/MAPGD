@@ -9,7 +9,7 @@ OPENMP_CXXFLAGS=@OPENMP_CXXFLAGS@
 	
 export
 
-all: echo 
+all:  
 all: $(SUBDIRS)
 
 $(SUBDIRS):
@@ -71,7 +71,7 @@ push:
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) clean
 	cp Makefile.empty Makefile
-#	$(MAKE) -C $(SUBDIRS) increment 
+	$(MAKE) -C $(SUBDIRS) increment 
 	git add -u
 	git commit
 	git push

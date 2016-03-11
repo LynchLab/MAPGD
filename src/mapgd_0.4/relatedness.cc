@@ -427,9 +427,9 @@ int estimateRel(int argc, char *argv[])
 	env.set_author("Matthew Ackerman");
 	env.set_description("Uses a maximum likelihood approach to estimate pairwise relatedness.");
 
-	env.optional_arg('i', "input", 	gcf_name, "an error occured while displaying the help message.", "input file name (default stdout)");
-	env.optional_arg('o', "output", rel_name, "an error occured while displaying the help message.", "output file name (default stdin)");
-	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occured while displaying the help message.", "prints this message");
+	env.optional_arg('i', "input", 	gcf_name, "an error occurred while displaying the help message.", "input filename (default stdout)");
+	env.optional_arg('o', "output", rel_name, "an error occurred while displaying the help message.", "output filename (default stdin)");
+	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
 

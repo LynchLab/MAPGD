@@ -68,7 +68,7 @@ endif
 
 DOCDIR=../../docs
 
-SUBDIR=raw sql data_types commands
+SUBDIR=raw sql data_types commands data_conversion
 #>! Just a list of flags to try at some later date.
 # -oFast -ffloat-store -fexcess-precision=style -ffast-math -fno-rounding-math -fno-signaling-nans
 # -fcx-limited-range -fno-math-errno -funsafe-math-optimizations -fassociative-math -freciprocal-math

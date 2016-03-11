@@ -1,10 +1,15 @@
 #format test
 
+timeout=timeout
+type timeout >/dev/null 2>&1 || { echo >&2 "timeout required but not installed.  Checking for gtimeout."; 
+timeout=gtimeout
+type gtimeout >/dev/null 2>&1 || { echo >&2 "not found, aborting."; exit 1; } }
+
 testa() 
 {
 if [ $? -ne 0 ]; then
 	echo "[$a] produced unexpected behavior."
-	exit
+	exit 1
 fi
 if [ `wc $a.out -l | cut -d  ' ' -f 1` -eq $size ]; then
 	echo " PASS"
@@ -13,7 +18,7 @@ else
 	echo `wc $a.out -l `
 	echo "expected $size"
 	echo "[$a] $msg FAIL"
-	exit
+	exit 1
 fi
 }
 
@@ -43,7 +48,7 @@ mapgd="../../bin/mapgd"
 
 if [ -z $mapgd ]; then 
 	echo "cannot find mapgd. Did you type 'make' in the src directory?"
-	exit
+	exit 1
 fi
 
 msg="    "
@@ -55,7 +60,7 @@ msg="proview"
 rm -f $a.out
 size=$(($pro_size+$pro_header+$idx_size+$idx_header))
 echo -n "cat $mpileup | $mapgd $a -H $header > $a.out							"
-timeout 5s bash -c "cat $mpileup | $mapgd $a -H $header > $a.out"
+$timeout 5s bash -c "cat $mpileup | $mapgd $a -H $header > $a.out"
 testa
 
 a="proview"
@@ -63,7 +68,7 @@ msg="proview"
 rm -f $a.out
 size=$(($pro_size+$pro_header+$idx_size+$idx_header))
 echo -n "$mapgd $a -n $name -H $header > $a.out								"
-timeout 5s bash -c "$mapgd $a -n $name -H $header > $a.out"
+$timeout 5s bash -c "$mapgd $a -n $name -H $header > $a.out"
 testa
 
 a="proview"
@@ -71,7 +76,7 @@ msg="proview"
 rm -f $a.out
 size=$(($pro_size+$pro_header))
 echo -n "$mapgd $a -n $name -H $header -o $a; ($a.pro)							"
-timeout 5s bash -c "$mapgd $a -n $name -H $header -o $a"
+$timeout 5s bash -c "$mapgd $a -n $name -H $header -o $a"
 mv $a.pro $a.out
 testa
 
@@ -85,7 +90,7 @@ msg="allele"
 rm -f $a.out
 size=$(($pro_size+$pro_header+$idx_size+$idx_header+$gof_header+$gof_size))
 echo -n "$mapgd proview -n $name -H $header | $mapgd $a -M 1 > $a.out				"
-timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a -M 1 > $a.out"
+$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a -M 1 > $a.out"
 testa
 
 a="pool"
@@ -93,7 +98,7 @@ msg="pool"
 rm -f $a.out
 size=$(($pro_size+$pro_header+$idx_size+$idx_header))
 echo -n "$mapgd proview -n $name -H $header | $mapgd $a > $a.out						"
-timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a > $a.out"
+$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a > $a.out"
 testa
 
 a="filter"
@@ -101,7 +106,7 @@ msg="filter"
 rm -f $a.out
 size=$(($good_size+$pro_header+$idx_size+$idx_header))
 echo -n "$mapgd proview -n $name -H $header | $mapgd allele -M 1 | $mapgd $a > $a.out	"
-timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd allele -M 1 | $mapgd $a > $a.out			"
+$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd allele -M 1 | $mapgd $a > $a.out			"
 testa
 
 a="sam2idx"
@@ -109,7 +114,7 @@ msg="sam2idx"
 rm -f $a.out
 size=$(($idx_size+$idx_header))
 echo -n "cat $header | $mapgd $a > $a.out										"
-timeout 5s bash -c "cat $header | $mapgd $a > $a.out"
+$timeout 5s bash -c "cat $header | $mapgd $a > $a.out"
 testa
 
 a="sam2idx"
@@ -117,7 +122,7 @@ msg="sam2idx"
 rm -f $a.out
 size=$(($idx_size+$idx_header))
 echo -n "$mapgd $a -H $header > $a.out										"
-timeout 5s bash -c "$mapgd $a -H $header > $a.out"
+$timeout 5s bash -c "$mapgd $a -H $header > $a.out"
 testa
 
 a="genotype"
@@ -131,7 +136,7 @@ $mapgd allele -i temp.pro -o temp -M 1
 echo "$mapgd filter -i temp.map -o temp-filtered	 								"
 $mapgd filter -i temp.map -o temp-filtered 
 echo -n "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out								"
-timeout 5s bash -c "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out"
+$timeout 5s bash -c "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out"
 testa
 rm temp*
 
@@ -146,11 +151,13 @@ $mapgd allele -i temp_pro.out -M 1 > temp_map.out
 echo "$mapgd filter -i temp_map.out > temp_map_filtered.out 								"
 $mapgd filter -i temp_map.out > temp_map_filtered.out
 echo -n "$mapgd $a -p temp_pro.out -m temp_map_filtered.out > $a.out							"
-timeout 5s bash -c "$mapgd $a -p temp_pro.out -m temp_map_filtered.out > $a.out"
+$timeout 5s bash -c "$mapgd $a -p temp_pro.out -m temp_map_filtered.out > $a.out"
 testa
 rm temp*
 
 echo -n "$mapgd $a -p pro -m map > $a.out (fifopipes)									"
+rm -f map
+rm -f pro
 mkfifo map
 mkfifo pro
 size=$(($idx_size+$idx_header+$good_size+$gcf_header))
@@ -160,6 +167,8 @@ rm -f map
 rm -f pro
 testa
 
+rm -f map
+rm -f pro
 a="relatedness"
 msg="relatedness"
 echo -n "cat genotype.out | $mapgd $a > $a.out 									"
@@ -172,17 +181,22 @@ testa
 rm -f map
 rm -f pro
 
-exit
-
-a="linkage"
-msg="linkage"
-echo -n "cat genotype.out | $mapgd $a > $a.out 									"
+a="relatedness"
+msg="relatedness"
+echo -n "cat genotype.out | $mapgd $a -o $a.out 									"
+rm -f map
+rm -f pro
 mkfifo map
 mkfifo pro
 size=$(($pop*($pop-1)/2+3))
 $mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd filter > map &
-$mapgd linkage -p pro -m map > $a.out
+$mapgd genotype -p pro -m map -o genotype 
+$mapgd relatedness -i genotype.gcf -o $a.out
+mv $a.out.rel $a.out
 testa
+rm -f $a.idx
+rm -f genotype.gcf
+rm -f genotype.idx
 rm -f map
 rm -f pro
 
@@ -197,7 +211,7 @@ $mapgd relatedness -i temp_genotype.out > $a.out
 testa
 rm -f temp*
 
-exit
+exit 0
 
 a="write"
 msg="write/read"

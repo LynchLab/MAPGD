@@ -1,6 +1,6 @@
 #include "population.h"
 
-const std::string Population::file_name="gcf";
+const std::string Population::file_name=".gcf";
 const std::string Population::table_name="GENOTYPES";
 const Registration Population::registered=Registration(Population::table_name, Population::create);
 /** @breif constuctor w/ initial values. **/

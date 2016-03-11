@@ -7,13 +7,13 @@
 #  allow_failures:
 #    - os: osx
 #    - compilter: clang
-
 os:
   - linux
   - osx
 language: cpp
 compiler:
   - gcc
+  - clang
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphviz; fi
@@ -28,6 +28,3 @@ addons:
     packages:
     - gcc-4.8
     - g++-4.8
-matrix:
-  allow_failures:
-    - os: osx
