@@ -478,19 +478,42 @@ print_help(Environment env)
 
 
 void 
-print_usage(Environment env){
+print_usage(Environment env)
+{
 	Usage(env, stderr);
 	fprintf(stderr, "Try '%s --help' for more information.\n", env.name);
 	exit(0);
 }
 
 void 
-Environment::close(void){
+Environment::close(void)
+{
 	flags.clear();
 	args.clear();
 	commands.clear();
 	required_args.clear();
 	required_coms.clear();
+}
+
+int
+flag_commands(void *parm)
+{
+	print_commands(*(Environment *) parm);
+	exit(0);
+}
+
+void print_commands(Environment env)
+{
+	std::list <Command>::iterator com=env.commands.begin();
+	std::list <Command>::iterator com_end=env.commands.end();
+	if (env.commands.size()==0) return;
+	printf("%s", com->lopt);
+	com++;
+	while (com!=com_end){
+		printf(" %s", com->lopt);
+		com++;
+	}
+	printf("\n");
 }
 
 void 

@@ -80,6 +80,8 @@ int flag_usage(void *);
 int flag_version(void *);			
 //! Prints an automatically formated help message to stdout.
 int flag_help(void *);				
+//! Prints an automatically formated list of commands to stdout.
+int flag_commands(void *);				
 
 //! Sets the error to be printed if a argument returns -1.
 int arg_error(int, char **, void *);		
@@ -368,6 +370,10 @@ void print_help(Environment env);
 /*!	\brief prints the automatically generated version line. 
  */
 void print_version(Environment env);
+
+/*!	\brief Print available commands in a tab separated list. 
+ */
+void print_commands(Environment env);
 
 /*!	\brief prints the automatically generated usage.
  *	

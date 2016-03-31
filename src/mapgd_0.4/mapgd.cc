@@ -22,6 +22,7 @@ int main (int argc, char* argv[])
 	env.set_author("Matthew Ackerman, Bernard Haubold, Michael Lynch, and Takahiro Maruki.");
 	env.set_description("A program for maximum-likelihood analysis of population genomic data. Please direct questions to matthew.s.ackerman@gmail.com");
 
+	env.flag(	'a',"avail", 	&env, 		&flag_commands, "an error occurred while displaying the help message", "Prints a list of available commands");		//DONE
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "Prints this message");				//DONE
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "Prints the program version");		//DONE
 	env.command(	' ',"allele", 	&estimateInd,	 		"an error occurred while calling allele", "Estimates allele frequencies using individual data");	//DONE

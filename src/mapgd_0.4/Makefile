@@ -16,7 +16,6 @@ INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/
 CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) 
 
 DEBUG=-g -D DEBUG
-
 NOOMP=-D NOOMP
 NOSQL=-D NOSQL
 NOGSL=-D NOGSL
@@ -161,14 +160,18 @@ install: all
 .PHONY: install
 
 
-COMMAND=allele linkage proview
-
-#docs: all
-#	for COM in $(COMMAND); do \
-#		echo $(TARGET) $$COM \$$1 > mapgd-$$COM;  \
-#		chmod 777 mapgd-$$COM;  \
-#		help2man ./mapgd-$$COM > $(DOCDIR)/man/1/mapgd-$$COM.1; \
-#	done
+docs:
+	$(eval COMMAND=`$(TARGET) -a`) 
+	echo -n $(COMMAND)
+	for COM in $(COMMAND); do \
+		if [ ! -f $(DOCDIR)/man/man1/mapgd-$$COM.1.gz ]; then \
+			echo $(TARGET) $$COM \$$1 > mapgd-$$COM;  \
+			chmod 777 mapgd-$$COM;  \
+			help2man ./mapgd-$$COM > $(DOCDIR)/man/man1/mapgd-$$COM.1; \
+			gzip $(DOCDIR)/man/man1/mapgd-$$COM.1; \
+			rm mapgd-$$COM; \
+		fi \
+	done
 #.PHONY: clean
 #	help2man
 
