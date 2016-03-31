@@ -441,6 +441,8 @@ int PopLD(int argc, char *argv[])
 	}
 	e_locus=locus_list.begin();
 	e_allele=allele_list.begin();
+						
+	std::cerr << "Opening a site!\n";
 
 	while (map_in.table_is_open() ){
 		while (read<BUFFER_SIZE && map_in.table_is_open() ) {
@@ -451,6 +453,7 @@ int PopLD(int argc, char *argv[])
 			id0_t scf2=index.get_id0(pos2);
 
 
+			std::cerr << max_d << "::" << pos2-pos1 << ", " << scf1 << ", " <<scf2 << std::endl;
 			if ( (pos2-pos1)<max_d && scf1==scf2) {
 				if ( (pos2-pos1)>min_dist ) {
 					number=count_sites(locus1, locus2);
@@ -460,6 +463,7 @@ int PopLD(int argc, char *argv[])
 						locus_buffer2[read]=locus2;
 						allele_buffer2[read]=allele2;
 						read++;
+						std::cerr << "Read a site!\n";
 					}
 				}
 			} else { 

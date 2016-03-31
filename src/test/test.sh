@@ -170,6 +170,17 @@ rm -f map
 rm -f pro
 testa
 
+a="unicode"
+msg="unicode"
+size=$(($pop*($pop-1)/2+3))
+echo -n "cat linkage | $mapgd $a > $a.out 										"
+$mapgd proview -H $header -n $unicode > temp_pro.out
+$mapgd allele -i temp_pro.out -M 1 > temp_allele.out
+$mapgd linkage -p temp_pro.out -m temp_allele.out > temp_genotype.out
+exit 0
+testa
+rm -f temp*
+
 rm -f map
 rm -f pro
 a="relatedness"
@@ -213,6 +224,7 @@ $mapgd genotype -p temp_pro.out -m temp_allele.out > temp_genotype.out
 $mapgd relatedness -i temp_genotype.out > $a.out
 testa
 rm -f temp*
+
 
 exit 0
 

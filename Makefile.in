@@ -1,8 +1,9 @@
 SUBDIRS=src
 
-@HAVE_GSL@
-@HAVE_OMP@
-@HAVE_SQL@
+HAVE_GSL=@HAVE_GSL@
+HAVE_OMP=@HAVE_OMP@
+HAVE_SQL=@HAVE_SQL@
+HAVE_MAN=@HAVE_MAN@
 
 CXX=@CXX@
 OPENMP_CXXFLAGS=@OPENMP_CXXFLAGS@
@@ -46,7 +47,7 @@ test: all
 .PHONY: test
 
 install: all
-	$(MAKE) -C $(SUBDIRS) all
+	$(MAKE) -C $(SUBDIRS) install
 .PHONY: install
 
 clean:

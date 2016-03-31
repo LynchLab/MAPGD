@@ -2,18 +2,13 @@
 #c90 c89 c99 c9x c11 c1x gnu90 gnu89 gnu99 gnu9x gnu11 gnu1x c++98 c++03 gnu++98 gnu++03 c++11 c++0x gnu++11 gnu++0x c++1y gnu++1y
 #Right now I need c++11 to support constructor delegation, which I like a lot.
 
-#CXX=g++
-#i686-w64-mingw32-c++
-#i586-mingw32msvc-c++
-
 MODE=-O3
 STD=-std=c++11
 DESTDIR=/usr/local/bin
-DOCPATH=\"$(shell pwd)../../docs/man/\"
+DOCPATH=\"$(shell pwd)/../../docs/man/\"
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d '-' -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
-POSIX=-D POSIX -D PATH=$(DOCPATH)
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ 
 
 #OPENMP
@@ -47,23 +42,27 @@ else
 	TARGET=../../bin/mapgd
 endif
 
-ifeq ($(HAVE_SQL), true)
+ifeq ($(HAVE_SQL), yes)
 	INCLUDE += -I ./sql
 	LDLIBS += -l sqlite3 
 else
 	CXXFLAGS += $(NOSQL)
 endif
 
-ifeq ($(HAVE_OMP), true)
+ifeq ($(HAVE_OMP), yes)
 	CXXFLAGS += $(OPENMP_CXXFLAGS)
 else
 	CXXFLAGS += $(NOOMP)
 endif
 
-ifeq ($(HAVE_GSL), true)
+ifeq ($(HAVE_GSL), yes)
 	LDLIBS +=-lgsl -lgslcblas -lm 
 else
 	CXXFLAGS += $(NOGSL)
+endif
+
+ifeq ($(HAVE_MAN), yes)
+	CXXFLAGS += -D USE_MAN -D PATH=$(DOCPATH)
 endif
 
 DOCDIR=../../docs
@@ -125,7 +124,7 @@ RAW_OBJ=raw/genotype.o \
 CONVERSION_OBJ=data_conversion/vcf_file.o
 
 
-ifeq ($(HAVE_SQL), true)
+ifeq ($(HAVE_SQL), yes)
 	OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ)
 else
 	OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
@@ -135,11 +134,6 @@ all: $(OBJ)
 	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
-nosql: CXXFLAGS:=$(CXXFLAGS) $(NOSQL)
-nosql: $(OBJ)
-	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
-	@echo "\n\nMade w/o sql functions, consider typing 'Make sql'"
-	
 DATA_SOURCE=data_types/*.cc
 
 data.h: data_types/data.cc

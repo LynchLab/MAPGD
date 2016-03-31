@@ -75,18 +75,18 @@ Pooled_data::write (std::ostream& out) const
 	out << major << delim;
 	out << minor << delim;
 	out << coverage << delim;
-	if (coverage!=0) out << error << delim;
-	else out << '.' << delim;
+	if (coverage!=0) out << error;
+	else out << '.';
 
 	for (size_t s=0; s<names_.size(); ++s) {
 		if (!isnan(p[s]) ){
 	//		out << std::setprecision(1);
-			out << p[s] << '/';
+			out << '\t' << p[s] << '/';
 			out << polyll[s] << '/';
 			out << minorll[s] << '/';
-			out << majorll[s] << '\t';
+			out << majorll[s];
 		} else {
-			out << ".../.../.../...\t";
+			out << "\t.../.../.../...";
 		}
 	}
 }

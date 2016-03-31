@@ -3,6 +3,8 @@
 #ifndef RELATEDNESS_DATA_H_
 #define RELATEDNESS_DATA_H_
 
+#include <cstring>
+
 #include <iostream>
 #include <cfloat>
 #include <iomanip>
@@ -11,6 +13,8 @@
 
 #include "typedef.h"
 #include "data.h"
+
+#define E_LIM 25
 
 /// A class to store population specific information. May be moved over to population.
 /*  This is likely to become some form of container to handel moving data into 
@@ -33,8 +37,8 @@ public:
 
 	id1_t sites;	//!< the number of sites analyzed.
 
-	float_t e_X_[8], e_X_ll;
-	float_t e_Y_[8], e_Y_ll;
+	float_t e_X_[E_LIM], e_X_ll;
+	float_t e_Y_[E_LIM], e_Y_ll;
 	float_t f_X_, f_X_ll;
 	float_t f_Y_, f_Y_ll;
 	float_t theta_XY_, theta_XY_ll;
@@ -67,6 +71,8 @@ public:
 
 	static const std::string file_name;	//!< The dafualt extention for files.
 	static const std::string table_name;	//!< Destination table in Db.
+
+	Relatedness& operator=(const Relatedness &rhs);
 };
 
 #endif

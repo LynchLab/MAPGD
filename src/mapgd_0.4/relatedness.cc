@@ -4,6 +4,11 @@
 
 #ifndef NOGSL
 
+size_t 
+freqtoi(float_t in)
+{
+	return size_t(in*E_LIM*2) < E_LIM ? size_t(in*E_LIM*2) : E_LIM-1;
+}
 //Moved to in memory
 std::map <Genotype_pair_tuple, size_t> 
 hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)
@@ -23,17 +28,48 @@ hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const siz
 	return counts;
 }
 
-/*Does a regression of allele frequency of the samples on the popualtion allele frequency*/
+Relatedness global_relatedness;
+/*Does a regression of allele frequency of the samples on the population allele frequency*/
 void 
 set_e(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
 {
-//	float e;
-//	e=0;
+	std::map<Genotype_pair_tuple, size_t>::iterator start=hashed_genotypes.begin();
+	std::map<Genotype_pair_tuple, size_t>::iterator end=hashed_genotypes.end();
+	std::map<Genotype_pair_tuple, size_t>::iterator it=start;
+
+	Genotype_pair pair;
+
+/*
+        float_t X_MM;
+        float_t X_Mm;
+        float_t X_mm;
+        float_t Y_MM;
+        float_t Y_Mm;
+        float_t Y_mm;
+        float_t m;
+*/
+	float_t freq[E_LIM]={0}, sum[E_LIM]={0};
+        while(it!=end){
+		pair=Genotype_pair::from_tuple(it->first);
+		freq[freqtoi(pair.m)]+=pair.m;
+		sum[freqtoi(pair.m)]+=it->second;
+		relatedness.e_X_[freqtoi(pair.m)]+=exp(-pair.X_mm)+exp(-pair.X_Mm)/2.;
+		relatedness.e_Y_[freqtoi(pair.m)]+=exp(-pair.Y_mm)+exp(-pair.Y_Mm)/2.;
+		++it;
+	}
+
+	for (size_t x=0; x<E_LIM; ++x){
+		relatedness.e_X_[x]=(relatedness.e_X_[x]-freq[x])/sum[x];
+		relatedness.e_Y_[x]=(relatedness.e_Y_[x]-freq[x])/sum[x];
+//		std::cerr << x << ": " << relatedness.e_X_[x] << ", " << relatedness.e_Y_[x] << std::endl;
+	}
+	global_relatedness=relatedness;
 }
 
 
 /*Guess starting values of relatedness for the maximization procedure*/
-void gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &counts)
+void 
+gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &counts)
 {
 	relatedness.zero();
 	std::map<Genotype_pair_tuple, size_t>::iterator start=counts.begin();
@@ -77,7 +113,9 @@ void gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> 
 	relatedness.delta_XY_=0;*/
 }
 
-void inc_f(Relatedness &rel, const Genotype_pair &pair, const size_t &count){
+void 
+inc_f(Relatedness &rel, const Genotype_pair &pair, const size_t &count)
+{
 	float_t P=1-pair.m;
 	float_t P2=P*P;
 	float_t var=P-P2;
@@ -88,14 +126,17 @@ void inc_f(Relatedness &rel, const Genotype_pair &pair, const size_t &count){
 	};
 }
 
-void inc_theta(Relatedness &rel, const Genotype_pair &pair, const size_t &count){
+void 
+inc_theta(Relatedness &rel, const Genotype_pair &pair, const size_t &count)
+{
 	float_t P=1-pair.m;
 	if(P!=0){
 		rel.theta_XY_+=( (exp(-pair.X_Mm-pair.Y_Mm)/4.+exp(-pair.X_MM-pair.Y_Mm)/2.+exp(-pair.X_Mm-pair.Y_MM)/2.+exp(-pair.X_MM-pair.Y_MM) )-pow(P,2) )/pow(P*(1-P),2)*count;
 	};
 }
 
-void inc_gamma(Relatedness &rel, const Genotype_pair &pair, const size_t &count)
+void 
+inc_gamma(Relatedness &rel, const Genotype_pair &pair, const size_t &count)
 {
 	float_t P=1-pair.m;
 	if(P!=0 && P!=0.5){
@@ -109,6 +150,9 @@ inc_Delta (Relatedness &rel, const Genotype_pair &pair, const size_t &count)
 {
 
 }
+
+//TODO FIX THIS TERRIBLE HACK JOB YOU SCHMUCK!
+
 
 float_t
 get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count) 
@@ -129,12 +173,14 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 	P=1-pair.m;
 
 	if (P==0) return 0;	
-	float_t e=0;
-	
+	float_t e=0;//global_relatedness.e_Y_[freqtoi(pair.m)]-global_relatedness.e_X_[freqtoi(pair.m)];
+	P+=(global_relatedness.e_Y_[freqtoi(pair.m)]+global_relatedness.e_X_[freqtoi(pair.m)]);
+
 	/*This comes from the inverse matrix of the one used to calculate the moments.*/
 	
-	float_t A=P;//+e(P)*P; 	//mean major allele frequency in A
-	float_t C=P;//-e(P)*P; 	//mean major allele frequency in C
+	float_t A=P+e;//+e(P)*P; 	//mean major allele frequency in A
+	float_t C=P-e;//-e(P)*P; 	//mean major allele frequency in C
+//	std::cerr << freqtoi(pair.m) << ", " << e << ", " << P << ", " << A << ", " << C << std::endl;	
 	float_t Va=A*(1.-A);	//variance of the two haploid genomes of A 
 	float_t Vc=C*(1.-C);	// "   "	"	" 	"     of B
 	float_t Sa=sqrt(Va);	//standard deviation of haploid genomes A
@@ -236,7 +282,7 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	std::pair<Genotype_pair_tuple, size_t> *pair;
 //	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
 
-	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
+//	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
 	for (size_t x=0; x<hashed_genotypes_p->size(); x++){
 //	while(it!=end){
 		pair=&(*hashed_genotypes_p)[x];
@@ -475,8 +521,8 @@ int estimateRel(int argc, char *argv[])
 			relatedness.set_X_name(genotype.get_sample_names()[x]);
 			relatedness.set_Y_name(genotype.get_sample_names()[y]);
 			hashed_genotypes=hash_genotypes(file_buffer, x, y);
-			set_e(relatedness, hashed_genotypes);
 			relatedness.zero();
+			set_e(relatedness, hashed_genotypes);
 		//	gestimate(relatedness, hashed_genotypes);
 			maximize(relatedness, hashed_genotypes);
 		//	get_llr(relatedness, hashed_genotypes);

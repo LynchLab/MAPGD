@@ -586,10 +586,11 @@ PACKAGE_URL='https://github.com/LynchLab/MAPGD/'
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+OPENMP_CXXFLAGS
+HAVE_MAN
+HAVE_SQL
 HAVE_OMP
 HAVE_GSL
-HAVE_SQL
-OPENMP_CXXFLAGS
 OBJEXT
 EXEEXT
 ac_ct_CXX
@@ -2299,7 +2300,94 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
-#AX_LIB_SQLITE3(v3)
+HAVE_GSL=no
+
+HAVE_OMP=no
+
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for sqlite3_open in -lsqlite3" >&5
+$as_echo_n "checking for sqlite3_open in -lsqlite3... " >&6; }
+if ${ac_cv_lib_sqlite3_sqlite3_open+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lsqlite3  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char sqlite3_open ();
+int
+main ()
+{
+return sqlite3_open ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_sqlite3_sqlite3_open=yes
+else
+  ac_cv_lib_sqlite3_sqlite3_open=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_sqlite3_sqlite3_open" >&5
+$as_echo "$ac_cv_lib_sqlite3_sqlite3_open" >&6; }
+if test "x$ac_cv_lib_sqlite3_sqlite3_open" = xyes; then :
+  HAVE_SQL=yes
+
+else
+  HAVE_SQL=no
+
+fi
+
+# Extract the first word of "man", so it can be a program name with args.
+set dummy man; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_prog_HAVE_MAN+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$HAVE_MAN"; then
+  ac_cv_prog_HAVE_MAN="$HAVE_MAN" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_HAVE_MAN="yes"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_prog_HAVE_MAN" && ac_cv_prog_HAVE_MAN="no"
+fi
+fi
+HAVE_MAN=$ac_cv_prog_HAVE_MAN
+if test -n "$HAVE_MAN"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $HAVE_MAN" >&5
+$as_echo "$HAVE_MAN" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for cos in -lm" >&5
 $as_echo_n "checking for cos in -lm... " >&6; }
@@ -2437,7 +2525,6 @@ _ACEOF
 fi
 
 
-#AX_CXX_COMPILE_STDCXX_11()
 
   OPENMP_CXXFLAGS=
   # Check whether --enable-openmp was given.
@@ -2505,25 +2592,21 @@ $as_echo "$ac_cv_prog_cxx_openmp" >&6; }
 
 
 
-HAVE_SQL=
-
-HAVE_GSL=
-
-HAVE_OMP=
-
-
 if test "$ac_cv_lib_gsl_gsl_blas_dgemm" == yes
 then
-	HAVE_GSL=HAVE_GSL=true
+	HAVE_GSL=yes
 
+else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: GSL (gnu scientific libraries) not found. Unable to use relatedness command." >&5
+$as_echo "$as_me: WARNING: GSL (gnu scientific libraries) not found. Unable to use relatedness command." >&2;}
 fi
 
 if test "$ac_cv_prog_cxx_openmp" == "unsupported"
 then
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: No openmp support detected" >&5
-$as_echo "$as_me: WARNING: No openmp support detected" >&2;}
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: No openmp support detected, will not be multi-threaded." >&5
+$as_echo "$as_me: WARNING: No openmp support detected, will not be multi-threaded." >&2;}
 else
-	HAVE_OMP=HAVE_OMP=true
+	HAVE_OMP=yes
 
 fi
 
