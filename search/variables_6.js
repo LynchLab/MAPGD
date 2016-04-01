@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gof',['gof',['../classallele__stat.html#a84c271c57a619f6ea3e520f44e446361',1,'allele_stat']]]
+  ['gof',['gof',['../classAllele.html#a4b901d28e3ea9bbb34df6e2fe636239e',1,'Allele']]]
 ];

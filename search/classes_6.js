@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['lnmultinomial',['lnmultinomial',['../classlnmultinomial.html',1,'']]],
-  ['locus',['Locus',['../classLocus.html',1,'']]]
+  ['genotype',['Genotype',['../classGenotype.html',1,'']]],
+  ['genotype_5fpair',['Genotype_pair',['../classGenotype__pair.html',1,'']]]
 ];

@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['close',['close',['../classmap__file.html#ab16be151908332859a30886fa16633dd',1,'map_file::close()'],['../classprofile.html#a6148476d9b8b5a5a20491450d92d0dcb',1,'profile::close()']]],
-  ['column_5fnames',['column_names',['../classprofile__header.html#af64f7e8c7fe40d481deab3df45371266',1,'profile_header']]],
-  ['column_5fsize',['column_size',['../classmap__file.html#a5ffe8fd41dd308c39425617e709910da',1,'map_file']]],
-  ['columns_5f',['columns_',['../classprofile.html#a10753bd922a2b0ebf0820bdf47d6681f',1,'profile']]],
-  ['com_5ft',['com_t',['../classcom__t.html',1,'']]],
-  ['command',['command',['../classenv__t.html#a9f3138b6b234353c3167e00f0d19f48d',1,'env_t']]],
-  ['commands',['commands',['../classenv__t.html#a26bd9c2ce445926975e57dbe831f4a39',1,'env_t']]],
-  ['control',['control',['../classprofile__header.html#a9bc6c1d4a979d36d060896cd2ee4d593',1,'profile_header']]],
-  ['copy',['copy',['../classprofile.html#a36ce56a84e7800c1fbcaf75ad8d066f6',1,'profile']]],
-  ['copyheader',['copyheader',['../classprofile.html#ada1dcfd3a02b7e2e06d11fa333f23a63',1,'profile']]],
-  ['coverage',['coverage',['../classallele__stat.html#a89c2d796a01de75df3657ff6b91a388a',1,'allele_stat']]]
+  ['cbegin',['cbegin',['../classLocus.html#aeb57c9fcf9b4699b60b6ba63e97be85e',1,'Locus']]],
+  ['cend',['cend',['../classLocus.html#aecedacb713b11054bce02e04b4f7ca2f',1,'Locus']]],
+  ['clear',['clear',['../classPopulation.html#a5a42d2a59c007194fec4d3168807e54d',1,'Population::clear()'],['../classRelatedness.html#a7fe18707d0ce33febc3a18bf5723ffda',1,'Relatedness::clear()']]],
+  ['close',['close',['../classBase__file.html#a6e30ff80eb99f401256d4bcca6a157a2',1,'Base_file']]],
+  ['close_5ftable',['close_table',['../classBase__file.html#af402edd3a5bf898885146158497ade2f',1,'Base_file']]],
+  ['command',['Command',['../classCommand.html',1,'Command'],['../classEnvironment.html#abf616c2710f5472f2d39219e353ac2dc',1,'Environment::command()']]],
+  ['commands',['commands',['../classEnvironment.html#a16ee1034e66b0d38c769edaea70d1097',1,'Environment']]],
+  ['concatenated',['concatenated',['../classBase__file.html#accfc822429915de3f8836174744c6dc9',1,'Base_file']]],
+  ['concatenated_5f',['concatenated_',['../classBase__file.html#aaa35644e5e2636edb25d734e234f7f92',1,'Base_file']]],
+  ['coverage',['coverage',['../classAllele.html#ac91659409e1a0ed57def249efbb2a6b1',1,'Allele']]],
+  ['cumulative_5fsize_5f',['cumulative_size_',['../classFile__index.html#a564f6ad8c74f9d92e3193fc6c63df346',1,'File_index']]]
 ];

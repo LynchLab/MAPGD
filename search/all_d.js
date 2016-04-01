@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['init',['init',['../classprofile.html#a0cb442b2b4871225903533e34adec148',1,'profile']]],
-  ['parm',['parm',['../classflag__t.html#a5c61b009bf1d18cef797fd54291136fb',1,'flag_t::parm()'],['../classarg__t.html#a5395567b0a31949b094774ba6dc6c10d',1,'arg_t::parm()']]],
-  ['pooled',['pooled',['../classallele__stat.html#aa64930e95321a4957bc4dcd0e19ccb9b',1,'allele_stat']]],
-  ['population',['population',['../classpopulation.html',1,'']]],
-  ['profile',['profile',['../classprofile.html',1,'profile'],['../classprofile.html#a11becb1c5f72a18350e93675b0124052',1,'profile::profile()']]],
-  ['profile_5fflags',['profile_flags',['../structprofile__flags.html',1,'']]],
-  ['profile_5fheader',['profile_header',['../classprofile__header.html',1,'profile_header'],['../classprofile__header.html#a6be558799b0b447f718c0546dd00033a',1,'profile_header::profile_header()'],['../classprofile__header.html#aa4fb665d7db7ecb1ac44a14d6a387cc3',1,'profile_header::profile_header(profile *)']]],
-  ['profile_5fheader',['profile_header',['../classprofile.html#a4507830b35e82d604067749aa9be0f5f',1,'profile']]]
+  ['p_5f',['p_',['../classLinkage.html#a0f2ca75a94abc15a9c796d06f9781c74',1,'Linkage']]],
+  ['parm',['parm',['../classFlag.html#ad1b277d5d017993de9ef5d86a78fbacc',1,'Flag::parm()'],['../classArgument.html#a7ef7d714a45634744ff3d0e268bbdce1',1,'Argument::parm()']]],
+  ['pooled',['pooled',['../classAllele.html#a2bf5d56b370a9d0b188102dda87b045f',1,'Allele']]],
+  ['pooled_5fdata',['Pooled_data',['../classPooled__data.html',1,'']]],
+  ['population',['Population',['../classPopulation.html',1,'Population'],['../classPopulation.html#a54eb24ca89470eebe0c27bcb03a0ceae',1,'Population::Population()'],['../classPopulation.html#ab902fbb9ed9e522d731b47b55184db14',1,'Population::Population(const std::vector&lt; std::string &gt; &amp;)'],['../classPopulation.html#ad3e359206cf10b85a3c3af4b70235c6a',1,'Population::Population(const Population &amp;)']]],
+  ['positional_5fargs',['positional_args',['../classEnvironment.html#ad03a76b027346a36e1f34840746ec071',1,'Environment']]]
 ];

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>mapgd: mapgd_0.3.1/genotype.h Source File</title>
+<title>mapgd: mapgd_0.4/raw/genotype.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">mapgd
-   &#160;<span id="projectnumber">0.3</span>
+   &#160;<span id="projectnumber">0.4</span>
    </div>
    <div id="projectbrief">A program for the Maximum-likelihood analysis of population genomic data.</div>
   </td>
@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -70,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -81,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_ed8f629ce2eb83d733fc07917adc3f02.html">mapgd_0.3.1</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_c2a9b5fdaa7270aad9f3a011f3ec453c.html">mapgd_0.4</a></li><li class="navelem"><a class="el" href="dir_27989f7cea35254cb4e8a107334c7125.html">raw</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -89,46 +90,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">genotype.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef GENOTYPE_H_</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define GENOTYPE_H_</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;quartet.h&quot;</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef _GENOTYPE_H_</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _GENOTYPE_H_</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;typedef.h&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;binomial.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;stdint.h&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;allele_stat.h&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classgenotype.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="classgenotype.html">genotype</a> {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    std::string name_;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    uint8_t ploidy_;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    std::vector&lt;float_t&gt; probabilities_;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="comment">//binomial bin;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classgenotype.html#af5ebf8bb0c53dca2400d58fabf82f445">   25</a></span>&#160;    <a class="code" href="classgenotype.html#af5ebf8bb0c53dca2400d58fabf82f445">genotype</a> (uint8_t ploidy)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        ploidy_=ploidy;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        probabilities_=std::vector &lt;float_t&gt;(ploidy_+1);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    };</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    ~<a class="code" href="classgenotype.html">genotype</a> () { };</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classgenotype.html#a81684d812333591a9c63705732a3da2b">set_probabilities</a>(<span class="keyword">const</span> <a class="code" href="classallele__stat.html">allele_stat</a> &amp;, <span class="keyword">const</span> <a class="code" href="structquartet.html">quartet_t</a> &amp;);     </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    float_t <a class="code" href="classgenotype.html#a38b6d54674d32091f6b8f830319fa875">get_probabilities</a>(<span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;x) <span class="keyword">const</span>;           </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classgenotype_html_a38b6d54674d32091f6b8f830319fa875"><div class="ttname"><a href="classgenotype.html#a38b6d54674d32091f6b8f830319fa875">genotype::get_probabilities</a></div><div class="ttdeci">float_t get_probabilities(const size_t &amp;x) const </div><div class="ttdoc">Returns genotypic probabilities. </div><div class="ttdef"><b>Definition:</b> genotype.cc:15</div></div>
-<div class="ttc" id="structquartet_html"><div class="ttname"><a href="structquartet.html">quartet</a></div><div class="ttdoc">A class that stores quartet information. </div><div class="ttdef"><b>Definition:</b> quartet.h:11</div></div>
-<div class="ttc" id="classallele__stat_html"><div class="ttname"><a href="classallele__stat.html">allele_stat</a></div><div class="ttdoc">A class to store population specific information. May be moved over to population. </div><div class="ttdef"><b>Definition:</b> allele_stat.h:14</div></div>
-<div class="ttc" id="classgenotype_html_a81684d812333591a9c63705732a3da2b"><div class="ttname"><a href="classgenotype.html#a81684d812333591a9c63705732a3da2b">genotype::set_probabilities</a></div><div class="ttdeci">void set_probabilities(const allele_stat &amp;, const quartet_t &amp;)</div><div class="ttdoc">Set genotypic probabilities. Needs a likelihood function, prior genotypic probabilites, and a quartet. </div></div>
-<div class="ttc" id="classgenotype_html"><div class="ttname"><a href="classgenotype.html">genotype</a></div><div class="ttdef"><b>Definition:</b> genotype.h:15</div></div>
-<div class="ttc" id="classgenotype_html_af5ebf8bb0c53dca2400d58fabf82f445"><div class="ttname"><a href="classgenotype.html#af5ebf8bb0c53dca2400d58fabf82f445">genotype::genotype</a></div><div class="ttdeci">genotype(uint8_t ploidy)</div><div class="ttdef"><b>Definition:</b> genotype.h:25</div></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classGenotype.html">    7</a></span>&#160;<span class="keyword">class </span><a class="code" href="classGenotype.html">Genotype</a> {</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">private</span> :</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">public</span> :</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classGenotype.html#a166919a369fff698d2e0c9fe03815f95">   10</a></span>&#160;    float_t lMM, lMm, <a class="code" href="classGenotype.html#a166919a369fff698d2e0c9fe03815f95">lmm</a>;                      </div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classGenotype.html#ae4e34ebbe34d71da2ce5fe2a2a7dd696">   11</a></span>&#160;    count_t <a class="code" href="classGenotype.html#ae4e34ebbe34d71da2ce5fe2a2a7dd696">N</a>;                          </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="classGenotype.html#a48f1317f3fb66a15007be37eac4c5c34">Genotype</a>(<span class="keyword">const</span> float_t &amp;MM, <span class="keyword">const</span> float_t &amp;Mm, <span class="keyword">const</span> float_t &amp;mm, <span class="keyword">const</span> count_t &amp;<a class="code" href="classGenotype.html#ae4e34ebbe34d71da2ce5fe2a2a7dd696">N</a>);    </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <a class="code" href="classGenotype.html#a48f1317f3fb66a15007be37eac4c5c34">Genotype</a>();                         </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="classGenotype.html">Genotype</a> &amp; <a class="code" href="classGenotype.html#a9e40e4bc96030ef27e6032a91d84498c">operator= </a>(<span class="keyword">const</span> <a class="code" href="classGenotype.html">Genotype</a>&amp;);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">friend</span> std::ostream&amp; operator &lt;&lt; (std::ostream&amp; out, <span class="keyword">const</span> <a class="code" href="classGenotype.html">Genotype</a>&amp; x);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">friend</span> std::istream&amp; operator &gt;&gt; (std::istream&amp; in, <a class="code" href="classGenotype.html">Genotype</a>&amp; x);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;};</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classGenotype_html_a9e40e4bc96030ef27e6032a91d84498c"><div class="ttname"><a href="classGenotype.html#a9e40e4bc96030ef27e6032a91d84498c">Genotype::operator=</a></div><div class="ttdeci">Genotype &amp; operator=(const Genotype &amp;)</div><div class="ttdef"><b>Definition:</b> genotype.cc:17</div></div>
+<div class="ttc" id="classGenotype_html_a166919a369fff698d2e0c9fe03815f95"><div class="ttname"><a href="classGenotype.html#a166919a369fff698d2e0c9fe03815f95">Genotype::lmm</a></div><div class="ttdeci">float_t lmm</div><div class="ttdoc">Major Major, Major minor, minor minor. </div><div class="ttdef"><b>Definition:</b> genotype.h:10</div></div>
+<div class="ttc" id="classGenotype_html_ae4e34ebbe34d71da2ce5fe2a2a7dd696"><div class="ttname"><a href="classGenotype.html#ae4e34ebbe34d71da2ce5fe2a2a7dd696">Genotype::N</a></div><div class="ttdeci">count_t N</div><div class="ttdoc">total depth of coverage. </div><div class="ttdef"><b>Definition:</b> genotype.h:11</div></div>
+<div class="ttc" id="classGenotype_html_a48f1317f3fb66a15007be37eac4c5c34"><div class="ttname"><a href="classGenotype.html#a48f1317f3fb66a15007be37eac4c5c34">Genotype::Genotype</a></div><div class="ttdeci">Genotype()</div><div class="ttdoc">constructor. </div><div class="ttdef"><b>Definition:</b> genotype.cc:2</div></div>
+<div class="ttc" id="classGenotype_html"><div class="ttname"><a href="classGenotype.html">Genotype</a></div><div class="ttdef"><b>Definition:</b> genotype.h:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 30 2015 11:51:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 31 2016 16:39:25 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

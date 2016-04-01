@@ -1,6 +1,7 @@
 var searchData=
 [
   ['fact',['fact',['../classbinomial.html#aba6c2cff03e17edaa79ac38beba97df8',1,'binomial']]],
-  ['flag',['flag',['../classenv__t.html#a32619a9a5d586b4ec83546e7b08ca7ad',1,'env_t']]],
-  ['from_5fsam_5fheader',['from_sam_header',['../classfile__index.html#a3a685eabc3286acaa9e6743cec08e234',1,'file_index']]]
+  ['filename',['filename',['../classBase__file.html#a4247584fc29eccc8f9cc3eea3a3b5489',1,'Base_file']]],
+  ['flag',['flag',['../classEnvironment.html#a794d9dde107ee843f46f9c599abaa6bd',1,'Environment']]],
+  ['from_5fsam_5fheader',['from_sam_header',['../classFile__index.html#af4cd642aeab2a261b1db02856ce178cb',1,'File_index']]]
 ];

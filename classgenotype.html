@@ -23,7 +23,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">mapgd
-   &#160;<span id="projectnumber">0.3</span>
+   &#160;<span id="projectnumber">0.4</span>
    </div>
    <div id="projectbrief">A program for the Maximum-likelihood analysis of population genomic data.</div>
   </td>
@@ -64,6 +64,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
     </ul>
   </div>
@@ -85,76 +86,134 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a>  </div>
+<a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle">
 <div class="title">genotype Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
+<p>genotypic likelihoods.  
+ <a href="classgenotype.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="genotype_8h_source.html">genotype.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af5ebf8bb0c53dca2400d58fabf82f445"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#af5ebf8bb0c53dca2400d58fabf82f445">genotype</a> (uint8_t ploidy)</td></tr>
-<tr class="separator:af5ebf8bb0c53dca2400d58fabf82f445"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81684d812333591a9c63705732a3da2b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81684d812333591a9c63705732a3da2b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#a81684d812333591a9c63705732a3da2b">set_probabilities</a> (const <a class="el" href="classallele__stat.html">allele_stat</a> &amp;, const <a class="el" href="structquartet.html">quartet_t</a> &amp;)</td></tr>
-<tr class="memdesc:a81684d812333591a9c63705732a3da2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set genotypic probabilities. Needs a likelihood function, prior genotypic probabilites, and a quartet. <br/></td></tr>
-<tr class="separator:a81684d812333591a9c63705732a3da2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38b6d54674d32091f6b8f830319fa875"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a38b6d54674d32091f6b8f830319fa875"></a>
-float_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#a38b6d54674d32091f6b8f830319fa875">get_probabilities</a> (const size_t &amp;x) const </td></tr>
-<tr class="memdesc:a38b6d54674d32091f6b8f830319fa875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns genotypic probabilities. <br/></td></tr>
-<tr class="separator:a38b6d54674d32091f6b8f830319fa875"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82ba475029f4a975546f7ea9c97809b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#a82ba475029f4a975546f7ea9c97809b7">genotype</a> (const float_t &amp;MM, const float_t &amp;Mm, const float_t &amp;mm, const count_t &amp;<a class="el" href="classgenotype.html#a84b10f827685483c895483a7ee0f2e7e">N</a>)</td></tr>
+<tr class="memdesc:a82ba475029f4a975546f7ea9c97809b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor.  <a href="#a82ba475029f4a975546f7ea9c97809b7">More...</a><br/></td></tr>
+<tr class="separator:a82ba475029f4a975546f7ea9c97809b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c7beec0441ff23d4548c5e7dd699fb0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#a0c7beec0441ff23d4548c5e7dd699fb0">genotype</a> ()</td></tr>
+<tr class="memdesc:a0c7beec0441ff23d4548c5e7dd699fb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor.  <a href="#a0c7beec0441ff23d4548c5e7dd699fb0">More...</a><br/></td></tr>
+<tr class="separator:a0c7beec0441ff23d4548c5e7dd699fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbf69b368d0be689e11d88c0b7258673"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classgenotype.html">genotype</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#abbf69b368d0be689e11d88c0b7258673">operator=</a> (const <a class="el" href="classgenotype.html">genotype</a> &amp;)</td></tr>
+<tr class="separator:abbf69b368d0be689e11d88c0b7258673"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ab3d7893a970717bf92fd1ecba1ef0599"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3d7893a970717bf92fd1ecba1ef0599"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name_</b></td></tr>
-<tr class="separator:ab3d7893a970717bf92fd1ecba1ef0599"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63aa71e017f5dc138f74f2d3948b89f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63aa71e017f5dc138f74f2d3948b89f8"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>ploidy_</b></td></tr>
-<tr class="separator:a63aa71e017f5dc138f74f2d3948b89f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46f37d1d7da597efbc162a00fff77052"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a46f37d1d7da597efbc162a00fff77052"></a>
-std::vector&lt; float_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>probabilities_</b></td></tr>
-<tr class="separator:a46f37d1d7da597efbc162a00fff77052"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a8da3bf6bedd979a4f6485c006db352b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8da3bf6bedd979a4f6485c006db352b1"></a>
+float_t&#160;</td><td class="memItemRight" valign="bottom"><b>lMM</b></td></tr>
+<tr class="separator:a8da3bf6bedd979a4f6485c006db352b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b6a0cb3f0d7e92a7d4903c18044bb6a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b6a0cb3f0d7e92a7d4903c18044bb6a"></a>
+float_t&#160;</td><td class="memItemRight" valign="bottom"><b>lMm</b></td></tr>
+<tr class="separator:a2b6a0cb3f0d7e92a7d4903c18044bb6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3ecf80833778a76f952370099a89d67"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3ecf80833778a76f952370099a89d67"></a>
+float_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#ae3ecf80833778a76f952370099a89d67">lmm</a></td></tr>
+<tr class="memdesc:ae3ecf80833778a76f952370099a89d67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Major Major, Major minor, minor minor. <br/></td></tr>
+<tr class="separator:ae3ecf80833778a76f952370099a89d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84b10f827685483c895483a7ee0f2e7e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84b10f827685483c895483a7ee0f2e7e"></a>
+count_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgenotype.html#a84b10f827685483c895483a7ee0f2e7e">N</a></td></tr>
+<tr class="memdesc:a84b10f827685483c895483a7ee0f2e7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">total depth of coverage. <br/></td></tr>
+<tr class="separator:a84b10f827685483c895483a7ee0f2e7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A data type to store genotypic probabilities.</p>
-<p>For members to be stored in map files they must contain only fixed width . . . Individuals can have names that appear in the column header. </p>
+<div class="textblock"><p>genotypic likelihoods. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="af5ebf8bb0c53dca2400d58fabf82f445"></a>
+<a class="anchor" id="a82ba475029f4a975546f7ea9c97809b7"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">genotype::genotype </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>ploidy</em></td><td>)</td>
+          <td class="paramtype">const float_t &amp;&#160;</td>
+          <td class="paramname"><em>MM</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float_t &amp;&#160;</td>
+          <td class="paramname"><em>Mm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float_t &amp;&#160;</td>
+          <td class="paramname"><em>mm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const count_t &amp;&#160;</td>
+          <td class="paramname"><em>lN</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>constructor. </p>
+<p>constuctor w/ initial values. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0c7beec0441ff23d4548c5e7dd699fb0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">genotype::genotype </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>The constructor requries the ploidy of the individual. </p>
+
+<p>constructor. </p>
+<p>default constructor. Does nothing </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="abbf69b368d0be689e11d88c0b7258673"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classgenotype.html">genotype</a> &amp; genotype::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classgenotype.html">genotype</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>&lt; Major Major, Major minor, minor minor</p>
+<p>&lt; total depth of coverage. </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>mapgd_0.3.1/<a class="el" href="genotype_8h_source.html">genotype.h</a></li>
-<li>mapgd_0.3.1/genotype.cc</li>
+<li>mapgd_0.4/<a class="el" href="genotype_8h_source.html">genotype.h</a></li>
+<li>mapgd_0.4/genotype.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 30 2015 11:51:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Feb 5 2016 10:05:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['major',['major',['../classallele__stat.html#accb8b46cf5789cfca74608a807a3c6f0',1,'allele_stat']]],
+  ['m',['m',['../classPopulation.html#aecc6702092ee57e74cf1c49f4fd3ca41',1,'Population']]],
+  ['major',['major',['../classAllele.html#ae8400c1de667d7fa3e9394eeca201e7e',1,'Allele::major()'],['../classPopulation.html#ae1491a8cc7aa72dd29c96ddd879b9eef',1,'Population::major()']]],
   ['masked',['masked',['../structquartet.html#ab55b5c0ef78a0dabebdc7bec6a1bd053',1,'quartet']]],
-  ['minor',['minor',['../classallele__stat.html#a36f0ec78b3840e105ce99cedfe1aed58',1,'allele_stat']]],
-  ['mm',['MM',['../classallele__stat.html#aaafd3e268c3eb3bd194ba302a6325675',1,'allele_stat::MM()'],['../classallele__stat.html#abe634b1131800ee5b295228b83934ac5',1,'allele_stat::mm()'],['../classallele__stat.html#aa50477ab7486d98a4643a9c52df1fb1e',1,'allele_stat::Mm()']]],
-  ['mpileup_5f',['mpileup_',['../classprofile.html#a74b8fe8ed39eacc152c64fc83c9e5efe',1,'profile']]]
+  ['minor',['minor',['../classAllele.html#a9fba57396063c90153948f54f23b4179',1,'Allele::minor()'],['../classPopulation.html#a896e36159f916cc98e004fe8e3886be7',1,'Population::minor()']]],
+  ['mm',['MM',['../classAllele.html#a182ba756113cafddcf11e47747e49790',1,'Allele::MM()'],['../classAllele.html#aa8694e3e500d7213ef3cf44848a8a39f',1,'Allele::Mm()'],['../classAllele.html#a059ecab4e832b9bf860d0e0251b52f18',1,'Allele::mm()']]],
+  ['mq',['MQ',['../classVcf__data.html#ae6be83a1e40bb6255cff715a4831a984',1,'Vcf_data']]],
+  ['mq0',['MQ0',['../classVcf__data.html#a301c94c4d794bc636cae964f115f9712',1,'Vcf_data']]]
 ];

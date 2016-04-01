@@ -23,7 +23,7 @@
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
    <div id="projectname">mapgd
-   &#160;<span id="projectnumber">0.3</span>
+   &#160;<span id="projectnumber">0.4</span>
    </div>
    <div id="projectbrief">A program for the Maximum-likelihood analysis of population genomic data.</div>
   </td>
@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -64,6 +65,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li class="current"><a href="functions.html"><span>Data&#160;Fields</span></a></li>
     </ul>
   </div>
@@ -98,6 +100,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="functions_u.html#index_u"><span>u</span></a></li>
       <li><a href="functions_v.html#index_v"><span>v</span></a></li>
       <li><a href="functions_w.html#index_w"><span>w</span></a></li>
+      <li><a href="functions_x.html#index_x"><span>x</span></a></li>
+      <li><a href="functions_y.html#index_y"><span>y</span></a></li>
+      <li><a href="functions_z.html#index_z"><span>z</span></a></li>
       <li><a href="functions_~.html#index_~"><span>~</span></a></li>
     </ul>
   </div>
@@ -107,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Groups</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -120,42 +125,45 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock">Here is a list of all documented struct and union fields with links to the struct/union documentation for each field:</div>
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
+<li>cbegin()
+: <a class="el" href="classLocus.html#aeb57c9fcf9b4699b60b6ba63e97be85e">Locus</a>
+</li>
+<li>cend()
+: <a class="el" href="classLocus.html#aecedacb713b11054bce02e04b4f7ca2f">Locus</a>
+</li>
+<li>clear()
+: <a class="el" href="classPopulation.html#a5a42d2a59c007194fec4d3168807e54d">Population</a>
+, <a class="el" href="classRelatedness.html#a7fe18707d0ce33febc3a18bf5723ffda">Relatedness</a>
+</li>
 <li>close()
-: <a class="el" href="classmap__file.html#ab16be151908332859a30886fa16633dd">map_file</a>
-, <a class="el" href="classprofile.html#a6148476d9b8b5a5a20491450d92d0dcb">profile</a>
+: <a class="el" href="classBase__file.html#a6e30ff80eb99f401256d4bcca6a157a2">Base_file</a>
 </li>
-<li>column_names
-: <a class="el" href="classprofile__header.html#af64f7e8c7fe40d481deab3df45371266">profile_header</a>
-</li>
-<li>column_size()
-: <a class="el" href="classmap__file.html#a5ffe8fd41dd308c39425617e709910da">map_file</a>
-</li>
-<li>columns_
-: <a class="el" href="classprofile.html#a10753bd922a2b0ebf0820bdf47d6681f">profile</a>
+<li>close_table()
+: <a class="el" href="classBase__file.html#af402edd3a5bf898885146158497ade2f">Base_file</a>
 </li>
 <li>command()
-: <a class="el" href="classenv__t.html#a9f3138b6b234353c3167e00f0d19f48d">env_t</a>
+: <a class="el" href="classEnvironment.html#abf616c2710f5472f2d39219e353ac2dc">Environment</a>
 </li>
 <li>commands
-: <a class="el" href="classenv__t.html#a26bd9c2ce445926975e57dbe831f4a39">env_t</a>
+: <a class="el" href="classEnvironment.html#a16ee1034e66b0d38c769edaea70d1097">Environment</a>
 </li>
-<li>control
-: <a class="el" href="classprofile__header.html#a9bc6c1d4a979d36d060896cd2ee4d593">profile_header</a>
+<li>concatenated()
+: <a class="el" href="classBase__file.html#accfc822429915de3f8836174744c6dc9">Base_file</a>
 </li>
-<li>copy()
-: <a class="el" href="classprofile.html#a36ce56a84e7800c1fbcaf75ad8d066f6">profile</a>
-</li>
-<li>copyheader()
-: <a class="el" href="classprofile.html#ada1dcfd3a02b7e2e06d11fa333f23a63">profile</a>
+<li>concatenated_
+: <a class="el" href="classBase__file.html#aaa35644e5e2636edb25d734e234f7f92">Base_file</a>
 </li>
 <li>coverage
-: <a class="el" href="classallele__stat.html#a89c2d796a01de75df3657ff6b91a388a">allele_stat</a>
+: <a class="el" href="classAllele.html#ac91659409e1a0ed57def249efbb2a6b1">Allele</a>
+</li>
+<li>cumulative_size_
+: <a class="el" href="classFile__index.html#a564f6ad8c74f9d92e3193fc6c63df346">File_index</a>
 </li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jul 30 2015 11:51:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 31 2016 16:39:28 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

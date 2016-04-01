@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['population',['population',['../classpopulation.html',1,'']]],
-  ['profile',['profile',['../classprofile.html',1,'']]],
-  ['profile_5fflags',['profile_flags',['../structprofile__flags.html',1,'']]],
-  ['profile_5fheader',['profile_header',['../classprofile__header.html',1,'']]]
+  ['linkage',['Linkage',['../classLinkage.html',1,'']]],
+  ['lnmultinomial',['lnmultinomial',['../classlnmultinomial.html',1,'']]],
+  ['locus',['Locus',['../classLocus.html',1,'']]],
+  ['log',['Log',['../classLog.html',1,'']]]
 ];

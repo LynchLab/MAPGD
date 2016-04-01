@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['e1',['e1',['../classallele__stat.html#a9206ac0d42fe383c24369a489fa922a5',1,'allele_stat']]],
-  ['e2',['e2',['../classallele__stat.html#a13d548f1bf5ba90007d8141d9ad66c40',1,'allele_stat']]],
+  ['e1',['e1',['../classAllele.html#ad082479961c178eb4318a5ec10d5792f',1,'Allele']]],
+  ['e2',['e2',['../classAllele.html#a4e8c809bd4c4dc34e378b1a65be5e584',1,'Allele']]],
   ['e2_5f',['E2_',['../classmodels.html#a1dc72dc854b102c0b8024c2f43633d39',1,'models']]],
-  ['efc',['efc',['../classallele__stat.html#a41e9b6e18c8028aa69e8afa2b52a5be1',1,'allele_stat']]],
-  ['emsg',['emsg',['../classflag__t.html#ad1efcb645ef5b3c0bf958c11b3867cb1',1,'flag_t::emsg()'],['../classarg__t.html#aab8c1d692c18688ed3e01f04ca7e2ea3',1,'arg_t::emsg()'],['../classcom__t.html#a335660c29bfa0cf5e324a3d54704f351',1,'com_t::emsg()']]],
-  ['error',['error',['../classallele__stat.html#adbc434a2d1899c71af8fca3d3a8a6cb9',1,'allele_stat']]],
-  ['excluded',['excluded',['../classallele__stat.html#a368470e1eb78f3f711d265dc05376a3a',1,'allele_stat']]],
-  ['extraid',['extraid',['../classLocus.html#a585fb7981a75e033fd9d74f86e9f7914',1,'Locus']]],
-  ['extraids',['extraids',['../classprofile__header.html#a60542dedeb25a6e9d80e0214978b4051',1,'profile_header']]]
+  ['efc',['efc',['../classAllele.html#a588890cfb85f2f9a043c1d4000f39587',1,'Allele']]],
+  ['emsg',['emsg',['../classFlag.html#aa90ee403f75c74ab5660ee5124a76e10',1,'Flag::emsg()'],['../classArgument.html#a4e87d381c07908baa667b1708ac7ed4b',1,'Argument::emsg()'],['../classCommand.html#aa7455fa3545a5df4f229e41c121d18d2',1,'Command::emsg()']]],
+  ['end',['END',['../classVcf__data.html#a3a31269fed85a6fcc0e4d0c4f2bcec41',1,'Vcf_data']]],
+  ['error',['error',['../classAllele.html#ab20335b9fb558eb9272a96783b7872a0',1,'Allele']]],
+  ['excluded',['excluded',['../classAllele.html#a8a8ec306b7fee9ee26189cd96c0cb2d9',1,'Allele']]]
 ];

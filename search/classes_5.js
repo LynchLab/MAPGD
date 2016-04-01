@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['genotype',['genotype',['../classgenotype.html',1,'']]]
+  ['file_5findex',['File_index',['../classFile__index.html',1,'']]],
+  ['flag',['Flag',['../classFlag.html',1,'']]],
+  ['flat_5ffile',['Flat_file',['../classFlat__file.html',1,'']]]
 ];

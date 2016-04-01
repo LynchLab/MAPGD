@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['parm',['parm',['../classflag__t.html#a5c61b009bf1d18cef797fd54291136fb',1,'flag_t::parm()'],['../classarg__t.html#a5395567b0a31949b094774ba6dc6c10d',1,'arg_t::parm()']]],
-  ['pooled',['pooled',['../classallele__stat.html#aa64930e95321a4957bc4dcd0e19ccb9b',1,'allele_stat']]]
+  ['p_5f',['p_',['../classLinkage.html#a0f2ca75a94abc15a9c796d06f9781c74',1,'Linkage']]],
+  ['parm',['parm',['../classFlag.html#ad1b277d5d017993de9ef5d86a78fbacc',1,'Flag::parm()'],['../classArgument.html#a7ef7d714a45634744ff3d0e268bbdce1',1,'Argument::parm()']]],
+  ['pooled',['pooled',['../classAllele.html#a2bf5d56b370a9d0b188102dda87b045f',1,'Allele']]],
+  ['positional_5fargs',['positional_args',['../classEnvironment.html#ad03a76b027346a36e1f34840746ec071',1,'Environment']]]
 ];

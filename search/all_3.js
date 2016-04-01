@@ -1,11 +1,12 @@
 var searchData=
 [
-  ['decode_5fid0',['decode_id0',['../classfile__index.html#abbd1d70fee35330f0c3e6e1d7476e0fc',1,'file_index']]],
-  ['decodeid0',['decodeid0',['../classprofile__header.html#a055f1012cdb9dd67480675e87c9f70cc',1,'profile_header::decodeid0()'],['../classprofile.html#a082c65eb29e7cb6c936fa109f9b50a4b',1,'profile::decodeid0()']]],
-  ['defaultorder',['defaultorder',['../classprofile.html#a9e8c731e703d2962423146da4ca40d12',1,'profile']]],
-  ['delim',['delim',['../classallele__stat.html#ac7036daf9817b8b2b8701a4c9767be7a',1,'allele_stat']]],
-  ['delim_5fcolumn',['delim_column',['../classprofile.html#a6aba87dd42332fe70f3dcf860c2ed416',1,'profile']]],
-  ['delim_5fcolumn_5f',['delim_column_',['../classmap__file.html#a9d706bfcd8d15f37a3eab6127cc5807e',1,'map_file']]],
-  ['delim_5fquartet',['delim_quartet',['../classprofile.html#a9240e3dae6cdbe7c0f95fd1c47cec26e',1,'profile']]],
-  ['description',['description',['../classenv__t.html#ae3578fa78fcac7714be35958427095c2',1,'env_t']]]
+  ['d_5f',['D_',['../classLinkage.html#a640487a528da5c759494b1c2bd11d4e5',1,'Linkage']]],
+  ['data',['Data',['../classData.html',1,'']]],
+  ['data_5ffile',['Data_file',['../classData__file.html',1,'']]],
+  ['data_5ffile_3c_20t_20_3e',['Data_file&lt; T &gt;',['../classData__file.html',1,'']]],
+  ['db',['DB',['../classVcf__data.html#ad1aaf620363cb0ff7997bad092d43204',1,'Vcf_data']]],
+  ['delim',['delim',['../classAllele.html#a82dce8235e786b0764b9d5f316cad16d',1,'Allele::delim()'],['../classLinkage.html#acf28b9d979eea452b62a2f490e01cf42',1,'Linkage::delim()'],['../classLog.html#a26e1fb03a0855d89a2cc87818db018e5',1,'Log::delim()'],['../classPooled__data.html#a6ec6ec3afb0cd570becdd6c658813c97',1,'Pooled_data::delim()'],['../classRelatedness.html#a834395682469c5ea224d9296e8fe0b5d',1,'Relatedness::delim()'],['../classSample__gof.html#a966bd1bea84d2cec5c84fa1de0a2e3c5',1,'Sample_gof::delim()'],['../classSample__name.html#a04192fa8a6e14a5bcef98a758771394d',1,'Sample_name::delim()']]],
+  ['delim_5fcolumn_5f',['delim_column_',['../classBase__file.html#a2da466fc2101aaaa88f15961a8c0af7a',1,'Base_file']]],
+  ['description',['description',['../classEnvironment.html#a6208c7eef3dc8ba7edff579ac746c2eb',1,'Environment']]],
+  ['dp',['DP',['../classVcf__data.html#a443c10e692d1718e7f42a62ca1061785',1,'Vcf_data']]]
 ];
