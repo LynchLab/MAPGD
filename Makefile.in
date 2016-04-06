@@ -65,7 +65,7 @@ push:
 	$(MAKE) -C $(SUBDIRS) test
 	$(MAKE) -C $(SUBDIRS) docs
 	$(MAKE) -C $(SUBDIRS) clean
-	rm -f ~/bin/mapgd
+	rm -f ./bin/mapgd
 	CXX=i686-w64-mingw32-c++
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) clean
