@@ -103,23 +103,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;newton-method-theta.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;models.h&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;count_t init_params(<a class="code" href="classLocus.html">Locus</a>&amp;, <a class="code" href="classAllele.html">Allele</a>&amp;, <span class="keyword">const</span> float_t&amp;);                                       </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;count_t maximize_analytical(<a class="code" href="classLocus.html">Locus</a>&amp;, <a class="code" href="classAllele.html">Allele</a>&amp;, <a class="code" href="classmodels.html">models</a>&amp;, std::vector &lt;float_t&gt;&amp;, <span class="keyword">const</span> float_t&amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span>&amp;);   </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;count_t maximize_grid      (<a class="code" href="classLocus.html">Locus</a>&amp;, <a class="code" href="classAllele.html">Allele</a>&amp;, <a class="code" href="classmodels.html">models</a>&amp;, std::vector &lt;float_t&gt;&amp;, <span class="keyword">const</span> float_t&amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span>&amp;);   </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;count_t maximize_newton    (<a class="code" href="classLocus.html">Locus</a>&amp;, <a class="code" href="classAllele.html">Allele</a>&amp;, <a class="code" href="classmodels.html">models</a>&amp;, std::vector &lt;float_t&gt;&amp;, <span class="keyword">const</span> float_t&amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span>&amp;);   </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;float_t loglikelihood(<span class="keyword">const</span> <a class="code" href="classLocus.html">Locus</a>&amp;, <span class="keyword">const</span> <a class="code" href="classAllele.html">Allele</a>&amp;, <a class="code" href="classmodels.html">models</a>&amp;, <span class="keyword">const</span> count_t&amp;);    </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classmodels_html"><div class="ttname"><a href="classmodels.html">models</a></div><div class="ttdef"><b>Definition:</b> models.h:20</div></div>
-<div class="ttc" id="classLocus_html"><div class="ttname"><a href="classLocus.html">Locus</a></div><div class="ttdef"><b>Definition:</b> locus.h:15</div></div>
-<div class="ttc" id="classAllele_html"><div class="ttname"><a href="classAllele.html">Allele</a></div><div class="ttdoc">A class to store population specific information. May be moved over to population. </div><div class="ttdef"><b>Definition:</b> allele.h:19</div></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;count_t init_params(<a class="code" href="classLocus.html">Locus</a>&amp;, <a class="code" href="classAllele.html">Allele</a>&amp;, <span class="keyword">const</span> float_t&amp;);                                       </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;count_t maximize_analytical(<a class="code" href="classLocus.html">Locus</a>&amp;, <a class="code" href="classAllele.html">Allele</a>&amp;, <a class="code" href="classmodels.html">models</a>&amp;, std::vector &lt;float_t&gt;&amp;, <span class="keyword">const</span> float_t&amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span>&amp;);   </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;count_t maximize_grid      (<a class="code" href="classLocus.html">Locus</a>&amp;, <a class="code" href="classAllele.html">Allele</a>&amp;, <a class="code" href="classmodels.html">models</a>&amp;, std::vector &lt;float_t&gt;&amp;, <span class="keyword">const</span> float_t&amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span>&amp;);   </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;count_t maximize_newton    (<a class="code" href="classLocus.html">Locus</a>&amp;, <a class="code" href="classAllele.html">Allele</a>&amp;, <a class="code" href="classmodels.html">models</a>&amp;, std::vector &lt;float_t&gt;&amp;, <span class="keyword">const</span> float_t&amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span>&amp;);   </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;float_t loglikelihood(<span class="keyword">const</span> <a class="code" href="classLocus.html">Locus</a>&amp;, <span class="keyword">const</span> <a class="code" href="classAllele.html">Allele</a>&amp;, <a class="code" href="classmodels.html">models</a>&amp;, <span class="keyword">const</span> count_t&amp;);    </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classmodels_html"><div class="ttname"><a href="classmodels.html">models</a></div><div class="ttdef"><b>Definition:</b> models.h:21</div></div>
+<div class="ttc" id="classLocus_html"><div class="ttname"><a href="classLocus.html">Locus</a></div><div class="ttdef"><b>Definition:</b> locus.h:14</div></div>
+<div class="ttc" id="classAllele_html"><div class="ttname"><a href="classAllele.html">Allele</a></div><div class="ttdoc">Summary statistics from the allele command. </div><div class="ttdef"><b>Definition:</b> allele.h:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 31 2016 16:39:25 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 15:40:36 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -97,7 +97,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>A class to store population specific information. May be moved over to population.  
+<p>A class to store a log of commands that have been run.  
  <a href="classLog.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="log_8h_source.html">log.h</a>&gt;</code></p>
@@ -150,10 +150,10 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 <tr class="memitem:ac888cf8ce1709cef09ba368fe61b3904 inherit pub_methods_classData"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac888cf8ce1709cef09ba368fe61b3904"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Data</b> (std::vector&lt; std::string &gt; &amp;)</td></tr>
 <tr class="separator:ac888cf8ce1709cef09ba368fe61b3904 inherit pub_methods_classData"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7847549c0b7000b2a5694490d6caeb91 inherit pub_methods_classData"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7847549c0b7000b2a5694490d6caeb91"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a7847549c0b7000b2a5694490d6caeb91">sql_read</a> (std::istream &amp;)</td></tr>
-<tr class="memdesc:a7847549c0b7000b2a5694490d6caeb91 inherit pub_methods_classData"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the values to be placed in columns. <br/></td></tr>
-<tr class="separator:a7847549c0b7000b2a5694490d6caeb91 inherit pub_methods_classData"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7847549c0b7000b2a5694490d6caeb91 inherit pub_methods_classData"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7847549c0b7000b2a5694490d6caeb91"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SQL.html#ga7847549c0b7000b2a5694490d6caeb91">sql_read</a> (std::istream &amp;)</td></tr>
+<tr class="memdesc:ga7847549c0b7000b2a5694490d6caeb91 inherit pub_methods_classData"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the values... <br/></td></tr>
+<tr class="separator:ga7847549c0b7000b2a5694490d6caeb91 inherit pub_methods_classData"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -208,14 +208,14 @@ static const <a class="el" href="classRegistration.html">Registration</a>&#160;<
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_static_methods_classData"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classData')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classData.html">Data</a></td></tr>
-<tr class="memitem:ad5f83014997c250c28c45b10b12df934 inherit pub_static_methods_classData"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5f83014997c250c28c45b10b12df934"></a>
-static <a class="el" href="classData.html">Data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#ad5f83014997c250c28c45b10b12df934">new_from_str</a> (const std::string &amp;, const std::vector&lt; std::string &gt; &amp;)</td></tr>
-<tr class="memdesc:ad5f83014997c250c28c45b10b12df934 inherit pub_static_methods_classData"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance of the class Registered w/ string. <br/></td></tr>
-<tr class="separator:ad5f83014997c250c28c45b10b12df934 inherit pub_static_methods_classData"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad5f83014997c250c28c45b10b12df934 inherit pub_static_methods_classData"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad5f83014997c250c28c45b10b12df934"></a>
+static <a class="el" href="classData.html">Data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__basic.html#gad5f83014997c250c28c45b10b12df934">new_from_str</a> (const std::string &amp;, const std::vector&lt; std::string &gt; &amp;)</td></tr>
+<tr class="memdesc:gad5f83014997c250c28c45b10b12df934 inherit pub_static_methods_classData"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance of the class Registered w/ string. <br/></td></tr>
+<tr class="separator:gad5f83014997c250c28c45b10b12df934 inherit pub_static_methods_classData"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class to store population specific information. May be moved over to population. </p>
-<p>This is likely to become some form of container to handel moving data into and out of rows of map file. </p>
+<div class="textblock"><p>A class to store a log of commands that have been run. </p>
+<p>Commands should set logs whenever they are run. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>mapgd_0.4/data_types/<a class="el" href="log_8h_source.html">log.h</a></li>
 <li>mapgd_0.4/data_types/log.cc</li>
@@ -223,7 +223,7 @@ static <a class="el" href="classData.html">Data</a> *&#160;</td><td class="memIt
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 31 2016 16:39:27 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 15:40:38 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

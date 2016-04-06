@@ -108,16 +108,16 @@ Inheritance diagram for Data:</div>
   <map id="Data_map" name="Data_map">
 <area href="classFile__index.html" title="An interface that transforms pairs of name and position keys into record numbers. ..." alt="File_index" shape="rect" coords="0,56,90,80"/>
 <area href="classIndexed__data.html" title="Data which has an absolute position. " alt="Indexed_data" shape="rect" coords="250,56,340,80"/>
-<area href="classLog.html" title="A class to store population specific information. May be moved over to population. " alt="Log" shape="rect" coords="350,56,440,80"/>
-<area href="classRelatedness.html" title="A class to store population specific information. May be moved over to population. " alt="Relatedness" shape="rect" coords="450,56,540,80"/>
-<area href="classSample__gof.html" title="A class to store population specific information. May be moved over to population. " alt="Sample_gof" shape="rect" coords="550,56,640,80"/>
-<area href="classSample__name.html" title="A class to store population specific information. May be moved over to population. " alt="Sample_name" shape="rect" coords="650,56,740,80"/>
+<area href="classLog.html" title="A class to store a log of commands that have been run. " alt="Log" shape="rect" coords="350,56,440,80"/>
+<area href="classRelatedness.html" title="Relatedness data. " alt="Relatedness" shape="rect" coords="450,56,540,80"/>
+<area href="classSample__gof.html" title="The sample specific goodness of fit. " alt="Sample_gof" shape="rect" coords="550,56,640,80"/>
+<area href="classSample__name.html" title="The name of a sample (i.e. what the user called it). " alt="Sample_name" shape="rect" coords="650,56,740,80"/>
 <area href="classVcf__header.html" alt="Vcf_header" shape="rect" coords="750,56,840,80"/>
-<area href="classAllele.html" title="A class to store population specific information. May be moved over to population. " alt="Allele" shape="rect" coords="0,112,90,136"/>
+<area href="classAllele.html" title="Summary statistics from the allele command. " alt="Allele" shape="rect" coords="0,112,90,136"/>
 <area href="classLinkage.html" title="A class to store linkage information. " alt="Linkage" shape="rect" coords="100,112,190,136"/>
 <area href="classLocus.html" alt="Locus" shape="rect" coords="200,112,290,136"/>
-<area href="classPooled__data.html" title="A class to store population specific information. May be moved over to population. " alt="Pooled_data" shape="rect" coords="300,112,390,136"/>
-<area href="classPopulation.html" alt="Population" shape="rect" coords="400,112,490,136"/>
+<area href="classPooled__data.html" title="Information genereated from pooled data. " alt="Pooled_data" shape="rect" coords="300,112,390,136"/>
+<area href="classPopulation.html" title="Population genotypes. " alt="Population" shape="rect" coords="400,112,490,136"/>
 <area href="classVcf__data.html" alt="Vcf_data" shape="rect" coords="500,112,590,136"/>
 </map>
  </div></div>
@@ -133,33 +133,33 @@ virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="memitem:a3b982488c72acf6e6a02c5d086cc4c05"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b982488c72acf6e6a02c5d086cc4c05"></a>
 virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_table_name</b> () const </td></tr>
 <tr class="separator:a3b982488c72acf6e6a02c5d086cc4c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcbd7fcbda994a17da77d960c2c1a79a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcbd7fcbda994a17da77d960c2c1a79a"></a>
-virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#afcbd7fcbda994a17da77d960c2c1a79a">sql_header</a> (void) const </td></tr>
-<tr class="memdesc:afcbd7fcbda994a17da77d960c2c1a79a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the names of the columns, along with variable type. <br/></td></tr>
-<tr class="separator:afcbd7fcbda994a17da77d960c2c1a79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f4a87d76dc4d37b9320d9eac5429b70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f4a87d76dc4d37b9320d9eac5429b70"></a>
-virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a9f4a87d76dc4d37b9320d9eac5429b70">sql_column_names</a> (void) const </td></tr>
-<tr class="memdesc:a9f4a87d76dc4d37b9320d9eac5429b70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the names of the columns. <br/></td></tr>
-<tr class="separator:a9f4a87d76dc4d37b9320d9eac5429b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0fd234132d2520e0f76a77f5ef3830e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0fd234132d2520e0f76a77f5ef3830e"></a>
-virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#ac0fd234132d2520e0f76a77f5ef3830e">sql_values</a> (void) const </td></tr>
-<tr class="memdesc:ac0fd234132d2520e0f76a77f5ef3830e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the values to be placed in columns. <br/></td></tr>
-<tr class="separator:ac0fd234132d2520e0f76a77f5ef3830e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7847549c0b7000b2a5694490d6caeb91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7847549c0b7000b2a5694490d6caeb91"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a7847549c0b7000b2a5694490d6caeb91">sql_read</a> (std::istream &amp;)</td></tr>
-<tr class="memdesc:a7847549c0b7000b2a5694490d6caeb91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the values to be placed in columns. <br/></td></tr>
-<tr class="separator:a7847549c0b7000b2a5694490d6caeb91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a048bd3bc77a909f4bf2ce7c80acb7afb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a048bd3bc77a909f4bf2ce7c80acb7afb"></a>
-virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a048bd3bc77a909f4bf2ce7c80acb7afb">size</a> (void) const </td></tr>
-<tr class="memdesc:a048bd3bc77a909f4bf2ce7c80acb7afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of the class in bytes. <br/></td></tr>
-<tr class="separator:a048bd3bc77a909f4bf2ce7c80acb7afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafcbd7fcbda994a17da77d960c2c1a79a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gafcbd7fcbda994a17da77d960c2c1a79a"></a>
+virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SQL.html#gafcbd7fcbda994a17da77d960c2c1a79a">sql_header</a> (void) const </td></tr>
+<tr class="memdesc:gafcbd7fcbda994a17da77d960c2c1a79a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the names of the columns, along with variable type. <br/></td></tr>
+<tr class="separator:gafcbd7fcbda994a17da77d960c2c1a79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f4a87d76dc4d37b9320d9eac5429b70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga9f4a87d76dc4d37b9320d9eac5429b70"></a>
+virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SQL.html#ga9f4a87d76dc4d37b9320d9eac5429b70">sql_column_names</a> (void) const </td></tr>
+<tr class="memdesc:ga9f4a87d76dc4d37b9320d9eac5429b70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the names of the columns. <br/></td></tr>
+<tr class="separator:ga9f4a87d76dc4d37b9320d9eac5429b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac0fd234132d2520e0f76a77f5ef3830e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gac0fd234132d2520e0f76a77f5ef3830e"></a>
+virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SQL.html#gac0fd234132d2520e0f76a77f5ef3830e">sql_values</a> (void) const </td></tr>
+<tr class="memdesc:gac0fd234132d2520e0f76a77f5ef3830e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the values to be placed in columns. <br/></td></tr>
+<tr class="separator:gac0fd234132d2520e0f76a77f5ef3830e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7847549c0b7000b2a5694490d6caeb91"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga7847549c0b7000b2a5694490d6caeb91"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SQL.html#ga7847549c0b7000b2a5694490d6caeb91">sql_read</a> (std::istream &amp;)</td></tr>
+<tr class="memdesc:ga7847549c0b7000b2a5694490d6caeb91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the values... <br/></td></tr>
+<tr class="separator:ga7847549c0b7000b2a5694490d6caeb91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga048bd3bc77a909f4bf2ce7c80acb7afb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga048bd3bc77a909f4bf2ce7c80acb7afb"></a>
+virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb">size</a> (void) const </td></tr>
+<tr class="memdesc:ga048bd3bc77a909f4bf2ce7c80acb7afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The size of the class in bytes. <br/></td></tr>
+<tr class="separator:ga048bd3bc77a909f4bf2ce7c80acb7afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ad5f83014997c250c28c45b10b12df934"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad5f83014997c250c28c45b10b12df934"></a>
-static <a class="el" href="classData.html">Data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#ad5f83014997c250c28c45b10b12df934">new_from_str</a> (const std::string &amp;, const std::vector&lt; std::string &gt; &amp;)</td></tr>
-<tr class="memdesc:ad5f83014997c250c28c45b10b12df934"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance of the class Registered w/ string. <br/></td></tr>
-<tr class="separator:ad5f83014997c250c28c45b10b12df934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad5f83014997c250c28c45b10b12df934"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gad5f83014997c250c28c45b10b12df934"></a>
+static <a class="el" href="classData.html">Data</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__basic.html#gad5f83014997c250c28c45b10b12df934">new_from_str</a> (const std::string &amp;, const std::vector&lt; std::string &gt; &amp;)</td></tr>
+<tr class="memdesc:gad5f83014997c250c28c45b10b12df934"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an instance of the class Registered w/ string. <br/></td></tr>
+<tr class="separator:gad5f83014997c250c28c45b10b12df934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -174,37 +174,82 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
-<tr class="memitem:ace3d2d835ff32c90261d66c3bf943302"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace3d2d835ff32c90261d66c3bf943302"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#ace3d2d835ff32c90261d66c3bf943302">file_name</a> =&quot;.txt&quot;</td></tr>
-<tr class="memdesc:ace3d2d835ff32c90261d66c3bf943302"><td class="mdescLeft">&#160;</td><td class="mdescRight">The destination table in the Db. <br/></td></tr>
+<tr class="memitem:ace3d2d835ff32c90261d66c3bf943302"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#ace3d2d835ff32c90261d66c3bf943302">file_name</a> =&quot;.txt&quot;</td></tr>
+<tr class="memdesc:ace3d2d835ff32c90261d66c3bf943302"><td class="mdescLeft">&#160;</td><td class="mdescRight">The read function must be defined in the child class.  <a href="#ace3d2d835ff32c90261d66c3bf943302">More...</a><br/></td></tr>
 <tr class="separator:ace3d2d835ff32c90261d66c3bf943302"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a816d5071b3f3f9a3a0c5f29e826ef8f6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a816d5071b3f3f9a3a0c5f29e826ef8f6"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a816d5071b3f3f9a3a0c5f29e826ef8f6">table_name</a> =&quot;NONE&quot;</td></tr>
-<tr class="memdesc:a816d5071b3f3f9a3a0c5f29e826ef8f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The destination table in the Db. <br/></td></tr>
+<tr class="memitem:a816d5071b3f3f9a3a0c5f29e826ef8f6"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a816d5071b3f3f9a3a0c5f29e826ef8f6">table_name</a> =&quot;NONE&quot;</td></tr>
+<tr class="memdesc:a816d5071b3f3f9a3a0c5f29e826ef8f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The read function must be defined in the child class.  <a href="#a816d5071b3f3f9a3a0c5f29e826ef8f6">More...</a><br/></td></tr>
 <tr class="separator:a816d5071b3f3f9a3a0c5f29e826ef8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a28c372256fd025bc9d601c6a19dfaedd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a28c372256fd025bc9d601c6a19dfaedd"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a28c372256fd025bc9d601c6a19dfaedd">operator&lt;&lt;</a> (std::ostream &amp;, const <a class="el" href="classData.html">Data</a> &amp;)</td></tr>
-<tr class="memdesc:a28c372256fd025bc9d601c6a19dfaedd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the &lt;&lt; operator to write <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> in text mode. <br/></td></tr>
-<tr class="separator:a28c372256fd025bc9d601c6a19dfaedd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a291da932cf6498acc66be2b7b9db31a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a291da932cf6498acc66be2b7b9db31a4"></a>
-std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a291da932cf6498acc66be2b7b9db31a4">operator&gt;&gt;</a> (std::istream &amp;, <a class="el" href="classData.html">Data</a> &amp;)</td></tr>
-<tr class="memdesc:a291da932cf6498acc66be2b7b9db31a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the &gt;&gt; operator to read <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> in text mode. <br/></td></tr>
-<tr class="separator:a291da932cf6498acc66be2b7b9db31a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga28c372256fd025bc9d601c6a19dfaedd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga28c372256fd025bc9d601c6a19dfaedd"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__basic.html#ga28c372256fd025bc9d601c6a19dfaedd">operator&lt;&lt;</a> (std::ostream &amp;, const <a class="el" href="classData.html">Data</a> &amp;)</td></tr>
+<tr class="memdesc:ga28c372256fd025bc9d601c6a19dfaedd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the &lt;&lt; operator to write <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> in text mode. <br/></td></tr>
+<tr class="separator:ga28c372256fd025bc9d601c6a19dfaedd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga291da932cf6498acc66be2b7b9db31a4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga291da932cf6498acc66be2b7b9db31a4"></a>
+std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__basic.html#ga291da932cf6498acc66be2b7b9db31a4">operator&gt;&gt;</a> (std::istream &amp;, <a class="el" href="classData.html">Data</a> &amp;)</td></tr>
+<tr class="memdesc:ga291da932cf6498acc66be2b7b9db31a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use the &gt;&gt; operator to read <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> in text mode. <br/></td></tr>
+<tr class="separator:ga291da932cf6498acc66be2b7b9db31a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A class which can be written as flat text file or into an SQL database. </p>
-<p><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> can be written in a plain text representation (the overloaded &gt;&gt; and &lt;&lt;), in a binary representation which requires accurate information from the <a class="el" href="classData.html#a048bd3bc77a909f4bf2ce7c80acb7afb" title="The size of the class in bytes. ">size()</a> function, or be given to an SQL database (the sql_ functions). Additionally, all <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> must have a static <a class="el" href="classRegistration.html" title="A class which registers a child of Data in Data::new_data_. ">Registration</a>, which uses the static table_name to write the derived class into new_data_. The static member new_data_ is a map between strings and constructors for the derived classes, so that derived <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> classes can be created from strings. Ultimately our goal is to define a Bijection between the sets {X, Y, ... } and {Z} meaning that we can construct X, Y, ... whenever we have Z and visa versa. However, we cannot know which <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> will be necessary to construct Z until X, Y, and Z are all defined. So, we will define functions whose sets ... injective and surjective function ... Additionally we cannot ... so if {X, Y} is bijective with {Z}, then {X} and {Y} must be surjective on {Z}, and {Z} must be injective on both {X} and {Y}. Additionally, if {X, Y} is surjective on {Z}, we can define a bijective by requiring that .... Additionally, some <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> can be transformed into other <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a>. If the set of {X, Y, ...} is surjective on Z, meaning that element of Z can be determined from the set {X, Y, ...} then we can construct Z from the set {X, Y, ...}. If X is injective on Z, then there exist a unique element of Z for every element of X, such that we is </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<p><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> can be written in a plain text representation (the overloaded &gt;&gt; and &lt;&lt;), in a binary representation which requires accurate information from the <a class="el" href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb" title="The size of the class in bytes. ">size()</a> function, or be given to an SQL database (the sql_ functions). Additionally, all <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> must have a static <a class="el" href="classRegistration.html" title="A class which registers a child of Data in Data::new_data_. ">Registration</a>, which uses the static table_name to write the derived class into new_data_. The static member new_data_ is a map between strings and constructors for the derived classes, so that derived <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> classes can be created from strings. Ultimately my goal is to require <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> classes to define a transformations between each other, so that mapgd can convert between exteranal data schemes and internal schemes as easily as possible, and maybe even aid in determining when data in the SQL data base needs to be updated. Notes to self: I can implement his be defining a bijection between the sets {X, Y, ... } and {Z}, meaning that I can construct {X, Y, ... } whenever I know {Z} and visa versa. In order to know how to define a bijection we need to define injective and surjective function between <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a>. If {X, Y} are surjective on {Z} but not injective, then we can define a bijection by removing elements from {X} or {Y}. TODO: Find a way to establish which elements of {X} or {Y} are extraneous. Also, is this injective/surjective language actually helpful? </p>
+</div><h2 class="groupheader">Field Documentation</h2>
+<a class="anchor" id="ace3d2d835ff32c90261d66c3bf943302"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string Data::file_name =&quot;.txt&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The read function must be defined in the child class. </p>
+<p>The destination table in the Db. </p>
+
+</div>
+</div>
+<a class="anchor" id="a816d5071b3f3f9a3a0c5f29e826ef8f6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string Data::table_name =&quot;NONE&quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The read function must be defined in the child class. </p>
+<p>The destination table in the Db. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>mapgd_0.4/data_types/<a class="el" href="data_8h_source.html">data.h</a></li>
 <li>mapgd_0.4/data_types/data.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 31 2016 16:39:26 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 15:40:37 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

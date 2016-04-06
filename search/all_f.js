@@ -12,7 +12,7 @@ var searchData=
   ['read_5ftext',['read_text',['../classFlat__file.html#af13e4339a7f119be996e8c08bd5ac335',1,'Flat_file::read_text()'],['../classIndexed__file.html#a43fa81e0e78a75a37db7771f879f233b',1,'Indexed_file::read_text()'],['../classMpileup__file.html#ad9febbfff5a2671bc116fc051ea1db3a',1,'Mpileup_file::read_text()']]],
   ['readsql',['readsql',['../group__Command.html#gac7375490444da082ef33969bf0e8388b',1,'readsql(int argc, char *argv[]):&#160;readsql.cc'],['../group__Command.html#gac7375490444da082ef33969bf0e8388b',1,'readsql(int argc, char *argv[]):&#160;readsql.cc']]],
   ['ref',['ref',['../classAllele.html#a2cc3063f958bf9b51af9b8573bd93a25',1,'Allele']]],
-  ['registration',['Registration',['../classRegistration.html',1,'Registration'],['../classRegistration.html#a07d6c6405f9ad571730f83baa91d74ed',1,'Registration::Registration()']]],
+  ['registration',['Registration',['../classRegistration.html',1,'Registration'],['../group__basic.html#ga07d6c6405f9ad571730f83baa91d74ed',1,'Registration::Registration()']]],
   ['relatedness',['Relatedness',['../classRelatedness.html',1,'Relatedness'],['../classRelatedness.html#a2103a6f1072f5662b6e163fe466c1c05',1,'Relatedness::Relatedness(const std::vector&lt; std::string &gt; &amp;)'],['../classRelatedness.html#af7f282315b32cd335b30e0487cc08376',1,'Relatedness::Relatedness(const std::string &amp;, const std::string &amp;)']]],
   ['required',['required',['../classArgument.html#a0053e8faaf0059f95244fb3f2149339c',1,'Argument']]],
   ['required_5farg',['required_arg',['../classEnvironment.html#a9718b1de381a5c6662260b471fbcc6f4',1,'Environment']]],

@@ -90,38 +90,37 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">binomial.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef BINOMIAL_H_</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define BINOMIAL_H_</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef _BINOMIAL_H_</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define _BINOMIAL_H_</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;typedef.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classbinomial.html">   10</a></span>&#160;<span class="keyword">class </span><a class="code" href="classbinomial.html">binomial</a> {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">   12</a></span>&#160;    std::vector &lt;uint32_t&gt; <a class="code" href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">fact_vector</a>;         </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    float_t p_;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    uint32_t *bp_;      </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    uint32_t size_;                     </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">public</span>: </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="classbinomial.html">binomial</a> () {};</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classbinomial.html">binomial</a> (<span class="keyword">const</span> float_t &amp;p) {p_=p;};            </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classbinomial.html#aa7170ce1cabd59f898e4b619ce97ccc8">   19</a></span>&#160;    <a class="code" href="classbinomial.html#aa7170ce1cabd59f898e4b619ce97ccc8">~binomial</a> (<span class="keywordtype">void</span>){ <a class="code" href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">fact_vector</a>.clear(); }        </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    uint32_t <a class="code" href="classbinomial.html#aba6c2cff03e17edaa79ac38beba97df8">fact</a>(<span class="keyword">const</span> uint32_t&amp;) ;            </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    uint32_t <a class="code" href="classbinomial.html#a829c87611cdd314ef3bdac88133c0d80">binom_coef</a>(<span class="keyword">const</span> uint32_t&amp;, <span class="keyword">const</span> uint32_t&amp;);  </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classbinomial_html_a52bbbb5322a8be20b000c53a1825430f"><div class="ttname"><a href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">binomial::fact_vector</a></div><div class="ttdeci">std::vector&lt; uint32_t &gt; fact_vector</div><div class="ttdoc">The vector that stores look up values for the binomial coefficent. </div><div class="ttdef"><b>Definition:</b> binomial.h:12</div></div>
-<div class="ttc" id="classbinomial_html"><div class="ttname"><a href="classbinomial.html">binomial</a></div><div class="ttdoc">A class that returns the binomial coefficent or the pdf the binomial distribution. Not Log. </div><div class="ttdef"><b>Definition:</b> binomial.h:10</div></div>
-<div class="ttc" id="classbinomial_html_aa7170ce1cabd59f898e4b619ce97ccc8"><div class="ttname"><a href="classbinomial.html#aa7170ce1cabd59f898e4b619ce97ccc8">binomial::~binomial</a></div><div class="ttdeci">~binomial(void)</div><div class="ttdoc">The constructor can be called with a float_t to specify the probability of success. </div><div class="ttdef"><b>Definition:</b> binomial.h:19</div></div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classbinomial.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="classbinomial.html">binomial</a> {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">   10</a></span>&#160;    std::vector &lt;uint32_t&gt; <a class="code" href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">fact_vector</a>;         </div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    float_t p_;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    uint32_t *bp_;      </div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    uint32_t size_;                     </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>: </div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classbinomial.html">binomial</a> () {};</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="classbinomial.html">binomial</a> (<span class="keyword">const</span> float_t &amp;p) {p_=p;};            </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classbinomial.html#aa7170ce1cabd59f898e4b619ce97ccc8">   17</a></span>&#160;    <a class="code" href="classbinomial.html#aa7170ce1cabd59f898e4b619ce97ccc8">~binomial</a> (<span class="keywordtype">void</span>){ <a class="code" href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">fact_vector</a>.clear(); }        </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    uint32_t <a class="code" href="classbinomial.html#aba6c2cff03e17edaa79ac38beba97df8">fact</a>(<span class="keyword">const</span> uint32_t&amp;) ;            </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    uint32_t <a class="code" href="classbinomial.html#a829c87611cdd314ef3bdac88133c0d80">binom_coef</a>(<span class="keyword">const</span> uint32_t&amp;, <span class="keyword">const</span> uint32_t&amp;);  </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;};</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classbinomial_html_a52bbbb5322a8be20b000c53a1825430f"><div class="ttname"><a href="classbinomial.html#a52bbbb5322a8be20b000c53a1825430f">binomial::fact_vector</a></div><div class="ttdeci">std::vector&lt; uint32_t &gt; fact_vector</div><div class="ttdoc">The vector that stores look up values for the binomial coefficent. </div><div class="ttdef"><b>Definition:</b> binomial.h:10</div></div>
+<div class="ttc" id="classbinomial_html"><div class="ttname"><a href="classbinomial.html">binomial</a></div><div class="ttdoc">A class that returns the binomial coefficient or the pdf the binomial distribution. Not Log. </div><div class="ttdef"><b>Definition:</b> binomial.h:8</div></div>
+<div class="ttc" id="classbinomial_html_aa7170ce1cabd59f898e4b619ce97ccc8"><div class="ttname"><a href="classbinomial.html#aa7170ce1cabd59f898e4b619ce97ccc8">binomial::~binomial</a></div><div class="ttdeci">~binomial(void)</div><div class="ttdoc">The constructor can be called with a float_t to specify the probability of success. </div><div class="ttdef"><b>Definition:</b> binomial.h:17</div></div>
 <div class="ttc" id="classbinomial_html_aba6c2cff03e17edaa79ac38beba97df8"><div class="ttname"><a href="classbinomial.html#aba6c2cff03e17edaa79ac38beba97df8">binomial::fact</a></div><div class="ttdeci">uint32_t fact(const uint32_t &amp;)</div><div class="ttdoc">Returns the probabiltiy of the binomial distribution . . . </div><div class="ttdef"><b>Definition:</b> binomial.cc:7</div></div>
 <div class="ttc" id="classbinomial_html_a829c87611cdd314ef3bdac88133c0d80"><div class="ttname"><a href="classbinomial.html#a829c87611cdd314ef3bdac88133c0d80">binomial::binom_coef</a></div><div class="ttdeci">uint32_t binom_coef(const uint32_t &amp;, const uint32_t &amp;)</div><div class="ttdoc">Returns the binomial coefficent. </div><div class="ttdef"><b>Definition:</b> binomial.cc:3</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 31 2016 16:39:25 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Apr 6 2016 15:40:36 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
