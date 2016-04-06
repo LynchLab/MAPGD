@@ -9,6 +9,12 @@
 #include "data_types/allele.h"
 #include "typedef.h"
 
+/** 
+  * \ingroup COMMANDS
+  * @{
+  */
+/// Filters the output of the allele command.
 int filter(int argc, char *argv[]);
+/** @} */
 
 #endif

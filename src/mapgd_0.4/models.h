@@ -1,5 +1,6 @@
-#ifndef MODELS_H_
-#define MODELS_H_
+#ifndef _MODELS_H_
+#define _MODELS_H_
+/*****************************************************************************/
 /*! \breif this class perfoms some likelihood calculations. It keeps some look-up tables that will grow as calculations
  *	are performed, and may become to large over time. TODO: implement automatic look-up table purging. 
  *

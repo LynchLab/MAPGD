@@ -1,7 +1,7 @@
 /* synonym for population? */
 
-#ifndef _SAMPLE_NAME_H_
-#define _SAMPLE_NAME_H_
+#ifndef _LOG_H_
+#define _LOG_H_
 
 #include <iostream>
 #include <cfloat>
@@ -15,8 +15,8 @@
 #include "data.h"
 #include "stream-tools.h"
 
-///	A class to store population specific information. May be moved over to population.
-/** This is likely to become some form of container to handel moving data into and out of rows of map file.
+///	A class to store a log of commands that have been run.
+/** Commands should set logs whenever they are run.
  */
 class Log : public virtual Data { 
 private:

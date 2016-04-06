@@ -1,5 +1,5 @@
-#ifndef TYPEDEF_H_
-#define TYPEDEF_H_
+#ifndef _TYPEDEF_H_
+#define _TYPEDEF_H_
 
 #include <cstddef>		//Included for ?
 #include <stdint.h>		//Included for uint32_t, uint16_t

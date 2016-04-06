@@ -439,24 +439,26 @@ int PopLD(int argc, char *argv[])
 		e_locus++;
 		e_allele++;
 	}
+
 	e_locus=locus_list.begin();
 	e_allele=allele_list.begin();
 						
 	std::cerr << "Opening a site!\n";
 
-	while (map_in.table_is_open() ){
-		while (read<BUFFER_SIZE && map_in.table_is_open() ) {
+	do {
+		do {
 			size_t number;
 			id1_t pos1=locus1.get_abs_pos();
 			id1_t pos2=locus2.get_abs_pos();
 			id0_t scf1=index.get_id0(pos1);
 			id0_t scf2=index.get_id0(pos2);
 
+			std::cerr << max_d << "::(" << pos1 << ", " << pos2 << ")" << pos2-pos1 << ", " << scf1 << ", " << scf2 << std::endl;
 
-			std::cerr << max_d << "::" << pos2-pos1 << ", " << scf1 << ", " <<scf2 << std::endl;
 			if ( (pos2-pos1)<max_d && scf1==scf2) {
 				if ( (pos2-pos1)>min_dist ) {
 					number=count_sites(locus1, locus2);
+					std::cerr << "Testing " << number << std::endl;
 					if ( number >= min_number ) {
 						locus_buffer1[read]=locus1;
 						allele_buffer1[read]=allele1;
@@ -464,6 +466,8 @@ int PopLD(int argc, char *argv[])
 						allele_buffer2[read]=allele2;
 						read++;
 						std::cerr << "Read a site!\n";
+						//size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
+						//std::cerr << estimate_D(Ni, (uint8_t)allele_buffer1[x].major, (uint8_t)allele_buffer1[x].minor, (uint8_t)allele_buffer2[x].major, (uint8_t)allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
 					}
 				}
 			} else { 
@@ -504,7 +508,7 @@ int PopLD(int argc, char *argv[])
 					new_allele++;
 				}
 			}
-		}
+		} while (read<BUFFER_SIZE && (map_in.table_is_open() || e_allele!=end_allele) );
 	
 		#ifndef NOOMP
 		#pragma omp for
@@ -517,7 +521,8 @@ int PopLD(int argc, char *argv[])
 		for (size_t c=0; c<read; ++c){ 
 			ld_out.write(linkage_buffer[c]);
 		}
-	}
+	} while (map_in.table_is_open() );
+	std::cerr << "Done!\n";
 	ld_out.close();
 	return 0;
 }

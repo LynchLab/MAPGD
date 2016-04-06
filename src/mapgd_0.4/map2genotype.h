@@ -11,6 +11,10 @@
 #include "quartet.h"
 #include "locus.h"
 
+/** /addtogroup COMMANDS
+ *  @{
+ */
 int map2genotype(int argc, char* argv[]);
+/** @} */
 
 #endif

@@ -11,9 +11,7 @@
 #include "typedef.h"
 #include "data.h"
 
-///	A class to store population specific information. May be moved over to population.
-/** This is likely to become some form of container to handel moving data into and out of rows of map file.
- */
+///	The sample specific goodness of fit.
 class Sample_gof : public Data { 
 private:
 	void write (std::ostream&) const;	//!< use the << operator to write Allele.

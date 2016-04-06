@@ -11,7 +11,6 @@
 #include "file-index.h"
 
 /* This is the record stored in a pro file*/
-
 class Locus : virtual public Indexed_data{
 private:
 	std::vector <std::string> sample_names_;		//!< names of the samples sequenced.
@@ -54,7 +53,7 @@ public:
 	void sort(count_t);				//!< Sort counts from most common to least common (based on population N).
 	void sort(void);				//!< Sort counts from most common to least common (among all non-masked sites).
 
-	/* @defgroup QUARTET Quartet
+	/* \defgroup QUARTET Quartet
 	 * The set of functions dealing with quartets
 	 * @{
 	 */
@@ -63,7 +62,7 @@ public:
 	quartet_t & get_quartet(const count_t &);		//!< Returns the N'th quartet at the Locus.
 	 /** @} */
 
-	/* @defgroup MASKING Masking 
+	/* \defgroup MASKING Masking 
 	 * Functions which set or unset the masked flag, quartets which are 
 	 * masked are ignored by calculations, and are printed as 0's. 
 	 * @{
@@ -76,16 +75,17 @@ public:
 	void mask_low_cov(const count_t &dp);	//!< Mask site with coverage stricktly lt dp;
 	/** @} */
 
-	/* @defgroup DEPRICATED depricated 
+	/* \defgroup DEPRICATED depricated 
 	 * Functions that were once used, but are no longer usful.
 	 * @{
 	 */
-//	char getname( const count_t &) const;		//!< Get the nucleotide represented by the count at the N'th indexed quartet_t.
-//	char getname_gt( const count_t &) const;	//!< Get the nucleotide represented by the count at the N'th indexed quartet_t, return * if the count equals the N+1 indexed quartet.
-//	count_t get_extraid(const size_t &) const;	//!< Get the extraid of the Locus. Used to represent the reference call.
-//	void set_extraid(const count_t &, const size_t &);	//!< Set the extraid of the Locus. Just used to represent the reference call. 
+		char getname( const count_t &) const;			//!< Get the nucleotide represented by the count at the N'th indexed quartet_t.
+		char getname_gt( const count_t &) const;		//!< Get the nucleotide represented by the count at the N'th indexed quartet_t, return * if the count equals the N+1 indexed quartet.
+		count_t get_extraid(const size_t &) const;		//!< Get the extraid of the Locus. Used to represent the reference call.
+		void set_extraid(const count_t &, const size_t &);	//!< Set the extraid of the Locus. Just used to represent the reference call. 
 	/* this will definetly by dropped */
-	/** @} */
+	/** @} i
+	  */
 
 
 	using Indexed_data::get_abs_pos;		//!< Get the absolute position of the Locus.
@@ -93,7 +93,7 @@ public:
 
 	void resize(const size_t &);			//!< Change the number of quartet_t s at the Locus.
 
-	/* @defgroup iterators Iterators
+	/* \defgroup iterators Iterators
 	 * Locus can return the iterators foir the quartets.
 	 * @{
 	 */
@@ -133,7 +133,7 @@ public:
 		if (sample_names_.size()!=sample.size() ) sample.assign(sample_names_.size(), quartet() );
 	};		
 
-	/* @defgroup LOCUS_DATA Inherited members
+	/* \defgroup LOCUS_DATA Inherited members
 	 * These members are inherited from Data
 	 * @{
 	 */

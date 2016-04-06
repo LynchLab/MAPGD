@@ -15,7 +15,7 @@
 #include <iostream>
 #include "typedef.h"
 
-/* @defgroup arg_parser Argument parsers
+/* /defgroup arg_parser Argument parsers
  * @{
 */
 //! Takes a reference to a vector<string> and will fill that vector with arguments from arg [] until a string begining with '-' is found.  

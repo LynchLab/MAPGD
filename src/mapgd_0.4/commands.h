@@ -6,7 +6,7 @@
 
 
 
-/** @defgroup Command Mapgd commands
+/** \defgroup Command Mapgd commands
  *  These are the basic commands that can be called by the main mapgd 
  *  program.
  */

@@ -12,9 +12,7 @@
 #include "data.h"
 #include "../stream-tools.h"
 
-///	A class to store population specific information. May be moved over to population.
-/** This is likely to become some form of container to handel moving data into and out of rows of map file.
- */
+///	The name of a sample (i.e. what the user called it).
 class Sample_name : public virtual Data { 
 private:
 	void read(std::istream& str);

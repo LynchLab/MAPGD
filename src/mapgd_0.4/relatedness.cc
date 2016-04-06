@@ -4,12 +4,14 @@
 
 #ifndef NOGSL
 
+///Takes a thing and does something.
 size_t 
 freqtoi(float_t in)
 {
 	return size_t(in*E_LIM*2) < E_LIM ? size_t(in*E_LIM*2) : E_LIM-1;
 }
-//Moved to in memory
+
+//DONE Moved to in memory
 std::map <Genotype_pair_tuple, size_t> 
 hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)
 {
@@ -29,6 +31,7 @@ hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const siz
 }
 
 Relatedness global_relatedness;
+
 /*Does a regression of allele frequency of the samples on the population allele frequency*/
 void 
 set_e(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)

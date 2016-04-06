@@ -15,7 +15,14 @@
 #include "locus.h"
 #include "data_types/allele.h"
 
+/** 
+  * \ingroup COMMANDS
+  * @{
+  */
+///Estimates allele fequency statistics from pooled data
 int estimatePooled(int, char **);
+/** @}*/
+
 Allele estimate(quartet_t);
 
 #endif 

@@ -8,6 +8,7 @@
 #include "typedef.h"
 #include "genotype.h"
 
+/// Population genotypes.
 class Population : public Indexed_data {
 private:
 	std::vector <Genotype>::iterator igl_;		//!< an iterator to allow us to iterate over the likelihoods.

@@ -1,6 +1,3 @@
-/* TODO: Implement.
- * 
- */
 #ifndef _MAP_FILE_H_
 #define _MAP_FILE_H_	
 
@@ -235,7 +232,7 @@ public:
 template <class T>
 class  Flat_file : public Data_file <T> {
 private:
-	void read_text(T&);		//!< Read file in text mode.		DONE
+	void read_text(T&);		//!< Read file in text mode.	DONE
 	void write_text(const T&);	//!< Write in text mode.	DONE
 
 	using Data_file<T>::out_;	//(const std::ios_base::openmode &);

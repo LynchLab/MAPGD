@@ -31,6 +31,7 @@ inline std::vector<std::string> split(std::istream &in, const char &delim)
 	return elements;
 }
 
+/// An overloaded decleration of split.
 inline std::vector<std::string> split(const std::string &s, const char &delim)
 {
 	std::stringstream ss;
@@ -53,8 +54,6 @@ inline std::vector<std::string> split(const std::string &s, const char &delim)
 /* For example, if the string "A,B,C , D" is given, and a delimiter ',' is used
  * to split the string, then {"A", "B,C , D"} is returned.
  */
-
-/// An overloaded decleartion of split_first.
 inline std::vector<std::string> split_first(std::istream &in, const char &delim)
 {
 	std::string first, second;
@@ -64,6 +63,8 @@ inline std::vector<std::string> split_first(std::istream &in, const char &delim)
 	else return std::vector <std::string> {first};
 }
 
+
+/// An overloaded decleartion of split_first.
 inline std::vector<std::string> split_first(const std::string &s, const char &delim)
 {
 	std::stringstream ss;
@@ -75,8 +76,6 @@ inline std::vector<std::string> split_first(const std::string &s, const char &de
 /* For example, if the string "A,B,C , D" is given, and a delimiter ',' is used
  * to split the string, then {"A,B,C "," D"} is returned.
  */
-
-/// An overloaded decleartion of split_first.
 inline std::vector<std::string> split_last(std::istream &in, const char &delim)
 {
 	std::string line;
@@ -88,6 +87,7 @@ inline std::vector<std::string> split_last(std::istream &in, const char &delim)
 
 }
 
+/// An overloaded decleration of split_last.
 inline std::vector<std::string> split_last(const std::string &s, const char &delim)
 {
 	std::stringstream ss;
@@ -95,6 +95,7 @@ inline std::vector<std::string> split_last(const std::string &s, const char &del
 	return split_last(ss, delim);
 }
 
+///Removes special characters from a user generated string.
 inline std::string sanitize (std::string &s){
 	std::replace( s.begin(), s.end(), '\'', '"' );
 	std::replace( s.begin(), s.end(), '>', ' ' );
@@ -102,6 +103,7 @@ inline std::string sanitize (std::string &s){
 	return s;
 }
 
+///Removes special characters from a user generated string.
 inline std::string sanitize (const std::string &s){
 	std::string r=s;
 	std::replace( r.begin(), r.end(), '\'', '"' );
@@ -111,7 +113,7 @@ inline std::string sanitize (const std::string &s){
 }
 
 #ifdef POSIX
-//Test a stream to see if it is open
+///Test a stream to see if it is open
 bool check_stream(std::istream *);
 #endif
 

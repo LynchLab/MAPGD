@@ -1,5 +1,5 @@
-#ifndef POOLEDLIKELIHOOD_H_
-#define POOLEDLIKELIHOOD_H_
+#ifndef _POOLEDLIKELIHOOD_H_
+#define _POOLEDLIKELIHOOD_H_
 
 #include "lnmultinomial.h"
 #include "data_types/allele.h"

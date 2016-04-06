@@ -1,5 +1,3 @@
-/* synonym for population? */
-
 #ifndef _POOLED_DATA_H_
 #define _POOLED_DATA_H_
 
@@ -13,8 +11,8 @@
 #include "data.h"
 #include "allele.h"
 
-///	A class to store population specific information. May be moved over to population.
-/** This is likely to become some form of container to handel moving data into and out of rows of map file.
+///	Information genereated from pooled data.
+/** This is information generated from pooled population data (i.e. mash everybody up together and sequence the slurry).
  */
 class Pooled_data : public Indexed_data { 
 private:

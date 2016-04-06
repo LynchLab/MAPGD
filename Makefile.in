@@ -63,6 +63,7 @@ increment:
 push: 
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) test
+	$(MAKE) -C $(SUBDIRS) docs
 	$(MAKE) -C $(SUBDIRS) clean
 	rm -f ~/bin/mapgd
 	CXX=i686-w64-mingw32-c++
@@ -76,4 +77,7 @@ push:
 	git add -u
 	git commit
 	git push
+	git checkout gh-pages
+	./update.sh
+	git checkout master
 .PHONY: push

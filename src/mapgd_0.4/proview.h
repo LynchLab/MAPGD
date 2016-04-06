@@ -1,9 +1,5 @@
-/***** proview.h **********************************
- * Description: Convert mpileup output to pro-files.
- */
-
-#ifndef PROVIEW_H_
-#define PROVIEW_H_
+#ifndef _PROVIEW_H_
+#define _PROVIEW_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,7 +18,7 @@
 
 #define SQRT2	1.41421356237
 
-/*! \breif struct to pass around command line arguments. Will either be depricated, or will be integreated into the interface.h*/
+/// Struct to pass around command line arguments. Will either be depricated, or will be integreated into the interface.h*/
 struct Args{
 	float_t pvalue;
 	int min;
@@ -30,7 +26,10 @@ struct Args{
 	bool binary;
 };
 
-/*! \breif executes the proview command.*/
+/** \ingroup COMMANDS
+ *  @{
+ */
+/// executes the proview command.
 int proview(int argc, char *argv[]);
-
+/** @}*/
 #endif

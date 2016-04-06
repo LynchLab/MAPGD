@@ -1,7 +1,5 @@
-/* synonym for population? */
-
-#ifndef RELATEDNESS_DATA_H_
-#define RELATEDNESS_DATA_H_
+#ifndef _RELATEDNESS_DATA_H_
+#define _RELATEDNESS_DATA_H_
 
 #include <cstring>
 
@@ -16,10 +14,7 @@
 
 #define E_LIM 25
 
-/// A class to store population specific information. May be moved over to population.
-/*  This is likely to become some form of container to handel moving data into 
- *  and out of rows of map file.
- */
+/// Relatedness data.
 class Relatedness : public Data{ 
 private:
 	void write (std::ostream&) const;	//!< use to write Allele. Inherits <<
@@ -28,7 +23,6 @@ private:
 	static Data * create(const std::vector <std::string> & Columns){
 		return new Relatedness(Columns);
 	}
-public:
 public:
 	char delim;	//!< the delimiter used when reading/writing the class in text mode.	
 
@@ -39,6 +33,9 @@ public:
 
 	float_t e_X_[E_LIM], e_X_ll;
 	float_t e_Y_[E_LIM], e_Y_ll;
+	/*
+	 * See ?
+	 */
 	float_t f_X_, f_X_ll;
 	float_t f_Y_, f_Y_ll;
 	float_t theta_XY_, theta_XY_ll;

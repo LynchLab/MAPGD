@@ -1,12 +1,10 @@
-#ifndef BINOMIAL_H_
-#define BINOMIAL_H_
+#ifndef _BINOMIAL_H_
+#define _BINOMIAL_H_
 
 #include <vector>
 #include "typedef.h"
 
-/// A class that returns the binomial coefficent or the pdf the binomial distribution. Not Log.
-/*!	\breif A class to return the binomial coefficent and binomial probabilities. NOT LOG!
- */
+/// A class that returns the binomial coefficient or the pdf the binomial distribution. Not Log.
 class binomial {
 private:
 	std::vector <uint32_t> fact_vector;			//!< The vector that stores look up values for the binomial coefficent.

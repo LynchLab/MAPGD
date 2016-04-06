@@ -1,7 +1,7 @@
 //General likelihood functions
 
-#ifndef LNMULTINOMIAL_H_
-#define LNMULTINOMIAL_H_
+#ifndef _LNMULTINOMIAL_H_
+#define _LNMULTINOMIAL_H_
 
 #include <map>
 #include <string>

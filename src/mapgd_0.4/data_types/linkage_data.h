@@ -13,12 +13,12 @@
 ///	A class to store linkage information. 
 /** Many of these data classes need to have things moved over to static 
   * functions. The problem popped up because I just copied over all the output 
-  * people wanted into values in the class, but really a lot of it can be 
-  * determined from ... bah. I'm getting bored of talking to myself. Someday
-  * if I ever get any help I may actually make these comments useful. Until 
-  * please enjoy this link to a 
-<a href="https://www.youtube.com/watch?v=VXa9tXcMhXQ">Kraftwork video</a> to see if Doxygen automatically 
-  * incorporates HTML tags right. Listening to Kraftwerk improves your coding 
+  * people wanted into values in the class, but really a lot of this is just 
+  * simple transformation of other representions of the data. If you are reading 
+  * this may god have mercy on your soul, because I really have no idea why you 
+  * would choose to read the comments on what is doubtlessly a dead project.
+  * please enjoy this link to a <a href="https://www.youtube.com/watch?v=VXa9tXcMhXQ">Kraftwork video</a> to see if Doxygen automatically 
+  * incorporates HTML tags right (IT DOES!). Listening to Kraftwerk improves your coding 
   * skillz. It's totally a fact.
   * I'll start fixing allele stat now.  
  */
@@ -88,6 +88,23 @@ public:
 	float_t adj_rsq (void) const;
 	float_t adj_Dmax (void) const;
 	float_t adj_Dmin (void) const;
+
+	Linkage & operator=(const Linkage &lhs){
+	Linkage rhs;
+        rhs.id0=lhs.id0;      //!< The scaffold of site X
+        rhs.id1=lhs.id1;      //!< The pos of site X
+        rhs.id1_y_=lhs.id1_y_;   //!< the pos of site Y
+
+        rhs.p_=lhs.p_;             //!< freq_major site numero uno
+        rhs.q_=lhs.q_;             //!< freq_major site numero dos
+
+        rhs.D_=lhs.D_;             //!< the magnitude of the ld, j0 
+        rhs.Ni_=lhs.Ni_;            //!< The number of individuals used in the calculation
+        rhs.fit_=lhs.fit_;           //!< fit statistic (thar be ld here!)
+        rhs.null_=lhs.null_;          //!< null statistic (i.e. no ld)
+	return rhs;
+	}
+
 };
 
 #endif

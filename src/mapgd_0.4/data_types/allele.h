@@ -13,8 +13,8 @@
 #include "base.h"
 #include "data.h"
 
-///	A class to store population specific information. May be moved over to population.
-/** This is likely to become some form of container to handel moving data into and out of rows of map file.
+///	Summary statistics from the allele command.
+/**
  */
 class Allele : public Indexed_data { 
 private:
@@ -29,17 +29,17 @@ public:
 	char delim;		//!< the delimiter used when reading/writing the class in text mode.	
 
 	count_t excluded;	//!< A count of the number of samples that were excluded due to filtering criteria.
-	bool pooled;		//!< Infered from pooled or labeled sequencing?
+	bool pooled;		//!< Inferred from pooled or labeled sequencing?
 
 	Allele();		//
 
 	float_t freq;		//!< frequency of major allele.
 
-	gt_t ref;		//!< idenity of ref allele.
-	gt_t minor;		//!< idenity of minor allele.
-	gt_t major;		//!< idenity major allele.
-	gt_t e1;		//!< idenity of error1
-	gt_t e2;		//!< idenity of error2.
+	gt_t ref;		//!< identity of ref allele.
+	gt_t minor;		//!< identity of minor allele.
+	gt_t major;		//!< identity major allele.
+	gt_t e1;		//!< identity of error1
+	gt_t e2;		//!< identity of error2.
 
 	float_t error;		//!< ml error rate.
 
@@ -47,11 +47,11 @@ public:
 	count_t coverage;	//!< population coverage.
 	float_t efc; 		//!< number of 'effective' chromosomes in the sample.
 
-	float_t ll, monoll, hwell; //!< loglikelihoods.
+	float_t ll, monoll, hwell; //!< log likelihoods.
 
 	float_t MM; 		//!< frequency of genotype MM in the population.
 	float_t Mm; 		//!< frequency of genotype Mm in the population.
-	float_t mm; 		//!< frequency of genotype mm in the popualtion.
+	float_t mm; 		//!< frequency of genotype mm in the population.
 
 	count_t N;		//!< number of individual at the site.
 	float_t f;		//!< HW statistic.
@@ -61,24 +61,19 @@ public:
 
 	Allele & operator=(const Allele &);				//!< use the = operator to assign Allele.
 
-	/**
-	 * \defgroup basic_data
-	 * @{
-	 */
 
-	///! Required constructor 
+	/// Instance of constructor required by Data, but Allele doesn't actually need the vector to initialize.   
 	Allele(std::vector<std::string>) : Allele(){};
-	const std::string header(void) const;		//!< names of columns.
-	static const std::string table_name;	//!< The destination table in the Db.
-	static const std::string file_name;	//!< Default file extention.
-	size_t size(void) const;		//!< The size of the ? in bytes.
+	const std::string header(void) const;	//!< returns first two lines of a file.
+	static const std::string table_name;	//!< The destination table in the database.
+	static const std::string file_name;	//!< Default file extension.
+	size_t size(void) const;		//!< The size of the class in bytes.
 
-	const std::string get_file_name(void) const;				//!< The dafualt extention for files.
-	const std::string get_table_name(void) const;				//!< The dafualt extention for files.
-	const std::string sql_header(void) const;
-	const std::string sql_column_names(void) const;
-	const std::string sql_values(void) const;
-	 // @}
+	const std::string get_file_name(void) const;	//!< Returns the default file extension.
+	const std::string get_table_name(void) const;	//!< Returns the destination table name.
+	const std::string sql_header(void) const;	//!< Returns a string to create an SQL table.
+	const std::string sql_column_names(void) const; //!< Returns the column names in the SQL table.
+	const std::string sql_values(void) const;	//!< Returns a string to insert values in an SQL table.
 };
 
 #endif

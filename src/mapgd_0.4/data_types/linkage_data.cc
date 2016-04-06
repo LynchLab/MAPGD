@@ -21,6 +21,7 @@ void
 Linkage::write(std::ostream& out) const
 {
 	out << id1_y_ << delim;
+	out << id1_y_-this->get_abs_pos() << delim;
 	out << D_ << delim;
 	out << Dprime() << delim;
 	out << Dsq() << delim;
@@ -37,7 +38,7 @@ Linkage::write(std::ostream& out) const
 const std::string 
 Linkage::header(void) const 
 {
-	return "@SCFNAME\tPOS_X\tPOS_Y\tBEST_D\tBEST_D'\tBEST_D2\tBEST_R2\tADJ_BEST_D\tADJ_BEST_D'\tADJ_BEST_D2\tADJ_BEST_r2\tNi\tLOGLIKE\n";
+	return "@SCFNAME\tPOS_X\tPOS_Y\tDIST\tBEST_D\tBEST_D'\tBEST_D2\tBEST_R2\tADJ_BEST_D\tADJ_BEST_D'\tADJ_BEST_D2\tADJ_BEST_r2\tNi\tLOGLIKE\n";
 }
 
 //TODO--IMPLEMENT
