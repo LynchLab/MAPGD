@@ -26,11 +26,10 @@ public:
 	count_t coverage;
 	float_t error;
 
-	std::vector <std::string> names_;
-	std::vector <float_t> p;
-	std::vector <float_t> polyll;
-	std::vector <float_t> majorll;
-	std::vector <float_t> minorll;
+	std::vector <std::string> names_;//!< the sample names.
+	std::vector <float_t> p;	//!< a vector of allele frequencies
+	std::vector <float_t> polyll;	//!< a vector of polymorphic log likelihoods
+	std::vector <float_t> fixedll;	//!< a vector of fixed log likelihoods 
 	
 	Pooled_data();	
 	Pooled_data(const std::vector <std::string> &);

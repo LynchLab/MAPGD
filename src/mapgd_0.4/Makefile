@@ -87,6 +87,7 @@ COMMAND_OBJ=estimate-individual.o \
 	map2genotype.o \
 	PopLD.o \
 	filter.o \
+	filter-pool.o \
 	relatedness.o
 
 #Depend on db_api

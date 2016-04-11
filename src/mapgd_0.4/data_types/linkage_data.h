@@ -89,6 +89,7 @@ public:
 	float_t adj_Dmax (void) const;
 	float_t adj_Dmin (void) const;
 
+	//TODO SHIT!
 	Linkage & operator=(const Linkage &lhs){
 	Linkage rhs;
         rhs.id0=lhs.id0;      //!< The scaffold of site X

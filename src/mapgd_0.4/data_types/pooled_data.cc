@@ -9,8 +9,7 @@ Pooled_data::Pooled_data ()
 	names_.clear();
 	p.clear();
 	polyll.clear();
-	majorll.clear();
-	minorll.clear();
+	fixedll.clear();
 	major.base=4;
 	minor.base=4;
 	abs_pos_=0;
@@ -27,8 +26,7 @@ Pooled_data::set_sample_names (const std::vector <std::string> &columns)
 
         p.assign(size, 0);
         polyll.assign(size, 0);
-        majorll.assign(size, 0);
-        minorll.assign(size, 0);
+        fixedll.assign(size, 0);
 }
 
 Pooled_data::Pooled_data (const std::vector <std::string> &columns)
@@ -38,8 +36,7 @@ Pooled_data::Pooled_data (const std::vector <std::string> &columns)
 
         p.assign(size, 0);
         polyll.assign(size, 0);
-        majorll.assign(size, 0);
-        minorll.assign(size, 0);
+        fixedll.assign(size, 0);
 
         major.base=4;
         minor.base=4;
@@ -64,8 +61,7 @@ Pooled_data::read (std::istream& in)
 	for (size_t s=0; s<names_.size();++s) {
 		line_stream >> p[s];
 		line_stream >> polyll[s];
-		line_stream >> minorll[s];
-		line_stream >> majorll[s];
+		line_stream >> fixedll[s];
 	}
 }
 
@@ -83,10 +79,10 @@ Pooled_data::write (std::ostream& out) const
 	//		out << std::setprecision(1);
 			out << '\t' << p[s] << '/';
 			out << polyll[s] << '/';
-			out << minorll[s] << '/';
-			out << majorll[s];
+			out << fixedll[s];
+//			out << majorll[s];
 		} else {
-			out << "\t.../.../.../...";
+			out << "\t.../.../...";
 		}
 	}
 }

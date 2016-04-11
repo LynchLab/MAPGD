@@ -133,6 +133,9 @@ int estimatePooled(int argc, char *argv[])
                 /* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 
                 for (size_t x=0; x<pop.size(); ++x) {
+			popN=locus.getcoverage();
+			site.error= (float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
+			if (site.error<EMLMIN) site.error=EMLMIN;
 			eml=site.error;
 
                         pmaj = (float_t) locus.getcount(pop[x],0) / (float_t) ( locus.getcount(pop[x], 1) + locus.getcount(pop[x],0) );	
@@ -143,16 +146,32 @@ int estimatePooled(int argc, char *argv[])
 			if (pmlP[x]<0) pmlP[x]=0.;
 			if (pmlP[x]>1) pmlP[x]=1.;
 
+			popN=locus.getcoverage(pop[x]);
+			site.error=(float_t) (popN-locus.getcount(pop[x],1 ) ) / ( popN ) ;
+			if (site.error<EMLMIN) site.error=EMLMIN;
+			if (site.error>0.5) site.error=0.5;
+//			std::cerr << "[" << site.error << ", ";
 			multi.set(&fixedmorphicmodel, site.to_allele(x) );
                         llhoodF[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
+			site.error=(float_t) (popN-locus.getcount(pop[x],0 ) ) / ( popN ) ;
+			if (site.error<EMLMIN) site.error=EMLMIN;
+			if (site.error>0.5) site.error=0.5;
+//	std::cerr << site.error << ", ";
 			multi.set(&monomorphicmodel, site.to_allele(x) );
                         llhoodM[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
+			popN=locus.getcoverage();
+			site.error=(float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
+			if (site.error<EMLMIN) site.error=EMLMIN;
 			site.p[x]=pmlP[x];
+//			std::cerr << site.error << "] ";
 			multi.set(&polymorphicmodel, site.to_allele(x) );
                         llhoodP[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
                 };
+		popN=locus.getcoverage();
+		site.error= (float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
+		if (site.error<EMLMIN) site.error=EMLMIN;
 
                 /* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
 
@@ -173,9 +192,8 @@ int estimatePooled(int argc, char *argv[])
 					llhoodFS+=llhoodF[y];
 				};
                         };*/
-			site.polyll[x] =(2.0 * (llhoodP[x] - llhoodM[x]) );
-			site.majorll[x]=(2.0 * (llhoodM[x] - llhoodF[x]) );
-			site.minorll[x]=(2.0 * (llhoodP[x] - llhoodF[x]) );
+			site.polyll[x] =(2.0 * (llhoodP[x] - std::max(llhoodM[x], llhoodF[x]) ) );
+			site.fixedll[x]=(2.0 * (llhoodF[x] - std::max(llhoodP[x], llhoodM[x]) ) );
                         if (site.polyll[x]>maxll) maxll=site.polyll[x];
                 };
 
