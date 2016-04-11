@@ -27,6 +27,7 @@ int main (int argc, char* argv[])
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "Prints the program version");		//DONE
 	env.command(	' ',"allele", 	&estimateInd,	 		"an error occurred while calling allele", "Estimates allele frequencies using individual data");	//DONE
 	env.command(	' ',"filter",	&filter,	 		"an error occurred while calling filter", "Filter sites in '.map' files");			 	//DONE
+	env.command(	' ',"filterpool",&filter_pool,	 		"an error occurred while calling filter", "Filter sites in '.map' files");			 	//DONE
 	env.command(	' ',"genotype",	&map2genotype,	 		"an error occurred while calling genotype", "Calculate genotype probabilities for individuals"); 	//DONE
 //	env.command(	' ',"vcf",	&vcf,		 		"an error occured while calling vcf", "Convert output to vcf format.");					//TODO
 	env.command(	' ',"linkage", 	&PopLD,	 			"an error occurred while calling linkage", "Estimates linkage disequilibrium between loci");		//DONE

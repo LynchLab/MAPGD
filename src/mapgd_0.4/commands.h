@@ -20,6 +20,7 @@
 #include "relatedness.h"
 #include "proview.h"
 #include "filter.h"
+#include "filter-pool.h"
 #include "map2genotype.h"
 #include "PopLD.h"
 #include "sam2idx.h"
