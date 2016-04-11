@@ -1,7 +1,7 @@
 /* A command to filter data by fields set in the map file. */
 
-#ifndef FILTER_H_
-#define FILTER_H_
+#ifndef FILTER_POOL_H_
+#define FILTER_POOL_H_
 
 #include <string>
 #include "map-file.h"
