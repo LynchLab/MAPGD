@@ -10,6 +10,7 @@ var searchData=
   ['filename',['filename',['../classBase__file.html#a4247584fc29eccc8f9cc3eea3a3b5489',1,'Base_file']]],
   ['filename_5f',['filename_',['../classBase__file.html#ae1df95dcb6c7bca078d2452048aef86d',1,'Base_file']]],
   ['fit_5f',['fit_',['../classLinkage.html#a090c643e862f2b5236a68c306b60286e',1,'Linkage']]],
+  ['fixedll',['fixedll',['../classPooled__data.html#ab4a5cb53f695551391295cbcf0447060',1,'Pooled_data']]],
   ['flag',['Flag',['../classFlag.html',1,'Flag'],['../classEnvironment.html#a794d9dde107ee843f46f9c599abaa6bd',1,'Environment::flag()']]],
   ['flags',['flags',['../classEnvironment.html#ac538ea60efe6ddda534159a0f4b9d9d3',1,'Environment']]],
   ['flat_5ffile',['Flat_file',['../classFlat__file.html',1,'']]],
