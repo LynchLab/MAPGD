@@ -15,7 +15,7 @@ int filter_pool(int argc, char *argv[])
 
 	bool binary=false;
 
-	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_fixedll=FLT_MAX, min_fixedll=-1, min_freq=0, max_freq=0.5;
+	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_fixedll=FLT_MAX, min_fixedll=-1, min_freq=0, max_freq=1;
 	int max_coverage=CNT_MAX, min_coverage=4;
 
 	Environment env;
@@ -63,11 +63,12 @@ int filter_pool(int argc, char *argv[])
 		if (s.coverage==0){
 			if (min_coverage==0) pol_out.write(s);
 		} else {
-			if ( *(std::min_element( s.polyll.begin(),  s.polyll.end() ) ) >= min_polyll &&  *(std::max_element( s.polyll.begin(),  s.polyll.end())) <= max_polyll){ 
-			if ( *(std::min_element(s.fixedll.begin(), s.fixedll.end() ) ) >= min_fixedll && *(std::max_element(s.fixedll.begin(), s.fixedll.end())) <= max_fixedll){
+			if ( *(std::max_element( s.polyll.begin(),  s.polyll.end() ) ) >= min_polyll &&  *(std::max_element( s.polyll.begin(),  s.polyll.end())) <= max_polyll){ 
+			if ( *(std::max_element(s.fixedll.begin(), s.fixedll.end() ) ) >= min_fixedll && *(std::max_element(s.fixedll.begin(), s.fixedll.end())) <= max_fixedll){
 			if (s.error <= error_max){
 			if ( *(std::min_element(s.p.begin(), s.p.end() )) >= min_freq && *(std::max_element(s.p.begin(), s.p.end() )) <= max_freq){
 			if (s.coverage >= min_coverage && s.coverage <= max_coverage){
+			pol_out.write(s);
 		}}}}}}
 		pol_in.read(s);
 	}

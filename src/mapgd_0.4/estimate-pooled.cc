@@ -139,7 +139,6 @@ int estimatePooled(int argc, char *argv[])
 			eml=site.error;
 
                         pmaj = (float_t) locus.getcount(pop[x],0) / (float_t) ( locus.getcount(pop[x], 1) + locus.getcount(pop[x],0) );	
-
                         pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
                         pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
 
@@ -193,7 +192,7 @@ int estimatePooled(int argc, char *argv[])
 				};
                         };*/
 			site.polyll[x] =(2.0 * (llhoodP[x] - std::max(llhoodM[x], llhoodF[x]) ) );
-			site.fixedll[x]=(2.0 * (llhoodF[x] - std::max(llhoodP[x], llhoodM[x]) ) );
+			site.fixedll[x]=(2.0 * (llhoodF[x] - llhoodM[x] ) );
                         if (site.polyll[x]>maxll) maxll=site.polyll[x];
                 };
 

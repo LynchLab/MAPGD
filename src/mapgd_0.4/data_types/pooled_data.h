@@ -5,6 +5,7 @@
 #include <cfloat>
 #include <iomanip>
 #include <vector>
+#include <math.h>
 
 #include "typedef.h"
 #include "base.h"

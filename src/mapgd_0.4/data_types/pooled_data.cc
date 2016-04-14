@@ -23,7 +23,6 @@ Pooled_data::set_sample_names (const std::vector <std::string> &columns)
 {
         size_t size=columns.size();
         names_=columns;
-
         p.assign(size, 0);
         polyll.assign(size, 0);
         fixedll.assign(size, 0);
@@ -49,7 +48,7 @@ Pooled_data::Pooled_data (const std::vector <std::string> &columns)
 void
 Pooled_data::read (std::istream& in)
 {
-	std::string line;
+	std::string line, f;
 	std::getline(in, line);
 	std::stringstream line_stream(line);
 
@@ -57,12 +56,25 @@ Pooled_data::read (std::istream& in)
 	line_stream >> minor;
 	line_stream >> coverage;
 	line_stream >> error;
+	line_stream.get();
 
 	for (size_t s=0; s<names_.size();++s) {
-		line_stream >> p[s];
-		line_stream >> polyll[s];
-		line_stream >> fixedll[s];
-	}
+		getline(line_stream, f, '/');
+//		std::cerr << f << std::endl;
+		if(f!="..."){
+	        	p[s]=std::stof(f);
+			getline(line_stream, f, '/');
+			polyll[s]=std::stof(f);
+			getline(line_stream, f, '\t');
+			fixedll[s]=std::stof(f);
+		} else {
+			p[s]=NAN;
+			getline(line_stream, f, '/');
+			polyll[s]=0;
+			getline(line_stream, f, '\t');
+			fixedll[s]=0;
+		}
+	}	
 }
 
 void
