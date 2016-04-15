@@ -95,6 +95,8 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 	est.set_Ni(Ni);
 	est.set_p(best_p);
 	est.set_q(best_q);
+
+
 	maxll = -FLT_MAX;
 
 	// Find the minimum and maximum possible values of D given the estimated allele frequencies
@@ -109,6 +111,8 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 		Dmax = (1.0-best_p)*best_q;
 	}
 
+
+	// TODO de-obfuscate. What dose mlNuc1_1 do? 
 	// Obtain the nucleotide read counts for the ML analysis
 	if (mlNuc1_1*mlNuc2_1 == 2) {
 		mlNuc3_1 = 3;
@@ -176,20 +180,20 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 	prob_mononuc1[6][2] = 1.0-best_error_1;			//  a|aB/ab
 	prob_mononuc1[6][3] = third_best_error_1;		// e1|aB/ab
 	prob_mononuc1[6][4] = third_best_error_1;		// e2|aB/ab
-	prob_mononuc1[7][1] = 0.5 - third_best_error_1;		//  A|AB/aB
-	prob_mononuc1[7][2] = 0.5 - third_best_error_1; 	//  a|AB/aB
+	prob_mononuc1[7][1] = 0.5 - third_best_error_1/2.;	//  A|AB/aB
+	prob_mononuc1[7][2] = 0.5 - third_best_error_1/2.; 	//  a|AB/aB
 	prob_mononuc1[7][3] = third_best_error_1;		// e1|AB/aB
 	prob_mononuc1[7][4] = third_best_error_1;		// e2|AB/aB
-	prob_mononuc1[8][1] = 0.5 - third_best_error_1; 	//  A|Ab/ab
-	prob_mononuc1[8][2] = 0.5 - third_best_error_1; 	//  a|Ab/ab
+	prob_mononuc1[8][1] = 0.5 - third_best_error_1/2.; 	//  A|Ab/ab
+	prob_mononuc1[8][2] = 0.5 - third_best_error_1/2.; 	//  a|Ab/ab
 	prob_mononuc1[8][3] = third_best_error_1;		// e1|Ab/ab
 	prob_mononuc1[8][4] = third_best_error_1;		// e2|Ab/ab
-	prob_mononuc1[9][1] = 0.5 - third_best_error_1; 	//  A|AB/ab
-	prob_mononuc1[9][2] = 0.5 - third_best_error_1;		//  a|AB/ab
+	prob_mononuc1[9][1] = 0.5 - third_best_error_1/2.;	//  A|AB/ab
+	prob_mononuc1[9][2] = 0.5 - third_best_error_1/2.;	//  a|AB/ab
 	prob_mononuc1[9][3] = third_best_error_1;		// e1|AB/ab
 	prob_mononuc1[9][4] = third_best_error_1;		// e2|AB/ab
-	prob_mononuc1[10][1] = 0.5 - third_best_error_1;	//  A|Ab/aB
-	prob_mononuc1[10][2] = 0.5 - third_best_error_1;	//  a|Ab/aB
+	prob_mononuc1[10][1] = 0.5 - third_best_error_1/2.;	//  A|Ab/aB
+	prob_mononuc1[10][2] = 0.5 - third_best_error_1/2.;	//  a|Ab/aB
 	prob_mononuc1[10][3] = third_best_error_1;		// e1|Ab/aB
 	prob_mononuc1[10][4] = third_best_error_1;		// e2|Ab/aB
 
@@ -211,12 +215,12 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 	prob_mononuc2[4][2] = 1.0-best_error_2;			//  b|ab/ab
 	prob_mononuc2[4][3] = third_best_error_2;		// e1|ab/ab
 	prob_mononuc2[4][4] = third_best_error_2;		// e2|ab/ab
-	prob_mononuc2[5][1] = 0.5 - third_best_error_2;		//  B|AB/Ab
-	prob_mononuc2[5][2] = 0.5 - third_best_error_2;		//  b|AB/Ab
+	prob_mononuc2[5][1] = 0.5 - third_best_error_2/2.;	//  B|AB/Ab
+	prob_mononuc2[5][2] = 0.5 - third_best_error_2/2.;	//  b|AB/Ab
 	prob_mononuc2[5][3] = third_best_error_2;		// e1|AB/Ab
 	prob_mononuc2[5][4] = third_best_error_2;		// e2|AB/Ab
-	prob_mononuc2[6][1] = 0.5 - third_best_error_2;		//  B|aB/ab
-	prob_mononuc2[6][2] = 0.5 - third_best_error_2;		//  b|aB/ab
+	prob_mononuc2[6][1] = 0.5 - third_best_error_2/2.;	//  B|aB/ab
+	prob_mononuc2[6][2] = 0.5 - third_best_error_2/2.;	//  b|aB/ab
 	prob_mononuc2[6][3] = third_best_error_2;		// e1|aB/ab
 	prob_mononuc2[6][4] = third_best_error_2;		// e2|aB/ab
 	prob_mononuc2[7][1] = 1.0-best_error_2;			//  B|AB/aB
@@ -227,22 +231,24 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 	prob_mononuc2[8][2] = 1.0-best_error_2;			//  b|Ab/ab
 	prob_mononuc2[8][3] = third_best_error_2;		// e1|Ab/ab
 	prob_mononuc2[8][4] = third_best_error_2;		// e2|Ab/ab
-	prob_mononuc2[9][1] = 0.5 - third_best_error_2;		//  B|AB/ab
-	prob_mononuc2[9][2] = 0.5 - third_best_error_2;		//  b|AB/ab
+	prob_mononuc2[9][1] = 0.5 - third_best_error_2/2.;	//  B|AB/ab
+	prob_mononuc2[9][2] = 0.5 - third_best_error_2/2.;	//  b|AB/ab
 	prob_mononuc2[9][3] = third_best_error_2;		// e1|AB/ab
 	prob_mononuc2[9][4] = third_best_error_2;		// e2|AB/ab
-	prob_mononuc2[10][1] = 0.5 - third_best_error_2;	//  B|Ab/aB	
-	prob_mononuc2[10][2] = 0.5 - third_best_error_2;	//  b|Ab/aB
+	prob_mononuc2[10][1] = 0.5 - third_best_error_2/2.;	//  B|Ab/aB	
+	prob_mononuc2[10][2] = 0.5 - third_best_error_2/2.;	//  b|Ab/aB
 	prob_mononuc2[10][3] = third_best_error_2;		// e1|Ab/aB
 	prob_mononuc2[10][4] = third_best_error_2;		// e2|Ab/aB
 
 	// Loop over the candidate LD coefficients D between the sites
 	size_grid_D = 1.0/(2.0*nsample);
+
 	if ( 2.0*nsample*( Dmax-Dmin ) - (int)( 2.0*nsample*( Dmax-Dmin ) ) >= 0.5) {
 		max_mdg = (int)( 2.0*nsample*( Dmax-Dmin ) ) + 2;
 	} else {
 		max_mdg = (int)( 2.0*nsample*( Dmax-Dmin ) ) + 1;
 	}
+
 	for (mdg = 1; mdg <= max_mdg+1; mdg++) {
 		if (mdg == max_mdg+1) {
 			mlD = 0.0;
@@ -263,6 +269,7 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 				
 		// Sum the log-likelihoods over the individuals
 		llhood = 0.0;
+
 		for (mig = 1; mig <= nsample; mig++) {
 			ml_mc_1[mig][1] = mononuc_count_1.get_quartet(mig-1)[mlNuc1_1-1];
 			ml_mc_1[mig][2] = mononuc_count_1.get_quartet(mig-1)[mlNuc2_1-1];
@@ -278,36 +285,41 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 			prob_all_obs[mig] = 0.0;
 			count_t cov1=mononuc_count_1.getcoverage(mig-1);
 			count_t cov2=mononuc_count_2.getcoverage(mig-1);
-			if (cov1*cov2 > 0) {
+
+			if ( cov1!=0 && cov2!=0) {
 				for(mgg = 1; mgg <= 10; mgg++) {
+					
 					prob_obs_mononuc1[mig] = pow(prob_mononuc1[mgg][1],(double)ml_mc_1[mig][1])*pow(prob_mononuc1[mgg][2],(double)ml_mc_1[mig][2])*pow(prob_mononuc1[mgg][3],(double)ml_mc_1[mig][3])*pow(prob_mononuc1[mgg][4],(double)ml_mc_1[mig][4]);
 					prob_obs_mononuc2[mig] = pow(prob_mononuc2[mgg][1],(double)ml_mc_2[mig][1])*pow(prob_mononuc2[mgg][2],(double)ml_mc_2[mig][2])*pow(prob_mononuc2[mgg][3],(double)ml_mc_2[mig][3])*pow(prob_mononuc2[mgg][4],(double)ml_mc_2[mig][4]);
-					prob_all_obs[mig] = prob_all_obs[mig] + prob_geno[mgg]*prob_obs_mononuc1[mig]*prob_obs_mononuc2[mig];
+					prob_all_obs[mig] += prob_geno[mgg]*prob_obs_mononuc1[mig]*prob_obs_mononuc2[mig];
 				}
 				if (prob_all_obs[mig] > 0) {
 					llhood = llhood + log(prob_all_obs[mig]);
 				} else {
 					llhood = -FLT_MAX;
+					break;
 				}
 			} else if (cov1 > 0) {
 				for(mgg = 1; mgg <= 10; mgg++) {
-					prob_obs_mononuc1[mig] = prob_obs_mononuc1[mig] + pow(prob_mononuc1[mgg][1],(double)ml_mc_1[mig][1])*pow(prob_mononuc1[mgg][2],(double)ml_mc_1[mig][2])*pow(prob_mononuc1[mgg][3],(double)ml_mc_1[mig][3])*pow(prob_mononuc1[mgg][4],(double)ml_mc_1[mig][4]);
+					prob_obs_mononuc1[mig] += pow(prob_mononuc1[mgg][1],(double)ml_mc_1[mig][1])*pow(prob_mononuc1[mgg][2],(double)ml_mc_1[mig][2])*pow(prob_mononuc1[mgg][3],(double)ml_mc_1[mig][3])*pow(prob_mononuc1[mgg][4],(double)ml_mc_1[mig][4]);
 				}
 				if (prob_obs_mononuc1[mig] > 0) {
 					llhood = llhood + log(prob_obs_mononuc1[mig]);
 				} else {
 					llhood = -FLT_MAX;
+					break;
 				}
 			} else if (cov2 > 0) {
 				for(mgg = 1; mgg <= 10; mgg++) {
-					prob_obs_mononuc2[mig] = prob_obs_mononuc2[mig] + pow(prob_mononuc2[mgg][1],(double)ml_mc_2[mig][1])*pow(prob_mononuc2[mgg][2],(double)ml_mc_2[mig][2])*pow(prob_mononuc2[mgg][3],(double)ml_mc_2[mig][3])*pow(prob_mononuc2[mgg][4],(double)ml_mc_2[mig][4]);
+					prob_obs_mononuc2[mig] +=pow(prob_mononuc2[mgg][1],(double)ml_mc_2[mig][1])*pow(prob_mononuc2[mgg][2],(double)ml_mc_2[mig][2])*pow(prob_mononuc2[mgg][3],(double)ml_mc_2[mig][3])*pow(prob_mononuc2[mgg][4],(double)ml_mc_2[mig][4]);
 				}
 				if (prob_obs_mononuc2[mig] > 0) {
 					llhood = llhood + log(prob_obs_mononuc2[mig]);
 				} else {
 					llhood = -FLT_MAX;
-				}
-			}
+					break;
+				} 
+			} 
 		} // End the loop over the individuals
 		
 		if (mdg == max_mdg+1) {
@@ -443,8 +455,6 @@ int PopLD(int argc, char *argv[])
 	e_locus=locus_list.begin();
 	e_allele=allele_list.begin();
 						
-//	std::cerr << "Opening a site!\n";
-
 	do {
 		do {
 			size_t number;
@@ -453,21 +463,16 @@ int PopLD(int argc, char *argv[])
 			id0_t scf1=index.get_id0(pos1);
 			id0_t scf2=index.get_id0(pos2);
 
-//			std::cerr << max_d << "::(" << pos1 << ", " << pos2 << ")" << pos2-pos1 << ", " << scf1 << ", " << scf2 << std::endl;
-
 			if ( (pos2-pos1)<max_d && scf1==scf2) {
 				if ( (pos2-pos1)>min_dist ) {
 					number=count_sites(locus1, locus2);
-//					std::cerr << "Testing " << number << std::endl;
 					if ( number >= min_number ) {
 						locus_buffer1[read]=locus1;
 						allele_buffer1[read]=allele1;
 						locus_buffer2[read]=locus2;
 						allele_buffer2[read]=allele2;
 						read++;
-//						std::cerr << "Read a site!\n";
 						//size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
-						//std::cerr << estimate_D(Ni, (uint8_t)allele_buffer1[x].major, (uint8_t)allele_buffer1[x].minor, (uint8_t)allele_buffer2[x].major, (uint8_t)allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
 					}
 				}
 			} else { 
@@ -516,13 +521,12 @@ int PopLD(int argc, char *argv[])
 		for (uint32_t x=0; x<read; ++x){
 			size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
 			// Estimate the LD coefficient D between the polymorphic sites 
-			linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major, (uint8_t)allele_buffer1[x].minor, (uint8_t)allele_buffer2[x].major, (uint8_t)allele_buffer2[x].minor, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
+			linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major+1, (uint8_t)allele_buffer1[x].minor+1, (uint8_t)allele_buffer2[x].major+1, (uint8_t)allele_buffer2[x].minor+1, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
 		}
 		for (size_t c=0; c<read; ++c){ 
 			ld_out.write(linkage_buffer[c]);
 		}
 	} while (map_in.table_is_open() );
-//	std::cerr << "Done!\n";
 	ld_out.close();
 	return 0;
 }

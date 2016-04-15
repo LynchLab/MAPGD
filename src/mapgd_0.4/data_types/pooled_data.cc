@@ -24,6 +24,7 @@ Pooled_data::set_sample_names (const std::vector <std::string> &columns)
         size_t size=columns.size();
         names_=columns;
         p.assign(size, 0);
+        cov.assign(size, 0);
         polyll.assign(size, 0);
         fixedll.assign(size, 0);
 }
@@ -31,9 +32,11 @@ Pooled_data::set_sample_names (const std::vector <std::string> &columns)
 Pooled_data::Pooled_data (const std::vector <std::string> &columns)
 {
 	size_t size=(columns.size()-6);
-	names_=std::vector<std::string> (size);
+	names_=std::vector <std::string> (columns.cbegin()+6, columns.cend() );
+//	names_.assign(size,"none");//=std::vector <std::string> (columns.cbegin()+6, columns.cend() );
 
         p.assign(size, 0);
+        cov.assign(size, 0);
         polyll.assign(size, 0);
         fixedll.assign(size, 0);
 
@@ -64,11 +67,15 @@ Pooled_data::read (std::istream& in)
 		if(f!="..."){
 	        	p[s]=std::stof(f);
 			getline(line_stream, f, '/');
+			cov[s]=std::stof(f);
+			getline(line_stream, f, '/');
 			polyll[s]=std::stof(f);
 			getline(line_stream, f, '\t');
 			fixedll[s]=std::stof(f);
 		} else {
 			p[s]=NAN;
+			getline(line_stream, f, '/');
+			cov[s]=0;
 			getline(line_stream, f, '/');
 			polyll[s]=0;
 			getline(line_stream, f, '\t');
@@ -90,11 +97,12 @@ Pooled_data::write (std::ostream& out) const
 		if (!isnan(p[s]) ){
 	//		out << std::setprecision(1);
 			out << '\t' << p[s] << '/';
+			out << cov[s] << '/';
 			out << polyll[s] << '/';
 			out << fixedll[s];
 //			out << majorll[s];
 		} else {
-			out << "\t.../.../...";
+			out << "\t.../.../.../..";
 		}
 	}
 }
@@ -134,3 +142,19 @@ Pooled_data::to_allele(const size_t & x)
 	a.coverage=coverage;   //!< population coverage.
 	return a;	
 }
+	
+Pooled_data & 
+Pooled_data::operator=(const Pooled_data &rhs){
+        this->major=rhs.major;
+        this->minor=rhs.minor;
+        this->coverage=rhs.coverage;
+        this->error=rhs.error;
+	
+	this->names_=rhs.names_;
+	this->p=rhs.p;
+	this->cov=rhs.cov;
+	this->polyll=rhs.polyll;
+	this->fixedll=rhs.fixedll;
+
+	return *this;	
+}	

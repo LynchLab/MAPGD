@@ -29,6 +29,7 @@ public:
 
 	std::vector <std::string> names_;//!< the sample names.
 	std::vector <float_t> p;	//!< a vector of allele frequencies
+	std::vector <float_t> cov;	//!< a vector of coverage
 	std::vector <float_t> polyll;	//!< a vector of polymorphic log likelihoods
 	std::vector <float_t> fixedll;	//!< a vector of fixed log likelihoods 
 	
@@ -38,6 +39,7 @@ public:
 	Allele to_allele(const size_t &);
 
 	void set_sample_names(const std::vector <std::string> &);
+	Pooled_data & operator=(const Pooled_data &);	//!< use the = operator to assign Pooled_data.
 
 	std::string header(void) const;
 	size_t size(void) const;

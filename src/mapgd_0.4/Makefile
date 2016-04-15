@@ -22,7 +22,7 @@ NOGSL=-D NOGSL
 
 OBJDIR=obj
 
-ifeq ($(CXX), i686-w64-mingw32-c++)
+ifeq ($(CXX), i686-w64-mingw32-g++)
 	TARGET=../../bin/mapgd-win32.exe
 	CXXFLAGS+= -static
 	HAVE_SQL=false	
@@ -79,7 +79,7 @@ MAPGD=mapgd.o
 
 #These all depend on interface.h
 COMMAND_OBJ=estimate-individual.o \
-	estimate-pooled.o \
+	commands/estimate-pooled.o \
 	mapgd-help.o \
 	sam2idx.o \
 	proview.o \

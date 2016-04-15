@@ -1,6 +1,8 @@
 #This compares the allele frequency reported in the map file to the allele frequency obtained from running mapgdutils.py. They should be nearly identical. Ideally they should
 #be exactally identical, but since I haven't implemented a real numeric estimation method yet the allele frequencies aren't as good as they should be.
 
+#!/bin/python
+
 import math
 import sys
 File=open(sys.argv[1])

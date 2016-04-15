@@ -89,21 +89,38 @@ public:
 	float_t adj_Dmax (void) const;
 	float_t adj_Dmin (void) const;
 
+/*
+        id0_t id0;      //!< The scaffold of site X
+        id1_t id1;      //!< The pos of site X
+
+        id1_t id1_y_;   //!< the pos of site Y
+
+        float_t p_;             //!< freq_major site numero uno
+        float_t q_;             //!< freq_major site numero dos
+
+        float_t D_;             //!< the magnitude of the ld, j0 
+        float_t Ni_;            //!< The number of individuals used in the calculation
+        float_t fit_;           //!< fit statistic (thar be ld here!)
+        float_t null_;          //!< null statistic (i.e. no ld)
+*/
+
+
 	//TODO SHIT!
 	Linkage & operator=(const Linkage &lhs){
-	Linkage rhs;
-        rhs.id0=lhs.id0;      //!< The scaffold of site X
-        rhs.id1=lhs.id1;      //!< The pos of site X
-        rhs.id1_y_=lhs.id1_y_;   //!< the pos of site Y
+//		(Indexed_data)(this)->abs_pos_=(Indexed_data)(&lhs)->abs_pos_;
+		this->abs_pos_=lhs.abs_pos_;
+	        this->id0=lhs.id0;      //!< The scaffold of site X
+	        this->id1=lhs.id1;      //!< The pos of site X
+	        this->id1_y_=lhs.id1_y_;   //!< the pos of site Y
 
-        rhs.p_=lhs.p_;             //!< freq_major site numero uno
-        rhs.q_=lhs.q_;             //!< freq_major site numero dos
+	        this->p_=lhs.p_;             //!< freq_major site numero uno
+	        this->q_=lhs.q_;             //!< freq_major site numero dos
 
-        rhs.D_=lhs.D_;             //!< the magnitude of the ld, j0 
-        rhs.Ni_=lhs.Ni_;            //!< The number of individuals used in the calculation
-        rhs.fit_=lhs.fit_;           //!< fit statistic (thar be ld here!)
-        rhs.null_=lhs.null_;          //!< null statistic (i.e. no ld)
-	return rhs;
+	        this->D_=lhs.D_;             //!< the magnitude of the ld, j0 
+	        this->Ni_=lhs.Ni_;            //!< The number of individuals used in the calculation
+	        this->fit_=lhs.fit_;           //!< fit statistic (thar be ld here!)
+	        this->null_=lhs.null_;          //!< null statistic (i.e. no ld)
+		return *this;
 	}
 
 };

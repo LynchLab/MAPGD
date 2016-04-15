@@ -67,11 +67,14 @@ push:
 	$(MAKE) -C $(SUBDIRS) clean
 	rm -f ./bin/mapgd
 	CXX=i686-w64-mingw32-c++
+	TARGET=mapgd-win64.exe
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) clean
 	CXX=x86_64-w64-mingw32-g++
+	TARGET=mapgd-win32.exe
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) clean
+	rm -f ./bin/mapgd
 	cp Makefile.empty Makefile
 	$(MAKE) -C $(SUBDIRS) increment 
 	git add -u

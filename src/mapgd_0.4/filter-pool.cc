@@ -55,6 +55,7 @@ int filter_pool(int argc, char *argv[])
 	s=pol_in.read_header();
 
 	pol_out.set_index(pol_in.get_index() );
+	std::cerr << s.header();
 	pol_out.write_header(s);
 
 	pol_in.read(s);
