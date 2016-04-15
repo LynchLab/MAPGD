@@ -169,26 +169,43 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    float_t adj_Dmax (<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    float_t adj_Dmin (<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="comment">//TODO SHIT!</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classLinkage.html#ab5a9461bba10e7e01900352759ae3290">   93</a></span>&#160;    <a class="code" href="classLinkage.html">Linkage</a> &amp; <a class="code" href="classLinkage.html#ab5a9461bba10e7e01900352759ae3290">operator=</a>(<span class="keyword">const</span> <a class="code" href="classLinkage.html">Linkage</a> &amp;lhs){</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="classLinkage.html">Linkage</a> rhs;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        rhs.<a class="code" href="classLinkage.html#ab1d86edd41d9a90d25ed4e430405f5ef">id0</a>=lhs.<a class="code" href="classLinkage.html#ab1d86edd41d9a90d25ed4e430405f5ef">id0</a>;      </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        rhs.<a class="code" href="classLinkage.html#a41a3cf64da87fce0533631a2230ff1e2">id1</a>=lhs.<a class="code" href="classLinkage.html#a41a3cf64da87fce0533631a2230ff1e2">id1</a>;      </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        rhs.<a class="code" href="classLinkage.html#aa82ff1a5d77be6eb670a58033a52d20f">id1_y_</a>=lhs.<a class="code" href="classLinkage.html#aa82ff1a5d77be6eb670a58033a52d20f">id1_y_</a>;   </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        rhs.<a class="code" href="classLinkage.html#a0f2ca75a94abc15a9c796d06f9781c74">p_</a>=lhs.<a class="code" href="classLinkage.html#a0f2ca75a94abc15a9c796d06f9781c74">p_</a>;             </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        rhs.<a class="code" href="classLinkage.html#a8a207464de1aaabc73bfbf7f45cfb9fb">q_</a>=lhs.<a class="code" href="classLinkage.html#a8a207464de1aaabc73bfbf7f45cfb9fb">q_</a>;             </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        rhs.<a class="code" href="classLinkage.html#a640487a528da5c759494b1c2bd11d4e5">D_</a>=lhs.<a class="code" href="classLinkage.html#a640487a528da5c759494b1c2bd11d4e5">D_</a>;             </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        rhs.<a class="code" href="classLinkage.html#a196cdd9ba7360f9ce46753c0baf86e4d">Ni_</a>=lhs.<a class="code" href="classLinkage.html#a196cdd9ba7360f9ce46753c0baf86e4d">Ni_</a>;            </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        rhs.<a class="code" href="classLinkage.html#a090c643e862f2b5236a68c306b60286e">fit_</a>=lhs.<a class="code" href="classLinkage.html#a090c643e862f2b5236a68c306b60286e">fit_</a>;           </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        rhs.<a class="code" href="classLinkage.html#a6337ec9dd8f9e778901282494bd36b08">null_</a>=lhs.<a class="code" href="classLinkage.html#a6337ec9dd8f9e778901282494bd36b08">null_</a>;          </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordflow">return</span> rhs;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;};</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="comment">        id0_t id0;      //!&lt; The scaffold of site X</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">        id1_t id1;      //!&lt; The pos of site X</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">        id1_t id1_y_;   //!&lt; the pos of site Y</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">        float_t p_;             //!&lt; freq_major site numero uno</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="comment">        float_t q_;             //!&lt; freq_major site numero dos</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="comment">        float_t D_;             //!&lt; the magnitude of the ld, j0 </span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">        float_t Ni_;            //!&lt; The number of individuals used in the calculation</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">        float_t fit_;           //!&lt; fit statistic (thar be ld here!)</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">        float_t null_;          //!&lt; null statistic (i.e. no ld)</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="comment">//TODO SHIT!</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classLinkage.html#ab5a9461bba10e7e01900352759ae3290">  109</a></span>&#160;    <a class="code" href="classLinkage.html">Linkage</a> &amp; <a class="code" href="classLinkage.html#ab5a9461bba10e7e01900352759ae3290">operator=</a>(<span class="keyword">const</span> <a class="code" href="classLinkage.html">Linkage</a> &amp;lhs){</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">//      (Indexed_data)(this)-&gt;abs_pos_=(Indexed_data)(&amp;lhs)-&gt;abs_pos_;</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        this-&gt;abs_pos_=lhs.abs_pos_;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#ab1d86edd41d9a90d25ed4e430405f5ef">id0</a>=lhs.<a class="code" href="classLinkage.html#ab1d86edd41d9a90d25ed4e430405f5ef">id0</a>;      </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#a41a3cf64da87fce0533631a2230ff1e2">id1</a>=lhs.<a class="code" href="classLinkage.html#a41a3cf64da87fce0533631a2230ff1e2">id1</a>;      </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#aa82ff1a5d77be6eb670a58033a52d20f">id1_y_</a>=lhs.<a class="code" href="classLinkage.html#aa82ff1a5d77be6eb670a58033a52d20f">id1_y_</a>;   </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#a0f2ca75a94abc15a9c796d06f9781c74">p_</a>=lhs.<a class="code" href="classLinkage.html#a0f2ca75a94abc15a9c796d06f9781c74">p_</a>;             </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#a8a207464de1aaabc73bfbf7f45cfb9fb">q_</a>=lhs.<a class="code" href="classLinkage.html#a8a207464de1aaabc73bfbf7f45cfb9fb">q_</a>;             </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#a640487a528da5c759494b1c2bd11d4e5">D_</a>=lhs.<a class="code" href="classLinkage.html#a640487a528da5c759494b1c2bd11d4e5">D_</a>;             </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#a196cdd9ba7360f9ce46753c0baf86e4d">Ni_</a>=lhs.<a class="code" href="classLinkage.html#a196cdd9ba7360f9ce46753c0baf86e4d">Ni_</a>;            </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#a090c643e862f2b5236a68c306b60286e">fit_</a>=lhs.<a class="code" href="classLinkage.html#a090c643e862f2b5236a68c306b60286e">fit_</a>;           </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            this-&gt;<a class="code" href="classLinkage.html#a6337ec9dd8f9e778901282494bd36b08">null_</a>=lhs.<a class="code" href="classLinkage.html#a6337ec9dd8f9e778901282494bd36b08">null_</a>;          </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;};</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classLinkage_html_afa27f3db5716c43281f8583827a9e9f0"><div class="ttname"><a href="classLinkage.html#afa27f3db5716c43281f8583827a9e9f0">Linkage::sql_column_names</a></div><div class="ttdeci">const std::string sql_column_names(void) const </div><div class="ttdoc">Destination table in Db. </div><div class="ttdef"><b>Definition:</b> linkage_data.cc:53</div></div>
 <div class="ttc" id="classLinkage_html_a196cdd9ba7360f9ce46753c0baf86e4d"><div class="ttname"><a href="classLinkage.html#a196cdd9ba7360f9ce46753c0baf86e4d">Linkage::Ni_</a></div><div class="ttdeci">float_t Ni_</div><div class="ttdoc">The number of individuals used in the calculation. </div><div class="ttdef"><b>Definition:</b> linkage_data.h:44</div></div>
 <div class="ttc" id="classLinkage_html_aa82ff1a5d77be6eb670a58033a52d20f"><div class="ttname"><a href="classLinkage.html#aa82ff1a5d77be6eb670a58033a52d20f">Linkage::id1_y_</a></div><div class="ttdeci">id1_t id1_y_</div><div class="ttdoc">the pos of site Y </div><div class="ttdef"><b>Definition:</b> linkage_data.h:38</div></div>
@@ -208,7 +225,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="classLinkage_html_afb6d498a4584f460263eb3ed3b5c502c"><div class="ttname"><a href="classLinkage.html#afb6d498a4584f460263eb3ed3b5c502c">Linkage::sql_header</a></div><div class="ttdeci">const std::string sql_header(void) const </div><div class="ttdoc">Destination table in Db. </div><div class="ttdef"><b>Definition:</b> linkage_data.cc:46</div></div>
 <div class="ttc" id="classLinkage_html_aae4c4ea40b348e88896d377792debf9a"><div class="ttname"><a href="classLinkage.html#aae4c4ea40b348e88896d377792debf9a">Linkage::write</a></div><div class="ttdeci">void write(std::ostream &amp;str) const </div><div class="ttdoc">! the write function must be ? by the child class. </div><div class="ttdef"><b>Definition:</b> linkage_data.cc:21</div></div>
 <div class="ttc" id="classLinkage_html_a090c643e862f2b5236a68c306b60286e"><div class="ttname"><a href="classLinkage.html#a090c643e862f2b5236a68c306b60286e">Linkage::fit_</a></div><div class="ttdeci">float_t fit_</div><div class="ttdoc">fit statistic (thar be ld here!) </div><div class="ttdef"><b>Definition:</b> linkage_data.h:45</div></div>
-<div class="ttc" id="classLinkage_html_ab5a9461bba10e7e01900352759ae3290"><div class="ttname"><a href="classLinkage.html#ab5a9461bba10e7e01900352759ae3290">Linkage::operator=</a></div><div class="ttdeci">Linkage &amp; operator=(const Linkage &amp;lhs)</div><div class="ttdef"><b>Definition:</b> linkage_data.h:93</div></div>
+<div class="ttc" id="classLinkage_html_ab5a9461bba10e7e01900352759ae3290"><div class="ttname"><a href="classLinkage.html#ab5a9461bba10e7e01900352759ae3290">Linkage::operator=</a></div><div class="ttdeci">Linkage &amp; operator=(const Linkage &amp;lhs)</div><div class="ttdef"><b>Definition:</b> linkage_data.h:109</div></div>
 <div class="ttc" id="classLinkage_html_ab1d86edd41d9a90d25ed4e430405f5ef"><div class="ttname"><a href="classLinkage.html#ab1d86edd41d9a90d25ed4e430405f5ef">Linkage::id0</a></div><div class="ttdeci">id0_t id0</div><div class="ttdoc">The scaffold of site X. </div><div class="ttdef"><b>Definition:</b> linkage_data.h:33</div></div>
 <div class="ttc" id="group__basic_html_gacc45c328230b21d900dae81b1f6f16b0"><div class="ttname"><a href="group__basic.html#gacc45c328230b21d900dae81b1f6f16b0">Indexed_data::get_abs_pos</a></div><div class="ttdeci">id1_t get_abs_pos(void) const </div><div class="ttdoc">Indexed data needs to associate each datum with a position in the genome. </div><div class="ttdef"><b>Definition:</b> data.cc:67</div></div>
 <div class="ttc" id="classLinkage_html_a41a3cf64da87fce0533631a2230ff1e2"><div class="ttname"><a href="classLinkage.html#a41a3cf64da87fce0533631a2230ff1e2">Linkage::id1</a></div><div class="ttdeci">id1_t id1</div><div class="ttdoc">The pos of site X. </div><div class="ttdef"><b>Definition:</b> linkage_data.h:36</div></div>
@@ -220,7 +237,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 14 2016 09:54:06 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 15 2016 13:14:27 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
