@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>mapgd: Main Page</title>
+<title>mapgd: Data types</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -38,8 +38,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
   <div id="navrow1" class="tabs">
     <ul class="tablist">
-      <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
+      <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li class="current"><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -61,7 +61,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       </li>
     </ul>
   </div>
-</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -76,54 +75,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+</div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">mapgd Documentation</div>  </div>
+<div class="title"><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> types </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>#MAPGD version 0.4.2</p>
-<p>#Contents #Introduction #Basic Design #Tutorials #Introduction</p>
-<p>MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum-likelihood approach. Basic Design: MAPGD:</p>
-<p>#Style Guidelines</p>
-<p>mapgd is written to conform to the GNU style guidelines, at least to the extent that I have had time to read and implement the guidelines.</p>
-<ul>
-<li>Class names should be whole English words starting with an initial capital (to distinguish them from the core classes and types of c++): e.g My_class_name.</li>
-<li>Variables should follow the same rules, but begin with a lower case letter: e.g. my_variable_name. etc. Variables should never be named something like aa, ab, ac, etc.</li>
-<li>We do not use CamelCase.</li>
-<li>Private members of classes should be postfixed with an underscore (e.g. var_)</li>
-<li>Types should be postfixed with an _t (e.g. My_type_t).</li>
-<li>Error messages should always list the name of the file generating the error and the line number from which the error message was printed. These can be set with the compiler Macros __NAME__ and __LINE__ so that they remain accurate as your source code changes.</li>
-<li>The GNU style guidelines recommend the use of gettext to make it easy to translate programs into different languages. We need to implement these standards in the future, however, we have not done so yet.</li>
-<li>Function definitions should have aligned braces:</li>
-</ul>
-<p>Right: Void My_func (void) { return; } Wrong: Void My_func (void) { return; }</p>
-<ul>
-<li>The return type should occur on the line immediately preceding the function name:</li>
-</ul>
-<p>Right: int My_func (void) { return 1; } Wrong: int My_func (void) { return 1; }</p>
-<ul>
-<li>Use the types defined in <a class="el" href="typedef_8h_source.html">typedef.h</a> when appropriate. For instance, when specifying a position in the genome, you should use the Id1_t type.</li>
-</ul>
-<p>Right: Id1_t position; Wrong: int position;</p>
-<p>This prevents inconsistent usage for variables storing positions in the genome, which could be reasonably be declared as int, unsigned int, long int, etc.</p>
-<ul>
-<li></li>
-</ul>
-<h2>Coancestry Coefficients</h2>
-<h2>Maximum Likelihood</h2>
-<h2>Likelihoods</h2>
-<h2>Prior</h2>
-<h2>Posteriors</h2>
-<h2>Maximizing Posteriors</h2>
-<h2>Genotypic Correlation</h2>
-<p>Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that population. This means that if we can accurately calculate all genotypic probabilities, then the calculation of any other population statistics becomes trivial. However, in order to calculate genotypic probabilities we must take account of the errors made in the genotyping process. Include inferring the presence of alleles that are not there, which can arise from sequencing error or mistakes made aligning to a reference, and failing to detect the presence of alleles which are there because of low coverage or biased sequencing of a single parental chromosome. We maximize a likelihood equation to account for sequencing error and the failure to sample genotypes, and then we test the data for fit to the parameters, and reject estimates where the data has a poor fit to the estimated parameters.</p>
-<h2><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> types</h2>
-<h2>Tutorials</h2>
-<p>An introduction to quartets Reading and writing to files "Making likelihood functions" "Maximizing a likelihood function" </p>
+<div class="textblock"><p>These are data classes that can read and write from files. The general philosophy of mapgd is that a command should transform one of these classes into another. Every data class descends from <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a>. See <a class="el" href="data_8h_source.html">data.h</a>. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 15 2016 13:51:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 15 2016 13:51:44 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
