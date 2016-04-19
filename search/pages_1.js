@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['readme',['README',['../md_mapgd_0_84_commands_README.html',1,'']]],
-  ['readme',['README',['../md_mapgd_0_84_data_conversion_README.html',1,'']]],
-  ['readme',['README',['../md_mapgd_0_84_raw_README.html',1,'']]]
+  ['data_20types',['Data types',['../DataTypes.html',1,'']]],
+  ['data_20conversion_20_7bconversion_7d',['Data conversion {Conversion}',['../md_mapgd_0_84_data_conversion_README.html',1,'']]]
 ];

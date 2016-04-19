@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['data_20types',['Data types',['../DataTypes.html',1,'']]]
+  ['commands',['Commands',['../Commands.html',1,'']]]
 ];

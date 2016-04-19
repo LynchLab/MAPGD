@@ -82,48 +82,69 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p>#MAPGD version 0.4.2</p>
-<p>#Contents #Introduction #Basic Design #Tutorials #Introduction</p>
-<p>MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum-likelihood approach. Basic Design: MAPGD:</p>
+<p>#Contents</p>
+<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#introduction">Introduction</a> <a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#basic-design">Basic Design</a> <a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#style-guidelines">Style Guidelines</a> <a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#tutorials">Tutorials</a> <a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#task-list">Task List</a></p>
+<p>#Introduction</p>
+<p>MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum-likelihood approach.</p>
+<p>#Basic Design</p>
+<ul>
+<li>I/O<ul>
+<li>The user interface The user interacts with MAPGD through a <a href="https://en.wikipedia.org/wiki/Command-line_interface">command line interface</a>. One of the advantages of</li>
+<li>The SQL database</li>
+<li><a class="el" href="classData__file.html">Data_file</a></li>
+</ul>
+</li>
+<li><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> MAPGD can most generally be described as a program which transforms data from one representation into a different representation. The features of the data which the user is interested in may not be obvious in the most basic representation of the sequencing data, and the user may wish to transform the data into a representation where the features are more obvious. Generally, ...<ul>
+<li>Raw_data</li>
+<li><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a></li>
+</ul>
+</li>
+<li>Indexing The standard format many programs use for referencing positions in the genome uses a string, used to reference a continuous region of the genome called either a <a href="https://en.wikipedia.org/wiki/Contig">contig</a>, scaffold or chromosome, and an integer, used to specify a position within that region. To reduce memory usage mapgd represent genome positions as a single integer number, called an absolute position. The <a class="el" href="classFile__index.html" title="An interface that transforms pairs of name and position keys into record numbers. ...">File_index</a> class is used to convert between string/integer pairs and absolute positions.<ul>
+<li><a class="el" href="classIndexed__data.html" title="Data which has an absolute position. ">Indexed_data</a></li>
+<li><a class="el" href="classIndexed__file.html">Indexed_file</a></li>
+</ul>
+</li>
+<li>Models In order to</li>
+</ul>
+<p>#</p>
 <p>#Style Guidelines</p>
 <p>mapgd is written to conform to the GNU style guidelines, at least to the extent that I have had time to read and implement the guidelines.</p>
 <ul>
 <li>Class names should be whole English words starting with an initial capital (to distinguish them from the core classes and types of c++): e.g My_class_name.</li>
 <li>Variables should follow the same rules, but begin with a lower case letter: e.g. my_variable_name. etc. Variables should never be named something like aa, ab, ac, etc.</li>
-<li>We do not use CamelCase.</li>
-<li>Private members of classes should be postfixed with an underscore (e.g. var_)</li>
+<li>Do not to use CamelCase, where words .</li>
+<li>Private or protected members of classes should be postfixed with an underscore (e.g. var_)</li>
 <li>Types should be postfixed with an _t (e.g. My_type_t).</li>
 <li>Error messages should always list the name of the file generating the error and the line number from which the error message was printed. These can be set with the compiler Macros __NAME__ and __LINE__ so that they remain accurate as your source code changes.</li>
 <li>The GNU style guidelines recommend the use of gettext to make it easy to translate programs into different languages. We need to implement these standards in the future, however, we have not done so yet.</li>
-<li>Function definitions should have aligned braces:</li>
+<li><p class="startli">Function definitions should have aligned braces:</p>
+<p class="startli">Right: ``` Void My_func (void) { return; } ``` Wrong: ``` Void My_func (void) { return; } ```</p>
+</li>
+<li><p class="startli">The return type should occur on the line immediately preceding the function name:</p>
+<p class="startli">Right: ``` int My_func (void) { return 1; } ``` Wrong: ``` int My_func (void) { return 1; } ```</p>
+</li>
+<li><p class="startli">Use the types defined in <a class="el" href="typedef_8h_source.html">typedef.h</a> when appropriate. For instance, when specifying a position in the genome, you should use the Id1_t type.</p>
+<p class="startli">Right: Id1_t position; Wrong: int position;</p>
+<p class="startli">This prevents inconsistent usage for variables storing positions in the genome, which could be reasonably be declared as int, unsigned int, long int, etc.</p>
+</li>
 </ul>
-<p>Right: Void My_func (void) { return; } Wrong: Void My_func (void) { return; }</p>
-<ul>
-<li>The return type should occur on the line immediately preceding the function name:</li>
-</ul>
-<p>Right: int My_func (void) { return 1; } Wrong: int My_func (void) { return 1; }</p>
-<ul>
-<li>Use the types defined in <a class="el" href="typedef_8h_source.html">typedef.h</a> when appropriate. For instance, when specifying a position in the genome, you should use the Id1_t type.</li>
-</ul>
-<p>Right: Id1_t position; Wrong: int position;</p>
-<p>This prevents inconsistent usage for variables storing positions in the genome, which could be reasonably be declared as int, unsigned int, long int, etc.</p>
-<ul>
-<li></li>
-</ul>
-<h2>Coancestry Coefficients</h2>
+<p>#Models</p>
+<p>In statistics, a <a href="https://en.wikipedia.org/wiki/Statistical_model">model</a> is an idealized description of how the observed data was generated. This description includes uses ...</p>
 <h2>Maximum Likelihood</h2>
 <h2>Likelihoods</h2>
-<h2>Prior</h2>
+<h2>Priors</h2>
 <h2>Posteriors</h2>
 <h2>Maximizing Posteriors</h2>
-<h2>Genotypic Correlation</h2>
+<p>#Genotypic Correlation</p>
 <p>Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that population. This means that if we can accurately calculate all genotypic probabilities, then the calculation of any other population statistics becomes trivial. However, in order to calculate genotypic probabilities we must take account of the errors made in the genotyping process. Include inferring the presence of alleles that are not there, which can arise from sequencing error or mistakes made aligning to a reference, and failing to detect the presence of alleles which are there because of low coverage or biased sequencing of a single parental chromosome. We maximize a likelihood equation to account for sequencing error and the failure to sample genotypes, and then we test the data for fit to the parameters, and reject estimates where the data has a poor fit to the estimated parameters.</p>
-<h2><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> types</h2>
-<h2>Tutorials</h2>
-<p>An introduction to quartets Reading and writing to files "Making likelihood functions" "Maximizing a likelihood function" </p>
+<p>#Tutorials</p>
+<p>[An introduction to quartets]() [Reading and writing to files]() [Making models]()</p>
+<p>#Task List</p>
+<p>[ ] Write scripting tutorials for the main user page. [ ] Claim mapgd.org. [ ] Automate tutorial testing. [ ] Automatic statistical and computational performance testing. Statistical test should report bais and MSE of MAPGD and several other programs (ANGSD/GATK/PLINK). Keep other programs up to date. Performance test should report ... [ ] Write SQL tutorials. [ ] Automatically generate figures from recent papers. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 15 2016 13:51:47 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 19 2016 10:47:30 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

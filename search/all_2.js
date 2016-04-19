@@ -6,7 +6,7 @@ var searchData=
   ['close',['close',['../classBase__file.html#a6e30ff80eb99f401256d4bcca6a157a2',1,'Base_file']]],
   ['close_5ftable',['close_table',['../classBase__file.html#af402edd3a5bf898885146158497ade2f',1,'Base_file']]],
   ['command',['Command',['../classCommand.html',1,'Command'],['../classEnvironment.html#abf616c2710f5472f2d39219e353ac2dc',1,'Environment::command()']]],
-  ['commands',['commands',['../classEnvironment.html#a16ee1034e66b0d38c769edaea70d1097',1,'Environment']]],
+  ['commands',['commands',['../classEnvironment.html#a16ee1034e66b0d38c769edaea70d1097',1,'Environment::commands()'],['../Commands.html',1,'(Global Namespace)']]],
   ['concatenated',['concatenated',['../classBase__file.html#accfc822429915de3f8836174744c6dc9',1,'Base_file']]],
   ['concatenated_5f',['concatenated_',['../classBase__file.html#aaa35644e5e2636edb25d734e234f7f92',1,'Base_file']]],
   ['cov',['cov',['../classPooled__data.html#a45500d7dd8c2fef416df625025109b36',1,'Pooled_data']]],

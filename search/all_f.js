@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['readme',['README',['../md_mapgd_0_84_commands_README.html',1,'']]],
-  ['readme',['README',['../md_mapgd_0_84_data_conversion_README.html',1,'']]],
-  ['readme',['README',['../md_mapgd_0_84_raw_README.html',1,'']]],
+  ['raw_20data',['Raw data',['../Raw.html',1,'']]],
   ['read',['read',['../classAllele.html#a460064777e16f97915cbf4e86f31eb17',1,'Allele::read()'],['../classData.html#a65eef72466166c1ec4aaef5eef2d15f9',1,'Data::read()'],['../classFile__index.html#aa0185c045ce14605a7f4407735e35e18',1,'File_index::read()'],['../classLinkage.html#ab21cd58249cf1f23cc8aed81eff3f70a',1,'Linkage::read()'],['../classLocus.html#ac09c4014cf519afa2d49a8a6090e005e',1,'Locus::read()'],['../classLog.html#a068b88d5c376d79ce21655cd1253f836',1,'Log::read()'],['../classPooled__data.html#a27359bfdb71b871684911e51ea784ac3',1,'Pooled_data::read()'],['../classPopulation.html#a1e18c297a24d631359a15a1729a6cb9a',1,'Population::read()'],['../classRelatedness.html#a22be7f4c37e25701289980fab890f938',1,'Relatedness::read()'],['../classSample__gof.html#aef46bcf0ff7dcdaa6f09769e8e37a25c',1,'Sample_gof::read()'],['../classSample__name.html#a1663e02dfbd36c3806441053e115fcdf',1,'Sample_name::read()'],['../group__BasicIO.html#ga97178d7f5cbc1e3daf2855c2b69080c4',1,'Base_file::read()'],['../classData__file.html#a7154340eff498ea240f57358e8c9ef3a',1,'Data_file::read()']]],
   ['read_5f',['read_',['../classBase__file.html#aa161481f85c422604981cd6b292b90f9',1,'Base_file']]],
   ['read_5fbinary',['read_binary',['../classData__file.html#a41376e51a6e242cd7e237c3df315eee6',1,'Data_file']]],
