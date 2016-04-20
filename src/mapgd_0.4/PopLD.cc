@@ -1,6 +1,7 @@
 // Updated on 01/19/16
 
 #include "PopLD.h"
+#include <iterator>     // std::distance
 
 /*
 
@@ -95,7 +96,6 @@ Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &m
 	est.set_Ni(Ni);
 	est.set_p(best_p);
 	est.set_q(best_q);
-
 
 	maxll = -FLT_MAX;
 
@@ -441,7 +441,6 @@ int PopLD(int argc, char *argv[])
 	std::list <Locus>::iterator s_locus=locus_list.begin(), e_locus=locus_list.begin(), end_locus=locus_list.end();
 	std::list <Allele>::iterator s_allele=allele_list.begin(), e_allele=allele_list.begin(), end_allele=allele_list.end();
 
-	
 	while(e_allele!=end_allele){
 		pro_in.read(*(e_locus) );
 		map_in.read(*(e_allele) );
@@ -456,6 +455,7 @@ int PopLD(int argc, char *argv[])
 	e_allele=allele_list.begin();
 						
 	do {
+		read=0;
 		do {
 			size_t number;
 			id1_t pos1=locus1.get_abs_pos();
@@ -463,9 +463,11 @@ int PopLD(int argc, char *argv[])
 			id0_t scf1=index.get_id0(pos1);
 			id0_t scf2=index.get_id0(pos2);
 
+			//TODO Fix my terrible code! This code block checks to see if the two sites (locus1 and locus2) pass critera for calculating LD.
 			if ( (pos2-pos1)<max_d && scf1==scf2) {
 				if ( (pos2-pos1)>min_dist ) {
 					number=count_sites(locus1, locus2);
+					//std::cerr << number << ", " << pos1 << ", " << pos2 << ", " << pos2-pos1 << " ding " << std::distance(e_allele,end_allele) << " -- " << std::distance(s_allele, end_allele) <<  ".\n";
 					if ( number >= min_number ) {
 						locus_buffer1[read]=locus1;
 						allele_buffer1[read]=allele1;
@@ -476,6 +478,7 @@ int PopLD(int argc, char *argv[])
 					}
 				}
 			} else { 
+				//If the distance between the two sites is too great, move the first site up.
 				s_locus++;
 				s_allele++;
 				if (s_locus!=end_locus && e_locus!=end_locus){
@@ -489,20 +492,30 @@ int PopLD(int argc, char *argv[])
 					e_allele=end_allele;
 				}
 			}
+
+			//Make sure site two isn't at the end of our buffer.
 			if (e_allele!=end_allele) {
+				//If it isn't, just move site two up..
 				locus2=*(e_locus);
 				allele2=*(e_allele);
 				e_locus++;
 				e_allele++;
-			} else {
+			} else if (map_in.table_is_open() ) {
+				//If it is we have to increase the size of our buffer.
+				//std::cerr << "Buffer read\n";
 				std::list <Locus>::iterator new_locus=e_locus;
 				std::list <Allele>::iterator new_allele=e_allele;
 				new_locus--;
 				new_allele--;
 				locus_list.insert(e_locus, BUFFER_SIZE, locus1);
 				allele_list.insert(e_allele, BUFFER_SIZE, allele1);
+
 				end_allele=allele_list.end();
 				end_locus=locus_list.end();
+
+				e_locus=new_locus;
+				e_allele=new_allele;
+
 				while(new_locus!=end_locus){
 					pro_in.read( *(new_locus) );
 						map_in.read( *(new_allele) );
@@ -512,8 +525,28 @@ int PopLD(int argc, char *argv[])
 					new_locus++;
 					new_allele++;
 				}
+
+				++e_locus;
+				++e_allele;
+
+				locus2=*(e_locus);
+				allele2=*(e_allele);
+			} else {
+				//std::cerr << "Moving locus1\n";
+				s_locus++;
+				s_allele++;
+				if (s_locus!=end_locus){
+					locus1=*s_locus;
+					allele1=*s_allele;
+					e_locus=s_locus;
+					e_allele=s_allele;
+					locus_list.pop_front();
+					allele_list.pop_front();
+				} else {
+					e_allele=end_allele;
+				}
 			}
-		} while (read<BUFFER_SIZE && (map_in.table_is_open() || e_allele!=end_allele) );
+		} while (read<BUFFER_SIZE && (map_in.table_is_open() || s_allele!=end_allele) );
 	
 		#ifndef NOOMP
 		#pragma omp for
@@ -526,7 +559,7 @@ int PopLD(int argc, char *argv[])
 		for (size_t c=0; c<read; ++c){ 
 			ld_out.write(linkage_buffer[c]);
 		}
-	} while (map_in.table_is_open() );
+	} while (map_in.table_is_open() || s_allele!=end_allele);
 	ld_out.close();
 	return 0;
 }
