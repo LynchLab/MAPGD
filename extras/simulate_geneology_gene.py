@@ -3,10 +3,10 @@ import numpy
 import os
 import math
 
-Pfreq=0.85
-SIZE=100
+Pfreq=0.55
+SIZE=10
 bp=1
-GEN=50
+GEN=10
 
 gdir="graphs/"
 
@@ -146,8 +146,17 @@ for x in range(0, SIZE):
 
 for y in range(1, GEN):
 	for x in range(0, SIZE):
-		w=random.randint(0, SIZE-1)
-		z=random.randint(0, SIZE-1)
+		if (y<3):
+			w=random.randint(0, SIZE-1)
+			z=random.randint(0, SIZE-1)
+		else:
+			if (x<5):
+				w=random.randint(0, SIZE/2-1)
+				z=random.randint(0, SIZE/2-1)
+			else:
+				w=random.randint(SIZE/2, SIZE-1)
+				z=random.randint(SIZE/2, SIZE-1)
+			
 		F[y].append(individual("F", F[y-1][z], F[y-1][w]))
 		if y==1:
 			if ( not(F[0][z].labeled) ):
@@ -167,7 +176,6 @@ A=individual("C", E, F[-1][3])
 
 count = [[ [0,0,0] for x in range(3)] for y in range(SIZE*2+1)]
 
-quit()
 a=0
 
 LIM=10

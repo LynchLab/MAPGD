@@ -177,7 +177,7 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 
 	if (P==0) return 0;	
 	float_t e=0;//global_relatedness.e_Y_[freqtoi(pair.m)]-global_relatedness.e_X_[freqtoi(pair.m)];
-	P+=(global_relatedness.e_Y_[freqtoi(pair.m)]+global_relatedness.e_X_[freqtoi(pair.m)]);
+	//P+=(global_relatedness.e_Y_[freqtoi(pair.m)]+global_relatedness.e_X_[freqtoi(pair.m)]);
 
 	/*This comes from the inverse matrix of the one used to calculate the moments.*/
 	

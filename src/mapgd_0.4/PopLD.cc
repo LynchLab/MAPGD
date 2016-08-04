@@ -551,10 +551,12 @@ int PopLD(int argc, char *argv[])
 		#ifndef NOOMP
 		#pragma omp for
 		#endif
-		for (uint32_t x=0; x<read; ++x){
-			size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
+		for (uint32_t x=0; x<BUFFER_SIZE; ++x){
+			if (x<read){
+				size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
 			// Estimate the LD coefficient D between the polymorphic sites 
-			linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major+1, (uint8_t)allele_buffer1[x].minor+1, (uint8_t)allele_buffer2[x].major+1, (uint8_t)allele_buffer2[x].minor+1, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
+				linkage_buffer[x] = estimate_D(Ni, (uint8_t)allele_buffer1[x].major+1, (uint8_t)allele_buffer1[x].minor+1, (uint8_t)allele_buffer2[x].major+1, (uint8_t)allele_buffer2[x].minor+1, allele_buffer1[x].freq, allele_buffer2[x].freq, allele_buffer1[x].error, allele_buffer2[x].error, nsample, locus_buffer1[x], locus_buffer2[x] );
+			}
 		}
 		for (size_t c=0; c<read; ++c){ 
 			ld_out.write(linkage_buffer[c]);

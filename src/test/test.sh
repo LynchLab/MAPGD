@@ -172,13 +172,12 @@ testa
 
 a="linkage"
 msg="linkage"
-size=$(($pop*($pop-1)/2+3))
-echo -n "cat linkage | $mapgd $a > $a.out 										"
-$mapgd proview -H $header -n $unicode > temp_pro.out
-$mapgd allele -i temp_pro.out -M 1 > temp_allele.out
+size=15
+echo -n "cat linkage | $mapgd $a > $a.out 											"
+$mapgd proview -H $header -n $unicode -o temp_pro
+$mapgd allele -i temp_pro.pro -M 1 > temp_allele.out
 $mapgd filter -i temp_allele.out -p 5 > temp_filtered.out
-$mapgd linkage -p temp_pro.out -m temp_filtered.out -M 2 > temp_genotype.out
-exit 0
+$mapgd linkage -p temp_pro.pro -m temp_filtered.out -M 2 > linkage.out
 testa
 rm -f temp*
 
@@ -225,7 +224,6 @@ $mapgd genotype -p temp_pro.out -m temp_allele.out > temp_genotype.out
 $mapgd relatedness -i temp_genotype.out > $a.out
 testa
 rm -f temp*
-
 
 exit 0
 

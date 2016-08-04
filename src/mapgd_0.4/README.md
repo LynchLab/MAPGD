@@ -1,19 +1,23 @@
 
-#MAPGD version 0.4.2
+# MAPGD version 0.4.2
 
-#Contents
+# Contents
 
 [Introduction](https://github.com/LynchLab/src/mapgd_0.4/MAPGD#introduction)
+
 [Basic Design](https://github.com/LynchLab/src/mapgd_0.4/MAPGD#basic-design)
+
 [Style Guidelines](https://github.com/LynchLab/src/mapgd_0.4/MAPGD#style-guidelines)
+
 [Tutorials](https://github.com/LynchLab/src/mapgd_0.4/MAPGD#tutorials)
+
 [Task List](https://github.com/LynchLab/src/mapgd_0.4/MAPGD#task-list)
 
-#Introduction
+# Introduction
 
 MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum-likelihood approach.
 
-#Basic Design
+# Basic Design
 
 * I/O
   * The user interface
@@ -32,9 +36,7 @@ MAPGD is a series of related programs that estimate allele frequency, heterozygo
 * Models
   In order to 
  
-#
-
-#Style Guidelines
+# Style Guidelines
 
 mapgd is written to conform to the GNU style guidelines, at least to the extent that I have had time to read and implement the guidelines.
 
@@ -48,37 +50,29 @@ mapgd is written to conform to the GNU style guidelines, at least to the extent 
 * Function definitions should have aligned braces:
 
    Right:
-   ```
-	Void
-	My_func (void)
-	{
-		return;
-	}
-   ```
+    Void
+    My_func (void)
+    {
+       return;
+    }
    Wrong:
-   ```
-	Void
-	My_func (void) {
-		return;
-	}
-   ```
+    Void
+    My_func (void) {
+       return;
+    }
 * The return type should occur on the line immediately preceding the function name:
 
    Right:
-   ```
-	int
-	My_func (void)
-	{
-		return 1;
-	}
-   ```
+    int
+    My_func (void)
+    {
+       return 1;
+    }
    Wrong:
-   ```
-	int My_func (void)
-	{
-		return 1;
-	}
-   ```
+    int My_func (void)
+    {
+       return 1;
+    }
 
 * Use the types defined in typedef.h when appropriate. For instance, when specifying a position in the genome, you should use the Id1\_t type.
 
@@ -89,38 +83,44 @@ mapgd is written to conform to the GNU style guidelines, at least to the extent 
 
    This prevents inconsistent usage for variables storing positions in the genome, which could be reasonably be declared as int, unsigned int, long int, etc. 
 
-#Models
+# Models
 
 In statistics, a [model](https://en.wikipedia.org/wiki/Statistical_model) is an idealized description of how the observed data was generated. This description includes uses ...
 
-##Maximum Likelihood
+## Maximum Likelihood
 
-##Likelihoods
+## Likelihoods
 
-##Priors
+## Priors
 
-##Posteriors
+## Posteriors
 
-##Maximizing Posteriors
+## Maximizing Posteriors
 
-#Genotypic Correlation
+# Genotypic Correlation
 
 Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that population. This means that if we can accurately calculate all genotypic probabilities, then the calculation of any other population statistics becomes trivial. However, in order to calculate genotypic probabilities we must take account of the errors made in the genotyping process. Include inferring the presence of alleles that are not there, which can arise from sequencing error or mistakes made aligning to a reference, and failing to detect the presence of alleles which are there because of low coverage or biased sequencing of a single parental chromosome. We maximize a likelihood equation to account for sequencing error and the failure to sample genotypes, and then we test the data for fit to the parameters, and reject estimates where the data has a poor fit to the estimated parameters.
 
-#Tutorials
+# Tutorials
 
 [An introduction to quartets]()
 [Reading and writing to files]()
 [Making models]()
 
-#Task List
+# Task List
 
 [ ] Write scripting tutorials for the main user page.
+
 [ ] Claim mapgd.org.
+
 [ ] Automate tutorial testing.
+
 [ ] Automatic statistical and computational performance testing.
+
    Statistical test should report bais and MSE of MAPGD and several other programs (ANGSD/GATK/PLINK).
    Keep other programs up to date.
    Performance test should report ...
+
 [ ] Write SQL tutorials.
+
 [ ] Automatically generate figures from recent papers. 

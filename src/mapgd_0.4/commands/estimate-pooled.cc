@@ -164,6 +164,7 @@ int estimatePooled(int argc, char *argv[])
 			site.error=(float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
 			if (site.error<EMLMIN) site.error=EMLMIN;
 			site.p[x]=pmlP[x];
+			popN=locus.getcoverage(pop[x]);
 //			std::cerr << site.error << "] ";
 			multi.set(&polymorphicmodel, site.to_allele(x) );
                         llhoodP[x]=multi.lnprob(locus.get_quartet(pop[x]).base );

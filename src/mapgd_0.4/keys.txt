@@ -23,3 +23,16 @@ AA	gt_t	ancestral allele
 NCUT	size_t	the number of samples excluded because of filters
 GOF	float_t	goodness of fit value
 DEFAULT	bool	a flag to indicate that a record represents a default value
+POS_X	
+POS_Y	
+DIST	
+BEST_D	
+BEST_D'	
+BEST_D2	
+BEST_R2	
+ADJ_BEST_D	
+ADJ_BEST_D'	
+ADJ_BEST_D2	
+ADJ_BEST_r2	
+Ni	
+LOGLIKE
