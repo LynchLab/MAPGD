@@ -81,12 +81,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">mapgd Documentation</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>#MAPGD version 0.4.2</p>
-<p>#Contents</p>
-<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#introduction">Introduction</a> <a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#basic-design">Basic Design</a> <a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#style-guidelines">Style Guidelines</a> <a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#tutorials">Tutorials</a> <a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#task-list">Task List</a></p>
-<p>#Introduction</p>
+<div class="textblock"><h1>Contents</h1>
+<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#introduction">Introduction</a></p>
+<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#basic-design">Basic Design</a></p>
+<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#style-guidelines">Style Guidelines</a></p>
+<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#tutorials">Tutorials</a></p>
+<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#task-list">Task List</a></p>
+<h1>Introduction</h1>
 <p>MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum-likelihood approach.</p>
-<p>#Basic Design</p>
+<h1>Basic Design</h1>
 <ul>
 <li>I/O<ul>
 <li>The user interface The user interacts with MAPGD through a <a href="https://en.wikipedia.org/wiki/Command-line_interface">command line interface</a>. One of the advantages of</li>
@@ -106,8 +109,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>Models In order to</li>
 </ul>
-<p>#</p>
-<p>#Style Guidelines</p>
+<h1>Style Guidelines</h1>
 <p>mapgd is written to conform to the GNU style guidelines, at least to the extent that I have had time to read and implement the guidelines.</p>
 <ul>
 <li>Class names should be whole English words starting with an initial capital (to distinguish them from the core classes and types of c++): e.g My_class_name.</li>
@@ -118,33 +120,39 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>Error messages should always list the name of the file generating the error and the line number from which the error message was printed. These can be set with the compiler Macros __NAME__ and __LINE__ so that they remain accurate as your source code changes.</li>
 <li>The GNU style guidelines recommend the use of gettext to make it easy to translate programs into different languages. We need to implement these standards in the future, however, we have not done so yet.</li>
 <li><p class="startli">Function definitions should have aligned braces:</p>
-<p class="startli">Right: ``` Void My_func (void) { return; } ``` Wrong: ``` Void My_func (void) { return; } ```</p>
+<p class="startli">Right: Void My_func (void) { return; } Wrong: Void My_func (void) { return; }</p>
 </li>
 <li><p class="startli">The return type should occur on the line immediately preceding the function name:</p>
-<p class="startli">Right: ``` int My_func (void) { return 1; } ``` Wrong: ``` int My_func (void) { return 1; } ```</p>
+<p class="startli">Right: int My_func (void) { return 1; } Wrong: int My_func (void) { return 1; }</p>
 </li>
 <li><p class="startli">Use the types defined in <a class="el" href="typedef_8h_source.html">typedef.h</a> when appropriate. For instance, when specifying a position in the genome, you should use the Id1_t type.</p>
 <p class="startli">Right: Id1_t position; Wrong: int position;</p>
 <p class="startli">This prevents inconsistent usage for variables storing positions in the genome, which could be reasonably be declared as int, unsigned int, long int, etc.</p>
 </li>
 </ul>
-<p>#Models</p>
+<h1>Models</h1>
 <p>In statistics, a <a href="https://en.wikipedia.org/wiki/Statistical_model">model</a> is an idealized description of how the observed data was generated. This description includes uses ...</p>
 <h2>Maximum Likelihood</h2>
 <h2>Likelihoods</h2>
 <h2>Priors</h2>
 <h2>Posteriors</h2>
 <h2>Maximizing Posteriors</h2>
-<p>#Genotypic Correlation</p>
+<h1>Genotypic Correlation</h1>
 <p>Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that population. This means that if we can accurately calculate all genotypic probabilities, then the calculation of any other population statistics becomes trivial. However, in order to calculate genotypic probabilities we must take account of the errors made in the genotyping process. Include inferring the presence of alleles that are not there, which can arise from sequencing error or mistakes made aligning to a reference, and failing to detect the presence of alleles which are there because of low coverage or biased sequencing of a single parental chromosome. We maximize a likelihood equation to account for sequencing error and the failure to sample genotypes, and then we test the data for fit to the parameters, and reject estimates where the data has a poor fit to the estimated parameters.</p>
-<p>#Tutorials</p>
+<h1>Tutorials</h1>
 <p>[An introduction to quartets]() [Reading and writing to files]() [Making models]()</p>
-<p>#Task List</p>
-<p>[ ] Write scripting tutorials for the main user page. [ ] Claim mapgd.org. [ ] Automate tutorial testing. [ ] Automatic statistical and computational performance testing. Statistical test should report bais and MSE of MAPGD and several other programs (ANGSD/GATK/PLINK). Keep other programs up to date. Performance test should report ... [ ] Write SQL tutorials. [ ] Automatically generate figures from recent papers. </p>
+<h1>Task List</h1>
+<p>[ ] Write scripting tutorials for the main user page.</p>
+<p>[ ] Claim mapgd.org.</p>
+<p>[ ] Automate tutorial testing.</p>
+<p>[ ] Automatic statistical and computational performance testing.</p>
+<p>Statistical test should report bais and MSE of MAPGD and several other programs (ANGSD/GATK/PLINK). Keep other programs up to date. Performance test should report ...</p>
+<p>[ ] Write SQL tutorials.</p>
+<p>[ ] Automatically generate figures from recent papers. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 19 2016 10:47:30 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Aug 4 2016 15:01:35 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
