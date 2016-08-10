@@ -58,7 +58,8 @@ Pooled_data::read (std::istream& in)
 	line_stream >> major;
 	line_stream >> minor;
 	line_stream >> coverage;
-	line_stream >> error;
+	if (coverage>0) line_stream >> error;
+	else line_stream >> f;
 	line_stream.get();
 
 	for (size_t s=0; s<names_.size();++s) {
