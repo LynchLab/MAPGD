@@ -15,6 +15,8 @@
 #include <iostream>
 #include "typedef.h"
 
+#define ARG_ERROR	-1
+
 /* /defgroup arg_parser Argument parsers
  * @{
 */

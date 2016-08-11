@@ -22,6 +22,18 @@
 *  Tis' a silly thing.
 */
 
+
+/* @Breif : tells you whether a string is an int */
+bool 
+isfloat(const char *c)
+{
+	const char *s=c;
+	while (*c !=0 && std::isdigit(*c) ) ++c;
+	if (*c !=0 && *c=='.') ++c;
+	while (*c !=0 && std::isdigit(*c) ) ++c;
+	return (*c==0 && c!=s);
+}
+
 /* @Breif : tells you whether a string is an int */
 bool 
 isint(const char *c)
@@ -125,7 +137,7 @@ arg_set_vector_uli(int argc, char **argv, void *parm)
 		}
 		return 1;
 	} 
-	std::cerr << "arg_set_vector_uint64_t: error parsing " << argv[1] << std::endl;
+	std::cerr << __FILE__ << ":" << __LINE__ << " arg_set_vector_uint64_t: error parsing " << argv[1] << std::endl;
 	exit(1);
 }
 
@@ -147,20 +159,20 @@ arg_set_vector_ulli(int argc, char **argv, void *parm)
 							}
 						};
 					} else {
-						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+						std::cerr << __FILE__ << ":" << __LINE__ << " cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
 					};
 				} else{
-					std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+					std::cerr << __FILE__ << ":" << __LINE__  << " cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
 				};
 			}
 		}
 		return 1;
 	} 
-	std::cerr << "arg_set_vector_uint64_t: error parsing " << argv[1] << std::endl;
+	std::cerr << __FILE__ << ":" << __LINE__ << " arg_set_vector_uint64_t: error parsing " << argv[1] << std::endl;
 	exit(1);
 }
 
-//TODO Comment
+// A functor to set integer parameters
 int
 arg_set_int(int argc, char **argv, void *parm)
 {
@@ -168,14 +180,14 @@ arg_set_int(int argc, char **argv, void *parm)
 		if (isint(argv[0])){
 			*( (int *)(parm) )=atoi(argv[0]);
 			return 1;
-		} 
-		return argc;
+		}
+		return ARG_ERROR; 
 	} 
-	std::cerr << "arg_setint:error parsing " << argv[1] << std::endl;
+	std::cerr << __FILE__ << ":" << __LINE__ << " arg_setint:error parsing " << argv[1] << std::endl;
 	exit(1);
 }
 
-//TODO Comment
+//A functor to set single character parameters
 int
 arg_set_char(int argc, char **argv, void *parm)
 {
@@ -185,7 +197,7 @@ arg_set_char(int argc, char **argv, void *parm)
 	} exit(1);	
 }
 
-//TODO Comment
+//A functor to set strings. Returns the number of fields processed on success (1) and exist on failure.
 int
 arg_set_str(int argc, char **argv, void *parm)
 {
@@ -195,7 +207,7 @@ arg_set_str(int argc, char **argv, void *parm)
         } exit(1);
 }
 
-//TODO Comment
+//A functor to set c strings. Returns the number of fields processed on success (1) and exist on failure.
 int 
 arg_setc_str(int argc, char **argv, void *parm)
 {
@@ -205,30 +217,42 @@ arg_setc_str(int argc, char **argv, void *parm)
 	} exit(1);	
 }
 
-//TODO Comment
+//A functor to set floats. Returns the number of fields processed on success (1), and exist on failure.
 int 
 arg_set_float(int argc, char **argv, void *parm)
 {
 	if (argc>0){
-		*(float *)(parm)=atof(argv[0]);
-		return 1;
+		if (isfloat(argv[0])){
+			*(float *)(parm)=atof(argv[0]);
+			return 1;
+		}
+		return ARG_ERROR; 
 	} exit(1);	
 }
 
+//A functor to set doubles. Returns the number of fields processed on success (1), and exits on failure.
 int 
 arg_set_double(int argc, char **argv, void *parm)
 {
 	if (argc>0){
-		*(double *)(parm)=atof(argv[0]);
-		return 1;
+		if (isfloat(argv[0])){
+			*(double *)(parm)=atof(argv[0]);
+			return 1;
+		}
+		return ARG_ERROR; 
 	} exit(1);	
 }
+
+//A functor to set long doubles.
 int
 arg_set_long_double(int argc, char **argv, void *parm)
 {
 	if (argc>0){
-		*(long double *)(parm)=atof(argv[0]);
-		return 1;
+		if (isfloat(argv[0])){
+			*(long double *)(parm)=atof(argv[0]);
+			return 1;
+		}
+		return ARG_ERROR; 
 	} exit(1);	
 }
 
@@ -269,7 +293,7 @@ flag_usage(void *parm)
 int
 arg_error(int argc, char **argv, void *parm)
 {
-	std::cerr << "error: option functor unset\n";
+	std::cerr << __FILE__ << ":" << __LINE__ << " error: option functor unset\n";
 	return 1;
 }
 
@@ -278,7 +302,7 @@ arg_error(int argc, char **argv, void *parm)
 int 
 parsargs(int argc, char *argv[], Environment &env)
 {
-	int optind=1; 
+	int optind=1,  arg_ret=0; 
 	char *optopt; 
 
 	std::list <Argument>::iterator arg=env.args.begin();
@@ -302,8 +326,14 @@ parsargs(int argc, char *argv[], Environment &env)
 					while(arg!=arg_end){
 						if (*optopt==arg->opt){
 							optind++;
-							optind+=arg->func(argc-optind, argv+optind, arg->parm);
-							arg->set=true;
+							arg_ret=arg->func(argc-optind, argv+optind, arg->parm);
+							if(arg_ret!=ARG_ERROR) {
+								optind+=arg_ret;
+								arg->set=true;
+							} else {
+								std::cerr << env.name << ":" << " option --" << arg->lopt << " -" << arg->opt << " "<< arg->emsg  << std::endl; 
+							}
+							//TODO insert error evaluation...
 							break;
 						} ++arg;
 					} if(arg==arg_end) {

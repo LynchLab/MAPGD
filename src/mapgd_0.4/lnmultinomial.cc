@@ -2,8 +2,6 @@
 
 #include "lnmultinomial.h"
 
-/*! \breif 
- */	
 lnmultinomial& lnmultinomial::operator=(const lnmultinomial& rhs)
 {
 	delete [] lnp_;
@@ -14,8 +12,6 @@ lnmultinomial& lnmultinomial::operator=(const lnmultinomial& rhs)
 	return *this;	
 }
 
-/* \breif creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .	
- */
 lnmultinomial::lnmultinomial (float_t* s, const count_t& size)
 {
 	size_=size;
@@ -25,8 +21,6 @@ lnmultinomial::lnmultinomial (float_t* s, const count_t& size)
 	lnfact_vector.clear();
 }
 
-/* \breif  . . .	
- */
 lnmultinomial::lnmultinomial (const count_t &size)
 {
 	size_=size;
@@ -34,8 +28,6 @@ lnmultinomial::lnmultinomial (const count_t &size)
 	lnfact_vector.clear();
 }
 
-/* \breif . . .	
- */
 lnmultinomial::lnmultinomial (void)
 {
 	size_=4;
@@ -43,26 +35,22 @@ lnmultinomial::lnmultinomial (void)
 	lnfact_vector.clear();
 }
 
-/* \breif  . . .	
- */
 lnmultinomial::~lnmultinomial (void)
 {
 	delete [] lnp_;
 	lnfact_vector.clear();
 }
 
-/* \breif  . . .	
- */
-void lnmultinomial::set(void (*fn)(Allele const &, float_t *), Allele const &s)
+void 
+lnmultinomial::set(void (*fn)(Allele const &, float_t *), Allele const &s)
 {
 	delete [] lnp_;
 	lnp_=new float_t[size_];
 	fn(s, lnp_);
 }
 
-/* \breif . . .	
- */
-void lnmultinomial::set(float_t *s)
+void 
+lnmultinomial::set(float_t *s)
 {
 	delete [] lnp_;
 	lnp_=new float_t[size_];
@@ -75,7 +63,8 @@ void lnmultinomial::set(float_t *s)
 	}
 }
 
-void lnmultinomial::set(float_t a, float_t b, float_t c, float_t d)
+void 
+lnmultinomial::set(float_t a, float_t b, float_t c, float_t d)
 {
 	delete [] lnp_;
 	lnp_=new float_t[4];
@@ -90,7 +79,8 @@ void lnmultinomial::set(float_t a, float_t b, float_t c, float_t d)
 	size_=4;
 }
 
-float_t lnmultinomial::lnprob(const count_t *s)
+float_t 
+lnmultinomial::lnprob(const count_t *s)
 {
 	float_t ret=0, *lit=lnp_;
 	const count_t *it=s, *end=s+size_;
@@ -102,13 +92,12 @@ float_t lnmultinomial::lnprob(const count_t *s)
 	return lnmultinomcoef(s)+ret;
 }
 
-//cacluates the probability of a sample 
-float_t lnmultinomial::lnprob_approx(const count_t *s)
+float_t 
+lnmultinomial::lnprob_approx(const count_t *s)
 {
 	float_t ret=0, *lit=lnp_;
 	const count_t *it=s, *end=s+size_;
 	while (it!=end) {
-//		std::cout << (*it) << " x " << *lit <<std::endl;
 		ret+=(*it)*(*lit); 
 		++lit; 
 		++it;
@@ -116,13 +105,9 @@ float_t lnmultinomial::lnprob_approx(const count_t *s)
 	return ret;
 }
 
-/*string hash(count_t a){
-	char *h=char *(&a);
-	return *h+*(h+1);
-};*/
-
-
-float_t lnmultinomial::lnmultinomcoef(const count_t *s){
+float_t 
+lnmultinomial::lnmultinomcoef(const count_t *s)
+{
 	switch (size_){
 		case 2:
 			return lnfact(s[0]+s[1])-lnfact(s[0])-lnfact(s[1]);
@@ -140,7 +125,8 @@ float_t lnmultinomial::lnmultinomcoef(const count_t *s){
 	return std::numeric_limits<double>::quiet_NaN();
  }
 
-float_t lnmultinomial::lnfact(const count_t &s)
+float_t 
+lnmultinomial::lnfact(const count_t &s)
 {
 	if (lnfact_vector.size()==0) {lnfact_vector.push_back(log(1) ); lnfact_vector.push_back(log(1) );}
 	for (size_t x=lnfact_vector.size(); x<=s; x++) lnfact_vector.push_back(lnfact_vector[x-1]+log(x) ); 
@@ -168,4 +154,3 @@ std::vector <std::pair <count_t, count_t> > sort (const count_t *a, const count_
 	std::sort(sorted.begin(), sorted.end(), sort_second() );
 	return sorted;
 }
-

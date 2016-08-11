@@ -40,10 +40,10 @@ int proview(int argc, char *argv[])
 	env.set_author("Matthew Ackerman and Bernhard Haubold");
 	env.set_description("prints data in the '.pro' file quartet format");
 	env.required_arg('H',"header",	headerfile,	"You must specify an index file (-H)", "sets the index file (required to use mpileup)");
-	env.optional_arg('m',"minimum",	args.min, 	"an error occurred", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
-	env.optional_arg('n',"names",	namefile, 	"an error occurred", "a tab delimited file with sample name 'tab' file name pairs.");
-	env.optional_arg('o',"output",	outfile,	"an error occurred", "sets the output file (default stdout)");
-	env.positional_arg('i',"input",	infiles,	"No input files specified.", "the mpileup files to be used");
+	env.optional_arg('m',"minimum",	args.min, 	"please provide a integer number", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
+	env.optional_arg('n',"names",	namefile, 	"No name file specified", "a tab delimited file with sample name 'tab' file name pairs.");
+	env.optional_arg('o',"output",	outfile,	"No output file specified", "sets the output file (default stdout)");
+	env.positional_arg('i',"input",	infiles,	"No input file specified", "the mpileup files to be used");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "prints the program version");
 	env.flag(	'b',"binary",	&out_binary, 	&flag_set, 	"an error occurred", "output in a binary format");

@@ -1,17 +1,20 @@
 #include "compare-pooled.h"
 
-int comparePooled(int argc, char *argv[])
+int 
+comparePooled(int argc, char *argv[])
 {
+	//Setting up the default values of variables.
 	std::string infile="";
 	std::string outfile="";
 
-	Environment env;
 
 	int s=0;
 	float_t a=0.0;
 	float_t EMLMIN=0.0001;
 
 	std::vector <int> pop;
+
+	Environment env;
 
 	env.set_name("mapgd cp");
 	env.set_version(VERSION);

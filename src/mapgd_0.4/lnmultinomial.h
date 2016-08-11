@@ -15,33 +15,32 @@
 #include "typedef.h"
 #include "data_types/allele.h"
 
-/* \breif information that should be passed to vcf files.
+/* \brief information that should be passed to vcf files.
  */
 
-//* This is pathalogical. Working to kill it.*/
-/* \breif returns the log... 
+//* This is pathological. Working to kill it.*/
+/* \brief returns the log... 
  */
 class lnmultinomial {
 private:
-	std::vector <float_t> lnfact_vector;
-	float_t *lnp_;
-	count_t size_;
+	std::vector <float_t> lnfact_vector;		//!< A look up table for log factorial values.
+	float_t *lnp_;					//!< TODO Add a description. 
+	count_t size_;					//!< The number of categories in the multinomial.
 public:	
-	lnmultinomial (float_t*, const count_t&);	//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
-	lnmultinomial (const count_t&);			//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
-	lnmultinomial (void);				//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
-	~lnmultinomial (void);				//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
-
-	void set (float_t*);				//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
-	void set (float_t, float_t, float_t, float_t);	//!< creates a function that returns log probabilites from a multinomial distribution with parameters float_t . . .
+	lnmultinomial (float_t*, const count_t&);	//!< Creates a function that returns log probabilities from a multinomial distribution with parameters float_t . . .
+	lnmultinomial (const count_t&);			//!< Creates a function that returns log probabilities from a multinomial distribution with parameters float_t . . .
+	lnmultinomial (void);				//!< Creates a function that returns log probabilities from a multinomial distribution with parameters float_t . . .
+	~lnmultinomial (void);				//!< Creates a function that returns log probabilities from a multinomial distribution with parameters float_t . . .
+	void set (float_t*);				//!< Creates a function that returns log probabilities from a multinomial distribution with parameters float_t . . .
+	void set (float_t, float_t, float_t, float_t);	//!< Creates a function that returns log probabilities from a multinomial distribution with parameters float_t . . .
 	void set(void (*)(const Allele&, float_t *), const Allele&);
 
-	float_t lnprob(const count_t*) ;		//!< returns the probabiltiy of the multinomial distribution . . .
-	float_t lnprob_approx(const count_t*);		//!< returns the probabiltiy of the multinomial distribution . . .
-	float_t lnfact(const count_t&);			//!< returns the log factorial of the count type numbers in the array
-	float_t lnmultinomcoef(const count_t*);		//!< returns the log factorial of the count type numbers in the array
+	float_t lnprob(const count_t*) ;		//!< Returns the probability of the multinomial distribution.
+	float_t lnprob_approx(const count_t*);		//!< Returns the probability of the multinomial distribution ().
+	float_t lnfact(const count_t&);			//!< Returns the log factorial of the count type numbers in the array
+	float_t lnmultinomcoef(const count_t*);		//!< Returns the log factorial of the count type numbers in the array
 
-	lnmultinomial& operator=(const lnmultinomial& rhs);  //!< a comment.
+	lnmultinomial& operator=(const lnmultinomial& rhs);  //!< Use = operator to copy a lnmultinomial.
 };
 
 std::vector <std::pair <count_t, float_t> > sort (const float_t *, const count_t &);
