@@ -25,6 +25,7 @@
 #include "PopLD.h"
 #include "sam2idx.h"
 #include "mapgd-help.h"
+//#include "make-vcf.h"
 
 #ifndef NOSQL
 #include "writesql.h"

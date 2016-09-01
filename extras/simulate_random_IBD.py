@@ -14,11 +14,18 @@ parser.add_argument('-c', metavar='--cov', type=float, default=10,
                    help='simulated depth of coverage')
 parser.add_argument('-s', metavar='--sigma', type=float, default=0.0,
                    help='simulated sampling error')
+parser.add_argument('-r', metavar='--rsq', type=float, default=0.0,
+                   help='ld between adjacent SNPs')
+parser.add_argument('-l', metavar='--l2i', type=bool, default=False,
+                   help='include the observed individual in allele frequency estimates')
 args = parser.parse_args()
 
 
 
-def getMs (P, S):
+def getMs (PA, PC, S):
+	P=PA
+	P=PC
+
 	FA, FC, r, sA, sC, z1, z2=S
 	Q=1-P
 
@@ -48,10 +55,13 @@ def getMs (P, S):
 
 def test (S):
 	for x in range (1, 10):
-		mmmm, Mmmm, MMmm, mmMm, MmMm, MMMm, mmMM, MmMM, MMMM=getMs(float(x)/10., S)
+		mmmm, Mmmm, MMmm, mmMm, MmMm, MMMm, mmMM, MmMM, MMMM=getMs(float(x)/10., float(x)/10., S)
 		if ( min([mmmm, Mmmm, MMmm, mmMm, MmMm, MMMm, mmMM, MmMM, MMMM])<-0.0001):
 			return False
 	return True
+
+#def get_conditional(X, rsq):
+	
 
 Fa=0
 Fc=1
@@ -65,7 +75,10 @@ Z= [0,1,2,3,4,5,6]
 
 S=[random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5 ]
 
+#S=[0,0, 0.10, 0, 0, 0, 0]
+
 random.shuffle(Z)
+
 
 for x in range(0, random.randint(0, 6) ):
 	S[Z[x]]=0      
@@ -89,19 +102,23 @@ for z in range (0, 11):
 			count[z][x].append(0)
 
 skipped=0
+l2i=False
 
 MAX=args.N
 N1=args.c
 N2=args.c
 sigma=args.s
+ld=args.r
+l2i=args.l
 
-MINP=0.1
-MAXP=0.4
+MINP=0.005
+MAXP=0.5
 
 while ( not ( test(S) ) ):
 	S=[random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5, random.random()-0.5 ]
 	for x in range(0, random.randint(0, 6) ):
 		S[Z[x]]=0
+
 FC, FA, r, sC, sA, z1, z2=S
 
 File2.write( "@NAME:SCAFFOLDS	VERSION:0.4.1	FORMAT:TEXT	CONCATENATED\n")
@@ -111,20 +128,37 @@ File2.write( "@END_TABLE\n")
 File2.write( "@NAME:GENOTYPES	VERSION:0.4.1	FORMAT:TEXT	CONCATENATED	INDEXED\n")
 File2.write( "@SCFNAME	POS	MN_FREQ	Sample_1	Sample_2\n")
 
+A=0
+C=0
+skipped=0
+x=0
 
-for x in range(0, MAX):
+while x<MAX+skipped:
+	x+=1	
+	lastA=A
+	lastC=C
+
 	P=0
-	while(P<MINP or P>MAXP):
-		P = round(triang.rvs(0.1), 2)
+
+	while( (P<=MINP) or (P>MAXP) ):
+		P = (numpy.random.pareto(0.1, 1)[0]+1 )/1000
+#		print P
+#		P = round(triang.rvs(0.1), 2)
+#		P = round(random.random(), 2)
+
 	Q=1-P
+
 	td=random.random()
 
-	mmmm, Mmmm, MMmm, mmMm, MmMm, MMMm, mmMM, MmMM, MMMM=getMs(P, S)
+#	PA1, PA2=get_conditional(P, lastA, rsq)
+	
+#	PC1, PC2=get_conditional(P, lastC, rsq)
+
+	mmmm, Mmmm, MMmm, mmMm, MmMm, MMMm, mmMM, MmMM, MMMM=getMs(P, P, S)
 
 	if( min([mmmm, Mmmm, MMmm, mmMm, MmMm, MMMm, mmMM, MmMM, MMMM])<-0.0001):
 		skipped+=1
 		continue
-
 
 	Mmmm+=mmmm
 	MMmm+=Mmmm
@@ -187,18 +221,18 @@ for x in range(0, MAX):
 	else:
 		[M2, m2, e2]=numpy.random.multinomial(N2,[e/3.0, (1-e), 2*e/3])
 
-
 	if (sigma>0):
-		OP=P
-		den = numpy.random.binomial(sigma, P) 
-		if den==0:
-			den=1
-		if den==sigma:
-			den=sigma-1
-		P = round(float(den)/float(sigma), 2)
-		Q=1-P
-		
-	#	print den, sigma, OP, P
+		den = numpy.random.binomial(sigma, P)
+		sampP = round(float(den)/float(sigma), 2)
+		if (l2i):
+			P=(float(A+C)+float(den))/float(sigma+4)
+			Q=1-P
+		else:
+			P=sampP
+			Q=1-P
+	if P==0:
+		skipped+=1
+		continue
 
 	MM1=lnc*M1+lne*(m1+e1)#-math.log(P**2)
 	Mm1=lnch*(M1+m1)+lne*e1#-math.log(2*P*Q)
@@ -211,7 +245,7 @@ for x in range(0, MAX):
 	norm1=math.log(math.exp(MM1)+math.exp(Mm1)+math.exp(mm1) )
 	norm2=math.log(math.exp(MM2)+math.exp(Mm2)+math.exp(mm2) )
 
-	File2.write( '\t'.join(map(str, ["scaffold_1", x, 1-P] ) )+'\t')
+	File2.write( '\t'.join(map(str, ["scaffold_1", x-skipped, 1-P] ) )+'\t')
 	File.write( '\t'.join(map(str, [-MM1+norm1, -Mm1+norm1, -mm1+norm1, N1, -MM2+norm2, -Mm2+norm2, -mm2+norm2, N2, P] ) )+'\n')
 	File2.write( '/'.join(map(str, [-MM1+norm1, -Mm1+norm1, -mm1+norm1, int(N1)] ) )+'\t')
 	File2.write( '/'.join(map(str, [-MM2+norm2, -Mm2+norm2, -mm2+norm2, int(N2)] ) )+'\n')

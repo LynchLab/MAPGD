@@ -78,7 +78,7 @@ SUBDIR=raw sql data_types commands data_conversion
 MAPGD=mapgd.o
 
 #These all depend on interface.h
-COMMAND_OBJ=estimate-individual.o \
+COMMAND_OBJ=commands/estimate-individual.o \
 	commands/estimate-pooled.o \
 	mapgd-help.o \
 	sam2idx.o \
@@ -86,7 +86,8 @@ COMMAND_OBJ=estimate-individual.o \
 	interface.o \
 	map2genotype.o \
 	PopLD.o \
-	filter.o \
+	commands/filter.o \
+	commands/make-vcf.o \
 	filter-pool.o \
 	relatedness.o
 
@@ -127,7 +128,7 @@ CONVERSION_OBJ=data_conversion/vcf_file.o
 ifeq ($(HAVE_SQL), yes)
 	OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ)
 else
-	OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ)
+	OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ)
 endif
 
 all: $(OBJ)

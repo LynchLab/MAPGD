@@ -24,7 +24,25 @@ hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const siz
 	while(gcf_in.table_is_open() ){
 		gcf_in.read(genotypes);
 		if (genotypes.likelihoods[x].N>1 && genotypes.likelihoods[y].N>1 ){
-			counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 2)]+=1;
+			counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 4)]+=1;
+		}
+	}
+	return counts;
+}
+
+std::map <Genotype_pair_tuple, size_t> 
+downsample_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)
+{
+	std::stringstream fb_copy(file_buffer.str() );
+	
+	Indexed_file <Population> gcf_in; 	// Open the file with genotypic probabilities.
+	gcf_in.open(&fb_copy, std::ios::in );
+	Population genotypes=gcf_in.read_header();
+	std::map <Genotype_pair_tuple, size_t> counts;
+	while(gcf_in.table_is_open() ){
+		gcf_in.read(genotypes);
+		if (genotypes.likelihoods[x].N>1 && genotypes.likelihoods[y].N>1 ){
+			counts[downvert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 4)]+=1;
 		}
 	}
 	return counts;
@@ -301,7 +319,7 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 void 
 maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
 {
-	const gsl_multimin_fminimizer_type *T=gsl_multimin_fminimizer_nmsimplex2;
+	const gsl_multimin_fminimizer_type *T=gsl_multimin_fminimizer_nmsimplex2rand;
 	std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(hashed_genotypes.begin(), hashed_genotypes.end() );
 	gsl_multimin_fminimizer *s=NULL;
 	gsl_vector *ss, *x;
@@ -344,9 +362,11 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 		if (status) break;
 
 		size = gsl_multimin_fminimizer_size (s);
-		status = gsl_multimin_test_size (size, 1e-4);
+		status = gsl_multimin_test_size (size, 1e-5);
 
-	}  while (status == GSL_CONTINUE && iter < 600);
+	}  while (status == GSL_CONTINUE && iter < 800);
+
+	std::cerr << iter << std::endl;
 
 	rel.f_X_ = gsl_vector_get(s->x, 0);
 	rel.f_Y_ = gsl_vector_get(s->x, 1);
@@ -395,6 +415,7 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 	double size;
 
 	std::vector <float_t> values={rel.f_X_, rel.f_Y_, rel.theta_XY_,rel.gamma_XY_,rel.gamma_YX_, rel.Delta_XY_, rel.delta_XY_};
+	std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(hashed_genotypes.begin(), hashed_genotypes.end() );
 
 
 	/* Starting point and stepsizes. I would really prefer to do this with a 
@@ -404,27 +425,33 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 	 */
 	for (size_t w=0; w<7; ++w) {
 
-		small_rel this_rel(w);
+//		small_rel this_rel(w);
 		
-		ss=gsl_vector_alloc(6);
-		x=gsl_vector_alloc(6);
-		gsl_vector_set_all(ss,0.15);	
+//		ss=gsl_vector_alloc(7);
+		x=gsl_vector_alloc(7);
 
-		gsl_vector_set(x, 0, w);
-		for (size_t y=0; y<5; ++y){
-			std::cerr << y+(y>=w) << std::endl;
-			gsl_vector_set(x, y, values[y+(y>=w)]);
-		}
-		std::cerr << "done" << std::endl;
+		rel.null_ll_ = rel_ll(x, &hashed_genotypes_vector);
 
-		gsl_func.n=6;
+	        gsl_vector_set(x, 0, rel.f_X_);
+	        gsl_vector_set(x, 1, rel.f_Y_);
+	        gsl_vector_set(x, 2, rel.theta_XY_);
+	        gsl_vector_set(x, 3, rel.gamma_XY_);
+	        gsl_vector_set(x, 4, rel.gamma_YX_);
+	        gsl_vector_set(x, 5, rel.Delta_XY_);
+	        gsl_vector_set(x, 6, rel.delta_XY_);
 
-//		gsl_func.f = &this_rel.rel_ll_2;
+		rel.max_ll_ = rel_ll(x, &hashed_genotypes_vector);
+
+
+//		gsl_vector_set_all(ss,0.15);	
+
+//TODO FIX ME!
+/*		gsl_func.n=6;
+		gsl_func.f = rel_ll;
 		gsl_func.params=&hashed_genotypes;
 
 		s = gsl_multimin_fminimizer_alloc (T, 6);
 		gsl_multimin_fminimizer_set (s, &gsl_func, x, ss);
-
 		do {
 			iter++;
 			status = gsl_multimin_fminimizer_iterate(s);
@@ -435,28 +462,43 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 			status = gsl_multimin_test_size (size, 1e-4);
 
 		}  while (status == GSL_CONTINUE && iter < 600);
+*/
 
 		switch (w) {
 			case 0:
-				rel.f_X_ll = rel_ll(x, &hashed_genotypes);
+	        		gsl_vector_set(x, 0, 0);
+				rel.f_X_ll = rel_ll(x, &hashed_genotypes_vector)-rel.max_ll_;
+	        		gsl_vector_set(x, 0, rel.f_X_);
 			break;
 			case 1:
-				rel.f_Y_ll = rel_ll(x, &hashed_genotypes);
+	        		gsl_vector_set(x, 1, 0);
+				rel.f_Y_ll = rel_ll(x, &hashed_genotypes_vector)-rel.max_ll_;
+	        		gsl_vector_set(x, 0, rel.f_Y_);
 			break;
 			case 2:
-				rel.theta_XY_ll = rel_ll(x, &hashed_genotypes);
+	        		gsl_vector_set(x, 2, 0);
+				rel.theta_XY_ll = rel_ll(x, &hashed_genotypes_vector)-rel.max_ll_;
+	        		gsl_vector_set(x, 0, rel.theta_XY_);
 			break;
 			case 3:
-				rel.gamma_XY_ll = rel_ll(x, &hashed_genotypes);
+	        		gsl_vector_set(x, 3, 0);
+				rel.gamma_XY_ll = rel_ll(x, &hashed_genotypes_vector)-rel.max_ll_;
+	        		gsl_vector_set(x, 0, rel.gamma_XY_);
 			break;
 			case 4:
-				rel.gamma_YX_ll = rel_ll(x, &hashed_genotypes);
+	        		gsl_vector_set(x, 4, 0);
+				rel.gamma_YX_ll = rel_ll(x, &hashed_genotypes_vector)-rel.max_ll_;
+	        		gsl_vector_set(x, 0, rel.gamma_YX_);
 			break;
 			case 5:
-				rel.Delta_XY_ll = rel_ll(x, &hashed_genotypes);
+	        		gsl_vector_set(x, 5, 0);
+				rel.Delta_XY_ll = rel_ll(x, &hashed_genotypes_vector)-rel.max_ll_;
+	        		gsl_vector_set(x, 0, rel.Delta_XY_);
 			break;
 			case 6:
-				rel.delta_XY_ll = rel_ll(x, &hashed_genotypes);
+	        		gsl_vector_set(x, 6, 0);
+				rel.delta_XY_ll = rel_ll(x, &hashed_genotypes_vector)-rel.max_ll_;
+	        		gsl_vector_set(x, 0, rel.delta_XY_);
 			break;
 		}
 	}
@@ -465,6 +507,7 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 
 int estimateRel(int argc, char *argv[])
 {
+	std::cerr << "Warning: this program should generate AICc's. However, it doesn't and it's _ll variables don't mean that much.\n"; 
 
 	/* All the variables that can be set from the command line */
 
@@ -517,6 +560,7 @@ int estimateRel(int argc, char *argv[])
 	rel_out.write_header(relatedness);
 
 	std::map <Genotype_pair_tuple, size_t> hashed_genotypes;
+	std::map <Genotype_pair_tuple, size_t> down_genotypes;
 	
 	size_t sample_size=genotype.get_sample_names().size();
 
@@ -525,11 +569,13 @@ int estimateRel(int argc, char *argv[])
 			relatedness.set_X_name(genotype.get_sample_names()[x]);
 			relatedness.set_Y_name(genotype.get_sample_names()[y]);
 			hashed_genotypes=hash_genotypes(file_buffer, x, y);
+			down_genotypes=hash_genotypes(file_buffer, x, y);
 			relatedness.zero();
 			set_e(relatedness, hashed_genotypes);
 		//	gestimate(relatedness, hashed_genotypes);
+			maximize(relatedness, down_genotypes);
 			maximize(relatedness, hashed_genotypes);
-		//	get_llr(relatedness, hashed_genotypes);
+			get_llr(relatedness, hashed_genotypes);
 			rel_out.write(relatedness);
 		}
 	}

@@ -7,6 +7,14 @@ convert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &p
 	return Genotype_pair_tuple ( roundf(x.lMM * T) / T, roundf(x.lMm*T)/T, roundf(x.lmm*T)/T, roundf(y.lMM*T)/T, roundf(y.lMm*T)/T, round(y.lmm*T)/T, round(m*T)/T);
 }
 
+Genotype_pair_tuple 
+downvert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &precision)
+{
+	float_t T=pow(10, precision);
+	float MIN=-10;
+	return Genotype_pair_tuple ( roundf( std::max(x.lMM, MIN)* T) / T, roundf( std::max(x.lMm, MIN)*T)/T, roundf( std::max(x.lmm, MIN)*T)/T, roundf( std::max(y.lMM, MIN)*T)/T, roundf( std::max(y.lMm, MIN)*T)/T, round( std::max(y.lmm, MIN) *T)/T, round(m*T)/T);
+}
+
 
 Genotype_pair::Genotype_pair(const float_t &X_MM_, const float_t &X_Mm_, const float_t &X_mm_, const float_t &Y_MM_, const float_t &Y_Mm_, const float_t &Y_mm_, const float_t &m_)
 {

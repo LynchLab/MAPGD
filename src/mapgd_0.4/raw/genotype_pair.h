@@ -33,4 +33,5 @@ public:
 
 
 Genotype_pair_tuple convert(const Genotype &, const Genotype &, const float_t &, const uint8_t &);
+Genotype_pair_tuple downvert(const Genotype &, const Genotype &, const float_t &, const uint8_t &);
 #endif  

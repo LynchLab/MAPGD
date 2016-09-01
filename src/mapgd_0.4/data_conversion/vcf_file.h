@@ -41,8 +41,8 @@ public:
 
 class Vcf_header : public virtual Data {
 private:
-
 public:
+	Vcf_header ();
 	std::vector <std::pair<std::string, std::string> > extra;
 };
 
