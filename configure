@@ -2616,9 +2616,10 @@ then
 	HAVE_HTS=yes
 
 else
-	HAVE_HTS=yes
+	HAVE_HTS=no
 
-	#AC_MSG_WARN([Htslib not detected, will be unable to create vcf files.])
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Htslib not detected, will be unable to create vcf files." >&5
+$as_echo "$as_me: WARNING: Htslib not detected, will be unable to create vcf files." >&2;}
 fi
 
 ac_config_files="$ac_config_files Makefile"
