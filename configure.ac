@@ -32,8 +32,8 @@ if test "$ax_with_htslib" == yes
 then
 	AC_SUBST(HAVE_HTS, yes)
 else
-	AC_SUBST(HAVE_HTS, yes)
-	#AC_MSG_WARN([Htslib not detected, will be unable to create vcf files.])
+	AC_SUBST(HAVE_HTS, no)
+	AC_MSG_WARN([Htslib not detected, will be unable to create vcf files.])
 fi
 
 AC_OUTPUT(Makefile)
