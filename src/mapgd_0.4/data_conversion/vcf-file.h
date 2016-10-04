@@ -10,7 +10,6 @@
 
 #ifndef NOHTS
 #include "htslib/vcf.h"
-#endif
 
 #include "external-file.h"
 #include "external-data.h"
@@ -132,4 +131,5 @@ public:
 	void write (const Allele &out) const;
 };
 
+#endif
 #endif
