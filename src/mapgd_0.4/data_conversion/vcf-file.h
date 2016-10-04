@@ -8,7 +8,9 @@
 #include <iomanip>
 #include <vector>
 
+#ifndef NOHTS
 #include "htslib/vcf.h"
+#endif
 
 #include "external-file.h"
 #include "external-data.h"
