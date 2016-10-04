@@ -11,8 +11,9 @@ Genotype_pair_tuple
 downvert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &precision)
 {
 	float_t T=pow(10, precision);
-	float MIN=-10;
-	return Genotype_pair_tuple ( roundf( std::max(x.lMM, MIN)* T) / T, roundf( std::max(x.lMm, MIN)*T)/T, roundf( std::max(x.lmm, MIN)*T)/T, roundf( std::max(y.lMM, MIN)*T)/T, roundf( std::max(y.lMm, MIN)*T)/T, round( std::max(y.lmm, MIN) *T)/T, round(m*T)/T);
+	float MIN=10;
+//	std::cerr << x.lMM << std::endl;
+	return Genotype_pair_tuple ( roundf( std::min(x.lMM, MIN)* T) / T, roundf( std::min(x.lMm, MIN)*T)/T, roundf( std::min(x.lmm, MIN)*T)/T, roundf( std::min(y.lMM, MIN)*T)/T, roundf( std::min(y.lMm, MIN)*T)/T, round( std::min(y.lmm, MIN) *T)/T, round(m*T)/T);
 }
 
 

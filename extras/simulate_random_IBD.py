@@ -18,6 +18,10 @@ parser.add_argument('-r', metavar='--rsq', type=float, default=0.0,
                    help='ld between adjacent SNPs')
 parser.add_argument('-l', metavar='--l2i', type=bool, default=False,
                    help='include the observed individual in allele frequency estimates')
+parser.add_argument('-I', metavar='--inbred', type=bool, default=False,
+                   help='include the observed individual in allele frequency estimates')
+parser.add_argument('-M', metavar='--cM', type=float, default=400,
+                   help='genome size in centiMorgans.')
 args = parser.parse_args()
 
 
@@ -110,6 +114,8 @@ N2=args.c
 sigma=args.s
 ld=args.r
 l2i=args.l
+inbred=args.I
+genome_size=args.M
 
 MINP=0.005
 MAXP=0.5
@@ -119,7 +125,13 @@ while ( not ( test(S) ) ):
 	for x in range(0, random.randint(0, 6) ):
 		S[Z[x]]=0
 
+if (inbred):
+	S=[0.5, 0.5, 0.5, 0.25, 0.25, 0.125, 0.375]
+else:
+	S=[0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.25]
 FC, FA, r, sC, sA, z1, z2=S
+
+
 
 File2.write( "@NAME:SCAFFOLDS	VERSION:0.4.1	FORMAT:TEXT	CONCATENATED\n")
 File2.write( "@NAME       	LENGTH\n")
@@ -133,73 +145,87 @@ C=0
 skipped=0
 x=0
 
+AMOM=random.randint(0,1)
+ADAD=random.randint(0,1)
+CMOM=random.randint(0,1)
+CDAD=random.randint(0,1)
+
+chromosomes=14
+cMperSNP=min(0.5, float(genome_size)/float(MAX)/100.*chromosomes)
+#print cMperSNP
+markers_per_chromosome=MAX/float(chromosomes)
+NEXT_CHROMOSOME=0
+count=0
+
+Theta=0
+Delta=0
+GammaAC=0
+GammaCA=0
+delta=0
+fA=0
+fC=0
+
 while x<MAX+skipped:
+
+		
 	x+=1	
-	lastA=A
-	lastC=C
 
 	P=0
 
 	while( (P<=MINP) or (P>MAXP) ):
-		P = (numpy.random.pareto(0.1, 1)[0]+1 )/1000
+#		P = (numpy.random.pareto(0.1, 1)[0]+1 )/1000
 #		print P
 #		P = round(triang.rvs(0.1), 2)
-#		P = round(random.random(), 2)
+		P = round(random.random(), 2)/2.
 
 	Q=1-P
 
-	td=random.random()
-
-#	PA1, PA2=get_conditional(P, lastA, rsq)
-	
-#	PC1, PC2=get_conditional(P, lastC, rsq)
-
-	mmmm, Mmmm, MMmm, mmMm, MmMm, MMMm, mmMM, MmMM, MMMM=getMs(P, P, S)
-
-	if( min([mmmm, Mmmm, MMmm, mmMm, MmMm, MMMm, mmMM, MmMM, MMMM])<-0.0001):
-		skipped+=1
-		continue
-
-	Mmmm+=mmmm
-	MMmm+=Mmmm
-
-	mmMm+=MMmm
-	MmMm+=mmMm
-	MMMm+=MmMm
-
-	mmMM+=MMMm
-	MmMM+=mmMM
-
-	if (td<mmmm):
-		A=0
-		C=0
-
-	elif (td<Mmmm):
-		A=1
-		C=0	
-
-	elif (td<MMmm):
-		A=2
-		C=0
-	
-	elif (td<mmMm):
-		A=0
-		C=1	
-	elif (td<MmMm):
-		A=1
-		C=1	
-	elif (td<MMMm):
-		A=2
-		C=1	
-	elif (td<mmMM):
-		A=0
-		C=2	
-	elif (td<MmMM):
-		A=1
-		C=2	
+	MOM=[int(random.random()<P),int(random.random()<P)]
+	if not(inbred):
+		DAD=[int(random.random()<P),int(random.random()<P)]
 	else:
-		A=2
-		C=2	
+		DAD=MOM
+
+
+	if (x>NEXT_CHROMOSOME):
+		AMOM=random.randint(0,1)
+		ADAD=random.randint(0,1)
+		CMOM=random.randint(0,1)
+		CDAD=random.randint(0,1)
+#		print AMOM, ADAD, CMOM, CDAD
+		NEXT_CHROMOSOME+=markers_per_chromosome
+	else:
+		if(random.random()<cMperSNP):
+			AMOM=int(AMOM==0)
+		if(random.random()<cMperSNP):
+			ADAD=int(ADAD==0)
+		if(random.random()<cMperSNP):
+			CMOM=int(CMOM==0)
+		if(random.random()<cMperSNP):
+			CDAD=int(CDAD==0)
+	if (inbred):
+		delta+=(float(AMOM==CMOM and ADAD==CDAD and AMOM==ADAD) )
+
+		Theta+=(float(AMOM==CMOM) )/4.
+		Theta+=(float(AMOM==CDAD) )/4.
+		Theta+=(float(ADAD==CMOM) )/4.
+		Theta+=(float(ADAD==CDAD) )/4.
+
+		Delta+=float(AMOM==CMOM and ADAD==CDAD and AMOM!=ADAD)
+		Delta+=float(AMOM==CDAD and ADAD==CMOM and AMOM!=ADAD)
+		Delta+=float(AMOM==ADAD and CDAD==CMOM and AMOM!=CDAD)
+		fA+=float(AMOM==ADAD)
+		fC+=float(CMOM==CDAD)
+		GammaAC+=(float(AMOM==ADAD and (ADAD==CDAD) ) )/2.
+		GammaAC+=(float(AMOM==ADAD and (ADAD==CMOM) ) )/2.
+		GammaCA+=(float(CMOM==CDAD and (ADAD==CDAD) ) )/2.
+		GammaCA+=(float(CMOM==CDAD and (CDAD==AMOM) ) )/2.
+	else:
+		Theta+=(float(AMOM==CMOM)+float(ADAD==CDAD) )/4.
+		Delta+=(float(AMOM==CMOM and ADAD==CDAD) )
+
+	A=MOM[AMOM]+DAD[ADAD]
+	C=MOM[CMOM]+DAD[CDAD]
 
 	M1=0
 	m1=0
@@ -253,3 +279,4 @@ File.close()
 dig=4
 print  round(FA, dig), round(FC, dig), round(r, dig), round(sA, dig), round(sC, dig), round(z1, dig), round(z2, dig)
 File2.write( "@END_TABLE\n")
+print fC/float(MAX), fA/float(MAX), Theta/float(MAX), GammaCA/float(MAX), GammaAC/float(MAX), delta/float(MAX), Delta/float(MAX)

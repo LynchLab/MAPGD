@@ -163,7 +163,7 @@ const std::string Allele::sql_column_names(void) const {
 
 const std::string Allele::sql_values(void) const {
         char return_buffer[SQL_LINE_SIZE]={0};
-//      char *write_ptr=return_buffer;
+#if FLT_EVAL_METHOD == 2
 	snprintf(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %Lf, %Lf, %Lf, %Lf, %Lf, %Lf, %d, %d, %Lf)",
 	abs_pos_,
 	ref,
@@ -179,6 +179,24 @@ const std::string Allele::sql_values(void) const {
 	N,
 	excluded,
 	ll);
+#elif FLT_EVAL_METHOD == 1
+	snprint(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %f, %f, %f, %f, %f, %f, %d, %d, %f)",
+	abs_pos_,
+	ref,
+	major,
+	minor,
+	coverage,
+	MM,
+	Mm,
+	(ll-monoll)*2,
+	(ll-hwell)*2,
+	gof,
+	efc,
+	N,
+	excluded,
+	ll);
+#elif FLT_EVAL_METHOD == 0
+#endif
         return std::string(return_buffer);
 }
 

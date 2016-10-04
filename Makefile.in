@@ -3,6 +3,7 @@ SUBDIRS=src
 HAVE_GSL=@HAVE_GSL@
 HAVE_OMP=@HAVE_OMP@
 HAVE_SQL=@HAVE_SQL@
+HAVE_HTS=@HAVE_HTS@
 HAVE_MAN=@HAVE_MAN@
 
 CXX=@CXX@
@@ -38,6 +39,7 @@ echo:
 	@echo HAVE_GSL $(HAVE_GSL)
 	@echo HAVE_OMP $(HAVE_OMP)
 	@echo HAVE_SQL $(HAVE_SQL)
+	@echo HAVE_HTS $(HAVE_HTS)
 	@cat config.log
 .PHONY: echo
 

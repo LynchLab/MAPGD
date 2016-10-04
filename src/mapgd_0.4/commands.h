@@ -24,6 +24,7 @@
 #include "map2genotype.h"
 #include "PopLD.h"
 #include "sam2idx.h"
+#include "make-vcf.h"
 #include "mapgd-help.h"
 //#include "make-vcf.h"
 

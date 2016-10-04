@@ -9,7 +9,7 @@ DOCPATH=\"$(shell pwd)/../../docs/man/\"
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d '-' -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ 
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/
 
 #OPENMP
 	
@@ -19,6 +19,9 @@ DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
 NOSQL=-D NOSQL
 NOGSL=-D NOGSL
+NOHTS=-D NOHTS
+
+#HTS_LIB_PATH=/usr/include/htslib/
 
 OBJDIR=obj
 
@@ -64,6 +67,13 @@ ifeq ($(HAVE_MAN), yes)
 	CXXFLAGS += -D USE_MAN -D PATH=$(DOCPATH)
 endif
 
+ifeq ($(HAVE_HTS), yes)
+#	INCLUDE += -I $(HTS_LIB_PATH)
+	LDLIBS += -lhts
+else
+	CXXFLAGS += $(NOHTS)
+endif
+
 DOCDIR=../../docs
 
 SUBDIR=raw sql data_types commands data_conversion
@@ -87,9 +97,12 @@ COMMAND_OBJ=commands/estimate-individual.o \
 	map2genotype.o \
 	PopLD.o \
 	commands/filter.o \
-	commands/make-vcf.o \
 	filter-pool.o \
 	relatedness.o
+
+#Depend on htslib
+HTS_OBJ=data_conversion/vcf-file.o \
+	commands/make-vcf.o
 
 #Depend on db_api
 SQL_OBJ=sql/writesql.o \
@@ -122,13 +135,16 @@ RAW_OBJ=raw/genotype.o \
 	raw/genotype_pair.o \
 	raw/base.o
 
-CONVERSION_OBJ=data_conversion/vcf_file.o
 
 
 ifeq ($(HAVE_SQL), yes)
 	OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ)
 else
 	OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ)
+endif
+
+ifeq ($(HAVE_HTS), yes)
+	OBJ += $(HTS_OBJ)
 endif
 
 all: $(OBJ)

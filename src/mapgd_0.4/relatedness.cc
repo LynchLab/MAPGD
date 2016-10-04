@@ -303,7 +303,7 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	std::pair<Genotype_pair_tuple, size_t> *pair;
 //	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
 
-//	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
+	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
 	for (size_t x=0; x<hashed_genotypes_p->size(); x++){
 //	while(it!=end){
 		pair=&(*hashed_genotypes_p)[x];
@@ -366,7 +366,7 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 
 	}  while (status == GSL_CONTINUE && iter < 800);
 
-	std::cerr << iter << std::endl;
+//	std::cerr << iter << std::endl;
 
 	rel.f_X_ = gsl_vector_get(s->x, 0);
 	rel.f_Y_ = gsl_vector_get(s->x, 1);
@@ -507,7 +507,7 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 
 int estimateRel(int argc, char *argv[])
 {
-	std::cerr << "Warning: this program should generate AICc's. However, it doesn't and it's _ll variables don't mean that much.\n"; 
+	std::cerr << "Warning: this program should generate AICc's. However, it doesn't and its _ll variables don't mean that much.\n"; 
 
 	/* All the variables that can be set from the command line */
 
@@ -569,7 +569,7 @@ int estimateRel(int argc, char *argv[])
 			relatedness.set_X_name(genotype.get_sample_names()[x]);
 			relatedness.set_Y_name(genotype.get_sample_names()[y]);
 			hashed_genotypes=hash_genotypes(file_buffer, x, y);
-			down_genotypes=hash_genotypes(file_buffer, x, y);
+			down_genotypes=downsample_genotypes(file_buffer, x, y);
 			relatedness.zero();
 			set_e(relatedness, hashed_genotypes);
 		//	gestimate(relatedness, hashed_genotypes);

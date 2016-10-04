@@ -25,6 +25,9 @@
 #include "pooled_data.h"
 #include "sample_name.h"
 
+#define READ	std::ios::in
+#define WRITE	std::ios::out
+
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 
 //! A templet which stores data associated with specific locations in a genome.

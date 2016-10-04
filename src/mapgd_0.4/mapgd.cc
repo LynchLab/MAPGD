@@ -35,6 +35,7 @@ int main (int argc, char* argv[])
 	env.command(	' ',"proview", 	&proview, 			"an error occurred while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
 	env.command(	' ',"relatedness",&estimateRel,	 		"an error occurred while calling relatedness", "Estimates the pairwise relatedness of individuals");	//DONE
 	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occurred while calling sam2idx", "Reformats a sam header file to a idx file"); 		//DONE
+	env.command(	' ',"vcf",	&make_vcf,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
 	env.command(	' ',"help", 	&mapgd_help, 			"an error occurred while calling help", "Prints helpful information");					//DONE
 
 #ifndef NOSQL

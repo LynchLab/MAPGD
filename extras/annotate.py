@@ -1,12 +1,12 @@
 import sys
 
 if (len(sys.argv)!=4):
-	print "map file, GFF file, FFN file"
+	print "map file, GFF file, FNA file"
 	exit()
 
 File=open(sys.argv[1])
 GFF=open(sys.argv[2])
-FFN=open(sys.argv[3])
+FNA=open(sys.argv[3])
 
 isopen=False
 
@@ -102,7 +102,7 @@ def issynrev(start, bp, seq, mut):
 	return codon_list[rcomp(seq[A-3:A])]==codon_list[rcomp(seq[A-3:B-1]+mut+seq[B:A])]
 
 seq=[]
-for line in FFN:
+for line in FNA:
         if line[0]!='>':
                 line=line.strip('\n')
                 seq.append(line)

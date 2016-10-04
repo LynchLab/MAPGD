@@ -26,4 +26,6 @@ typedef uint8_t gt_t;		//specifies a genotype.		limit 128.
 #define REAL_MAX LDBL_MAX
 #define	GT_MAX	255
 #define SQL_LINE_SIZE	1024
+
+
 #endif

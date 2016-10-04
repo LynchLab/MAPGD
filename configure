@@ -586,6 +586,7 @@ PACKAGE_URL='https://github.com/LynchLab/MAPGD/'
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+HAVE_HTS
 OPENMP_CXXFLAGS
 HAVE_MAN
 HAVE_SQL
@@ -2608,6 +2609,16 @@ $as_echo "$as_me: WARNING: No openmp support detected, will not be multi-threade
 else
 	HAVE_OMP=yes
 
+fi
+
+if test "$ax_with_htslib" == yes
+then
+	HAVE_HTS=yes
+
+else
+	HAVE_HTS=yes
+
+	#AC_MSG_WARN([Htslib not detected, will be unable to create vcf files.])
 fi
 
 ac_config_files="$ac_config_files Makefile"

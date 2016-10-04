@@ -3,7 +3,7 @@
 
 ##MAPGD version 0.4
 
-[(C) Michael Lynch](https://github.com/LynchLab/MAPGD#-copyright-)
+[(C) Michael Lynch and Matthew Ackerman](https://github.com/LynchLab/MAPGD#-copyright-)
 
 [<b>Visit the MAPGD development page</b>](https://lynchlab.github.io/MAPGD/)
 
