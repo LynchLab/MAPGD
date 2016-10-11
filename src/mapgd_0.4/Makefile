@@ -2,8 +2,9 @@
 #c90 c89 c99 c9x c11 c1x gnu90 gnu89 gnu99 gnu9x gnu11 gnu1x c++98 c++03 gnu++98 gnu++03 c++11 c++0x gnu++11 gnu++0x c++1y gnu++1y
 #Right now I need c++11 to support constructor delegation, which I like a lot.
 
-MODE=-O3
-STD=-std=c++11
+#MODE=-O3
+#STD=-std=c++11
+
 DESTDIR=/usr/local/bin
 DOCPATH=\"$(shell pwd)/../../docs/man/\"
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
@@ -11,9 +12,7 @@ MINOR=`cat VERSION | cut -d '-' -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/
 
-#OPENMP
-	
-CXXFLAGS=$(VERSION) $(STD) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) 
+CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) 
 
 DEBUG=-g -D DEBUG
 NOOMP=-D NOOMP
@@ -146,7 +145,9 @@ endif
 all: $(OBJ)
 	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
-
+	#ifdef HAVE_STD11
+	#endif
+	
 DATA_SOURCE=data_types/*.cc
 
 data.h: data_types/data.cc
