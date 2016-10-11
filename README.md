@@ -72,9 +72,10 @@ Mapgd works a number of [commands](https://github.com/LynchLab/MAPGD#-commands-)
 
 For analyzing individual labeled data you will probably want a command like this:
 
-	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	samtools mpileup -q 25 -Q 25 -B individual1.sort.bam individual2.sort.bam 
 	| mapgd proview -H seq1.header | mapgd allele 
 	| mapgd filter -p 22 -E 0.01 -c 50 -C 200 -o allelefrequency-filtered.map
+
 The filter command will limit the output to sites where the log-likelihood ratio of polymorphism is greater than 22 (-p 22), the error rate is less than 0.01 (-E 0.01) and the population coverage is between 50 and 200. 
 
 And for analyzing pooled data you will probably want a command like this:
