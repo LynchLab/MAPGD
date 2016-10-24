@@ -165,10 +165,16 @@ File_index::write_index(std::ostream &out)
 	return 0;
 }
 
-std::vector <id1_t> 
-File_index::get_sizes (void)
+const std::vector <id1_t> 
+File_index::get_sizes (void) const
 {
 	return size_;				
+}
+
+const std::vector<std::string>
+File_index::get_names (void) const
+{
+	return id0_;				
 }	
 
 void

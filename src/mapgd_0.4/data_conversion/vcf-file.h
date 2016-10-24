@@ -9,7 +9,9 @@
 #include <vector>
 
 #ifndef NOHTS
-#include "htslib/vcf.h"
+#include <htslib/hts.h>
+#include <htslib/vcf.h>
+
 
 #include "external-file.h"
 #include "external-data.h"
@@ -47,17 +49,25 @@ public:
 
 class Vcf_data : public External_data {
 private:
-	bcf1_t *record;
-	bcf_hdr_t *header;
+
 //	bcf_init
 //	bcf_destroy
 //	bcf_read(htsFile *fp, const bcf_hdr_t *h, bcf1_t *v)
 //	bcf_write(htsFile *fp, const bcf_hdr_t *h, bcf1_t *v)
 
 public:
-	void read (Allele& );
-	void write (Allele& ) const;
+	bcf1_t *record_;
+	bcf_hdr_t *header_;
 	Vcf_data ();
+
+	void set_header(const File_index &, const std::vector <std::string> &);
+
+	void put (const Data *, ...);
+	void get (Data *, ...) const;
+
+	void put (const File_index &, const Allele &, const Population &);
+	void get (Locus &, Allele &) const;
+
 	//The mandatory fields.
 	std::string id;
 	Base ref;
@@ -123,13 +133,31 @@ private:
 	using Base_file::out_;
 	using Base_file::open_;
 	using Base_file::open_no_extention;
-
+	htsFile *file_;
 public:
 	void open(const std::ios_base::openmode &);
 	void open(const char *, const std::ios_base::openmode &);
-	void read (Allele &allele);
-	void write (const Allele &out) const;
+	void close(void);
+	void read (Vcf_data &);
+	void write (const Vcf_data &);
+	void write_header (const Vcf_data &);
 };
+
+/*
+typedef struct {
+    int32_t n[3];           // n:the size of the dictionary block in use, (allocated size, m, is below to preserve ABI) 
+    bcf_idpair_t *id[3];
+    void *dict[3];          // ID dictionary, contig dict and sample dict
+    char **samples;	    // Presumably sample names.
+    bcf_hrec_t **hrec;      // Jesus fucking crist.
+    int nhrec, dirty;       // 
+    int ntransl, *transl[2];    // for bcf_translate()
+    int nsamples_ori;           // for bcf_hdr_set_samples()
+    uint8_t *keep_samples;
+    kstring_t mem;
+    int32_t m[3];          // m: allocated size of the dictionary block in use (see n above)
+} bcf_hdr_t;
+*/
 
 #endif
 #endif

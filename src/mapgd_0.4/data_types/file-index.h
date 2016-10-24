@@ -23,7 +23,7 @@
 class File_index : public virtual Data {
 
 private:
-	//! a hash table to store pairs of strings and the numeral associated with them.
+	//! a hash table to store pairs of strings and the id representing them.
 	std::map <std::string, id0_t> id0_str_;			
 
 	//! the keys to the hash table id0_str_.
@@ -35,10 +35,10 @@ private:
 	//! the cumulative number of bp per scaffold.
 	std::vector <id1_t> cumulative_size_;	
 
-	//! the last numberical id returned by an decodeid0 querry. Initilized to 0-1.
+	//! the last numerical id returned by an decodeid0 quarry. Initialized to 0-1.
 	id0_t last_id0_;						
 
-	//! the last string id returned by an decodeid0 querry. Initilized to "".
+	//! the last string id returned by an decodeid0 quarry. Initialized to "".
 	std::string last_id0_str_;
 	
 	//! TODO: Is this ever used?
@@ -83,14 +83,17 @@ public:
 	//! set the number of rows (bp) in the scaffold with numeric id id0.
 	void set_size (const id0_t &, const id1_t &);	
 
-	//! set the number of rows in the most resently read scaffold.
+	//! set the number of rows in the most recently read scaffold.
 	void set_last_size (const id1_t &);			
 
 	//! set the number of rows in the next scaffold to be read.
 	void set_next_size (const id1_t &);			
 
+	//! get a vector containing the name of each scaffold.
+	const std::vector <std::string> get_names (void) const;		
+
 	//! get a vector containing the sizes of each scaffold.
-	std::vector <id1_t> get_sizes (void);		
+	const std::vector <id1_t> get_sizes (void) const;		
 
 	//! get the size of scaffold blarg.
 	id1_t get_size (const id0_t &) const;

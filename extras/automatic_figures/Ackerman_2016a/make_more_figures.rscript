@@ -1,0 +1,77 @@
+Theta<-read.csv("KAP_Theta.csv")
+F<-read.csv("KAP_F.csv")
+
+#X=2.9
+X=6.3
+Y=6.3
+mar=0.6
+XLIM=c(-0.2, 0.2)
+
+colplink=rgb(0,0,1,0.8)
+colmapgd=rgb(0,0,0,0.8)
+
+colhigh=rgb(0,0,0)
+collow=rgb(1,0,0)
+
+black="black"
+
+Y1=c(-0.2, 0.6)
+Y2=c(-0.2, 1.02)
+PCH=20
+LABSIZE=1.25
+
+pdf("theta_cor.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(xlim=c(-0.05, 0.3), ylim=c(-0.05, 0.3), cex.lab=LABSIZE, Theta$plink_Theta/2, Theta$mapgd_Theta, ylab=expression(paste("mapgd ", italic(Theta) ) ), xlab=expression(paste("plink ", italic(Theta) ) ), pch=20, col=colhigh)
+points(Theta$plink_Theta[Theta$MEAN<5]/2, Theta$mapgd_Theta[Theta$MEAN<5], pch=20, col=collow)
+abline(0,1,col=black,lty=2)
+dev.off()
+
+pdf("d_cor.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(xlim=c(-0.05, 0.3), ylim=c(-0.05, 0.3), cex.lab=LABSIZE, Theta$plink_z2, Theta$mapgd_z2, ylab=expression(paste("mapgd ", italic(Delta) ) ), xlab=expression(paste("plink ", italic(Delta) ) ), pch=20, col=colhigh)
+points(Theta$plink_z2[Theta$MEAN<5], Theta$mapgd_z2[Theta$MEAN<5], pch=20, col=collow)
+abline(0,1,col=black,lty=2)
+dev.off()
+
+pdf("theta_cov.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(cex.lab=LABSIZE, Theta$MIN, Theta$plink_Theta/2, ylab=expression(paste("", italic(Theta) ) ), xlab=expression(paste("Depth of coverage") ), pch=20, col=colplink)
+points(Theta$MIN, Theta$mapgd_Theta, pch=20, col=colmapgd)
+dev.off()
+
+pdf("d_cov.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(cex.lab=LABSIZE, Theta$MIN, Theta$mapgd_z2, ylab=expression(paste("", italic(Delta) ) ), xlab=expression(paste("Depth of coverage") ), pch=20, col=colmapgd)
+points(Theta$MIN, Theta$plink_z2, pch=20, col=colplink)
+dev.off()
+
+pdf("f_cov.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(cex.lab=LABSIZE, F$COV, F$plink_F, ylab=expression(paste("", italic(f) ) ), xlab=expression(paste("Depth of coverage") ), pch=20, col=colplink)
+points(F$COV, F$mapgd_F, pch=20, col=colmapgd)
+dev.off()
+
+pdf("f_cor.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(cex.lab=LABSIZE, F$mapgd_F, F$plink_F, ylab=expression(paste("plink ", italic(f) ) ), xlab=expression(paste("mapgd ", italic(f) ) ), pch=20, col="black", xlim=c(-0.5, 0.25), ylim=c(-0.5, 0.25) )
+points(F$mapgd_F[F$COV<10], F$plink_F[F$COV<10], pch=20, col="red", )
+abline(0,1,col=black,lty=2)
+dev.off()
+
+pdf("f_dif.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(cex.lab=LABSIZE, F$COV, F$plink_F-F$mapgd_F, ylab=expression(paste("", italic(f) ) ), xlab=expression(paste("Depth of coverage") ), pch=20, col="black")
+dev.off()
+
+pdf("d_dif.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(cex.lab=LABSIZE, Theta$MIN, Theta$plink_z2-Theta$mapgd_z2, ylab=expression(paste("", italic(f) ) ), xlab=expression(paste("Depth of coverage") ), pch=20, col="black")
+
+dev.off()
+
+pdf("theta_dif.pdf", width=X, height=Y)
+par(mar=c(4,4.5,0.25, 1) )
+plot(cex.lab=LABSIZE, Theta$MIN, Theta$plink_Theta-Theta$mapgd_Theta, ylab=expression(paste("", italic(f) ) ), xlab=expression(paste("Depth of coverage") ), pch=20, col="black")
+
+dev.off()

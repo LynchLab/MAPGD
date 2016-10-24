@@ -19,8 +19,12 @@
 #####[Log-likelihood ratios](https://github.com/LynchLab/MAPGD#-log-likelihood-ratio-statistics-)
 #####[Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-)
 #####[Other Useful Programs](https://github.com/LynchLab/MAPGD#-other-useful-programs-)
+####Performance()
+#####[Statistical](https://github.com/LynchLab/MAPGD#-statistical-performance-)
+#####[Computational](https://github.com/LynchLab/MAPGD#-computational-performance-)
 ####Misc.
 #####[IU users](https://github.com/LynchLab/MAPGD#-notes-for-indiana-university-users-)
+#####[Sanger users](https://github.com/LynchLab/MAPGD#-notes-for-sanger-users-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
 <h2> Introduction </h2>
@@ -55,6 +59,8 @@ A quick test to make sure everything is working correctly can be conducted by ty
 
 	make test
 
+This will output a of lines ending in PASS or FAIL to your terminal. Ideally all of the lines should say PASS. 
+
 <h6>Mac installation</h6>
 
 Mac users may not have developmental tools installed by default, or you may not have agreed to the xcode licence. You may have to install and configure xcode before using mapgd.
@@ -62,7 +68,6 @@ Once you have xcode you can type:
 
 	make noomp.
 
-This will output a of lines ending in PASS or FAIL to your terminal. Ideally all of the lines should say PASS. 
 
 <h6> Using mapgd </h6>
 
@@ -176,20 +181,14 @@ Mapgd currently implements the following commands:
 	allele                Estimates allele frequencies using individual data
 	filter                Filter sites in '.map' files
 	genotype              Calculate genotype probabilities for individuals
+	linkage               Estimates linkage disequilibrium between loci
 	pool                  Estimates allele frequencies using pooled data*
 	proview               Prints data in the '.pro' file quartet format
-	sam2idx               Reformats a sam header to an idx used by mapgd.
 	read                  Reads from an SQL database	
-	relatedness           Estimates the 7 IBD coefficients 
-	write                 Writes to an SQL database
-
-Working in previous version, but currently broken:
-
-	linkage               Estimates linkage disequilibrium between loci
-
-In the near future we hope to implement the commands:
-
+	relatedness           Estimates the 7 genotypic correlation coefficients 
+	sam2idx               Reformats a sam header to an idx used by mapgd.
 	vcf                   Converts output to the popular vcf format
+	write                 Writes to an SQL database
 
 Each command has a number of options that can be examined by the -h option. For example, to get a short help message you can type: 
 
@@ -283,7 +282,7 @@ Header lines can also contain an arbitrary (sanitized) string, which serves as a
 
 	@NAME:QUARTETS	VERSION:0.4.1	FORMAT:TEXT
 	@SCFNAME       	POS     REF     PA-001          PA-002          PA-003          ...
-	scaffold_1      1       A       000/000/000/000 001/000/000/002 004/000/000/000
+	scaffold_1      1       A       0/0/0/0         1/0/0/2         4/0/0/0
 
 <b>.pro</b> files are the most basic input file for mapgd. These are plain text files containing three or more tab delimited columns. The first column is an arbitrary string which identifier a genomic region (e.g., a scaffold), the second column is an integer number specifying the location of a site on that scaffold, and the remaining column(s) contains four integer values separated by '/'s representing the number of times an A, C, G, and T was observed at the site (respectively).
 
@@ -391,6 +390,13 @@ In the case where the allele command is being used to estimated the seven genoty
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map;
 	mapgd genotype -p pro -m map | relatedness.py -o population.rel
+<h3> Statistical Performance </h3>
+
+![Figure1](https://github.com/LynchLab/MAPGD/extras/automated_figures/Ackerman2016b/figure1.jpg)
+
+<h3> Computational Performance </h3>
+
+![Figure2](https://github.com/LynchLab/MAPGD/extras/automated_figures/Ackerman2016b/figure2.jpg)
 
 <h3> Other Useful Programs </h3>
 
@@ -405,6 +411,9 @@ To download samtools please visit http://www.htslib.org/
 <h5> For windows users </h5>
 
 Windows is currently unsupported, but you may try to compile the code and fix it yourself. I have tried to refrain from using any platform specific libraries, so it may not be too much work.
+
+<h2> Notes for any High Performance Computer users</h2>
+MAPGD is able to take advantage of mutli-threading and cluster computing environment. Make sure you know how to submit jobs that execute on multiple nodes with mutliple CPUs. To test whether your jobs are running correctly you can run the script 'speedtest' in the src/test directory. Ideally you should roughly linear gains from adding threads and CPUs up to the maximum avalible to you. 
 
 <h2> Notes for Indiana University users </h2>
 When submitting PBS scripts please *make sure to specify the number of threads to use with the ppn option* 
@@ -427,7 +436,14 @@ When submitting PBS scripts please *make sure to specify the number of threads t
 	module load gcc/4.9.2
 	module load gsl/1.15	
 
-Mason doesn't appear to be setting the Library paths correctly at the current time. We are investigating the problem.
+<h2> Notes for Sanger users </h2>
+
+*Farm3* will require
+
+	configure 'CXX=/software/gcc-4.9.2/bin' 'CXXFLAGS=-static'
+	make	
+
+Word of warnding, the static linking is likely to make the program run slower, but I'm not sure by how much. If you are able you may want to change your environmental variables so that 'configure; make' works. 
 
 <h3> References </h3>
 

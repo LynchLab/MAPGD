@@ -13,36 +13,46 @@ independent=[]
 P=0.1
 Q=1-P
 
-def G(M, F):
-	return [M[0]*F[0], M[1]*F[0]+M[0]*F[1], M[1]*F[1] ]
-
 class record:
 	def __init__ (self, args):
 		self.FamilyID, self.PersonID, self.FatherID, self.MotherID, self.Sex=args
 		global PersonIDs
 		PersonIDs[self.PersonID]=self
+
 		self.F=[]
 		self.M=[]
+
 		if self.FatherID=='':
 			self.PF=[P, Q]	#These are unconditional
-			self.F=0
 			independent.append(self.PF)
+		else :
+			self.PF="NaN":
 		if self.MotherID=='':
 			self.PM=[P, Q]
-			self.M=0
 			independent.append(self.PM)
+		else :
+			self.PM="NaN":
 		self.bellow=[]
-
-	def getF (self):
-		self.F=[PersonIDs[self.FatherID].getG()[0]+PersonIDs[self.FatherID].getG()[1]/2., PersonIDs[self.FatherID].getG()[2]+PersonIDs[self.FatherID].getG()[1]/2.]
-	def getM (self):
-		self.M=[PersonIDs[self.MotherID].getG()[0]+PersonIDs[self.MotherID].getG()[1]/2., PersonIDs[self.MotherID].getG()[2]+PersonIDs[self.MotherID].getG()[1]/2.]
 		
-	def getG (self, conditions):
-		self.getF()
-		self.getM()
-		self.G=G(self.M, self.F)
-		return self.G
+	def getrel(person):
+		return  
+		
+def inner_enum(weight, tree):
+	for :
+		if ?==1:
+			weight*0.5
+	PersonIDs={}
+	return weight, tree
+
+def outer_enum(weight, ind):
+	for x in range(0. len(ind) ):
+		if len(ind[x])==2:
+			ind[x]=0
+			outer_enum(weight*Q, ind)
+			ind[x]=1
+			outer_enum(weight*P, ind)
+			return 0
+	inner_enum(weight, ind)
 
 def setbellow(ID, IDB):
         if ID!='':
@@ -50,10 +60,6 @@ def setbellow(ID, IDB):
                 ID.bellow.append(IDB)
                 setbellow(ID.FatherID, IDB)
                 setbellow(ID.MotherID, IDB)
-
-for event in independent:
-	trees	
-
 
 try:
 	File=open(args.pedigree, "r")
@@ -74,6 +80,7 @@ for rec1 in PersonIDs.keys():
 	setbellow(PersonIDs[rec1].MotherID, rec1)
 
 print "ID1\tID2\tF1\tF2\tTheta12\tgamma12\tgamma21\tdelta12\tDelta12"
+
 try:
 	print args.n[0]+'\t'+args.n[1]+'\t'+'\t'.join(map (str, PersonIDs[args.n[0]].getrel(args.n[1]) ) )
 except:

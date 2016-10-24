@@ -5,3 +5,9 @@ External_file::open(const char *, const std::ios_base::openmode &)
 {
 
 }
+
+/*(template <class External_data>
+External_file::close(void)
+{
+
+}*/

@@ -326,6 +326,6 @@ public:
 	T read_header(void);			//!< Reads a file header.
 };
 
-//#include "map-file.hxx"
+//#include "map-file.cc"
 
 #endif

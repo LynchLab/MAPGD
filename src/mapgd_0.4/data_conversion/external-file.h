@@ -65,7 +65,7 @@ public:
 	 */
 	External_file& read(External_data &);				
 
-	void close(void);
+//	void close(void);
 };
 
 #endif

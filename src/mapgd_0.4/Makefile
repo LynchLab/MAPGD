@@ -67,7 +67,8 @@ ifeq ($(HAVE_MAN), yes)
 endif
 
 ifeq ($(HAVE_HTS), yes)
-#	INCLUDE += -I $(HTS_LIB_PATH)
+	INCLUDE += $(HTSLIB_CPPFLAGS)/
+	INCLUDE += $(HTSLIB_LDFLAGS)
 	LDLIBS += -lhts
 else
 	CXXFLAGS += $(NOHTS)
@@ -145,8 +146,6 @@ endif
 all: $(OBJ)
 	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
-	#ifdef HAVE_STD11
-	#endif
 	
 DATA_SOURCE=data_types/*.cc
 

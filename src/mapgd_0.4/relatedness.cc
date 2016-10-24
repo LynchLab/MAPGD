@@ -574,7 +574,7 @@ int estimateRel(int argc, char *argv[])
 			set_e(relatedness, hashed_genotypes);
 		//	gestimate(relatedness, hashed_genotypes);
 			maximize(relatedness, down_genotypes);
-			maximize(relatedness, hashed_genotypes);
+		//	maximize(relatedness, hashed_genotypes);
 			get_llr(relatedness, hashed_genotypes);
 			rel_out.write(relatedness);
 		}
