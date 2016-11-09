@@ -13,7 +13,7 @@ CXXFLAGS=@CXXFLAGS@
 #SAMTOOLS FLAGS
 
 @Hsource@HTSDIR = @HTSDIR@
-@Hsource@include $(HTSDIR)/htslib.mk
+#@Hsource@include $(HTSDIR)/htslib.mk
 @Hsource@HTSLIB = $(HTSDIR)/libhts.a
 @Hsource@HTSLIB_LIB = $(HTSLIB)
 @Hsource@BGZIP = $(HTSDIR)/bgzip
