@@ -2,6 +2,8 @@
 
 const std::string Allele::file_name=".map";//!< The destination table in the Db.
 const std::string Allele::table_name="GENOME";//!< The destination table in the Db.
+const bool Allele::binary=false;
+
 const Registration Allele::registered=Registration(Allele::table_name, Allele::create);
 
 Allele::Allele (void){
@@ -208,4 +210,9 @@ const std::string Allele::get_file_name(void) const
 const std::string Allele::get_table_name(void) const
 {
 	return table_name;
+}
+
+const  bool Allele::get_binary(void) const
+{
+	return binary;
 }

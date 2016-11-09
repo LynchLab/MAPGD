@@ -43,15 +43,18 @@ private:
 	
 	//! TODO: Is this ever used?
 	bool open_;
+	size_t byte_size_;
 
 	static const Registration registered;
+
 	static Data * create(const std::vector <std::string> & Columns){
 		return new File_index(Columns);
 	}
 
 public:
 	File_index();						
-	File_index(std::vector<std::string>) : File_index(){};						
+	File_index(std::vector<std::string>);
+        bool bianary(void) const {return false;};
 
 	//! returns the number of rows until a row with id0, id1.
 	id1_off_t get_offset (const std::string &, const id1_t &) const;	
@@ -133,6 +136,7 @@ public:
 	std::string header(void) const;
 	static const std::string file_name;
 	static const std::string table_name;
+	static const bool binary;	//!< Returns the destination table name.
 	size_t size(void) const;
 
 	//! use the << operator to write File_index.
@@ -142,6 +146,7 @@ public:
 
 	const std::string get_file_name() const {return File_index::file_name;};
         const std::string get_table_name() const {return File_index::table_name;};
+        const bool get_binary() const;
 	//! returns the string needed to create an SQL table.
 	const std::string sql_header(void) const;		
 	//! returns the column names (SQL).

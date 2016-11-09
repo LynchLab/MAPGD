@@ -2,6 +2,8 @@
 
 const std::string Sample_gof::file_name=".gof";
 const std::string Sample_gof::table_name="SAMPLE";
+const bool Sample_gof::binary=false;
+
 const Registration Sample_gof::registered=Registration(Sample_gof::table_name, Sample_gof::create);
 
 Sample_gof::Sample_gof ()
@@ -41,4 +43,9 @@ Sample_gof::size(void) const
 {
 	//Oh, lets just have a segfault cause I'm bored.
 	return sizeof(float_t)+sizeof(char)+name_.size()*sizeof(char);
+}
+
+const bool Sample_gof::get_binary(void) const
+{
+	return binary;
 }

@@ -14,7 +14,8 @@
 /* These should all be included from the objects using this code, but I'm not 
  * linking things correctly right now.
  */
-#include "vcf-file.h"
+
+//#include "vcf-file.h"
 
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 

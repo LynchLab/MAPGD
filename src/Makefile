@@ -18,6 +18,10 @@ nosql:
 	$(MAKE) -C $(SUBDIRS) nosql
 .PHONY: nosql
 
+debug: 
+	$(MAKE) -C $(SUBDIRS) debug
+.PHONY: debug
+
 noomp: 
 	$(MAKE) -C $(SUBDIRS) noomp
 .PHONY: noomp

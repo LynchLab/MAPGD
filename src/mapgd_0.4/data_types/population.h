@@ -33,8 +33,13 @@ public:
 	void add(const float_t &lMM, const float_t &lMm, const float_t &lmm, const count_t &N); //!< append a sample to the likelihood.
 	void clear();						//!< clear likelihoods.
 	std::string header(void) const;				//!< print header.
+
 	static const std::string table_name;			//!< destination table in Db.
 	static const std::string file_name;			//!< defualt file extention.
+	static const bool binary;
+
+	const bool get_binary() const;
+
 	inline std::vector <std::string> get_sample_names(void) const {return sample_names_;};		//!< names of the samples sequenced.
 	inline void set_sample_names(const std::vector <std::string>& sample_names) {
 		sample_names_=sample_names;

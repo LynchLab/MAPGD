@@ -2,6 +2,8 @@
 
 const std::string File_index::file_name=".idx";
 const std::string File_index::table_name="SCAFFOLDS";
+const bool File_index::binary=false;
+
 const Registration File_index::registered=Registration(File_index::table_name, File_index::create);
 
 File_index::File_index()
@@ -10,6 +12,18 @@ File_index::File_index()
 	last_id0_=-1;						
 	std::string last_id0_str_="";
 	open_=false;
+	byte_size_=2;
+}
+
+File_index::File_index(std::vector<std::string> fields)
+{
+//	File_index();
+	cumulative_size_.push_back(0);
+	last_id0_=-1;						
+	std::string last_id0_str_="";
+	open_=false;
+	byte_size_=2;
+//	byte_size_=atoi(fields.back().c_str());
 }
 
 File_index & 
@@ -206,7 +220,6 @@ File_index::read (std::istream& in)
 			id0_.push_back(scaffold_name);
 		} 
 	}
-	
 }
 
 std::string 
@@ -218,7 +231,7 @@ File_index::header(void) const
 size_t 
 File_index::size(void) const
 {
-	return 2;
+	return byte_size_;
 }
 
 const std::string 
@@ -266,4 +279,9 @@ File_index::sql_read (std::istream &in)
 	id0_.push_back(scaffold_name);
 	//just want to read till the new line, not doing much else.
 	std::getline(in, scaffold_name);
+}
+
+const bool File_index::get_binary(void) const
+{
+	return binary;
 }

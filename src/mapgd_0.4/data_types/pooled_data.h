@@ -50,6 +50,8 @@ public:
 	void read (std::istream&);
 	static const std::string file_name;	//!< The dafualt extention for files.
 	static const std::string table_name;	//!< Destination table in Db.
+	static const bool binary;
+	const bool get_binary() const;
 };
 
 #endif

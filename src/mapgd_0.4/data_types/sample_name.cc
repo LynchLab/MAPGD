@@ -2,6 +2,8 @@
 
 const std::string Sample_name::file_name=".txt";
 const std::string Sample_name::table_name="FILES";
+const bool Sample_name::binary=false;
+
 const Registration Sample_name::registered=Registration(Sample_name::table_name, Sample_name::create);
 
 Sample_name::Sample_name ()
@@ -80,4 +82,9 @@ const std::string Sample_name::get_file_name(void) const
 const std::string Sample_name::get_table_name(void) const
 {
 	return table_name;
+}
+
+const bool Sample_name::get_binary(void) const
+{
+	return binary;
 }

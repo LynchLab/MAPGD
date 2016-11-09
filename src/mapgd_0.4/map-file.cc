@@ -8,6 +8,7 @@ Base_file::Base_file(void)
 	write_=false;
 	delim_column_='\t';
 	binary_=false;
+	try_binary_=false;
 	filename_="";
 	concatenated_=false;
 	indexed_=false;
@@ -20,6 +21,7 @@ Base_file::indexed(void)
 }
 
 
+#if 0
 //This seriously needs to be cleaned up.
 template <class T>
 void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mode)
@@ -63,6 +65,7 @@ void Data_file<T>::open_extention(const char* filename, const std::ios_base::ope
 #endif 
 	open_no_extention(temp_filename.c_str(), mode);
 }
+#endif
 
 void Base_file::open_no_extention(const char* filename, const std::ios_base::openmode &mode)
 {
@@ -95,7 +98,10 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 		write_=true;
 		openmode_=mode;
 	};
-	if ( mode & std::ios::binary ) binary_=true;
+	if ( mode & std::ios::binary ) {
+		try_binary_=true;
+		binary_=false;
+	}
 	open_=true;
 }
 
@@ -128,7 +134,10 @@ void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)
 		write_=true;
 		openmode_=mode;
 	}
-	if ( mode & std::ios::binary ) binary_=true;
+	if ( mode & std::ios::binary ) {
+		try_binary_=true;
+		binary_=true;
+	}
 	open_=true;
 	concatenated_=true;
 }
@@ -150,7 +159,10 @@ void Base_file::open(std::istream *s, const std::ios_base::openmode &mode)
 		read_=true;
 		openmode_=mode;
 	}
-	if ( mode & std::ios::binary) binary_=true;
+	if ( mode & std::ios::binary) {
+		binary_=false;
+		try_binary_=true;
+	}
 	open_=true;
 	concatenated_=true;
 }
@@ -166,11 +178,15 @@ void Base_file::open(std::ostream *s, const std::ios_base::openmode &mode)
 		write_=true;
 		openmode_=mode;
 	}
-	if ( mode & std::ios::binary) binary_=true;
+	if ( mode & std::ios::binary){
+		binary_=false;
+		try_binary_=true;
+	}
 	open_=true;
 	concatenated_=true;
 }
 
+#if 0
 template <class T>
 void Data_file<T>::open_from(Base_file &file)
 {
@@ -186,9 +202,10 @@ void Data_file<T>::open_from(Base_file &file)
 		else this->open_extention(file.filename().c_str(), file.openmode() );
 //		}
 	}
-	binary_=(file.openmode() & std::ios::binary);
+	try_binary_=(file.openmode() & std::ios::binary);
 	open_=true;
 }
+#endif
 
 std::istream * Base_file::get_in(void)
 {
@@ -260,11 +277,13 @@ void Base_file::close(void)
 	open_=false;
 }
 
+#if 0
 template <class T>
 id1_t Indexed_file<T>::get_pos(const T &data) const 
 {
 	return data.get_abs_pos();
 }
+#endif
 
 Base_file & 
 Base_file::read(Data *data)
@@ -349,6 +368,7 @@ Base_file::read(File_index &index, Indexed_data *data)
 	return *this;
 }
 
+#if 0
 template <class T>
 Data_file<T>& Data_file<T>::read(T &data)
 {
@@ -471,6 +491,7 @@ Data_file<T>& Data_file<T>::write(const T &data)
 //	if (!out_->good() ) { std::cerr << __FILE__ << ":" << __LINE__ << ": unexpected error writing file. Exiting.\n"; exit(0);};
 	return *this;
 }
+#endif
 
 bool Base_file::is_open(void) const
 {
@@ -482,13 +503,20 @@ bool Base_file::table_is_open(void) const
 	return table_open_;
 }			
 
+#if 0
 template <class T>
 void Flat_file<T>::write_header(const T &data)
 {
 	if (write_) {
 		*out_ << "@NAME:" << T::table_name << "\tVERSION:" << VERSION;
-		if (binary_) *out_ << "\tFORMAT:BINARY";
-		else *out_ << "\tFORMAT:TEXT";
+		if (try_binary_ && T::binary)
+		{
+			*out_ << "\tFORMAT:BINARY";
+			binary_=true;
+		} else {
+			*out_ << "\tFORMAT:TEXT";
+			binary_=false;
+		}
 		if (concatenated_) *out_ << "\tCONCATENATED";
 		*out_ << std::endl;
 		*out_ << data.header();
@@ -497,6 +525,7 @@ void Flat_file<T>::write_header(const T &data)
 		std::cerr << __FILE__ << ":" << __LINE__ << ": file not open for writing. Exiting.\n"; exit(0);
 	}
 }
+#endif
 
 Data *Base_file::read_header(void)
 {
@@ -512,6 +541,9 @@ Data *Base_file::read_header(void)
 				exit(0);
 			}
 			binary_=(columns[2]!="FORMAT:TEXT");
+#if (DEBUG)
+			std::cerr << (columns[2]!="FORMAT:TEXT") << std::endl;
+#endif
 			concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
 			indexed_=std::find(columns.begin(), columns.end(), "INDEXED")!=columns.end();
 			std::getline(*in_, line);
@@ -533,6 +565,7 @@ Data *Base_file::read_header(void)
 	exit(0);
 }
 
+#if 0
 template <class T>
 T Flat_file<T>::read_header(void)
 {
@@ -581,7 +614,7 @@ T Indexed_file<T>::read_header(void)
 	columns=split(line, '\t');
 	if (columns.size()>2){
 		if (columns[0]=="@NAME:"+T::table_name){
-			//binary_=(columns[2]!="FORMAT:TEXT");
+			binary_=(columns[2]!="FORMAT:TEXT");
 			std::getline(*in_, line);
 			columns=split(line, '\t');
 			T data(columns);
@@ -636,8 +669,13 @@ void Indexed_file<T>::write_header(const T &data)
 	index.write(file_index_);
 	index.close_table();
 	*out_ << "@NAME:" << T::table_name << "\tVERSION:" << VERSION;
-	if (binary_) *out_ << "\tFORMAT:BINARY";
-	else *out_ << "\tFORMAT:TEXT";
+	if (try_binary_ && T::binary){
+		*out_ << "\tFORMAT:BINARY";
+		binary_=true;
+	} else {
+		*out_ << "\tFORMAT:TEXT";
+		binary_=false;
+	}
 	if (concatenated_) *out_ << "\tCONCATENATED";
 	*out_ << "\tINDEXED\n";
 	*out_ << data.header();
@@ -655,6 +693,7 @@ File_index Indexed_file<T>::get_index(void) const
 {
 	return file_index_;
 }
+#endif
 
 bool Base_file::eof(void)
 {
@@ -670,8 +709,7 @@ bool Base_file::binary(void) const
 {
 	return binary_;
 }
-
-
+/*
 template class Data_file <Allele>;
 template class Data_file <Population>;
 template class Data_file <Locus>;
@@ -685,6 +723,7 @@ template class Indexed_file <Allele>;
 template class Indexed_file <Population>;
 template class Indexed_file <Locus>;
 template class Indexed_file <Pooled_data>;
+template class Indexed_file <Bcf2pro>;
 
 template class Flat_file <Linkage>;
 template class Data_file <Linkage>;
@@ -700,4 +739,4 @@ template class Flat_file <Relatedness>;
 template class Flat_file <Sample_name>;
 
 template class Mpileup_file <Locus>;
-
+*/

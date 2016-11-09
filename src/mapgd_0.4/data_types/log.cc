@@ -2,6 +2,8 @@
 
 const std::string Log::file_name=".log";
 const std::string Log::table_name="LOGS";
+const bool Log::binary=false;
+
 const Registration Log::registered=Registration(Log::table_name, Log::create);
 
 const std::string 
@@ -85,4 +87,10 @@ const std::string
 Log::get_table_name(void) const
 {
 	return table_name;
+}
+
+const bool 
+Log::get_binary(void) const
+{
+	return binary;
 }

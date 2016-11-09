@@ -14,7 +14,8 @@
 #include "stream-tools.h"
 #include "map-file.h"
 #include "locus.h"
-#include "data_types/sample_name.h"
+#include "sample_name.h"
+#include "bcf2pro-file.h"
 
 #define SQRT2	1.41421356237
 

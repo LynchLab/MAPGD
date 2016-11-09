@@ -2,6 +2,8 @@
 
 const std::string Locus::file_name=".pro";
 const std::string Locus::table_name="QUARTETS";
+const bool Locus::binary=true;
+
 const Registration Locus::registered=Registration(Locus::table_name, Locus::create);
 const gt_t Locus::default_order[5] = {0,1,2,3,4};
 
@@ -276,6 +278,20 @@ Locus::write (std::ostream& out) const
 }
 
 void
+Locus::write_binary (std::ostream& out) const
+{
+	out.write((char *)&ref.base, sizeof(gt_t) );
+	out.write((char *)&sample[0], (size_t)(sample.size()*sizeof(quartet_t) ) );
+}
+
+void
+Locus::read_binary (std::istream& in) 
+{
+	in.read((char *)&ref.base, sizeof(gt_t) );
+	in.read((char *)&sample[0], (size_t)(sample.size()*sizeof(quartet_t) ) );
+}
+
+void
 Locus::read (std::istream &in)
 {
 	//Set sorted_ back to default (a,c,g,t)
@@ -436,4 +452,10 @@ const std::string
 Locus::get_table_name(void) const
 {
 	return Locus::table_name;
+}
+
+const bool 
+Locus::get_binary(void) const
+{
+	return binary;
 }

@@ -24,6 +24,7 @@
 #include "population.h"
 #include "pooled_data.h"
 #include "sample_name.h"
+#include "bcf2pro.h"
 
 #define READ	std::ios::in
 #define WRITE	std::ios::out
@@ -64,6 +65,7 @@ protected:
 	bool read_;		//!< File is open for reading.
 	bool write_;		//!< File is open for writing.
 	bool binary_;		//!< Binary mode flag. 
+	bool try_binary_;	//!< Attempt to set binary mode flag. 
 	bool indexed_;		//!< Indexed mode flag.
 
 	std::istream *in_;	//!< All data is read from in.
@@ -242,6 +244,7 @@ private:
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
 	using Base_file::write_;	//(const std::ios_base::openmode &);
 	using Base_file::binary_;//(const std::ios_base::openmode &);
+	using Base_file::try_binary_;//(const std::ios_base::openmode &);
 	using Base_file::concatenated_;//(const std::ios_base::openmode &);
 	using Base_file::table_open_;
 
@@ -260,11 +263,16 @@ protected:
 	void read_text(T&);	//!< Read file in text mode.		DONE
 	void write_text(const T&);	//!< Write in text mode.	DONE
 
+	void read_binary(T &);
+	void write_binary(const T &);
+
 	using Data_file<T>::out_;	//(const std::ios_base::openmode &);
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
 	using Base_file::write_;	//(const std::ios_base::openmode &);
 	using Base_file::binary_;//(const std::ios_base::openmode &);
+	using Base_file::try_binary_;//(const std::ios_base::openmode &);
 	using Base_file::table_open_;
+	using Base_file::read_;
 	using Base_file::concatenated_;//(const std::ios_base::openmode &);
 	using Base_file::filename_;
 
@@ -280,52 +288,391 @@ public:
 	 *
 	 * Positions are guarnteed to be unique and increasing for each row. 
 	 */
+	Indexed_file& write(const T&);//(const Indexed_data &);
+	Indexed_file& read(T&);//(const Indexed_data &);
 
 	id1_t get_pos(const T &) const;
 	void write_header(const T&);		//!< Writes a file header.
 	T read_header(void);			//!< Reads a file header.
 };
 
-/* to provide compatibility with Mpileup_files.*/
+//This seriously needs to be cleaned up.
 template <class T>
-class Mpileup_file: public Indexed_file <T> {
-private:
-	using Indexed_file<T>::file_index_;
-
-	void read_text(T&);	//!< Read file in text mode.			DONE
-
-	using Indexed_file<T>::write_text;	//!< Write in text mode.	DONE
-	using Indexed_file<T>::out_;	//(const std::ios_base::openmode &);
-	using Indexed_file<T>::in_;	//(const std::ios_base::openmode &);
-
-	using Base_file::open_;
-	using Base_file::table_open_;
-public:
-/*	Mpileup_file(){
-		open_=false;
-		table_open_=false;
-		read_=false;
-		write_=false;
-		delim_column_='\t';
-		binary_=false;
-		filename_="";
+void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mode)
+{
+	std::vector<std::string> line;
+	filename_=std::string(filename);
+	if (open_){
+		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
+		exit(0);
+	}
+	if ( mode & std::ios::in ){
+		line=split_last(filename, '.');
+		if (line.back()!=T::file_name) {
+#ifdef DEBUG
+			std::cerr << line.back() << "!=" << T::file_name;
+			std::cerr << "opening " << filename_ << " in concatenated mode\n";
+#endif
+			concatenated_=true;
+			open_no_extention(filename, mode);
+			return;
+		} else {
+			concatenated_=false;
+			filename_=line[0];
+		}
+	} else {
 		concatenated_=false;
-		indexed_=false;
-	};			//!< default constructor*/
-	using Indexed_file<T>::open;
-	using Indexed_file<T>::set_index;	//!< Sets the File_index.		
-	using Indexed_file<T>::get_index;	//!< Returns the File_index.
+	} 
+#ifdef DEBUG
+	std::cerr << "opening "<< filename_ <<" in split mode\n";
+#endif 
+	open_extention(filename_.c_str(), mode);
+}
 
-	/*! \brief Returns the position in the file.
-	 *
-	 * Positions are guarnteed to be unique and increasing for each row. 
-	 */
+template <class T>
+void Data_file<T>::open_extention(const char* filename, const std::ios_base::openmode &mode)
+{
+	if (filename_.size()==0) filename_=std::string(filename);
+	std::string temp_filename=std::string(filename)+T::file_name;
+#ifdef DEBUG
+	std::cerr << "opening "<< temp_filename <<"\n";
+#endif 
+	open_no_extention(temp_filename.c_str(), mode);
+}
 
-	using Indexed_file<T>::get_pos;
-	using Indexed_file<T>::write_header;	//!< Writes a file header.
-	T read_header(void);			//!< Reads a file header.
-};
+template <class T>
+void Data_file<T>::open_from(Base_file &file)
+{
+	if (file.table_is_open() ) file.close_table();
+	if (file.openmode() & std::ios::in){
+//		if(file.filename().size()!=0) {
+		if(file.concatenated() ) this->open(file.get_in(), file.openmode() );
+		else this->open_extention(file.filename().c_str(), file.openmode() );
+//		}
+	} else if (file.openmode() & std::ios::out) {
+//		if(file.filename().size()!=0) {
+		if(file.concatenated() ) this->open(file.get_out(), file.openmode() );
+		else this->open_extention(file.filename().c_str(), file.openmode() );
+//		}
+	}
+	try_binary_=(file.openmode() & std::ios::binary);
+	open_=true;
+}
 
-//#include "map-file.cc"
+template <class T>
+id1_t Indexed_file<T>::get_pos(const T &data) const 
+{
+	return data.get_abs_pos();
+}
+
+template <class T>
+Data_file<T>& Data_file<T>::read(T &data)
+{
+	if (!table_open_ ){
+		return *this;
+	}
+	if (read_){
+		if (binary_) read_binary(data);
+		else read_text(data);
+	} else {
+		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open for reading. The methods Flat_file<type>::open() and Flat_file<type>::read_header(<type>) should be called.";
+	}
+	return *this;
+}
+
+template <class T>
+Indexed_file<T>& Indexed_file<T>::read(T &data)
+{
+	if (!table_open_ ){
+		return *this;
+	}
+	if (read_){
+		if (binary_) read_binary(data);
+		else read_text(data);
+	} else {
+		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open for reading. The methods Flat_file<type>::open() and Flat_file<type>::read_header(<type>) should be called.";
+	}
+	return *this;
+}
+
+template <class T>
+void Flat_file<T>::read_text(T &data)
+{
+	if (!in_->good() ) {
+		std::cerr << "an error has occured durring reading.\n";
+		exit(0);
+	}
+	if (in_->peek()=='@') {
+		std::string line;
+		std::getline(*in_, line);
+		if (line!="@END_TABLE") {
+			std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
+			exit(0);
+		} 
+		if (!concatenated_) {
+			this->close();
+		} else {
+			this->close_table();
+		}
+	}
+	else *in_ >> data;
+}
+
+template <class T>
+void Indexed_file<T>::read_text(T &data)
+{
+	//TODO Check for table_open instead?
+	id1_t pos;
+	std::string scaffold;
+	if (!in_->good() ) {
+		std::cerr << "an error has occured durring reading.\n";
+		exit(0);
+	}
+	if (in_->peek()=='@') {
+		std::string line;
+		*in_ >> line;
+		if (line!="@END_TABLE") {
+			std::cerr << line << std::endl;
+			std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
+			exit(0);
+		} 
+		if (!concatenated_) {
+			this->close();
+		} else {
+			this->close_table();
+		}
+	} else {
+#ifdef DEBUG
+		std::cerr << (char)(in_->peek()) << std::endl;
+#endif
+		*in_ >> scaffold;
+		*in_ >> pos;
+		*in_ >> data;
+		data.set_abs_pos(file_index_.get_abs_pos(scaffold, pos) );
+	}
+}
+
+template <class T>
+void Data_file<T>::read_binary(T &data)
+{
+	data.read_binary(*in_);
+}
+
+template <class T>
+void Indexed_file<T>::read_binary(T &data)
+{
+	data.read_pos(*in_);
+	data.read_binary(*in_);
+}
+
+template <class T>
+void Flat_file<T>::write_text(const T &data)
+{
+	*out_ << data << std::endl;
+}
+
+template <class T>
+void Indexed_file<T>::write_text(const T &data)
+{
+	*out_ << file_index_.get_string(file_index_.get_id0(data.get_abs_pos()) ) << '\t' << file_index_.get_id1(data.get_abs_pos() ) << '\t' << data << std::endl;
+}
+
+
+template <class T>
+void Data_file<T>::write_binary(const T &data)
+{
+	data.write_binary(*out_);
+}
+
+template <class T>
+void Indexed_file<T>::write_binary(const T &data)
+{
+	data.write_pos(*out_);
+	data.write_binary(*out_);
+}
+
+template <class T>
+Data_file<T>& Data_file<T>::write(const T &data)
+{
+	if (binary_) write_binary(data);
+	else write_text(data);
+//	if (!out_->good() ) { std::cerr << __FILE__ << ":" << __LINE__ << ": unexpected error writing file. Exiting.\n"; exit(0);};
+	return *this;
+}
+
+template <class T>
+Indexed_file<T>& Indexed_file<T>::write(const T &data)
+{
+	if (binary_) write_binary(data);
+	else write_text(data);
+//	if (!out_->good() ) { std::cerr << __FILE__ << ":" << __LINE__ << ": unexpected error writing file. Exiting.\n"; exit(0);};
+	return *this;
+}
+
+template <class T>
+void Flat_file<T>::write_header(const T &data)
+{
+	if (write_) {
+		*out_ << "@NAME:" << T::table_name << "\tVERSION:" << VERSION;
+		if (try_binary_ && T::binary)
+		{
+			*out_ << "\tFORMAT:BINARY";
+			binary_=true;
+		} else {
+			*out_ << "\tFORMAT:TEXT";
+			binary_=false;
+		}
+		if (concatenated_) *out_ << "\tCONCATENATED";
+		*out_ << std::endl;
+		*out_ << data.header();
+		table_open_=true;
+	} else {
+		std::cerr << __FILE__ << ":" << __LINE__ << ": file not open for writing. Exiting.\n"; exit(0);
+	}
+}
+
+template <class T>
+T Flat_file<T>::read_header(void)
+{
+	std::string line;
+	std::vector <std::string> columns;
+	std::getline(*in_, line);
+	columns=split(line, '\t');
+	if (columns.size()>2){
+		if (columns[0]=="@NAME:"+T::table_name ){
+			binary_=(columns[2]!="FORMAT:TEXT");
+			std::getline(*in_, line);
+			columns=split(line, '\t');
+			T data(columns);
+			table_open_=true;
+			return data;
+		}
+		std::cerr << __FILE__ << ":" << __LINE__ << " attempted to open incorrect header.\n"; 
+	}
+	table_open_=false;
+	std::cerr << __FILE__ << ":" << __LINE__ << " could not initilize " << typeid(T).name() <<"\n";
+	T data;
+	return data;
+}
+
+template <class T>
+T Indexed_file<T>::read_header(void)
+{
+	Flat_file <File_index> index;
+	index.open_from(*this);
+	file_index_=index.read_header();
+	while(index.table_is_open() ){
+		index.read(file_index_);
+	}
+	
+	std::string line;
+	std::vector <std::string> columns;
+#ifdef DEBUG
+	std::cerr << in_->peek() << std::endl;
+#endif
+	/*while(in_->peek()!='@' && in_->good() ){
+		std::getline(*in_, line);
+		std::cerr << line << std::endl;
+	}*/
+	std::getline(*in_, line);
+	
+	columns=split(line, '\t');
+	if (columns.size()>2){
+		if (columns[0]=="@NAME:"+T::table_name){
+			binary_=(columns[2]!="FORMAT:TEXT");
+			std::getline(*in_, line);
+			columns=split(line, '\t');
+			T data(columns);
+			table_open_=true;
+			return data;
+		}
+		std::cerr << __FILE__ << ":" << __LINE__ << " attempted to open incorrect header.\n"; 
+		std::cerr << line << std::endl;
+		std::cerr << T::table_name << std::endl;
+	}
+	std::cerr << __FILE__ << ":" << __LINE__ << " could not initilize " << typeid(T).name() << "\n";
+	std::cerr << line << std::endl;
+	T data;
+	table_open_=false;
+	return data;
+}
+
+template <class T>
+void Indexed_file<T>::write_header(const T &data)
+{
+	if (!write_) {
+		std::cerr << __FILE__ << ":" << __LINE__ << " file not open for writing. Exiting \n";
+		exit(0);
+	}
+	Flat_file <File_index> index;
+#ifdef DEBUG
+	std::cerr << "Writing header of " << filename_ << std::endl;
+	std::cerr << "aka: " << this->filename() << std::endl;
+#endif
+	index.open_from(*this);
+	if (!index.is_open() ) {
+		std::cerr << __FILE__ << ":" << __LINE__ << " cannot  open for writing. Exiting \n";
+		exit(0);
+	}
+	index.write_header(file_index_);
+	index.write(file_index_);
+	index.close_table();
+	*out_ << "@NAME:" << T::table_name << "\tVERSION:" << VERSION;
+	if (try_binary_ && T::binary){
+		*out_ << "\tFORMAT:BINARY";
+		binary_=true;
+	} else {
+		*out_ << "\tFORMAT:TEXT";
+		binary_=false;
+	}
+	if (concatenated_) *out_ << "\tCONCATENATED";
+	*out_ << "\tINDEXED\n";
+	*out_ << data.header();
+	table_open_=true;
+}
+
+template <class T>
+void Indexed_file<T>::set_index(const File_index &index)
+{
+	file_index_=index;
+}
+
+template <class T>
+File_index Indexed_file<T>::get_index(void) const
+{
+	return file_index_;
+}
+
+/*
+template class Data_file <Allele>;
+template class Data_file <Population>;
+template class Data_file <Locus>;
+template class Data_file <Pooled_data>;
+template class Data_file <Sample_gof>;
+template class Data_file <File_index>;
+template class Data_file <Relatedness>;
+template class Data_file <Sample_name>;
+
+template class Indexed_file <Allele>;
+template class Indexed_file <Population>;
+template class Indexed_file <Locus>;
+template class Indexed_file <Pooled_data>;
+template class Indexed_file <Bcf2pro>;
+
+template class Flat_file <Linkage>;
+template class Data_file <Linkage>;
+template class Indexed_file <Linkage>;
+
+template class Flat_file <Allele>;
+template class Flat_file <Population>;
+template class Flat_file <Locus>;
+template class Flat_file <Pooled_data>;
+template class Flat_file <Sample_gof>;
+template class Flat_file <File_index>;
+template class Flat_file <Relatedness>;
+template class Flat_file <Sample_name>;
+
+template class Mpileup_file <Locus>;
+*/
 
 #endif

@@ -2,6 +2,8 @@
 
 const std::string Linkage::file_name=".lds";
 const std::string Linkage::table_name="LINKAGE";
+const bool Linkage::binary=false;
+
 const Registration Linkage::registered=Registration(Linkage::table_name, Linkage::create);
 
 Linkage::Linkage ()
@@ -194,4 +196,9 @@ void Linkage::set_p(const float_t &p)
 void Linkage::set_q(const float_t &q)
 {
 	q_=q;
+}
+
+const bool Linkage::get_binary(void) const
+{
+	return binary;
 }

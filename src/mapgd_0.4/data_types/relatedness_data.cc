@@ -2,6 +2,8 @@
 
 const std::string Relatedness::file_name=".rel";
 const std::string Relatedness::table_name="RELATEDNESS";
+const bool Relatedness::binary=false;
+
 const Registration Relatedness::registered=Registration(Relatedness::table_name, Relatedness::create);
 
 Relatedness::Relatedness (){
@@ -131,4 +133,10 @@ Relatedness::operator=(const Relatedness &rhs)
 	Delta_XY_=rhs.Delta_XY_, Delta_XY_ll=rhs.Delta_XY_ll;
 	null_ll_=rhs.null_ll_, max_ll_=rhs.max_ll_;
 	return *this;
+}
+
+const bool 
+Relatedness::get_binary(void) const
+{
+	return binary;
 }

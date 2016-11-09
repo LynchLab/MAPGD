@@ -2,6 +2,8 @@
 
 const std::string Pooled_data::file_name=".pol";
 const std::string Pooled_data::table_name="SAMPLE";
+const bool Pooled_data::binary=false;
+
 const Registration Pooled_data::registered=Registration(Pooled_data::table_name, Pooled_data::create);
 
 Pooled_data::Pooled_data ()
@@ -159,3 +161,9 @@ Pooled_data::operator=(const Pooled_data &rhs){
 
 	return *this;	
 }	
+
+const bool
+Pooled_data::get_binary(void) const
+{
+	return binary;
+}

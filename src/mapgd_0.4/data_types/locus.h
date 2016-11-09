@@ -13,8 +13,12 @@
 /* This is the record stored in a pro file*/
 class Locus : virtual public Indexed_data{
 private:
+	//NOT READ READ/WRITE!!
 	std::vector <std::string> sample_names_;		//!< names of the samples sequenced.
+
+	//READ READ/WRITE!!
 	using Indexed_data::abs_pos_;
+
 	static const Registration registered;
 	static Data * create(const std::vector <std::string> & Columns){
 		return new Locus(Columns);
@@ -22,12 +26,15 @@ private:
 	void write (std::ostream& out) const;
 	void read (std::istream& in);
 public:
+	void write_binary (std::ostream& out) const;
+	void read_binary (std::istream& in);
+	/* BEGIN DATA BLOCK */
 	/* these need to be changed to private */
 	gt_t sorted_[5];				//!< an array to allow sorted access to quartets.
-	
 	std::vector <quartet_t> sample;			//!< The five bases A/C/G/T/N;
-
 	Base ref;
+	/* END DATA BLOCK */
+
 	static const gt_t default_order[5];
 //public:
 
@@ -142,9 +149,11 @@ public:
 
 	static const std::string file_name;
 	static const std::string table_name;
+	static const bool binary;
 
 	const std::string get_file_name(void) const;
 	const std::string get_table_name(void) const;
+	const bool get_binary(void) const;
 
 	const std::string sql_header(void) const;				
 	const std::string sql_column_names(void) const;				

@@ -67,10 +67,13 @@ public:
 	const std::string header(void) const;	//!< returns first two lines of a file.
 	static const std::string table_name;	//!< The destination table in the database.
 	static const std::string file_name;	//!< Default file extension.
+	static const bool binary;	        //!< Default file extension.
 	size_t size(void) const;		//!< The size of the class in bytes.
 
 	const std::string get_file_name(void) const;	//!< Returns the default file extension.
 	const std::string get_table_name(void) const;	//!< Returns the destination table name.
+	const bool get_binary(void) const;	        //!< Returns the destination table name.
+
 	const std::string sql_header(void) const;	//!< Returns a string to create an SQL table.
 	const std::string sql_column_names(void) const; //!< Returns the column names in the SQL table.
 	const std::string sql_values(void) const;	//!< Returns a string to insert values in an SQL table.

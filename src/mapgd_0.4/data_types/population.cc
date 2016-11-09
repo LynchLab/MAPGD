@@ -2,6 +2,8 @@
 
 const std::string Population::file_name=".gcf";
 const std::string Population::table_name="GENOTYPES";
+const bool Population::binary=false;
+
 const Registration Population::registered=Registration(Population::table_name, Population::create);
 /** @breif constuctor w/ initial values. **/
 
@@ -80,4 +82,10 @@ Population::read (std::istream& in)
 		line_stream >> *s_it;
 		s_it++;
 	}	
+}
+
+const bool
+Population::get_binary(void) const
+{
+	return binary;
 }

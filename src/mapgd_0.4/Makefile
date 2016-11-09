@@ -14,7 +14,7 @@ INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/
 
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) 
 
-DEBUG=-g -D DEBUG
+DEBUG=-pg -D DEBUG -ggdb
 NOOMP=-D NOOMP
 NOSQL=-D NOSQL
 NOGSL=-D NOGSL
@@ -102,6 +102,7 @@ COMMAND_OBJ=commands/estimate-individual.o \
 
 #Depend on htslib
 HTS_OBJ=data_conversion/vcf-file.o \
+	data_conversion/bcf2pro-file.o \
 	commands/make-vcf.o
 
 #Depend on db_api

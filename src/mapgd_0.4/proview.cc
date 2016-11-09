@@ -11,6 +11,10 @@
 
 #include "proview.h"
 
+//class Bcf2pro : public Locus{};
+//class Bcf2pro_file : public Indexed_file <Bcf2pro>{};
+
+
 using namespace std;
 
 int proview(int argc, char *argv[])
@@ -24,6 +28,7 @@ int proview(int argc, char *argv[])
 	bool in_pro=false;
 	bool bernhard=false;
 	bool noheader=false;
+	bool dontprint=false;
 
 	args.pro=false;
 	args.min=4;
@@ -47,6 +52,7 @@ int proview(int argc, char *argv[])
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "prints the program version");
 	env.flag(	'b',"binary",	&out_binary, 	&flag_set, 	"an error occurred", "output in a binary format");
+	env.flag(	's',"skip",	&out_binary, 	&flag_set, 	"an error occurred", "skip empty lines");
 	env.flag(	'r',"mlrho",	&bernhard, 	&flag_set, 	"an error occurred", "output in mlrho format");
 	env.flag(	'N',"noheader",	&noheader,	&flag_set, 	"an error occurred", "don't print those silly '@' lines.");
 	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occurred", "input is in pro format");
@@ -55,7 +61,7 @@ int proview(int argc, char *argv[])
 
 	Indexed_file <Locus> out_file;			//the output profile
 
-	std::vector <Mpileup_file <Locus> *> in_files;	//the input profile(s)
+	std::vector <Bcf2pro_file *> in_files;	//the input profile(s)
 
 	std::vector <Locus> in_locus;
 	Locus out_locus;
@@ -85,7 +91,7 @@ int proview(int argc, char *argv[])
 		in_names.open(namefile.c_str(), ios::in);
 		name_file=in_names.read_header();
 		while (in_names.read(name_file).table_is_open() ){
-			in_files.push_back(new Mpileup_file <Locus>);
+			in_files.push_back(new Bcf2pro_file(in_pro) );
 			in_files.back()->open_no_extention(name_file.mpileup_name.c_str(), ios::in);
 			in_locus.push_back( in_files.back()->read_header() );
 			if (name_file.sample_names.size()!=in_locus.back().get_sample_names().size() ){
@@ -95,7 +101,6 @@ int proview(int argc, char *argv[])
 			for (size_t y=0; y<name_file.sample_names.size(); ++y){
 				sample_names.push_back(name_file.sample_names[y]);
 			}
-//			sample_names.insert(std::end(sample_names), std::begin(in_locus.back().get_sample_names() ), std::end(in_locus.back().get_sample_names() ) );
 			sample_numbers+=in_locus.back().get_sample_names().size();
        		 	in_files.back()->set_index(index);
 			if (in_files.back()->read(in_locus.back()).eof() ) in_files.back()->close();
@@ -103,7 +108,7 @@ int proview(int argc, char *argv[])
 		in_names.close();
 	} else	if (infiles.size()!=0){	
 		for (size_t x=0; x<infiles.size(); ++x) {
-			in_files.push_back(new Mpileup_file <Locus>);
+			in_files.push_back(new Bcf2pro_file(in_pro) );
 			if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), ios::in);
 			else in_files.back()->open(ios::in);
 			in_locus.push_back( in_files.back()->read_header() );
@@ -112,19 +117,17 @@ int proview(int argc, char *argv[])
 				s << split_last(infiles[x], '/').back() << ":" << y+1;
 				sample_names.push_back( s.str().c_str() );
 			}
-//			sample_names.insert(std::end(sample_names), std::begin(in_locus.back().get_sample_names() ), std::end(in_locus.back().get_sample_names() ) );
 			sample_numbers+=in_locus.back().get_sample_names().size();
               	 	in_files[x]->set_index(index);
 			if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
 		}
 	} else 	{
-		in_files.push_back(new Mpileup_file <Locus>);
+		in_files.push_back(new Bcf2pro_file(in_pro) );
 		in_files.back()->open(ios::in);
 		in_locus.push_back( in_files.back()->read_header() );
 		for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
 			sample_names.push_back(in_locus.back().get_sample_names()[y]);
 		}
-//		sample_names.insert(sample_names.begin(), (in_locus.back().get_sample_names()).begin(), (in_locus.back().get_sample_names()).end()  );
                 in_files[0]->set_index(index);
 		sample_numbers+=in_locus.back().get_sample_names().size();
 		if (in_files[0]->read(in_locus[0]).eof() ) in_files[0]->close();
@@ -143,11 +146,13 @@ int proview(int argc, char *argv[])
 	if(!noheader) {
 		out_file.write_header(out_locus);
 	} else {
-		out_file.write_header(out_locus);
+	//	out_file.write_header(out_locus);
 	}
 
 	out_locus.set_abs_pos(1);
-	bool print_all=true, go=true, read_site=false;
+	bool print_all=!dontprint, go=true, read_site=false;
+
+	id1_t reference_size=index.get_reference_size();
 
 	while(go){
 		out_locus.ref.base=4;
@@ -189,7 +194,7 @@ int proview(int argc, char *argv[])
 			out_file.write(out_locus);
 		}
 		out_locus.set_abs_pos(out_locus.get_abs_pos()+1);
-		if (out_locus.get_abs_pos()<=index.get_reference_size() ) go=true;
+		if (out_locus.get_abs_pos()<=reference_size ) go=true;
 		else go=false;
 	
 	};

@@ -35,9 +35,15 @@ private:
 	static const std::string file_name;
 	//! The read function must be defined in the child class.
 	static const std::string table_name;
+	/*! A flag to indicate whether reading/writing in binary mode is 
+	 * supported for the data_type.
+ 	 */
+        static const bool binary;
 protected:
+
 	//! The read function must be defined in the child class.
 	virtual void read(std::istream& str) = 0;
+
 	//! The write function must be defined in the child class.
 	virtual void write(std::ostream& str) const = 0;
 
@@ -60,10 +66,15 @@ protected:
 	}*/
 
 public:
+	void read_binary(std::istream& str) {};
+	void write_binary(std::ostream& str) const {};
+
 	Data(){};
 	Data(std::vector <std::string> &){};
+
 	virtual const std::string get_file_name() const {return this->file_name;};
         virtual const std::string get_table_name() const {return this->table_name;};
+        virtual const bool get_binary() const {return this->binary;};
 
 	/**
 	 * \defgroup SQL functions
@@ -120,9 +131,22 @@ class Indexed_data : public virtual Data {
 protected:
 	id1_t abs_pos_;
 public:
+	using Data::write_binary;
+	using Data::read_binary;
+	void write_pos(std::ostream& str) const
+	{
+		str.write((char *)(&abs_pos_), sizeof(id1_t) );
+	}
+
+	void read_pos(std::istream& str)
+	{
+		str.read((char *)(&abs_pos_), sizeof(id1_t) );
+	}
+
 	Indexed_data(){};
 	Indexed_data(std::vector <std::string> &){};
 	id1_t get_abs_pos (void) const;	  //!< Indexed data needs to associate each datum with a position in the genome.
+
 	void set_abs_pos (const id1_t &); //!< Indexed data needs to associate each datum with a position in the genome. 
 };
 
