@@ -97,6 +97,7 @@ push:
 	git add -u
 	git commit
 	git push
+	rm -rf autom4te.cache/
 	git checkout gh-pages
 	./update.sh
 	git checkout master
