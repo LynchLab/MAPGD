@@ -397,13 +397,20 @@ In the case where the allele command is being used to estimated the seven genoty
 	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map;
 	mapgd genotype -p pro -m map | relatedness.py -o population.rel
+
 <h3> Statistical Performance </h3>
 
-![Figure1](https://github.com/LynchLab/MAPGD/extras/automated_figures/Ackerman2016b/figure1.jpg)
+![Figure1](https://github.com/LynchLab/MAPGD/tree/master/extras/automatic_figures/Ackerman_2016b/figure1.jpg)
+The bais (solid line), 95% CI (shaded region), and Type II error rate (dashed line) of four variant calling programs on simulated data. Type II error rates are sliding window averags. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs in a 5 Mb genome at 3x coverage simulated by the pipeline I haven't linked here yet. 
 
 <h3> Computational Performance </h3>
 
-![Figure2](https://github.com/LynchLab/MAPGD/extras/automated_figures/Ackerman2016b/figure2.jpg)
+
+![Figure2](https://github.com/LynchLab/MAPGD/tree/master/extras/automatic_figures/Ackerman_2016b/figure2.jpg)
+
+A hypothetical figure demonstrating the scaling of several different components of mapgd, and several other programs for comparison.
+Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. For 20,000 randomly distributed SNPs in a 5 Mb genome at 3x coverage simulated by the pipeline I haven't linked here yet.  
+
 
 <h3> Other Useful Programs </h3>
 
@@ -450,7 +457,7 @@ When submitting PBS scripts please *make sure to specify the number of threads t
 	configure 'CXX=/software/gcc-4.9.2/bin' 'CXXFLAGS=-static'
 	make	
 
-Word of warnding, the static linking is likely to make the program run slower, but I'm not sure by how much. If you are able you may want to change your environmental variables so that 'configure; make' works. 
+Word of warning, the static linking is likely to make the program run slower, but I'm not sure by how much. If you are able you may want to change your environmental variables so that 'configure; make' works. 
 
 <h3> References </h3>
 
