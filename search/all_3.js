@@ -4,6 +4,7 @@ var searchData=
   ['d_5f',['D_',['../classLinkage.html#a640487a528da5c759494b1c2bd11d4e5',1,'Linkage']]],
   ['data',['Data',['../classData.html',1,'']]],
   ['data_5ffile',['Data_file',['../classData__file.html',1,'']]],
+  ['data_5ffile_3c_20locus_20_3e',['Data_file&lt; Locus &gt;',['../classData__file.html',1,'']]],
   ['data_5ffile_3c_20t_20_3e',['Data_file&lt; T &gt;',['../classData__file.html',1,'']]],
   ['data_20types',['Data types',['../DataTypes.html',1,'']]],
   ['db',['DB',['../classVcf__data.html#ad1aaf620363cb0ff7997bad092d43204',1,'Vcf_data']]],

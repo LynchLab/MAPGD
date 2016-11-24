@@ -85,11 +85,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>In general external formats discard data critical for statistical analysis and cannot be converted directly into files usable by mapgd.</p>
 <p>To perform these conversions we leverage the basic data-processing schema of mapgd, which requires that different</p>
 <p>Thus</p>
-<p>GFF: BED: SAM→ PRO PRO→ MAP (MAP, PRO)→ GCF GCF→ VCF (MAP, PRO)→ LNK GCF→ REL </p>
+<p>Sam files can be read by mapgd to make PRO files:</p>
+<p>sam → PRO</p>
+<p>GCF files can be used to write vcf files:</p>
+<p>GCF → vcf</p>
+<p>ped map tfam tped</p>
+<p>PRO → MAP (MAP, PRO) → GCF (MAP, PRO) → LNK GCF → REL </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 11 2016 13:35:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 24 2016 16:54:00 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

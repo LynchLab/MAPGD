@@ -1,0 +1,5 @@
+The function fails with a segfault when passed an unformated record because bcf_seqname(h,v) 
+
+        fprintf(stderr,"[%s:%d %s] Broken VCF record, the number of columns at %s:%d does not match the number of samples (%d vs %d).\n",
+                __FILE__,__LINE__,__FUNCTION__,bcf_seqname(h,v),v->pos+1, v->n_sample, bcf_hdr_nsamples(h));
+

@@ -105,28 +105,72 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;genotype.h&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;genotype_pair.h&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;relatedness_data.h&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef NOOMP</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;omp.h&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#ifndef NOGSL</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_multimin.h&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> inc_f(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> inc_theta(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> inc_gamma(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> inc_Delta(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">int</span> estimateRel(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[]);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif </span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;newton-method-rel.h&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#ifndef NOOMP</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;omp.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#ifndef NOGSL</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;gsl/gsl_multimin.h&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">int</span> estimateRel(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[]);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">size_t</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;freqtoi(float_t in);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//DONE Moved to in memory</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;std::map &lt;Genotype_pair_tuple, size_t&gt; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;hash_genotypes (<span class="keyword">const</span> std::stringstream &amp;file_buffer, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;x, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;y);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;std::map &lt;Genotype_pair_tuple, size_t&gt; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;downsample_genotypes (<span class="keyword">const</span> std::stringstream &amp;file_buffer, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;x, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;y);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">/*Does a regression of allele frequency of the samples on the population allele frequency*/</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">void</span> </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;set_e(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;relatedness, std::map &lt;Genotype_pair_tuple, size_t&gt; &amp;hashed_genotypes);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">/*Guess starting values of relatedness for the maximization procedure*/</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">void</span> </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;gestimate(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;relatedness, std::map &lt;Genotype_pair_tuple, size_t&gt; &amp;counts);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keywordtype">void</span> </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;inc_f(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;rel, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;pair, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;count);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;inc_theta(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;rel, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;pair, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;count);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">void</span> </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;inc_gamma(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;rel, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;pair, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;count);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="keywordtype">void</span> </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;inc_Delta (<a class="code" href="classRelatedness.html">Relatedness</a> &amp;rel, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;pair, <span class="keyword">const</span> <span class="keywordtype">size_t</span> &amp;count);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">//TODO FIX THIS TERRIBLE HACK JOB YOU SCHMUCK!</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;float_t</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;get_ll (<span class="keyword">const</span> <a class="code" href="classRelatedness.html">Relatedness</a> &amp;rel, <span class="keyword">const</span> <a class="code" href="classGenotype__pair.html">Genotype_pair</a> &amp;pair, <span class="keyword">const</span> float_t count);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keywordtype">double</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;rel_ll (<span class="keyword">const</span> gsl_vector *v, <span class="keywordtype">void</span> *void_hashed_genotypes_p);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">/*Maximizes the relatedness*/</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">void</span> </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;maximize(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;rel, std::map &lt;Genotype_pair_tuple, size_t&gt; &amp;hashed_genotypes);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keywordtype">void</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;get_llr(<a class="code" href="classRelatedness.html">Relatedness</a> &amp;rel, std::map &lt;Genotype_pair_tuple, size_t&gt; hashed_genotypes);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif </span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="ttc" id="classRelatedness_html"><div class="ttname"><a href="classRelatedness.html">Relatedness</a></div><div class="ttdoc">Relatedness data. </div><div class="ttdef"><b>Definition:</b> relatedness_data.h:18</div></div>
 <div class="ttc" id="classGenotype__pair_html"><div class="ttname"><a href="classGenotype__pair.html">Genotype_pair</a></div><div class="ttdef"><b>Definition:</b> genotype_pair.h:19</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 11 2016 13:35:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 24 2016 16:54:00 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

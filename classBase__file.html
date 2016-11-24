@@ -103,11 +103,16 @@ Inheritance diagram for Base_file:</div>
  <div class="center">
   <img src="classBase__file.png" usemap="#Base_file_map" alt=""/>
   <map id="Base_file_map" name="Base_file_map">
-<area href="classData__file.html" alt="Data_file&lt; Data &gt;" shape="rect" coords="0,56,112,80"/>
-<area href="classData__file.html" alt="Data_file&lt; T &gt;" shape="rect" coords="122,56,234,80"/>
-<area href="classFlat__file.html" alt="Flat_file&lt; T &gt;" shape="rect" coords="61,112,173,136"/>
-<area href="classIndexed__file.html" alt="Indexed_file&lt; T &gt;" shape="rect" coords="183,112,295,136"/>
-<area href="classMpileup__file.html" alt="Mpileup_file&lt; T &gt;" shape="rect" coords="183,168,295,192"/>
+<area href="classData__file.html" alt="Data_file&lt; Data &gt;" shape="rect" coords="0,56,183,80"/>
+<area href="classData__file.html" alt="Data_file&lt; Locus &gt;" shape="rect" coords="193,56,376,80"/>
+<area href="classData__file.html" alt="Data_file&lt; T &gt;" shape="rect" coords="482,56,665,80"/>
+<area href="classExternal__file.html" title="An interface for reading and writing data specified outside of mapgd. " alt="External_file&lt; External_data &gt;" shape="rect" coords="675,56,858,80"/>
+<area href="classExternal__file.html" alt="External_file&lt; Vcf_data &gt;" shape="rect" coords="868,56,1051,80"/>
+<area href="classIndexed__file.html" alt="Indexed_file&lt; Locus &gt;" shape="rect" coords="193,112,376,136"/>
+<area href="classFlat__file.html" alt="Flat_file&lt; T &gt;" shape="rect" coords="386,112,569,136"/>
+<area href="classIndexed__file.html" alt="Indexed_file&lt; T &gt;" shape="rect" coords="579,112,762,136"/>
+<area href="classVcf__file.html" alt="Vcf_file" shape="rect" coords="868,112,1051,136"/>
+<area href="classBcf2pro__file.html" title="Because of the god awful mess that are vcf header lines. " alt="Bcf2pro_file" shape="rect" coords="193,168,376,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -244,6 +249,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>eof</b> (void)</td></
 <tr class="memitem:a16b9f99a9d6c1260b34b9d9d25e1ed79"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16b9f99a9d6c1260b34b9d9d25e1ed79"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>indexed</b> (void)</td></tr>
 <tr class="separator:a16b9f99a9d6c1260b34b9d9d25e1ed79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e15750c94abce17f4c355fd1f680158"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e15750c94abce17f4c355fd1f680158"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>check_concatenated</b> (const char *<a class="el" href="classBase__file.html#a4247584fc29eccc8f9cc3eea3a3b5489">filename</a>)</td></tr>
+<tr class="separator:a2e15750c94abce17f4c355fd1f680158"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -275,6 +283,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase__file.html#a7a1b8803895492a833234f37108fe66f">binary_</a></td></tr>
 <tr class="memdesc:a7a1b8803895492a833234f37108fe66f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary mode flag. <br /></td></tr>
 <tr class="separator:a7a1b8803895492a833234f37108fe66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec9fa287c66abcc4bc15e9acf3a64062"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec9fa287c66abcc4bc15e9acf3a64062"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase__file.html#aec9fa287c66abcc4bc15e9acf3a64062">try_binary_</a></td></tr>
+<tr class="memdesc:aec9fa287c66abcc4bc15e9acf3a64062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempt to set binary mode flag. <br /></td></tr>
+<tr class="separator:aec9fa287c66abcc4bc15e9acf3a64062"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeccf93156dc67e079c223241b89a4494"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeccf93156dc67e079c223241b89a4494"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase__file.html#aeccf93156dc67e079c223241b89a4494">indexed_</a></td></tr>
 <tr class="memdesc:aeccf93156dc67e079c223241b89a4494"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indexed mode flag. <br /></td></tr>
@@ -330,7 +342,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hre
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 11 2016 13:35:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 24 2016 16:54:00 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

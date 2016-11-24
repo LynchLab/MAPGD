@@ -107,23 +107,28 @@ Inheritance diagram for Data:</div>
   <img src="classData.png" usemap="#Data_map" alt=""/>
   <map id="Data_map" name="Data_map">
 <area href="classFile__index.html" title="An interface that transforms pairs of name and position keys into record numbers. ..." alt="File_index" shape="rect" coords="0,56,90,80"/>
-<area href="classIndexed__data.html" title="Data which has an absolute position. " alt="Indexed_data" shape="rect" coords="250,56,340,80"/>
-<area href="classLog.html" title="A class to store a log of commands that have been run. " alt="Log" shape="rect" coords="350,56,440,80"/>
-<area href="classRelatedness.html" title="Relatedness data. " alt="Relatedness" shape="rect" coords="450,56,540,80"/>
-<area href="classSample__gof.html" title="The sample specific goodness of fit. " alt="Sample_gof" shape="rect" coords="550,56,640,80"/>
-<area href="classSample__name.html" title="The name of a sample (i.e. what the user called it). " alt="Sample_name" shape="rect" coords="650,56,740,80"/>
-<area href="classVcf__header.html" alt="Vcf_header" shape="rect" coords="750,56,840,80"/>
+<area href="classIndexed__data.html" title="Data which has an absolute position. " alt="Indexed_data" shape="rect" coords="200,56,290,80"/>
+<area href="classLog.html" title="A class to store a log of commands that have been run. " alt="Log" shape="rect" coords="300,56,390,80"/>
+<area href="classRelatedness.html" title="Relatedness data. " alt="Relatedness" shape="rect" coords="400,56,490,80"/>
+<area href="classSample__gof.html" title="The sample specific goodness of fit. " alt="Sample_gof" shape="rect" coords="500,56,590,80"/>
+<area href="classSample__name.html" title="The name of a sample (i.e. what the user called it). " alt="Sample_name" shape="rect" coords="600,56,690,80"/>
 <area href="classAllele.html" title="Summary statistics from the allele command. " alt="Allele" shape="rect" coords="0,112,90,136"/>
 <area href="classLinkage.html" title="A class to store linkage information. " alt="Linkage" shape="rect" coords="100,112,190,136"/>
 <area href="classLocus.html" alt="Locus" shape="rect" coords="200,112,290,136"/>
 <area href="classPooled__data.html" title="Information genereated from pooled data. " alt="Pooled_data" shape="rect" coords="300,112,390,136"/>
 <area href="classPopulation.html" title="Population genotypes. " alt="Population" shape="rect" coords="400,112,490,136"/>
-<area href="classVcf__data.html" alt="Vcf_data" shape="rect" coords="500,112,590,136"/>
+<area href="classBcf2pro.html" title="Because of the god awful mess that are vcf header lines. " alt="Bcf2pro" shape="rect" coords="200,168,290,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a98f85b26ee16b2ad8b20adc14990769e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98f85b26ee16b2ad8b20adc14990769e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>read_binary</b> (std::istream &amp;str)</td></tr>
+<tr class="separator:a98f85b26ee16b2ad8b20adc14990769e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a551a5ef296f16fae1d0c2d55328e6cf9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a551a5ef296f16fae1d0c2d55328e6cf9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>write_binary</b> (std::ostream &amp;str) const </td></tr>
+<tr class="separator:a551a5ef296f16fae1d0c2d55328e6cf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac888cf8ce1709cef09ba368fe61b3904"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac888cf8ce1709cef09ba368fe61b3904"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Data</b> (std::vector&lt; std::string &gt; &amp;)</td></tr>
 <tr class="separator:ac888cf8ce1709cef09ba368fe61b3904"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,6 +138,9 @@ virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>
 <tr class="memitem:a3b982488c72acf6e6a02c5d086cc4c05"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3b982488c72acf6e6a02c5d086cc4c05"></a>
 virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_table_name</b> () const </td></tr>
 <tr class="separator:a3b982488c72acf6e6a02c5d086cc4c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d78324ed78b1479fad53249224e57fd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d78324ed78b1479fad53249224e57fd"></a>
+virtual const bool&#160;</td><td class="memItemRight" valign="bottom"><b>get_binary</b> () const </td></tr>
+<tr class="separator:a4d78324ed78b1479fad53249224e57fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafcbd7fcbda994a17da77d960c2c1a79a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gafcbd7fcbda994a17da77d960c2c1a79a"></a>
 virtual const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SQL.html#gafcbd7fcbda994a17da77d960c2c1a79a">sql_header</a> (void) const </td></tr>
 <tr class="memdesc:gafcbd7fcbda994a17da77d960c2c1a79a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the names of the columns, along with variable type. <br /></td></tr>
@@ -180,6 +188,9 @@ Static Private Attributes</h2></td></tr>
 <tr class="memitem:a816d5071b3f3f9a3a0c5f29e826ef8f6"><td class="memItemLeft" align="right" valign="top">static const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a816d5071b3f3f9a3a0c5f29e826ef8f6">table_name</a> =&quot;NONE&quot;</td></tr>
 <tr class="memdesc:a816d5071b3f3f9a3a0c5f29e826ef8f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The read function must be defined in the child class.  <a href="#a816d5071b3f3f9a3a0c5f29e826ef8f6">More...</a><br /></td></tr>
 <tr class="separator:a816d5071b3f3f9a3a0c5f29e826ef8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d0007aa9442a4bb8455301253e6c1a1"><td class="memItemLeft" align="right" valign="top">static const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData.html#a6d0007aa9442a4bb8455301253e6c1a1">binary</a> =false</td></tr>
+<tr class="memdesc:a6d0007aa9442a4bb8455301253e6c1a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A flag to indicate that binary reading/writing is not supported by default.  <a href="#a6d0007aa9442a4bb8455301253e6c1a1">More...</a><br /></td></tr>
+<tr class="separator:a6d0007aa9442a4bb8455301253e6c1a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -196,6 +207,29 @@ std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 <div class="textblock"><p>A class which can be written as flat text file or into an SQL database. </p>
 <p><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> can be written in a plain text representation (the overloaded &gt;&gt; and &lt;&lt;), in a binary representation which requires accurate information from the <a class="el" href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb" title="The size of the class in bytes. ">size()</a> function, or be given to an SQL database (the sql_ functions). Additionally, all <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> must have a static <a class="el" href="classRegistration.html" title="A class which registers a child of Data in Data::new_data_. ">Registration</a>, which uses the static table_name to write the derived class into new_data_. The static member new_data_ is a map between strings and constructors for the derived classes, so that derived <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> classes can be created from strings. Ultimately my goal is to require <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> classes to define a transformations between each other, so that mapgd can convert between exteranal data schemes and internal schemes as easily as possible, and maybe even aid in determining when data in the SQL data base needs to be updated. Notes to self: I can implement his be defining a bijection between the sets {X, Y, ... } and {Z}, meaning that I can construct {X, Y, ... } whenever I know {Z} and visa versa. In order to know how to define a bijection we need to define injective and surjective function between <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a>. If {X, Y} are surjective on {Z} but not injective, then we can define a bijection by removing elements from {X} or {Y}. TODO: Find a way to establish which elements of {X} or {Y} are extraneous. Also, is this injective/surjective language actually helpful? </p>
 </div><h2 class="groupheader">Field Documentation</h2>
+<a class="anchor" id="a6d0007aa9442a4bb8455301253e6c1a1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const bool Data::binary =false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A flag to indicate that binary reading/writing is not supported by default. </p>
+<p>A flag to indicate whether reading/writing in binary mode is supported for the data_type. </p>
+
+</div>
+</div>
 <a class="anchor" id="ace3d2d835ff32c90261d66c3bf943302"></a>
 <div class="memitem">
 <div class="memproto">
@@ -249,7 +283,7 @@ std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 11 2016 13:35:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 24 2016 16:54:00 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

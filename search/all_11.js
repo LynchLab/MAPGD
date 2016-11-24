@@ -5,5 +5,6 @@ var searchData=
   ['table_5fopen_5f',['table_open_',['../classBase__file.html#a0ae9254b25c9a4f10a200dff00abb0be',1,'Base_file']]],
   ['tellg',['tellg',['../group__BasicIO.html#ga050748ab7f19f5b4459dd63727e4e58c',1,'Base_file']]],
   ['tellp',['tellp',['../group__BasicIO.html#ga7aebf86e3ff85e3c442c257fd4210eae',1,'Base_file']]],
-  ['to_5fallele',['to_allele',['../classPooled__data.html#a482600636b08908040fff1e5ed374e18',1,'Pooled_data']]]
+  ['to_5fallele',['to_allele',['../classPooled__data.html#a482600636b08908040fff1e5ed374e18',1,'Pooled_data']]],
+  ['try_5fbinary_5f',['try_binary_',['../classBase__file.html#aec9fa287c66abcc4bc15e9acf3a64062',1,'Base_file']]]
 ];

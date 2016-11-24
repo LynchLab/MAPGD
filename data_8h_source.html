@@ -105,117 +105,139 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classData.html#ace3d2d835ff32c90261d66c3bf943302">   35</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code" href="classData.html#ace3d2d835ff32c90261d66c3bf943302">file_name</a>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classData.html#a816d5071b3f3f9a3a0c5f29e826ef8f6">   37</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code" href="classData.html#a816d5071b3f3f9a3a0c5f29e826ef8f6">table_name</a>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classData.html#a65eef72466166c1ec4aaef5eef2d15f9">read</a>(std::istream&amp; str) = 0;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classData.html#ab6d8845dcdd7f481b877d971e0da29a1">write</a>(std::ostream&amp; str) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classData.html#a6d0007aa9442a4bb8455301253e6c1a1">   41</a></span>&#160;        <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> <a class="code" href="classData.html#a6d0007aa9442a4bb8455301253e6c1a1">binary</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">/*  //! T can be constructed form this, but this can not be constructed from T.</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">    template &lt;class T, typename... Args&gt; </span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">    void </span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">    injection_ (T&amp;) const { </span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">        injection_{}</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">    template &lt;class T&gt; </span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">    void</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">    surjection_ (const T&amp;) { }</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment"></span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">    template&lt;typename T, typename... Args&gt; </span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">    T&amp; convert(const Args &amp;args ...)</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">    {</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">        </span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">        args.injection_(T);</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">    }*/</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="classData.html">Data</a>(){};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="classData.html">Data</a>(std::vector &lt;std::string&gt; &amp;){};</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> std::string get_file_name()<span class="keyword"> const </span>{<span class="keywordflow">return</span> this-&gt;<a class="code" href="classData.html#ace3d2d835ff32c90261d66c3bf943302">file_name</a>;};</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::string get_table_name()<span class="keyword"> const </span>{<span class="keywordflow">return</span> this-&gt;<a class="code" href="classData.html#a816d5071b3f3f9a3a0c5f29e826ef8f6">table_name</a>;};</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classData.html#a65eef72466166c1ec4aaef5eef2d15f9">read</a>(std::istream&amp; str) = 0;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classData.html#ab6d8845dcdd7f481b877d971e0da29a1">write</a>(std::ostream&amp; str) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">/*  //! T can be constructed form this, but this can not be constructed from T.</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="comment">    template &lt;class T, typename... Args&gt; </span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="comment">    void </span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">    injection_ (T&amp;) const { </span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">        injection_{}</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">    template &lt;class T&gt; </span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">    void</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">    surjection_ (const T&amp;) { }</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">    template&lt;typename T, typename... Args&gt; </span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">    T&amp; convert(const Args &amp;args ...)</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">    {</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">        </span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">        args.injection_(T);</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">    }*/</span></div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="comment">/* E.g. Column_name_1 integer, Column_name_2 integer, ...</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">     */</span> </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="group__SQL.html#gafcbd7fcbda994a17da77d960c2c1a79a">   76</a></span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::string <a class="code" href="group__SQL.html#gafcbd7fcbda994a17da77d960c2c1a79a">sql_header</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;};</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="comment">/* E.g. Column_name_1, Column_name_2, ...</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">     */</span> </div>
-<div class="line"><a name="l00080"></a><span class="lineno"><a class="line" href="group__SQL.html#ga9f4a87d76dc4d37b9320d9eac5429b70">   80</a></span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::string <a class="code" href="group__SQL.html#ga9f4a87d76dc4d37b9320d9eac5429b70">sql_column_names</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;};</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">/* E.g. 1, 0, ...</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">     */</span> </div>
-<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="group__SQL.html#gac0fd234132d2520e0f76a77f5ef3830e">   84</a></span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> std::string <a class="code" href="group__SQL.html#gac0fd234132d2520e0f76a77f5ef3830e">sql_values</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;};</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">/* E.g. 1, 0, ...</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">     */</span> </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="group__SQL.html#ga7847549c0b7000b2a5694490d6caeb91">sql_read</a>(std::istream &amp;);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="comment">     *@}</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="group__basic.html#ga28c372256fd025bc9d601c6a19dfaedd">operator &lt;&lt; </a>(std::ostream&amp;, <span class="keyword">const</span> <a class="code" href="classData.html">Data</a> &amp;); </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">friend</span> std::istream&amp; <a class="code" href="group__basic.html#ga291da932cf6498acc66be2b7b9db31a4">operator &gt;&gt; </a>(std::istream&amp;, <a class="code" href="classData.html">Data</a> &amp;);       </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="comment">/* If size() is undefined in the child class, then we don&#39;t want to </span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="comment">     * read or write any at all, so we return 0.</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="comment">     */</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb">  107</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb">size</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> 0;};</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="comment">/*</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment">     *@}</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">         */</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">static</span> <a class="code" href="classData.html">Data</a> * <a class="code" href="group__basic.html#gad5f83014997c250c28c45b10b12df934">new_from_str</a> (<span class="keyword">const</span> std::string &amp;, <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;};</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">/* Indexed_data can be stored in indexed files.</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="classIndexed__data.html">  119</a></span>&#160;<span class="keyword">class </span><a class="code" href="classIndexed__data.html">Indexed_data</a> : <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="classData.html">Data</a> {</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    id1_t abs_pos_;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <a class="code" href="classIndexed__data.html">Indexed_data</a>(){};</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="classIndexed__data.html">Indexed_data</a>(std::vector &lt;std::string&gt; &amp;){};</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    id1_t <a class="code" href="group__basic.html#gacc45c328230b21d900dae81b1f6f16b0">get_abs_pos</a> (<span class="keywordtype">void</span>) <span class="keyword">const</span>;   </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__basic.html#ga14d4547b73f5a55a634e42c5da0060e2">set_abs_pos</a> (<span class="keyword">const</span> id1_t &amp;); </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;};</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">/*  This initializes the m_data_ctor map which should not be visible</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment"> *  outside of ...</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">static</span> <span class="keyword">struct </span>Registry_initalizer {</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    Registry_initalizer ();</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    ~Registry_initalizer ();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;} Registry_initalizer;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="classRegistration.html">  143</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRegistration.html">Registration</a> </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;{</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <a class="code" href="group__basic.html#ga07d6c6405f9ad571730f83baa91d74ed">Registration</a> (<span class="keyword">const</span> std::string &amp;str, <a class="code" href="classData.html">Data</a>*(*fn)(<span class="keyword">const</span> std::vector &lt;std::string&gt; &amp;) );</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    ~<a class="code" href="classRegistration.html">Registration</a> (<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    std::string name_;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;};</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="group__basic_html_ga07d6c6405f9ad571730f83baa91d74ed"><div class="ttname"><a href="group__basic.html#ga07d6c6405f9ad571730f83baa91d74ed">Registration::Registration</a></div><div class="ttdeci">Registration(const std::string &amp;str, Data *(*fn)(const std::vector&lt; std::string &gt; &amp;))</div><div class="ttdoc">< The constructor of Registration, which stores a constructor for a Data class to new_data_ ...</div><div class="ttdef"><b>Definition:</b> data.cc:48</div></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> read_binary(std::istream&amp; str) {};</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> write_binary(std::ostream&amp; str)<span class="keyword"> const </span>{};</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <a class="code" href="classData.html">Data</a>(){};</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="classData.html">Data</a>(std::vector &lt;std::string&gt; &amp;){};</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> std::string get_file_name()<span class="keyword"> const </span>{<span class="keywordflow">return</span> this-&gt;<a class="code" href="classData.html#ace3d2d835ff32c90261d66c3bf943302">file_name</a>;};</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::string get_table_name()<span class="keyword"> const </span>{<span class="keywordflow">return</span> this-&gt;<a class="code" href="classData.html#a816d5071b3f3f9a3a0c5f29e826ef8f6">table_name</a>;};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keywordtype">bool</span> get_binary()<span class="keyword"> const </span>{<span class="keywordflow">return</span> this-&gt;<a class="code" href="classData.html#a6d0007aa9442a4bb8455301253e6c1a1">binary</a>;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="comment">/* E.g. Column_name_1 integer, Column_name_2 integer, ...</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">     */</span> </div>
+<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="group__SQL.html#gafcbd7fcbda994a17da77d960c2c1a79a">   87</a></span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::string <a class="code" href="group__SQL.html#gafcbd7fcbda994a17da77d960c2c1a79a">sql_header</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;};</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="comment">/* E.g. Column_name_1, Column_name_2, ...</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">     */</span> </div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="group__SQL.html#ga9f4a87d76dc4d37b9320d9eac5429b70">   91</a></span>&#160;        <span class="keyword">virtual</span> <span class="keyword">const</span> std::string <a class="code" href="group__SQL.html#ga9f4a87d76dc4d37b9320d9eac5429b70">sql_column_names</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;};</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="comment">/* E.g. 1, 0, ...</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="comment">     */</span> </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="group__SQL.html#gac0fd234132d2520e0f76a77f5ef3830e">   95</a></span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> std::string <a class="code" href="group__SQL.html#gac0fd234132d2520e0f76a77f5ef3830e">sql_values</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;};</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">/* E.g. 1, 0, ...</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="comment">     */</span> </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="group__SQL.html#ga7847549c0b7000b2a5694490d6caeb91">sql_read</a>(std::istream &amp;);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">     *@}</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">friend</span> std::ostream&amp; <a class="code" href="group__basic.html#ga28c372256fd025bc9d601c6a19dfaedd">operator &lt;&lt; </a>(std::ostream&amp;, <span class="keyword">const</span> <a class="code" href="classData.html">Data</a> &amp;); </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">friend</span> std::istream&amp; <a class="code" href="group__basic.html#ga291da932cf6498acc66be2b7b9db31a4">operator &gt;&gt; </a>(std::istream&amp;, <a class="code" href="classData.html">Data</a> &amp;);       </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="comment">/* If size() is undefined in the child class, then we don&#39;t want to </span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">     * read or write any at all, so we return 0.</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">     */</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb">  118</a></span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb">size</a>(<span class="keywordtype">void</span>)<span class="keyword"> const </span>{<span class="keywordflow">return</span> 0;};</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">     *@}</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">         */</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keyword">static</span> <a class="code" href="classData.html">Data</a> * <a class="code" href="group__basic.html#gad5f83014997c250c28c45b10b12df934">new_from_str</a> (<span class="keyword">const</span> std::string &amp;, <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;};</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">/* Indexed_data can be stored in indexed files.</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classIndexed__data.html">  130</a></span>&#160;<span class="keyword">class </span><a class="code" href="classIndexed__data.html">Indexed_data</a> : <span class="keyword">public</span> <span class="keyword">virtual</span> <a class="code" href="classData.html">Data</a> {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    id1_t abs_pos_;</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keyword">using</span> Data::write_binary;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">using</span> Data::read_binary;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">void</span> write_pos(std::ostream&amp; str)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        str.write((<span class="keywordtype">char</span> *)(&amp;abs_pos_), <span class="keyword">sizeof</span>(id1_t) );</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    }</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keywordtype">void</span> read_pos(std::istream&amp; str)</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    {</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        str.read((<span class="keywordtype">char</span> *)(&amp;abs_pos_), <span class="keyword">sizeof</span>(id1_t) );</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <a class="code" href="classIndexed__data.html">Indexed_data</a>(){};</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <a class="code" href="classIndexed__data.html">Indexed_data</a>(std::vector &lt;std::string&gt; &amp;){};</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    id1_t <a class="code" href="group__basic.html#gacc45c328230b21d900dae81b1f6f16b0">get_abs_pos</a> (<span class="keywordtype">void</span>) <span class="keyword">const</span>;   </div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__basic.html#ga14d4547b73f5a55a634e42c5da0060e2">set_abs_pos</a> (<span class="keyword">const</span> id1_t &amp;); </div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;};</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">/*  This initializes the m_data_ctor map which should not be visible</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment"> *  outside of ...</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="keyword">static</span> <span class="keyword">struct </span>Registry_initalizer {</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    Registry_initalizer ();</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    ~Registry_initalizer ();</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;} Registry_initalizer;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="classRegistration.html">  167</a></span>&#160;<span class="keyword">class </span><a class="code" href="classRegistration.html">Registration</a> </div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;{</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <a class="code" href="group__basic.html#ga07d6c6405f9ad571730f83baa91d74ed">Registration</a> (<span class="keyword">const</span> std::string &amp;str, <a class="code" href="classData.html">Data</a>*(*fn)(<span class="keyword">const</span> std::vector &lt;std::string&gt; &amp;) );</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    ~<a class="code" href="classRegistration.html">Registration</a> (<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    std::string name_;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;};</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="group__basic_html_ga07d6c6405f9ad571730f83baa91d74ed"><div class="ttname"><a href="group__basic.html#ga07d6c6405f9ad571730f83baa91d74ed">Registration::Registration</a></div><div class="ttdeci">Registration(const std::string &amp;str, Data *(*fn)(const std::vector&lt; std::string &gt; &amp;))</div><div class="ttdoc">< The constructor of Registration, which stores a constructor for a Data class to new_data_ ...</div><div class="ttdef"><b>Definition:</b> data.cc:49</div></div>
 <div class="ttc" id="classData_html_ab6d8845dcdd7f481b877d971e0da29a1"><div class="ttname"><a href="classData.html#ab6d8845dcdd7f481b877d971e0da29a1">Data::write</a></div><div class="ttdeci">virtual void write(std::ostream &amp;str) const =0</div><div class="ttdoc">The write function must be defined in the child class. </div></div>
-<div class="ttc" id="group__basic_html_gad5f83014997c250c28c45b10b12df934"><div class="ttname"><a href="group__basic.html#gad5f83014997c250c28c45b10b12df934">Data::new_from_str</a></div><div class="ttdeci">static Data * new_from_str(const std::string &amp;, const std::vector&lt; std::string &gt; &amp;)</div><div class="ttdoc">Constructs an instance of the class Registered w/ string. </div><div class="ttdef"><b>Definition:</b> data.cc:23</div></div>
-<div class="ttc" id="classIndexed__data_html"><div class="ttname"><a href="classIndexed__data.html">Indexed_data</a></div><div class="ttdoc">Data which has an absolute position. </div><div class="ttdef"><b>Definition:</b> data.h:119</div></div>
-<div class="ttc" id="group__basic_html_ga291da932cf6498acc66be2b7b9db31a4"><div class="ttname"><a href="group__basic.html#ga291da932cf6498acc66be2b7b9db31a4">Data::operator&gt;&gt;</a></div><div class="ttdeci">friend std::istream &amp; operator&gt;&gt;(std::istream &amp;, Data &amp;)</div><div class="ttdoc">Use the >> operator to read Data in text mode. </div><div class="ttdef"><b>Definition:</b> data.cc:36</div></div>
-<div class="ttc" id="group__SQL_html_gac0fd234132d2520e0f76a77f5ef3830e"><div class="ttname"><a href="group__SQL.html#gac0fd234132d2520e0f76a77f5ef3830e">Data::sql_values</a></div><div class="ttdeci">virtual const std::string sql_values(void) const </div><div class="ttdoc">Return the values to be placed in columns. </div><div class="ttdef"><b>Definition:</b> data.h:84</div></div>
-<div class="ttc" id="group__basic_html_ga28c372256fd025bc9d601c6a19dfaedd"><div class="ttname"><a href="group__basic.html#ga28c372256fd025bc9d601c6a19dfaedd">Data::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;, const Data &amp;)</div><div class="ttdoc">Use the << operator to write Data in text mode. </div><div class="ttdef"><b>Definition:</b> data.cc:42</div></div>
-<div class="ttc" id="group__SQL_html_gafcbd7fcbda994a17da77d960c2c1a79a"><div class="ttname"><a href="group__SQL.html#gafcbd7fcbda994a17da77d960c2c1a79a">Data::sql_header</a></div><div class="ttdeci">virtual const std::string sql_header(void) const </div><div class="ttdoc">Return the names of the columns, along with variable type. </div><div class="ttdef"><b>Definition:</b> data.h:76</div></div>
-<div class="ttc" id="group__basic_html_ga14d4547b73f5a55a634e42c5da0060e2"><div class="ttname"><a href="group__basic.html#ga14d4547b73f5a55a634e42c5da0060e2">Indexed_data::set_abs_pos</a></div><div class="ttdeci">void set_abs_pos(const id1_t &amp;)</div><div class="ttdoc">Indexed data needs to associate each datum with a position in the genome. </div><div class="ttdef"><b>Definition:</b> data.cc:72</div></div>
+<div class="ttc" id="group__basic_html_gad5f83014997c250c28c45b10b12df934"><div class="ttname"><a href="group__basic.html#gad5f83014997c250c28c45b10b12df934">Data::new_from_str</a></div><div class="ttdeci">static Data * new_from_str(const std::string &amp;, const std::vector&lt; std::string &gt; &amp;)</div><div class="ttdoc">Constructs an instance of the class Registered w/ string. </div><div class="ttdef"><b>Definition:</b> data.cc:24</div></div>
+<div class="ttc" id="classData_html_a6d0007aa9442a4bb8455301253e6c1a1"><div class="ttname"><a href="classData.html#a6d0007aa9442a4bb8455301253e6c1a1">Data::binary</a></div><div class="ttdeci">static const bool binary</div><div class="ttdoc">A flag to indicate that binary reading/writing is not supported by default. </div><div class="ttdef"><b>Definition:</b> data.h:41</div></div>
+<div class="ttc" id="classIndexed__data_html"><div class="ttname"><a href="classIndexed__data.html">Indexed_data</a></div><div class="ttdoc">Data which has an absolute position. </div><div class="ttdef"><b>Definition:</b> data.h:130</div></div>
+<div class="ttc" id="group__basic_html_ga291da932cf6498acc66be2b7b9db31a4"><div class="ttname"><a href="group__basic.html#ga291da932cf6498acc66be2b7b9db31a4">Data::operator&gt;&gt;</a></div><div class="ttdeci">friend std::istream &amp; operator&gt;&gt;(std::istream &amp;, Data &amp;)</div><div class="ttdoc">Use the >> operator to read Data in text mode. </div><div class="ttdef"><b>Definition:</b> data.cc:37</div></div>
+<div class="ttc" id="group__SQL_html_gac0fd234132d2520e0f76a77f5ef3830e"><div class="ttname"><a href="group__SQL.html#gac0fd234132d2520e0f76a77f5ef3830e">Data::sql_values</a></div><div class="ttdeci">virtual const std::string sql_values(void) const </div><div class="ttdoc">Return the values to be placed in columns. </div><div class="ttdef"><b>Definition:</b> data.h:95</div></div>
+<div class="ttc" id="group__basic_html_ga28c372256fd025bc9d601c6a19dfaedd"><div class="ttname"><a href="group__basic.html#ga28c372256fd025bc9d601c6a19dfaedd">Data::operator&lt;&lt;</a></div><div class="ttdeci">friend std::ostream &amp; operator&lt;&lt;(std::ostream &amp;, const Data &amp;)</div><div class="ttdoc">Use the << operator to write Data in text mode. </div><div class="ttdef"><b>Definition:</b> data.cc:43</div></div>
+<div class="ttc" id="group__SQL_html_gafcbd7fcbda994a17da77d960c2c1a79a"><div class="ttname"><a href="group__SQL.html#gafcbd7fcbda994a17da77d960c2c1a79a">Data::sql_header</a></div><div class="ttdeci">virtual const std::string sql_header(void) const </div><div class="ttdoc">Return the names of the columns, along with variable type. </div><div class="ttdef"><b>Definition:</b> data.h:87</div></div>
+<div class="ttc" id="group__basic_html_ga14d4547b73f5a55a634e42c5da0060e2"><div class="ttname"><a href="group__basic.html#ga14d4547b73f5a55a634e42c5da0060e2">Indexed_data::set_abs_pos</a></div><div class="ttdeci">void set_abs_pos(const id1_t &amp;)</div><div class="ttdoc">Indexed data needs to associate each datum with a position in the genome. </div><div class="ttdef"><b>Definition:</b> data.cc:73</div></div>
 <div class="ttc" id="classData_html_ace3d2d835ff32c90261d66c3bf943302"><div class="ttname"><a href="classData.html#ace3d2d835ff32c90261d66c3bf943302">Data::file_name</a></div><div class="ttdeci">static const std::string file_name</div><div class="ttdoc">The read function must be defined in the child class. </div><div class="ttdef"><b>Definition:</b> data.h:35</div></div>
-<div class="ttc" id="group__SQL_html_ga7847549c0b7000b2a5694490d6caeb91"><div class="ttname"><a href="group__SQL.html#ga7847549c0b7000b2a5694490d6caeb91">Data::sql_read</a></div><div class="ttdeci">virtual void sql_read(std::istream &amp;)</div><div class="ttdoc">Reads the values... </div><div class="ttdef"><b>Definition:</b> data.cc:29</div></div>
+<div class="ttc" id="group__SQL_html_ga7847549c0b7000b2a5694490d6caeb91"><div class="ttname"><a href="group__SQL.html#ga7847549c0b7000b2a5694490d6caeb91">Data::sql_read</a></div><div class="ttdeci">virtual void sql_read(std::istream &amp;)</div><div class="ttdoc">Reads the values... </div><div class="ttdef"><b>Definition:</b> data.cc:30</div></div>
 <div class="ttc" id="classData_html_a65eef72466166c1ec4aaef5eef2d15f9"><div class="ttname"><a href="classData.html#a65eef72466166c1ec4aaef5eef2d15f9">Data::read</a></div><div class="ttdeci">virtual void read(std::istream &amp;str)=0</div><div class="ttdoc">The read function must be defined in the child class. </div></div>
-<div class="ttc" id="group__basic_html_gacc45c328230b21d900dae81b1f6f16b0"><div class="ttname"><a href="group__basic.html#gacc45c328230b21d900dae81b1f6f16b0">Indexed_data::get_abs_pos</a></div><div class="ttdeci">id1_t get_abs_pos(void) const </div><div class="ttdoc">Indexed data needs to associate each datum with a position in the genome. </div><div class="ttdef"><b>Definition:</b> data.cc:67</div></div>
-<div class="ttc" id="classRegistration_html"><div class="ttname"><a href="classRegistration.html">Registration</a></div><div class="ttdoc">A class which registers a child of Data in Data::new_data_. </div><div class="ttdef"><b>Definition:</b> data.h:143</div></div>
+<div class="ttc" id="group__basic_html_gacc45c328230b21d900dae81b1f6f16b0"><div class="ttname"><a href="group__basic.html#gacc45c328230b21d900dae81b1f6f16b0">Indexed_data::get_abs_pos</a></div><div class="ttdeci">id1_t get_abs_pos(void) const </div><div class="ttdoc">Indexed data needs to associate each datum with a position in the genome. </div><div class="ttdef"><b>Definition:</b> data.cc:68</div></div>
+<div class="ttc" id="classRegistration_html"><div class="ttname"><a href="classRegistration.html">Registration</a></div><div class="ttdoc">A class which registers a child of Data in Data::new_data_. </div><div class="ttdef"><b>Definition:</b> data.h:167</div></div>
 <div class="ttc" id="classData_html"><div class="ttname"><a href="classData.html">Data</a></div><div class="ttdoc">A class which can be written as flat text file or into an SQL database. </div><div class="ttdef"><b>Definition:</b> data.h:32</div></div>
-<div class="ttc" id="group__SQL_html_ga9f4a87d76dc4d37b9320d9eac5429b70"><div class="ttname"><a href="group__SQL.html#ga9f4a87d76dc4d37b9320d9eac5429b70">Data::sql_column_names</a></div><div class="ttdeci">virtual const std::string sql_column_names(void) const </div><div class="ttdoc">Return the names of the columns. </div><div class="ttdef"><b>Definition:</b> data.h:80</div></div>
+<div class="ttc" id="group__SQL_html_ga9f4a87d76dc4d37b9320d9eac5429b70"><div class="ttname"><a href="group__SQL.html#ga9f4a87d76dc4d37b9320d9eac5429b70">Data::sql_column_names</a></div><div class="ttdeci">virtual const std::string sql_column_names(void) const </div><div class="ttdoc">Return the names of the columns. </div><div class="ttdef"><b>Definition:</b> data.h:91</div></div>
 <div class="ttc" id="classData_html_a816d5071b3f3f9a3a0c5f29e826ef8f6"><div class="ttname"><a href="classData.html#a816d5071b3f3f9a3a0c5f29e826ef8f6">Data::table_name</a></div><div class="ttdeci">static const std::string table_name</div><div class="ttdoc">The read function must be defined in the child class. </div><div class="ttdef"><b>Definition:</b> data.h:37</div></div>
-<div class="ttc" id="group__basic_html_ga048bd3bc77a909f4bf2ce7c80acb7afb"><div class="ttname"><a href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb">Data::size</a></div><div class="ttdeci">virtual size_t size(void) const </div><div class="ttdoc">The size of the class in bytes. </div><div class="ttdef"><b>Definition:</b> data.h:107</div></div>
+<div class="ttc" id="group__basic_html_ga048bd3bc77a909f4bf2ce7c80acb7afb"><div class="ttname"><a href="group__basic.html#ga048bd3bc77a909f4bf2ce7c80acb7afb">Data::size</a></div><div class="ttdeci">virtual size_t size(void) const </div><div class="ttdoc">The size of the class in bytes. </div><div class="ttdef"><b>Definition:</b> data.h:118</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 11 2016 13:35:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 24 2016 16:53:59 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

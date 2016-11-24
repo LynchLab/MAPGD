@@ -82,45 +82,47 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1>Contents</h1>
-<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#introduction">Introduction</a></p>
-<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#basic-design">Basic Design</a></p>
-<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#style-guidelines">Style Guidelines</a></p>
-<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#tutorials">Tutorials</a></p>
-<p><a href="https://github.com/LynchLab/src/mapgd_0.4/MAPGD#task-list">Task List</a></p>
+<p><a href="https://github.com/LynchLab/src/MAPGD_0.4/MAPGD#introduction">Introduction</a></p>
+<p><a href="https://github.com/LynchLab/src/MAPGD_0.4/MAPGD#basic-design">Basic Design</a></p>
+<p><a href="https://github.com/LynchLab/src/MAPGD_0.4/MAPGD#style-guidelines">Style Guidelines</a></p>
+<p><a href="https://github.com/LynchLab/src/MAPGD_0.4/MAPGD#tutorials">Tutorials</a></p>
+<p><a href="https://github.com/LynchLab/src/MAPGD_0.4/MAPGD#task-list">Task List</a></p>
 <h1>Introduction</h1>
 <p>MAPGD is a series of related programs that estimate allele frequency, heterozygosity, Hardy-Weinberg disequilibrium and identity by descent (IBD) coefficients from population genomic data using statistically rigorous maximum-likelihood approach.</p>
 <h1>Basic Design</h1>
 <ul>
-<li>I/O<ul>
-<li>The user interface The user interacts with MAPGD through a <a href="https://en.wikipedia.org/wiki/Command-line_interface">command line interface</a>. One of the advantages of</li>
-<li>The SQL database</li>
-<li><a class="el" href="classData__file.html">Data_file</a></li>
-</ul>
-</li>
-<li><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> MAPGD can most generally be described as a program which transforms data from one representation into a different representation. The features of the data which the user is interested in may not be obvious in the most basic representation of the sequencing data, and the user may wish to transform the data into a representation where the features are more obvious. Generally, ...<ul>
+<li>The user interface The user interacts with MAPGD through a <a href="https://en.wikipedia.org/wiki/Command-line_interface">command line interface</a>. One of the advantages of a CLI is that it allows users to easily document and automate their analysis, however a CLI often provides less contextual help to users and users may be generally unfamiliar with CLI. We hope to address this by enforcing rich feature documentation through the use of MAPGD's <a href="https://lynchlab.github.io/MAPGD/interface_8h_source.html">interface</a>, which requires us to prove short verbal descriptions of all options and formats contextual help. MAPGD also provides documentation through man pages.</li>
+<li><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> MAPGD can most generally be described as a program which transforms data from one representation into a different representation. The features of the data which the user is interested in may not be obvious in the most basic representation of the sequencing data, and the user may wish to transform the data into a representation where these features are more obvious. We attempt to organize data into minimal classes that associate one particular representation . . . This choice<ul>
 <li>Raw_data</li>
 <li><a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a></li>
 </ul>
 </li>
-<li>Indexing The standard format many programs use for referencing positions in the genome uses a string, used to reference a continuous region of the genome called either a <a href="https://en.wikipedia.org/wiki/Contig">contig</a>, scaffold or chromosome, and an integer, used to specify a position within that region. To reduce memory usage mapgd represent genome positions as a single integer number, called an absolute position. The <a class="el" href="classFile__index.html" title="An interface that transforms pairs of name and position keys into record numbers. ...">File_index</a> class is used to convert between string/integer pairs and absolute positions.<ul>
-<li><a class="el" href="classIndexed__data.html" title="Data which has an absolute position. ">Indexed_data</a></li>
-<li><a class="el" href="classIndexed__file.html">Indexed_file</a></li>
+<li>Indexing The standard format many programs use for referencing positions in the genome uses a string, used to reference a continuous region of the genome called either a <a href="https://en.wikipedia.org/wiki/Contig">contig</a>, scaffold or chromosome, and an integer, used to specify a position within that region. To reduce memory usage MAPGD represent genome positions as a single integer number, called an absolute position. The <a class="el" href="classFile__index.html" title="An interface that transforms pairs of name and position keys into record numbers. ...">File_index</a> class is used to convert between string/integer pairs and absolute positions.</li>
+<li>File interface MAPGD provides a basic file interface for reading and writing data. This interface allows the user to<ul>
+<li><a class="el" href="classIndexed__data.html" title="Data which has an absolute position. ">Indexed_data</a> <a class="el" href="classData.html" title="A class which can be written as flat text file or into an SQL database. ">Data</a> which is logically associated with a position in the genome can be declared as <a class="el" href="classIndexed__data.html" title="Data which has an absolute position. ">Indexed_data</a>. This allows</li>
+<li>Doubly_indexed_data</li>
+</ul>
+</li>
+<li>I/O MAPGD enforces a few basic rules with respect to IO. The input of most commands should be a File, and the output should be a File. Commands that naturally take more than one Data_type as input should define a single Data_type that unites these Data_types so that they can be written to a single file. Then, a command that specifically takes the different Data_types as input and outputs the single new Data_type should also be implemented. This ensures that MAPGD can effectively use the SQL database back end.<ul>
+<li>The SQL database</li>
 </ul>
 </li>
 <li>Models In order to</li>
 </ul>
 <h1>Style Guidelines</h1>
-<p>mapgd is written to conform to the GNU style guidelines, at least to the extent that I have had time to read and implement the guidelines.</p>
+<p>MAPGD is written to conform to the GNU style guidelines, at least to the extent that I have had time to read and implement the guidelines.</p>
 <ul>
 <li>Class names should be whole English words starting with an initial capital (to distinguish them from the core classes and types of c++): e.g My_class_name.</li>
-<li>Variables should follow the same rules, but begin with a lower case letter: e.g. my_variable_name. etc. Variables should never be named something like aa, ab, ac, etc.</li>
-<li>Do not to use CamelCase, where words .</li>
-<li>Private or protected members of classes should be postfixed with an underscore (e.g. var_)</li>
+<li>Variables should generally follow the same rules, but begin with a lower case letter: e.g. my_variable_name. etc. Variables should never be named something like aa, ab, ac, etc.</li>
+<li>Common abbreviations are acceptable for variable names (but not for class or function names). For instance, tmp would be preferred over temporary, etc. Use your own judgment on whether the use of a variable is obvious enough from context that a long descriptive name is unnecessary (loop counters, temporary storage, etc.). When in doubt, error on the side of excess description.</li>
+<li>Do not to use <a href="https://en.wikipedia.org/wiki/Camel_case">CamelCase</a>, where several words are joined together and each word begins with a capital letter. Instead join words with the underscore, since non-native English speakers allegedly find this easier to read.</li>
+<li>Private or protected members of classes should be postfixed with an underscore (e.g. var_).</li>
 <li>Types should be postfixed with an _t (e.g. My_type_t).</li>
+<li>Avoid type prefixes. Prefixes which encode type information (e.g. ui_count, to show that count is an unsigned int) should generally not be used. In most IDEs it is quite easy to display types, and at any rate, if the code is reasonably well organized it shouldn't be too difficult to find the declaration.</li>
 <li>Error messages should always list the name of the file generating the error and the line number from which the error message was printed. These can be set with the compiler Macros __NAME__ and __LINE__ so that they remain accurate as your source code changes.</li>
 <li>The GNU style guidelines recommend the use of gettext to make it easy to translate programs into different languages. We need to implement these standards in the future, however, we have not done so yet.</li>
 <li><p class="startli">Function definitions should have aligned braces:</p>
-<p class="startli">Right: Void My_func (void) { return; } Wrong: Void My_func (void) { return; }</p>
+<p class="startli">Right: void My_func (void) { return; } Wrong: void My_func (void) { return; }</p>
 </li>
 <li><p class="startli">The return type should occur on the line immediately preceding the function name:</p>
 <p class="startli">Right: int My_func (void) { return 1; } Wrong: int My_func (void) { return 1; }</p>
@@ -129,30 +131,49 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p class="startli">Right: Id1_t position; Wrong: int position;</p>
 <p class="startli">This prevents inconsistent usage for variables storing positions in the genome, which could be reasonably be declared as int, unsigned int, long int, etc.</p>
 </li>
+<li>Do not assume that characters will be encoded in ASCII. We would like MAPGD to work for international users, who may have text encoded in UTF-8 etc. Please do not break this.</li>
+<li>Keep source file small. While you do not have to ensure that only a single object exists in source file style, they should certainly not contain logically independent objects. This allows the code to easily be reorganized by moving files around, allows for re-use of objects in other programs, and generally lowers the barrier for other programmers to contribute to the project.</li>
+<li>Each object files should compile independently.</li>
+<li>Comment your code. We will be using <a href="http://www.stack.nl/~dimitri/doxygen/">DOXYGEN</a> to comment the code. Header files should include descriptions for essentially every line of code that will appear in the development website. Comments may be more sparse in the source file, since other developers have less need to poke around in these files as long as everything is working properly. Still, write your code to be read by other people.</li>
 </ul>
 <h1>Models</h1>
-<p>In statistics, a <a href="https://en.wikipedia.org/wiki/Statistical_model">model</a> is an idealized description of how the observed data was generated. This description includes uses ...</p>
-<h2>Maximum Likelihood</h2>
+<p>In statistics, a <a href="https://en.wikipedia.org/wiki/Statistical_model">model</a> is an idealized description of how data is generated. If a statistical model of data exist, it can be used to estimate parameters used to generate the data through the process of likelihood maximization.</p>
 <h2>Likelihoods</h2>
+<h2>Maximum Likelihood</h2>
 <h2>Priors</h2>
 <h2>Posteriors</h2>
 <h2>Maximizing Posteriors</h2>
-<h1>Genotypic Correlation</h1>
+<h2>Detecting violations of the model</h2>
+<h1>Useful representations of data</h1>
+<h2><a class="el" href="classAllele.html" title="Summary statistics from the allele command. ">Allele</a> frequencies</h2>
+<h2>Genotypic likelihoods</h2>
+<h2>Genotypic Correlation</h2>
 <p>Ultimately the genetic structure of a population is fully specified by the genotypes of the individuals that compose that population. This means that if we can accurately calculate all genotypic probabilities, then the calculation of any other population statistics becomes trivial. However, in order to calculate genotypic probabilities we must take account of the errors made in the genotyping process. Include inferring the presence of alleles that are not there, which can arise from sequencing error or mistakes made aligning to a reference, and failing to detect the presence of alleles which are there because of low coverage or biased sequencing of a single parental chromosome. We maximize a likelihood equation to account for sequencing error and the failure to sample genotypes, and then we test the data for fit to the parameters, and reject estimates where the data has a poor fit to the estimated parameters.</p>
+<h3>Jaquard's condensed coefficients of identity</h3>
+<h2>Zygosity Correlations</h2>
+<p>The genotypic correlation between two loci within a population is generally described in terms of linkage disequilibrium, but can more generally be seen as second order zygosity correlations between loci. These correlations exist within individuals, and ultimately linkage disequilibrium is simply the average second order zygosity correlation across individuals within the population.</p>
 <h1>Tutorials</h1>
 <p>[An introduction to quartets]() [Reading and writing to files]() [Making models]()</p>
 <h1>Task List</h1>
+<p>[x] Claim MAPGD.org.</p>
+<p>The website should probably just redirect to the github repository.</p>
+<p>[ ] Implement gettext for internationalization.</p>
+<p>[ ] Get SQL back end working again.</p>
+<p>[ ] Get MPI working again.</p>
 <p>[ ] Write scripting tutorials for the main user page.</p>
-<p>[ ] Claim mapgd.org.</p>
-<p>[ ] Automate tutorial testing.</p>
-<p>[ ] Automatic statistical and computational performance testing.</p>
-<p>Statistical test should report bais and MSE of MAPGD and several other programs (ANGSD/GATK/PLINK). Keep other programs up to date. Performance test should report ...</p>
+<p>Write a tutorial to show</p>
 <p>[ ] Write SQL tutorials.</p>
-<p>[ ] Automatically generate figures from recent papers. </p>
+<p>SQL tutorials should show users how to quickly calculate various summary statistics form the SQL database, such as piN and piS.</p>
+<p>[ ] Automate tutorial testing.</p>
+<p>Both coding tutorials and example work flows in the README should be automatically tested before each push to the main repository.</p>
+<p>[ ] Automatic statistical and computational performance testing.</p>
+<p>Statistical test should report bais and MSE of MAPGD and several other programs (ANGSD/GATK/PLINK). Add scripts to keep other programs up to date. Performance test should look at how computations times scale with input size, number of threads, and number of nodes. Results of Statistical and Performance test should automatically be displayed in the readme.</p>
+<p>[x] Automatically generate figures from recent papers.</p>
+<p>These figures and scripts are placed in the directories Ackerman 2016a and Ackerman 2016b. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 11 2016 13:35:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 24 2016 16:54:00 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>

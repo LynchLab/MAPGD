@@ -11,6 +11,7 @@ var searchData=
   ['indexed_5f',['indexed_',['../classBase__file.html#aeccf93156dc67e079c223241b89a4494',1,'Base_file']]],
   ['indexed_5fdata',['Indexed_data',['../classIndexed__data.html',1,'']]],
   ['indexed_5ffile',['Indexed_file',['../classIndexed__file.html',1,'']]],
+  ['indexed_5ffile_3c_20locus_20_3e',['Indexed_file&lt; Locus &gt;',['../classIndexed__file.html',1,'']]],
   ['info',['Info',['../classInfo.html',1,'']]],
   ['init_5fgof',['init_gof',['../classmodels.html#af826c332f07d74c4750302f934ccaa09',1,'models']]],
   ['is_5fopen',['is_open',['../classBase__file.html#a14e2e7ae8882e0a2d98fa52518f7b11c',1,'Base_file']]]

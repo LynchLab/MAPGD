@@ -7,5 +7,6 @@ var searchData=
   ['ni_5f',['Ni_',['../classLinkage.html#a196cdd9ba7360f9ce46753c0baf86e4d',1,'Linkage']]],
   ['ns',['NS',['../classVcf__data.html#a363694f3e1905d63c08b88b844a4ecb4',1,'Vcf_data']]],
   ['null_5f',['null_',['../classLinkage.html#a6337ec9dd8f9e778901282494bd36b08',1,'Linkage']]],
-  ['null_5ferror',['null_error',['../classAllele.html#a534e43f8ae1f63d46b2435bcd0423acf',1,'Allele']]]
+  ['null_5ferror',['null_error',['../classAllele.html#a534e43f8ae1f63d46b2435bcd0423acf',1,'Allele']]],
+  ['null_5ferror2',['null_error2',['../classAllele.html#aec5027ceb933bae073ff941ccded1733',1,'Allele']]]
 ];

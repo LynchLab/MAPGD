@@ -5,5 +5,6 @@ var searchData=
   ['parm',['parm',['../classFlag.html#ad1b277d5d017993de9ef5d86a78fbacc',1,'Flag::parm()'],['../classArgument.html#a7ef7d714a45634744ff3d0e268bbdce1',1,'Argument::parm()']]],
   ['polyll',['polyll',['../classPooled__data.html#aca44fe3a32e81536b527aeb86e5838e4',1,'Pooled_data']]],
   ['pooled',['pooled',['../classAllele.html#a2bf5d56b370a9d0b188102dda87b045f',1,'Allele']]],
-  ['positional_5fargs',['positional_args',['../classEnvironment.html#ad03a76b027346a36e1f34840746ec071',1,'Environment']]]
+  ['positional_5fargs',['positional_args',['../classEnvironment.html#ad03a76b027346a36e1f34840746ec071',1,'Environment']]],
+  ['profile_5f',['profile_',['../classBcf2pro__file.html#a58a3305254dd9191fc6b1b95d311f8db',1,'Bcf2pro_file']]]
 ];

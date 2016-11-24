@@ -8,5 +8,8 @@ var searchData=
   ['end',['end',['../classLocus.html#a6758be06e066d09c6743ed5a0c49528b',1,'Locus::end()'],['../classVcf__data.html#a3a31269fed85a6fcc0e4d0c4f2bcec41',1,'Vcf_data::END()']]],
   ['environment',['Environment',['../classEnvironment.html',1,'']]],
   ['error',['error',['../classAllele.html#ab20335b9fb558eb9272a96783b7872a0',1,'Allele']]],
-  ['excluded',['excluded',['../classAllele.html#a8a8ec306b7fee9ee26189cd96c0cb2d9',1,'Allele']]]
+  ['excluded',['excluded',['../classAllele.html#a8a8ec306b7fee9ee26189cd96c0cb2d9',1,'Allele']]],
+  ['external_5fdata',['External_data',['../classExternal__data.html',1,'']]],
+  ['external_5ffile',['External_file',['../classExternal__file.html',1,'']]],
+  ['external_5ffile_3c_20vcf_5fdata_20_3e',['External_file&lt; Vcf_data &gt;',['../classExternal__file.html',1,'']]]
 ];

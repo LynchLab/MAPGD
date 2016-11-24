@@ -88,7 +88,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a>  </div>
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">Indexed_file&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
@@ -99,9 +100,8 @@ Inheritance diagram for Indexed_file&lt; T &gt;:</div>
  <div class="center">
   <img src="classIndexed__file.png" usemap="#Indexed_file&lt; T &gt;_map" alt=""/>
   <map id="Indexed_file&lt; T &gt;_map" name="Indexed_file&lt; T &gt;_map">
-<area href="classData__file.html" alt="Data_file&lt; T &gt;" shape="rect" coords="0,56,112,80"/>
-<area href="classBase__file.html" title="A templet which stores data associated with specific locations in a genome. " alt="Base_file" shape="rect" coords="0,0,112,24"/>
-<area href="classMpileup__file.html" alt="Mpileup_file&lt; T &gt;" shape="rect" coords="0,168,112,192"/>
+<area href="classData__file.html" alt="Data_file&lt; T &gt;" shape="rect" coords="0,56,111,80"/>
+<area href="classBase__file.html" title="A templet which stores data associated with specific locations in a genome. " alt="Base_file" shape="rect" coords="0,0,111,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -115,8 +115,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <a class="el" href="classFile__index.html">File_index</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndexed__file.html#a15c4c835374c3edcf4b423f82f6bf40e">get_index</a> (void) const </td></tr>
 <tr class="memdesc:a15c4c835374c3edcf4b423f82f6bf40e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <a class="el" href="classFile__index.html" title="An interface that transforms pairs of name and position keys into record numbers. ...">File_index</a>. <br /></td></tr>
 <tr class="separator:a15c4c835374c3edcf4b423f82f6bf40e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab25dfabe2aff618c6a454eb803159a85"><td class="memItemLeft" align="right" valign="top">id1_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndexed__file.html#ab25dfabe2aff618c6a454eb803159a85">get_pos</a> (const T &amp;) const </td></tr>
-<tr class="memdesc:ab25dfabe2aff618c6a454eb803159a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position in the file.  <a href="#ab25dfabe2aff618c6a454eb803159a85">More...</a><br /></td></tr>
+<tr class="memitem:a28b5a827e86896d3bf40befe089f3e58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classIndexed__file.html">Indexed_file</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndexed__file.html#a28b5a827e86896d3bf40befe089f3e58">write</a> (const T &amp;)</td></tr>
+<tr class="memdesc:a28b5a827e86896d3bf40befe089f3e58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position in the file.  <a href="#a28b5a827e86896d3bf40befe089f3e58">More...</a><br /></td></tr>
+<tr class="separator:a28b5a827e86896d3bf40befe089f3e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fddb17a3d93faa5e8db3e314630ac84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8fddb17a3d93faa5e8db3e314630ac84"></a>
+<a class="el" href="classIndexed__file.html">Indexed_file</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>read</b> (T &amp;)</td></tr>
+<tr class="separator:a8fddb17a3d93faa5e8db3e314630ac84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab25dfabe2aff618c6a454eb803159a85"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab25dfabe2aff618c6a454eb803159a85"></a>
+id1_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_pos</b> (const T &amp;) const </td></tr>
 <tr class="separator:ab25dfabe2aff618c6a454eb803159a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94e2cd82357e96cda747a89fd4f559fb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a94e2cd82357e96cda747a89fd4f559fb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndexed__file.html#a94e2cd82357e96cda747a89fd4f559fb">write_header</a> (const T &amp;)</td></tr>
@@ -279,6 +285,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>eof</b> (void)</td></
 <tr class="memitem:a16b9f99a9d6c1260b34b9d9d25e1ed79 inherit pub_methods_classBase__file"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16b9f99a9d6c1260b34b9d9d25e1ed79"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>indexed</b> (void)</td></tr>
 <tr class="separator:a16b9f99a9d6c1260b34b9d9d25e1ed79 inherit pub_methods_classBase__file"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e15750c94abce17f4c355fd1f680158 inherit pub_methods_classBase__file"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2e15750c94abce17f4c355fd1f680158"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>check_concatenated</b> (const char *<a class="el" href="classBase__file.html#a4247584fc29eccc8f9cc3eea3a3b5489">filename</a>)</td></tr>
+<tr class="separator:a2e15750c94abce17f4c355fd1f680158 inherit pub_methods_classBase__file"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -290,6 +299,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classIndexed__file.html#a8cf6da8008038a9c4da5ac4b66c09d05">write_text</a> (const T &amp;)</td></tr>
 <tr class="memdesc:a8cf6da8008038a9c4da5ac4b66c09d05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write in text mode. DONE. <br /></td></tr>
 <tr class="separator:a8cf6da8008038a9c4da5ac4b66c09d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6bc9e61d8ea01ef5970ff41b50d407b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac6bc9e61d8ea01ef5970ff41b50d407b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>read_binary</b> (T &amp;)</td></tr>
+<tr class="separator:ac6bc9e61d8ea01ef5970ff41b50d407b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addc63b330f29ddd4ce5b31ce3c3f5ab1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="addc63b330f29ddd4ce5b31ce3c3f5ab1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>write_binary</b> (const T &amp;)</td></tr>
+<tr class="separator:addc63b330f29ddd4ce5b31ce3c3f5ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classData__file"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classData__file')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classData__file.html">Data_file&lt; T &gt;</a></td></tr>
 <tr class="memitem:a41376e51a6e242cd7e237c3df315eee6 inherit pro_methods_classData__file"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a41376e51a6e242cd7e237c3df315eee6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classData__file.html#a41376e51a6e242cd7e237c3df315eee6">read_binary</a> (T &amp;)</td></tr>
@@ -335,6 +350,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase__file.html#a7a1b8803895492a833234f37108fe66f">binary_</a></td></tr>
 <tr class="memdesc:a7a1b8803895492a833234f37108fe66f inherit pro_attribs_classBase__file"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary mode flag. <br /></td></tr>
 <tr class="separator:a7a1b8803895492a833234f37108fe66f inherit pro_attribs_classBase__file"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec9fa287c66abcc4bc15e9acf3a64062 inherit pro_attribs_classBase__file"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec9fa287c66abcc4bc15e9acf3a64062"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase__file.html#aec9fa287c66abcc4bc15e9acf3a64062">try_binary_</a></td></tr>
+<tr class="memdesc:aec9fa287c66abcc4bc15e9acf3a64062 inherit pro_attribs_classBase__file"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempt to set binary mode flag. <br /></td></tr>
+<tr class="separator:aec9fa287c66abcc4bc15e9acf3a64062 inherit pro_attribs_classBase__file"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeccf93156dc67e079c223241b89a4494 inherit pro_attribs_classBase__file"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeccf93156dc67e079c223241b89a4494"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase__file.html#aeccf93156dc67e079c223241b89a4494">indexed_</a></td></tr>
 <tr class="memdesc:aeccf93156dc67e079c223241b89a4494 inherit pro_attribs_classBase__file"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indexed mode flag. <br /></td></tr>
@@ -359,20 +378,26 @@ std::ios::openmode&#160;</td><td class="memItemRight" valign="bottom"><a class="
 std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBase__file.html#ae1df95dcb6c7bca078d2452048aef86d">filename_</a></td></tr>
 <tr class="memdesc:ae1df95dcb6c7bca078d2452048aef86d inherit pro_attribs_classBase__file"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the file if opened. <br /></td></tr>
 <tr class="separator:ae1df95dcb6c7bca078d2452048aef86d inherit pro_attribs_classBase__file"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:af47777b633f70aab468e46952f0fb280"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af47777b633f70aab468e46952f0fb280"></a>
+id1_t&#160;</td><td class="memItemRight" valign="bottom"><b>reference_size_</b></td></tr>
+<tr class="separator:af47777b633f70aab468e46952f0fb280"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ab25dfabe2aff618c6a454eb803159a85"></a>
+<a class="anchor" id="a28b5a827e86896d3bf40befe089f3e58"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class T&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">id1_t <a class="el" href="classIndexed__file.html">Indexed_file</a>&lt; T &gt;::get_pos </td>
+          <td class="memname"><a class="el" href="classIndexed__file.html">Indexed_file</a>&lt; T &gt; &amp; <a class="el" href="classIndexed__file.html">Indexed_file</a>&lt; T &gt;::write </td>
           <td>(</td>
           <td class="paramtype">const T &amp;&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -382,14 +407,13 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>mapgd_0.4/<a class="el" href="map-file_8h_source.html">map-file.h</a></li>
-<li>mapgd_0.4/map-file.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Aug 11 2016 13:35:18 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 24 2016 16:54:00 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.7
 </small></address>
