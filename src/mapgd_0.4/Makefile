@@ -98,11 +98,14 @@ COMMAND_OBJ=commands/estimate-individual.o \
 	PopLD.o \
 	commands/filter.o \
 	filter-pool.o \
-	relatedness.o
+	fastview.o \
+	relatedness.o \
+	relatedness_test.o
 
 #Depend on htslib
 HTS_OBJ=data_conversion/vcf-file.o \
 	data_conversion/bcf2pro-file.o \
+	commands/read-vcf.o \
 	commands/make-vcf.o
 
 #Depend on db_api

@@ -66,7 +66,7 @@ public:
 	void get (Data *, ...) const;
 
 	void put (const File_index &, const Allele &, const Population &);
-	void get (Locus &, Allele &) const;
+	void get(File_index &, Allele &, Population &) const;
 
 	//The mandatory fields.
 	std::string id;

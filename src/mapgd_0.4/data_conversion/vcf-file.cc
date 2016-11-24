@@ -132,8 +132,62 @@ Vcf_data::put(const Data *data, ...)
 }
 
 void 
-Vcf_data::get(Locus &locus, Allele &allele) const
+Vcf_data::get(File_index &index, Allele &allele, Population &pop) const
 {
+	if(allele.get_abs_pos()!=pop.get_abs_pos() )
+	{
+		std::cerr << __FILE__ << ":" << __LINE__ <<  "allele and locus have different positions (private abs_pos_).\n";
+	}
+
+	char alleles[4];
+	size_t size=record_->n_sample;
+	id1_t abs_pos=pop.get_abs_pos();
+	float *gp=new float[size*3], freq=allele.freq;
+	float *vit=gp;
+	int32_t *dp=new int32_t[size];
+	int32_t *dp_it=dp;
+	int32_t *gt=new int[size*2];
+	int32_t *gt_it=gt;
+	record_->rid = index.get_id0(abs_pos);
+	record_->pos = index.get_id1(abs_pos)-1;
+	if (allele.major==allele.ref)
+	{
+		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.minor) );
+        	bcf_update_info_float(header_, record_, "AF", &freq, 1);
+		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
+       		{
+			*(vit+0)=(float)(it->lMM);
+			*(vit+1)=(float)(it->lMm);
+			*(vit+2)=(float)(it->lmm);
+			*dp_it=(int32_t)(it->N);
+			call_major(*it, gt_it);
+			vit+=3;
+			++dp_it;
+			gt_it+=2;
+		}
+	} else {
+		freq=1.-freq;
+		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.major) );
+        	bcf_update_info_float(header_, record_, "AF", &freq, 1);
+		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
+		{
+			*(vit+0)=(float)(it->lmm);
+			*(vit+1)=(float)(it->lMm);
+			*(vit+2)=(float)(it->lMM);
+			*dp_it=(int32_t)(it->N);
+			call_minor(*it, gt_it);
+			vit+=3;
+			++dp_it;
+			gt_it+=2;
+		}
+	}
+	bcf_update_alleles_str(header_, record_, alleles);
+        bcf_update_format_float(header_, record_, "GP", gp, size*3);
+	bcf_update_genotypes(header_, record_, gt, size*2);
+        bcf_update_format_int32(header_, record_, "DP", dp, size);
+	free(gp);
+	free(gt);
+	free(dp);
 }
 
 void 

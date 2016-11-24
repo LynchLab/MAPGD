@@ -52,9 +52,9 @@ int proview(int argc, char *argv[])
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "prints this message");
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "prints the program version");
 	env.flag(	'b',"binary",	&out_binary, 	&flag_set, 	"an error occurred", "output in a binary format");
-	env.flag(	's',"skip",	&out_binary, 	&flag_set, 	"an error occurred", "skip empty lines");
+	env.flag(	's',"skip",	&dontprint,	&flag_set, 	"an error occurred", "skip empty lines");
 	env.flag(	'r',"mlrho",	&bernhard, 	&flag_set, 	"an error occurred", "output in mlrho format");
-	env.flag(	'N',"noheader",	&noheader,	&flag_set, 	"an error occurred", "don't print those silly '@' lines.");
+	env.flag(	'N',"noheader",	&noheader,	&flag_set, 	"an error occurred", "don't print those silly '@' lines. Overrides the b option.");
 	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occurred", "input is in pro format");
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
@@ -143,6 +143,7 @@ int proview(int argc, char *argv[])
 	else out_file.open(outfile.c_str(), out_binary ? ios::out | ios::binary : ios::out );
 	out_locus.set_sample_names(sample_names);
 	out_file.set_index(index);
+
 	if(!noheader) {
 		out_file.write_header(out_locus);
 	} else {

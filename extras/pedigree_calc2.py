@@ -41,6 +41,8 @@ def inner_enum(weight, tree):
 	for :
 		if ?==1:
 			weight*0.5
+			
+			
 	PersonIDs={}
 	return weight, tree
 

@@ -1,7 +1,7 @@
 ﻿![Travis Says](https://travis-ci.org/LynchLab/MAPGD.svg?branch=master)
 #[Download MAPGD](https://github.com/LynchLab/MAPGD/archive/master.zip)
 
-##MAPGD version 0.4
+##MAPGD version 0.5
 
 [(C) Michael Lynch and Matthew Ackerman](https://github.com/LynchLab/MAPGD#-copyright-)
 
@@ -26,6 +26,7 @@
 #####[IU users](https://github.com/LynchLab/MAPGD#-notes-for-indiana-university-users-)
 #####[Sanger users](https://github.com/LynchLab/MAPGD#-notes-for-sanger-users-)
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
+
 
 <h2> Introduction </h2>
 
@@ -170,6 +171,12 @@ Finally show me your changes by typing.
 	git push
 
 <h2> Changes </h2>
+
+<h3> Changes from 0.4 </h3>
+
+Several flags have been changed for greater consistency between commands, binary flags are up and working, vcf output/input is up and working. 
+
+<h3> Changes from 0.3 </h3>
 
 There have been a lot changes from 0.3. The format of input and output files has changed, and previous formats are no longer supported. The name of the 'ei' command has been changed to allele, and the 'ep' and 'cp' are now both part of the 'pooled' command. A standard file interface has been created (map-file) which handles all our reading and writing needs. The pro-file interface has been deprecated.  
 

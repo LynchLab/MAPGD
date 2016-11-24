@@ -12,6 +12,7 @@ Allele::Allele (void){
 	major=4;
 	minor=4;
 	null_error=-FLT_MAX;
+	null_error2=-FLT_MAX;
 	error=-FLT_MAX;
 	f=0;
 	MM=1;
@@ -42,7 +43,7 @@ void Allele::read(std::istream& in) {
 	line_stream >> c; minor=Base::ctob(c);
 	line_stream >> coverage;
 	//if (coverage>0){
-		line_stream >> freq >> temp >> error >> null_error >> f;
+		line_stream >> freq >> temp >> error >> null_error >> null_error2 >> f;
 		line_stream >> MM >> Mm >> mm;
 		line_stream >> temp;
 		line_stream >> monoll;
@@ -58,7 +59,39 @@ void Allele::read(std::istream& in) {
 	//}
 }
 
-void Allele::write (std::ostream& out) const {
+/*
+write_binary (std::ostream& out) const
+{
+	out.write( (char *) &ref, sizeof(gt_t) );
+	out.write( (char *) &major, sizeof(gt_t) );
+	out.write( (char *) &minor, sizeof(gt_t) );
+	out.write( (char *) &coverage, sizeof() );
+	out.write( () freq, );
+	out.write( () error, );
+	out.write( () null_error, );
+	out.write( () f, );
+	out.write( () MM, );
+	out.write( () Mm, );
+	out.write( () mm, );
+	out.write( () monoll, );
+	out.write( () hwell, );
+	out.write( () gof, );
+	out.write( () efc, );
+	out.write( () N, );
+	out.write( () excluded, );
+	out.write( () ll, );
+}*/
+
+/*read_binary (std::istream& in)
+{
+	line_stream >> c; ref=Base::ctob(c);
+	line_stream >> c; major=Base::ctob(c);
+	line_stream >> c; minor=Base::ctob(c);
+	line_stream >> coverage;
+}*/
+
+void Allele::write (std::ostream& out) const 
+{
 	if (coverage>0){
 		out << Base::btoc(ref) <<  delim;
 		out << Base::btoc(major) <<  delim;
@@ -67,9 +100,16 @@ void Allele::write (std::ostream& out) const {
 		out << coverage << delim;
 		out << std::fixed << std::setprecision(4);
 		out << freq <<  delim;
-		out << 1.-freq <<  delim;
+		if (ref==minor){
+			out << freq <<  delim;
+		} else if (ref==major) {
+			out << 1-freq <<  delim;
+		} else {
+			out << 0 <<  delim;
+		}
 		out << error << delim;
 		out << null_error << delim;
+		out << null_error2 << delim;
 		out << f+1./(2.*N-1.) <<  delim;
 		out << MM << delim;
 		out << Mm << delim;
@@ -128,6 +168,7 @@ Allele & Allele::operator=(const Allele & x) {
 		major=x.major;		
 		error=x.error;
 		null_error=x.null_error;
+		null_error2=x.null_error2;
 		coverage=x.coverage;	
 		f=x.f;
 		MM=x.MM;
@@ -147,7 +188,7 @@ Allele & Allele::operator=(const Allele & x) {
 }
 	
 const std::string Allele::header(void) const {
-	return "@SCFNAME    \tPOS\tREF\tMAJOR\tMINOR\tCOVERAG\tMJ_FREQ\tMN_FREQ\tERROR\tNULL_ER\tF_STAT\tMM_FREQ\tMm_FREQ\tmm_FREQ\tHETERO\tPOLY_LR\tHWE_LR\tGOF\tEF_CHRM\tIND_INC\tIND_CUT\tBEST_LL\n"; 
+	return "@SCFNAME    \tPOS\tREF\tMAJOR\tMINOR\tCOVERAG\tMJ_FREQ\tVR_FREQ\tERROR\tNULL_ER\tNULL_ER2\tF_STAT\tMM_FREQ\tMm_FREQ\tmm_FREQ\tHETERO\tPOLY_LR\tHWE_LR\tGOF\tEF_CHRM\tIND_INC\tIND_CUT\tBEST_LL\n"; 
 }
 
 size_t Allele::size() const{

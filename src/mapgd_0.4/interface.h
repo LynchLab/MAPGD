@@ -84,6 +84,8 @@ int flag_version(void *);
 int flag_help(void *);				
 //! Prints an automatically formated list of commands to stdout.
 int flag_commands(void *);				
+//! Prints an automatically formated list of options to stdout.
+int flag_options(void *);				
 
 //! Sets the error to be printed if a argument returns -1.
 int arg_error(int, char **, void *);		

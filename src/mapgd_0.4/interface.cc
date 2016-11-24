@@ -325,8 +325,17 @@ parsargs(int argc, char *argv[], Environment &env)
 					arg=env.args.begin();
 					while(arg!=arg_end){
 						if (*optopt==arg->opt){
-							optind++;
-							arg_ret=arg->func(argc-optind, argv+optind, arg->parm);
+							if (argv[optind][2]!=0){
+								//TODO CHECK THE SUPER DANGERS SHIT HERE.
+								char* to=*(argv+optind);
+								char* from=*(argv+optind)+2;
+								do {*to=*from; ++to, ++from;} while((*from)!=0);
+								*to=0;
+								arg_ret=arg->func(argc-optind, argv+optind, arg->parm);
+							} else {
+								optind++;
+								arg_ret=arg->func(argc-optind, argv+optind, arg->parm);
+							}
 							if(arg_ret!=ARG_ERROR) {
 								optind+=arg_ret;
 								arg->set=true;
@@ -342,6 +351,7 @@ parsargs(int argc, char *argv[], Environment &env)
 							while(flag!=flag_end){
 								if (*optopt==flag->opt){
 									flag->func(flag->parm);
+									std::cerr << "Got flag\n";
 									optopt++;
 									break;
 								};
@@ -544,6 +554,35 @@ void print_commands(Environment env)
 		com++;
 	}
 	printf("\n");
+}
+
+void
+print_options(Environment env)
+{
+	std::list <Argument>::iterator arg=env.args.begin(), arg_end=env.args.end();
+	std::list <Flag>::iterator flag=env.flags.begin(), flags_end=env.flags.end();
+
+	if (env.args.size()!=0)
+	{
+		printf("%s", arg->lopt);
+		arg++;
+		while (arg!=arg_end) {printf(" %s", arg->lopt); arg++;}
+	}
+	if (env.flags.size()!=0)
+	{
+		printf("%s", flag->lopt);
+		flag++;
+		while (flag!=flags_end) {printf(" %s", flag->lopt); flag++;}
+	}
+	printf("\n");
+	return;
+}
+
+int
+flag_options(void *parm)
+{
+	print_options(*(Environment *) parm);
+	exit(0);
 }
 
 void 

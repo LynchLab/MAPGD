@@ -29,6 +29,7 @@
 #define READ	std::ios::in
 #define WRITE	std::ios::out
 
+#define OPEN	1
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 
 //! A templet which stores data associated with specific locations in a genome.
@@ -165,7 +166,7 @@ public:
 	size_t size(void) const; 
 	bool eof(void);
 	bool indexed(void);
-
+	bool check_concatenated(const char *filename);
 };
 
 template <class Data>
@@ -257,6 +258,8 @@ public:
 	
 template <class T>
 class Indexed_file: public Data_file <T> {
+private:
+	id1_t reference_size_;
 protected:
 	File_index file_index_;	//!< A file_index which turns (id0, id1)->pos.
 
@@ -297,6 +300,8 @@ public:
 };
 
 //This seriously needs to be cleaned up.
+
+
 template <class T>
 void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mode)
 {
@@ -308,6 +313,7 @@ void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mod
 	}
 	if ( mode & std::ios::in ){
 		line=split_last(filename, '.');
+//		if ( Base_file::check_concatenated(filename) ){
 		if (line.back()!=T::file_name) {
 #ifdef DEBUG
 			std::cerr << line.back() << "!=" << T::file_name;
@@ -455,14 +461,36 @@ void Indexed_file<T>::read_text(T &data)
 template <class T>
 void Data_file<T>::read_binary(T &data)
 {
-	data.read_binary(*in_);
+	char a='a';
+	if (in_->peek()!='@'){
+		in_->read(&a, sizeof(char) );
+		data.read_binary(*in_);
+	} else {
+		if (!concatenated_) {
+			this->close();
+		} else {
+			this->close_table();
+		}
+	}
 }
 
 template <class T>
 void Indexed_file<T>::read_binary(T &data)
 {
-	data.read_pos(*in_);
-	data.read_binary(*in_);
+	char a='a';
+	if (in_->peek()=='@')
+	{
+		if (!concatenated_) {
+			this->close();
+		} else {
+			this->close_table();
+		}
+	} else {
+		in_->read(&a, sizeof(char) );
+		data.read_pos(*in_);
+		data.read_binary(*in_);
+	}
+	
 }
 
 template <class T>
@@ -481,12 +509,16 @@ void Indexed_file<T>::write_text(const T &data)
 template <class T>
 void Data_file<T>::write_binary(const T &data)
 {
+	char a='a';
+	out_->write(&a, sizeof(char) );
 	data.write_binary(*out_);
 }
 
 template <class T>
 void Indexed_file<T>::write_binary(const T &data)
 {
+	char a='a';
+	out_->write(&a, sizeof(char) );
 	data.write_pos(*out_);
 	data.write_binary(*out_);
 }
@@ -540,7 +572,8 @@ T Flat_file<T>::read_header(void)
 	columns=split(line, '\t');
 	if (columns.size()>2){
 		if (columns[0]=="@NAME:"+T::table_name ){
-			binary_=(columns[2]!="FORMAT:TEXT");
+			binary_=std::find(columns.begin(), columns.end(), "FORMAT:BINARY")!=columns.end();
+			concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
 			std::getline(*in_, line);
 			columns=split(line, '\t');
 			T data(columns);
@@ -579,7 +612,8 @@ T Indexed_file<T>::read_header(void)
 	columns=split(line, '\t');
 	if (columns.size()>2){
 		if (columns[0]=="@NAME:"+T::table_name){
-			binary_=(columns[2]!="FORMAT:TEXT");
+			binary_=std::find(columns.begin(), columns.end(), "FORMAT:BINARY")!=columns.end();
+			concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
 			std::getline(*in_, line);
 			columns=split(line, '\t');
 			T data(columns);
@@ -594,6 +628,7 @@ T Indexed_file<T>::read_header(void)
 	std::cerr << line << std::endl;
 	T data;
 	table_open_=false;
+	reference_size_=file_index_.get_reference_size();
 	return data;
 }
 
@@ -642,37 +677,5 @@ File_index Indexed_file<T>::get_index(void) const
 {
 	return file_index_;
 }
-
-/*
-template class Data_file <Allele>;
-template class Data_file <Population>;
-template class Data_file <Locus>;
-template class Data_file <Pooled_data>;
-template class Data_file <Sample_gof>;
-template class Data_file <File_index>;
-template class Data_file <Relatedness>;
-template class Data_file <Sample_name>;
-
-template class Indexed_file <Allele>;
-template class Indexed_file <Population>;
-template class Indexed_file <Locus>;
-template class Indexed_file <Pooled_data>;
-template class Indexed_file <Bcf2pro>;
-
-template class Flat_file <Linkage>;
-template class Data_file <Linkage>;
-template class Indexed_file <Linkage>;
-
-template class Flat_file <Allele>;
-template class Flat_file <Population>;
-template class Flat_file <Locus>;
-template class Flat_file <Pooled_data>;
-template class Flat_file <Sample_gof>;
-template class Flat_file <File_index>;
-template class Flat_file <Relatedness>;
-template class Flat_file <Sample_name>;
-
-template class Mpileup_file <Locus>;
-*/
 
 #endif

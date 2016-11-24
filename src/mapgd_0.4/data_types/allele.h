@@ -26,6 +26,9 @@ private:
 		return new Allele();
 	};
 public:
+//	void write_binary (std::ostream& out) const;
+//	void read_binary (std::istream& in);
+
 	char delim;		//!< the delimiter used when reading/writing the class in text mode.	
 
 	count_t excluded;	//!< A count of the number of samples that were excluded due to filtering criteria.
@@ -43,7 +46,8 @@ public:
 
 	float_t error;		//!< ml error rate.
 
-	float_t null_error;	//!< error rate assuming monomorphism.
+	float_t null_error;	//!< error rate assuming Major allele monomorphism.
+	float_t null_error2;	//!< error rate assuming Minor allele monomorphism.
 	count_t coverage;	//!< population coverage.
 	float_t efc; 		//!< number of 'effective' chromosomes in the sample.
 

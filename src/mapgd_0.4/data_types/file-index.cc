@@ -148,7 +148,7 @@ File_index::from_sam_header(std::istream &in)
 					cumulative_size_.push_back(cumulative_size_.back()+length);
 					has_ln=true;
 				} else if(tag.compare("SN")==0) {
-					last_id0_str_=val;
+					last_id0_str_=column[x].substr(3,column[x].size() );
 					last_id0_=id0_.size();
 					id0_str_[last_id0_str_]=last_id0_;
 					id0_.push_back(last_id0_str_);

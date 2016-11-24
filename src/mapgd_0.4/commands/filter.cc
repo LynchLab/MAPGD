@@ -15,7 +15,7 @@ int filter(int argc, char *argv[])
 
 	bool binary=false;
 
-	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_hwell=FLT_MAX, min_hwell=-1, min_freq=0, max_freq=0.5, min_gof=-2.;
+	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_hwell=FLT_MAX, min_hwell=-1, min_freq=0, max_freq=0.5, min_gof=2.;
 	int max_coverage=CNT_MAX, min_coverage=4, max_pitch=1;
 
 	Environment env;
@@ -72,7 +72,7 @@ int filter(int argc, char *argv[])
 			if (s.error <= error_max){
 			if (s.f >= f_min && s.f <= f_max){
 			if (m >= min_freq && m <= max_freq){
-			if (s.gof >= min_gof){
+			if (s.gof >= -min_gof){
 			if (s.efc >= min_efc){
 			if (s.coverage >= min_coverage && s.coverage <= max_coverage){
 			if (s.excluded <= max_pitch) map_out.write(s);

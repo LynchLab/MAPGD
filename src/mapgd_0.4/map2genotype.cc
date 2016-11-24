@@ -97,8 +97,8 @@ int map2genotype(int argc, char *argv[])
 	Indexed_file <Population> gcf_out;
 
 	/* Open input files based on file name*/
-	map_in.open(mapname.c_str(), std::ios::in);
-	pro_in.open(proname.c_str(), std::ios::in);
+	pro_in.open(proname.c_str(), READ);
+	map_in.open(mapname.c_str(), READ);
 
 	if (outname.size()!=0) {
 		gcf_out.open(outname.c_str(), binary ? std::ios::out | std::ios::binary : std::ios::out);
@@ -113,8 +113,8 @@ int map2genotype(int argc, char *argv[])
 	Population gcf_record;
 
 	/* Read the headers of the files */
-	map_record=map_in.read_header();	
-	pro_record=pro_in.read_header();	
+	pro_record=pro_in.read_header();
+	map_record=map_in.read_header();
 
 	/* Set the sample names for the gcf file from the sample names in the pro_file*/
 	gcf_record.set_sample_names(pro_record.get_sample_names() );
@@ -123,11 +123,11 @@ int map2genotype(int argc, char *argv[])
 	/* Write the header */
 	gcf_out.write_header(gcf_record);
 
-	id1_t map_pos;	
+	id1_t map_pos;
 	map_in.read(map_record);
 	
 	while(map_in.table_is_open() ){
-	/* a read/write cycle */
+		/* a read/write cycle */
 		map_pos=map_in.get_pos(map_record);
 		while(pro_in.get_pos(pro_record)<map_pos && !pro_in.eof() ){
 			pro_in.read(pro_record);

@@ -80,28 +80,44 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 
 	mle.ll=model.loglikelihood(site, mle);		//Sets the site.ll to the log likelihood of the best fit (ll). 
 
+
 	if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
 		std::swap(mle.major, mle.minor);
 		std::swap(mle.MM, mle.mm);
+		std::swap(mle.null_error, mle.null_error2);
 		mle.freq=1.-mle.freq;
 		site.swap(0, 1);
 		
 	}
-	else if (mle.freq==0.5){
-		if (rand() % 2){				//If the major and minor allele frequencies are identical, 
+	/*else if (mle.freq==0.5){
+		//struct drand48_data drand_buf;
+		//drand48_r (&drand_buf, &r);
+		if (r % 2){					//If the major and minor allele frequencies are identical, 
 			std::swap(mle.major, mle.minor);	//flip a coin to determine the major and minor allele.
 			std::swap(mle.MM, mle.mm);
+			std::swap(mle.null_error, mle.null_error2);
 			mle.freq=1.-mle.freq;
 			site.swap(0, 1);
 		};
-	};
+	};*/
 
 	temp=mle; temp.MM=1.0; temp.Mm=0.; temp.mm=0.;		//Copies site to mono, then sets mono to a monomophic site 
 								//(i.e. sets the genotypic frequencies Mm and mm to 0.
 	temp.error=mle.null_error;				//Sets the error rate of mono to the null error rate.
 	temp.freq=1.;
 	temp.f=0.;
-	mle.monoll=model.loglikelihood(site, temp);			//Sets the site.ll to the log likelihood of the best fit (ll). 
+
+	float_t mono1, mono2;
+
+	mono1=model.loglikelihood(site, temp);			//Sets the site.ll to the log likelihood of the best fit (ll). 
+	
+	temp=mle; temp.MM=0.0; temp.Mm=0.; temp.mm=1.;		
+	temp.error=mle.null_error2;				//Sets the error rate of mono to the null error rate.
+	temp.freq=0.;
+	temp.f=0.;
+
+	mono2=model.loglikelihood(site, temp);			//Sets the site.ll to the log likelihood of the best fit (ll). 
+	mono1 > mono2 ? mle.monoll=mono1 : mle.monoll=mono2; 
 
 	if (mle.monoll>mle.ll){
 		mle.ll=mle.monoll;
@@ -112,10 +128,11 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	temp.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
 	temp.mm=pow(1.-mle.freq, 2);				//?
 	mle.hwell=model.loglikelihood(site, temp);		//?
-	if (site.getcount(0)==site.getcount(1) ){
+	/*if (site.getcount(0)==site.getcount(1) ){
 		mle.major=4;
 		mle.minor=4;
-	} else if (site.getcount(1)==site.getcount(2) ) mle.minor=4;
+	} else */
+	if (site.getcount(1)==site.getcount(2) ) mle.minor=4;
 	return mle;
 }
 
@@ -213,19 +230,19 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('o',"output", 	outfile,	"an error occurred while setting the name of the output file.", "the output file for the program (default stdin).");
 	env.optional_arg('p',"outpro",  outfilepro,	"an error occurred while setting the name of the output file.", "name of a 'cleaned' pro file (default none).");
 	env.optional_arg('I',"individuals", ind, 	"please provide a list of integers", "the individuals to be used in estimates. A comma separated list containing no spaces, and the format X-Y can be used to specify a range (default ALL).");
-	env.optional_arg('m',"min-error", EMLMIN, 	"please provide a float.", "prior estimate of the error rate (default 0.001).");
+	env.optional_arg('e',"min-error", EMLMIN, 	"please provide a float.", "prior estimate of the error rate (default 0.001).");
 
 //	env.optional_arg('c',"columns", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "number of columsn in profile (if applicable).");
 
 	env.optional_arg('H',"header", indexname, 	"please provide an str.", "the name of a .idx file storing scaffold information");
-	env.optional_arg('M',"min-coverage", MIN, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (default 4).");
+	env.optional_arg('c',"min-coverage", MIN, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (default 4).");
 	env.optional_arg('g',"good-fit", MINGOF,	"please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
-	env.optional_arg('N',"min-number", MAXPITCH,	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
+	env.optional_arg('B',"max-bad",  MAXPITCH,	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
 
 	env.positional_arg('i',"input",	infile,	"No input file specified", "the input file for the program (default stdout).");
 
-	env.flag(	'H',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a header-line.");
-	env.flag(	'n',"newton", 	&newton,	&flag_set, 	"takes no argument", "use Newton-Raphson likelihood maximization (slow but accurate).");
+	env.flag(	'N',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a header-line.");
+	env.flag(	'n',"newton", 	&newton,	&flag_set, 	"takes no argument", "use Newton-Raphson likelihood maximization (not working).");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
 	env.flag(	'V', "verbose", &verbose,	&flag_set, 	"an error occurred while enabling verbose execution.", "prints more information while the command is running.");
@@ -233,8 +250,6 @@ int estimateInd(int argc, char *argv[])
 
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
-
-	srand(rnseed);
 
 	Indexed_file <Allele> map_out;
 	Indexed_file <Locus> pro_in, pro_out;
@@ -258,7 +273,6 @@ int estimateInd(int argc, char *argv[])
 		fprintf(stderr, "%s:%d. Error: cannot open file.\n",__FILE__, __LINE__);
 		exit(0);
 	}
-
 
 	bool binary=false;
 

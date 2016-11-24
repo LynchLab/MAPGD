@@ -55,6 +55,9 @@ echo:
 	@cat config.log
 .PHONY: echo
 
+debug: 
+	$(MAKE) -C $(SUBDIRS) debug
+.PHONY: dist
 	
 test: all
 	$(MAKE) -C $(SUBDIRS) test

@@ -20,12 +20,15 @@
 #include "relatedness.h"
 #include "proview.h"
 #include "filter.h"
+#include "fastview.h"
 #include "filter-pool.h"
 #include "map2genotype.h"
 #include "PopLD.h"
 #include "sam2idx.h"
 #include "make-vcf.h"
+#include "read-vcf.h"
 #include "mapgd-help.h"
+#include "relatedness_test.h"
 //#include "make-vcf.h"
 
 #ifndef NOSQL

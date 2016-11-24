@@ -6,7 +6,7 @@ const bool Locus::binary=true;
 
 const Registration Locus::registered=Registration(Locus::table_name, Locus::create);
 const gt_t Locus::default_order[5] = {0,1,2,3,4};
-
+	
 /*! \brief Locus is initialized to abs_pos_=0, id1=0, and set to contain 0 samples.
 */	
 Locus::Locus(void)

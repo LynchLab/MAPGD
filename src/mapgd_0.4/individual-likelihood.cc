@@ -57,13 +57,18 @@ count_t init_params(Locus &site, Allele &a, const float_t &minerr)
 		a.error=3.*e_/2.;
 		e_=float_t(E_+m_)/float_t(S);
 		a.null_error=e_;
+		e_=float_t(E_+M_)/float_t(S);
+		a.null_error2=e_;
 		if (a.error<minerr) a.error=minerr;
 		if (a.null_error<minerr) a.null_error=minerr;
+		if (a.null_error2<minerr) a.null_error2=minerr;
 	} else {
 		e_= float_t(E_)/float_t(S);
 		a.error=3.*e_/2.;
 		e_=float_t(E_+m_)/float_t(S);
 		a.null_error=e_;
+		e_=float_t(E_+M_)/float_t(S);
+		a.null_error2=e_;
 	};
 
 	a.major=site.getindex(0);

@@ -92,8 +92,8 @@ a="allele"
 msg="allele"
 rm -f $a.out
 size=$(($pro_size+$pro_header+$idx_size+$idx_header+$gof_header+$gof_size))
-echo -n "$mapgd proview -n $name -H $header | $mapgd $a -M 1 > $a.out				"
-$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a -M 1 > $a.out"
+echo -n "$mapgd proview -n $name -H $header | $mapgd $a -c 1 > $a.out				"
+$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a -c 1 > $a.out"
 testa
 
 a="pool"
@@ -108,8 +108,8 @@ a="filter"
 msg="filter"
 rm -f $a.out
 size=$(($good_size+$pro_header+$idx_size+$idx_header))
-echo -n "$mapgd proview -n $name -H $header | $mapgd allele -M 1 | $mapgd $a > $a.out	"
-$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd allele -M 1 | $mapgd $a > $a.out			"
+echo -n "$mapgd proview -n $name -H $header | $mapgd allele -c 1 | $mapgd $a > $a.out	"
+$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd allele -c 1 | $mapgd $a > $a.out			"
 testa
 
 a="sam2idx"
@@ -134,8 +134,8 @@ rm -f $a.out
 size=$(($idx_size+$idx_header+$good_size+$gcf_header))
 echo "$mapgd proview -H $header -i $mpileup -o temp	 								"
 $mapgd proview -H $header -i $mpileup -o temp 
-echo "$mapgd allele -i temp.pro -o temp -M 1		 								"
-$mapgd allele -i temp.pro -o temp -M 1
+echo "$mapgd allele -i temp.pro -o temp -c 1		 								"
+$mapgd allele -i temp.pro -o temp -c 1
 echo "$mapgd filter -i temp.map -o temp-filtered	 								"
 $mapgd filter -i temp.map -o temp-filtered 
 echo -n "$mapgd $a -p temp.pro -m temp-filtered.map > $a.out								"
@@ -149,8 +149,8 @@ rm -f $a.out
 size=$(($idx_size+$idx_header+$good_size+$gcf_header))
 echo "$mapgd proview -H $header -i $mpileup > temp_pro.out 								"
 $mapgd proview -H $header -i $mpileup > temp_pro.out
-echo "$mapgd allele -i temp_pro.out -M 1 > temp_map.out 								"
-$mapgd allele -i temp_pro.out -M 1 > temp_map.out
+echo "$mapgd allele -i temp_pro.out -c 1 > temp_map.out 								"
+$mapgd allele -i temp_pro.out -c 1 > temp_map.out
 echo "$mapgd filter -i temp_map.out > temp_map_filtered.out 								"
 $mapgd filter -i temp_map.out > temp_map_filtered.out
 echo -n "$mapgd $a -p temp_pro.out -m temp_map_filtered.out > $a.out							"
@@ -164,7 +164,7 @@ rm -f pro
 mkfifo map
 mkfifo pro
 size=$(($idx_size+$idx_header+$good_size+$gcf_header))
-$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd filter > map &
+$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -c 1 | $mapgd filter > map &
 $mapgd genotype -p pro -m map > $a.out
 rm -f map
 rm -f pro
@@ -189,7 +189,7 @@ echo -n "cat genotype.out | $mapgd $a > $a.out 									"
 mkfifo map
 mkfifo pro
 size=$(($pop*($pop-1)/2+3))
-$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd filter > map &
+$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -c 1 | $mapgd filter > map &
 $mapgd genotype -p pro -m map | $mapgd relatedness > $a.out
 testa
 rm -f map
@@ -203,7 +203,7 @@ rm -f pro
 mkfifo map
 mkfifo pro
 size=$(($pop*($pop-1)/2+3))
-$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -M 1 | $mapgd filter > map &
+$mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -c 1 | $mapgd filter > map &
 $mapgd genotype -p pro -m map -o genotype 
 $mapgd relatedness -i genotype.gcf -o $a.out
 mv $a.out.rel $a.out
@@ -219,7 +219,7 @@ msg="unicode"
 size=$(($pop*($pop-1)/2+3))
 echo -n "cat genotype.out | $mapgd $a > $a.out 										"
 $mapgd proview -H $header -n $unicode > temp_pro.out
-$mapgd allele -i temp_pro.out -M 1 > temp_allele.out
+$mapgd allele -i temp_pro.out -c 1 > temp_allele.out
 $mapgd genotype -p temp_pro.out -m temp_allele.out > temp_genotype.out
 $mapgd relatedness -i temp_genotype.out > $a.out
 testa
