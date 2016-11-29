@@ -115,7 +115,7 @@ int estimatePooled(int argc, char *argv[])
 		//sorts the reads at the site from most frequenct (0) to least frequenct (3) (at metapopulation level);
 
 		/* Calculate the ML estimates of the major / minor allele frequencies and the error rate. */
-                locus.sort();
+		locus.sort();
 
 		site.set_abs_pos(locus.get_abs_pos() );
 
@@ -123,24 +123,26 @@ int estimatePooled(int argc, char *argv[])
 
 		site.major.base=locus.getindex(0);
 		site.minor.base=locus.getindex(1);
+		site.ref.base=locus.ref.base;
 
-                /* Calculate the ML estimates of the major pooled allele frequency and the error rate. */
+		/* Calculate the ML estimates of the major pooled allele frequency and the error rate. */
 		popN=locus.getcoverage();
 
 		site.error= (float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
 		if (site.error<EMLMIN) site.error=EMLMIN;
 
-                /* Calculate the likelihoods under the reduced model assuming no variation between populations. */
 
-                for (size_t x=0; x<pop.size(); ++x) {
+		/* Calculate the likelihoods under the reduced model assuming no variation between populations. */
+
+		for (size_t x=0; x<pop.size(); ++x) {
 			popN=locus.getcoverage();
 			site.error= (float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
 			if (site.error<EMLMIN) site.error=EMLMIN;
 			eml=site.error;
 
-                        pmaj = (float_t) locus.getcount(pop[x],0) / (float_t) ( locus.getcount(pop[x], 1) + locus.getcount(pop[x],0) );	
-                        pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
-                        pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
+			pmaj = (float_t) locus.getcount(pop[x],0) / (float_t) ( locus.getcount(pop[x], 1) + locus.getcount(pop[x],0) );	
+			pmlP[x] = (pmaj * (1.0 - (2.0 * eml / 3.0) ) ) - (eml / 3.0);
+			pmlP[x] = pmlP[x] / (1.0 - (4.0 * eml / 3.0) );
 
 			if (pmlP[x]<0) pmlP[x]=0.;
 			if (pmlP[x]>1) pmlP[x]=1.;
@@ -149,66 +151,64 @@ int estimatePooled(int argc, char *argv[])
 			site.error=(float_t) (popN-locus.getcount(pop[x],1 ) ) / ( popN ) ;
 			if (site.error<EMLMIN) site.error=EMLMIN;
 			if (site.error>0.5) site.error=0.5;
-//			std::cerr << "[" << site.error << ", ";
 			multi.set(&fixedmorphicmodel, site.to_allele(x) );
-                        llhoodF[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
+			llhoodF[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
 			site.error=(float_t) (popN-locus.getcount(pop[x],0 ) ) / ( popN ) ;
 			if (site.error<EMLMIN) site.error=EMLMIN;
 			if (site.error>0.5) site.error=0.5;
-//	std::cerr << site.error << ", ";
 			multi.set(&monomorphicmodel, site.to_allele(x) );
-                        llhoodM[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
+			llhoodM[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
 			popN=locus.getcoverage();
 			site.error=(float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
 			if (site.error<EMLMIN) site.error=EMLMIN;
 			site.p[x]=pmlP[x];
 			popN=locus.getcoverage(pop[x]);
-//			std::cerr << site.error << "] ";
 			multi.set(&polymorphicmodel, site.to_allele(x) );
-                        llhoodP[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
+			llhoodP[x]=multi.lnprob(locus.get_quartet(pop[x]).base );
 
 			site.cov[x]=popN;
-                };
+		};
+
 		popN=locus.getcoverage();
 		site.error= (float_t) (popN-locus.getcount(0)-locus.getcount(1) )*3. / ( 2.* popN ) ;
 		if (site.error<EMLMIN) site.error=EMLMIN;
 
-                /* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
+		/* Likelihood ratio test statistic; asymptotically chi-square distributed with one degree of freedom. */
 
-                maxll=0;
-                for (size_t x=0; x<pop.size(); ++x){
-                        //llhoodMS=0;
-                        //llhoodPS=0;
-                        //llhoodFS=0;
+		maxll=0;
+		for (size_t x=0; x<pop.size(); ++x){
+			//llhoodMS=0;
+			//llhoodPS=0;
+			//llhoodFS=0;
 			/*
-                        for (int y=0; y<pop.size(); ++y){
-                                llhoodMS+=llhoodM[y];
-                                if (x!=y){
+			for (int y=0; y<pop.size(); ++y){
+				llhoodMS+=llhoodM[y];
+				if (x!=y){
 					llhoodPS+=llhoodM[y];
 					llhoodFS+=llhoodM[y];
 				}
-                                else {
+				else {
 					llhoodPS+=llhoodP[y];
 					llhoodFS+=llhoodF[y];
 				};
-                        };*/
+			};*/
 			site.polyll[x] =(2.0 * (llhoodP[x] - std::max(llhoodM[x], llhoodF[x]) ) );
 			site.fixedll[x]=(2.0 * (llhoodF[x] - llhoodM[x] ) );
-                        if (site.polyll[x]>maxll) maxll=site.polyll[x];
-                };
+			if (site.polyll[x]>maxll) maxll=site.polyll[x];
+		};
 
-                if (maxll>=a){
+		if (maxll>=a){
 			out_pooled.write(site);
-                };
+		};
 	}
-        delete [] llhoodP;
-        delete [] llhoodF;
-        delete [] llhoodM;
-        delete [] pmlP;
-        delete [] llstat;
-        delete [] llstatc;
+	delete [] llhoodP;
+	delete [] llhoodF;
+	delete [] llhoodM;
+	delete [] pmlP;
+	delete [] llstat;
+	delete [] llstatc;
 	out_pooled.close();
 	/* Ends the computations when the end of file is reached. */
 	exit(0);

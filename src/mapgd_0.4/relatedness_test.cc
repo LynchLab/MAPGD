@@ -44,14 +44,14 @@ int testRel(int argc, char *argv[])
 		gcf_in.open(std::ios::in);
 
 	if (rel_name1.size()!=0)
-		rel_in1.open(rel_name1.c_str(), std::ios::out);
+		rel_in1.open(rel_name1.c_str(), std::ios::in);
 	else
-		rel_in1.open(std::ios::out);
+		rel_in1.open(std::ios::in);
 
 	if (rel_name2.size()!=0)
-		rel_in2.open(rel_name2.c_str(), std::ios::out);
+		rel_in2.open(rel_name2.c_str(), std::ios::in);
 	else
-		rel_in2.open(std::ios::out);
+		rel_in2.open(std::ios::in);
 	
 	genotype=gcf_in.read_header();			//This gives us the sample names.
 
@@ -60,26 +60,32 @@ int testRel(int argc, char *argv[])
 	gcf_mem.write_header(genotype);
 
 	while(gcf_in.table_is_open() ){
+		std::cerr << genotype << std::endl;
 		gcf_in.read(genotype);
 		gcf_mem.write(genotype);
 	}
 	gcf_mem.close();
 
 	std::map <Genotype_pair_tuple, size_t> hashed_genotypes;
-	std::map <Genotype_pair_tuple, size_t> down_genotypes;
 	
 	size_t sample_size=genotype.get_sample_names().size();
 
 	float_t r1, r2;
 
+	rel1=rel_in1.read_header();			//This gives us the sample names.
+	rel2=rel_in2.read_header();			//This gives us the sample names.
+
 	while(rel_in1.table_is_open() ){
 		rel_in1.read(rel1);
 		rel_in2.read(rel2);
+
 		if (rel1.X_!=rel2.X_ || rel1.Y_!=rel2.Y_){
 			std::cerr << __FILE__ << ":" << __LINE__ << "relatedness in files do not compare the same individual. exiting.\n";
 			break;
 		}
 		hashed_genotypes=hash_genotypes(file_buffer, 0, 1);
+
+		set_e(rel1, hashed_genotypes);
 	
 		gsl_vector *x;
 		
@@ -94,6 +100,7 @@ int testRel(int argc, char *argv[])
 		gsl_vector_set(x, 6, rel1.delta_XY_);
 
 		r1=rel_ll(x, &hashed_genotypes);	
+		set_e(rel2, hashed_genotypes);
 
 		gsl_vector_set(x, 0, rel2.f_X_);
 		gsl_vector_set(x, 1, rel2.f_Y_);
@@ -104,7 +111,7 @@ int testRel(int argc, char *argv[])
 		gsl_vector_set(x, 6, rel2.delta_XY_);
 
 		r2=rel_ll(x, &hashed_genotypes);
-		std::cout << r1 << ", " << r2 << std::endl;
+		std::cout << rel1 << r1 << ", " << r2 << std::endl;
 	}
 	return 0;					//Since everything worked, return 0!.
 }

@@ -16,6 +16,7 @@
 #include "locus.h"
 #include "sample_name.h"
 #include "bcf2pro-file.h"
+#include "region.h"
 
 #define SQRT2	1.41421356237
 

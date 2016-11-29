@@ -23,7 +23,7 @@ private:
 	}
 public:
 	char delim;		//!< the delimiter used when reading/writing the class in text mode.	
-	Base major, minor; 
+	Base major, minor, ref; 
 	count_t coverage;
 	float_t error;
 

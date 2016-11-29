@@ -57,6 +57,7 @@ Pooled_data::read (std::istream& in)
 	std::getline(in, line);
 	std::stringstream line_stream(line);
 
+	line_stream >> ref;
 	line_stream >> major;
 	line_stream >> minor;
 	line_stream >> coverage;
@@ -90,6 +91,7 @@ Pooled_data::read (std::istream& in)
 void
 Pooled_data::write (std::ostream& out) const
 {
+	out << ref << delim;
 	out << major << delim;
 	out << minor << delim;
 	out << coverage << delim;
@@ -113,7 +115,7 @@ Pooled_data::write (std::ostream& out) const
 std::string 
 Pooled_data::header(void) const 
 {
-	std::string line="@SCFNAME       \tPOS\tMAJOR\tMINOR\tCOVRAG\tERROR";
+	std::string line="@SCFNAME       \tPOS\tREF\tMAJOR\tMINOR\tCOVRAG\tERROR";
 	for (size_t s=0; s<names_.size(); ++s) {
 		line+=('\t'+names_[s]);
 	}

@@ -400,11 +400,10 @@ In the case where the allele command is being used to estimated the seven genoty
 
 <h3> Statistical Performance </h3>
 
-![Figure1](https://github.com/LynchLab/MAPGD/tree/master/extras/automatic_figures/Ackerman_2016b/figure1.jpg)
+![Figure1](/extras/automatic_figures/Ackerman_2016b/figure1.jpg?raw=true "Bias and Type II error"))
 The bais (solid line), 95% CI (shaded region), and Type II error rate (dashed line) of four variant calling programs on simulated data. Type II error rates are sliding window averags. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs in a 5 Mb genome at 3x coverage simulated by the pipeline I haven't linked here yet. 
 
 <h3> Computational Performance </h3>
-
 
 ![Figure2](https://github.com/LynchLab/MAPGD/tree/master/extras/automatic_figures/Ackerman_2016b/figure2.jpg)
 

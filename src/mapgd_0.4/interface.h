@@ -14,16 +14,23 @@
 #include <list>
 #include <iostream>
 #include "typedef.h"
+#include "region.h"
 
 #define ARG_ERROR	-1
 
 /* /defgroup arg_parser Argument parsers
  * @{
 */
+
 //! Takes a reference to a vector<string> and will fill that vector with arguments from arg [] until a string begining with '-' is found.  
 //
 int arg_set_vector_str(int, char **, void *);	
 inline int arg_set(int a, char **b, std::vector<std::string> &c){return arg_set_vector_str(a,b, &c); }
+
+//! Takes a reference to a vector<string> and will fill that vector with arguments from arg [] until a string begining with '-' is found.  
+//
+int arg_set_region(int, char **, void *);	
+inline int arg_set(int a, char **b, Region &c){return arg_set_region(a,b, &c); }
 
 //! Takes a reference to a vector<int> and calls atoi() on a comma delimited list (no white space) of integers. Ranges of the form N-M are accepted. 
 //

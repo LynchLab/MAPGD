@@ -39,6 +39,8 @@ int proview(int argc, char *argv[])
 	std::string outfile="";
 	std::string headerfile="";
 
+	Region region(0,ID1_MAX);
+
 	Environment env;
 	env.set_name("mapgd proview");
 	env.set_version(VERSION);
@@ -46,7 +48,8 @@ int proview(int argc, char *argv[])
 	env.set_description("prints data in the '.pro' file quartet format");
 	env.required_arg('H',"header",	headerfile,	"You must specify an index file (-H)", "sets the index file (required to use mpileup)");
 	env.optional_arg('m',"minimum",	args.min, 	"please provide a integer number", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
-	env.optional_arg('n',"names",	namefile, 	"No name file specified", "a tab delimited file with sample name 'tab' file name pairs.");
+	env.optional_arg('R',"region",	region, 	"please provide a valid region (name:start-stop)", "a string which specifies the region to be viewed");
+	env.optional_arg('n',"names",	namefile, 	"No name file specified", "a tab delimited file with sample name 'tab' file name pairs");
 	env.optional_arg('o',"output",	outfile,	"No output file specified", "sets the output file (default stdout)");
 	env.positional_arg('i',"input",	infiles,	"No input file specified", "the mpileup files to be used");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "prints this message");
@@ -58,8 +61,8 @@ int proview(int argc, char *argv[])
 	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occurred", "input is in pro format");
 
 	if (parsargs(argc, argv, env)!=0) exit(0);
-
-	Indexed_file <Locus> out_file;			//the output profile
+	
+	Indexed_file <Locus> out_file;		//the output profile
 
 	std::vector <Bcf2pro_file *> in_files;	//the input profile(s)
 
@@ -79,7 +82,6 @@ int proview(int argc, char *argv[])
 		std::cerr << __FILE__ << ":" << __LINE__ << ". Error: no scaffolds in index file. Exiting.\n";
 		exit(0);
 	}
-
 
 	std::vector <std::string> sample_names;
 
@@ -153,7 +155,8 @@ int proview(int argc, char *argv[])
 	out_locus.set_abs_pos(1);
 	bool print_all=!dontprint, go=true, read_site=false;
 
-	id1_t reference_size=index.get_reference_size();
+	region.set(index);
+	id1_t out_abs_pos;
 
 	while(go){
 		out_locus.ref.base=4;
@@ -190,12 +193,15 @@ int proview(int argc, char *argv[])
 				}
 			}
 		}
+		out_abs_pos=out_locus.get_abs_pos();
 		if ( read_site || print_all ){
-			out_locus.unmaskall();
-			out_file.write(out_locus);
+			if ( out_abs_pos > region.abs_start && out_abs_pos < region.abs_stop ){
+				out_locus.unmaskall();
+				out_file.write(out_locus);
+			}
 		}
-		out_locus.set_abs_pos(out_locus.get_abs_pos()+1);
-		if (out_locus.get_abs_pos()<=reference_size ) go=true;
+		out_locus.set_abs_pos(out_abs_pos+1);
+		if (out_abs_pos<=region.abs_stop ) go=true;
 		else go=false;
 	
 	};

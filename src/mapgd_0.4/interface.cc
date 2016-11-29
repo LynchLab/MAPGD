@@ -78,6 +78,22 @@ arg_set_vector_str(int argc, char **argv, void *parm)
 	exit(1);
 }
 
+int 
+arg_set_region(int argc, char **argv, void *parm)
+{
+	if (argc>0){
+		if (isregion(argv[0])){
+			//Region bob=ator(argv[0]);
+			//std::cerr << bob << std::endl;
+			*( (Region *)(parm) )=ator(argv[0]);
+			return 1;
+		}
+		return ARG_ERROR; 
+	} 
+	std::cerr << __FILE__ << ":" << __LINE__ << " arg_set_region:error parsing " << argv[1] << std::endl;
+	exit(1);
+}
+
 /*@Breif : sets a vector of ints from a string. */
 int
 arg_set_vector_ui(int argc, char **argv, void *parm)
@@ -351,7 +367,6 @@ parsargs(int argc, char *argv[], Environment &env)
 							while(flag!=flag_end){
 								if (*optopt==flag->opt){
 									flag->func(flag->parm);
-									std::cerr << "Got flag\n";
 									optopt++;
 									break;
 								};

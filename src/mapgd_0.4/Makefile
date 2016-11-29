@@ -137,6 +137,7 @@ DATA_OBJ=data_types/allele.o \
 RAW_OBJ=raw/genotype.o \
 	raw/quartet.o \
 	raw/genotype_pair.o \
+	raw/region.o \
 	raw/base.o
 
 

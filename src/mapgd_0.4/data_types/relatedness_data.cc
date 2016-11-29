@@ -102,8 +102,8 @@ void
 Relatedness::zero(void)
 {
 	sites=0;    //!< the number of sites analyzed.
-	memset(e_X_, 0, E_LIM*sizeof(float_t) );
-	memset(e_Y_, 0, E_LIM*sizeof(float_t) );
+	//memset(e_X_, 0, E_LIM*sizeof(float_t) );
+	//memset(e_Y_, 0, E_LIM*sizeof(float_t) );
 	e_X_ll=0;
 	e_Y_ll=0;
 	f_X_=0, f_X_ll=0;
@@ -120,8 +120,8 @@ Relatedness&
 Relatedness::operator=(const Relatedness &rhs)
 {
 	sites=rhs.sites;
-	memcpy(e_X_, rhs.e_X_, E_LIM*sizeof(float_t) );
-	memcpy(e_Y_, rhs.e_Y_, E_LIM*sizeof(float_t) );
+	//memcpy(e_X_, rhs.e_X_, E_LIM*sizeof(float_t) );
+	//memcpy(e_Y_, rhs.e_Y_, E_LIM*sizeof(float_t) );
 	e_X_ll=rhs.e_X_ll;
 	e_Y_ll=rhs.e_Y_ll;
 	f_X_=rhs.f_X_, f_X_ll=rhs.f_X_ll;
