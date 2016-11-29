@@ -312,7 +312,7 @@ Locus::read (std::istream &in)
 }
 
 std::istream &
-mpileup (std::istream& in, Locus& x)
+mpileup (std::istream& in, Locus& x, const int &offset, const int &ncolumns)
 {
 	std::string line;
 	std::vector <std::string> column;
@@ -322,11 +322,21 @@ mpileup (std::istream& in, Locus& x)
 	getline(in, line);
 	column=split(line, '\t');
 
+	if (column.size()!=x.sample.size()*ncolumns+offset) 
+	{
+		std::cerr << __FILE__ << "." << __LINE__ << ": unexpected error parsing mpileup file." << std::endl;
+		std::cerr << column.size() << " not " << x.sample.size()*ncolumns+offset;
+		in.clear (in.rdstate() | std::ios::failbit);
+		return in;
+	}
+
+//	if ?
+
 	x.ref=Base::ctob(column[0].c_str()[0] );
 	
 	for (size_t s=0; s<x.sample.size(); ++s) {
 		memset(x.sample[s].base, 0, sizeof(count_t)*5 );
-		scan(x, column[s*3+2], x.sample[s] );
+		scan(x, column[s*ncolumns+offset], x.sample[s] );
 	}
 	return in;
 }

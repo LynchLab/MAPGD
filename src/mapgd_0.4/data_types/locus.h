@@ -162,7 +162,7 @@ public:
 	void sql_read(std::istream &) override;
 	/** @}*/
 	
-	friend std::istream& mpileup (std::istream& in, Locus& x);
+	friend std::istream& mpileup (std::istream& in, Locus& x, const int &, const int &);
 	friend void scan(const Locus & site, const std::string &str, quartet_t &q);
 };
 

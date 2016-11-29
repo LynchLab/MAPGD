@@ -13,7 +13,7 @@ void Bcf2pro_file::read_text(Locus &data)
 			this->close();
 		} else {
 			data.set_abs_pos(file_index_.get_abs_pos(scaffold, pos) );
-			mpileup(*in_, data);
+			mpileup(*in_, data, offset_, columns_);
 			if (in_->eof() ) this->close();
 		}
 	}
@@ -34,4 +34,11 @@ Locus Bcf2pro_file::read_header(void){
 		table_open_=true;
 		return data;
 	} 
+}
+
+void
+Bcf2pro_file::set_mpileup(const int &columns, const int &offset)
+{
+	columns_=columns;
+	offset_=offset;
 }

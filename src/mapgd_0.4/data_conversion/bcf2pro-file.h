@@ -28,6 +28,9 @@ class Bcf2pro_file : public Indexed_file <Locus> {
 	void read_text_profile(Locus &locus){Indexed_file<Locus>::read_text(locus);};	//!< Read file in text mode.			DONE
 
 	bool profile_;
+
+	int columns_, offset_;
+
 	using Indexed_file<Locus>::write_text;	//!< Write in text mode.	DONE
 	using Indexed_file<Locus>::out_;	//(const std::ios_base::openmode &);
 	using Indexed_file<Locus>::in_;	//(const std::ios_base::openmode &);
@@ -37,6 +40,7 @@ class Bcf2pro_file : public Indexed_file <Locus> {
 public:
 	Bcf2pro_file(){profile_=false;};
 	Bcf2pro_file(bool call){profile_=call;};
+	void set_mpileup(const int &, const int &);
 /*	Mpileup_file(){
 		open_=false;
 		table_open_=false;
@@ -59,7 +63,6 @@ public:
 
 	using Indexed_file<Locus>::get_pos;
 	using Indexed_file<Locus>::write_header;	//!< Writes a file header.
-
 	
 	Locus read_header_profile(void){return Indexed_file<Locus>::read_header();}	//!< Writes a file header.
 	Locus read_header(void);			//!< Reads a file header.

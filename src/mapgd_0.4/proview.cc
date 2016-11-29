@@ -29,6 +29,9 @@ int proview(int argc, char *argv[])
 	bool bernhard=false;
 	bool noheader=false;
 	bool dontprint=false;
+	
+	int offset=2;
+	int columns=3;
 
 	args.pro=false;
 	args.min=4;
@@ -49,6 +52,8 @@ int proview(int argc, char *argv[])
 	env.required_arg('H',"header",	headerfile,	"You must specify an index file (-H)", "sets the index file (required to use mpileup)");
 	env.optional_arg('m',"minimum",	args.min, 	"please provide a integer number", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
 	env.optional_arg('R',"region",	region, 	"please provide a valid region (name:start-stop)", "a string which specifies the region to be viewed");
+	env.optional_arg('f',"offset",	offset, 	"please provide a valid integer", "offset untill the first sample column in mpileup");
+	env.optional_arg('c',"columns",	columns, 	"please provide a valid integer", "number of columns per sample");
 	env.optional_arg('n',"names",	namefile, 	"No name file specified", "a tab delimited file with sample name 'tab' file name pairs");
 	env.optional_arg('o',"output",	outfile,	"No output file specified", "sets the output file (default stdout)");
 	env.positional_arg('i',"input",	infiles,	"No input file specified", "the mpileup files to be used");
@@ -65,6 +70,7 @@ int proview(int argc, char *argv[])
 	Indexed_file <Locus> out_file;		//the output profile
 
 	std::vector <Bcf2pro_file *> in_files;	//the input profile(s)
+
 
 	std::vector <Locus> in_locus;
 	Locus out_locus;
@@ -105,6 +111,7 @@ int proview(int argc, char *argv[])
 			}
 			sample_numbers+=in_locus.back().get_sample_names().size();
        		 	in_files.back()->set_index(index);
+			in_files.back()->set_mpileup(offset, columns);
 			if (in_files.back()->read(in_locus.back()).eof() ) in_files.back()->close();
 		}
 		in_names.close();
