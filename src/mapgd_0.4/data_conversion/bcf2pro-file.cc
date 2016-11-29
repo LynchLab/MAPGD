@@ -26,7 +26,7 @@ Locus Bcf2pro_file::read_header(void){
 		std::vector <std::string> columns;
 		std::getline(*in_, line);
 		columns=split(line, '\t');
-		Locus data( (columns.size()-3.)/3. );	//TODO FIX IMEDIATELY!! (TOMORROW).
+		Locus data( (columns.size()-offset_)/columns_ );	//TODO FIX IMEDIATELY!! (TOMORROW).
 		in_->putback('\n');
 		for(std::string::iterator c=line.end(); (c--)!=line.begin();) {
 			in_->putback(*c);

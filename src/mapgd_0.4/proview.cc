@@ -101,6 +101,7 @@ int proview(int argc, char *argv[])
 		while (in_names.read(name_file).table_is_open() ){
 			in_files.push_back(new Bcf2pro_file(in_pro) );
 			in_files.back()->open_no_extention(name_file.mpileup_name.c_str(), ios::in);
+			in_files.back()->set_mpileup(offset, columns);
 			in_locus.push_back( in_files.back()->read_header() );
 			if (name_file.sample_names.size()!=in_locus.back().get_sample_names().size() ){
 				std::cerr << __FILE__ << ":" << __LINE__ << ". Error: name file does not name the correct number of samples. Exiting.\n";
@@ -111,15 +112,15 @@ int proview(int argc, char *argv[])
 			}
 			sample_numbers+=in_locus.back().get_sample_names().size();
        		 	in_files.back()->set_index(index);
-			in_files.back()->set_mpileup(offset, columns);
 			if (in_files.back()->read(in_locus.back()).eof() ) in_files.back()->close();
 		}
 		in_names.close();
-	} else	if (infiles.size()!=0){	
+	} else if (infiles.size()!=0){	
 		for (size_t x=0; x<infiles.size(); ++x) {
 			in_files.push_back(new Bcf2pro_file(in_pro) );
 			if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), ios::in);
 			else in_files.back()->open(ios::in);
+			in_files.back()->set_mpileup(offset, columns);
 			in_locus.push_back( in_files.back()->read_header() );
 			for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
 				std::stringstream s;
@@ -133,6 +134,7 @@ int proview(int argc, char *argv[])
 	} else 	{
 		in_files.push_back(new Bcf2pro_file(in_pro) );
 		in_files.back()->open(ios::in);
+		in_files.back()->set_mpileup(offset, columns);
 		in_locus.push_back( in_files.back()->read_header() );
 		for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
 			sample_names.push_back(in_locus.back().get_sample_names()[y]);

@@ -322,10 +322,10 @@ mpileup (std::istream& in, Locus& x, const int &offset, const int &ncolumns)
 	getline(in, line);
 	column=split(line, '\t');
 
-	if (column.size()!=x.sample.size()*ncolumns+offset) 
+	if (column.size()!=x.sample.size()*ncolumns+offset-1) 
 	{
 		std::cerr << __FILE__ << "." << __LINE__ << ": unexpected error parsing mpileup file." << std::endl;
-		std::cerr << column.size() << " not " << x.sample.size()*ncolumns+offset;
+		std::cerr << column.size() << " not " << x.sample.size()*ncolumns+offset << std::endl;
 		in.clear (in.rdstate() | std::ios::failbit);
 		return in;
 	}
