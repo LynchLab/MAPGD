@@ -37,6 +37,8 @@ float_t compare (Allele mle1, Allele mle2, Locus &site1, Locus &site2,  models &
 Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton){
 
 #ifdef MPI
+	std::cerr << "HOW THE HELL IS THIS HAPPENING!\n";
+	exit(0);
 	MPI_Init(&argc, &argv);
 
 	int numtasks, taskid;
@@ -72,23 +74,25 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	}
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);//trim bad clones and re-fit the model.
+	} else {
+		return mle;
 	}
 
 	mle.excluded=rexc-texc;
 
 	// CALCULATE THE LIKELIHOODS 
 
-	mle.ll=model.loglikelihood(site, mle);		//Sets the site.ll to the log likelihood of the best fit (ll). 
+	mle.ll=model.loglikelihood(site, mle);			//Sets the site.ll to the log likelihood of the best fit (ll). 
 
 
-	if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
+	/*if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
 		std::swap(mle.major, mle.minor);
 		std::swap(mle.MM, mle.mm);
 		std::swap(mle.null_error, mle.null_error2);
 		mle.freq=1.-mle.freq;
 		site.swap(0, 1);
 		
-	}
+	} */
 	/*else if (mle.freq==0.5){
 		//struct drand48_data drand_buf;
 		//drand48_r (&drand_buf, &r);

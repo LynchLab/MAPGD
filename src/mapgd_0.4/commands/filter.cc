@@ -67,7 +67,7 @@ int filter(int argc, char *argv[])
 		if (s.coverage==0){
 			if (min_coverage==0) map_out.write(s);
 		} else {
-			if (polyll >= min_polyll){ 
+			if (polyll >= min_polyll){
 			if (hwell >= min_hwell && hwell <= max_hwell){
 			if (s.error <= error_max){
 			if (s.f >= f_min && s.f <= f_max){

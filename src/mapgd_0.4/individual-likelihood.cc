@@ -43,6 +43,7 @@ count_t init_params(Locus &site, Allele &a, const float_t &minerr)
 
 	count_t M_=site.getcount(0);
 	count_t m_=site.getcount(1);
+
 	if (m_==site.getcount(2) ){
 		if (m_==site.getcount(3) ) a.minor=site.getindex(1+rand()%3);
 		else a.minor=site.getindex(1+rand()%2);
@@ -52,24 +53,16 @@ count_t init_params(Locus &site, Allele &a, const float_t &minerr)
 
 	float_t e_;
 
-	if (minerr>0){
-		e_= float_t(E_)/float_t(S);
-		a.error=3.*e_/2.;
-		e_=float_t(E_+m_)/float_t(S);
-		a.null_error=e_;
-		e_=float_t(E_+M_)/float_t(S);
-		a.null_error2=e_;
-		if (a.error<minerr) a.error=minerr;
-		if (a.null_error<minerr) a.null_error=minerr;
-		if (a.null_error2<minerr) a.null_error2=minerr;
-	} else {
-		e_= float_t(E_)/float_t(S);
-		a.error=3.*e_/2.;
-		e_=float_t(E_+m_)/float_t(S);
-		a.null_error=e_;
-		e_=float_t(E_+M_)/float_t(S);
-		a.null_error2=e_;
-	};
+	e_= float_t(E_)/float_t(S);
+	a.error=3.*e_/2.;
+	e_=float_t(E_+m_)/float_t(S);
+	a.null_error=e_;
+	e_=float_t(E_+M_)/float_t(S);
+	a.null_error2=e_;
+
+	if (a.error<minerr) a.error=minerr;
+	if (a.null_error<minerr) a.null_error=minerr;
+	if (a.null_error2<minerr) a.null_error2=minerr;
 
 	a.major=site.getindex(0);
 	a.minor=site.getindex(1);
@@ -303,9 +296,10 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 /* Uses a grid method to maximize the likelihood equations.*/
 count_t maximize_grid (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &MINGOF, const size_t &maxpitch)
 {
+	
 	count_t N_=a.N;
-	count_t P_=a.MM*N_;
-	count_t H_=a.Mm*N_;
+	count_t P_=rint(a.MM*N_);
+	count_t H_=rint(a.Mm*N_);
 	count_t Q_=N_-P_-H_;
 	count_t iP, iQ, iH;
 	float_t PtQ, PtH, QtP, QtH, HtP, HtQ, maxll_;

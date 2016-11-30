@@ -37,7 +37,7 @@ Locus Bcf2pro_file::read_header(void){
 }
 
 void
-Bcf2pro_file::set_mpileup(const int &columns, const int &offset)
+Bcf2pro_file::set_mpileup(const int &offset, const int &columns)
 {
 	columns_=columns;
 	offset_=offset;
