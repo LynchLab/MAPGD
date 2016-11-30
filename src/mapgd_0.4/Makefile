@@ -97,6 +97,7 @@ COMMAND_OBJ=commands/estimate-individual.o \
 	map2genotype.o \
 	PopLD.o \
 	commands/filter.o \
+	commands/filter-genotype.o \
 	filter-pool.o \
 	fastview.o \
 	relatedness.o \

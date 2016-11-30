@@ -22,6 +22,7 @@
 #include "filter.h"
 #include "fastview.h"
 #include "filter-pool.h"
+#include "filter-genotype.h"
 #include "map2genotype.h"
 #include "PopLD.h"
 #include "sam2idx.h"
