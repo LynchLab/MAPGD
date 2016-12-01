@@ -11,6 +11,81 @@ freqtoi(float_t in)
 	return size_t(in*E_LIM*2) < E_LIM ? size_t(in*E_LIM*2) : E_LIM-1;
 }
 
+void 
+newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
+{
+	Eigen::MatrixXd J(7,7);
+	Eigen::MatrixXd iJ(7,7);
+	Eigen::VectorXd R(7);
+
+	std::map <Genotype_pair_tuple, size_t>::iterator it, end;
+	Genotype_pair v;
+	size_t c;
+
+	float_t det, sumlnL;
+
+	while (true){
+		it=counts.begin();
+		end=counts.end();
+	while (it!=end ){
+		//v=
+		//c=
+		J(0,0)+=J00(v, a)*c; J(0,1)+=J01(v, a)*c; J(0,2)+=J02(v, a)*c; J(0,3)+=J03(v, a)*c; 
+				J(0,4)+=J04(v, a)*c; J(0,5)+=J05(v, a)*c; J(0,6)+=J06(v, a)*c; 
+	
+		J(1,0)+=J10(v, a)*c; J(1,1)+=J11(v, a)*c; J(1,2)+=J12(v, a)*c; J(1,3)+=J13(v, a)*c; 
+				J(1,4)+=J14(v, a)*c; J(1,5)+=J15(v, a)*c; J(1,6)+=J16(v, a)*c; 
+
+		J(2,0)+=J20(v, a)*c; J(2,1)+=J21(v, a)*c; J(2,2)+=J22(v, a)*c; J(2,3)+=J23(v, a)*c; 
+				J(2,4)+=J24(v, a)*c; J(2,5)+=J25(v, a)*c; J(2,6)+=J26(v, a)*c; 
+
+		J(3,0)+=J30(v, a)*c; J(3,1)+=J31(v, a)*c; J(3,2)+=J32(v, a)*c; J(3,3)+=J33(v, a)*c; 
+				J(3,4)+=J34(v, a)*c; J(3,5)+=J35(v, a)*c; J(3,6)+=J36(v, a)*c; 
+
+		J(4,0)+=J40(v, a)*c; J(4,1)+=J41(v, a)*c; J(4,2)+=J42(v, a)*c; J(4,3)+=J43(v, a)*c; 
+				J(4,4)+=J44(v, a)*c; J(4,5)+=J45(v, a)*c; J(4,6)+=J46(v, a)*c; 
+
+		J(5,0)+=J50(v, a)*c; J(5,1)+=J51(v, a)*c; J(5,2)+=J52(v, a)*c; J(5,3)+=J53(v, a)*c; 
+				J(5,4)+=J54(v, a)*c; J(5,5)+=J55(v, a)*c; J(5,6)+=J56(v, a)*c; 
+
+		J(6,0)+=J60(v, a)*c; J(6,1)+=J61(v, a)*c; J(6,2)+=J62(v, a)*c; J(6,3)+=J63(v, a)*c; 
+				J(6,4)+=J64(v, a)*c; J(6,5)+=J65(v, a)*c; J(6,6)+=J66(v, a)*c; 
+
+		R(0)+=H0(v, a);
+		R(1)+=H1(v, a);
+		R(2)+=H2(v, a);
+		R(3)+=H3(v, a);
+		R(4)+=H4(v, a);
+		R(5)+=H5(v, a);
+		R(6)+=H6(v, a);
+
+		sumlnL+=lnL_NR(v, a);
+
+		++it;
+	};
+
+	iJ=J.inverse();
+	det=J.determinant();
+	iJ*=det;
+	R=R*iJ;
+/*
+	if (fabs(R[0])>B)
+	{
+		if(R[0]>0) R(0)=B;
+			else R(0)=-B;
+	}*/
+	//params=[F_X, F_Y, T, g_XY, g_YX, d, D]
+
+	a.f_X_-=R(0);
+	a.f_Y_-=R(1);
+	a.theta_XY_-=R(2);
+	a.gamma_XY_-=R(3);
+	a.gamma_YX_-=R(4);
+	a.delta_XY_-=R(5);
+	a.Delta_XY_-=R(6);
+	}
+}
+
 //DONE Moved to in memory
 std::map <Genotype_pair_tuple, size_t> 
 hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)

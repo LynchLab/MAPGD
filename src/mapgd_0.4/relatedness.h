@@ -15,6 +15,10 @@
 #include "relatedness_data.h"
 #include "newton-method-rel.h"
 
+//#ifdef EIGEN
+//#include <eigen3/Eigen/Dense>
+//#endif
+
 #ifndef NOOMP
 #include <omp.h>
 #endif

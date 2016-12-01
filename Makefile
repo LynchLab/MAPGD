@@ -1,7 +1,7 @@
 SUBDIRS=src
 
 HAVE_GSL=yes
-HAVE_OMP=yes
+#HAVE_OMP=yes
 HAVE_SQL=no
 HAVE_HTS=yes
 HAVE_MAN=yes
@@ -17,7 +17,7 @@ HTSDIR = ../htslib
 HTSLIB = $(HTSDIR)/libhts.a
 HTSLIB_LIB = $(HTSLIB)
 BGZIP = $(HTSDIR)/bgzip
-HTSLIB_CPPFLAGS = -I ../../../htslib
+HTSLIB_CPPFLAGS = -I ../../../htslib 
 HTSLIB_LDFLAGS = -L ../../../htslib
 #HTSLIB_LIB = -lhts
 	

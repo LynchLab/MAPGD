@@ -83,8 +83,6 @@ arg_set_region(int argc, char **argv, void *parm)
 {
 	if (argc>0){
 		if (isregion(argv[0])){
-			//Region bob=ator(argv[0]);
-			//std::cerr << bob << std::endl;
 			*( (Region *)(parm) )=ator(argv[0]);
 			return 1;
 		}
@@ -115,8 +113,16 @@ arg_set_vector_ui(int argc, char **argv, void *parm)
 					} else {
 						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
 					};
-				} else{
-					std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+				} else {
+					std::vector<std::string> intpair=split(elems[x], '*');
+					if (intpair.size()==2){
+						for (unsigned int y=0; y<atoi(intpair[1].c_str() ); ++y){
+							v->push_back(atoi(intpair[0].c_str() ) );
+						}
+						
+					} else {
+						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+					}	
 				};
 			}
 		}
@@ -146,9 +152,17 @@ arg_set_vector_uli(int argc, char **argv, void *parm)
 					} else {
 						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
 					};
-				} else{
-					std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
-				};
+				} else {
+					std::vector<std::string> intpair=split(elems[x], '*');
+					if (intpair.size()==2){
+						for (unsigned int y=0; y<atoi(intpair[1].c_str() ); ++y){
+							v->push_back(atoi(intpair[0].c_str() ) );
+						}
+						
+					} else {
+						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+					}	
+				}
 			}
 		}
 		return 1;
@@ -177,8 +191,16 @@ arg_set_vector_ulli(int argc, char **argv, void *parm)
 					} else {
 						std::cerr << __FILE__ << ":" << __LINE__ << " cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
 					};
-				} else{
-					std::cerr << __FILE__ << ":" << __LINE__  << " cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+				} else {
+					std::vector<std::string> intpair=split(elems[x], '*');
+					if (intpair.size()==2){
+						for (unsigned int y=0; y<atoi(intpair[1].c_str() ); ++y){
+							v->push_back(atoi(intpair[0].c_str() ) );
+						}
+						
+					} else {
+						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+					}	
 				};
 			}
 		}

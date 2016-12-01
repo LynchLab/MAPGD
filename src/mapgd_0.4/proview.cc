@@ -49,7 +49,7 @@ int proview(int argc, char *argv[])
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman and Bernhard Haubold");
 	env.set_description("prints data in the '.pro' file quartet format");
-	env.required_arg('H',"header",	headerfile,	"You must specify an index file (-H)", "sets the index file (required to use mpileup)");
+	env.optional_arg('H',"header",	headerfile,	"You must specify an index file (-H)", "sets the index file (required to use mpileup)");
 	env.optional_arg('m',"minimum",	args.min, 	"please provide a integer number", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
 	env.optional_arg('R',"region",	region, 	"please provide a valid region (name:start-stop)", "a string which specifies the region to be viewed");
 	env.optional_arg('f',"offset",	offset, 	"please provide a valid integer", "offset untill the first sample column in mpileup");
@@ -65,7 +65,15 @@ int proview(int argc, char *argv[])
 	env.flag(	'N',"noheader",	&noheader,	&flag_set, 	"an error occurred", "don't print those silly '@' lines. Overrides the b option.");
 	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occurred", "input is in pro format");
 
-	if (parsargs(argc, argv, env)!=0) exit(0);
+	if (parsargs(argc, argv, env)!=0)
+	{
+	//	if (!in_pro) 
+		exit(0);
+	}
+	if( headerfile=="" and !in_pro)
+	{
+		std::cerr << "You must either specify an index file (-H) or read a pro file (-p)\n";
+	}
 	
 	Indexed_file <Locus> out_file;		//the output profile
 
@@ -84,7 +92,7 @@ int proview(int argc, char *argv[])
                 out_file.set_index(index);
         }
 
-	if (index.get_sizes().size()==0) {
+	if (!in_pro && index.get_sizes().size()==0) {
 		std::cerr << __FILE__ << ":" << __LINE__ << ". Error: no scaffolds in index file. Exiting.\n";
 		exit(0);
 	}
@@ -111,7 +119,7 @@ int proview(int argc, char *argv[])
 				sample_names.push_back(name_file.sample_names[y]);
 			}
 			sample_numbers+=in_locus.back().get_sample_names().size();
-       		 	in_files.back()->set_index(index);
+       		 	if (!in_pro) in_files.back()->set_index(index);
 			if (in_files.back()->read(in_locus.back()).eof() ) in_files.back()->close();
 		}
 		in_names.close();
@@ -128,7 +136,7 @@ int proview(int argc, char *argv[])
 				sample_names.push_back( s.str().c_str() );
 			}
 			sample_numbers+=in_locus.back().get_sample_names().size();
-              	 	in_files[x]->set_index(index);
+              	 	if (!in_pro) in_files[x]->set_index(index);
 			if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
 		}
 	} else 	{
@@ -139,7 +147,7 @@ int proview(int argc, char *argv[])
 		for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
 			sample_names.push_back(in_locus.back().get_sample_names()[y]);
 		}
-                in_files[0]->set_index(index);
+                if (!in_pro) in_files[0]->set_index(index);
 		sample_numbers+=in_locus.back().get_sample_names().size();
 		if (in_files[0]->read(in_locus[0]).eof() ) in_files[0]->close();
 	}
@@ -153,6 +161,9 @@ int proview(int argc, char *argv[])
 	if (outfile.size()==0) out_file.open( out_binary ? ios::out | ios::binary : ios::out );
 	else out_file.open(outfile.c_str(), out_binary ? ios::out | ios::binary : ios::out );
 	out_locus.set_sample_names(sample_names);
+
+	index=in_files.back()->get_index();
+
 	out_file.set_index(index);
 
 	if(!noheader) {

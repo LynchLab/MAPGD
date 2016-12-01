@@ -146,7 +146,9 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 	float_t deltalnL=10, maxlnL=DBL_MAX;
 
         while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || std::isnan(R[0]) || std::isnan(R[1]) || std::isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
+        //while ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 ){
 
+		std::cerr << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ", " << iter << ", " << fabs(deltalnL) << std::endl;
 		++iter;
  
 		memset(J[0], 0, sizeof(float_t)*3);
@@ -200,7 +202,7 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 		det=J[0][0]*iJ[0][0]+J[0][1]*iJ[1][0]+J[0][2]*iJ[2][0];
 
 		std::cerr << det << std::endl;
-		if (det<0.00001) break;//det=0.00001;
+		if (fabs(det)<0.00001) det<0 ? -0.00001 : 0.00001;
 
 		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
 		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;

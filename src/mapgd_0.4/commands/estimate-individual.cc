@@ -214,7 +214,7 @@ int estimateInd(int argc, char *argv[])
 
 	int rnseed=3;
 
-	double EMLMIN=0.001;
+	double EMLMIN=0.0001;
 	int MIN=4;
 	double MINGOF=2.00;
 	int MAXPITCH=96;
@@ -233,7 +233,7 @@ int estimateInd(int argc, char *argv[])
 
 	env.optional_arg('o',"output", 	outfile,	"an error occurred while setting the name of the output file.", "the output file for the program (default stdin).");
 	env.optional_arg('p',"outpro",  outfilepro,	"an error occurred while setting the name of the output file.", "name of a 'cleaned' pro file (default none).");
-	env.optional_arg('I',"individuals", ind, 	"please provide a list of integers", "the individuals to be used in estimates. A comma separated list containing no spaces, and the format X-Y can be used to specify a range (default ALL).");
+	env.optional_arg('I',"individuals", ind, 	"please provide a list of integers", "the individuals to be used in estimates. A comma separated list containing no spaces, the python slice notation (i.e. 1:4 for 1,2,3,4 or [1:5:2] for 1,3,4 ... can be used to specify this list (default ALL).");
 	env.optional_arg('e',"min-error", EMLMIN, 	"please provide a float.", "prior estimate of the error rate (default 0.001).");
 
 //	env.optional_arg('c',"columns", &EMLMIN, 	&arg_setfloat_t, "please provide a float.", "number of columsn in profile (if applicable).");
