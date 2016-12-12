@@ -113,9 +113,17 @@ int map2genotype(int argc, char *argv[])
 	Population gcf_record;
 
 	/* Read the headers of the files */
-	pro_record=pro_in.read_header();
-	map_record=map_in.read_header();
-
+	#pragma omp sections
+	{
+		#pragma omp section
+		{
+		pro_record=pro_in.read_header();
+		}
+		#pragma omp section
+		{
+		map_record=map_in.read_header();
+		}
+	}
 	/* Set the sample names for the gcf file from the sample names in the pro_file*/
 	gcf_record.set_sample_names(pro_record.get_sample_names() );
 	gcf_out.set_index(map_in.get_index() );
