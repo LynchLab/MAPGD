@@ -147,8 +147,9 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 
         while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || std::isnan(R[0]) || std::isnan(R[1]) || std::isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
         //while ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 ){
-
+#ifdef DEBUG
 		std::cerr << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ", " << iter << ", " << fabs(deltalnL) << std::endl;
+#endif
 		++iter;
  
 		memset(J[0], 0, sizeof(float_t)*3);
@@ -201,8 +202,10 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 		//THE DETERMINENT
 		det=J[0][0]*iJ[0][0]+J[0][1]*iJ[1][0]+J[0][2]*iJ[2][0];
 
-		std::cerr << det << std::endl;
-		if (fabs(det)<0.00001) det<0 ? -0.00001 : 0.00001;
+		if (fabs(det)<0.00001) 
+		{
+			//det < 0 ? det=-0.00001 : det=0.00001;
+		}
 
 		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
 		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;
@@ -227,10 +230,11 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 	        a.freq=a.MM+a.Mm/2.;
 	        a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
 
+#ifdef DEBUG
 	       	std::cerr << "P:" << p << ", " << F << ", " << E << std::endl;
 	       	std::cerr << iter <<" Pi= " <<  a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << R[0]+R[1]+R[2] << ": lnL=" << sumlnL << " : lnL="<< model.loglikelihood(site, a) << std::endl;
 		std::cerr << ( pow(p,4)+pow(F,4)+pow(E,4) )/160000.0 << std::endl;
-
+#endif
 		a.f=F;
 		a.freq=p;
 		a.error=E;
@@ -280,8 +284,6 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 
 	if (iter==200) {
 		std::cerr << "Failure to maximize " << iter << " " << a << "\n";
-//		init_params(site, a, 0);
-//		return maximize_grid(site, a, model, gofs, maxgof, maxpitch);
 	}
 	if ( a.gof<maxgof) {
 		if (excluded==maxpitch){
@@ -303,6 +305,18 @@ count_t maximize_grid (Locus &site, Allele &a, models &model, std::vector <float
 	count_t P_=rint(a.MM*N_);
 	count_t H_=rint(a.Mm*N_);
 	count_t Q_=N_-P_-H_;
+	if (P_+H_>N_) 
+	{
+		if(P_>N_)
+		{
+			P_=N_; 
+			H_=0; 
+			Q_=0;
+		} else {
+			Q_=0;
+			H_=N_-P_;
+		}
+	}
 	count_t iP, iQ, iH;
 	float_t PtQ, PtH, QtP, QtH, HtP, HtQ, maxll_;
 	count_t it=0;

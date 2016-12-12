@@ -341,7 +341,7 @@ void Data_file<T>::open_extention(const char* filename, const std::ios_base::ope
 	if (filename_.size()==0) filename_=std::string(filename);
 	std::string temp_filename=std::string(filename)+T::file_name;
 #ifdef DEBUG
-	std::cerr << "opening "<< temp_filename <<"\n";
+	std::cerr << __LINE__ << "opening w extention "<< temp_filename <<"\n";
 #endif 
 	open_no_extention(temp_filename.c_str(), mode);
 }
@@ -351,15 +351,14 @@ void Data_file<T>::open_from(Base_file &file)
 {
 	if (file.table_is_open() ) file.close_table();
 	if (file.openmode() & std::ios::in){
-//		if(file.filename().size()!=0) {
+#ifdef DEBUG
+		std::cerr << "opening from...\n";
+#endif
 		if(file.concatenated() ) this->open(file.get_in(), file.openmode() );
 		else this->open_extention(file.filename().c_str(), file.openmode() );
-//		}
 	} else if (file.openmode() & std::ios::out) {
-//		if(file.filename().size()!=0) {
 		if(file.concatenated() ) this->open(file.get_out(), file.openmode() );
 		else this->open_extention(file.filename().c_str(), file.openmode() );
-//		}
 	}
 	try_binary_=(file.openmode() & std::ios::binary);
 	open_=true;
@@ -580,7 +579,7 @@ T Flat_file<T>::read_header(void)
 			table_open_=true;
 			return data;
 		}
-		std::cerr << __FILE__ << ":" << __LINE__ << " attempted to open incorrect header.\n"; 
+		std::cerr << __FILE__ << ":" << __LINE__ << " attempted to open incorrect header.\n";
 	}
 	table_open_=false;
 	std::cerr << __FILE__ << ":" << __LINE__ << " could not initilize " << typeid(T).name() <<"\n";

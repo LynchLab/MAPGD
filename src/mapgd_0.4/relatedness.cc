@@ -11,6 +11,7 @@ freqtoi(float_t in)
 	return size_t(in*E_LIM*2) < E_LIM ? size_t(in*E_LIM*2) : E_LIM-1;
 }
 
+#ifdef EIGEN
 void 
 newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 {
@@ -27,9 +28,11 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 	while (true){
 		it=counts.begin();
 		end=counts.end();
+		J=Eigen::MatrixXd::Zero(7,7);
 	while (it!=end ){
-		//v=
-		//c=
+		std::cout << "[" << R << "]" << std::endl;
+		v=Genotype_pair::from_tuple(it->first);
+		c=it->second;
 		J(0,0)+=J00(v, a)*c; J(0,1)+=J01(v, a)*c; J(0,2)+=J02(v, a)*c; J(0,3)+=J03(v, a)*c; 
 				J(0,4)+=J04(v, a)*c; J(0,5)+=J05(v, a)*c; J(0,6)+=J06(v, a)*c; 
 	
@@ -66,8 +69,8 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 
 	iJ=J.inverse();
 	det=J.determinant();
-	iJ*=det;
-	R=R*iJ;
+	iJ/=det;
+	R=iJ*R;
 /*
 	if (fabs(R[0])>B)
 	{
@@ -85,6 +88,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 	a.Delta_XY_-=R(6);
 	}
 }
+#endif
 
 //DONE Moved to in memory
 std::map <Genotype_pair_tuple, size_t> 
@@ -648,7 +652,11 @@ int estimateRel(int argc, char *argv[])
 			relatedness.zero();
 			set_e(relatedness, hashed_genotypes);
 		//	gestimate(relatedness, hashed_genotypes);
+#ifdef EIGEN
+			newton(relatedness, down_genotypes);
+#else
 			maximize(relatedness, down_genotypes);
+#endif
 		//	maximize(relatedness, hashed_genotypes);
 			get_llr(relatedness, hashed_genotypes);
 			rel_out.write(relatedness);

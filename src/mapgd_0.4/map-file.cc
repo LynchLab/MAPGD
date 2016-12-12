@@ -22,7 +22,6 @@ Base_file::indexed(void)
 
 bool Base_file::check_concatenated(const char* filename)
 {
-	std::cerr << "opening\n";
 	if(open_) {
 		return concatenated_;
 	} else  {
@@ -49,13 +48,14 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 {
 	if ( filename_.size()==0 ) filename_=std::string(filename);
 #ifdef DEBUG
-	std::cerr << "opening "<< filename <<"\n";
+	std::cerr << __LINE__ << "opening no extention "<< filename <<"\n";
 #endif 
 	if ( open_ ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
 		exit(0);
 	}
 	if ( mode & std::ios::in ){
+		concatenated_=check_concatenated(filename);
 		file_.open( filename, std::ios::in);
 		if ( !file_.is_open() ){
 			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
@@ -340,7 +340,6 @@ Data *Base_file::read_header(void)
 #if (DEBUG)
 			std::cerr << (columns[2]!="FORMAT:TEXT") << std::endl;
 #endif
-			std::cerr << "Checking 3" << std::endl;
 			concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
 			indexed_=std::find(columns.begin(), columns.end(), "INDEXED")!=columns.end();
 			std::getline(*in_, line);

@@ -192,6 +192,18 @@ docs:
 			rm mapgd-$$COM; \
 		fi \
 	done
+	$(eval TYPES=`$(TARGET) `) 
+	TYPES=
+	echo -n $(TYPES)
+	for TYPE in $(TYPES); do \
+		if [ ! -f $(DOCDIR)/man/man1/mapgd-$$TYPE.1.gz ]; then \
+			echo $(TARGET) $$COM \$$1 > mapgd-$$TYPE;  \
+			chmod 777 mapgd-$$TYPE;  \
+			help2man ./mapgd-$$TYPE > $(DOCDIR)/man/man1/mapgd-$$TYPE.1; \
+			gzip $(DOCDIR)/man/man1/mapgd-$$TYPE.1; \
+			rm mapgd-$$TYPE; \
+		fi \
+	done
 #.PHONY: clean
 #	help2man
 

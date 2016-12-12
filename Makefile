@@ -1,25 +1,25 @@
 SUBDIRS=src
 
 HAVE_GSL=yes
-#HAVE_OMP=yes
-HAVE_SQL=no
-HAVE_HTS=yes
+HAVE_OMP=yes
+HAVE_SQL=yes
+HAVE_HTS=no
 HAVE_MAN=yes
 
 CXX=g++
 OPENMP_CXXFLAGS=-fopenmp
-CXXFLAGS=-O3 -std=gnu++11
+CXXFLAGS=-g -O2 -std=gnu++11
 
 #SAMTOOLS FLAGS
 
-HTSDIR = ../htslib
-#include $(HTSDIR)/htslib.mk
-HTSLIB = $(HTSDIR)/libhts.a
-HTSLIB_LIB = $(HTSLIB)
-BGZIP = $(HTSDIR)/bgzip
-HTSLIB_CPPFLAGS = -I ../../../htslib 
-HTSLIB_LDFLAGS = -L ../../../htslib
-#HTSLIB_LIB = -lhts
+#HTSDIR = 
+##include $(HTSDIR)/htslib.mk
+#HTSLIB = $(HTSDIR)/libhts.a
+#HTSLIB_LIB = $(HTSLIB)
+#BGZIP = $(HTSDIR)/bgzip
+HTSLIB_CPPFLAGS = -I ../../
+HTSLIB_LDFLAGS = -L ../../
+HTSLIB_LIB = -lhts
 	
 export
 

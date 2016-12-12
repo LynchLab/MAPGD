@@ -43,7 +43,7 @@ vcf_header=3		#Size of vcf header
 gcf_header=3		#Size of gcf header
 gof_header=3		#Size of gcf header
 pro_size=30		#number of lines in the pro file
-good_size=10		#number of lines post filtering
+good_size=9		#number of lines post filtering
 idx_size=3		#number of lines in the idx file
 gof_size=8		#number of lines in the idx file
 

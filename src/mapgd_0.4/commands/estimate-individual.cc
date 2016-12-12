@@ -70,7 +70,7 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	if (mle.null_error!=0){
 		rexc=maximize_grid(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 		if (newton) 
-		rexc=maximize_newton(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//the NR maximization
+			rexc=maximize_newton(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//the NR maximization
 	}
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);//trim bad clones and re-fit the model.
@@ -85,14 +85,14 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	mle.ll=model.loglikelihood(site, mle);			//Sets the site.ll to the log likelihood of the best fit (ll). 
 
 
-	/*if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
+	if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
 		std::swap(mle.major, mle.minor);
 		std::swap(mle.MM, mle.mm);
 		std::swap(mle.null_error, mle.null_error2);
 		mle.freq=1.-mle.freq;
 		site.swap(0, 1);
 		
-	} */
+	} 
 	/*else if (mle.freq==0.5){
 		//struct drand48_data drand_buf;
 		//drand48_r (&drand_buf, &r);
@@ -127,6 +127,7 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 		mle.ll=mle.monoll;
 		mle.error=mle.null_error;
 	};
+
 	temp=mle; 
 	temp.MM=pow(mle.freq, 2);				//Similar set up to mono, but now assuming 
 	temp.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
