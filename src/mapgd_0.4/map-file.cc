@@ -38,6 +38,12 @@ bool Base_file::check_concatenated(const char* filename)
 		std::getline(*in_, line);
 		columns=split(line, '\t');
 		concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
+		std::string::iterator c=line.begin();
+		while (c!=line.end() )
+		{
+			in_->putback(*c);
+			c++;
+		}
 		file_.close();
 		in_=NULL;
 		return concatenated_;
