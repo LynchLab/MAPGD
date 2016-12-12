@@ -19,7 +19,7 @@
 #####[Log-likelihood ratios](https://github.com/LynchLab/MAPGD#-log-likelihood-ratio-statistics-)
 #####[Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-)
 #####[Other Useful Programs](https://github.com/LynchLab/MAPGD#-other-useful-programs-)
-####Performance()
+####Performance
 #####[Statistical](https://github.com/LynchLab/MAPGD#-statistical-performance-)
 #####[Computational](https://github.com/LynchLab/MAPGD#-computational-performance-)
 ####Misc.
@@ -400,7 +400,7 @@ In the case where the allele command is being used to estimated the seven genoty
 
 <h3> Statistical Performance </h3>
 
-![Figure1](/extras/automatic_figures/Ackerman_2016b/figure1.jpg?raw=true "Bias and Type II error"))
+![Figure1](/extras/automatic_figures/Ackerman_2016b/figure1.jpg?raw=true "Bias and Type II error")
 The bais (solid line), 95% CI (shaded region), and Type II error rate (dashed line) of four variant calling programs on simulated data. Type II error rates are sliding window averags. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs in a 5 Mb genome at 3x coverage simulated by the pipeline I haven't linked here yet. 
 
 <h3> Computational Performance </h3>
