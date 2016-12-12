@@ -25,27 +25,20 @@ bool Base_file::check_concatenated(const char* filename)
 	if(open_) {
 		return concatenated_;
 	} else  {
-		if ( filename_.size()==0 ) filename_=std::string(filename);
-		file_.open( filename, std::ios::in);
-		if ( !file_.is_open() ){
-			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
-			std::cerr << "Error: " << strerror(errno) << std::endl;
-			exit(0);
-		}
-		in_=&file_;
 		std::string line;
 		std::vector <std::string> columns;
 		std::getline(*in_, line);
 		columns=split(line, '\t');
 		concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
-		std::string::iterator c=line.begin();
-		while (c!=line.end() )
+		std::string::iterator c=line.end();
+		in_->putback('\n');
+		c--;
+		while (c!=line.begin() )
 		{
 			in_->putback(*c);
-			c++;
+			c--;
 		}
-		file_.close();
-		in_=NULL;
+		in_->putback(*c);
 		return concatenated_;
 	}
 }
@@ -61,7 +54,6 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 		exit(0);
 	}
 	if ( mode & std::ios::in ){
-		concatenated_=check_concatenated(filename);
 		file_.open( filename, std::ios::in);
 		if ( !file_.is_open() ){
 			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
@@ -69,6 +61,7 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 			exit(0);
 		};
 		in_=&file_;
+		concatenated_=check_concatenated(filename);
 		read_=true;
 		openmode_=mode;
 	} else if ( mode & std::ios::out ){

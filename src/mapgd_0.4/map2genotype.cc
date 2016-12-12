@@ -97,8 +97,17 @@ int map2genotype(int argc, char *argv[])
 	Indexed_file <Population> gcf_out;
 
 	/* Open input files based on file name*/
-	pro_in.open(proname.c_str(), READ);
-	map_in.open(mapname.c_str(), READ);
+	#pragma omp parallel sections num_threads(2)
+	{
+		#pragma omp section
+		{
+		pro_in.open(proname.c_str(), READ);
+		}
+		#pragma omp section
+		{
+		map_in.open(mapname.c_str(), READ);
+		}
+	}
 
 	if (outname.size()!=0) {
 		gcf_out.open(outname.c_str(), binary ? std::ios::out | std::ios::binary : std::ios::out);
@@ -113,7 +122,7 @@ int map2genotype(int argc, char *argv[])
 	Population gcf_record;
 
 	/* Read the headers of the files */
-	#pragma omp sections
+	#pragma omp parallel sections num_threads(2)
 	{
 		#pragma omp section
 		{

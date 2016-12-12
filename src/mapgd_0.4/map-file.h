@@ -580,6 +580,7 @@ T Flat_file<T>::read_header(void)
 			return data;
 		}
 		std::cerr << __FILE__ << ":" << __LINE__ << " attempted to open incorrect header.\n";
+		std::cerr << line << std::endl;
 	}
 	table_open_=false;
 	std::cerr << __FILE__ << ":" << __LINE__ << " could not initilize " << typeid(T).name() <<"\n";
