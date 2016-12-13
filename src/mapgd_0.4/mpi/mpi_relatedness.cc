@@ -64,7 +64,7 @@ int estimateRel(int argc, char *argv[])
 	std::map <Genotype_pair_tuple, size_t> down_genotypes;
 	
 	size_t sample_size=genotype.get_sample_names().size();
-#if 0
+	
 	Relatedness buffer_rel[BUFFER_SIZE];        
 	std::fill_n(buffer_rel, BUFFER_SIZE, relatedness);
 
@@ -82,32 +82,38 @@ int estimateRel(int argc, char *argv[])
 #if DEBUG
 	printf ("MPI task %d has started...\n", taskid);
 #endif
-#endif
+
+	size_t done=0;
 	for (size_t x=0; x<sample_size; ++x){
 		for (size_t y=x+1; y<sample_size; ++y){
-			relatedness.set_X_name(genotype.get_sample_names()[x]);
-			relatedness.set_Y_name(genotype.get_sample_names()[y]);
-			hashed_genotypes=hash_genotypes(file_buffer, x, y);
-			down_genotypes=downsample_genotypes(file_buffer, x, y);
-			relatedness.zero();
-			set_e(relatedness, hashed_genotypes);
-		//	gestimate(relatedness, hashed_genotypes);
+			z=x*sample_size+(y-x-1)-done;
+			if (z>BUFFER_SIZE){
+				if (taskid == MASTER) 
+				{
+					MPI_Waitall(numtasks-1, request, status);
+					rel_out.write(buffer_rel[z]);
+				}
+				done+=BUFFER_SIZE;
+				z-=BUFFER_SIZE;
+			} 
+			if (z%numtasks==taskid){
+				relatedness.set_X_name(genotype.get_sample_names()[x]);
+				relatedness.set_Y_name(genotype.get_sample_names()[y]);
+				hashed_genotypes=hash_genotypes(file_buffer, x, y);
+				down_genotypes=downsample_genotypes(file_buffer, x, y);
+				relatedness.zero();
+				set_e(relatedness, hashed_genotypes);
+			//	gestimate(relatedness, hashed_genotypes);
 #ifdef EIGEN
-			newton(relatedness, down_genotypes);
+				newton(relatedness, down_genotypes);
 #else
-			maximize(relatedness, down_genotypes);
+				maximize(relatedness, down_genotypes);
 #endif
-		//	maximize(relatedness, hashed_genotypes);
-			get_llr(relatedness, hashed_genotypes);
-
-//			buffer_rel[x*sample_size+(y-x-1)]=relatedness;
-			rel_out.write(relatedness);
+				get_llr(relatedness, hashed_genotypes);
+				buffer_rel[z]=relatedness;
+			}
 		}
 	}
-	//rc = MPI_Reduce(&homepi, &pisum, 1, MPI_DOUBLE, MPI_SUM, MASTER, MPI_COMM_WORLD);
-//	if (rc != MPI_SUCCESS) printf("%d: failure on mpc_reduce\n", taskid);
-//	if (taskid == MASTER) 
-//		printf ("\nReal value of PI: 3.1415926535897 \n");
 	rel_out.close();
 	return 0;					//Since everything worked, return 0!.
 }

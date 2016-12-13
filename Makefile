@@ -4,24 +4,24 @@ HAVE_GSL=yes
 HAVE_OMP=yes
 HAVE_MPI=yes
 HAVE_SQL=yes
-HAVE_HTS=no
+HAVE_HTS=yes
 HAVE_MAN=yes
 
-MPICXX=mpicxx -std=c++11
+MPICXX=g++ -std=c++11 -std=c++11
 CXX=g++ -std=c++11
 OPENMP_CXXFLAGS=-fopenmp
-CXXFLAGS=-O3
+CXXFLAGS=-O4
 
 #SAMTOOLS FLAGS
 
-#HTSDIR = 
-##include $(HTSDIR)/htslib.mk
-#HTSLIB = $(HTSDIR)/libhts.a
-#HTSLIB_LIB = $(HTSLIB)
-#BGZIP = $(HTSDIR)/bgzip
-HTSLIB_CPPFLAGS = -I ../../
-HTSLIB_LDFLAGS = -L ../../
-HTSLIB_LIB = -lhts
+HTSDIR = ../htslib
+#include $(HTSDIR)/htslib.mk
+HTSLIB = $(HTSDIR)/libhts.a
+HTSLIB_LIB = $(HTSLIB)
+BGZIP = $(HTSDIR)/bgzip
+HTSLIB_CPPFLAGS = -I ../../../htslib
+HTSLIB_LDFLAGS = -L ../../../htslib
+#HTSLIB_LIB = -lhts
 	
 export
 

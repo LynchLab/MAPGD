@@ -97,13 +97,19 @@ int map2genotype(int argc, char *argv[])
 	Indexed_file <Population> gcf_out;
 
 	/* Open input files based on file name*/
+	#ifndef NOOMP
 	#pragma omp parallel sections num_threads(2)
+	#endif
 	{
+		#ifndef NOOMP
 		#pragma omp section
+		#endif
 		{
 		pro_in.open(proname.c_str(), READ);
 		}
+		#ifndef NOOMP
 		#pragma omp section
+		#endif
 		{
 		map_in.open(mapname.c_str(), READ);
 		}
@@ -122,13 +128,19 @@ int map2genotype(int argc, char *argv[])
 	Population gcf_record;
 
 	/* Read the headers of the files */
+	#ifndef NOOMP
 	#pragma omp parallel sections num_threads(2)
+	#endif
 	{
+		#ifndef NOOMP
 		#pragma omp section
+		#endif
 		{
 		pro_record=pro_in.read_header();
 		}
+		#ifndef NOOMP
 		#pragma omp section
+		#endif
 		{
 		map_record=map_in.read_header();
 		}

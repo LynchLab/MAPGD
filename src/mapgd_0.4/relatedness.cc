@@ -11,16 +11,6 @@ freqtoi(float_t in)
 	return size_t(in*E_LIM*2) < E_LIM ? size_t(in*E_LIM*2) : E_LIM-1;
 }
 
-#ifdef MPI
-        std::cerr << "HOW THE HELL IS THIS HAPPENING!\n";
-        exit(0);
-        MPI_Init(&argc, &argv);
-
-        int numtasks, taskid;
-        MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
-        MPI_Comm_rank(MPI_COMM_WORLD, &taskid);
-#endif
-
 #ifdef EIGEN
 void 
 newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
@@ -392,7 +382,7 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	std::pair<Genotype_pair_tuple, size_t> *pair;
 //	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
 
-	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
+//	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
 	for (size_t x=0; x<hashed_genotypes_p->size(); x++){
 //	while(it!=end){
 		pair=&(*hashed_genotypes_p)[x];
@@ -664,7 +654,7 @@ int estimateRel(int argc, char *argv[])
 			set_e(relatedness, hashed_genotypes);
 		//	gestimate(relatedness, hashed_genotypes);
 #ifdef EIGEN
-			newton(relatedness, down_genotypes);
+//			newton(relatedness, down_genotypes);
 #else
 			maximize(relatedness, down_genotypes);
 #endif
