@@ -12,12 +12,13 @@ AC_CHECK_LIB([m],[cos])
 AC_CHECK_LIB([gslcblas],[cblas_dgemm])
 AC_CHECK_LIB([gsl],[gsl_blas_dgemm])
 
-m4_include([./m4/ax_with_htslib.m4])
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_OPENMP
-AX_CXX_COMPILE_STDCXX_11
+AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory])
+#AX_CXX_COMPILE_STDCXX_11
 AX_WITH_HTSLIB
-#AX_CHECK_COMPILE_FLAG([-std=c++11], [CXXFLAGS="$CXXFLAGS -std=c++11"])
+AX_MPI
 
 if test "$ac_cv_lib_gsl_gsl_blas_dgemm" == yes
 then
@@ -33,13 +34,12 @@ else
 	AC_SUBST(HAVE_OMP, yes)
 fi
 
-#if test "$ac_cv_prog_cxx_mpi" == "unsupported"
-#then
-#	AC_MSG_WARN([No mpi support detected, cannot run on multiple nodes.])
-#else
-#	AC_SUBST(HAVE_MPI, yes)
-#then
-#AX_WITH_HTSLIB
+if test "$ac_cv_func_MPI_Init" == "yes"
+then
+	AC_SUBST(HAVE_MPI, yes)
+else
+	AC_MSG_WARN([No mpi support detected, cannot run on multiple nodes.])
+fi
 
 if test "$ax_cv_htslib" == yes
 then
@@ -56,8 +56,8 @@ else
   Hsource='#'
   Hinstall=
 fi
+
 AC_SUBST([Hsource])
 AC_SUBST([Hinstall])
-
 AC_OUTPUT(Makefile)
 #cp confdefs.h my_config.h
