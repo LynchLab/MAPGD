@@ -190,7 +190,9 @@ mkfifo map
 mkfifo pro
 size=$(($pop*($pop-1)/2+3))
 $mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -c 1 | $mapgd filter > map &
-$mapgd genotype -p pro -m map | $mapgd relatedness > $a.out
+$mapgd genotype -p pro -m map > genotype
+$mapgd relatedness > $a.out
+exit
 testa
 rm -f map
 rm -f pro

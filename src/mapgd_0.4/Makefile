@@ -19,6 +19,7 @@ NOOMP=-D NOOMP
 NOSQL=-D NOSQL
 NOGSL=-D NOGSL
 NOHTS=-D NOHTS
+NOMPI=-D NOMPI
 
 #HTS_LIB_PATH=/usr/include/htslib/
 
@@ -105,7 +106,6 @@ COMMAND_OBJ=commands/estimate-individual.o \
 
 #Depend on htslib
 HTS_OBJ=data_conversion/vcf-file.o \
-	data_conversion/bcf2pro-file.o \
 	commands/read-vcf.o \
 	commands/make-vcf.o
 
@@ -114,6 +114,7 @@ SQL_OBJ=sql/writesql.o \
 	sql/readsql.o \
 	sql/db_api.o 
 
+#many objects depend on these
 BASE_OBJ=binomial.o \
 	individual-likelihood.o \
 	lnmultinomial.o \
@@ -132,6 +133,7 @@ DATA_OBJ=data_types/allele.o \
 	data_types/population.o \
 	data_types/sample_gof.o \
 	data_types/relatedness_data.o \
+	data_conversion/bcf2pro-file.o \
 	data_types/locus.o \
 	data_types/sample_name.o 
 
@@ -141,33 +143,50 @@ RAW_OBJ=raw/genotype.o \
 	raw/region.o \
 	raw/base.o
 
+OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) 
 
-
-ifeq ($(HAVE_SQL), yes)
-	OBJ=$(MAPGD) $(COMMAND_OBJ) $(SQL_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) $(HTS_OBJ)
+ifeq ($(HAVE_MPI), yes)
+	MPI_OBJ=mpi/mpi_relatedness.o
+	OBJ := $(OBJ) $(MPI_OBJ)
+	MPI_LDLIBS += -lmpi -pthread
+	FINAL_CXX=$(MPICXX)
 else
-	OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) $(HTS_OBJ)
+	MPI_OBJ =
+	MPI_LDLIBS =
+	FINAL_CXX = $(CXX)
+	CXXFLAGS += $(NOMPI)
 endif
 
-all: $(OBJ)
-	$(CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS)
+ifeq ($(HAVE_SQL), yes)
+	OBJ := $(OBJ) $(SQL_OBJ)
+endif
+
+ifeq ($(HAVE_HTS), yes)
+	OBJ := $(OBJ) $(HTS_OBJ)
+endif
+
+all : $(TARGET)
+
+$(TARGET) : $(OBJ) 
+	$(FINAL_CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS) $(MPI_LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
-	
+
+$(MPI_OBJ) : $(MPI_OBJ:.o=.cc)
+	$(MPICXX) $(CXXFLAGS) -c $(@:.o=.cc) -o $@
+
 DATA_SOURCE=data_types/*.cc
 
-data.h: data_types/data.cc
+data.h : data_types/data.cc
 	@echo "updating data_types"
 	touch $(DATA_SOURCE)
 
-interface.h: interface.cc
+interface.h : interface.cc
 	@echo "updating commands"
 	touch $(COMMAND_SOURCE)
 
-noomp: CXXFLAGS:=$(CXXFLAGS) $(NOOMP)
-noomp: all
 
-debug: CXXFLAGS:=$(CXXFLAGS) $(DEBUG)
-debug: all
+debug : CXXFLAGS:=$(CXXFLAGS) $(DEBUG)
+debug : all
 
 increment:
 	echo -n $$(($(MINOR)+1)) > VERSION

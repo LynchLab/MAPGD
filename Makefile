@@ -2,13 +2,15 @@ SUBDIRS=src
 
 HAVE_GSL=yes
 HAVE_OMP=yes
+HAVE_MPI=yes
 HAVE_SQL=yes
 HAVE_HTS=no
 HAVE_MAN=yes
 
-CXX=g++
+MPICXX=mpicxx -std=c++11
+CXX=g++ -std=c++11
 OPENMP_CXXFLAGS=-fopenmp
-CXXFLAGS=-g -O2 -std=gnu++11
+CXXFLAGS=-O3
 
 #SAMTOOLS FLAGS
 

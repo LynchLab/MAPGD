@@ -37,6 +37,7 @@ fi
 if test "$ac_cv_func_MPI_Init" == "yes"
 then
 	AC_SUBST(HAVE_MPI, yes)
+	AC_SUBST(MPICXX, mpicxx)
 else
 	AC_MSG_WARN([No mpi support detected, cannot run on multiple nodes.])
 fi

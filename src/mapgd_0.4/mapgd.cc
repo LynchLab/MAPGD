@@ -32,15 +32,17 @@ int main (int argc, char* argv[])
 	env.command(	' ',"filterpool",&filter_pool,	 		"an error occurred while calling filter", "Filter sites in '.pol' files");			 	//DONE
 	env.command(	' ',"filtergcf",&filter_genotype,	 	"an error occurred while calling filter", "Filter sites in '.gcf' files");			 	//DONE
 	env.command(	' ',"genotype",	&map2genotype,	 		"an error occurred while calling genotype", "Calculate genotype probabilities for individuals"); 	//DONE
-//	env.command(	' ',"vcf",	&vcf,		 		"an error occured while calling vcf", "Convert output to vcf format.");					//TODO
 	env.command(	' ',"linkage", 	&PopLD,	 			"an error occurred while calling linkage", "Estimates linkage disequilibrium between loci");		//DONE
 	env.command(	' ',"pool",	&estimatePooled, 		"an error occurred while calling pool", "Estimates allele frequencies using pooled data");		//DONE
 	env.command(	' ',"proview", 	&proview, 			"an error occurred while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
 	env.command(	' ',"relatedness",&estimateRel,	 		"an error occurred while calling relatedness", "Estimates the pairwise relatedness of individuals");	//DONE
 	env.command(	' ',"reltest", &testRel,	 		"an error occurred while calling relatedness", "Test for sig dif between relatedness estiamtes");	//DONE
 	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occurred while calling sam2idx", "Reformats a sam header file to a idx file"); 		//DONE
+
+#ifndef NOHTS
 	env.command(	' ',"writevcf",	&make_vcf,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
 	env.command(	' ',"readvcf",	&read_vcf,	 		"an error occurred while calling vcf", "Reads a vcf file"); 		//DONE
+#endif
 	env.command(	' ',"help", 	&mapgd_help, 			"an error occurred while calling help", "Prints helpful information");					//DONE
 
 #ifndef NOSQL

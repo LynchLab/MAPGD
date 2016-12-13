@@ -11,6 +11,16 @@ freqtoi(float_t in)
 	return size_t(in*E_LIM*2) < E_LIM ? size_t(in*E_LIM*2) : E_LIM-1;
 }
 
+#ifdef MPI
+        std::cerr << "HOW THE HELL IS THIS HAPPENING!\n";
+        exit(0);
+        MPI_Init(&argc, &argv);
+
+        int numtasks, taskid;
+        MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
+        MPI_Comm_rank(MPI_COMM_WORLD, &taskid);
+#endif
+
 #ifdef EIGEN
 void 
 newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
@@ -584,6 +594,7 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 	
 }
 
+#ifdef NOMPI
 int estimateRel(int argc, char *argv[])
 {
 	std::cerr << "Warning: this program should generate AICc's. However, it doesn't and its _ll variables don't mean that much.\n"; 
@@ -611,7 +622,7 @@ int estimateRel(int argc, char *argv[])
 
 	Flat_file <Relatedness> rel_out; 		// Open a file for output.
 
-	Relatedness relatedness;			//The class to read to
+	Relatedness relatedness;		//The class to read to
 	Population genotype;			//The class to write from
 
 	if (gcf_name.size()!=0)
@@ -659,12 +670,14 @@ int estimateRel(int argc, char *argv[])
 #endif
 		//	maximize(relatedness, hashed_genotypes);
 			get_llr(relatedness, hashed_genotypes);
+
 			rel_out.write(relatedness);
 		}
 	}
 	rel_out.close();
 	return 0;					//Since everything worked, return 0!.
 }
+#endif
 
 #else 
 
@@ -676,4 +689,3 @@ estimateRel(int argc, char *argv[])
 }
 
 #endif 
-

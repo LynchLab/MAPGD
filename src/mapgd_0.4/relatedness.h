@@ -65,7 +65,6 @@ inc_Delta (Relatedness &rel, const Genotype_pair &pair, const size_t &count);
 
 //TODO FIX THIS TERRIBLE HACK JOB YOU SCHMUCK!
 
-
 float_t
 get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count);
 
