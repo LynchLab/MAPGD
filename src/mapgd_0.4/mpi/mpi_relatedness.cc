@@ -1,6 +1,6 @@
 #include "mpi_relatedness.h"
 
-#define BUFFER_SIZE 30
+#define BUFFER_SIZE 500
 
 #ifndef NOGSL
 
