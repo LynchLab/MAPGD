@@ -79,10 +79,10 @@ int testRel(int argc, char *argv[])
 		rel_in1.read(rel1);
 		rel_in2.read(rel2);
 
-		if (rel1.X_!=rel2.X_ || rel1.Y_!=rel2.Y_){
-			std::cerr << __FILE__ << ":" << __LINE__ << "relatedness in files do not compare the same individual. exiting.\n";
-			break;
-		}
+//		if (rel1.X_!=rel2.X_ || rel1.Y_!=rel2.Y_){
+//			std::cerr << __FILE__ << ":" << __LINE__ << "relatedness in files do not compare the same individual. exiting.\n";
+//			break;
+//		}
 		hashed_genotypes=hash_genotypes(file_buffer, 0, 1);
 
 		set_e(rel1, hashed_genotypes);

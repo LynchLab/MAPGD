@@ -7,27 +7,39 @@ const bool Relatedness::binary=false;
 const Registration Relatedness::registered=Registration(Relatedness::table_name, Relatedness::create);
 
 Relatedness::Relatedness (){
-	X_="";
-	Y_="";
+//	X_="";
+//	Y_="";
 	delim='\t';
 }
 
 Relatedness::Relatedness (const std::string &X, const std::string &Y){
-	X_=X;
-	Y_=Y;
+//	X_=X;
+//	Y_=Y;
 	delim='\t';
 }
 
 void 
 Relatedness::set_X_name(const std::string &X)
 {
+//	X_=X;
+}
+
+void
+Relatedness::set_X_name(const id0_t &X)
+{
 	X_=X;
+}
+
+void
+Relatedness::set_Y_name(const id0_t &Y)
+{
+	Y_=Y;
 }
 
 void 
 Relatedness::set_Y_name(const std::string &Y)
 {
-	Y_=Y;
+//	Y_=Y;
 }
 
 void
@@ -86,15 +98,15 @@ Relatedness::header(void) const {
 
 size_t 
 Relatedness::size(void) const {
-	return sizeof(float_t)*16+(X_.size()+Y_.size())*sizeof(char);
+	//18
+	return sizeof(id1_t)+sizeof(float_t)*E_LIM*2+sizeof(float_t)*18+sizeof(char)+sizeof(id0_t)*2;
 }
 
 void 
 Relatedness::clear(void)
 {
-	X_=""; //!< the name of the first (X) sample in the compairison.
-	Y_=""; //!< the name of the second (Y) sample in the compairison.
-
+//	X_=""; //!< the name of the first (X) sample in the compairison.
+//	Y_=""; //!< the name of the second (Y) sample in the compairison.
 	zero();
 }
 
