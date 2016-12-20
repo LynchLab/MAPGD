@@ -167,13 +167,15 @@ ifeq ($(HAVE_HTS), yes)
 	OBJ := $(OBJ) $(HTS_OBJ)
 endif
 
-all : $(TARGET) gzstream
+all : gzstream $(TARGET) 
+
+#$(TARGET) 
 
 gzstream :
 	$(MAKE) -C gzstream
 .PHONY: gzstream
 
-$(TARGET) : $(OBJ) 
+$(TARGET) : $(OBJ)
 	$(FINAL_CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS) $(MPI_LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
