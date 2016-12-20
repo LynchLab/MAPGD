@@ -10,9 +10,10 @@ DOCPATH=\"$(shell pwd)/../../docs/man/\"
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d '-' -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/
 
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) 
+LDLIBS += -lgzstream -lz -L ./gzstream/
 
 DEBUG=-pg -D DEBUG -ggdb
 NOOMP=-D NOOMP
@@ -77,7 +78,7 @@ endif
 
 DOCDIR=../../docs
 
-SUBDIR=raw sql data_types commands data_conversion
+SUBDIR=raw sql data_types commands data_conversion stream_tools
 #>! Just a list of flags to try at some later date.
 # -oFast -ffloat-store -fexcess-precision=style -ffast-math -fno-rounding-math -fno-signaling-nans
 # -fcx-limited-range -fno-math-errno -funsafe-math-optimizations -fassociative-math -freciprocal-math
@@ -122,7 +123,8 @@ BASE_OBJ=binomial.o \
 	map-file.o \
 	models.o \
 	pooled-likelihood.o \
-	stream-tools.o 
+	stream_tools/tmp_buffer.o \
+	stream_tools/stream-tools.o 
 
 #These all depend on data.h
 DATA_OBJ=data_types/allele.o \
@@ -165,7 +167,11 @@ ifeq ($(HAVE_HTS), yes)
 	OBJ := $(OBJ) $(HTS_OBJ)
 endif
 
-all : $(TARGET)
+all : $(TARGET) gzstream
+
+gzstream :
+	$(MAKE) -C gzstream
+.PHONY: gzstream
 
 $(TARGET) : $(OBJ) 
 	$(FINAL_CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS) $(MPI_LDLIBS)

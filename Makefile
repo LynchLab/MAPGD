@@ -2,7 +2,7 @@ SUBDIRS=src
 
 HAVE_GSL=yes
 HAVE_OMP=yes
-HAVE_MPI=yes
+HAVE_MPI=no
 HAVE_SQL=yes
 HAVE_HTS=no
 HAVE_MAN=yes

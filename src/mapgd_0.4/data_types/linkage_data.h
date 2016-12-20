@@ -6,9 +6,9 @@
 #include <iomanip>
 #include <vector>
 
-#include "../typedef.h"
+#include "typedef.h"
 #include "data.h"
-#include "../stream-tools.h"
+#include "stream-tools.h"
 
 ///	A class to store linkage information. 
 /** Many of these data classes need to have things moved over to static 

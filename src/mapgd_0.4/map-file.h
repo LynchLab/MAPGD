@@ -25,6 +25,8 @@
 #include "pooled_data.h"
 #include "sample_name.h"
 #include "bcf2pro.h"
+#include "gzstream.h"
+#include "tmp_buffer.h"
 
 #define READ	std::ios::in
 #define WRITE	std::ios::out
@@ -33,15 +35,16 @@
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 
 //! A templet which stores data associated with specific locations in a genome.
-/*! An indexed file is a table with colulmns specified by the data types stored
- * in the table, which must store a pair of IDs retrived by the get_id0() and 
+/*! An indexed file is a table with columns specified by the data types stored
+ * in the table, which must store a pair of IDs retrieved by the get_id0() and 
  * get_id1() member functions. Additionally, data types must return a name for 
  * the table in the database where the data may be stored with member function 
- * table_name(), and must name the columns of the table with cannonical data 
+ * table_name(), and must name the columns of the table with canonical data 
  * types listed in the file ?. This allows data to easily be transfered into 
  * and out of a database. Finally...
  *
  */
+
 class Base_file {
 private:
 protected:
@@ -49,7 +52,7 @@ protected:
 	//! indicates whether the iostream opened succesfully
 	bool open_;		
 
-	//! indicates whether the header has been read succesfully
+	//! indicates whether the header has been read successfully
 	/*   Since all tables begin with a header, 
 	 *   Base_file::read(Data *) will return NULL before until 
 	 *   read_header has been called and moved the iostream past 
@@ -60,7 +63,10 @@ protected:
 	//! indicates whether multiple tables are included in the file
 	bool concatenated_;	
 
-	//! The delimiter which seperates columns
+	//! indicates whether the input/output stream is compressed.
+	bool compressed_;	
+
+	//! The delimiter which separates columns
 	char delim_column_;	
 
 	bool read_;		//!< File is open for reading.
@@ -70,9 +76,14 @@ protected:
 	bool indexed_;		//!< Indexed mode flag.
 
 	std::istream *in_;	//!< All data is read from in.
-	std::ostream *out_;	//!< All data is writen is writen to out.
+	std::ostream *out_;	//!< All data is written is written to out.
+
+	Tmp_buffer buffer_;	//!< an buffer which can be rewound.
 
 	std::fstream file_;	//!< The file to read data from.
+
+	igzstream gzin_;	//!< compressed istream.
+	ogzstream gzout_;	//!< compressed ostream.
 
 	//! stores information about the mode in which the file was opened.
 	std::ios::openmode openmode_;
@@ -131,11 +142,11 @@ public:
 	Base_file& write(Data *);	
 	Base_file& write(File_index &, Data *);	
 
-	//! sets in and out (for reading and writing) to possition pos.	
+	//! sets in and out (for reading and writing) to position pos.	
 	void seek(const std::streampos &pos);		
-	//! sets in (for reading) to possition pos.
+	//! sets in (for reading) to position pos.
 	void seekg(const std::streampos &pos);		
-	//! sets out (for writing) to possition pos.
+	//! sets out (for writing) to position pos.
 	void seekp(const std::streampos &pos);		
 
 	void seek(std::streampos pos, std::ios_base::seekdir way);	//!< TODO		
@@ -149,9 +160,9 @@ public:
 	/**@defgroup Formating Formating options
 	 * @{
 	 */
-	//! Sets the delimiter that seperates columns. Only used in text mode.
+	//! Sets the delimiter that separates columns. Only used in text mode.
 	void set_delim (const char&);				
-	//! Gest the delimiter that seperates columns. Only used in text mode.
+	//! Gets the delimiter that separates columns. Only used in text mode.
 	const char & get_delim (const char&) const;		
 	/** @} */
 
@@ -166,7 +177,8 @@ public:
 	size_t size(void) const; 
 	bool eof(void);
 	bool indexed(void);
-	bool check_concatenated(const char *filename);
+	bool check_concatenated(void);
+	bool check_compressed(void);
 };
 
 template <class Data>
@@ -217,10 +229,10 @@ public:
         /*! 
          * This method opens a file to the same i/o stream as 
 	 * Base_file iff Base_file is not associated with a file,
-	 * and creates a file with the extention T:file_name 
+	 * and creates a file with the extension T:file_name 
 	 * otherwise. Base_file is not closed. This can result in 
 	 * data between the Base_file and the . . . being 
-	 * interspersed, potentially curupting the file.
+	 * interspersed, potentially corrupting the file.
          */
         void open_header(Base_file &);
 
@@ -244,9 +256,9 @@ private:
 	using Data_file<T>::out_;	//(const std::ios_base::openmode &);
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
 	using Base_file::write_;	//(const std::ios_base::openmode &);
-	using Base_file::binary_;//(const std::ios_base::openmode &);
-	using Base_file::try_binary_;//(const std::ios_base::openmode &);
-	using Base_file::concatenated_;//(const std::ios_base::openmode &);
+	using Base_file::binary_;	//(const std::ios_base::openmode &);
+	using Base_file::try_binary_;	//(const std::ios_base::openmode &);
+	using Base_file::concatenated_;	//(const std::ios_base::openmode &);
 	using Base_file::table_open_;
 
 public:
@@ -263,7 +275,7 @@ private:
 protected:
 	File_index file_index_;	//!< A file_index which turns (id0, id1)->pos.
 
-	void read_text(T&);	//!< Read file in text mode.		DONE
+	void read_text(T&);		//!< Read file in text mode.	DONE
 	void write_text(const T&);	//!< Write in text mode.	DONE
 
 	void read_binary(T &);
@@ -272,11 +284,11 @@ protected:
 	using Data_file<T>::out_;	//(const std::ios_base::openmode &);
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
 	using Base_file::write_;	//(const std::ios_base::openmode &);
-	using Base_file::binary_;//(const std::ios_base::openmode &);
-	using Base_file::try_binary_;//(const std::ios_base::openmode &);
+	using Base_file::binary_;	//(const std::ios_base::openmode &);
+	using Base_file::try_binary_;	//(const std::ios_base::openmode &);
 	using Base_file::table_open_;
 	using Base_file::read_;
-	using Base_file::concatenated_;//(const std::ios_base::openmode &);
+	using Base_file::concatenated_;	//(const std::ios_base::openmode &);
 	using Base_file::filename_;
 
 public:
@@ -289,10 +301,10 @@ public:
 
 	/*! \brief Returns the position in the file.
 	 *
-	 * Positions are guarnteed to be unique and increasing for each row. 
+	 * Positions are guaranteed to be unique and increasing for each row. 
 	 */
-	Indexed_file& write(const T&);//(const Indexed_data &);
-	Indexed_file& read(T&);//(const Indexed_data &);
+	Indexed_file& write(const T&);		//(const Indexed_data &);
+	Indexed_file& read(T&);			//(const Indexed_data &);
 
 	id1_t get_pos(const T &) const;
 	void write_header(const T&);		//!< Writes a file header.
@@ -412,6 +424,7 @@ void Flat_file<T>::read_text(T &data)
 		std::getline(*in_, line);
 		if (line!="@END_TABLE") {
 			std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
+			std::cerr << line << std::endl;
 			exit(0);
 		} 
 		if (!concatenated_) {

@@ -8,9 +8,9 @@
 #include <iomanip>
 #include <vector>
 
-#include "../typedef.h"
+#include "typedef.h"
 #include "data.h"
-#include "../stream-tools.h"
+#include "stream-tools.h"
 
 ///	The name of a sample (i.e. what the user called it).
 class Sample_name : public virtual Data { 

@@ -11,6 +11,7 @@ Base_file::Base_file(void)
 	try_binary_=false;
 	filename_="";
 	concatenated_=false;
+	compressed_=false;
 	indexed_=false;
 }
 
@@ -20,7 +21,20 @@ Base_file::indexed(void)
 	return indexed_;
 }
 
-bool Base_file::check_concatenated(const char* filename)
+bool Base_file::check_compressed(void)
+{
+	if(open_) {
+		return compressed_;
+	} else  {
+		uint16_t bytes;
+		char c;
+		in_->read((char *)(&bytes), 2);
+		compressed_=(bytes==0x1f8b || bytes==0x8b1f);
+		return compressed_;
+	}
+}
+
+bool Base_file::check_concatenated(void)
 {
 	if(open_) {
 		return concatenated_;
@@ -28,17 +42,9 @@ bool Base_file::check_concatenated(const char* filename)
 		std::string line;
 		std::vector <std::string> columns;
 		std::getline(*in_, line);
+		//std::cerr << "got:" << line << std::endl;
 		columns=split(line, '\t');
 		concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
-		std::string::iterator c=line.end();
-		in_->putback('\n');
-		c--;
-		while (c!=line.begin() )
-		{
-			in_->putback(*c);
-			c--;
-		}
-		in_->putback(*c);
 		return concatenated_;
 	}
 }
@@ -47,7 +53,7 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 {
 	if ( filename_.size()==0 ) filename_=std::string(filename);
 #ifdef DEBUG
-	std::cerr << __LINE__ << "opening no extention "<< filename <<"\n";
+	std::cerr << __LINE__ << "opening no extension "<< filename <<"\n";
 #endif 
 	if ( open_ ){
 		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
@@ -55,23 +61,57 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 	}
 	if ( mode & std::ios::in ){
 		file_.open( filename, std::ios::in);
-		if ( !file_.is_open() ){
+		if ( !file_.is_open() )
+		{
 			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
 			std::cerr << "Error: " << strerror(errno) << std::endl;
 			exit(0);
-		};
-		in_=&file_;
-		concatenated_=check_concatenated(filename);
+		}
+		buffer_.open(&in_, &file_);
+		//in_=&file_;
+		//std::cerr << "checking for compression...\n";
+		buffer_.buffer_on();
+		buffer_.reread_off();
+		compressed_=check_compressed();
+		if (compressed_)
+		{
+			//std::cerr << "Compressed!\n";
+			file_.close();
+			gzin_.open(filename, READ);
+			if ( !gzin_.good() ){
+				std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
+				std::cerr << "Error: " << strerror(errno) << std::endl;
+				exit(0);
+			};
+			buffer_.open(&in_, &gzin_);
+			buffer_.clear_read();
+		}
+		//std::cerr << "checking for concatenation...\n";
+		concatenated_=check_concatenated();
+		//if(concatenated_) std::cerr << "Concatenated!\n";
+		buffer_.buffer_off();
+		buffer_.reread_on();
 		read_=true;
 		openmode_=mode;
 	} else if ( mode & std::ios::out ){
-		file_.open( filename, std::ios::out);
-		if (!file_.is_open() ){
-			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for writing." << std::endl;
-			std::cerr << "Error: " << strerror(errno) << std::endl;
-			exit(0);
-		};
-		out_=&file_;
+		if (compressed_) 
+		{
+			gzout_.open( filename, std::ios::out);
+			if (!gzout_.good() ){
+				std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for writing." << std::endl;
+				std::cerr << "Error: " << strerror(errno) << std::endl;
+				exit(0);
+			};
+			out_=&gzout_;
+		} else {
+			file_.open( filename, std::ios::out);
+			if (!file_.is_open() ){
+				std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for writing." << std::endl;
+				std::cerr << "Error: " << strerror(errno) << std::endl;
+				exit(0);
+			};
+			out_=&file_;
+		}
 		write_=true;
 		openmode_=mode;
 	};

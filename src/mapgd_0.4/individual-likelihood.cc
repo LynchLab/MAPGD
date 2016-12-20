@@ -204,7 +204,7 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 
 		if (fabs(det)<0.00001) 
 		{
-			//det < 0 ? det=-0.00001 : det=0.00001;
+		//	det < 0 ? det=-0.00001 : det=0.00001;
 		}
 
 		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
