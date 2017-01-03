@@ -30,6 +30,7 @@ bool Base_file::check_compressed(void)
 		char c;
 		in_->read((char *)(&bytes), 2);
 		compressed_=(bytes==0x1f8b || bytes==0x8b1f);
+		//std::cerr << "compressed?" << compressed_ << std::endl;
 		return compressed_;
 	}
 }
@@ -42,7 +43,6 @@ bool Base_file::check_concatenated(void)
 		std::string line;
 		std::vector <std::string> columns;
 		std::getline(*in_, line);
-		//std::cerr << "got:" << line << std::endl;
 		columns=split(line, '\t');
 		concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
 		return concatenated_;
@@ -85,10 +85,12 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 			};
 			buffer_.open(&in_, &gzin_);
 			buffer_.clear_read();
+			buffer_.buffer_on();
+			buffer_.reread_off();
 		}
-		//std::cerr << "checking for concatenation...\n";
+//		std::cerr << "checking for concatenation...\n";
 		concatenated_=check_concatenated();
-		//if(concatenated_) std::cerr << "Concatenated!\n";
+//		if(concatenated_) std::cerr << "Concatenated!\n";
 		buffer_.buffer_off();
 		buffer_.reread_on();
 		read_=true;

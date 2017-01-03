@@ -597,6 +597,7 @@ T Flat_file<T>::read_header(void)
 	}
 	table_open_=false;
 	std::cerr << __FILE__ << ":" << __LINE__ << " could not initilize " << typeid(T).name() <<"\n";
+	std::cerr << line << std::endl;
 	T data;
 	return data;
 }

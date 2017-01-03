@@ -191,7 +191,7 @@ int proview(int argc, char *argv[])
 			std::vector <quartet_t>::iterator it_in=in_locus[x].begin();
 			std::vector <quartet_t>::iterator end_in=in_locus[x].end();	
 
-			out_locus.ref.base=4;
+			//out_locus.ref.base=4;
 			out_file.get_pos(out_locus);
 			in_files[0]->get_pos(in_locus[0]);
 			if ( in_files[x]->is_open()  && in_files[x]->get_pos(in_locus[x])==out_file.get_pos(out_locus) ){

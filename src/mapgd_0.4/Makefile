@@ -8,7 +8,7 @@
 DESTDIR=/usr/local/bin
 DOCPATH=\"$(shell pwd)/../../docs/man/\"
 WARNINGS=-Wall -Werror=return-type -Wno-write-strings
-MINOR=`cat VERSION | cut -d '-' -f 1`
+MINOR=`cat VERSION`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/
 

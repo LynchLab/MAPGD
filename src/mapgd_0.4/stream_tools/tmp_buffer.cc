@@ -51,9 +51,9 @@ Tmp_streambuf::underflow()
 void 
 Tmp_streambuf::clear_read(void)
 {
-	std::cerr << "Clear!\n";
+	//std::cerr << "Clear!\n";
 	_buffer.str(std::string());
-	std::cerr << "Good? " << _buffer.good() << std::endl;
+	//std::cerr << "Good? " << _buffer.good() << std::endl;
 	//_
 }
 
