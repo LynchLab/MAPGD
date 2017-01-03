@@ -82,7 +82,7 @@ Tmp_streambuf::~Tmp_streambuf()
 	close(); 
 }
 
-Tmp_buffer::Tmp_buffer (std::istream **dest, std::istream *src) 
+Tmp_buffer::Tmp_buffer (std::istream **dest, std::istream *src) : std::istream() 
 {
 	*dest=this;
 	init(&_spool);
