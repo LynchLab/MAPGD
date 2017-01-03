@@ -36,7 +36,7 @@
 
 CPPFLAGS = -I. -O
 LDFLAGS  = -L. -lgzstream -lz
-AR       = ar cr
+AR       = ar crv
 
 # ----------------------------------------------------------------------------
 # plain simple rules to make and cleanup the library:
