@@ -43,7 +43,7 @@ class Tmp_buffer : public std::istream {
 	protected:
 	public:
 	
-	Tmp_buffer() : std::istream(){};
+	Tmp_buffer() : std::istream (NULL){};
 //	Tmp_buffer (void){};
 	~Tmp_buffer (void){};
 
