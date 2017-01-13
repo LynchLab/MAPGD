@@ -176,7 +176,7 @@ gzstream :
 .PHONY: gzstream
 
 $(TARGET) : $(OBJ)
-	$(FINAL_CXX) $(OBJ) $(CXXFLAGS) -o $(TARGET) $(LDLIBS) $(MPI_LDLIBS)
+	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o $(TARGET) $(LDLIBS) $(MPI_LDLIBS)
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
 $(MPI_OBJ) : $(MPI_OBJ:.o=.cc)
