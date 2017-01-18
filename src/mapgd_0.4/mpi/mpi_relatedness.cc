@@ -116,7 +116,7 @@ int estimateRel(int argc, char *argv[])
 
 	//TODO: This is uninitialized in most tasks.
 	MPI_Datatype record;
-	MPI_Type_contiguous(relatedness.size(), MPI_BYTE, &record);
+	MPI_Type_contiguous(sizeof(relatedness), MPI_BYTE, &record);
 	MPI_Type_commit(&record);
 
 	std::map <Genotype_pair_tuple, size_t> hashed_genotypes;
@@ -135,6 +135,7 @@ int estimateRel(int argc, char *argv[])
 	size_t done=0;
 	size_t todo=sample_size*(sample_size-1)/2;
 	size_t z=0;//x*sample_size+(y-x-1)-done;
+//	std::cerr << BUFFER_SIZE << ", " << chunk << ", " << numtasks << std::endl;
 	for (size_t x=0; x<sample_size; ++x){
 		for (size_t y=x+1; y<sample_size; ++y){
 			if (z>=used_size) 
@@ -144,15 +145,18 @@ int estimateRel(int argc, char *argv[])
 					for (size_t i=1; i<numtasks; i++)
 					{
 						MPI_Recv (&buffer_rel[i*chunk], chunk, record, i, 0, MPI_COMM_WORLD, &status);
+//						std::cerr << done+i*chunk << "-" << done+i*chunk+chunk-1 << std::endl;
 					}
 					for (size_t w=0; w<used_size; w++)
 					{
 						size_t X=getx(w+done, sample_size);
-						size_t Y=gety(w+done, sample_size );
+						size_t Y=gety(w+done, sample_size);
 						relatedness=buffer_rel[w];
 						relatedness.set_X_name(X);
 						relatedness.set_Y_name(Y);
+//						std::cout << w+done << std::endl;
 						rel_out.write(relatedness);
+//						std::cerr << w+done << std::endl;
 					}
 				} else {
 					MPI_Send (&buffer_rel[taskid*chunk], chunk, record, MASTER, 0, MPI_COMM_WORLD);
@@ -174,7 +178,6 @@ int estimateRel(int argc, char *argv[])
 #endif
 				get_llr(relatedness, hashed_genotypes);
 				buffer_rel[z]=relatedness;
-			//	rel_out.write(buffer_rel[z]);
 			}
 			z++;
 		}
