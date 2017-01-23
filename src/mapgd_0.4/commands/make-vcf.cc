@@ -42,9 +42,9 @@ int make_vcf(int argc, char *argv[])
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("Convert mapgd output into a vcf file.");
-	env.optional_arg('o',"output", 	outfile,"an error occurred while setting the name of the output file.", "the output file for the program (default stdin).");
-	env.positional_arg('g',"gcffile", gcffile,	"an error occurred while setting the name of the input file.", "the input file for the program (default stdout).");
-	env.positional_arg('m',"mapfile", mapfile,	"an error occurred while setting the name of the input file.", "the input file for the program (default stdout).");
+	env.optional_arg('o',"output", 	outfile,"an error occurred while setting the name of the output file.", "the output vcf file (default stdout).");
+	env.positional_arg('g',"gcffile", gcffile,	"an error occurred while setting the name of the input file.", "the input 'gcf' file (default none).");
+	env.positional_arg('m',"mapfile", mapfile,	"an error occurred while setting the name of the input file.", "the input 'map' file (default none).");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
 

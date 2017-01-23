@@ -170,16 +170,16 @@ rm -f map
 rm -f pro
 testa
 
-#a="linkage"
-#msg="linkage"
-#size=15
-#echo -n "cat linkage | $mapgd $a > $a.out 											"
-#$mapgd proview -H $header -n $unicode -o temp_pro
-#$mapgd allele -i temp_pro.pro -M 1 > temp_allele.out
-#$mapgd filter -i temp_allele.out -p 5 > temp_filtered.out
-#$mapgd linkage -p temp_pro.pro -m temp_filtered.out -M 2 > linkage.out
-#testa
-#rm -f temp*
+a="linkage"
+msg="linkage"
+size=15
+echo -n "cat linkage | $mapgd $a > $a.out 											"
+$mapgd proview -H $header -n $unicode > temp_pro
+$mapgd allele -i temp_pro -c 1 > temp_map
+$mapgd filter -i temp_map -p 5 > temp_filtered_map
+$mapgd linkage -p temp_pro -m temp_filtered_map -M 2 > linkage.out
+testa
+rm -f temp*
 
 rm -f map
 rm -f pro

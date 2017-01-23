@@ -382,7 +382,7 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	std::pair<Genotype_pair_tuple, size_t> *pair;
 //	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
 
-//	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
+	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
 	for (size_t x=0; x<hashed_genotypes_p->size(); x++){
 //	while(it!=end){
 		pair=&(*hashed_genotypes_p)[x];
@@ -654,7 +654,7 @@ int estimateRel(int argc, char *argv[])
 			set_e(relatedness, hashed_genotypes);
 		//	gestimate(relatedness, hashed_genotypes);
 #ifdef EIGEN
-//			newton(relatedness, down_genotypes);
+			newton(relatedness, down_genotypes);
 #else
 			maximize(relatedness, down_genotypes);
 #endif
