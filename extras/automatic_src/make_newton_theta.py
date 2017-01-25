@@ -23,6 +23,7 @@ lnc=sympy.Symbol('lnc');
 lne=sympy.Symbol('lne');
 lneh=sympy.Symbol('lneh');
 lnch=sympy.Symbol('lnch');
+
 #H00=( h**2.+h*(1.-h)*F)*sympy.exp( lnc*M+lne*(m+e1+e2) ) 
 #H01=2.*h*(1.-h)*(1.-F)*sympy.exp( lnch*(M+m)+lneh*(e1+e2) ) 
 #H11=( (1.-h)**2.+h*(1.-h)*F)*sympy.exp( lnc*m+lne*(M+e1+e2) ) 
@@ -85,6 +86,47 @@ sys.stdout.write("\treturn ")
 print_ccode(sympy.simplify(lnL) )
 print ";\n}\n"
 
+#An array of the parameters.
+params=[h,F]
+
+H00=(1-H)*P*( ( (1.-pe)**M)*((pe/3.)**(m+E) ) )
+H01=H*( ( ( (1.-pe)/2.+(pe/6.) )**(M+m) )*( (pe/3.)**(E) ) )#-0.00001
+H11=(1-H)*(1-P)*( ( (1.-pe)**m )*( (pe/3.)**(M+E) ) )#-0.00001 
+
+#The log likelihood equation
+lnL=sympy.log( H00+H01+H11 )-(e**6+h**6+F**6)/64000000.0
+#lnL=-e**2-h**2-F**2
+
+system_eq=[]
+
+#We first need the three equations we are going to try and set to zero, i.e. the first partial derivitives wrt e h and F.
+#numpy.set_printoptions(precission=18)
+for x in range(0, 2):
+	system_eq.append(sympy.diff(lnL, params[x]) )
+	print "inline float_t H"+str(x)+"R (const quartet_t &q, const allele_stat &a) {"
+	print "\tconst float_t M=q.base[a.major];"
+	print "\tconst float_t m=q.base[a.minor];"
+	print "\tconst float_t E=q.base[a.e1]+q.base[a.e2];"
+	sys.stdout.write("\treturn ")
+	print_ccode(  system_eq[-1] )
+	print ";\n}\n"
+
+#Then we need to make the Jacobian, which is a matrix with ...
+for x in range(0, 2):
+	for y in range(0, 2):
+		print "inline float_t J"+str(x)+str(y)+"R (const quartet_t &q, const allele_stat &a) {"
+		print "\tconst float_t M=q.base[a.major];"
+		print "\tconst float_t m=q.base[a.minor];"
+		print "\tconst float_t E=q.base[a.e1]+q.base[a.e2];"
+		sys.stdout.write("\treturn ")
+		print_ccode(sympy.diff(system_eq[x], params[y]))
+		print ";\n}\n"
+print "inline float_t lnL_NR (const quartet_t &q, const allele_stat &a) {"
+print "\tconst float_t M=q.base[a.major];"
+print "\tconst float_t m=q.base[a.minor];"
+print "\tconst float_t E=q.base[a.e1]+q.base[a.e2];"
+sys.stdout.write("\treturn ")
+print_ccode(sympy.simplify(lnL) )
+print ";\n}\n"
 
 quit()
-

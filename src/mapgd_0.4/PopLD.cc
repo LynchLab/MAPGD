@@ -381,8 +381,8 @@ int PopLD(int argc, char *argv[])
 
 	env.required_arg('p',"pro", 	pro_name,	"please enter a string.", "the input 'pro' file.");
 	env.required_arg('m',"map", 	map_name,	"please enter a string.", "the input 'map' file.");
-	env.optional_arg('M',"min_n", 	min_number, 	"please enter a number.", "the minimum number of usable individuals at a site.");
-	env.optional_arg('D',"max_d", 	max_d,		"please enter a number.", "the maximum distance between sites.");
+	env.optional_arg('M',"min_n", 	min_number, 	"please enter a number.", "the minimum number of individuals at a site need to calculate LD (default: 10).");
+	env.optional_arg('D',"max_d", 	max_d,		"please enter a number.", "the maximum distance between sites for LD calculation (default: none).");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
 

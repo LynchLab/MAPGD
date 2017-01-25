@@ -86,7 +86,7 @@ The filter command will limit the output to sites where the log-likelihood ratio
 
 And for analyzing pooled data you will probably want a command like this:
 
-	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	samtools mpileup -q 5 -Q 5 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | mapgd pool -a 22 -o allelefrequency-filtered.pol
 
 The -a option will limit the output to sites where the log-likelihood ratio of polymorphism is greater than 22, which is a relatively stringent criteria.
@@ -95,7 +95,7 @@ In the case where the allele command is being used to estimated the seven genoty
 	
 	mkfifo map;
 	mkfifo pro;
-	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	samtools mpileup -q 5 -Q 5 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | tee pro | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map &;
 	mapgd genotype -p pro -m map | mapgd relatedness > population-rel.out
 
@@ -103,7 +103,7 @@ And linkage disequilibrium can be calculated in a similar manner:
 
 	mkfifo map;
 	mkfifo pro;
-	samtools mpileup -q 25 -Q 25 -B population1.sort.bam population2.sort.bam 
+	samtools mpileup -q 5 -Q 5 -B population1.sort.bam population2.sort.bam 
 	| mapgd proview -H seq1.header | tee pro  | mapgd allele | mapgd filter -p 22 -E 0.01 -c 50 -C 200 > map &;
 	mapgd linkage -p pro -m map > population-lnk.out
 

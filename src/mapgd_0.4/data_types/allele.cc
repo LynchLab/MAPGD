@@ -55,7 +55,7 @@ void Allele::read(std::istream& in) {
 		line_stream >> ll;
 		monoll=ll-monoll/2.;
 		hwell=ll-hwell/2.;
-		f-=1./(2.*N-1.);
+//		f-=1./(2.*N-1.);
 	//}
 }
 
@@ -110,7 +110,7 @@ void Allele::write (std::ostream& out) const
 		out << error << delim;
 		out << null_error << delim;
 		out << null_error2 << delim;
-		out << f+1./(2.*N-1.) <<  delim;
+		out << f << delim;//+1./(2.*N-1.) <<  delim;
 		out << MM << delim;
 		out << Mm << delim;
 		out << mm << delim;

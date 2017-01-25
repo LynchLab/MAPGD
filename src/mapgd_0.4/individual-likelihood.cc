@@ -95,6 +95,186 @@ count_t init_params(Locus &site, Allele &a, const float_t &minerr)
 	return 1;
 }
 
+count_t maximize_newton_restricted (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
+{
+	float_t J[2][2];		//The Jacobian/Hessian.
+        float_t iJ[2][2]; 		//Inverse of the Jacobian/Hessian.
+	float_t R[2]={100,100};	//The 'residual'. Th
+
+        float_t det;
+
+	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//Lets us iterate over the quartets. 
+	std::vector <quartet_t>::const_iterator end=site.sample.end();	 
+
+	count_t iter=0;			//counts the number of iterations to let us know if we have a failure to converge.
+
+	float_t MM=a.MM, Mm=a.Mm, mm=a.mm, p=a.freq, F=a.freq, E;//, q=1-a.freq;
+//	a.f=log( (1.+p/(1.-p) )/(a.f+p/(1-p) )-1.);
+//	a.f=log( (1.+(1.-p)/p )/(0.2+(1.-p)/p )-1.);
+//	MM=pow(p, 2)+p*q*F;
+//	Mm=2*p*q*(1-F);
+//	mm=pow(q, 2)+p*q*F;
+
+/*
+	if (mm==0){
+		if (Mm>MM) {mm+=0.01; Mm-=0.01;}
+		else {mm+=0.01; MM-=0.01;}
+	};
+	if (Mm==0){
+		if (mm>MM) {Mm+=0.01; mm-=0.01;}
+		else {Mm+=0.01; MM-=0.01;}
+	};
+	if (MM==0){
+		if (Mm>mm) {MM+=0.01; Mm-=0.01;}
+		else {MM+=0.01; mm-=0.01;}
+	};*/
+
+	a.freq=Mm;
+	a.f=MM/(MM+mm);
+
+
+	if (a.freq==1.) a.freq-=0.000001;
+	if (a.f==1.) a.f-=0.000001;
+	if (a.freq==0.) a.freq+=0.000001;
+	if (a.f==0.) a.f+=0.000001;
+
+	a.f=log(1./a.f-1.);
+	a.freq=log(1./a.freq-1.);
+	a.error=log(0.75/a.error-1.);
+
+	float_t deltalnL=10, maxlnL=DBL_MAX;
+
+        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || std::isnan(R[0]) || std::isnan(R[1]) || std::isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
+#ifdef DEBUG
+		std::cerr << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ", " << iter << ", " << fabs(deltalnL) << std::endl;
+#endif
+		++iter;
+ 
+		memset(J[0], 0, sizeof(float_t)*2);
+		memset(J[1], 0, sizeof(float_t)*2);
+		memset(R, 0, sizeof(float_t)*2);
+
+		it=site.sample.begin();	 
+
+		float_t sumlnL=0;
+
+		while (it!=end ){
+
+			J[0][0]+=J00R(*it, a); J[0][1]+=J01R(*it, a);
+			J[1][0]+=J10R(*it, a); J[1][1]+=J11R(*it, a); 
+
+                        R[0]+=H0R(*it, a);
+                        R[1]+=H1R(*it, a);
+			
+			sumlnL+=lnL_NR(*it, a);
+
+                        ++it;
+                };
+		deltalnL=(maxlnL-sumlnL)+1;
+		maxlnL=sumlnL;
+
+/*		Check my matrix algebra.
+		
+		J[0][0]=0; J[0][1]=3; J[0][2]=6;
+		J[1][0]=1; J[1][1]=4; J[1][2]=7;
+		J[2][0]=1; J[2][1]=5; J[2][2]=8;
+						*/
+
+		//FIRST ROW 
+		iJ[0][0]=J[1][1]; 
+		iJ[0][1]=-J[0][1]; 
+
+		//SECOND ROW 
+		iJ[1][0]=-J[1][0]; 
+		iJ[1][1]= J[0][0]; 
+
+		//THE DETERMINENT
+		det=J[0][0]*iJ[0][0]+J[0][1]*iJ[1][0];
+
+		if (fabs(det)<0.00001) 
+		{
+			det < 0 ? det=-0.00001 : det=0.00001;
+		}
+
+		iJ[0][0]/=det; iJ[0][1]/=det;
+		iJ[1][0]/=det; iJ[1][1]/=det; 
+
+                R[0]=(R[0]*iJ[0][0]+R[1]*iJ[0][1]);
+                R[1]=(R[0]*iJ[1][0]+R[1]*iJ[1][1]);
+
+		p=a.freq;
+		F=a.f;
+
+	        a.freq=1./(1.+exp(a.freq) );
+	        a.f=1./(1.+exp(a.f) );
+
+	        a.MM=(1.-a.freq)*a.f;
+	        a.Mm=a.freq;
+	        a.mm=(1.-a.freq)*(1.-a.f);
+
+	        a.freq=a.MM+a.Mm/2.;
+	        a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
+
+#ifdef DEBUG
+	       	std::cerr << "P:" << p << ", " << F << ", " << E << std::endl;
+	       	std::cerr << iter <<" Pi= " <<  a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << R[0]+R[1] << ": lnL=" << sumlnL << " : lnL="<< model.loglikelihood(site, a) << std::endl;
+		std::cerr << ( pow(p,4)+pow(F,4)+pow(E,4) )/160000.0 << std::endl;
+#endif
+		a.f=F;
+		a.freq=p;
+
+		//BOUNDS CHECKS.
+		
+		float_t B= 5.1-float_t(iter)*0.015;
+
+		if (fabs(R[0])>B){
+			if(R[0]>0) R[0]=B;
+			else R[0]=-B;
+		}
+		if (fabs(R[1])>B){
+			if(R[1]>0) R[1]=B;
+			else R[1]=-B;
+		}
+
+		a.freq-=R[0];
+		a.f-=R[1];
+	
+        };
+
+	a.freq=1./(1.+exp(a.freq) );
+	a.f=1./(1.+exp(a.f) );
+
+        a.MM=(1.-a.freq)*a.f;
+        a.Mm=a.freq;
+        a.mm=(1.-a.freq)*(1.-a.f);
+
+	a.freq=a.MM+a.Mm/2.;
+	a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
+
+	a.coverage=site.getcoverage();
+
+	count_t excluded=0;
+
+        excluded=site.maskedcount();
+	std::vector <float_t> temp_gofs(site.sample.size());
+	a.gof=model.goodness_of_fit(site, a, temp_gofs, maxgof);
+        a.efc=efc(site);
+
+	if (iter==200) {
+		std::cerr << "Failure to maximize " << iter << " " << a << "\n";
+	}
+	if ( a.gof<maxgof) {
+		if (excluded==maxpitch){
+			for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
+			return excluded;
+		}
+                a.N-=1;
+		return maximize_newton(site, a, model, gofs, maxgof, maxpitch);
+	};
+	for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
+	return excluded;
+}
+
 count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
 {
 	float_t J[3][3];		//The Jacobian/Hessian.
@@ -139,6 +319,7 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 	if (a.f==0.) a.f+=0.000001;
 	if (a.error==0.5) a.error-=0.0000000001;
 	if (a.error==0.0) a.error+=0.0000000001;
+
 	a.f=log(1./a.f-1.);
 	a.freq=log(1./a.freq-1.);
 	a.error=log(0.75/a.error-1.);
@@ -146,7 +327,6 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 	float_t deltalnL=10, maxlnL=DBL_MAX;
 
         while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || std::isnan(R[0]) || std::isnan(R[1]) || std::isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
-        //while ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 ){
 #ifdef DEBUG
 		std::cerr << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ", " << iter << ", " << fabs(deltalnL) << std::endl;
 #endif
@@ -204,7 +384,7 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 
 		if (fabs(det)<0.00001) 
 		{
-		//	det < 0 ? det=-0.00001 : det=0.00001;
+			det < 0 ? det=-0.00001 : det=0.00001;
 		}
 
 		iJ[0][0]/=det; iJ[0][1]/=det; iJ[0][2]/=det;
