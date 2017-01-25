@@ -95,7 +95,7 @@ count_t init_params(Locus &site, Allele &a, const float_t &minerr)
 	return 1;
 }
 
-count_t maximize_newton_restricted (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
+count_t maximize_restricted_newton (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
 {
 	float_t J[2][2];		//The Jacobian/Hessian.
         float_t iJ[2][2]; 		//Inverse of the Jacobian/Hessian.
@@ -241,6 +241,7 @@ count_t maximize_newton_restricted (Locus &site, Allele &a, models &model, std::
 	
         };
 
+	a.error=0.75/(1.+exp(a.error) );
 	a.freq=1./(1.+exp(a.freq) );
 	a.f=1./(1.+exp(a.f) );
 
