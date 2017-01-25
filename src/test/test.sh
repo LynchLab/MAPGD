@@ -178,7 +178,7 @@ $mapgd proview -H $header -n $unicode > temp_pro
 $mapgd allele -i temp_pro -c 1 > temp_map
 $mapgd filter -i temp_map -p 5 > temp_filtered_map
 $mapgd linkage -p temp_pro -m temp_filtered_map -M 2 > linkage.out
-testa
+#testa
 rm -f temp*
 
 rm -f map
