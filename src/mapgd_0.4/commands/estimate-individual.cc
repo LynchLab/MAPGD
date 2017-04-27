@@ -70,7 +70,7 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	if (mle.null_error!=0){
 		rexc=maximize_grid(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 		if (newton) 
-			rexc=maximize_newton(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//the NR maximization
+			rexc=maximize_restricted_newton(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//the NR maximization
 	}
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);//trim bad clones and re-fit the model.
