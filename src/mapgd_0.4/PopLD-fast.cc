@@ -1,7 +1,7 @@
 // Updated on 01/19/16
 
 #include "PopLD.h"
-#include <algorithm>
+
 /*
 
 Program PopLD.cc to estimate linkage disequilibrium (LD) between 
@@ -22,11 +22,11 @@ count_t
 count_sites(const Population &X, const Population &Y)
 {
 	count_t ret=0;
-	std::vector<Genotype>::const_iterator it_X=X.likelihoods.cbegin();
+	std::vector<Genotype>::const_iterator it_X=X.liklihoods.cbegin();
 	std::vector<Genotype>::const_iterator it_Y=Y.likelihoods.cbegin();
 	std::vector<Genotype>::const_iterator end=Y.likelihoods.cend();
 	while (it_Y!=end){
-		ret+=(it_X->N!=0 and it_Y->N!=0);
+		ret+=(count(*it_X).N!=0) & (count(*it_Y).N!=0);
 		++it_X;
 		++it_Y;
 	}
@@ -35,93 +35,35 @@ count_sites(const Population &X, const Population &Y)
 
 float_t guesstimate_D (const Population &P1, const Population &P2)
 {
-	return 0.00;	
+	return 0;	
 }
 
-Linkage estimate_D (const Population &P1, const Population &P2, const float_t &cD, std::default_random_engine &re)
+Linkage estimate_D (const Population &P1, const Population &P2, float_t &D)
 {
-	float_t q1=P1.m;
-	float_t q2=P2.m;
-	float_t p1=1.-q1;
-	float_t p2=1.-q2;
-	double Dmin=-min(p1*p2, q1*q2);
-	double Dmax=min(q1*p2, q2*p1);
-	float_t D=cD;
-	//float_t Dp=cD, Dpp=cD+(cD-Dmax)/5.;
-	//float_t Hp=H0(P1, P2, Dp);
-	//float_t Hpp=H0(P1, P2, Dpp);
 	float_t R=H0(P1, P2, D);
-	float_t J;
-//	std::cerr << " Called with " << cD << std::endl;
-	//D=(Dpp*Hp-Dp*Hpp)/(Hp-Hpp);
-	//We're going to try the method of the Secant...
-	int iter=0;
-	while (fabs(R)>0.05 and iter < 20){
+	while (R>0.0001){
 		R=H0(P1, P2, D);
-		J=J00(P1, P2, D);
-		/*if ( fabs(J) > 100000 ){
-			if (J > 0 ) J=100000;
-			else J=-100000;
-		}*/
-		D-=R/J;
-//		std::cerr << D << " = " << R << ", " << J << ", " << J00(P1, P2, D) << std::endl;
-		iter++;
-/*		Hpp=Hp;
-		Dpp=Dp;
-		Dp=D;
-		Hp=H0(P1, P2, Dp);
-		D=(Dpp*Hp-Dp*Hpp)/(Hp-Hpp);
-		std::cerr << D << " = " << Hp << ", " << (Dpp*Hp-Dp*Hpp)/(Hp-Hpp) << std::endl;
-*/ 
-	}
-	if (D < Dmin or D > Dmax or iter == 20) {
-		float min_lnL=lnL_NR(P1, P2, Dmin);
-		float max_lnL=lnL_NR(P1, P2, Dmax);
-		if ( not isnan(min_lnL) ){
-			if (min_lnL < max_lnL) {
-				D=Dmax;
-			}
-			else D=Dmin;
-		} else D=Dmax;
-	} 
-//	std::cerr << P1.m << "/" << P2.m << ", " << Dmin << ", " << Dmax << ", " << D << std::endl;
-	
-/*	float_t scan_max=-FLT_MAX, scan_D=0;	
-	for (int x=0; x<100; x++)
-	{
-		//std::cerr << Dmin << ", " << Dmax << ", " << Dmin+x/100.*(Dmax-Dmin) << ", " << lnL_NR(P1, P2, Dmin+x/100.*(Dmax-Dmin) ) << std::endl;
-		if (lnL_NR(P1, P2, Dmin+x/100.*(Dmax-Dmin) ) > scan_max) 
-		{
-			scan_max=lnL_NR(P1, P2, Dmin+x/100.*(Dmax-Dmin) );
-			scan_D=Dmin+x/100.*(Dmax-Dmin);
-		}
-	}
-	std::cerr << "converged to " << D << "=" << lnL_NR(P1, P2, D) << " and scan max is " << scan_max << " at " << scan_D  << std::endl;
-*/
+		D-=R/J00(P1, P2, D)
+		
+        }
 	
 	Linkage est;
-
-        est.set_Ni( count_sites(P1, P2) );
-        est.set_p(P1.m);
-        est.set_q(P2.m);
-
         est.set_abs_pos(P1.get_abs_pos() );
         est.set_abs_pos_y(P2.get_abs_pos() );
         est.set_D(D);
-        est.set_fit(lnL_NR(P1, P2, D) );
-        est.set_null(lnL_NR(P1, P2, 0 ) );
+        est.set_fit(lnL(P1, P2, D) );
+        est.set_null(lnL(P1, P2, 0 ) );
 
         return(est);
 }
-
-#define TRACE_LINKAGE
 	
 int PopLD(int argc, char *argv[])
 {
 
 	/* All the variables that can be set from the command line */
 
-	std::string gcf_name="";
+	std::string pro_name="";
+	std::string map_name="";
 
 	std::vector <int> ind;
 
@@ -149,8 +91,9 @@ int PopLD(int argc, char *argv[])
 
 	Indexed_file <Population> gcf_in;
 
-	if (gcf_name.size()>0 ) gcf_in.open(gcf_name.c_str() ,std::ios::in);	// Try to open the input file
-	else gcf_in.open(std::ios::in);	
+	if gcf_name
+	gcf_in.open(map_name.c_str() ,std::ios::in);	// Try to open the input file
+	else 	
 
 	Indexed_file <Linkage> ld_out;	
 	ld_out.open(std::ios::out);
@@ -188,17 +131,13 @@ int PopLD(int argc, char *argv[])
 	}
 
 	e_allele=allele_list.begin();
-	
-	std::default_random_engine re;	
-					
+						
 	do {
 		read=0;
 		do {
 			size_t number;
-
 			id1_t pos1=allele1.get_abs_pos();
 			id1_t pos2=allele2.get_abs_pos();
-
 			id0_t scf1=index.get_id0(pos1);
 			id0_t scf2=index.get_id0(pos2);
 
@@ -206,10 +145,12 @@ int PopLD(int argc, char *argv[])
 			if ( (pos2-pos1)<max_d && scf1==scf2) {
 				if ( (pos2-pos1)>min_dist ) {
 					number=count_sites(allele1, allele2);
+					//std::cerr << number << ", " << pos1 << ", " << pos2 << ", " << pos2-pos1 << " ding " << std::distance(e_allele,end_allele) << " -- " << std::distance(s_allele, end_allele) <<  ".\n";
 					if ( number >= min_number ) {
 						allele_buffer1[read]=allele1;
 						allele_buffer2[read]=allele2;
 						read++;
+						//size_t Ni=count_sites(locus_buffer1[x], locus_buffer2[x]);
 					}
 				}
 			} else { 
@@ -231,6 +172,7 @@ int PopLD(int argc, char *argv[])
 				e_allele++;
 			} else if (gcf_in.table_is_open() ) {
 				//If it is we have to increase the size of our buffer.
+				//std::cerr << "Buffer read\n";
 				std::list <Population>::iterator new_allele=e_allele;
 				new_allele--;
 				allele_list.insert(e_allele, BUFFER_SIZE, allele1);
@@ -249,7 +191,7 @@ int PopLD(int argc, char *argv[])
 
 				allele2=*(e_allele);
 			} else {
-				//Moving locus1 ...
+				//std::cerr << "Moving locus1\n";
 				s_allele++;
 				if (s_allele!=end_allele){
 					allele1=*s_allele;
@@ -264,7 +206,9 @@ int PopLD(int argc, char *argv[])
 		#pragma omp for
 		for (uint32_t x=0; x<BUFFER_SIZE; ++x){
 			if (x<read){
-				linkage_buffer[x] = estimate_D( allele_buffer1[x], allele_buffer2[x] ,guesstimate_D(allele_buffer1[x], allele_buffer2[x]), re );
+				//size_t Ni=count_sites(allele_buffer1[x], allele_buffer2[x]);
+				//if (Ni>
+				linkage_buffer[x] = estimate_D( allele_buffer1[x], allele_buffer2[x] ,guesstimate_D(allele_buffer1[x], allele_buffer2[x]) );
 			}
 		}
 		for (size_t c=0; c<read; ++c){ 

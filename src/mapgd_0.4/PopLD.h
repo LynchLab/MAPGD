@@ -7,6 +7,7 @@
 #include "genotype.h"
 #include "locus.h"
 #include "map-file.h"
+#include "newton-method-ld.h"
 #include "datatypes.h"
 
 #include <iostream>
@@ -18,6 +19,7 @@
 #include <queue>
 #include <algorithm>
 #include <limits.h>
+#include <iterator>     // std::distance
 
 #ifndef NOOMP
 #include <omp.h>

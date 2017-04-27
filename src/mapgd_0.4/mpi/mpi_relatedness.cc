@@ -27,12 +27,8 @@ size_t gety(const size_t &w, const size_t &size)
 			t++;
 		}
 	}
-//0 to (n-1)  n to 2*n-3 	2*n-2 to 3*n-6
-//1,2,3,...n, 2,3,...n,  	3,...n
-//0	    1		2
 	return 0;
 }
-
 
 int estimateRel(int argc, char *argv[])
 {
