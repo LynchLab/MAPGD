@@ -38,7 +38,7 @@ float_t guesstimate_D (const Population &P1, const Population &P2)
 	return 0.00;	
 }
 
-Linkage estimate_D (const Population &P1, const Population &P2, const float_t &cD, std::default_random_engine &re)
+Linkage estimate_D (const Population &P1, const Population &P2, const float_t &cD)//, std::default_random_engine &re)
 {
 	float_t q1=P1.m;
 	float_t q2=P2.m;
@@ -189,7 +189,7 @@ int PopLD(int argc, char *argv[])
 
 	e_allele=allele_list.begin();
 	
-	std::default_random_engine re;	
+//	std::default_random_engine re;	
 					
 	do {
 		read=0;
