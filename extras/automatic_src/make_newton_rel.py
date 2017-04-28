@@ -76,9 +76,9 @@ for x in range(0, 7):
 		print_ccode(sympy.diff(system_eq[x], params[y]))
 		print ";\n}\n"
 
-print "inline float_t lnL_NR (const quartet_t &q, const Allele &a) {"
+print "inline float_t lnL_NR (const Genotype_pair &pair, const Relatedness &rel) {"
 sys.stdout.write("\treturn ")
-print_ccode(sympy.simplify(lnL) )
+print_ccode(lnL)
 print ";\n}\n"
 
 quit()

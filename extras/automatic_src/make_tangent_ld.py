@@ -43,15 +43,15 @@ G10=P1*Q2-D
 G01=Q1*P2-D
 G11=P1*P2+D
 
-H00=G00*G00+f*G00*(1-G00)
-H10=2*G10*G00*(1-f)
-H20=G10*G10+f*G10*(1-G10)
-H01=2*G01*G00*(1-f)
-H11=(2*G01*G10+2*G11*G00)*(1-f)
-H21=2*G10*G11*(1-f)
-H02=G01*G01+f*G01*(1-G01)
-H12=2*G11*G01*(1-f)
-H22=G11*G11+f*G11*(1-G11)
+H00=G00*G00#+f*G00*(1-G00)
+H10=2*G10*G00#*(1-f)
+H20=G10*G10#+f*G10*(1-G10)
+H01=2*G01*G00#*(1-f)
+H11=(2*G01*G10+2*G11*G00)#*(1-f)
+H21=2*G10*G11#*(1-f)
+H02=G01*G01#+f*G01*(1-G01)
+H12=2*G11*G01#*(1-f)
+H22=G11*G11#+f*G11*(1-G11)
 
 #The log likelihood equation
 lnL=sympy.log( H00*sympy.exp(-lmm1-lmm2)+H01*(sympy.exp(-lmm1-lMm2))+H02*sympy.exp(-lmm1-lMM2)+H10*sympy.exp(-lMm1-lmm2)+H11*sympy.exp(-lMm1-lMm2)+H12*sympy.exp(-lMm1-lMM2)+H20*sympy.exp(-lMM1-lmm2)+H21*sympy.exp(-lMM1-lMm2)+H22*sympy.exp(-lMM1-lMM2) )

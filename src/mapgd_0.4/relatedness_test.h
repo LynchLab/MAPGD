@@ -14,7 +14,7 @@
 #include "genotype_pair.h"
 #include "relatedness_data.h"
 #include "relatedness.h"
-#include "newton-method-rel.h"
+//#include "newton-method-rel.h"
 
 #ifndef NOOMP
 #include <omp.h>

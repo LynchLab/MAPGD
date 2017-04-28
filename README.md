@@ -1,49 +1,50 @@
 ﻿![Travis Says](https://travis-ci.org/LynchLab/MAPGD.svg?branch=master)
-#[Download MAPGD](https://github.com/LynchLab/MAPGD/archive/master.zip)
 
-##MAPGD version 0.5
+# [Download MAPGD](https://github.com/LynchLab/MAPGD/archive/master.zip)
+
+## MAPGD version 0.5
 
 [(C) Michael Lynch and Matthew Ackerman](https://github.com/LynchLab/MAPGD#-copyright-)
 
 [<b>Visit the MAPGD development page</b>](https://lynchlab.github.io/MAPGD/)
 
-###Contents 
+<h2> Contents </h2> 
 
-####[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+#### [Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
 
-#####[Quick start](https://github.com/LynchLab/MAPGD#-quick-start-)
+##### [Quick start](https://github.com/LynchLab/MAPGD#-quick-start-)
 
-#####[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
+##### [FAQ](https://github.com/LynchLab/MAPGD#-faq-)
 
-#####[Changes](https://github.com/LynchLab/MAPGD#-changes-)
+##### [Changes](https://github.com/LynchLab/MAPGD#-changes-)
 
-####Basic Usage
+#### Basic Usage
 
-#####[Commands](https://github.com/LynchLab/MAPGD#-commands-)
+##### [Commands](https://github.com/LynchLab/MAPGD#-commands-)
 
-#####[Common Options](https://github.com/LynchLab/MAPGD#-common-options-)
+##### [Common Options](https://github.com/LynchLab/MAPGD#-common-options-)
 
-#####[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
+##### [Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
 
-#####[Log-likelihood ratios](https://github.com/LynchLab/MAPGD#-log-likelihood-ratio-statistics-)
+##### [Log-likelihood ratios](https://github.com/LynchLab/MAPGD#-log-likelihood-ratio-statistics-)
 
-#####[Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-)
+##### [Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-)
 
-#####[Other Useful Programs](https://github.com/LynchLab/MAPGD#-other-useful-programs-)
+##### [Other Useful Programs](https://github.com/LynchLab/MAPGD#-other-useful-programs-)
 
-####Performance
+#### Performance
 
-#####[Statistical](https://github.com/LynchLab/MAPGD#-statistical-performance-)
+##### [Statistical](https://github.com/LynchLab/MAPGD#-statistical-performance-)
 
-#####[Computational](https://github.com/LynchLab/MAPGD#-computational-performance-)
+##### [Computational](https://github.com/LynchLab/MAPGD#-computational-performance-)
 
-####Misc.
+#### Misc.
 
-#####[IU users](https://github.com/LynchLab/MAPGD#-notes-for-indiana-university-users-)
+##### [IU users](https://github.com/LynchLab/MAPGD#-notes-for-indiana-university-users-)
 
-#####[Sanger users](https://github.com/LynchLab/MAPGD#-notes-for-sanger-users-)
+##### [Sanger users](https://github.com/LynchLab/MAPGD#-notes-for-sanger-users-)
 
-#####[References](https://github.com/LynchLab/MAPGD#-references-)
+##### [References](https://github.com/LynchLab/MAPGD#-references-)
 
 
 <h2> Introduction </h2>
