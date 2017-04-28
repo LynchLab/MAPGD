@@ -15,6 +15,8 @@
 #include "relatedness_data.h"
 #include "newton-method-rel.h"
 
+#define EIGEN
+
 #ifdef EIGEN
 #include <Eigen/Dense>
 #endif

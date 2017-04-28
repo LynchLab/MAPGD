@@ -4,47 +4,53 @@ from sympy.utilities.codegen import codegen
 from sympy.printing import print_ccode
 
 #The Data
-P=sympy.Symbol('P')
-Q=1-P
+Q=sympy.Symbol('pair.m')
 
-MM1=sympy.Symbol('pair.X_MM')
-Mm1=sympy.Symbol('Mm1')
-mm1=sympy.Symbol('mm1')
+lMM2=sympy.Symbol('pair.Y_MM')
+lMm2=sympy.Symbol('pair.Y_Mm')
+lmm2=sympy.Symbol('pair.Y_mm')
 
-MM2=sympy.Symbol('MM2')
-Mm2=sympy.Symbol('Mm2')
-mm2=sympy.Symbol('mm2')
+lMM1=sympy.Symbol('pair.X_MM')
+lMm1=sympy.Symbol('pair.X_Mm')
+lmm1=sympy.Symbol('pair.X_mm')
 
 #The Parameters
-F_x=sympy.Symbol('rel.Delta_XY_')
-F_y=sympy.Symbol('F_y')
-T=sympy.Symbol('T')
-g_xy=sympy.Symbol('g_xy')
-g_yx=sympy.Symbol('g_yx')
-D=sympy.Symbol('D')
-d=sympy.Symbol('d')
+g_XY=sympy.Symbol('rel.gamma_XY_')
+g_YX=sympy.Symbol('rel.gamma_YX_')
+T=sympy.Symbol('rel.theta_XY_')
+D=sympy.Symbol('rel.Delta_XY_')
+d=sympy.Symbol('rel.delta_XY_')
+F_Y=sympy.Symbol('rel.f_Y_')
+F_X=sympy.Symbol('rel.f_X_')
 
-params=[F_x, F_y, T, g_xy, g_yx, D, d]
+#An array of the parameters.
+params=[F_X, F_Y, T, g_XY, g_YX, d, D]
 
 #The three componenents of the likelihood function. H00 is homozygous for the major allele, H01 heterozygous, and H11 homozygous minor.
 
-M2=
-M3=
-M4=
+P=1-Q
+var=P*(1.-P)
+std=var**(0.5);
+skew=(1.-2.*P)/std;
+kurtosis=1./(1.-P)+1./P-3.;
 
-H00=Q**4+(F_x+F_y+4*T)*M2*Q**2-2*(g_xy+g_yx)*M3*Q+d*M4+D*M2**2
-H01=
-H02=
-H10=2*P*Q**3+2*(F_y*P*Q-F_x*Q**2-2*T*(Q**2-P*Q) )*M2+4*g_xy*M3*Q+2*g_yx*(Q-P)*M3-2*d*M4-2*d*M2**2
-H11=4*P**2*Q**2+4*(T*(P**2+Q**2-2*P*Q)-(F_x+F_y)*(P*Q) )*M2+4*(g_xy+g_yx)*(P-Q)*M3+4*d*M4+4*d*M2**2
-H12=
-H20=
-H21=
-H22=
+mmmm=(Q**4+(F_X+F_Y+4*T)*var*Q**2-2*(g_XY+g_YX)*skew*Q+d*kurtosis+D*var**2);
+
+MMMM=(P**4+(F_X+F_Y+4*T)*var*P**2-2*(g_XY+g_YX)*skew*P+d*kurtosis+D*var**2);
+
+Mmmm=(2*P*Q**3+2*(F_Y*P*Q-F_X*Q**2-2*T*(Q**2-P*Q))*var-4*g_XY*(P-Q)*skew+2*g_YX*(Q-P)*skew-2*d*kurtosis-2*D*var**2);
+mmMm=(2*P*Q**3+2*(F_X*P*Q-F_Y*Q**2-2*T*(Q**2-P*Q))*var-4*g_YX*(P-Q)*skew+2*g_XY*(Q-P)*skew-2*d*kurtosis-2*D*var**2);
+
+MmMM=(2*Q*P**3+2*(F_Y*P*Q-F_X*P**2-2*T*(P**2-P*Q))*var-4*g_XY*(Q-P)*skew+2*g_YX*(P-Q)*skew-2*d*kurtosis-2*D*var**2);
+MMMm=(2*Q*P**3+2*(F_X*P*Q-F_Y*P**2-2*T*(P**2-P*Q))*var-4*g_YX*(Q-P)*skew+2*g_XY*(P-Q)*skew-2*d*kurtosis-2*D*var**2);
+
+MmMm=(4*P**2*Q**2+4*(T*(P**2+Q**2-2*P*Q)-F_X*P*Q-F_Y*P*Q)*var+4*g_XY*(P-Q)*skew+4*g_YX*(Q-P)*skew+4*d*kurtosis+4*D*var**2);
+
+MMmm=(P**2*Q**2+(F_Y*P**2+F_X*Q**2-4*T*P*Q)*var+2*g_XY*P*skew-2*g_YX*Q*skew+d*kurtosis+D*var**2);
+mmMM=(P**2*Q**2+(F_X*P**2+F_Y*Q**2-4*T*P*Q)*var+2*g_YX*P*skew-2*g_XY*Q*skew+d*kurtosis+D*var**2);
 
 #The log likelihood equation
-lnL=sympy.log( H00*sympy.exp(-lmm1-lmm2)+H01*(sympy.exp(-lmm1-lMm2))+H02*sympy.exp(-lmm1-lMM2)+H10*sympy.exp(-lMm1-lmm2)+H11*sympy.exp(-lMm1-lMm2)+H12*sympy.exp(-lMm1-lMM2)+H20*sympy.exp(-lMM1-lmm2)+H21*sympy.exp(-lMM1-lMm2)+H22*sympy.exp(-lMM1-lMM2) )
-#lnL=-e**2-h**2-F**2
+lnL=sympy.log( mmmm*sympy.exp(-lmm1-lmm2)+mmMm*(sympy.exp(-lmm1-lMm2))+mmMM*sympy.exp(-lmm1-lMM2)+Mmmm*sympy.exp(-lMm1-lmm2)+MmMm*sympy.exp(-lMm1-lMm2)+MmMM*sympy.exp(-lMm1-lMM2)+MMmm*sympy.exp(-lMM1-lmm2)+MMMm*sympy.exp(-lMM1-lMm2)+MMMM*sympy.exp(-lMM1-lMM2) )
 
 system_eq=[]
 
