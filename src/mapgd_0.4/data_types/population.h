@@ -23,6 +23,7 @@ public:
 	gt_t major;					//!< identity of the major allele
 	gt_t minor;					//!< identity of the minor allele
 	float_t m;					//!< minor allele frequency
+	float_t f;					//!< departure from HWE
 
 	Population();					//!< simple constructor.
 	Population(const std::vector <std::string> &);//!< constructor needed by map-file. String should be coloumn names. 

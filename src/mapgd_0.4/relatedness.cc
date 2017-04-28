@@ -71,6 +71,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 	det=J.determinant();
 	iJ/=det;
 	R=iJ*R;
+
 /*
 	if (fabs(R[0])>B)
 	{
@@ -90,7 +91,6 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 }
 #endif
 
-//DONE Moved to in memory
 std::map <Genotype_pair_tuple, size_t> 
 hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y)
 {
@@ -121,7 +121,7 @@ downsample_genotypes (const std::stringstream &file_buffer, const size_t &x, con
 	while(gcf_in.table_is_open() ){
 		gcf_in.read(genotypes);
 		if (genotypes.likelihoods[x].N>1 && genotypes.likelihoods[y].N>1 ){
-			counts[downvert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 4)]+=1;
+			counts[downvert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 2)]+=1;
 		}
 	}
 	return counts;
@@ -172,45 +172,42 @@ void
 gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &counts)
 {
 	relatedness.zero();
-	std::map<Genotype_pair_tuple, size_t>::iterator start=counts.begin();
+/*	std::map<Genotype_pair_tuple, size_t>::iterator start=counts.begin();
 	std::map<Genotype_pair_tuple, size_t>::iterator end=counts.end();
 	std::map<Genotype_pair_tuple, size_t>::iterator it=start;
 	Genotype_pair pair;
 
-	float_t N=0;
-        while(it!=end){
+	for (size_t x=0; x<?; x++){
+	?
+	double OX=
+	double OY=
+
+	double k1x=pow(OX*(1-OX), 2);
+	double k2x=OX*(1-OX)*(3*OX*OX-3*OX+1);
+	double k1y=pow(OY*(1-OY), 2);
+	double k2y=OY*(1-OY)*(3*OY*OY-3*OY+1);
+
+	k1=sqrt(k1x*k1y);
+	k2=sqrt(k2x*k2y);
+
+	gsl_matrix_set (Xm, c2, 0, k1);
+	gsl_matrix_set (Xm, c2, 1, k2);
+	gsl_vector_set (yv, c2, mu);
+	gsl_vector_set (wv, c2, Den);
+
+	}
+#define beta(i) (gsl_vector_get(cv,(i)))
+	gsl_multifit_wlinear (Xm, wv, yv, cv, cov, &chisq, work);
+        std::cerr << "\t" << f_X_w << "\t" << f_Y/f_Y_w << "\t" << f_Y_w << "\t" << Theta/Theta_w << "\t" <<Theta_w <<"\t" << gamma_XY/gamma_XY_w << "\t" << gamma_XY_w << "\t" << gamma_YX/gamma_YX_w << "\t" << gamma_YX_w << "\t" << beta(1) << "\t" << "0" << "\t" << beta(0) << "\t" << std::endl;
+*/
+/*        while(it!=end){
 		pair=Genotype_pair::from_tuple(it->first);
-                inc_f(relatedness, pair, it->second);
-                inc_theta(relatedness, pair, it->second);
-		if (pair.m!=0) N+=it->second/(pair.m*(1-pair.m) );
+               	inc_guess(relatedness, pair, it->second);
+                ++(it);
                 ++(it);
         }
-	relatedness.f_X_/=N;
-	relatedness.f_Y_/=N;
-	relatedness.theta_XY_/=N;
-	N=0;
-	it=start;
-        while(it!=end){
-		pair=Genotype_pair::from_tuple(it->first);
-               	inc_gamma(relatedness, pair, it->second);
-		if (pair.m!=0 && pair.m!=0.5) N+=it->second;
-                ++(it);
-        }
-	relatedness.gamma_XY_/=N;
-	relatedness.gamma_YX_/=N;
-	it=start;
-        while(it!=end){
-		pair=Genotype_pair::from_tuple(it->first);
-                inc_Delta(relatedness, pair, it->second);
-                ++(it);
-        }
-/*	relatedness.f_X_=0;
-	relatedness.f_Y_=0;
-	relatedness.theta_XY_=0;
-	relatedness.gamma_XY_=0;
-	relatedness.gamma_YX_=0;
-	relatedness.Delta_XY_=0;
-	relatedness.delta_XY_=0;*/
+*/
+
 }
 
 void 
@@ -253,10 +250,12 @@ inc_Delta (Relatedness &rel, const Genotype_pair &pair, const size_t &count)
 
 //TODO FIX THIS TERRIBLE HACK JOB YOU SCHMUCK!
 
+//int eval;
 
 float_t
 get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count) 
 {
+//	eval++;
 	/*This is the basic likelihood model that we are fitting. It essentially calculates the correlation coefficents
 	for the first four moments of the joint distribution. The math needs to be cleaned up here. For now it is typed
 	up to minimize the chance of typos. a, b, c and d are r.v. Representing the presence (1) or absence of (0) of
@@ -380,15 +379,18 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	float_t sum=0;
 	
 	std::pair<Genotype_pair_tuple, size_t> *pair;
-//	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
+	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
+	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator it=hashed_genotypes_p->begin();
 
-	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
-	for (size_t x=0; x<hashed_genotypes_p->size(); x++){
-//	while(it!=end){
-		pair=&(*hashed_genotypes_p)[x];
-		first=Genotype_pair::from_tuple(pair->first);
-		count=pair->second;
+//	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
+//	for (size_t x=0; x<hashed_genotypes_p->size(); x++){
+	while(it!=end){
+//		pair=&(*hashed_genotypes_p)[x];
+//		pair=&it;
+		first=Genotype_pair::from_tuple(it->first);
+		count=it->second;
 		sum+=get_ll(rel, first, count);
+		it++;
 	}
 	if (std::isnan(sum) ) return FLT_MAX;
 	return double(-sum);
@@ -433,19 +435,22 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 
 	s = gsl_multimin_fminimizer_alloc (T, 7);
 	gsl_multimin_fminimizer_set (s, &gsl_func, x, ss);
+	
+//	eval=0;
 
 	do {
+
 		iter++;
 		status = gsl_multimin_fminimizer_iterate(s);
       
 		if (status) break;
 
 		size = gsl_multimin_fminimizer_size (s);
-		status = gsl_multimin_test_size (size, 1e-5);
+		status = gsl_multimin_test_size (size, 1e-3);
 
 	}  while (status == GSL_CONTINUE && iter < 800);
 
-//	std::cerr << iter << std::endl;
+//	std::cerr << " Solved in " << eval << " evaluations " << std::endl;
 
 	rel.f_X_ = gsl_vector_get(s->x, 0);
 	rel.f_Y_ = gsl_vector_get(s->x, 1);
@@ -646,8 +651,8 @@ int estimateRel(int argc, char *argv[])
 
 	for (size_t x=0; x<sample_size; ++x){
 		for (size_t y=x+1; y<sample_size; ++y){
-			relatedness.set_X_name(genotype.get_sample_names()[x]);
-			relatedness.set_Y_name(genotype.get_sample_names()[y]);
+			relatedness.set_X_name(x);
+			relatedness.set_Y_name(y);
 			hashed_genotypes=hash_genotypes(file_buffer, x, y);
 			down_genotypes=downsample_genotypes(file_buffer, x, y);
 			relatedness.zero();

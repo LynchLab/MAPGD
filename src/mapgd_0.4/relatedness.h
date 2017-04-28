@@ -68,9 +68,10 @@ inc_Delta (Relatedness &rel, const Genotype_pair &pair, const size_t &count);
 float_t
 get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count);
 
-
+#ifndef NOGSL
 double
 rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p);
+#endif 
 
 /*Maximizes the relatedness*/
 void 

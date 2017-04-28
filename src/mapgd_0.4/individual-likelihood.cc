@@ -95,7 +95,7 @@ count_t init_params(Locus &site, Allele &a, const float_t &minerr)
 	return 1;
 }
 
-count_t maximize_newton_restricted (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
+count_t maximize_restricted_newton (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
 {
 	float_t J[2][2];		//The Jacobian/Hessian.
         float_t iJ[2][2]; 		//Inverse of the Jacobian/Hessian.
@@ -144,7 +144,7 @@ count_t maximize_newton_restricted (Locus &site, Allele &a, models &model, std::
 
 	float_t deltalnL=10, maxlnL=DBL_MAX;
 
-        while ( ( (fabs(R[0])+fabs(R[1])+fabs(R[2]) )>0.00001 || std::isnan(R[0]) || std::isnan(R[1]) || std::isnan(R[2]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
+        while ( ( (fabs(R[0])+fabs(R[1]) )>0.00001 || std::isnan(R[0]) || std::isnan(R[1]) ) && iter<200 && fabs(deltalnL)>0.0001 ){
 #ifdef DEBUG
 		std::cerr << fabs(R[0])+fabs(R[1])+fabs(R[2]) << ", " << iter << ", " << fabs(deltalnL) << std::endl;
 #endif
@@ -241,6 +241,7 @@ count_t maximize_newton_restricted (Locus &site, Allele &a, models &model, std::
 	
         };
 
+	a.error=0.75/(1.+exp(a.error) );
 	a.freq=1./(1.+exp(a.freq) );
 	a.f=1./(1.+exp(a.f) );
 

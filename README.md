@@ -8,23 +8,41 @@
 [<b>Visit the MAPGD development page</b>](https://lynchlab.github.io/MAPGD/)
 
 ###Contents 
+
 ####[Introduction](https://github.com/LynchLab/MAPGD#-introduction-)
+
 #####[Quick start](https://github.com/LynchLab/MAPGD#-quick-start-)
+
 #####[FAQ](https://github.com/LynchLab/MAPGD#-faq-)
+
 #####[Changes](https://github.com/LynchLab/MAPGD#-changes-)
+
 ####Basic Usage
+
 #####[Commands](https://github.com/LynchLab/MAPGD#-commands-)
+
 #####[Common Options](https://github.com/LynchLab/MAPGD#-common-options-)
+
 #####[Input/Output](https://github.com/LynchLab/MAPGD#-inputoutput-)
+
 #####[Log-likelihood ratios](https://github.com/LynchLab/MAPGD#-log-likelihood-ratio-statistics-)
+
 #####[Example Analysis](https://github.com/LynchLab/MAPGD#-example-analysis-)
+
 #####[Other Useful Programs](https://github.com/LynchLab/MAPGD#-other-useful-programs-)
+
 ####Performance
+
 #####[Statistical](https://github.com/LynchLab/MAPGD#-statistical-performance-)
+
 #####[Computational](https://github.com/LynchLab/MAPGD#-computational-performance-)
+
 ####Misc.
+
 #####[IU users](https://github.com/LynchLab/MAPGD#-notes-for-indiana-university-users-)
+
 #####[Sanger users](https://github.com/LynchLab/MAPGD#-notes-for-sanger-users-)
+
 #####[References](https://github.com/LynchLab/MAPGD#-references-)
 
 
@@ -176,6 +194,8 @@ Finally show me your changes by typing.
 
 Several flags have been changed for greater consistency between commands, binary flags are up and working, vcf output/input is up and working. 
 
+Likelihood equations for LD have been changed to account for departure from HWE.
+
 <h3> Changes from 0.3 </h3>
 
 There have been a lot changes from 0.3. The format of input and output files has changed, and previous formats are no longer supported. The name of the 'ei' command has been changed to allele, and the 'ep' and 'cp' are now both part of the 'pooled' command. A standard file interface has been created (map-file) which handles all our reading and writing needs. The pro-file interface has been deprecated.  
@@ -186,16 +206,22 @@ There have been a lot changes from 0.3. The format of input and output files has
 Mapgd currently implements the following commands:
 
 	allele                Estimates allele frequencies using individual data
+	fastview	      Quickly displays contents of a file.
 	filter                Filter sites in '.map' files
+	filterpool	      Filter sites in '.pol' files
+	filtergcf	      Filter sites in '.gcf' files
 	genotype              Calculate genotype probabilities for individuals
 	linkage               Estimates linkage disequilibrium between loci
 	pool                  Estimates allele frequencies using pooled data*
 	proview               Prints data in the '.pro' file quartet format
 	read                  Reads from an SQL database	
 	relatedness           Estimates the 7 genotypic correlation coefficients 
-	sam2idx               Reformats a sam header to an idx used by mapgd.
-	vcf                   Converts output to the popular vcf format
+  	reltest		      Test for significant difference between relatedness estiamtes
+	sam2idx               Reformats a sam header to an idx used by mapgd
+  	writevcf	      Prints as a vcf file
+  	readvcf		      Reads a vcf file
 	write                 Writes to an SQL database
+
 
 Each command has a number of options that can be examined by the -h option. For example, to get a short help message you can type: 
 
@@ -400,12 +426,26 @@ In the case where the allele command is being used to estimated the seven genoty
 
 <h3> Statistical Performance </h3>
 
-![Figure1](/extras/automatic_figures/Ackerman_2016b/figure1.jpg?raw=true "Bias and Type II error")
-The bais (solid line), 95% CI (shaded region), and Type II error rate (dashed line) of four variant calling programs on simulated data. Type II error rates are sliding window averags. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs in a 5 Mb genome at 3x coverage simulated by the pipeline I haven't linked here yet. 
+MAPGD substantially outperfomrs existing programs 
+
+![Figure1](/extras/automatic_figures/Ackerman_2017/figure1.jpg?raw=true "Bias and RMSE of Allele freq.")
+The bais (solid line), 95% CI (shaded region) of four variant calling programs on simulated data. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs on Yeast Chromosome VI at 3x coverage. Simulation pipeline availible [here](https://github.com/LynchLab/genomics_simulation). 
+
+![Figure2](/extras/automatic_figures/Ackerman_2017/figure2.jpg?raw=true "Type I vs Type II error")
+The bais (solid line), 95% CI (shaded region) of four variant calling programs on simulated data. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs on Yeast Chromosome VI at 3x coverage. Simulation pipeline availible [here](https://github.com/LynchLab/genomics_simulation). 
+
+![Figure3](/extras/automatic_figures/Ackerman_2017/figure3.jpg?raw=true "Bias and RMSE of r2")
+The bais (solid line), 95% CI (shaded region) of four variant calling programs on simulated data. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs on Yeast Chromosome VI at 3x coverage. Simulation pipeline availible [here](https://github.com/LynchLab/genomics_simulation). 
+
+![Figure4](/extras/automatic_figures/Ackerman_2017/figure4.jpg?raw=true "Bais and RMSE of pooled data")
+The bais (solid line), 95% CI (shaded region) of four variant calling programs on simulated data. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs on Yeast Chromosome VI at 3x coverage. Simulation pipeline availible [here](https://github.com/LynchLab/genomics_simulation). 
+
+![Figure5](/extras/automatic_figures/Ackerman_2017/figure5.jpg?raw=true "Bias and RMSE of f")
+The bais (solid line), 95% CI (shaded region) of four variant calling programs on simulated data. Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. Simulation of 20,000 randomly distributed SNPs on Yeast Chromosome VI at 3x coverage. Simulation pipeline availible [here](https://github.com/LynchLab/genomics_simulation). 
 
 <h3> Computational Performance </h3>
 
-![Figure2](https://github.com/LynchLab/MAPGD/tree/master/extras/automatic_figures/Ackerman_2016b/figure2.jpg)
+![Figure2](https://github.com/LynchLab/MAPGD/tree/master/extras/automatic_figures/Ackerman_2017/figure2.jpg)
 
 A hypothetical figure demonstrating the scaling of several different components of mapgd, and several other programs for comparison.
 Red: mapgd, Cyan: angsd, Green: gatk, Blue: bcftools. For 20,000 randomly distributed SNPs in a 5 Mb genome at 3x coverage simulated by the pipeline I haven't linked here yet.  

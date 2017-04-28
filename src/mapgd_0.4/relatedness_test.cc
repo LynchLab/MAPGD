@@ -119,7 +119,7 @@ int testRel(int argc, char *argv[])
 #else 
 
 int 
-estimateRel(int argc, char *argv[])
+testRel(int argc, char *argv[])
 {
 	std::cerr << "This command depends on gsl, which could not be found. Please e-mail matthew.s.ackerman@gmail.com for help.\n";
 	return 0;

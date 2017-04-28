@@ -9,7 +9,7 @@ const Registration Population::registered=Registration(Population::table_name, P
 
 Population::Population(const std::vector <std::string> &column_names)
 {
-	sample_names_=std::vector <std::string> (column_names.cbegin()+4, column_names.cend() );
+	sample_names_=std::vector <std::string> (column_names.cbegin()+3, column_names.cend() );
 	likelihoods.resize(sample_names_.size() );
 }
 
@@ -48,7 +48,7 @@ Population::operator= (const Population& rhs)
 std::string 
 Population::header(void) const
 {
-	std::string line="@SCFNAME\tPOS\tMN_FREQ\tF_STAT";
+	std::string line="@SCFNAME\tPOS\tMN_FREQ";
 	std::vector <std::string>::const_iterator s_it=sample_names_.cbegin(), end=sample_names_.cend();
 	while(s_it!=end){
 		line+='\t';	
@@ -63,7 +63,7 @@ void
 Population::write (std::ostream& out) const
 {
 	std::vector <Genotype>::const_iterator s_it=likelihoods.cbegin(), end=likelihoods.cend();
-	out << m << '\t' << f;
+	out << m;
 	while(s_it!=end){
 		out << '\t' << *s_it;
 		s_it++;	
@@ -77,7 +77,6 @@ Population::read (std::istream& in)
         std::getline(in, line);
         std::stringstream line_stream(line);
 	line_stream >> m;
-	line_stream >> f;
 	std::vector <Genotype>::iterator s_it=likelihoods.begin(), end=likelihoods.end();
 	while(s_it!=end){
 		line_stream >> *s_it;

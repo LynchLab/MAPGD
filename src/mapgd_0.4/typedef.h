@@ -14,7 +14,7 @@
 typedef uint16_t count_t;	//Should be used to specify depth of coverage only.  
 				//Once it is fixed it should be changed to uint8_t or uint16_t.
 
-typedef long double real_t;	//most ?
+typedef double real_t;		//most ?
 typedef uint16_t id0_t;		//specifies scaffold. 		limits to 65,536 scaffolds.
 typedef uint32_t id1_t;		//specifies bp locations.	limits to 4,294,967,296 bp per scaffold.
 typedef int64_t id1_off_t;	//specifies an offset		specifies a distance between bp, must be
