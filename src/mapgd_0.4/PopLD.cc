@@ -264,7 +264,7 @@ int PopLD(int argc, char *argv[])
 		#pragma omp for
 		for (uint32_t x=0; x<BUFFER_SIZE; ++x){
 			if (x<read){
-				linkage_buffer[x] = estimate_D( allele_buffer1[x], allele_buffer2[x] ,guesstimate_D(allele_buffer1[x], allele_buffer2[x]), re );
+				linkage_buffer[x] = estimate_D( allele_buffer1[x], allele_buffer2[x] ,guesstimate_D(allele_buffer1[x], allele_buffer2[x]) );//, re );
 			}
 		}
 		for (size_t c=0; c<read; ++c){ 
