@@ -127,7 +127,7 @@ public:
 	static Data * new_from_str (const std::string &, const std::vector<std::string> &);
 
 	//! Toys
-	virtual const enum tags(void) const {return "";};
+//	virtual const enum tags(void) const {return "";};
 
 };
 
