@@ -24,7 +24,7 @@ public:
 	std::vector <real_t> e_hat;	//!< environmental deviation
 
 	Phenotype();					//!< simple constructor.
-	Phenotype(const std::vector <std::string> &);	//!< constructor needed by map-file. String should be coloumn names. 
+	Phenotype(const std::vector <std::string> &);	//!< constructor needed by map_file. String should be coloumn names. 
 	Phenotype(const Phenotype &); 		//!< constructor using a Phenotypes
 	~Population();					//!< destructor.
 	size_t size() const;					//!< Returns the number of samples.

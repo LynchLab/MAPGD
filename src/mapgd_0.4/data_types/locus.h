@@ -6,9 +6,9 @@
 
 #include "quartet.h"
 #include "base.h"
-#include "stream-tools.h"
+#include "stream_tools.h"
 #include "data.h"
-#include "file-index.h"
+#include "file_index.h"
 
 /* This is the record stored in a pro file*/
 class Locus : virtual public Indexed_data{

@@ -10,7 +10,7 @@
 
 #include "typedef.h"
 #include "data.h"
-#include "stream-tools.h"
+#include "stream_tools.h"
 
 ///	The name of a sample (i.e. what the user called it).
 class Sample_name : public virtual Data { 
@@ -35,7 +35,7 @@ public:
 	static const std::string table_name;				//!< Destination table in Db.
 	static const bool binary;				//!< Destination table in Db.
 
-	const std::string header(void) const;
+	std::string header(void) const;
 	size_t size(void) const;
 
 	const std::string get_file_name(void) const;				//!< The dafualt extention for files.

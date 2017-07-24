@@ -2,10 +2,10 @@
 #define _REGION_H_
 
 #include "typedef.h"
-#include "stream-tools.h"
+#include "stream_tools.h"
 #include <iostream>
 #include <vector>
-#include "file-index.h"
+#include "file_index.h"
 
 class Region {
 private :

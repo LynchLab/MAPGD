@@ -7,7 +7,7 @@
 #include <iomanip>
 #include "interface.h"
 #include "compare-pooled.h"
-#include "pooled-likelihood.h"
+#include "pooled_likelihood.h"
 #include <iostream>
 int comparePooled(int argc, char *argv[]);
 #endif

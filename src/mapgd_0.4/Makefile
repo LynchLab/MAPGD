@@ -7,12 +7,13 @@
 
 DESTDIR=/usr/local/bin
 DOCPATH=\"$(shell pwd)/../../docs/man/\"
-WARNINGS=-Wall -Werror=return-type -Wno-write-strings
+WARNINGS=-Wno-write-strings
+#WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/
 
-CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) 
+CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) -MMD
 LDLIBS += -lgzstream -lz -L ./gzstream/
 
 DEBUG=-pg -D DEBUG -ggdb
@@ -24,7 +25,7 @@ NOMPI=-D NOMPI
 
 #HTS_LIB_PATH=/usr/include/htslib/
 
-OBJDIR=obj
+OBJDIR=objs
 
 ifeq ($(CXX), i686-w64-mingw32-g++)
 	TARGET=../../bin/mapgd-win32.exe
@@ -78,7 +79,11 @@ endif
 
 DOCDIR=../../docs
 
-SUBDIR=raw sql data_types commands data_conversion stream_tools
+SUBDIR=raw sql data_types commands data_conversion stream_tools 
+
+ifeq ($(UNSTABLE), yes)
+	SUBDIR += testing
+endif
 #>! Just a list of flags to try at some later date.
 # -oFast -ffloat-store -fexcess-precision=style -ffast-math -fno-rounding-math -fno-signaling-nans
 # -fcx-limited-range -fno-math-errno -funsafe-math-optimizations -fassociative-math -freciprocal-math
@@ -90,24 +95,28 @@ SUBDIR=raw sql data_types commands data_conversion stream_tools
 MAPGD=mapgd.o
 
 #These all depend on interface.h
-COMMAND_OBJ=commands/estimate-individual.o \
-	commands/estimate-pooled.o \
-	mapgd-help.o \
-	sam2idx.o \
-	proview.o \
-	interface.o \
-	map2genotype.o \
-	PopLD.o \
+
+#Headers with templates or inline code
+
+COMMAND_OBJ=commands/estimate_individual.o \
+	commands/estimate_pooled.o \
+	commands/mapgd_help.o \
+	commands/sam2idx.o \
+	commands/proview.o \
+	commands/interface.o \
+	commands/map2genotype.o \
+	commands/linkage_disequilibrium.o \
 	commands/filter.o \
-	commands/filter-genotype.o \
-	filter-pool.o \
-	fastview.o \
-	relatedness.o \
-	relatedness_test.o
+	commands/filter_genotype.o \
+	commands/filter_pool.o \
+	commands/fastview.o \
+	commands/relatedness.o \
+	commands/test_keys.o \
+	commands/relatedness_test.o
 
 #Depend on htslib
 HTS_OBJ=data_conversion/vcf-file.o \
-	commands/read-vcf.o \
+	commands/read_vcf.o \
 	commands/make-vcf.o
 
 #Depend on db_api
@@ -116,20 +125,21 @@ SQL_OBJ=sql/writesql.o \
 	sql/db_api.o 
 
 #many objects depend on these
-BASE_OBJ=binomial.o \
-	individual-likelihood.o \
-	lnmultinomial.o \
+BASE_OBJ=math_functions/binomial.o \
+	individual_likelihood.o \
+	math_functions/lnmultinomial.o \
 	newton-method-theta.o \
-	map-file.o \
-	models.o \
-	pooled-likelihood.o \
+	newton-method-ld.o \
+	io/map_file.o \
+	math_functions/models.o \
+	pooled_likelihood.o \
 	stream_tools/tmp_buffer.o \
-	stream_tools/stream-tools.o 
+	stream_tools/stream_tools.o 
 
 #These all depend on data.h
 DATA_OBJ=data_types/allele.o \
 	data_types/data.o \
-	data_types/file-index.o \
+	data_types/file_index.o \
 	data_types/linkage_data.o \
 	data_types/pooled_data.o \
 	data_types/population.o \
@@ -137,13 +147,16 @@ DATA_OBJ=data_types/allele.o \
 	data_types/relatedness_data.o \
 	data_conversion/bcf2pro-file.o \
 	data_types/locus.o \
+	data_types/key.o \
 	data_types/sample_name.o 
-
+#??
 RAW_OBJ=raw/genotype.o \
 	raw/quartet.o \
 	raw/genotype_pair.o \
 	raw/region.o \
+	raw/constants.o \
 	raw/base.o
+
 
 OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) 
 
@@ -167,12 +180,15 @@ ifeq ($(HAVE_HTS), yes)
 	OBJ := $(OBJ) $(HTS_OBJ)
 endif
 
-all : gzstream $(TARGET) 
+all : gzstream $(TARGET)
+#	cd python_api
+#	python setup.py clean
+#	python setup.py install
 
 #$(TARGET) 
 
 gzstream :
-	$(MAKE) -C gzstream
+	$(MAKE) -C gzstream 
 .PHONY: gzstream
 
 $(TARGET) : $(OBJ)
@@ -219,16 +235,15 @@ docs:
 			rm mapgd-$$COM; \
 		fi \
 	done
-	$(eval TYPES=`$(TARGET) `) 
-	TYPES=
-	echo -n $(TYPES)
-	for TYPE in $(TYPES); do \
+	$(eval KEYS=`$(TARGET) keyinfo -a`) 
+	echo -n $(KEYS)
+	for KEY in $(KEYS); do \
 		if [ ! -f $(DOCDIR)/man/man1/mapgd-$$TYPE.1.gz ]; then \
-			echo $(TARGET) $$COM \$$1 > mapgd-$$TYPE;  \
-			chmod 777 mapgd-$$TYPE;  \
-			help2man ./mapgd-$$TYPE > $(DOCDIR)/man/man1/mapgd-$$TYPE.1; \
-			gzip $(DOCDIR)/man/man1/mapgd-$$TYPE.1; \
-			rm mapgd-$$TYPE; \
+			echo $(TARGET) keyinfo $$KEY \$$1 > mapgd-$$KEY;  \
+			chmod 777 mapgd-$$KEY;  \
+			help2man ./mapgd-$$KEY > $(DOCDIR)/man/man1/mapgd-$$KEY.1; \
+			gzip $(DOCDIR)/man/man1/mapgd-$$KEY.1; \
+			rm mapgd-$$KEY; \
 		fi \
 	done
 #.PHONY: clean

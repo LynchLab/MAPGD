@@ -7,7 +7,7 @@
 class Genotype {
 private :
 public :
-	float_t lMM, lMm, lmm;						//!< Major Major, Major minor, minor minor
+	float_t MM, Mm, mm;						//!< Major Major, Major minor, minor minor
 	count_t N;							//!< total depth of coverage.
 	Genotype(const float_t &MM, const float_t &Mm, const float_t &mm, const count_t &N);	//!< constructor.
 	Genotype();							//!< constructor.

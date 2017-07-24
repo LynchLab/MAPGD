@@ -37,10 +37,10 @@ Linkage::write(std::ostream& out) const
 //	out << std::endl;
 }
 
-const std::string 
+std::string 
 Linkage::header(void) const 
 {
-	return "@SCFNAME\tPOS_X\tPOS_Y\tDIST\tBEST_D\tBEST_D'\tBEST_D2\tBEST_R2\tADJ_BEST_D\tADJ_BEST_D'\tADJ_BEST_D2\tADJ_BEST_r2\tNi\tLOGLIKE\n";
+	return std::string("@SCFNAME\tPOS_X\tPOS_Y\tDIST\tBEST_D\tBEST_D'\tBEST_D2\tBEST_R2\tADJ_BEST_D\tADJ_BEST_D'\tADJ_BEST_D2\tADJ_BEST_r2\tNi\tLOGLIKE\n");
 }
 
 //TODO--IMPLEMENT

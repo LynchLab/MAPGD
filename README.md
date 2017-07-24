@@ -193,6 +193,8 @@ Finally show me your changes by typing.
 
 <h3> Changes from 0.4 </h3>
 
+I'm breaking LD with this update. 
+
 Several flags have been changed for greater consistency between commands, binary flags are up and working, vcf output/input is up and working. 
 
 Likelihood equations for LD have been changed to account for departure from HWE.

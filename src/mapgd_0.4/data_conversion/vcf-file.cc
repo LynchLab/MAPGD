@@ -4,9 +4,9 @@
 
 void call_minor(const  Genotype &gtl, int32_t *calls)
 {
-	if (gtl.lMM<gtl.lMm)
+	if (gtl.MM>gtl.Mm)
 	{
-		if(gtl.lMM<gtl.lmm)
+		if(gtl.MM>gtl.mm)
 		{
 			calls[0]=bcf_gt_unphased(1);
 			calls[1]=bcf_gt_unphased(1);
@@ -14,7 +14,7 @@ void call_minor(const  Genotype &gtl, int32_t *calls)
 			calls[0]=bcf_gt_unphased(0);
 			calls[1]=bcf_gt_unphased(0);
 		}
-	} else if(gtl.lMm<gtl.lmm) {
+	} else if(gtl.Mm>gtl.mm) {
 		calls[0]=bcf_gt_unphased(0);
 		calls[1]=bcf_gt_unphased(1);
 	} else {
@@ -25,9 +25,9 @@ void call_minor(const  Genotype &gtl, int32_t *calls)
 
 void call_major(const  Genotype &gtl, int32_t *calls)
 {
-	if (gtl.lMM<gtl.lMm)
+	if (gtl.MM>gtl.Mm)
 	{
-		if(gtl.lMM<gtl.lmm)
+		if(gtl.MM>gtl.mm)
 		{
 			calls[0]=bcf_gt_unphased(0);
 			calls[1]=bcf_gt_unphased(0);
@@ -35,7 +35,7 @@ void call_major(const  Genotype &gtl, int32_t *calls)
 			calls[0]=bcf_gt_unphased(1);
 			calls[1]=bcf_gt_unphased(1);
 		}
-	} else if(gtl.lMm<gtl.lmm) {
+	} else if(gtl.Mm>gtl.mm) {
 		calls[0]=bcf_gt_unphased(0);
 		calls[1]=bcf_gt_unphased(1);
 	} else {
@@ -54,8 +54,12 @@ Vcf_file::read (Vcf_data &vcf)
 {
 	if (open_) 
 	{
-		std::string line;
-		std::getline(*in_, line);
+		std::cerr << __FILE__ << ":" << __LINE__ <<  "trying to read.\n";
+		if (bcf_read(file_, vcf.header_, vcf.record_)!=0) 
+		{
+			std::cerr << __FILE__ << ":" << __LINE__ <<  "attempt to read from file failed.\n";
+			exit(0);
+		}
 	} else {
 		std::cerr << __FILE__ << ":" << __LINE__ <<  "attempt to read from unopened file.\n";
 		exit(0);
@@ -70,7 +74,7 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 		std::cerr << __FILE__ << ":" << __LINE__ <<  "allele and locus have different positions (private abs_pos_).\n";
 	}
 
-	char alleles[4];
+	char alleles[4]={0};
 	size_t size=record_->n_sample;
 	id1_t abs_pos=pop.get_abs_pos();
 	float *gp=new float[size*3], freq=allele.freq;
@@ -84,12 +88,15 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 	if (allele.major==allele.ref)
 	{
 		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.minor) );
+
         	bcf_update_info_float(header_, record_, "AF", &freq, 1);
+       // 	bcf_update_info_float(header_, record_, "", &f, 1);
+
 		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
        		{
-			*(vit+0)=(float)(it->lMM);
-			*(vit+1)=(float)(it->lMm);
-			*(vit+2)=(float)(it->lmm);
+			*(vit+0)=(float)log(it->MM);
+			*(vit+1)=(float)log(it->Mm);
+			*(vit+2)=(float)log(it->mm);
 			*dp_it=(int32_t)(it->N);
 			call_major(*it, gt_it);
 			vit+=3;
@@ -99,12 +106,15 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 	} else {
 		freq=1.-freq;
 		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.major) );
+
         	bcf_update_info_float(header_, record_, "AF", &freq, 1);
+     //   	bcf_update_info_float(header_, record_, "", &f, 1);
+
 		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
 		{
-			*(vit+0)=(float)(it->lmm);
-			*(vit+1)=(float)(it->lMm);
-			*(vit+2)=(float)(it->lMM);
+			*(vit+0)=(float)log(it->mm);
+			*(vit+1)=(float)log(it->Mm);
+			*(vit+2)=(float)log(it->MM);
 			*dp_it=(int32_t)(it->N);
 			call_minor(*it, gt_it);
 			vit+=3;
@@ -128,67 +138,61 @@ Vcf_data::put(const Data *data, ...)
 	va_start(args, data);
 	File_index *idx = dynamic_cast<File_index *>(va_arg(args, Data *) );
 	Population *pop = dynamic_cast<Population *>(va_arg(args, Data *) );
+
 //	put(*idx, *pop);
 }
 
-void 
-Vcf_data::get(File_index &index, Allele &allele, Population &pop) const
+id1_t
+Vcf_data::get(const File_index &index, Population &pop) const
 {
-	if(allele.get_abs_pos()!=pop.get_abs_pos() )
-	{
-		std::cerr << __FILE__ << ":" << __LINE__ <<  "allele and locus have different positions (private abs_pos_).\n";
-	}
-
 	char alleles[4];
 	size_t size=record_->n_sample;
-	id1_t abs_pos=pop.get_abs_pos();
-	float *gp=new float[size*3], freq=allele.freq;
-	float *vit=gp;
-	int32_t *dp=new int32_t[size];
-	int32_t *dp_it=dp;
-	int32_t *gt=new int[size*2];
-	int32_t *gt_it=gt;
-	record_->rid = index.get_id0(abs_pos);
-	record_->pos = index.get_id1(abs_pos)-1;
-	if (allele.major==allele.ref)
+
+
+	float *genotype_qualities=new float[sample_size_*3];
+	float *vit=genotype_qualities;
+	int *sequence_depth=new int[sample_size_];
+	int *dit=sequence_depth;	
+
+	int genotype_qualities_size=sample_size_*3;
+	int sequence_depth_size=sample_size_;
+
+	bcf_get_format_float(header_, record_, "GQ", &genotype_qualities, &genotype_qualities_size);
+	bcf_get_format_int32(header_, record_, "DP", &sequence_depth, &sequence_depth_size);
+
+	std::vector<Genotype>::iterator end=pop.likelihoods.end();
+	for (std::vector<Genotype>::iterator it=pop.likelihoods.begin(); it<end; ++it)
 	{
-		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.minor) );
-        	bcf_update_info_float(header_, record_, "AF", &freq, 1);
-		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
-       		{
-			*(vit+0)=(float)(it->lMM);
-			*(vit+1)=(float)(it->lMm);
-			*(vit+2)=(float)(it->lmm);
-			*dp_it=(int32_t)(it->N);
-			call_major(*it, gt_it);
+			it->mm=(float)(exp(vit[0]) );
+			it->Mm=(float)(exp(vit[1]) );
+			it->MM=(float)(exp(vit[2]) );
+			it->N=*(++dit);
 			vit+=3;
-			++dp_it;
-			gt_it+=2;
-		}
-	} else {
-		freq=1.-freq;
-		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.major) );
-        	bcf_update_info_float(header_, record_, "AF", &freq, 1);
-		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
-		{
-			*(vit+0)=(float)(it->lmm);
-			*(vit+1)=(float)(it->lMm);
-			*(vit+2)=(float)(it->lMM);
-			*dp_it=(int32_t)(it->N);
-			call_minor(*it, gt_it);
-			vit+=3;
-			++dp_it;
-			gt_it+=2;
-		}
 	}
-	bcf_update_alleles_str(header_, record_, alleles);
-        bcf_update_format_float(header_, record_, "GP", gp, size*3);
-	bcf_update_genotypes(header_, record_, gt, size*2);
-        bcf_update_format_int32(header_, record_, "DP", dp, size);
-	free(gp);
-	free(gt);
-	free(dp);
+
+	int allele_count=1;
+	bcf_get_info_float(header_, record_, "AF", &pop.m, &allele_count);
+	//bcf_get_info_float(header_, record_, "", &pop.f, 1);
+
+	if (pop.m>0.5)
+	{
+		pop.major=Base::ctob(record_->d.allele[0][0]);
+		pop.minor=Base::ctob(record_->d.allele[1][0]);
+	}
+	else if (pop.m < 0.5)
+	{
+		pop.major=Base::ctob(record_->d.allele[0][0]);
+		pop.minor=Base::ctob(record_->d.allele[1][0]);
+	}
+	else 
+	{
+		pop.major=Base::ctob(record_->d.allele[0][0]);
+		pop.minor=Base::ctob(record_->d.allele[1][0]);
+	}
+	pop.set_abs_pos(index.get_abs_pos(record_->rid, record_->pos+1) );
+	return 0;
 }
+
 
 void 
 Vcf_data::get(Data *data, ...) const
@@ -217,9 +221,13 @@ Vcf_file::write_header(const Vcf_data &vcf)
 void
 Vcf_file::open(const std::ios_base::openmode &mode)
 {
-	//if read, read header.
-	//if write, write header.
+//	if (mode & READ) open(std::cin, mode); 
+//	else if (mode & WRITE) open(std::cout, mode);
+//	else {
+		std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open file in std::ios_base::openmode &mode=" << mode << std::endl; 
+//	}
 }
+
 
 /*
 void 
@@ -233,20 +241,15 @@ Vcf_data::set_header(const File_index &index, const std::vector <std::string> &s
 
 /* === Dictionary ===
 
-   The header keeps three dictonaries. The first keeps IDs in the
+   The header keeps three dictionaries. The first keeps IDs in the
    "FILTER/INFO/FORMAT" lines, 
-
-   the second keeps the sequence names and lengths in the "contig" lines 
-
-   popultation.get_index()
-
-   and the last keeps the sample names 
-
+   The second keeps the sequence names and lengths in the "contig" lines 
+   popultation.get_index() and the last keeps the sample names 
    get_header().get_sample_names();
 
    bcf_hdr_t::dict[]
 
-   is the actual hash table, which is opaque to the end users. In the hash
+   Is the actual hash table, which is opaque to the end users. In the hash
    table, the key is the ID or sample name as a C string and the value is a
    bcf_idinfo_t struct. bcf_hdr_t::id[] points to key-value pairs in the hash
    table in the order that they appear in the VCF header. bcf_hdr_t::n[] is the
@@ -283,11 +286,15 @@ Vcf_data::set_header(const File_index &index, const std::vector <std::string> &s
 void
 Vcf_file::open(const char *file_name, const std::ios_base::openmode &mode)
 {
-//	open_no_extention(file_name, mode);
 	if (mode & READ)
 	{
-		file_=vcf_open(file_name, "r");
+		std::cerr << "opening\n";
+		file_=bcf_open(file_name, "r");
 		if ( file_) open_=true;
+		else {
+			std::cerr << __FILE__ << __LINE__ << "Whoops! bad bad bad\n";
+			exit(EXIT_FAILURE);
+		}
 	}
 	else if (mode & WRITE)
 	{
@@ -318,4 +325,39 @@ Vcf_file::close(void)
 		
 }
 
+File_index
+Vcf_data::get_index (void) const
+{
+	File_index index;
+	int id_size=header_->n[BCF_DT_CTG];
+        for (int i = 0; i < id_size; i++) {
+		index.add_id(header_->id[BCF_DT_CTG][i].key, header_->id[BCF_DT_CTG][i].val->info[0] ); 
+        }
+	return index;
+}
+	
+std::vector<std::string> 
+Vcf_data::get_sample_names (void) const 
+{
+	std::vector<std::string> names;
+	int sample_size=header_->n[BCF_DT_SAMPLE];
+	for (int i = 0; i < sample_size; i++) {
+		names.push_back(header_->id[BCF_DT_SAMPLE][i].key );
+	}       
+	return names;
+}
+
+Vcf_data
+Vcf_file::read_header(void)
+{
+	std::cerr << "Reading header dumbass\n";
+	Vcf_data vcf;
+	vcf.header_=bcf_hdr_read(file_);
+	vcf.record_=bcf_init();
+	vcf.record_->n_sample=bcf_hdr_nsamples(vcf.header_);
+	vcf.sample_size_=vcf.record_->n_sample;
+//	vcf.max_unpack=?
+	table_open_=true;
+	return vcf;
+}
 #endif

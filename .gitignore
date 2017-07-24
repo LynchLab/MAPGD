@@ -3,3 +3,4 @@ extras/daphnia/
 extras/pedigree/
 src/test/fastq/
 src/test/output/
+Makefile

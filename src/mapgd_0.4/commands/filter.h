@@ -4,7 +4,7 @@
 #define FILTER_H_
 
 #include <string>
-#include "map-file.h"
+#include "map_file.h"
 #include "interface.h"
 #include "data_types/allele.h"
 #include "typedef.h"

@@ -11,6 +11,13 @@ std::map <std::string, Data*(*)(const std::vector <std::string> &) > m_data_ctor
   m_data_ctor_buf; // memory for the stream object
 std::map <std::string, Data*(*)(const std::vector <std::string> Stream) >& stream = reinterpret_cast<std::map <std::string, Data*(*)(const std::vector <std::string>) >& > (m_data_ctor_buf);*/
 
+std::vector <std::string> registry_list(void)
+{
+	std::vector<std::string> ret;
+	for( std::map <std::string, Data*(*)(const std::vector <std::string> &)>::iterator it = m_data_ctor.begin(); it != m_data_ctor.end(); ++it) ret.push_back(it->first);
+	return ret;
+}
+
 Registry_initalizer::Registry_initalizer()
 {
 	if (nifty_counter++ == 0) new (&m_data_ctor) std::map <std::string, Data*(*)(const std::vector <std::string> &)>; 

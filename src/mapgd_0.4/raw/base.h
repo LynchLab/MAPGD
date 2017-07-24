@@ -1,5 +1,3 @@
-/* synonym for population? */
-
 #ifndef BASE_H_
 #define BASE_H_
 
@@ -8,22 +6,35 @@
 #include <cfloat>
 #include <iomanip>
 
-/// A class that handels conversions between the human readable bases 
-/// (A,C,G, and T) and their numberical representation.
-/** 
+// PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
+
+/// A class converts human readable bases to bit flags
+/*!
+ * Uses a bit flags to represent the IUPCA encoded bases. Bits 1,2,3 and 4 
+ * represent A, C, G and T. An ambiguous base will set all applicable flags. 
  */
 class Base { 
 private:
+	/// indicates the site has been masked.
+	/*! Some calculations check if a site is masked before use.
+	*/
 	bool masked;
 public:
 	Base();
+
+	/// constructor from IUPCA base code. 
 	Base(const char &);
+
+	/// constructor from Base. 
 	Base(const gt_t &);
 
+	/// Represents a single base.
 	gt_t base;
 
-	friend std::ostream& operator << (std::ostream&, const Base&);	//!< use the << operator to write Allele.
-	friend std::istream& operator >> (std::istream&, Base&);		//!< use the >> operator to read Allele.
+	/// use the << operator to write Allele.
+	friend std::ostream& operator << (std::ostream&, const Base&);	
+	/// use the >> operator to read Allele.
+	friend std::istream& operator >> (std::istream&, Base&);	
 
 	static char btoc(const gt_t &);
 	static gt_t ctob(const char &);

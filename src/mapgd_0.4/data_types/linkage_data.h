@@ -8,7 +8,7 @@
 
 #include "typedef.h"
 #include "data.h"
-#include "stream-tools.h"
+#include "stream_tools.h"
 
 ///	A class to store linkage information. 
 /** Many of these data classes need to have things moved over to static 
@@ -57,7 +57,7 @@ public:
 	static const std::string table_name;				//!< Destination table in Db.
 	static const bool binary;	//!< Returns the destination table name.
 
-	const std::string header(void) const;
+	std::string header(void) const;
 	size_t size(void) const;
 
 	const std::string get_file_name(void) const;				//!< The default extension for files.

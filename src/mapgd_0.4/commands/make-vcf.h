@@ -3,7 +3,7 @@
 
 #include "allele.h"
 #include "locus.h"
-#include "map-file.h"
+#include "map_file.h"
 #include "interface.h"
 #include "vcf-file.h"
 

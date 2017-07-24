@@ -14,22 +14,23 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
-#include "estimate-pooled.h"
-#include "estimate-individual.h"
-#include "estimate-fst.h"
+#include "estimate_pooled.h"
+#include "estimate_individual.h"
+#include "estimate_fst.h"
 #include "relatedness.h"
 #include "proview.h"
 #include "filter.h"
 #include "fastview.h"
-#include "filter-pool.h"
-#include "filter-genotype.h"
+#include "filter_pool.h"
+#include "filter_genotype.h"
 #include "map2genotype.h"
-#include "PopLD.h"
+#include "linkage_disequilibrium.h"
 #include "sam2idx.h"
 #include "make-vcf.h"
-#include "read-vcf.h"
-#include "mapgd-help.h"
+#include "read_vcf.h"
+#include "mapgd_help.h"
 #include "relatedness_test.h"
+#include "test_keys.h"
 //#include "make-vcf.h"
 
 #ifndef NOSQL

@@ -76,6 +76,8 @@ int estimateRel(int argc, char *argv[])
 	size_t file_buffer_size=0;
 	char *char_buff;
 	size_t sample_size;
+	sample_names
+
 	if(taskid==MASTER){
 		if (gcf_name.size()!=0)
 			gcf_in.open(gcf_name.c_str(), std::ios::in);
@@ -99,6 +101,7 @@ int estimateRel(int argc, char *argv[])
 		}
 		gcf_mem.close();
 		rel_out.write_header(relatedness);
+		sample_names=
 		sample_size=genotype.get_sample_names().size();
 		file_buffer_size=file_buffer.str().size();
 		char_buff=new char [file_buffer_size];
@@ -148,8 +151,8 @@ int estimateRel(int argc, char *argv[])
 						size_t X=getx(w+done, sample_size);
 						size_t Y=gety(w+done, sample_size);
 						relatedness=buffer_rel[w];
-						relatedness.set_X_name(X);
-						relatedness.set_Y_name(Y);
+						relatedness.set_X_name(name[X]);
+						relatedness.set_Y_name(name[Y]);
 //						std::cout << w+done << std::endl;
 						rel_out.write(relatedness);
 //						std::cerr << w+done << std::endl;
@@ -188,8 +191,8 @@ int estimateRel(int argc, char *argv[])
 			size_t X=getx(w+done, sample_size);
 			size_t Y=gety(w+done, sample_size);
 			relatedness=buffer_rel[w];
-			relatedness.set_X_name(X);
-			relatedness.set_Y_name(Y);
+			relatedness.set_X_name(name[X]);
+			relatedness.set_Y_name(name[Y]);
 			rel_out.write(relatedness);
 		}
 		rel_out.close();

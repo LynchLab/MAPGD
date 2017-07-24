@@ -35,7 +35,7 @@ Sample_gof::write (std::ostream& out) const
 std::string 
 Sample_gof::header(void) const 
 {
-	return "@SMPNAME\tGOF\n";
+	return std::string("@SMPNAME\tGOF\n");
 }
 
 size_t 

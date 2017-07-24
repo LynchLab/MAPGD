@@ -34,8 +34,11 @@ Locus::Locus(const count_t &size)
 
 Locus::Locus(const std::vector<std::string> &column_names)
 {
-	sample_names_=std::vector<std::string> (&column_names[3], &column_names.back()+1 );
-	sample.assign(sample_names_.size(), quartet() );
+	if (column_names.size()>4)
+	{
+		sample_names_=std::vector<std::string> (&column_names[3], &column_names.back()+1 );
+		sample.assign(sample_names_.size(), quartet() );
+	}
 	abs_pos_=0;
 	ref.base=4;
 }

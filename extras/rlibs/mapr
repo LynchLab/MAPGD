@@ -1,0 +1,4 @@
+openmap <- function(x)
+{
+	read.csv(x, sep="	",   skip=c(1,-1) ) 
+}

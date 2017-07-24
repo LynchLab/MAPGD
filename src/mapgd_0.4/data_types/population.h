@@ -18,15 +18,16 @@ private:
 		return new Population(Columns);
 	}
 public:
+//Data block
 	std::vector <Genotype> likelihoods;		//!< Genotypic likelihood
 
 	gt_t major;					//!< identity of the major allele
 	gt_t minor;					//!< identity of the minor allele
 	float_t m;					//!< minor allele frequency
 	float_t f;					//!< departure from HWE
-
+//end Data block
 	Population();					//!< simple constructor.
-	Population(const std::vector <std::string> &);//!< constructor needed by map-file. String should be coloumn names. 
+	Population(const std::vector <std::string> &);//!< constructor needed by map_file. String should be coloumn names. 
 	Population(const Population &); 	//!< constructor using a Population_Genotype
 	~Population();				//!< destructor.
 	size_t size() const;					//!< Returns the number of samples.
@@ -38,7 +39,6 @@ public:
 	static const std::string table_name;			//!< destination table in Db.
 	static const std::string file_name;			//!< defualt file extention.
 	static const bool binary;
-
 	const bool get_binary() const;
 
 	inline std::vector <std::string> get_sample_names(void) const {return sample_names_;};		//!< names of the samples sequenced.
@@ -51,6 +51,9 @@ public:
 
 	void write (std::ostream&) const;
 	void read (std::istream&);
+
+	void write_binary (std::ostream&) const;
+	void read_binary (std::istream&);
 };
 
 #endif

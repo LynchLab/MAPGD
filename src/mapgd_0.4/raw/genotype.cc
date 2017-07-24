@@ -1,31 +1,31 @@
 #include "genotype.h"
 Genotype::Genotype()
 {
-	lMM=-REAL_MAX; 
-	lMm=-REAL_MAX; 
-	lmm=-REAL_MAX; 
+	MM=0; 
+	Mm=0; 
+	mm=0; 
 	N=0;
 }
-Genotype::Genotype(const float_t &MM, const float_t &Mm, const float_t &mm, const count_t &lN)
+Genotype::Genotype(const float_t &MM_, const float_t &Mm_, const float_t &mm_, const count_t &N_)
 {
-	lMM=MM; 
-	lMm=Mm; 
-	lmm=mm; 
-	N=lN;
+	MM=MM_; 
+	Mm=Mm_; 
+	mm=mm_; 
+	N=N_;
 }
 	
 Genotype & Genotype::operator= (const Genotype& rhs)
 {
-	lMM=rhs.lMM;
-	lMm=rhs.lMm;
-	lmm=rhs.lmm;						//!< Major Major, Major minor, minor minor
+	MM=rhs.MM;
+	Mm=rhs.Mm;
+	mm=rhs.mm;						//!< Major Major, Major minor, minor minor
 	N=rhs.N;						//!< total depth of coverage.
 	return *this;
 }
 
 std::ostream& operator<< (std::ostream& out, const Genotype& x)
 {
-	out << x.lMM << '/' << x.lMm << '/' << x.lmm << '/' << x.N;
+	out << x.MM << '/' << x.Mm << '/' << x.mm << '/' << x.N;
 	return out;
 }
 
@@ -33,11 +33,12 @@ std::istream& operator>> (std::istream& in, Genotype& x)
 {
 	std::string line;
 	getline(in, line, '/');
-	x.lMM=std::stof(line);
+	//TODO make this respect the type of x.MM
+	x.MM=std::stod(line);
 	getline(in, line, '/');
-	x.lMm=std::stof(line);
+	x.Mm=std::stod(line);
 	getline(in, line, '/');
-	x.lmm=std::stof(line);
+	x.mm=std::stod(line);
 	getline(in, line, '\t');
 	x.N=std::stoi(line);
         return in;

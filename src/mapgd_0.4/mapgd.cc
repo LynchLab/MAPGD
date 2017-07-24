@@ -32,12 +32,13 @@ int main (int argc, char* argv[])
 	env.command(	' ',"filterpool",&filter_pool,	 		"an error occurred while calling filter", "Filter sites in '.pol' files");			 	//DONE
 	env.command(	' ',"filtergcf",&filter_genotype,	 	"an error occurred while calling filter", "Filter sites in '.gcf' files");			 	//DONE
 	env.command(	' ',"genotype",	&map2genotype,	 		"an error occurred while calling genotype", "Calculate genotype probabilities for individuals"); 	//DONE
-	env.command(	' ',"linkage", 	&PopLD,	 			"an error occurred while calling linkage", "Estimates linkage disequilibrium between loci");		//DONE
+	env.command(	' ',"linkage", 	&linkage_disequilibrium,	 			"an error occurred while calling linkage", "Estimates linkage disequilibrium between loci");		//DONE
 	env.command(	' ',"pool",	&estimatePooled, 		"an error occurred while calling pool", "Estimates allele frequencies using pooled data");		//DONE
 	env.command(	' ',"proview", 	&proview, 			"an error occurred while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
 	env.command(	' ',"relatedness",&estimateRel,	 		"an error occurred while calling relatedness", "Estimates the pairwise relatedness of individuals");	//DONE
 	env.command(	' ',"reltest", &testRel,	 		"an error occurred while calling relatedness", "Test for sig dif between relatedness estiamtes");	//DONE
 	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occurred while calling sam2idx", "Reformats a sam header file to a idx file"); 		//DONE
+	env.command(	' ',"keyinfo",	&test_keys,	 		"an error occurred while calling sam2idx", "Displays information regarding keys (i.e. column names)"); 		//DONE
 
 #ifndef NOHTS
 	env.command(	' ',"writevcf",	&make_vcf,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
@@ -49,7 +50,7 @@ int main (int argc, char* argv[])
 	env.command(	' ',"read", 	&readsql, 			"an error occurred while calling read", "Reads data from the SQL database");				//TODO
 	env.command(	' ',"write", 	&writesql, 			"an error occurred while calling write", "Writes data to the SQL database");				//DONE
 #endif
-	env.set_footer(" 'mapgd help [command]' will print the manual page for that command, e.g. mapdg help genotype will show general information the genotype command. mapgd help [COLUMN NAME] will \
+	env.set_footer(" '\e[1mmapgd help\e[0m \e[4mCOMMAND\e[0m' will print the manual page for that command, e.g. \e[1mmapdg help genotype\e[0m will show general information for the genotype command. \e[1mmapgd help\e[0m \e[4mCOLUMN NAME\e[0m will \
 give information about the column names that appear in the first two lines of files.");
 //	env.command(	' ',"mlrho", 	&mlrho, 			"an error occured while calling proview", "Runs mlrho");						//TODO
 //	env.command(	' ',"calc", 	&calcInd,	 		"an error occured while calling calc", "print log likelihood of ...");

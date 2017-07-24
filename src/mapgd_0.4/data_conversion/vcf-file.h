@@ -19,7 +19,7 @@
 #include "typedef.h"
 #include "datatypes.h"
 #include "raw.h"
-#include "stream-tools.h"
+#include "stream_tools.h"
 
 /// Because of the god awful mess that are vcf header lines.
 /** This is likely to become some form of container to handle moving data into and out of rows of map file.
@@ -55,10 +55,15 @@ private:
 //	bcf_read(htsFile *fp, const bcf_hdr_t *h, bcf1_t *v)
 //	bcf_write(htsFile *fp, const bcf_hdr_t *h, bcf1_t *v)
 
+	//! number of individuals sapmled
+
 public:
+	Vcf_data ();
+
+	//These should all be private, make vcf_file freind?
 	bcf1_t *record_;
 	bcf_hdr_t *header_;
-	Vcf_data ();
+	size_t sample_size_;
 
 	void set_header(const File_index &, const std::vector <std::string> &);
 
@@ -66,7 +71,10 @@ public:
 	void get (Data *, ...) const;
 
 	void put (const File_index &, const Allele &, const Population &);
-	void get(File_index &, Allele &, Population &) const;
+	id1_t get (const File_index &, Population &) const;
+
+	std::vector<std::string> get_sample_names (void) const;
+	File_index get_index (void) const;
 
 	//The mandatory fields.
 	std::string id;
@@ -141,6 +149,7 @@ public:
 	void read (Vcf_data &);
 	void write (const Vcf_data &);
 	void write_header (const Vcf_data &);
+	Vcf_data read_header();
 };
 
 /*

@@ -1,0 +1,1531 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AA	data_conversion/vcf-file.h	/^		AA,$/;"	e	enum:Info::Key
+AA	data_conversion/vcf-file.h	/^        Base AA;$/;"	m	class:Vcf_data
+AC	data_conversion/vcf-file.h	/^	std::vector <count_t> AC;$/;"	m	class:Vcf_data
+AF	data_conversion/vcf-file.h	/^	std::vector <float_t> AF;$/;"	m	class:Vcf_data
+ALLELE_STAT_H	data_types/allele.h	4;"	d
+AN	data_conversion/vcf-file.h	/^        count_t AN;$/;"	m	class:Vcf_data
+AR	gzstream/Makefile	/^AR       = ar crv$/;"	m
+ARG_ERROR	commands/interface.h	19;"	d
+Allele	data_types/allele.cc	/^Allele::Allele (void){$/;"	f	class:Allele
+Allele	data_types/allele.h	/^	Allele(std::vector<std::string>) : Allele(){};$/;"	f	class:Allele
+Allele	data_types/allele.h	/^class Allele : public Indexed_data { $/;"	c
+Args	commands/proview.h	/^struct Args{$/;"	s
+Argument	commands/interface.h	/^	Argument(){$/;"	f	class:Argument
+Argument	commands/interface.h	/^	Argument(const char opt_, $/;"	f	class:Argument
+Argument	commands/interface.h	/^class Argument {$/;"	c
+BASE_H_	raw/base.h	2;"	d
+BASE_OBJ	Makefile	/^BASE_OBJ=math_functions\/binomial.o \\$/;"	m
+BINARY	io/map_file.h	33;"	d
+BQ	data_conversion/vcf-file.h	/^		BQ,$/;"	e	enum:Info::Key
+BQ	data_conversion/vcf-file.h	/^        float_t BQ;$/;"	m	class:Vcf_data
+BUFFER_SIZE	commands/estimate_individual.cc	24;"	d	file:
+BUFFER_SIZE	commands/linkage_disequilibrium.cc	17;"	d	file:
+BUFFER_SIZE	commands/make-vcf.cc	6;"	d	file:
+BUFFER_SIZE	commands/read_vcf.cc	6;"	d	file:
+BUFFER_SIZE	commands/relatedness.cc	3;"	d	file:
+BUFFER_SIZE	commands/relatedness_test.cc	3;"	d	file:
+BUFFER_SIZE	mpi/mpi_relatedness.cc	3;"	d	file:
+BUFFER_SIZE	testing/PopLD-fast.cc	17;"	d	file:
+BUFFER_SIZE	testing/PopLD-fast2.cc	18;"	d	file:
+BUFFER_SIZE	testing/PopLD-tm.cc	18;"	d	file:
+BUFFER_SIZE	testing/regress.cc	3;"	d	file:
+Base	raw/base.cc	/^Base::Base (){$/;"	f	class:Base
+Base	raw/base.cc	/^Base::Base (const char &c)$/;"	f	class:Base
+Base	raw/base.cc	/^Base::Base (const gt_t &g)$/;"	f	class:Base
+Base	raw/base.h	/^class Base { $/;"	c
+Base_file	io/map_file.cc	/^Base_file::Base_file(void)$/;"	f	class:Base_file
+Base_file	io/map_file.h	/^class Base_file {$/;"	c
+Bcf2pro	data_conversion/bcf2pro.h	/^	Bcf2pro (){$/;"	f	class:Bcf2pro
+Bcf2pro	data_conversion/bcf2pro.h	/^	Bcf2pro (const count_t &){$/;"	f	class:Bcf2pro
+Bcf2pro	data_conversion/bcf2pro.h	/^	Bcf2pro (const std::vector <std::string> &str){$/;"	f	class:Bcf2pro
+Bcf2pro	data_conversion/bcf2pro.h	/^class Bcf2pro : public Locus  {$/;"	c
+Bcf2pro_file	data_conversion/bcf2pro-file.h	/^	Bcf2pro_file(){profile_=false;};$/;"	f	class:Bcf2pro_file
+Bcf2pro_file	data_conversion/bcf2pro-file.h	/^	Bcf2pro_file(bool call){profile_=call;};$/;"	f	class:Bcf2pro_file
+Bcf2pro_file	data_conversion/bcf2pro-file.h	/^class Bcf2pro_file : public Indexed_file <Locus> {$/;"	c
+CIGAR	data_conversion/vcf-file.h	/^		CIGAR,$/;"	e	enum:Info::Key
+CNT_MAX	typedef.h	23;"	d
+COMMAND_OBJ	Makefile	/^COMMAND_OBJ=commands\/estimate_individual.o \\$/;"	m
+CONSTANTS_H_	raw/constants.h	2;"	d
+CONVERT_HPP	depricated/convert.h	2;"	d
+CPPFLAGS	gzstream/Makefile	/^CPPFLAGS = -I. -O$/;"	m
+CXXFLAGS	Makefile	/^debug : CXXFLAGS:=$(CXXFLAGS) $(DEBUG)$/;"	m
+C_it	testing/circular_list.h	/^	C_it ()$/;"	f	class:C_it
+C_it	testing/circular_list.h	/^	C_it (const T &val)$/;"	f	class:C_it
+C_it	testing/circular_list.h	/^class C_it : public std::iterator<std::bidirectional_iterator_tag, T> $/;"	c
+Circular_list	testing/circular_list.h	/^	Circular_list()$/;"	f	class:Circular_list
+Circular_list	testing/circular_list.h	/^	Circular_list(const T &val)$/;"	f	class:Circular_list
+Circular_list	testing/circular_list.h	/^class Circular_list{$/;"	c
+Circular_list	testing/circular_list2.h	/^	Circular_list (const Type &T)$/;"	f	class:Circular_list
+Circular_list	testing/circular_list2.h	/^class Circular_list : public std::list<Type> {$/;"	c
+Command	commands/interface.h	/^	Command(){$/;"	f	class:Command
+Command	commands/interface.h	/^	Command(char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_){$/;"	f	class:Command
+Command	commands/interface.h	/^class Command {$/;"	c
+Constants	raw/constants.h	/^	Constants(const size_t &size, void (**fn) (Constants <R, T> &, const T &) )$/;"	f	class:Constants
+Constants	raw/constants.h	/^class Constants{$/;"	c
+DATA_OBJ	Makefile	/^DATA_OBJ=data_types\/allele.o \\$/;"	m
+DATA_SOURCE	Makefile	/^DATA_SOURCE=data_types\/*.cc$/;"	m
+DATA_TYPES_H_	datatypes.h	9;"	d
+DB	data_conversion/vcf-file.h	/^		DB,$/;"	e	enum:Info::Key
+DB	data_conversion/vcf-file.h	/^	bool DB;$/;"	m	class:Vcf_data
+DEBUG	Makefile	/^DEBUG=-pg -D DEBUG -ggdb$/;"	m
+DESTDIR	Makefile	/^DESTDIR=\/usr\/local\/bin$/;"	m
+DOCDIR	Makefile	/^DOCDIR=..\/..\/docs$/;"	m
+DOCPATH	Makefile	/^DOCPATH=\\"$(shell pwd)\/..\/..\/docs\/man\/\\"$/;"	m
+DP	data_conversion/vcf-file.h	/^		DP,$/;"	e	enum:Info::Key
+DP	data_conversion/vcf-file.h	/^        count_t DP;$/;"	m	class:Vcf_data
+D_	data_types/linkage_data.h	/^	float_t D_;		\/\/!< the magnitude of the ld, j0 $/;"	m	class:Linkage
+Data	data_types/data.h	/^	Data(){};$/;"	f	class:Data
+Data	data_types/data.h	/^	Data(std::vector <std::string> &){};$/;"	f	class:Data
+Data	data_types/data.h	/^class Data {$/;"	c
+Data_file	io/map_file.h	/^class Data_file : public Base_file {$/;"	c
+Delta_XY_	data_types/relatedness_data.h	/^	float_t Delta_XY_, Delta_XY_ll;$/;"	m	class:Relatedness
+Delta_XY_ll	data_types/relatedness_data.h	/^	float_t Delta_XY_, Delta_XY_ll;$/;"	m	class:Relatedness
+Dmax	data_types/linkage_data.cc	/^Linkage::Dmax (void) const$/;"	f	class:Linkage
+Dmin	data_types/linkage_data.cc	/^Linkage::Dmin (void) const$/;"	f	class:Linkage
+Dprime	data_types/linkage_data.cc	/^Linkage::Dprime (void) const $/;"	f	class:Linkage
+Dsq	data_types/linkage_data.cc	/^Linkage::Dsq (void) const$/;"	f	class:Linkage
+E0_	math_functions/models.h	/^float_t E0_, E1_, E2_;			\/\/!< Values used in calculations;$/;"	m	class:models
+E1_	math_functions/models.h	/^float_t E0_, E1_, E2_;			\/\/!< Values used in calculations;$/;"	m	class:models
+E2_	math_functions/models.h	/^float_t E0_, E1_, E2_;			\/\/!< Values used in calculations;$/;"	m	class:models
+END	data_conversion/vcf-file.h	/^		END,$/;"	e	enum:Info::Key
+END	data_conversion/vcf-file.h	/^	id1_t END;$/;"	m	class:Vcf_data
+EOF	stream_tools/tmp_buffer.h	10;"	d
+E_LIM	data_types/pedigree.h	15;"	d
+E_LIM	data_types/relatedness_data.h	15;"	d
+Environment	commands/interface.h	/^	Environment(){$/;"	f	class:Environment
+Environment	commands/interface.h	/^class Environment{$/;"	c
+External_data	data_conversion/external-data.h	/^class External_data {$/;"	c
+External_file	data_conversion/external-file.h	/^class External_file : public Base_file {$/;"	c
+FILTER_GENOTYPE_H_	commands/filter_genotype.h	4;"	d
+FILTER_H_	commands/filter.h	4;"	d
+FILTER_POOL_H_	commands/filter_pool.h	4;"	d
+FINAL_CXX	Makefile	/^	FINAL_CXX = $(CXX)$/;"	m
+FINAL_CXX	Makefile	/^	FINAL_CXX=$(MPICXX)$/;"	m
+File	python_api/print_line.py	/^File=mappy.open("names-file.txt")$/;"	v
+File_index	data_types/file_index.cc	/^File_index::File_index()$/;"	f	class:File_index
+File_index	data_types/file_index.cc	/^File_index::File_index(std::vector<std::string> fields)$/;"	f	class:File_index
+File_index	data_types/file_index.h	/^class File_index : public virtual Data {$/;"	c
+Flag	commands/interface.h	/^	Flag (char opt_, char* lopt_, void *parm_, int (*func_)(void *), char *emsg_, char *umsg_){$/;"	f	class:Flag
+Flag	commands/interface.h	/^	Flag(){$/;"	f	class:Flag
+Flag	commands/interface.h	/^class Flag {$/;"	c
+Flat_file	io/map_file.h	/^class  Flat_file : public Data_file <T> {$/;"	c
+G	data_conversion/vcf-file.h	/^		G$/;"	e	enum:Info::Key
+GT_MAX	typedef.h	27;"	d
+GZSTREAM_H	gzstream/gzstream.h	30;"	d
+GZSTREAM_NAMESPACE	gzstream/gzstream.C	/^namespace GZSTREAM_NAMESPACE {$/;"	n	file:
+GZSTREAM_NAMESPACE	gzstream/gzstream.h	/^namespace GZSTREAM_NAMESPACE {$/;"	n
+Genotype	raw/genotype.cc	/^Genotype::Genotype()$/;"	f	class:Genotype
+Genotype	raw/genotype.cc	/^Genotype::Genotype(const float_t &MM_, const float_t &Mm_, const float_t &mm_, const count_t &N_)$/;"	f	class:Genotype
+Genotype	raw/genotype.h	/^class Genotype {$/;"	c
+Genotype_pair	raw/genotype_pair.cc	/^Genotype_pair::Genotype_pair(const float_t &X_MM_, const float_t &X_Mm_, const float_t &X_mm_, const float_t &Y_MM_, const float_t &Y_Mm_, const float_t &Y_mm_, const float_t &m_)$/;"	f	class:Genotype_pair
+Genotype_pair	raw/genotype_pair.h	/^	Genotype_pair(){};$/;"	f	class:Genotype_pair
+Genotype_pair	raw/genotype_pair.h	/^class Genotype_pair {$/;"	c
+Genotype_pair_tuple	raw/genotype_pair.h	/^typedef std::tuple <float_t, float_t, float_t, float_t, float_t, float_t, float_t> Genotype_pair_tuple; $/;"	t
+H0	newton-method-ld.cc	/^float_t H0 (const Population &P1, const Population &P2, const float_t &D) {$/;"	f
+H0	newton-method-rel.h	/^inline float_t H0 (const Genotype_pair &pair, const Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+H0	newton-method-theta.h	/^inline float_t H0 (const quartet_t &q, const Allele &a) {$/;"	f
+H0R	newton-method-theta.h	/^inline float_t H0R (const quartet_t &q, const Allele &a) {$/;"	f
+H1	newton-method-rel.h	/^inline float_t H1 (const Genotype_pair &pair, const Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+H1	newton-method-theta.h	/^inline float_t H1 (const quartet_t &q, const Allele &a) {$/;"	f
+H1R	newton-method-theta.h	/^inline float_t H1R (const quartet_t &q, const Allele &a) {$/;"	f
+H2	data_conversion/vcf-file.h	/^		H2,$/;"	e	enum:Info::Key
+H2	data_conversion/vcf-file.h	/^	bool H2;$/;"	m	class:Vcf_data
+H2	newton-method-rel.h	/^inline float_t H2 (const Genotype_pair &pair, const Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+H2	newton-method-theta.h	/^inline float_t H2 (const quartet_t &q, const Allele &a) {$/;"	f
+H3	data_conversion/vcf-file.h	/^		H3,$/;"	e	enum:Info::Key
+H3	newton-method-rel.h	/^inline float_t H3 (const Genotype_pair &pair, const Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+H4	newton-method-rel.h	/^inline float_t H4 (const Genotype_pair &pair, const Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+H5	newton-method-rel.h	/^inline float_t H5 (const Genotype_pair &pair, const Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+H6	newton-method-rel.h	/^inline float_t H6 (const Genotype_pair &pair, const Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+HAVE_GSL	Makefile	/^	HAVE_GSL=false$/;"	m
+HAVE_OMP	Makefile	/^	HAVE_OMP=false$/;"	m
+HAVE_SQL	Makefile	/^	HAVE_SQL=false	$/;"	m
+HAVE_SQL	Makefile	/^	HAVE_SQL=false$/;"	m
+HTS_OBJ	Makefile	/^HTS_OBJ=data_conversion\/vcf-file.o \\$/;"	m
+ID0_MAX	typedef.h	24;"	d
+ID1_MAX	typedef.h	25;"	d
+INCLUDE	Makefile	/^INCLUDE=-I .\/ -I .\/data_types\/ -I .\/commands\/ -I .\/raw\/ -I .\/data_conversion\/ -I .\/gzstream\/ -I .\/stream_tools\/ -I .\/io\/ -I .\/math_functions\/$/;"	m
+Indexed_data	data_types/data.h	/^	Indexed_data(){};$/;"	f	class:Indexed_data
+Indexed_data	data_types/data.h	/^	Indexed_data(std::vector <std::string> &){};$/;"	f	class:Indexed_data
+Indexed_data	data_types/data.h	/^class Indexed_data : public virtual Data {$/;"	c
+Indexed_file	io/map_file.h	/^class Indexed_file: public Data_file <T> {$/;"	c
+Info	data_conversion/vcf-file.h	/^class Info {$/;"	c
+J00	newton-method-ld.cc	/^float_t J00 (const Population &P1, const Population &P2, const float_t &D) {$/;"	f
+J00	newton-method-rel.h	/^inline float_t J00 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J00	newton-method-theta.h	/^inline float_t J00 (const quartet_t &q, const Allele &a) {$/;"	f
+J00R	newton-method-theta.h	/^inline float_t J00R (const quartet_t &q, const Allele &a) {$/;"	f
+J01	newton-method-rel.h	/^inline float_t J01 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J01	newton-method-theta.h	/^inline float_t J01 (const quartet_t &q, const Allele &a) {$/;"	f
+J01R	newton-method-theta.h	/^inline float_t J01R (const quartet_t &q, const Allele &a) {$/;"	f
+J02	newton-method-rel.h	/^inline float_t J02 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J02	newton-method-theta.h	/^inline float_t J02 (const quartet_t &q, const Allele &a) {$/;"	f
+J03	newton-method-rel.h	/^inline float_t J03 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J04	newton-method-rel.h	/^inline float_t J04 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J05	newton-method-rel.h	/^inline float_t J05 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J06	newton-method-rel.h	/^inline float_t J06 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J10	newton-method-rel.h	/^inline float_t J10 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J10	newton-method-theta.h	/^inline float_t J10 (const quartet_t &q, const Allele &a) {$/;"	f
+J10R	newton-method-theta.h	/^inline float_t J10R (const quartet_t &q, const Allele &a) {$/;"	f
+J11	newton-method-rel.h	/^inline float_t J11 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J11	newton-method-theta.h	/^inline float_t J11 (const quartet_t &q, const Allele &a) {$/;"	f
+J11R	newton-method-theta.h	/^inline float_t J11R (const quartet_t &q, const Allele &a) {$/;"	f
+J12	newton-method-rel.h	/^inline float_t J12 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J12	newton-method-theta.h	/^inline float_t J12 (const quartet_t &q, const Allele &a) {$/;"	f
+J13	newton-method-rel.h	/^inline float_t J13 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J14	newton-method-rel.h	/^inline float_t J14 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J15	newton-method-rel.h	/^inline float_t J15 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J16	newton-method-rel.h	/^inline float_t J16 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J20	newton-method-rel.h	/^inline float_t J20 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J20	newton-method-theta.h	/^inline float_t J20 (const quartet_t &q, const Allele &a) {$/;"	f
+J21	newton-method-rel.h	/^inline float_t J21 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J21	newton-method-theta.h	/^inline float_t J21 (const quartet_t &q, const Allele &a) {$/;"	f
+J22	newton-method-rel.h	/^inline float_t J22 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J22	newton-method-theta.h	/^inline float_t J22 (const quartet_t &q, const Allele &a) {$/;"	f
+J23	newton-method-rel.h	/^inline float_t J23 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J24	newton-method-rel.h	/^inline float_t J24 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J25	newton-method-rel.h	/^inline float_t J25 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J26	newton-method-rel.h	/^inline float_t J26 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J30	newton-method-rel.h	/^inline float_t J30 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J31	newton-method-rel.h	/^inline float_t J31 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J32	newton-method-rel.h	/^inline float_t J32 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J33	newton-method-rel.h	/^inline float_t J33 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J34	newton-method-rel.h	/^inline float_t J34 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J35	newton-method-rel.h	/^inline float_t J35 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J36	newton-method-rel.h	/^inline float_t J36 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J40	newton-method-rel.h	/^inline float_t J40 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J41	newton-method-rel.h	/^inline float_t J41 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J42	newton-method-rel.h	/^inline float_t J42 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J43	newton-method-rel.h	/^inline float_t J43 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J44	newton-method-rel.h	/^inline float_t J44 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J45	newton-method-rel.h	/^inline float_t J45 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J46	newton-method-rel.h	/^inline float_t J46 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J50	newton-method-rel.h	/^inline float_t J50 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J51	newton-method-rel.h	/^inline float_t J51 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J52	newton-method-rel.h	/^inline float_t J52 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J53	newton-method-rel.h	/^inline float_t J53 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J54	newton-method-rel.h	/^inline float_t J54 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J55	newton-method-rel.h	/^inline float_t J55 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J56	newton-method-rel.h	/^inline float_t J56 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J60	newton-method-rel.h	/^inline float_t J60 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J61	newton-method-rel.h	/^inline float_t J61 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J62	newton-method-rel.h	/^inline float_t J62 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J63	newton-method-rel.h	/^inline float_t J63 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J64	newton-method-rel.h	/^inline float_t J64 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J65	newton-method-rel.h	/^inline float_t J65 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+J66	newton-method-rel.h	/^inline float_t J66 (const Genotype_pair &pair, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con) {$/;"	f
+Key	data_conversion/vcf-file.h	/^	enum Key {$/;"	g	class:Info
+Key	data_types/key.cc	/^Key::Key ()$/;"	f	class:Key
+Key	data_types/key.cc	/^Key::Key (const std::string &this_name, const float_t &number)$/;"	f	class:Key
+Key	data_types/key.h	/^	Key(const std::vector <std::string> &) : Key(){};	$/;"	f	class:Key
+Key	data_types/key.h	/^class Key : public virtual Data { $/;"	c
+LDFLAGS	gzstream/Makefile	/^LDFLAGS  = -L. -lgzstream -lz$/;"	m
+LD_ARRAY	newton-method-ld.h	343;"	d
+LD_CNTS	newton-method-ld.h	342;"	d
+LIKEILIHOOD_H_	math_functions/likelihood.h	2;"	d
+LOCUS_H_	data_types/locus.h	2;"	d
+Linkage	data_types/linkage_data.cc	/^Linkage::Linkage ()$/;"	f	class:Linkage
+Linkage	data_types/linkage_data.h	/^	Linkage(const std::vector <std::string> &) : Linkage(){};	\/\/!< delegating the constructor ftw.	$/;"	f	class:Linkage
+Linkage	data_types/linkage_data.h	/^class Linkage : public virtual Indexed_data { $/;"	c
+Locus	data_types/locus.cc	/^Locus::Locus(const count_t &size)$/;"	f	class:Locus
+Locus	data_types/locus.cc	/^Locus::Locus(const std::vector<std::string> &column_names)$/;"	f	class:Locus
+Locus	data_types/locus.cc	/^Locus::Locus(void)$/;"	f	class:Locus
+Locus	data_types/locus.h	/^class Locus : virtual public Indexed_data{$/;"	c
+Log	data_types/log.cc	/^Log::Log (const std::string &name, const std::string &message)$/;"	f	class:Log
+Log	data_types/log.h	/^	Log(const std::vector <std::string> &) : Log(){};	$/;"	f	class:Log
+Log	data_types/log.h	/^class Log : public virtual Data { $/;"	c
+MAPGD	Makefile	/^MAPGD=mapgd.o$/;"	m
+MAPGDAI_H	python_api/mapgdapi.h	2;"	d
+MAPGDAPI	python_api/mappy.cc	2;"	d	file:
+MAPGD_API_pointers	python_api/mapgdapi.h	15;"	d
+MAPGD_System_NUM	python_api/mapgdapi.h	10;"	d
+MAPGD_System_PROTO	python_api/mapgdapi.h	12;"	d
+MAPGD_System_RETURN	python_api/mapgdapi.h	11;"	d
+MASTER	mpi/mpi_relatedness.cc	7;"	d	file:
+MINOR	Makefile	/^MINOR=`cat VERSION`$/;"	m
+MM	data_types/allele.h	/^	float_t MM; 		\/\/!< frequency of genotype MM in the population.$/;"	m	class:Allele
+MM	raw/genotype.h	/^	float_t MM, Mm, mm;						\/\/!< Major Major, Major minor, minor minor$/;"	m	class:Genotype
+MMmodel	math_functions/models.cc	/^void MMmodel(const Allele &a, float_t *prob)$/;"	f
+MMmodelP	math_functions/models.cc	/^void MMmodelP(const Allele &a, float_t *l)$/;"	f
+MPI_LDLIBS	Makefile	/^	MPI_LDLIBS =$/;"	m
+MPI_OBJ	Makefile	/^	MPI_OBJ =$/;"	m
+MPI_OBJ	Makefile	/^	MPI_OBJ=mpi\/mpi_relatedness.o$/;"	m
+MQ	data_conversion/vcf-file.h	/^		MQ,$/;"	e	enum:Info::Key
+MQ	data_conversion/vcf-file.h	/^	float_t MQ;$/;"	m	class:Vcf_data
+MQ0	data_conversion/vcf-file.h	/^		MQ0,$/;"	e	enum:Info::Key
+MQ0	data_conversion/vcf-file.h	/^	count_t MQ0;$/;"	m	class:Vcf_data
+Mask	data_types/state.cc	/^static uint32_t Mask[32]={0x00000001, 0x00000002, 0x00000004, 0x00000008,$/;"	v	file:
+Mask	testing/exact_lsq_estimators.cc	/^static uint32_t Mask[32]={0x00000001, 0x00000002, 0x00000004, 0x00000008,$/;"	v	file:
+Mm	data_types/allele.h	/^	float_t Mm; 		\/\/!< frequency of genotype Mm in the population.$/;"	m	class:Allele
+Mm	raw/genotype.h	/^	float_t MM, Mm, mm;						\/\/!< Major Major, Major minor, minor minor$/;"	m	class:Genotype
+Mmmodel	math_functions/models.cc	/^void Mmmodel(const Allele &a, float_t *l)		\/\/Dito.$/;"	f
+MmmodelP	math_functions/models.cc	/^void MmmodelP(const Allele &a, float_t *l) 	\/\/[M]ajor [m]inor.$/;"	f
+N	data_types/allele.h	/^	count_t N;		\/\/!< number of individual at the site.$/;"	m	class:Allele
+N	raw/genotype.h	/^	count_t N;							\/\/!< total depth of coverage.$/;"	m	class:Genotype
+NEWTON_LD	newton-method-ld.h	4;"	d
+NOGSL	Makefile	/^NOGSL=-D NOGSL$/;"	m
+NOHTS	Makefile	/^NOHTS=-D NOHTS$/;"	m
+NOMPI	Makefile	/^NOMPI=-D NOMPI$/;"	m
+NOOMP	Makefile	/^NOOMP=-D NOOMP$/;"	m
+NOSQL	Makefile	/^NOSQL=-D NOSQL$/;"	m
+NS	data_conversion/vcf-file.h	/^		NS,$/;"	e	enum:Info::Key
+NS	data_conversion/vcf-file.h	/^	count_t NS;$/;"	m	class:Vcf_data
+Ni_	data_types/linkage_data.h	/^	float_t Ni_;		\/\/!< The number of individuals used in the calculation$/;"	m	class:Linkage
+Node	testing/circular_list.h	/^	struct Node {$/;"	s	class:C_it
+OBJ	Makefile	/^	OBJ := $(OBJ) $(HTS_OBJ)$/;"	m
+OBJ	Makefile	/^	OBJ := $(OBJ) $(MPI_OBJ)$/;"	m
+OBJ	Makefile	/^	OBJ := $(OBJ) $(SQL_OBJ)$/;"	m
+OBJ	Makefile	/^OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) $/;"	m
+OBJDIR	Makefile	/^OBJDIR=objs$/;"	m
+OPEN	io/map_file.h	35;"	d
+Pedigree	data_types/pedigree.h	/^	Pedigree(const std::vector <std::string> &) : Pedigree(){}; $/;"	f	class:Pedigree
+Pedigree	data_types/pedigree.h	/^class Pedigree : public Data{ $/;"	c
+Pedigree_record	raw/pedigree_record.h	/^class Pedigree_record {$/;"	c
+Phenotype	data_types/phenotype.h	/^class Phenotype : public Data {$/;"	c
+Pooled_data	data_types/pooled_data.cc	/^Pooled_data::Pooled_data ()$/;"	f	class:Pooled_data
+Pooled_data	data_types/pooled_data.cc	/^Pooled_data::Pooled_data (const std::vector <std::string> &columns)$/;"	f	class:Pooled_data
+Pooled_data	data_types/pooled_data.h	/^class Pooled_data : public Indexed_data { $/;"	c
+PopLD	depricated/PopLD-old.cc	/^int PopLD(int argc, char *argv[])$/;"	f
+Population	data_types/phenotype.cc	/^Population::Population()$/;"	f	class:Population
+Population	data_types/phenotype.cc	/^Population::Population(const Population &rhs)$/;"	f	class:Population
+Population	data_types/phenotype.cc	/^Population::Population(const std::vector <std::string> &column_names)$/;"	f	class:Population
+Population	data_types/population.cc	/^Population::Population()$/;"	f	class:Population
+Population	data_types/population.cc	/^Population::Population(const Population &rhs)$/;"	f	class:Population
+Population	data_types/population.cc	/^Population::Population(const std::vector <std::string> &column_names)$/;"	f	class:Population
+Population	data_types/population.h	/^class Population : public Indexed_data {$/;"	c
+PyMAPGD_API	python_api/mapgdapi.h	/^static void **PyMAPGD_API;$/;"	v
+PySpam_System	python_api/mapgdapi.h	28;"	d
+PySpam_System_PROTO	python_api/mapgdapi.h	/^static PySpam_System_RETURN PySpam_System PySpam_System_PROTO;$/;"	v
+QUARTET_H_	raw/quartet.h	2;"	d
+RAW_OBJ	Makefile	/^RAW_OBJ=raw\/genotype.o \\$/;"	m
+READ	io/map_file.h	31;"	d
+READ	stream_tools/tmp_buffer.h	14;"	d
+REAL_MAX	typedef.h	26;"	d
+REL_ARRAY	newton-method-rel.h	645;"	d
+REL_CNTS	newton-method-rel.h	644;"	d
+Region	raw/region.cc	/^Region::Region()$/;"	f	class:Region
+Region	raw/region.cc	/^Region::Region(const id0_t &this_id0, const id1_t &this_start, const id1_t &this_stop)$/;"	f	class:Region
+Region	raw/region.cc	/^Region::Region(const id1_t &this_start, const id1_t &this_stop)$/;"	f	class:Region
+Region	raw/region.cc	/^Region::Region(const std::string &this_name, const id1_t &this_start, const id1_t &this_stop)$/;"	f	class:Region
+Region	raw/region.h	/^class Region {$/;"	c
+Registration	data_types/data.cc	/^Registration::Registration (const std::string &str, Data*(*fn)(const std::vector <std::string> &) )$/;"	f	class:Registration
+Registration	data_types/data.h	/^class Registration $/;"	c
+Registry_initalizer	data_types/data.cc	/^Registry_initalizer::Registry_initalizer()$/;"	f	class:Registry_initalizer
+Registry_initalizer	data_types/data.h	/^static struct Registry_initalizer {$/;"	s
+Registry_initalizer	data_types/data.h	/^} Registry_initalizer;$/;"	v	typeref:struct:Registry_initalizer
+Relatedness	data_types/pedigree.cc	/^Relatedness::Relatedness (){$/;"	f	class:Relatedness
+Relatedness	data_types/pedigree.cc	/^Relatedness::Relatedness (const std::string &X, const std::string &Y){$/;"	f	class:Relatedness
+Relatedness	data_types/relatedness_data.cc	/^Relatedness::Relatedness (){$/;"	f	class:Relatedness
+Relatedness	data_types/relatedness_data.cc	/^Relatedness::Relatedness (const std::string &X, const std::string &Y){$/;"	f	class:Relatedness
+Relatedness	data_types/relatedness_data.h	/^	Relatedness(const std::vector <std::string> &) : Relatedness(){}; $/;"	f	class:Relatedness
+Relatedness	data_types/relatedness_data.h	/^class Relatedness : public Data{ $/;"	c
+SAMPLE_GOF_H	data_types/sample_gof.h	4;"	d
+SB	data_conversion/vcf-file.h	/^		SB,$/;"	e	enum:Info::Key
+SB	data_conversion/vcf-file.h	/^	float_t SB;$/;"	m	class:Vcf_data
+SOMATIC	data_conversion/vcf-file.h	/^		SOMATIC,$/;"	e	enum:Info::Key
+SOMATIC	data_conversion/vcf-file.h	/^        bool SOMATIC;$/;"	m	class:Vcf_data
+SQL_LINE_SIZE	typedef.h	28;"	d
+SQL_OBJ	Makefile	/^SQL_OBJ=sql\/writesql.o \\$/;"	m
+SQRT2	commands/fastview.h	20;"	d
+SQRT2	commands/proview.h	21;"	d
+SUBDIR	Makefile	/^SUBDIR=raw sql data_types commands data_conversion stream_tools $/;"	m
+Sample_gof	data_types/sample_gof.cc	/^Sample_gof::Sample_gof ()$/;"	f	class:Sample_gof
+Sample_gof	data_types/sample_gof.cc	/^Sample_gof::Sample_gof (const std::string &name, const float_t &number)$/;"	f	class:Sample_gof
+Sample_gof	data_types/sample_gof.h	/^	Sample_gof(std::vector <std::string>) : Sample_gof(){};	$/;"	f	class:Sample_gof
+Sample_gof	data_types/sample_gof.h	/^class Sample_gof : public Data { $/;"	c
+Sample_name	data_types/sample_name.cc	/^Sample_name::Sample_name ()$/;"	f	class:Sample_name
+Sample_name	data_types/sample_name.cc	/^Sample_name::Sample_name (const std::string &name, const float_t &number)$/;"	f	class:Sample_name
+Sample_name	data_types/sample_name.h	/^	Sample_name(const std::vector <std::string> &) : Sample_name(){};	$/;"	f	class:Sample_name
+Sample_name	data_types/sample_name.h	/^class Sample_name : public virtual Data { $/;"	c
+Slow_index	testing/exact_lsq_estimators.cc	/^	Slow_index(const size_t &_N)$/;"	f	class:Slow_index
+Slow_index	testing/exact_lsq_estimators.cc	/^class Slow_index$/;"	c	file:
+State	data_types/state.cc	/^State::State()$/;"	f	class:State
+State	data_types/state.cc	/^State::State(const State &rhs)$/;"	f	class:State
+State	data_types/state.cc	/^State::State(const std::vector <std::string> &column_names)$/;"	f	class:State
+State	data_types/state.h	/^class State : public data {$/;"	c
+TARGET	Makefile	/^	TARGET=..\/..\/bin\/mapgd$/;"	m
+TARGET	Makefile	/^	TARGET=..\/..\/bin\/mapgd-win32.exe$/;"	m
+TARGET	Makefile	/^	TARGET=..\/..\/bin\/mapgd-win64.exe$/;"	m
+TEST_KEYS_H_	commands/test_keys.h	4;"	d
+TMP_BUFFER_H	stream_tools/tmp_buffer.h	7;"	d
+TRACE_LINKAGE	commands/linkage_disequilibrium.cc	117;"	d	file:
+Tmp_buffer	stream_tools/tmp_buffer.cc	/^Tmp_buffer::Tmp_buffer (std::istream **dest, std::istream *src) : std::istream(NULL) $/;"	f	class:Tmp_buffer
+Tmp_buffer	stream_tools/tmp_buffer.h	/^	Tmp_buffer (void) : std::istream(NULL){};$/;"	f	class:Tmp_buffer
+Tmp_buffer	stream_tools/tmp_buffer.h	/^class Tmp_buffer : public std::istream {$/;"	c
+Tmp_streambuf	stream_tools/tmp_buffer.cc	/^Tmp_streambuf::Tmp_streambuf()$/;"	f	class:Tmp_streambuf
+Tmp_streambuf	stream_tools/tmp_buffer.h	/^class Tmp_streambuf : public std::streambuf {$/;"	c
+Usage	commands/interface.cc	/^Usage(Environment env, FILE *out){$/;"	f
+VALIDATED	data_conversion/vcf-file.h	/^		VALIDATED,$/;"	e	enum:Info::Key
+VALIDATED	data_conversion/vcf-file.h	/^        bool VALIDATED; $/;"	m	class:Vcf_data
+VERSION	Makefile	/^VERSION=-D VERSION=\\"0.4.$(MINOR)\\"$/;"	m
+Vcf_data	data_conversion/vcf-file.cc	/^Vcf_data::Vcf_data ()$/;"	f	class:Vcf_data
+Vcf_data	data_conversion/vcf-file.h	/^class Vcf_data : public External_data {$/;"	c
+Vcf_file	data_conversion/vcf-file.h	/^class Vcf_file : public External_file <Vcf_data> {$/;"	c
+WARNINGS	Makefile	/^WARNINGS=-Wno-write-strings$/;"	m
+WRITE	io/map_file.h	32;"	d
+X_	data_types/relatedness_data.h	/^	id0_t X_, Y_;$/;"	m	class:Relatedness
+X_MM	raw/genotype_pair.h	/^	float_t X_MM;$/;"	m	class:Genotype_pair
+X_Mm	raw/genotype_pair.h	/^	float_t X_Mm;$/;"	m	class:Genotype_pair
+X_mm	raw/genotype_pair.h	/^	float_t X_mm;$/;"	m	class:Genotype_pair
+Y_	data_types/relatedness_data.h	/^	id0_t X_, Y_;$/;"	m	class:Relatedness
+Y_MM	raw/genotype_pair.h	/^	float_t Y_MM;$/;"	m	class:Genotype_pair
+Y_Mm	raw/genotype_pair.h	/^	float_t Y_Mm;$/;"	m	class:Genotype_pair
+Y_mm	raw/genotype_pair.h	/^	float_t Y_mm;$/;"	m	class:Genotype_pair
+_1	testing/exact_lsq_estimators.cc	/^	size_t _1, _2, _3, _4, _5;$/;"	m	class:Slow_index	file:
+_2	testing/exact_lsq_estimators.cc	/^	size_t _1, _2, _3, _4, _5;$/;"	m	class:Slow_index	file:
+_3	testing/exact_lsq_estimators.cc	/^	size_t _1, _2, _3, _4, _5;$/;"	m	class:Slow_index	file:
+_4	testing/exact_lsq_estimators.cc	/^	size_t _1, _2, _3, _4, _5;$/;"	m	class:Slow_index	file:
+_5	testing/exact_lsq_estimators.cc	/^	size_t _1, _2, _3, _4, _5;$/;"	m	class:Slow_index	file:
+_BCF2PRO_H_	data_conversion/bcf2pro.h	4;"	d
+_BCF_FILE_H_	data_conversion/bcf2pro-file.h	4;"	d
+_BINOMIAL_H_	math_functions/binomial.h	2;"	d
+_CICULAR_LIST_H_	testing/circular_list.h	2;"	d
+_CICULAR_LIST_H_	testing/circular_list2.h	2;"	d
+_COMMANDS_H_	commands.h	15;"	d
+_COMPAREPOOLED_H_	commands/compare-individual.h	5;"	d
+_COMPAREPOOLED_H_	commands/compare-pooled.h	5;"	d
+_DATA_H_	data_types/data.h	2;"	d
+_DBAPI_	sql/db_api.h	2;"	d
+_ESTIMATE_FST_H_	commands/estimate_fst.h	2;"	d
+_ESTIMATE_INDIVIDUAL_H_	commands/estimate_individual.h	2;"	d
+_ESTIMATE_POOLED_H_	commands/estimate_pooled.h	2;"	d
+_EXTERNAL_DATA_H_	data_conversion/external-data.h	2;"	d
+_EXTERNAL_FILE_H_	data_conversion/external-file.h	2;"	d
+_FASTVIEW_H_	commands/fastview.h	2;"	d
+_FILE_INDEX_H_	data_types/file_index.h	2;"	d
+_GENOTYPE_H_	raw/genotype.h	2;"	d
+_GENOTYPE_H_	raw/pedigree_record.h	2;"	d
+_GENOTYPE_PAIR_H_	raw/genotype_pair.h	2;"	d
+_INDIVIDUAL_LIKELIHOOD_H_	individual_likelihood.h	2;"	d
+_INTERFACE_H_	commands/interface.h	11;"	d
+_KEY_H_	data_types/key.h	4;"	d
+_LINKAGE_H_	data_types/linkage_data.h	2;"	d
+_LNMULTINOMIAL_H_	math_functions/lnmultinomial.h	4;"	d
+_LOG_H_	data_types/log.h	4;"	d
+_MAKE_VCF_H_	commands/make-vcf.h	2;"	d
+_MAP2GENOTYPE_H_	commands/map2genotype.h	2;"	d
+_MAPGD_HELP_H_	commands/mapgd_help.h	2;"	d
+_MAP_FILE_H_	io/map_file.h	2;"	d
+_MODELS_H_	math_functions/models.h	2;"	d
+_MPI_RELATEDNESS_H_	mpi/mpi_relatedness.h	2;"	d
+_PEDIGREE_DATA_H_	data_types/pedigree.h	2;"	d
+_PHENOTYPE_H_	data_types/phenotype.h	2;"	d
+_POOLEDLIKELIHOOD_H_	pooled_likelihood.h	2;"	d
+_POOLED_DATA_H_	data_types/pooled_data.h	2;"	d
+_POPLD_H_	commands/linkage_disequilibrium.h	2;"	d
+_POPULATION_H_	data_types/population.h	2;"	d
+_PROVIEW_H_	commands/proview.h	2;"	d
+_READ_SQL_H_	sql/readsql.h	2;"	d
+_READ_VCF_H_	commands/read_vcf.h	2;"	d
+_REGION_H_	raw/region.h	2;"	d
+_REGRESS_H_	testing/regress.h	2;"	d
+_RELATEDNESS_DATA_H_	data_types/relatedness_data.h	2;"	d
+_RELATEDNESS_H_	commands/relatedness.h	2;"	d
+_SAM2IDX_H_	commands/sam2idx.h	2;"	d
+_SAMPLE_NAME_H_	data_types/sample_name.h	4;"	d
+_STATE_H_	data_types/state.h	2;"	d
+_STREAMTOOLS_H_	stream_tools/stream_tools.h	2;"	d
+_TEST_RELATEDNESS_H_	commands/relatedness_test.h	2;"	d
+_TYPEDEF_H_	typedef.h	2;"	d
+_VCF_FILE_H_	data_conversion/vcf-file.h	4;"	d
+_WRITE_SQL_H_	sql/writesql.h	2;"	d
+_buffer	stream_tools/tmp_buffer.h	/^	std::stringstream _buffer;$/;"	m	class:Tmp_streambuf
+_dest	stream_tools/tmp_buffer.h	/^	std::istream **_dest;$/;"	m	class:Tmp_streambuf
+_mode	stream_tools/tmp_buffer.h	/^	int _mode;$/;"	m	class:Tmp_streambuf
+_opened	stream_tools/tmp_buffer.h	/^	bool _opened;$/;"	m	class:Tmp_streambuf
+_size	raw/constants.h	/^	size_t _size;$/;"	m	class:Constants
+_spool	stream_tools/tmp_buffer.h	/^	Tmp_streambuf _spool;$/;"	m	class:Tmp_buffer
+_src	stream_tools/tmp_buffer.h	/^	std::istream *_src;$/;"	m	class:Tmp_streambuf
+a_hat	data_types/phenotype.h	/^	std::vector <real_t> a_hat;	\/\/!< additive genetic value$/;"	m	class:Phenotype
+abs_pos_	data_types/data.h	/^	id1_t abs_pos_;$/;"	m	class:Indexed_data
+abs_start	raw/region.h	/^	id1_t abs_start, start, abs_stop, stop;$/;"	m	class:Region
+abs_stop	raw/region.h	/^	id1_t abs_start, start, abs_stop, stop;$/;"	m	class:Region
+add_id	data_types/file_index.cc	/^File_index::add_id(const std::string & id_str, const id1_t &length)$/;"	f	class:File_index
+adj_D	data_types/linkage_data.cc	/^Linkage::adj_D (void) const$/;"	f	class:Linkage
+adj_Dmax	data_types/linkage_data.cc	/^Linkage::adj_Dmax (void) const$/;"	f	class:Linkage
+adj_Dmin	data_types/linkage_data.cc	/^Linkage::adj_Dmin (void) const$/;"	f	class:Linkage
+adj_Dprime	data_types/linkage_data.cc	/^Linkage::adj_Dprime(void) const$/;"	f	class:Linkage
+adj_Dsq	data_types/linkage_data.cc	/^Linkage::adj_Dsq (void) const$/;"	f	class:Linkage
+adj_rsq	data_types/linkage_data.cc	/^Linkage::adj_rsq (void) const$/;"	f	class:Linkage
+alt	data_conversion/vcf-file.h	/^	std::vector <std::string> alt;$/;"	m	class:Vcf_data
+arg_error	commands/interface.cc	/^arg_error(int argc, char **argv, void *parm)$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, Region &c){return arg_set_region(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, char &c){return arg_set_char(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, double &c){return arg_set_double(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, float &c){return arg_set_float(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, int &c){return arg_set_int(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, long double &c){return arg_set_long_double(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, std::string &c){return arg_set_str(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, std::vector<std::string> &c){return arg_set_vector_str(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, std::vector<unsigned int> &c){return arg_set_vector_ui(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, std::vector<unsigned long int> &c){return arg_set_vector_uli(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, std::vector<unsigned long long int> &c){return arg_set_vector_ulli(a,b, &c); }$/;"	f
+arg_set	commands/interface.h	/^inline int arg_set(int a, char **b, std::vector<unsigned short int> &c){return arg_set_vector_usi(a,b, &c); }$/;"	f
+arg_set_char	commands/interface.cc	/^arg_set_char(int argc, char **argv, void *parm)$/;"	f
+arg_set_double	commands/interface.cc	/^arg_set_double(int argc, char **argv, void *parm)$/;"	f
+arg_set_float	commands/interface.cc	/^arg_set_float(int argc, char **argv, void *parm)$/;"	f
+arg_set_int	commands/interface.cc	/^arg_set_int(int argc, char **argv, void *parm)$/;"	f
+arg_set_long_double	commands/interface.cc	/^arg_set_long_double(int argc, char **argv, void *parm)$/;"	f
+arg_set_region	commands/interface.cc	/^arg_set_region(int argc, char **argv, void *parm)$/;"	f
+arg_set_str	commands/interface.cc	/^arg_set_str(int argc, char **argv, void *parm)$/;"	f
+arg_set_vector_str	commands/interface.cc	/^arg_set_vector_str(int argc, char **argv, void *parm)$/;"	f
+arg_set_vector_ui	commands/interface.cc	/^arg_set_vector_ui(int argc, char **argv, void *parm)$/;"	f
+arg_set_vector_uli	commands/interface.cc	/^arg_set_vector_uli(int argc, char **argv, void *parm)$/;"	f
+arg_set_vector_ulli	commands/interface.cc	/^arg_set_vector_ulli(int argc, char **argv, void *parm)$/;"	f
+arg_setc_str	commands/interface.cc	/^arg_setc_str(int argc, char **argv, void *parm)$/;"	f
+args	commands/interface.h	/^	std::list <Argument> args;				\/\/!< A list of options that can be passed from the command line$/;"	m	class:Environment
+ator	raw/region.cc	/^Region ator(const char *c_str)$/;"	f
+author	commands/interface.h	/^	const char *author;		\/\/!< author(s)$/;"	m	class:Environment
+author	python_api/setup.py	/^      	author='Matthew Ackerman',$/;"	v
+base	raw/base.h	/^	gt_t base;$/;"	m	class:Base
+base	raw/quartet.h	/^	count_t base[5];	\/\/!< The count of the number of occurnaces of bases. What nucleotieds this cout represents is stored at the Locus. $/;"	m	struct:quartet
+batcmd	python_api/setup.py	/^batcmd="find ..\/ -name \\"*.o\\" -not -name mapgd.o -not -name mappy.o -not -name gzstream.o | tr -s \\'\\\\n\\'  \\' \\' "$/;"	v
+baysian_genotype	commands/map2genotype.cc	/^baysian_genotype(const int &major, const int &minor, const float_t &freq, const float_t &error, const quartet_t &quart)$/;"	f
+begin	data_types/locus.h	/^	inline std::vector <quartet_t>::iterator begin(void) {return sample.begin();};		\/\/!< Return an iterator to the quartet_t s stored at this Locus.$/;"	f	class:Locus
+begin	testing/circular_list.h	/^	iterator begin(void) const$/;"	f	class:Circular_list
+beta	testing/exact_lsq_estimators.cc	206;"	d	file:
+bgt_	data_types/state.h	/^	Bgt bgt_;$/;"	m	class:State
+bgt_compression_	data_types/state.h	/^	bool bgt_compression_;$/;"	m	class:State
+bianary	data_types/file_index.h	/^        bool bianary(void) const {return false;};$/;"	f	class:File_index
+binary	commands/proview.h	/^	bool binary;$/;"	m	struct:Args
+binary	data_types/allele.cc	/^const bool Allele::binary=false;$/;"	m	class:Allele	file:
+binary	data_types/allele.h	/^	static const bool binary;	        \/\/!< Default file extension.$/;"	m	class:Allele
+binary	data_types/data.cc	/^const bool Data::binary=false; \/\/!< A flag to indicate that binary reading\/writing is not supported by default.$/;"	m	class:Data	file:
+binary	data_types/data.h	/^        static const bool binary;$/;"	m	class:Data
+binary	data_types/file_index.cc	/^const bool File_index::binary=false;$/;"	m	class:File_index	file:
+binary	data_types/file_index.h	/^	static const bool binary;	\/\/!< Returns the destination table name.$/;"	m	class:File_index
+binary	data_types/key.cc	/^const bool Key::binary=false;$/;"	m	class:Key	file:
+binary	data_types/key.h	/^	static const bool binary;				\/\/!< Destination table in Db.$/;"	m	class:Key
+binary	data_types/linkage_data.cc	/^const bool Linkage::binary=false;$/;"	m	class:Linkage	file:
+binary	data_types/linkage_data.h	/^	static const bool binary;	\/\/!< Returns the destination table name.$/;"	m	class:Linkage
+binary	data_types/locus.cc	/^const bool Locus::binary=true;$/;"	m	class:Locus	file:
+binary	data_types/locus.h	/^	static const bool binary;$/;"	m	class:Locus
+binary	data_types/log.cc	/^const bool Log::binary=false;$/;"	m	class:Log	file:
+binary	data_types/log.h	/^	static const bool binary;$/;"	m	class:Log
+binary	data_types/pedigree.cc	/^const bool Relatedness::binary=false;$/;"	m	class:Relatedness	file:
+binary	data_types/pedigree.h	/^	static const bool binary;$/;"	m	class:Pedigree
+binary	data_types/phenotype.cc	/^const bool Population::binary=false;$/;"	m	class:Population	file:
+binary	data_types/phenotype.h	/^	static const bool binary;$/;"	m	class:Phenotype
+binary	data_types/pooled_data.cc	/^const bool Pooled_data::binary=false;$/;"	m	class:Pooled_data	file:
+binary	data_types/pooled_data.h	/^	static const bool binary;$/;"	m	class:Pooled_data
+binary	data_types/population.cc	/^const bool Population::binary=true;$/;"	m	class:Population	file:
+binary	data_types/population.h	/^	static const bool binary;$/;"	m	class:Population
+binary	data_types/relatedness_data.cc	/^const bool Relatedness::binary=false;$/;"	m	class:Relatedness	file:
+binary	data_types/relatedness_data.h	/^	static const bool binary;$/;"	m	class:Relatedness
+binary	data_types/sample_gof.cc	/^const bool Sample_gof::binary=false;$/;"	m	class:Sample_gof	file:
+binary	data_types/sample_gof.h	/^	static const bool binary;					\/\/!< Destination table in Db.$/;"	m	class:Sample_gof
+binary	data_types/sample_name.cc	/^const bool Sample_name::binary=false;$/;"	m	class:Sample_name	file:
+binary	data_types/sample_name.h	/^	static const bool binary;				\/\/!< Destination table in Db.$/;"	m	class:Sample_name
+binary	data_types/state.cc	/^const bool State::binary=true;$/;"	m	class:State	file:
+binary	data_types/state.h	/^	static const bool binary;				\/\/!< flag that indicates whether binary output is avalible.$/;"	m	class:State
+binary	io/map_file.cc	/^bool Base_file::binary(void) const$/;"	f	class:Base_file
+binary_	io/map_file.h	/^	bool binary_;		\/\/!< Binary mode flag. $/;"	m	class:Base_file
+binom_coef	math_functions/binomial.cc	/^uint32_t binomial::binom_coef(const uint32_t &n, const uint32_t &k){$/;"	f	class:binomial
+binomial	math_functions/binomial.h	/^	binomial () {};$/;"	f	class:binomial
+binomial	math_functions/binomial.h	/^	binomial (const float_t &p) {p_=p;};			\/\/!< The constructor can be called with a float_t to specify the probability of success.$/;"	f	class:binomial
+binomial	math_functions/binomial.h	/^class binomial {$/;"	c
+bit_	data_types/state.h	/^	size_t bit_;$/;"	m	class:State
+btoc	raw/base.cc	/^char Base::btoc(const gt_t &b) $/;"	f	class:Base
+buf	gzstream/gzstream.h	/^    gzstreambuf buf;$/;"	m	class:GZSTREAM_NAMESPACE::gzstreambase
+buffer	gzstream/gzstream.h	/^    char             buffer[bufferSize]; \/\/ data buffer$/;"	m	class:GZSTREAM_NAMESPACE::gzstreambuf
+bufferSize	gzstream/gzstream.h	/^    static const int bufferSize = 47+256;    \/\/ size of data buff$/;"	m	class:GZSTREAM_NAMESPACE::gzstreambuf
+buffer_	io/map_file.h	/^	Tmp_buffer buffer_;	\/\/!< an buffer which can be rewound.$/;"	m	class:Base_file
+buffer_off	stream_tools/tmp_buffer.h	/^	void buffer_off (void) {_spool.buffered=false;};$/;"	f	class:Tmp_buffer
+buffer_on	stream_tools/tmp_buffer.h	/^	void buffer_on (void) {_spool.buffered=true;};$/;"	f	class:Tmp_buffer
+buffered	stream_tools/tmp_buffer.h	/^	bool buffered, reread;$/;"	m	class:Tmp_streambuf
+byte_size_	data_types/file_index.h	/^	size_t byte_size_;$/;"	m	class:File_index
+c	raw/constants.h	/^	R* c;$/;"	m	class:Constants
+c	stream_tools/tmp_buffer.h	/^	char c;$/;"	m	class:Tmp_streambuf
+call_back	sql/db_api.cc	/^int call_back(void *stream, int argc, char **argv, char **azColName){$/;"	f
+call_major	data_conversion/vcf-file.cc	/^void call_major(const  Genotype &gtl, int32_t *calls)$/;"	f
+call_minor	data_conversion/vcf-file.cc	/^void call_minor(const  Genotype &gtl, int32_t *calls)$/;"	f
+cbegin	data_types/locus.h	/^	cbegin(void) const {$/;"	f	class:Locus
+cbegin	testing/circular_list.h	/^	const_iterator cbegin(void) const$/;"	f	class:Circular_list
+cend	data_types/locus.h	/^	cend(void) const {$/;"	f	class:Locus
+cfn	newton-method-rel.h	/^static void (*cfn[58])(Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &, const std::pair <const Genotype_pair &, const Relatedness &> &)={&set_c55$/;"	v
+cfn	raw/constants.h	/^	void (**cfn) (Constants <R, T> &, const T &);$/;"	m	class:Constants
+cfn_ld	newton-method-ld.h	/^static void (*cfn_ld[34])(Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &, const std::tuple<const Population &, const Population &, const float_t &> &)={&set_c27 , &set_c26$/;"	v
+char_per_line_	data_types/state.h	/^	size_t char_per_line_;$/;"	m	class:State
+char_size_	data_types/state.h	/^	size_t char_size_;$/;"	m	class:State
+check_compressed	io/map_file.cc	/^bool Base_file::check_compressed(void)$/;"	f	class:Base_file
+check_concatenated	io/map_file.cc	/^bool Base_file::check_concatenated(void)$/;"	f	class:Base_file
+check_stream	stream_tools/stream_tools.cc	/^check_stream(std::istream *s)$/;"	f
+clear	data_types/pedigree.cc	/^Relatedness::clear(void)$/;"	f	class:Relatedness
+clear	data_types/relatedness_data.cc	/^Relatedness::clear(void)$/;"	f	class:Relatedness
+clear_read	stream_tools/tmp_buffer.cc	/^Tmp_streambuf::clear_read(void)$/;"	f	class:Tmp_streambuf
+clear_read	stream_tools/tmp_buffer.cc	/^void Tmp_buffer::clear_read(void)$/;"	f	class:Tmp_buffer
+close	commands/interface.cc	/^Environment::close(void)$/;"	f	class:Environment
+close	data_conversion/vcf-file.cc	/^Vcf_file::close(void)$/;"	f	class:Vcf_file
+close	gzstream/gzstream.C	/^gzstreambuf * gzstreambuf::close() {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+close	gzstream/gzstream.C	/^void gzstreambase::close() {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambase
+close	io/map_file.cc	/^void Base_file::close(void)$/;"	f	class:Base_file
+close	stream_tools/tmp_buffer.cc	/^Tmp_streambuf::close(void)$/;"	f	class:Tmp_streambuf
+close_table	io/map_file.cc	/^void Base_file::close_table(void){$/;"	f	class:Base_file
+columns_	data_conversion/bcf2pro-file.h	/^	int columns_, offset_;$/;"	m	class:Bcf2pro_file
+command	commands/interface.h	/^	void command (char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_)$/;"	f	class:Environment
+command	data_types/log.h	/^	std::string command;$/;"	m	class:Log
+commands	commands/interface.h	/^	std::list <Command> commands;			\/\/!< A list of sub-commands that can be called from the command line$/;"	m	class:Environment
+comparePooled	commands/compare-individual.cc	/^int comparePooled(int argc, char *argv[])$/;"	f
+comparePooled	commands/compare-pooled.cc	/^comparePooled(int argc, char *argv[])$/;"	f
+compressed_	io/map_file.h	/^	bool compressed_;	$/;"	m	class:Base_file
+concatenated	io/map_file.cc	/^const bool& Base_file::concatenated(void)$/;"	f	class:Base_file
+concatenated_	io/map_file.h	/^	bool concatenated_;	$/;"	m	class:Base_file
+const_iterator	testing/circular_list.h	/^	typedef const C_it<T> const_iterator;$/;"	t	class:Circular_list
+convert	depricated/convert.cc	/^int convert(int argc, char *argv[])$/;"	f
+convert	raw/genotype_pair.cc	/^convert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &precision)$/;"	f
+count	raw/quartet.cc	/^count_t count(const quartet_t &q){$/;"	f
+count_sites	commands/linkage_disequilibrium.cc	/^count_sites(const Population &X, const Population &Y)$/;"	f
+count_sites	testing/PopLD-fast.cc	/^count_sites(const Population &X, const Population &Y)$/;"	f
+count_sites	testing/PopLD-fast2.cc	/^count_sites(const Locus &X, const Locus &Y)$/;"	f
+count_sites	testing/PopLD-tm.cc	/^count_sites(const Locus &X, const Locus &Y)$/;"	f
+count_t	typedef.h	/^typedef uint16_t count_t;	\/\/Should be used to specify depth of coverage only.  $/;"	t
+cov	data_types/pooled_data.h	/^	std::vector <float_t> cov;	\/\/!< a vector of coverage$/;"	m	class:Pooled_data
+coverage	data_types/allele.h	/^	count_t coverage;	\/\/!< population coverage.$/;"	m	class:Allele
+coverage	data_types/pooled_data.h	/^	count_t coverage;$/;"	m	class:Pooled_data
+create	data_types/allele.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Allele
+create	data_types/file_index.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:File_index
+create	data_types/key.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Key
+create	data_types/linkage_data.h	/^	static Data * create(const std::vector <std::string> &columns){$/;"	f	class:Linkage
+create	data_types/locus.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Locus
+create	data_types/log.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Log
+create	data_types/pedigree.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Pedigree
+create	data_types/phenotype.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Phenotype
+create	data_types/pooled_data.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Pooled_data
+create	data_types/population.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Population
+create	data_types/relatedness_data.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Relatedness
+create	data_types/sample_gof.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Sample_gof
+create	data_types/sample_name.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:Sample_name
+create	data_types/state.h	/^	static Data * create(const std::vector <std::string> & Columns){$/;"	f	class:State
+ctob	raw/base.cc	/^gt_t Base::ctob(const char &c)$/;"	f	class:Base
+cumulative_size_	data_types/file_index.h	/^	std::vector <id1_t> cumulative_size_;	$/;"	m	class:File_index
+current_time	data_types/log.cc	/^current_time(const time_t &time) $/;"	f
+d_hat	data_types/phenotype.h	/^	std::vector <real_t> d_hat;	\/\/!< dominance deviation$/;"	m	class:Phenotype
+data	data_types/state.h	/^	uint32_t *data;$/;"	m	class:State
+data	python_api/mappy.cc	/^	Data *data;$/;"	m	struct:file_s	file:
+db_begin	sql/db_api.cc	/^void db_begin(sqlite3 *db)$/;"	f
+db_close_table	sql/db_api.cc	/^db_close_table(sqlite3_stmt *query)$/;"	f
+db_end	sql/db_api.cc	/^void db_end(sqlite3 *db)$/;"	f
+db_get	sql/db_api.cc	/^int db_get(std::stringstream *stream, Data *these_data)$/;"	f
+db_insert	sql/db_api.cc	/^void db_insert(sqlite3 *db, const Data *these_data)$/;"	f
+db_make_table	sql/db_api.cc	/^void db_make_table(sqlite3 *db, const Data *these_data)$/;"	f
+db_open_table	sql/db_api.cc	/^void db_open_table(sqlite3 *db, Data *these_data, std::stringstream *stream)$/;"	f
+default_order	data_types/locus.cc	/^const gt_t Locus::default_order[5] = {0,1,2,3,4};$/;"	m	class:Locus	file:
+default_order	data_types/locus.h	/^	static const gt_t default_order[5];$/;"	m	class:Locus
+delim	data_types/allele.h	/^	char delim;		\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Allele
+delim	data_types/key.h	/^	char delim;		\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Key
+delim	data_types/linkage_data.h	/^	char delim;		\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Linkage
+delim	data_types/log.h	/^	char delim;		\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Log
+delim	data_types/pedigree.h	/^	char delim;	\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Pedigree
+delim	data_types/pooled_data.h	/^	char delim;		\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Pooled_data
+delim	data_types/relatedness_data.h	/^	char delim;	\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Relatedness
+delim	data_types/sample_gof.h	/^	char delim;		\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Sample_gof
+delim	data_types/sample_name.h	/^	char delim;		\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Sample_name
+delim	raw/quartet.h	/^	char delim;$/;"	m	struct:quartet
+delim_column_	io/map_file.h	/^	char delim_column_;	$/;"	m	class:Base_file
+delta_XY_	data_types/relatedness_data.h	/^	float_t delta_XY_, delta_XY_ll;$/;"	m	class:Relatedness
+delta_XY_ll	data_types/relatedness_data.h	/^	float_t delta_XY_, delta_XY_ll;$/;"	m	class:Relatedness
+description	commands/interface.h	/^	const char *description;	\/\/!< a brief description of the command being executed$/;"	m	class:Environment
+description	data_types/key.h	/^	std::string description, type;$/;"	m	class:Key
+description	python_api/setup.py	/^	description = 'This is a mapgd api',$/;"	v
+do_estimate	commands/estimate_individual.cc	/^do_estimate(Allele* buffer_mle, Locus& buffer_site, models& model, $/;"	f
+downsample_genotypes	commands/relatedness.cc	/^downsample_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y, const bool &l2o)$/;"	f
+downvert	raw/genotype_pair.cc	/^downvert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &precision)$/;"	f
+e1	data_types/allele.h	/^	gt_t e1;		\/\/!< identity of error1$/;"	m	class:Allele
+e2	data_types/allele.h	/^	gt_t e2;		\/\/!< identity of error2.$/;"	m	class:Allele
+e_X_	data_types/relatedness_data.h	/^	float_t e_X_[E_LIM], e_X_ll;$/;"	m	class:Relatedness
+e_X_ll	data_types/relatedness_data.h	/^	float_t e_X_[E_LIM], e_X_ll;$/;"	m	class:Relatedness
+e_Y_	data_types/relatedness_data.h	/^	float_t e_Y_[E_LIM], e_Y_ll;$/;"	m	class:Relatedness
+e_Y_ll	data_types/relatedness_data.h	/^	float_t e_Y_[E_LIM], e_Y_ll;$/;"	m	class:Relatedness
+e_hat	data_types/phenotype.h	/^	std::vector <real_t> e_hat;	\/\/!< environmental deviation$/;"	m	class:Phenotype
+efc	data_types/allele.h	/^	float_t efc; 		\/\/!< number of 'effective' chromosomes in the sample.$/;"	m	class:Allele
+efc	individual_likelihood.cc	/^float_t efc (const Locus &site)$/;"	f
+emsg	commands/interface.h	/^	char *emsg;		\/\/!< A short error message to display when the proper parameters aren't passed to this option.$/;"	m	class:Flag
+emsg	commands/interface.h	/^	char *emsg;	\/\/!< A short error message to display when the proper parameters aren't passed to this option$/;"	m	class:Command
+emsg	commands/interface.h	/^	char *emsg; \/\/!< A short error message to display when the proper parameters aren't passed to this option.$/;"	m	class:Argument
+end	data_types/locus.h	/^	end(void) {$/;"	f	class:Locus
+end_	data_types/state.h	/^	uint32_t *it_, end_;$/;"	m	class:State
+eof	io/map_file.cc	/^bool Base_file::eof(void)$/;"	f	class:Base_file
+error	data_types/allele.h	/^	float_t error;		\/\/!< ml error rate.$/;"	m	class:Allele
+error	data_types/pooled_data.h	/^	float_t error;$/;"	m	class:Pooled_data
+estimate	commands/estimate_individual.cc	/^Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton){$/;"	f
+estimateInd	commands/estimate_individual.cc	/^int estimateInd(int argc, char *argv[])$/;"	f
+estimatePooled	commands/estimate_pooled.cc	/^int estimatePooled(int argc, char *argv[])$/;"	f
+estimateRel	commands/relatedness.cc	/^estimateRel(int argc, char *argv[])$/;"	f
+estimateRel	commands/relatedness.cc	/^int estimateRel(int argc, char *argv[])$/;"	f
+estimateRel	mpi/mpi_relatedness.cc	/^estimateRel(int argc, char *argv[])$/;"	f
+estimateRel	mpi/mpi_relatedness.cc	/^int estimateRel(int argc, char *argv[])$/;"	f
+estimateRel	testing/regress.cc	/^estimateRel(int argc, char *argv[])$/;"	f
+estimate_D	commands/linkage_disequilibrium.cc	/^Linkage estimate_D (const Population &P1, const Population &P2, const float_t &cD)\/\/, std::default_random_engine &re)$/;"	f
+estimate_D	depricated/PopLD-old.cc	/^Linkage estimate_D(double Ni, int mlNuc1_1, int mlNuc2_1, int mlNuc1_2, int mlNuc2_2, double best_p, double best_q, double best_error_1, double best_error_2, int nsample, int mononuc_count_1[][5], int mononuc_count_2[][5], int *cov1, int *cov2)$/;"	f
+estimate_D	testing/PopLD-fast.cc	/^Linkage estimate_D (const Population &P1, const Population &P2, float_t &D)$/;"	f
+estimate_D	testing/PopLD-fast2.cc	/^Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &mlNuc2_1, const uint8_t &mlNuc1_2, const uint8_t &mlNuc2_2, float_t &best_p, float_t &best_q, float_t &best_error_1, float_t &best_error_2, const count_t &nsample, const Locus &mononuc_count_1, const Locus &mononuc_count_2)$/;"	f
+estimate_D	testing/PopLD-tm.cc	/^Linkage estimate_D (const float_t &Ni, const uint8_t &mlNuc1_1, const uint8_t &mlNuc2_1, const uint8_t &mlNuc1_2, const uint8_t &mlNuc2_2, float_t &best_p, float_t &best_q, float_t &best_error_1, float_t &best_error_2, const count_t &nsample, const Locus &mononuc_count_1, const Locus &mononuc_count_2)$/;"	f
+estimate_fst	commands/estimate_fst.cc	/^int estimate_fst(int argc, char *argv[])$/;"	f
+excluded	data_types/allele.h	/^	count_t excluded;	\/\/!< A count of the number of samples that were excluded due to filtering criteria.$/;"	m	class:Allele
+ext_modules	python_api/setup.py	/^	ext_modules = [module1])$/;"	v
+extra_link_args	python_api/setup.py	/^		extra_link_args=['-lgomp'],$/;"	v
+extra_objects	python_api/setup.py	/^		extra_objects = objects )$/;"	v
+f	data_types/allele.h	/^	float_t f;		\/\/!< HW statistic.$/;"	m	class:Allele
+f	data_types/population.h	/^	float_t f;					\/\/!< departure from HWE$/;"	m	class:Population
+f_X_	data_types/relatedness_data.h	/^	float_t f_X_, f_X_ll;$/;"	m	class:Relatedness
+f_X_ll	data_types/relatedness_data.h	/^	float_t f_X_, f_X_ll;$/;"	m	class:Relatedness
+f_Y_	data_types/relatedness_data.h	/^	float_t f_Y_, f_Y_ll;$/;"	m	class:Relatedness
+f_Y_ll	data_types/relatedness_data.h	/^	float_t f_Y_, f_Y_ll;$/;"	m	class:Relatedness
+fact	math_functions/binomial.cc	/^uint32_t binomial::fact(const uint32_t &s){$/;"	f	class:binomial
+fact_vector	math_functions/binomial.h	/^	std::vector <uint32_t> fact_vector;			\/\/!< The vector that stores look up values for the binomial coefficent.$/;"	m	class:binomial
+family	raw/pedigree_record.h	/^	size_t family;						$/;"	m	class:Pedigree_record
+fast_bit_sumN	testing/exact_lsq_estimators.cc	/^inline void fast_bit_sumN(const uint32_t *place, const uint32_t &N, const uint32_t &bit, uint32_t *sum)$/;"	f
+fast_het_sumN	testing/exact_lsq_estimators.cc	/^inline void fast_het_sumN(const uint32_t *place, const uint32_t &N, const uint32_t &bit, uint32_t *sum)$/;"	f
+fastview	commands/fastview.cc	/^int fastview(int argc, char *argv[])$/;"	f
+file	gzstream/gzstream.h	/^    gzFile           file;               \/\/ file handle for compressed file$/;"	m	class:GZSTREAM_NAMESPACE::gzstreambuf
+file	python_api/mappy.cc	/^	Base_file *file;$/;"	m	struct:file_s	file:
+file_	io/map_file.h	/^	std::fstream file_;	\/\/!< The file to read data from.$/;"	m	class:Base_file
+file_index_	io/map_file.h	/^	File_index file_index_;	\/\/!< A file_index which turns (id0, id1)->pos.$/;"	m	class:Indexed_file
+file_name	data_types/allele.cc	/^const std::string Allele::file_name=".map";\/\/!< The destination table in the Db.$/;"	m	class:Allele	file:
+file_name	data_types/allele.h	/^	static const std::string file_name;	\/\/!< Default file extension.$/;"	m	class:Allele
+file_name	data_types/data.cc	/^const std::string Data::file_name=".txt";\/\/!< The destination table in the Db.$/;"	m	class:Data	file:
+file_name	data_types/data.h	/^	static const std::string file_name;$/;"	m	class:Data
+file_name	data_types/file_index.cc	/^const std::string File_index::file_name=".idx";$/;"	m	class:File_index	file:
+file_name	data_types/file_index.h	/^	static const std::string file_name;$/;"	m	class:File_index
+file_name	data_types/key.cc	/^const std::string Key::file_name=".txt";$/;"	m	class:Key	file:
+file_name	data_types/key.h	/^	static const std::string file_name;				\/\/!< The dafualt extention for files.$/;"	m	class:Key
+file_name	data_types/linkage_data.cc	/^const std::string Linkage::file_name=".lds";$/;"	m	class:Linkage	file:
+file_name	data_types/linkage_data.h	/^	static const std::string file_name;				\/\/!< The default extension for files.$/;"	m	class:Linkage
+file_name	data_types/locus.cc	/^const std::string Locus::file_name=".pro";$/;"	m	class:Locus	file:
+file_name	data_types/locus.h	/^	static const std::string file_name;$/;"	m	class:Locus
+file_name	data_types/log.cc	/^const std::string Log::file_name=".log";$/;"	m	class:Log	file:
+file_name	data_types/log.h	/^	static const std::string file_name;				\/\/!< The dafualt extention for files.$/;"	m	class:Log
+file_name	data_types/pedigree.cc	/^const std::string Relatedness::file_name=".rel";$/;"	m	class:Relatedness	file:
+file_name	data_types/pedigree.h	/^	static const std::string file_name;	\/\/!< The dafualt extention for files.$/;"	m	class:Pedigree
+file_name	data_types/phenotype.cc	/^const std::string Population::file_name=".gcf";$/;"	m	class:Population	file:
+file_name	data_types/phenotype.h	/^	static const std::string file_name;			\/\/!< defualt file extention.$/;"	m	class:Phenotype
+file_name	data_types/pooled_data.cc	/^const std::string Pooled_data::file_name=".pol";$/;"	m	class:Pooled_data	file:
+file_name	data_types/pooled_data.h	/^	static const std::string file_name;	\/\/!< The dafualt extention for files.$/;"	m	class:Pooled_data
+file_name	data_types/population.cc	/^const std::string Population::file_name=".gcf";$/;"	m	class:Population	file:
+file_name	data_types/population.h	/^	static const std::string file_name;			\/\/!< defualt file extention.$/;"	m	class:Population
+file_name	data_types/relatedness_data.cc	/^const std::string Relatedness::file_name=".rel";$/;"	m	class:Relatedness	file:
+file_name	data_types/relatedness_data.h	/^	static const std::string file_name;	\/\/!< The dafualt extention for files.$/;"	m	class:Relatedness
+file_name	data_types/sample_gof.cc	/^const std::string Sample_gof::file_name=".gof";$/;"	m	class:Sample_gof	file:
+file_name	data_types/sample_gof.h	/^	static const std::string file_name;					\/\/!< The dafualt extention for files.$/;"	m	class:Sample_gof
+file_name	data_types/sample_name.cc	/^const std::string Sample_name::file_name=".txt";$/;"	m	class:Sample_name	file:
+file_name	data_types/sample_name.h	/^	static const std::string file_name;				\/\/!< The dafualt extention for files.$/;"	m	class:Sample_name
+file_name	data_types/state.cc	/^const std::string State::file_name=".stt";$/;"	m	class:State	file:
+file_name	data_types/state.h	/^	static const std::string file_name;			\/\/!< default file extension.$/;"	m	class:State
+file_s	python_api/mappy.cc	/^struct file_s{$/;"	s	file:
+filename	io/map_file.cc	/^const std::string& Base_file::filename(void)$/;"	f	class:Base_file
+filename_	io/map_file.h	/^	std::string filename_;	\/\/!< The name of the file if opened.$/;"	m	class:Base_file
+filter	commands/filter.cc	/^int filter(int argc, char *argv[])$/;"	f
+filter	data_conversion/vcf-file.h	/^	bool filter;$/;"	m	class:Vcf_data
+filter_genotype	commands/filter_genotype.cc	/^int filter_genotype(int argc, char *argv[])$/;"	f
+filter_pool	commands/filter_pool.cc	/^int filter_pool(int argc, char *argv[])$/;"	f
+fit_	data_types/linkage_data.h	/^	float_t fit_;		\/\/!< fit statistic (thar be ld here!)$/;"	m	class:Linkage
+fixedll	data_types/pooled_data.h	/^	std::vector <float_t> fixedll;	\/\/!< a vector of fixed log likelihoods $/;"	m	class:Pooled_data
+fixedmorphicmodel	pooled_likelihood.cc	/^void fixedmorphicmodel(Allele const &a, float_t *l)$/;"	f
+flag	commands/interface.h	/^	void flag (char opt_, char* lopt_, void * parm_, int (*func_)(void *), char *emsg_, char*umsg_)$/;"	f	class:Environment
+flag_commands	commands/interface.cc	/^flag_commands(void *parm)$/;"	f
+flag_help	commands/interface.cc	/^flag_help(void *parm)$/;"	f
+flag_options	commands/interface.cc	/^flag_options(void *parm)$/;"	f
+flag_set	commands/interface.cc	/^flag_set(void *parm)$/;"	f
+flag_usage	commands/interface.cc	/^flag_usage(void *parm)$/;"	f
+flag_version	commands/interface.cc	/^flag_version(void *parm)$/;"	f
+flags	commands/interface.h	/^	std::list <Flag> flags;			\/\/!< A list of flags that can be set$/;"	m	class:Environment
+flush_buffer	gzstream/gzstream.C	/^int gzstreambuf::flush_buffer() {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+footer_	commands/interface.h	/^	const char *footer_;		\/\/!< The ending text of the help menu$/;"	m	class:Environment
+format_usage	commands/interface.cc	/^format_usage(const char *message, const size_t &padding)$/;"	f
+freq	data_types/allele.h	/^	float_t freq;		\/\/!< frequency of major allele.$/;"	m	class:Allele
+freqtoi	commands/relatedness.cc	/^freqtoi(float_t in)$/;"	f
+from_sam_header	data_types/file_index.cc	/^File_index::from_sam_header(std::istream &in)$/;"	f	class:File_index
+from_tuple	raw/genotype_pair.cc	/^Genotype_pair::from_tuple(const Genotype_pair_tuple &t)$/;"	f	class:Genotype_pair
+fs	python_api/mappy.cc	/^	std::fstream *fs;$/;"	m	struct:file_s	file:
+func	commands/interface.h	/^	int (*func)(int, char **);	\/\/!< the function to set the parameters$/;"	m	class:Command
+func	commands/interface.h	/^	int (*func)(int, char **, void *);	\/\/!< the function to set the parameters.$/;"	m	class:Argument
+func	commands/interface.h	/^	int (*func)(void *); 	\/\/!< the function to set the parameters.$/;"	m	class:Flag
+gamma_XY_	data_types/relatedness_data.h	/^	float_t gamma_XY_, gamma_XY_ll;$/;"	m	class:Relatedness
+gamma_XY_ll	data_types/relatedness_data.h	/^	float_t gamma_XY_, gamma_XY_ll;$/;"	m	class:Relatedness
+gamma_YX_	data_types/relatedness_data.h	/^	float_t gamma_YX_, gamma_YX_ll;$/;"	m	class:Relatedness
+gamma_YX_ll	data_types/relatedness_data.h	/^	float_t gamma_YX_, gamma_YX_ll;$/;"	m	class:Relatedness
+genotypelikelihood	math_functions/models.cc	/^float_t models::genotypelikelihood(quartet_t const &quartet, const Allele &population)$/;"	f	class:models
+gestimate	commands/relatedness.cc	/^gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &counts)$/;"	f
+get	data_conversion/vcf-file.cc	/^Vcf_data::get(Data *data, ...) const$/;"	f	class:Vcf_data
+get	data_conversion/vcf-file.cc	/^Vcf_data::get(File_index &index, Allele &allele, Population &pop) const$/;"	f	class:Vcf_data
+get	data_types/state.cc	/^uint32_t get(const uint32_t &x) const$/;"	f
+get	testing/exact_lsq_estimators.cc	/^inline int get(const uint32_t *place, const uint32_t &x, const uint32_t &bit)$/;"	f
+get_abs_pos	data_types/data.cc	/^id1_t Indexed_data::get_abs_pos (void) const$/;"	f	class:Indexed_data
+get_abs_pos	data_types/file_index.cc	/^File_index::get_abs_pos (const id0_t &id0, const id1_t &id1) const$/;"	f	class:File_index
+get_abs_pos	data_types/file_index.cc	/^File_index::get_abs_pos (const std::string &id0_str, const id1_t &id1) const$/;"	f	class:File_index
+get_binary	data_types/allele.cc	/^const  bool Allele::get_binary(void) const$/;"	f	class:Allele
+get_binary	data_types/data.h	/^        virtual const bool get_binary() const {return this->binary;};$/;"	f	class:Data
+get_binary	data_types/file_index.cc	/^const bool File_index::get_binary(void) const$/;"	f	class:File_index
+get_binary	data_types/key.cc	/^const bool Key::get_binary(void) const$/;"	f	class:Key
+get_binary	data_types/linkage_data.cc	/^const bool Linkage::get_binary(void) const$/;"	f	class:Linkage
+get_binary	data_types/locus.cc	/^Locus::get_binary(void) const$/;"	f	class:Locus
+get_binary	data_types/log.cc	/^Log::get_binary(void) const$/;"	f	class:Log
+get_binary	data_types/pedigree.cc	/^Relatedness::get_binary(void) const$/;"	f	class:Relatedness
+get_binary	data_types/phenotype.cc	/^Population::get_binary(void) const$/;"	f	class:Population
+get_binary	data_types/pooled_data.cc	/^Pooled_data::get_binary(void) const$/;"	f	class:Pooled_data
+get_binary	data_types/population.cc	/^Population::get_binary(void) const$/;"	f	class:Population
+get_binary	data_types/relatedness_data.cc	/^Relatedness::get_binary(void) const$/;"	f	class:Relatedness
+get_binary	data_types/sample_gof.cc	/^const bool Sample_gof::get_binary(void) const$/;"	f	class:Sample_gof
+get_binary	data_types/sample_name.cc	/^const bool Sample_name::get_binary(void) const$/;"	f	class:Sample_name
+get_binary	data_types/state.cc	/^State::get_binary(void) const$/;"	f	class:State
+get_cumulative_size	data_types/file_index.cc	/^File_index::get_cumulative_size (const id0_t &id0) const$/;"	f	class:File_index
+get_cumulative_size	data_types/file_index.cc	/^File_index::get_cumulative_size (const std::string &id0_str) const$/;"	f	class:File_index
+get_delim	io/map_file.cc	/^const char & Base_file::get_delim(void) const$/;"	f	class:Base_file
+get_file_name	data_types/allele.cc	/^const std::string Allele::get_file_name(void) const$/;"	f	class:Allele
+get_file_name	data_types/data.h	/^	virtual const std::string get_file_name() const {return this->file_name;};$/;"	f	class:Data
+get_file_name	data_types/file_index.h	/^	const std::string get_file_name() const {return File_index::file_name;};$/;"	f	class:File_index
+get_file_name	data_types/key.cc	/^const std::string Key::get_file_name(void) const$/;"	f	class:Key
+get_file_name	data_types/linkage_data.cc	/^Linkage::get_file_name(void) const$/;"	f	class:Linkage
+get_file_name	data_types/locus.cc	/^Locus::get_file_name(void) const$/;"	f	class:Locus
+get_file_name	data_types/log.cc	/^Log::get_file_name(void) const$/;"	f	class:Log
+get_file_name	data_types/sample_name.cc	/^const std::string Sample_name::get_file_name(void) const$/;"	f	class:Sample_name
+get_genotypes	commands/map2genotype.cc	/^void get_genotypes(const Allele &allele, const Locus &locus, Population &genotypes )$/;"	f
+get_id0	data_types/file_index.cc	/^File_index::get_id0 (const std::string &id0_str) const$/;"	f	class:File_index
+get_id0	data_types/file_index.cc	/^File_index::get_id0(const id1_t &abs_pos) const$/;"	f	class:File_index
+get_id1	data_types/file_index.cc	/^File_index::get_id1(const id1_t &abs_pos) const$/;"	f	class:File_index
+get_in	io/map_file.cc	/^std::istream * Base_file::get_in(void)$/;"	f	class:Base_file
+get_index	data_conversion/vcf-file.cc	/^Vcf_data::get_index (void) const$/;"	f	class:Vcf_data
+get_index	io/map_file.h	/^File_index Indexed_file<T>::get_index(void) const$/;"	f	class:Indexed_file
+get_ll	commands/relatedness.cc	/^get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count) $/;"	f
+get_llr	commands/relatedness.cc	/^get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes)$/;"	f
+get_names	data_types/file_index.cc	/^File_index::get_names (void) const$/;"	f	class:File_index
+get_next	data_types/state.cc	/^uint32_t get_next()$/;"	f
+get_out	io/map_file.cc	/^std::ostream * Base_file::get_out(void)$/;"	f	class:Base_file
+get_pos	io/map_file.h	/^id1_t Indexed_file<T>::get_pos(const T &data) const $/;"	f	class:Indexed_file
+get_quartet	data_types/locus.cc	/^Locus::get_quartet(const count_t &c) $/;"	f	class:Locus
+get_quartet	data_types/locus.cc	/^Locus::get_quartet(const count_t &c) const $/;"	f	class:Locus
+get_reference_size	data_types/file_index.cc	/^File_index::get_reference_size(void) const$/;"	f	class:File_index
+get_sample_names	data_conversion/vcf-file.cc	/^Vcf_data::get_sample_names (void) const $/;"	f	class:Vcf_data
+get_sample_names	data_types/locus.h	/^	get_sample_names(void) const $/;"	f	class:Locus
+get_sample_names	data_types/phenotype.h	/^	inline std::vector <std::string> get_sample_names(void) const {return sample_names_;};		\/\/!< names of the samples sequenced.$/;"	f	class:Phenotype
+get_sample_names	data_types/population.h	/^	inline std::vector <std::string> get_sample_names(void) const {return sample_names_;};		\/\/!< names of the samples sequenced.$/;"	f	class:Population
+get_size	data_types/file_index.cc	/^File_index::get_size (const id0_t &id0) const$/;"	f	class:File_index
+get_sizes	data_types/file_index.cc	/^File_index::get_sizes (void) const$/;"	f	class:File_index
+get_string	data_types/file_index.cc	/^File_index::get_string(const id0_t &id0) const$/;"	f	class:File_index
+get_table_name	data_types/allele.cc	/^const std::string Allele::get_table_name(void) const$/;"	f	class:Allele
+get_table_name	data_types/data.h	/^        virtual const std::string get_table_name() const {return this->table_name;};$/;"	f	class:Data
+get_table_name	data_types/file_index.h	/^        const std::string get_table_name() const {return File_index::table_name;};$/;"	f	class:File_index
+get_table_name	data_types/key.cc	/^const std::string Key::get_table_name(void) const$/;"	f	class:Key
+get_table_name	data_types/linkage_data.cc	/^Linkage::get_table_name(void) const$/;"	f	class:Linkage
+get_table_name	data_types/locus.cc	/^Locus::get_table_name(void) const$/;"	f	class:Locus
+get_table_name	data_types/log.cc	/^Log::get_table_name(void) const$/;"	f	class:Log
+get_table_name	data_types/sample_name.cc	/^const std::string Sample_name::get_table_name(void) const$/;"	f	class:Sample_name
+getcount	data_types/locus.cc	/^Locus::getcount(count_t c) const$/;"	f	class:Locus
+getcount	data_types/locus.cc	/^Locus::getcount(count_t s, count_t c) const$/;"	f	class:Locus
+getcoverage	data_types/locus.cc	/^Locus::getcoverage() const$/;"	f	class:Locus
+getcoverage	data_types/locus.cc	/^Locus::getcoverage(count_t s) const$/;"	f	class:Locus
+getindex	data_types/locus.cc	/^Locus::getindex(count_t c) const$/;"	f	class:Locus
+getx	mpi/mpi_relatedness.cc	/^size_t getx(const size_t &w, const size_t &size)$/;"	f
+gety	mpi/mpi_relatedness.cc	/^size_t gety(const size_t &w, const size_t &size)$/;"	f
+gof	data_types/allele.h	/^	float_t gof; 		\/\/!< gof statistic.$/;"	m	class:Allele
+goodness_of_fit	math_functions/models.cc	/^float_t models::goodness_of_fit (Locus &site, const Allele &allele, std::vector <float_t> &gofs, const float_t &MINGOF)$/;"	f	class:models
+gt_t	typedef.h	/^typedef uint8_t gt_t;		\/\/specifies a genotype.		limit 128.$/;"	t
+guesstimate_D	commands/linkage_disequilibrium.cc	/^float_t guesstimate_D (const Population &P1, const Population &P2)$/;"	f
+guesstimate_D	testing/PopLD-fast.cc	/^float_t guesstimate_D (const Population &P1, const Population &P2)$/;"	f
+gzin_	io/map_file.h	/^	igzstream gzin_;	\/\/!< compressed istream.$/;"	m	class:Base_file
+gzout_	io/map_file.h	/^	ogzstream gzout_;	\/\/!< compressed ostream.$/;"	m	class:Base_file
+gzstreambase	gzstream/gzstream.C	/^gzstreambase::gzstreambase( const char* name, int mode) {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambase
+gzstreambase	gzstream/gzstream.h	/^    gzstreambase() { init(&buf); }$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambase
+gzstreambase	gzstream/gzstream.h	/^class gzstreambase : virtual public std::ios {$/;"	c	namespace:GZSTREAM_NAMESPACE
+gzstreambuf	gzstream/gzstream.h	/^    gzstreambuf() : opened(0) {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+gzstreambuf	gzstream/gzstream.h	/^class gzstreambuf : public std::streambuf {$/;"	c	namespace:GZSTREAM_NAMESPACE
+h	data_types/allele.h	/^	float_t h;		\/\/!< heterozygosity.$/;"	m	class:Allele
+hash_genotypes	commands/relatedness.cc	/^hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y, const bool &l2o)$/;"	f
+header	data_types/allele.cc	/^std::string Allele::header(void) const {$/;"	f	class:Allele
+header	data_types/file_index.cc	/^File_index::header(void) const$/;"	f	class:File_index
+header	data_types/key.cc	/^std::string Key::header(void) const $/;"	f	class:Key
+header	data_types/linkage_data.cc	/^Linkage::header(void) const $/;"	f	class:Linkage
+header	data_types/locus.cc	/^Locus::header(void) const$/;"	f	class:Locus
+header	data_types/log.cc	/^Log::header(void) const $/;"	f	class:Log
+header	data_types/pedigree.cc	/^Relatedness::header(void) const {$/;"	f	class:Relatedness
+header	data_types/phenotype.cc	/^Population::header(void) const$/;"	f	class:Population
+header	data_types/pooled_data.cc	/^Pooled_data::header(void) const $/;"	f	class:Pooled_data
+header	data_types/population.cc	/^Population::header(void) const$/;"	f	class:Population
+header	data_types/relatedness_data.cc	/^Relatedness::header(void) const {$/;"	f	class:Relatedness
+header	data_types/sample_gof.cc	/^Sample_gof::header(void) const $/;"	f	class:Sample_gof
+header	data_types/sample_name.cc	/^std::string Sample_name::header(void) const $/;"	f	class:Sample_name
+header	data_types/state.cc	/^State::header(void) const$/;"	f	class:State
+header_	data_conversion/vcf-file.h	/^	bcf_hdr_t *header_;$/;"	m	class:Vcf_data
+hwell	data_types/allele.h	/^	float_t ll, monoll, hwell; \/\/!< log likelihoods.$/;"	m	class:Allele
+id	data_conversion/vcf-file.h	/^	std::string id;$/;"	m	class:Vcf_data
+id0	data_types/linkage_data.h	/^	id0_t id0;	\/\/!< The scaffold of site X$/;"	m	class:Linkage
+id0	raw/region.h	/^	id0_t id0;$/;"	m	class:Region
+id0_	data_types/file_index.h	/^	std::vector <std::string> id0_;	$/;"	m	class:File_index
+id0_str_	data_types/file_index.h	/^	std::map <std::string, id0_t> id0_str_;			$/;"	m	class:File_index
+id0_t	typedef.h	/^typedef uint16_t id0_t;		\/\/specifies scaffold. 		limits to 65,536 scaffolds.$/;"	t
+id1	data_types/linkage_data.h	/^	id1_t id1;	\/\/!< The pos of site X$/;"	m	class:Linkage
+id1_off_t	typedef.h	/^typedef int64_t id1_off_t;	\/\/specifies an offset		specifies a distance between bp, must be$/;"	t
+id1_t	typedef.h	/^typedef uint32_t id1_t;		\/\/specifies bp locations.	limits to 4,294,967,296 bp per scaffold.$/;"	t
+id1_y_	data_types/linkage_data.h	/^	id1_t id1_y_;	\/\/!< the pos of site Y$/;"	m	class:Linkage
+igl_	data_types/population.h	/^	std::vector <Genotype>::iterator igl_;		\/\/!< an iterator to allow us to iterate over the likelihoods.$/;"	m	class:Population
+igzstream	gzstream/gzstream.h	/^    igzstream( const char* name, int open_mode = std::ios::in)$/;"	f	class:GZSTREAM_NAMESPACE::igzstream
+igzstream	gzstream/gzstream.h	/^    igzstream() : std::istream( &buf) {} $/;"	f	class:GZSTREAM_NAMESPACE::igzstream
+igzstream	gzstream/gzstream.h	/^class igzstream : public gzstreambase, public std::istream {$/;"	c	namespace:GZSTREAM_NAMESPACE
+import_mapgd	python_api/mapgdapi.h	/^import_mapgd(void)$/;"	f
+in_	io/map_file.h	/^	std::istream *in_;	\/\/!< All data is read from in.$/;"	m	class:Base_file
+inc_Delta	commands/relatedness.cc	/^inc_Delta (Relatedness &rel, const Genotype_pair &pair, const size_t &count)$/;"	f
+inc_f	commands/relatedness.cc	/^inc_f(Relatedness &rel, const Genotype_pair &pair, const size_t &count)$/;"	f
+inc_gamma	commands/relatedness.cc	/^inc_gamma(Relatedness &rel, const Genotype_pair &pair, const size_t &count)$/;"	f
+inc_theta	commands/relatedness.cc	/^inc_theta(Relatedness &rel, const Genotype_pair &pair, const size_t &count)$/;"	f
+include_dirs	python_api/setup.py	/^		include_dirs=['..\/', '..\/data_types\/', '..\/commands\/', '..\/raw\/', '..\/data_conversion\/', '..\/gzstream\/', '..\/stream_tools\/'],$/;"	v
+indexed	io/map_file.cc	/^Base_file::indexed(void)$/;"	f	class:Base_file
+indexed_	io/map_file.h	/^	bool indexed_;		\/\/!< Indexed mode flag.$/;"	m	class:Base_file
+info	data_conversion/vcf-file.h	/^	std::vector <std::string> info;$/;"	m	class:Vcf_data
+init_params	individual_likelihood.cc	/^count_t init_params(Locus &site, Allele &a, const float_t &minerr)$/;"	f
+initmappy	python_api/mappy.cc	/^initmappy(void)$/;"	f
+insert	testing/circular_list.h	/^	iterator insert (iterator &it, const T &val)$/;"	f	class:Circular_list
+insert	testing/circular_list.h	/^	iterator insert (iterator &it, const size_t &n, const T &val)$/;"	f	class:Circular_list
+instream	depricated/PopLD-old.cc	/^FILE *instream;$/;"	v
+is_open	data_types/file_index.cc	/^File_index::is_open (void) const$/;"	f	class:File_index
+is_open	gzstream/gzstream.h	/^    int is_open() { return opened; }$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+is_open	io/map_file.cc	/^bool Base_file::is_open(void) const$/;"	f	class:Base_file
+is_open	stream_tools/tmp_buffer.cc	/^Tmp_streambuf::is_open(void)$/;"	f	class:Tmp_streambuf
+isfloat	commands/interface.cc	/^isfloat(const char *c)$/;"	f
+isint	commands/interface.cc	/^isint(const char *c)$/;"	f
+isregion	raw/region.cc	/^bool isregion(const char *c_str)$/;"	f
+it_	data_types/state.h	/^	uint32_t *it_, end_;$/;"	m	class:State
+iterator	testing/circular_list.h	/^	typedef C_it<T> iterator;$/;"	t	class:Circular_list
+itr_	testing/circular_list.h	/^	Node *itr_;$/;"	m	class:C_it
+kill_me	python_api/mappy.cc	/^	void kill_me (void *)$/;"	f	struct:file_s
+last_id0_	data_types/file_index.h	/^	id0_t last_id0_;						$/;"	m	class:File_index
+last_id0_str_	data_types/file_index.h	/^	std::string last_id0_str_;$/;"	m	class:File_index
+libraries	python_api/setup.py	/^		libraries=['gsl', 'gslcblas', "m", "gzstream", "z", "hts", "sqlite3"],$/;"	v
+library_dirs	python_api/setup.py	/^		library_dirs=["..\/gzstream\/", "..\/..\/..\/..\/htslib"],$/;"	v
+likelihoods	data_types/population.h	/^	std::vector <Genotype> likelihoods;		\/\/!< Genotypic likelihood$/;"	m	class:Population
+line_length_	data_types/state.h	/^	size_t line_length_;$/;"	m	class:State
+linkage_disequilibrium	commands/linkage_disequilibrium.cc	/^int linkage_disequilibrium(int argc, char *argv[])$/;"	f
+linkage_disequilibrium	testing/PopLD-fast.cc	/^int linkage_disequilibrium(int argc, char *argv[])$/;"	f
+linkage_disequilibrium	testing/PopLD-fast2.cc	/^int linkage_disequilibrium(int argc, char *argv[])$/;"	f
+linkage_disequilibrium	testing/PopLD-tm.cc	/^int linkage_disequilibrium(int argc, char *argv[])$/;"	f
+ll	data_types/allele.h	/^	float_t ll, monoll, hwell; \/\/!< log likelihoods.$/;"	m	class:Allele
+ll	data_types/linkage_data.cc	/^Linkage::ll (void) const$/;"	f	class:Linkage
+lnL	math_functions/models.h	/^	inline float_t lnL(const float_t &logMM, const float_t &logMm, const float &logmm, const count_t *count){$/;"	f	class:models
+lnL_NR	newton-method-ld.h	/^inline float_t lnL_NR (const Population &P1, const Population &P2, const float_t &D) {$/;"	f
+lnL_NR	newton-method-rel.h	/^inline float_t lnL_NR (const Genotype_pair &pair, const Relatedness &rel) {$/;"	f
+lnL_NR	newton-method-theta.h	/^inline float_t lnL_NR (const quartet_t &q, const Allele &a) {$/;"	f
+lnMMP_	math_functions/models.h	/^lnmultinomial lnMMP_, lnMmP_, lnmmP_;		$/;"	m	class:models
+lnMM_	math_functions/models.h	/^lnmultinomial lnMM_, lnMm_, lnmm_;		\/\/!< The three multinomials we will use for probability calculations.$/;"	m	class:models
+lnMmP_	math_functions/models.h	/^lnmultinomial lnMMP_, lnMmP_, lnmmP_;		$/;"	m	class:models
+lnMm_	math_functions/models.h	/^lnmultinomial lnMM_, lnMm_, lnmm_;		\/\/!< The three multinomials we will use for probability calculations.$/;"	m	class:models
+lnfact	math_functions/lnmultinomial.cc	/^lnmultinomial::lnfact(const count_t &s)$/;"	f	class:lnmultinomial
+lnfact_vector	math_functions/lnmultinomial.h	/^	std::vector <float_t> lnfact_vector;		\/\/!< A look up table for log factorial values.$/;"	m	class:lnmultinomial
+lnmmP_	math_functions/models.h	/^lnmultinomial lnMMP_, lnMmP_, lnmmP_;		$/;"	m	class:models
+lnmm_	math_functions/models.h	/^lnmultinomial lnMM_, lnMm_, lnmm_;		\/\/!< The three multinomials we will use for probability calculations.$/;"	m	class:models
+lnmultinomcoef	math_functions/lnmultinomial.cc	/^lnmultinomial::lnmultinomcoef(const count_t *s)$/;"	f	class:lnmultinomial
+lnmultinomial	math_functions/lnmultinomial.cc	/^lnmultinomial::lnmultinomial (const count_t &size)$/;"	f	class:lnmultinomial
+lnmultinomial	math_functions/lnmultinomial.cc	/^lnmultinomial::lnmultinomial (float_t* s, const count_t& size)$/;"	f	class:lnmultinomial
+lnmultinomial	math_functions/lnmultinomial.cc	/^lnmultinomial::lnmultinomial (void)$/;"	f	class:lnmultinomial
+lnmultinomial	math_functions/lnmultinomial.h	/^class lnmultinomial {$/;"	c
+lnp_	math_functions/lnmultinomial.h	/^	float_t *lnp_;					\/\/!< TODO Add a description. $/;"	m	class:lnmultinomial
+lnprob	math_functions/lnmultinomial.cc	/^lnmultinomial::lnprob(const count_t *s)$/;"	f	class:lnmultinomial
+lnprob_approx	math_functions/lnmultinomial.cc	/^lnmultinomial::lnprob_approx(const count_t *s)$/;"	f	class:lnmultinomial
+loglikelihood	math_functions/models.cc	/^float_t models::loglikelihood(const Locus &site, const Allele &p)$/;"	f	class:models
+lopt	commands/interface.h	/^	char *lopt;	\/\/!< the long option name$/;"	m	class:Command
+lopt	commands/interface.h	/^	char *lopt;	\/\/!< the long option name.$/;"	m	class:Flag
+lopt	commands/interface.h	/^	char *lopt; \/\/!< the long option name.$/;"	m	class:Argument
+m	data_types/population.h	/^	float_t m;					\/\/!< minor allele frequency$/;"	m	class:Population
+m	raw/genotype_pair.h	/^	float_t m;$/;"	m	class:Genotype_pair
+m_data_ctor	data_types/data.cc	/^std::map <std::string, Data*(*)(const std::vector <std::string> &) > m_data_ctor;$/;"	v
+main	mapgd.cc	/^int main (int argc, char* argv[])$/;"	f
+main	testing/Circ_test.cc	/^int main (int argc, char *argv[]){$/;"	f
+main	testing/exact_lsq_estimators.cc	/^int main (int argc, char **argv){$/;"	f
+major	data_types/allele.h	/^	gt_t major;		\/\/!< identity major allele.$/;"	m	class:Allele
+major	data_types/pooled_data.h	/^	Base major, minor, ref; $/;"	m	class:Pooled_data
+major	data_types/population.h	/^	gt_t major;					\/\/!< identity of the major allele$/;"	m	class:Population
+make_vcf	commands/make-vcf.cc	/^int make_vcf(int argc, char *argv[])$/;"	f
+map2genotype	commands/map2genotype.cc	/^int map2genotype(int argc, char *argv[])$/;"	f
+mapgd_help	commands/mapgd_help.cc	/^int mapgd_help(int argc, char *argv[])$/;"	f
+mask	data_types/locus.cc	/^Locus::mask(const std::vector <size_t> &s)$/;"	f	class:Locus
+mask	raw/quartet.cc	/^void mask(quartet_t &q){$/;"	f
+mask_low_cov	data_types/locus.cc	/^Locus::mask_low_cov( const count_t &dp )$/;"	f	class:Locus
+maskall	data_types/locus.cc	/^Locus::maskall(void)$/;"	f	class:Locus
+masked	raw/base.h	/^	bool masked;$/;"	m	class:Base
+masked	raw/quartet.h	/^	bool masked;		\/\/!< A flag that indicates whether or not functions should use information from this quartet_t. Functions may ignore this flag if such behavior is desired. $/;"	m	struct:quartet
+maskedcount	data_types/locus.cc	/^Locus::maskedcount(void) const$/;"	f	class:Locus
+max_ll_	data_types/relatedness_data.h	/^	float_t null_ll_, max_ll_;$/;"	m	class:Relatedness
+maximize	commands/relatedness.cc	/^maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)$/;"	f
+maximize_analytical	individual_likelihood.cc	/^count_t maximize_analytical (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)$/;"	f
+maximize_grid	individual_likelihood.cc	/^count_t maximize_grid (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &MINGOF, const size_t &maxpitch)$/;"	f
+maximize_newton	individual_likelihood.cc	/^count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)$/;"	f
+maximize_restricted_newton	individual_likelihood.cc	/^count_t maximize_restricted_newton (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)$/;"	f
+message	data_types/log.h	/^	std::string message;$/;"	m	class:Log
+min	commands/proview.h	/^	int min;$/;"	m	struct:Args
+minor	data_types/allele.h	/^	gt_t minor;		\/\/!< identity of minor allele.$/;"	m	class:Allele
+minor	data_types/pooled_data.h	/^	Base major, minor, ref; $/;"	m	class:Pooled_data
+minor	data_types/population.h	/^	gt_t minor;					\/\/!< identity of the minor allele$/;"	m	class:Population
+minor	python_api/setup.py	/^minor="a"#open("..\/VERSION").read()$/;"	v
+mm	data_types/allele.h	/^	float_t mm; 		\/\/!< frequency of genotype mm in the population.$/;"	m	class:Allele
+mm	raw/genotype.h	/^	float_t MM, Mm, mm;						\/\/!< Major Major, Major minor, minor minor$/;"	m	class:Genotype
+mmmodel	math_functions/models.cc	/^void mmmodel(const Allele &a, float_t *l)$/;"	f
+mmmodelP	math_functions/models.cc	/^void mmmodelP(const Allele &a, float_t *l)		\/\/Dito, assuming [m]ajor [m]inor.$/;"	f
+mode	gzstream/gzstream.h	/^    int              mode;               \/\/ I\/O mode$/;"	m	class:GZSTREAM_NAMESPACE::gzstreambuf
+models	math_functions/models.cc	/^models::models(void)$/;"	f	class:models
+models	math_functions/models.h	/^class models{$/;"	c
+module1	python_api/setup.py	/^module1 = Extension('mappy',$/;"	v
+module_functions	python_api/mappy.cc	/^module_functions[] = {$/;"	v	file:
+monoll	data_types/allele.h	/^	float_t ll, monoll, hwell; \/\/!< log likelihoods.$/;"	m	class:Allele
+monomorphicmodel	pooled_likelihood.cc	/^void monomorphicmodel(Allele const &a, float_t *l)$/;"	f
+mpi_recieve_string	commands/estimate_individual.cc	/^std::string mpi_recieve_string(int rank)$/;"	f
+mpi_select	commands/estimate_individual.cc	/^bool mpi_select(int lineid, int taskid, int num_tasks)$/;"	f
+mpileup	data_types/locus.cc	/^mpileup (std::istream& in, Locus& x, const int &offset, const int &ncolumns)$/;"	f
+mpileup_name	data_types/sample_name.h	/^	std::string mpileup_name;$/;"	m	class:Sample_name
+name	commands/interface.h	/^	const char *name;		\/\/!< the name of the command$/;"	m	class:Environment
+name	data_types/key.h	/^	char name[8];$/;"	m	class:Key
+name	python_api/print_line.py	/^name=mappy.read(File)$/;"	v
+name	raw/pedigree_record.h	/^	std::string name;$/;"	m	class:Pedigree_record
+name_	data_types/data.h	/^	std::string name_;$/;"	m	class:Registration
+name_	data_types/sample_gof.h	/^	std::string name_;$/;"	m	class:Sample_gof
+names_	data_types/pooled_data.h	/^	std::vector <std::string> names_;\/\/!< the sample names.$/;"	m	class:Pooled_data
+new_from_str	data_types/data.cc	/^Data* Data::new_from_str(const std::string &Name, const std::vector<std::string> &columns)$/;"	f	class:Data
+newton	commands/relatedness.cc	/^newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)$/;"	f
+next	testing/circular_list.h	/^		Node *next;$/;"	m	struct:C_it::Node
+nifty_counter	data_types/data.cc	/^static int nifty_counter=0; $/;"	v	file:
+null_	data_types/linkage_data.h	/^	float_t null_;		\/\/!< null statistic (i.e. no ld)$/;"	m	class:Linkage
+null_error	data_types/allele.h	/^	float_t null_error;	\/\/!< error rate assuming Major allele monomorphism.$/;"	m	class:Allele
+null_error2	data_types/allele.h	/^	float_t null_error2;	\/\/!< error rate assuming Minor allele monomorphism.$/;"	m	class:Allele
+null_ll_	data_types/relatedness_data.h	/^	float_t null_ll_, max_ll_;$/;"	m	class:Relatedness
+number_	data_types/sample_gof.h	/^	float_t number_;$/;"	m	class:Sample_gof
+objects	python_api/setup.py	/^objects=result.split()$/;"	v
+offset_	data_conversion/bcf2pro-file.h	/^	int columns_, offset_;$/;"	m	class:Bcf2pro_file
+offspring	raw/pedigree_record.h	/^	std::vector <Pedigree_record *> parent, offspring;$/;"	m	class:Pedigree_record
+ogzstream	gzstream/gzstream.h	/^    ogzstream( const char* name, int mode = std::ios::out)$/;"	f	class:GZSTREAM_NAMESPACE::ogzstream
+ogzstream	gzstream/gzstream.h	/^    ogzstream() : std::ostream( &buf) {}$/;"	f	class:GZSTREAM_NAMESPACE::ogzstream
+ogzstream	gzstream/gzstream.h	/^class ogzstream : public gzstreambase, public std::ostream {$/;"	c	namespace:GZSTREAM_NAMESPACE
+open	data_conversion/external-file.cc	/^External_file::open(const char *, const std::ios_base::openmode &)$/;"	f	class:External_file
+open	data_conversion/vcf-file.cc	/^Vcf_file::open(const char *file_name, const std::ios_base::openmode &mode)$/;"	f	class:Vcf_file
+open	data_conversion/vcf-file.cc	/^Vcf_file::open(const std::ios_base::openmode &mode)$/;"	f	class:Vcf_file
+open	gzstream/gzstream.C	/^gzstreambuf* gzstreambuf::open( const char* name, int open_mode) {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+open	gzstream/gzstream.C	/^void gzstreambase::open( const char* name, int open_mode) {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambase
+open	gzstream/gzstream.h	/^    void open( const char* name, int open_mode = std::ios::in) {$/;"	f	class:GZSTREAM_NAMESPACE::igzstream
+open	gzstream/gzstream.h	/^    void open( const char* name, int open_mode = std::ios::out) {$/;"	f	class:GZSTREAM_NAMESPACE::ogzstream
+open	io/map_file.cc	/^void Base_file::open(const std::ios_base::openmode &mode)$/;"	f	class:Base_file
+open	io/map_file.cc	/^void Base_file::open(std::iostream *s, const std::ios_base::openmode &mode)$/;"	f	class:Base_file
+open	io/map_file.cc	/^void Base_file::open(std::istream *s, const std::ios_base::openmode &mode)$/;"	f	class:Base_file
+open	io/map_file.cc	/^void Base_file::open(std::ostream *s, const std::ios_base::openmode &mode)$/;"	f	class:Base_file
+open	io/map_file.h	/^void Data_file<T>::open(const char* filename, const std::ios_base::openmode &mode)$/;"	f	class:Data_file
+open	python_api/mappy.cc	/^open(PyObject *self, PyObject *args, PyObject *kwargs)$/;"	f	file:
+open	stream_tools/tmp_buffer.cc	/^Tmp_buffer::open (std::istream **dest, std::istream *src) $/;"	f	class:Tmp_buffer
+open	stream_tools/tmp_buffer.cc	/^Tmp_streambuf::open(std::istream **dest, std::istream *src)$/;"	f	class:Tmp_streambuf
+open_	data_types/file_index.h	/^	bool open_;$/;"	m	class:File_index
+open_	io/map_file.h	/^	bool open_;		$/;"	m	class:Base_file
+open_extention	io/map_file.h	/^void Data_file<T>::open_extention(const char* filename, const std::ios_base::openmode &mode)$/;"	f	class:Data_file
+open_from	io/map_file.h	/^void Data_file<T>::open_from(Base_file &file)$/;"	f	class:Data_file
+open_no_extention	io/map_file.cc	/^void Base_file::open_no_extention(const char* filename, const std::ios_base::openmode &mode)$/;"	f	class:Base_file
+opened	gzstream/gzstream.h	/^    char             opened;             \/\/ open\/close state of stream$/;"	m	class:GZSTREAM_NAMESPACE::gzstreambuf
+openmode	io/map_file.cc	/^const std::ios::openmode& Base_file::openmode(void)$/;"	f	class:Base_file
+openmode_	io/map_file.h	/^	std::ios::openmode openmode_;$/;"	m	class:Base_file
+operand_type	commands/interface.h	/^	char *operand_type; $/;"	m	class:Argument
+operator !=	testing/circular_list.h	/^	operator != (const C_it<Other_type>& rhs) const$/;"	f	class:C_it
+operator ()	math_functions/lnmultinomial.cc	/^		bool operator()(const std::pair<count_t, count_t> &left, const std::pair<count_t,count_t> &right) { return left.second > right.second; }$/;"	f	struct:sort_second
+operator ()	math_functions/lnmultinomial.cc	/^		bool operator()(const std::pair<count_t, float_t> &left, const std::pair<count_t,float_t> &right) { return left.second > right.second; }$/;"	f	struct:sort_second
+operator ()	testing/exact_lsq_estimators.cc	/^	operator () (const uint32_t &c1, const uint32_t &c2, const uint32_t &x, const uint32_t &y, const uint32_t &i, const uint32_t &j)	{return c1*_1+c2*_2+x*_3+y*_4+i*_5+j;};$/;"	f	class:Slow_index
+operator *	testing/circular_list.h	/^	operator* () const$/;"	f	class:C_it
+operator +	data_types/locus.cc	/^Locus Locus::operator +(const Locus& rhs) const $/;"	f	class:Locus
+operator +	raw/quartet.h	/^	inline quartet operator+(const quartet& x) const {$/;"	f	struct:quartet
+operator ++	testing/circular_list.h	/^	operator++ (int) \/\/ Post-increment$/;"	f	class:C_it
+operator ++	testing/circular_list.h	/^	operator++ (void) \/\/ Pre-increment$/;"	f	class:C_it
+operator +=	data_types/locus.cc	/^Locus::operator+=(const Locus &rhs) $/;"	f	class:Locus
+operator +=	raw/quartet.h	/^	quartet& operator+=(const quartet& x) {$/;"	f	struct:quartet
+operator --	testing/circular_list.h	/^	operator-- (int) \/\/ Post-increment$/;"	f	class:C_it
+operator --	testing/circular_list.h	/^	operator-- (void) \/\/ Pre-increment$/;"	f	class:C_it
+operator ->	testing/circular_list.h	/^	operator-> () const$/;"	f	class:C_it
+operator <	raw/genotype_pair.cc	/^bool Genotype_pair::operator<(const Genotype_pair& rhs) const$/;"	f	class:Genotype_pair
+operator <<	data_types/data.cc	/^std::ostream& operator << (std::ostream& out, const Data &data)$/;"	f
+operator <<	raw/base.cc	/^std::ostream& operator<< (std::ostream& out, const Base& x)$/;"	f
+operator <<	raw/genotype.cc	/^std::ostream& operator<< (std::ostream& out, const Genotype& x)$/;"	f
+operator <<	raw/pedigree_record.cc	/^std::ostream& operator<< (std::ostream& out, const quartet& q) $/;"	f
+operator <<	raw/quartet.cc	/^std::ostream& operator<< (std::ostream& out, const quartet& q) $/;"	f
+operator <<	raw/region.cc	/^std::ostream& operator << (std::ostream& out, const Region& x)$/;"	f
+operator =	data_types/allele.cc	/^Allele & Allele::operator=(const Allele & x) {$/;"	f	class:Allele
+operator =	data_types/file_index.cc	/^File_index::operator =(const File_index& arg)$/;"	f	class:File_index
+operator =	data_types/linkage_data.h	/^	Linkage & operator=(const Linkage &lhs){$/;"	f	class:Linkage
+operator =	data_types/locus.cc	/^Locus::operator =(const Locus& rhs)$/;"	f	class:Locus
+operator =	data_types/pedigree.cc	/^Relatedness::operator=(const Relatedness &rhs)$/;"	f	class:Relatedness
+operator =	data_types/phenotype.cc	/^Population::operator= (const Population& rhs)$/;"	f	class:Population
+operator =	data_types/pooled_data.cc	/^Pooled_data::operator=(const Pooled_data &rhs){$/;"	f	class:Pooled_data
+operator =	data_types/population.cc	/^Population::operator= (const Population& rhs)$/;"	f	class:Population
+operator =	data_types/relatedness_data.cc	/^Relatedness::operator=(const Relatedness &rhs)$/;"	f	class:Relatedness
+operator =	data_types/state.cc	/^State::operator= (const State& rhs)$/;"	f	class:State
+operator =	math_functions/lnmultinomial.cc	/^lnmultinomial& lnmultinomial::operator=(const lnmultinomial& rhs)$/;"	f	class:lnmultinomial
+operator =	math_functions/models.cc	/^models& models::operator=(const models& rhs){$/;"	f	class:models
+operator =	raw/genotype.cc	/^Genotype & Genotype::operator= (const Genotype& rhs)$/;"	f	class:Genotype
+operator =	raw/quartet.h	/^	quartet& operator=(const count_t& x) {$/;"	f	struct:quartet
+operator ==	testing/circular_list.h	/^	operator == (const C_it<Other_type>& rhs) const$/;"	f	class:C_it
+operator >>	data_types/data.cc	/^std::istream& operator >> (std::istream& in, Data &data)$/;"	f
+operator >>	raw/base.cc	/^std::istream& operator >> (std::istream& in, Base& x)$/;"	f
+operator >>	raw/genotype.cc	/^std::istream& operator>> (std::istream& in, Genotype& x)$/;"	f
+operator >>	raw/pedigree_record.cc	/^std::istream& operator >> (std::istream& in, quartet& q) $/;"	f
+operator >>	raw/quartet.cc	/^std::istream& operator >> (std::istream& in, quartet& q) $/;"	f
+operator >>	raw/region.cc	/^std::istream& operator >> (std::istream& in, Region& x)$/;"	f
+operator C_it <const T>	testing/circular_list.h	/^	operator C_it <const T>() const$/;"	f	class:C_it
+operator []	raw/quartet.h	/^	count_t operator[](const Base &x) const {$/;"	f	struct:quartet
+operator []	raw/quartet.h	/^	count_t operator[](const gt_t &x) const {$/;"	f	struct:quartet
+opt	commands/interface.h	/^	char opt;	\/\/!< the option name$/;"	m	class:Command
+opt	commands/interface.h	/^	char opt;	\/\/!< the option name.$/;"	m	class:Flag
+opt	commands/interface.h	/^	char opt;   \/\/!< the option name.$/;"	m	class:Argument
+optional_arg	commands/interface.h	/^	inline void optional_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)$/;"	f	class:Environment
+optional_arg	commands/interface.h	/^	void optional_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)$/;"	f	class:Environment
+origin_	testing/circular_list.h	/^	C_it<T> origin_;$/;"	m	class:Circular_list
+out_	io/map_file.h	/^	std::ostream *out_;	\/\/!< All data is written is written to out.$/;"	m	class:Base_file
+outstream	depricated/PopLD-old.cc	/^FILE *outstream;$/;"	v
+overflow	gzstream/gzstream.C	/^int gzstreambuf::overflow( int c) { \/\/ used for output buffer only$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+override	data_types/file_index.h	/^	void sql_read(std::istream &) override;$/;"	m	class:File_index
+override	data_types/locus.h	/^	void sql_read(std::istream &) override;$/;"	m	class:Locus
+p	data_types/pooled_data.h	/^	std::vector <float_t> p;	\/\/!< a vector of allele frequencies$/;"	m	class:Pooled_data
+p_	data_types/linkage_data.h	/^	float_t p_;		\/\/!< freq_major site numero uno$/;"	m	class:Linkage
+p_	math_functions/binomial.h	/^	float_t p_;						\/\/!< The probability of success.  $/;"	m	class:binomial
+padding_	data_types/state.h	/^	size_t padding_;$/;"	m	class:State
+parent	raw/pedigree_record.h	/^	std::vector <Pedigree_record *> parent, offspring;$/;"	m	class:Pedigree_record
+parents	data_types/pedigree.h	/^	Pedigree_record *parents;$/;"	m	class:Pedigree
+parm	commands/interface.h	/^	void *parm;		\/\/!< pointer to the parameter to be set.$/;"	m	class:Flag
+parm	commands/interface.h	/^	void *parm; \/\/!< pointer to the parameter to be set.$/;"	m	class:Argument
+parsargs	commands/interface.cc	/^parsargs(int argc, char *argv[], Environment &env)$/;"	f
+pedigree_	raw/pedigree_record.h	/^	Pedigree *pedigree_;$/;"	m	class:Pedigree_record
+polyll	data_types/pooled_data.h	/^	std::vector <float_t> polyll;	\/\/!< a vector of polymorphic log likelihoods$/;"	m	class:Pooled_data
+polymorphicmodel	pooled_likelihood.cc	/^void polymorphicmodel(Allele const &a, float_t *l)$/;"	f
+pooled	data_types/allele.h	/^	bool pooled;		\/\/!< Inferred from pooled or labeled sequencing?$/;"	m	class:Allele
+positional_arg	commands/interface.h	/^	void positional_arg (Type &parm_, char *emsg_, char*umsg_)$/;"	f	class:Environment
+positional_arg	commands/interface.h	/^	void positional_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)$/;"	f	class:Environment
+positional_args	commands/interface.h	/^	std::list <Argument *> positional_args;		\/\/!< A list of options that are called in order$/;"	m	class:Environment
+prev	testing/circular_list.h	/^		Node *prev;$/;"	m	struct:C_it::Node
+print_commands	commands/interface.cc	/^void print_commands(Environment env)$/;"	f
+print_help	commands/interface.cc	/^print_help(Environment env)$/;"	f
+print_options	commands/interface.cc	/^print_options(Environment env)$/;"	f
+print_usage	commands/interface.cc	/^print_usage(Environment env)$/;"	f
+print_version	commands/interface.cc	/^print_version(Environment env){$/;"	f
+pro	commands/proview.h	/^	bool pro;$/;"	m	struct:Args
+profile_	data_conversion/bcf2pro-file.h	/^	bool profile_;$/;"	m	class:Bcf2pro_file
+proview	commands/proview.cc	/^int proview(int argc, char *argv[])$/;"	f
+put	data_conversion/vcf-file.cc	/^Vcf_data::put(const Data *data, ...)$/;"	f	class:Vcf_data
+put	data_conversion/vcf-file.cc	/^Vcf_data::put(const File_index &index, const Allele &allele, const Population &pop)$/;"	f	class:Vcf_data
+pvalue	commands/proview.h	/^	float_t pvalue;$/;"	m	struct:Args
+q_	data_types/linkage_data.h	/^	float_t q_;		\/\/!< freq_major site numero dos$/;"	m	class:Linkage
+qual	data_conversion/vcf-file.h	/^	float_t qual;$/;"	m	class:Vcf_data
+quartet	raw/quartet.h	/^	quartet (){		$/;"	f	struct:quartet
+quartet	raw/quartet.h	/^	quartet(const count_t &A, const count_t &C, const count_t &G, const count_t &T, const count_t &N) {$/;"	f	struct:quartet
+quartet	raw/quartet.h	/^typedef struct quartet {$/;"	s
+quartet_t	raw/quartet.h	/^} quartet_t;$/;"	t	typeref:struct:quartet
+rdbuf	gzstream/gzstream.h	/^    gzstreambuf* rdbuf() { return &buf; }$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambase
+rdbuf	gzstream/gzstream.h	/^    gzstreambuf* rdbuf() { return gzstreambase::rdbuf(); }$/;"	f	class:GZSTREAM_NAMESPACE::igzstream
+rdbuf	gzstream/gzstream.h	/^    gzstreambuf* rdbuf() { return gzstreambase::rdbuf(); }$/;"	f	class:GZSTREAM_NAMESPACE::ogzstream
+read	data_conversion/vcf-file.cc	/^Vcf_file::read (Vcf_data &vcf)$/;"	f	class:Vcf_file
+read	data_types/allele.cc	/^void Allele::read(std::istream& in) {$/;"	f	class:Allele
+read	data_types/file_index.cc	/^File_index::read (std::istream& in)$/;"	f	class:File_index
+read	data_types/key.cc	/^void Key::read (std::istream& in) $/;"	f	class:Key
+read	data_types/linkage_data.cc	/^Linkage::read (std::istream& in) $/;"	f	class:Linkage
+read	data_types/locus.cc	/^Locus::read (std::istream &in)$/;"	f	class:Locus
+read	data_types/log.cc	/^Log::read (std::istream& in) $/;"	f	class:Log
+read	data_types/pedigree.cc	/^Relatedness::read (std::istream& in) $/;"	f	class:Relatedness
+read	data_types/phenotype.cc	/^Population::read (std::istream& in)$/;"	f	class:Population
+read	data_types/pooled_data.cc	/^Pooled_data::read (std::istream& in)$/;"	f	class:Pooled_data
+read	data_types/population.cc	/^Population::read (std::istream& in)$/;"	f	class:Population
+read	data_types/relatedness_data.cc	/^Relatedness::read (std::istream& in) $/;"	f	class:Relatedness
+read	data_types/sample_gof.cc	/^Sample_gof::read (std::istream& in)$/;"	f	class:Sample_gof
+read	data_types/sample_name.cc	/^void Sample_name::read (std::istream& in) $/;"	f	class:Sample_name
+read	data_types/state.cc	/^State::read (std::istream& in)$/;"	f	class:State
+read	io/map_file.cc	/^Base_file::read(Data *data)$/;"	f	class:Base_file
+read	io/map_file.cc	/^Base_file::read(File_index &index, Indexed_data *data)$/;"	f	class:Base_file
+read	io/map_file.h	/^Data_file<T>& Data_file<T>::read(T &data)$/;"	f	class:Data_file
+read	io/map_file.h	/^Indexed_file<T>& Indexed_file<T>::read(T &data)$/;"	f	class:Indexed_file
+read_	io/map_file.h	/^	bool read_;		\/\/!< File is open for reading.$/;"	m	class:Base_file
+read_binary	data_types/data.h	/^	void read_binary(std::istream& str) {};$/;"	f	class:Data
+read_binary	data_types/locus.cc	/^Locus::read_binary (std::istream& in) $/;"	f	class:Locus
+read_binary	data_types/population.cc	/^Population::read_binary (std::istream& in)$/;"	f	class:Population
+read_binary	data_types/state.cc	/^State::read_binary (std::istream& in)$/;"	f	class:State
+read_binary	io/map_file.h	/^void Data_file<T>::read_binary(T &data)$/;"	f	class:Data_file
+read_binary	io/map_file.h	/^void Indexed_file<T>::read_binary(T &data)$/;"	f	class:Indexed_file
+read_header	data_conversion/bcf2pro-file.cc	/^Locus Bcf2pro_file::read_header(void){$/;"	f	class:Bcf2pro_file
+read_header	data_conversion/vcf-file.cc	/^Vcf_file::read_header(void)$/;"	f	class:Vcf_file
+read_header	io/map_file.cc	/^Data *Base_file::read_header(void)$/;"	f	class:Base_file
+read_header	io/map_file.h	/^T Flat_file<T>::read_header(void)$/;"	f	class:Flat_file
+read_header	io/map_file.h	/^T Indexed_file<T>::read_header(void)$/;"	f	class:Indexed_file
+read_header_profile	data_conversion/bcf2pro-file.h	/^	Locus read_header_profile(void){return Indexed_file<Locus>::read_header();}	\/\/!< Writes a file header.$/;"	f	class:Bcf2pro_file
+read_line	python_api/mappy.cc	/^read_line(PyObject *self, PyObject *args, PyObject *kwargs)$/;"	f	file:
+read_pos	data_types/data.h	/^	void read_pos(std::istream& str)$/;"	f	class:Indexed_data
+read_text	data_conversion/bcf2pro-file.cc	/^void Bcf2pro_file::read_text(Locus &data)$/;"	f	class:Bcf2pro_file
+read_text	data_conversion/external-file.h	/^	virtual void read_text( External_data &){};	\/\/!< Read file in text mode.$/;"	f	class:External_file
+read_text	io/map_file.h	/^	virtual void read_text(Data &){};$/;"	f	class:Data_file
+read_text	io/map_file.h	/^void Flat_file<T>::read_text(T &data)$/;"	f	class:Flat_file
+read_text	io/map_file.h	/^void Indexed_file<T>::read_text(T &data)$/;"	f	class:Indexed_file
+read_text_profile	data_conversion/bcf2pro-file.h	/^	void read_text_profile(Locus &locus){Indexed_file<Locus>::read_text(locus);};	\/\/!< Read file in text mode.			DONE$/;"	f	class:Bcf2pro_file
+read_vcf	commands/read_vcf.cc	/^int read_vcf(int argc, char *argv[])$/;"	f
+readsql	sql/readsql.cc	/^int readsql(int argc, char *argv[])$/;"	f
+real_t	typedef.h	/^typedef double real_t;		\/\/most ?$/;"	t
+recalculate	raw/constants.h	/^	void recalculate(const T &t)$/;"	f	class:Constants
+record_	data_conversion/vcf-file.h	/^	bcf1_t *record_;$/;"	m	class:Vcf_data
+ref	data_conversion/vcf-file.h	/^	Base ref;$/;"	m	class:Vcf_data
+ref	data_types/allele.h	/^	gt_t ref;		\/\/!< identity of ref allele.$/;"	m	class:Allele
+ref	data_types/locus.h	/^	Base ref;$/;"	m	class:Locus
+ref	data_types/pooled_data.h	/^	Base major, minor, ref; $/;"	m	class:Pooled_data
+reference_size_	io/map_file.h	/^	id1_t reference_size_;$/;"	m	class:Indexed_file
+registered	data_types/allele.cc	/^const Registration Allele::registered=Registration(Allele::table_name, Allele::create);$/;"	m	class:Allele	file:
+registered	data_types/allele.h	/^	static const Registration registered;$/;"	m	class:Allele
+registered	data_types/file_index.cc	/^const Registration File_index::registered=Registration(File_index::table_name, File_index::create);$/;"	m	class:File_index	file:
+registered	data_types/file_index.h	/^	static const Registration registered;$/;"	m	class:File_index
+registered	data_types/key.cc	/^const Registration Key::registered=Registration(Key::table_name, Key::create);$/;"	m	class:Key	file:
+registered	data_types/key.h	/^	static const Registration registered;$/;"	m	class:Key
+registered	data_types/linkage_data.cc	/^const Registration Linkage::registered=Registration(Linkage::table_name, Linkage::create);$/;"	m	class:Linkage	file:
+registered	data_types/linkage_data.h	/^	static const Registration registered;$/;"	m	class:Linkage
+registered	data_types/locus.cc	/^const Registration Locus::registered=Registration(Locus::table_name, Locus::create);$/;"	m	class:Locus	file:
+registered	data_types/locus.h	/^	static const Registration registered;$/;"	m	class:Locus
+registered	data_types/log.cc	/^const Registration Log::registered=Registration(Log::table_name, Log::create);$/;"	m	class:Log	file:
+registered	data_types/log.h	/^	static const Registration registered;$/;"	m	class:Log
+registered	data_types/pedigree.cc	/^const Registration Relatedness::registered=Registration(Relatedness::table_name, Relatedness::create);$/;"	m	class:Relatedness	file:
+registered	data_types/pedigree.h	/^	static const Registration registered;$/;"	m	class:Pedigree
+registered	data_types/phenotype.cc	/^const Registration Population::registered=Registration(Population::table_name, Population::create);$/;"	m	class:Population	file:
+registered	data_types/phenotype.h	/^	static const Registration registered;$/;"	m	class:Phenotype
+registered	data_types/pooled_data.cc	/^const Registration Pooled_data::registered=Registration(Pooled_data::table_name, Pooled_data::create);$/;"	m	class:Pooled_data	file:
+registered	data_types/pooled_data.h	/^	static const Registration registered;$/;"	m	class:Pooled_data
+registered	data_types/population.cc	/^const Registration Population::registered=Registration(Population::table_name, Population::create);$/;"	m	class:Population	file:
+registered	data_types/population.h	/^	static const Registration registered;$/;"	m	class:Population
+registered	data_types/relatedness_data.cc	/^const Registration Relatedness::registered=Registration(Relatedness::table_name, Relatedness::create);$/;"	m	class:Relatedness	file:
+registered	data_types/relatedness_data.h	/^	static const Registration registered;$/;"	m	class:Relatedness
+registered	data_types/sample_gof.cc	/^const Registration Sample_gof::registered=Registration(Sample_gof::table_name, Sample_gof::create);$/;"	m	class:Sample_gof	file:
+registered	data_types/sample_gof.h	/^	static const Registration registered;$/;"	m	class:Sample_gof
+registered	data_types/sample_name.cc	/^const Registration Sample_name::registered=Registration(Sample_name::table_name, Sample_name::create);$/;"	m	class:Sample_name	file:
+registered	data_types/sample_name.h	/^	static const Registration registered;$/;"	m	class:Sample_name
+registered	data_types/state.cc	/^const Registration State::registered=Registration(State::table_name, State::create);$/;"	m	class:State	file:
+registered	data_types/state.h	/^	static const Registration registered;$/;"	m	class:State
+registry_list	data_types/data.cc	/^std::vector <std::string> registry_list(void)$/;"	f
+regress	testing/regress.cc	/^int regress(int argc, char *argv[])$/;"	f
+rel_ll	commands/relatedness.cc	/^rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)$/;"	f
+rel_ll_2	commands/relatedness.cc	/^	rel_ll_2 (const gsl_vector *v, void *void_hashed_genotypes_p)$/;"	f	class:small_rel
+required	commands/interface.h	/^	bool required; \/\/!< flag toggles whether option is required.$/;"	m	class:Argument
+required_arg	commands/interface.h	/^	void required_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)$/;"	f	class:Environment
+required_arg	commands/interface.h	/^	void required_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)$/;"	f	class:Environment
+required_args	commands/interface.h	/^	std::list <Argument *> required_args;		\/\/!< A list of options, all of which must be set$/;"	m	class:Environment
+required_coms	commands/interface.h	/^	std::list <Command *> required_coms;		\/\/!< A list of sub-commands, one of which must be run$/;"	m	class:Environment
+required_set	commands/interface.h	/^	bool required_set (void)$/;"	f	class:Environment
+reread	stream_tools/tmp_buffer.h	/^	bool buffered, reread;$/;"	m	class:Tmp_streambuf
+reread_off	stream_tools/tmp_buffer.h	/^	void reread_off (void) {_spool.reread=false;};$/;"	f	class:Tmp_buffer
+reread_on	stream_tools/tmp_buffer.h	/^	void reread_on (void) {_spool.reread=true;};$/;"	f	class:Tmp_buffer
+resize	data_types/locus.cc	/^Locus::resize(const size_t &c)$/;"	f	class:Locus
+result	python_api/setup.py	/^result = subprocess.check_output(batcmd, shell=True)$/;"	v
+roots	data_types/pedigree.h	/^	Pedigree_record *roots;$/;"	m	class:Pedigree
+rsq	data_types/linkage_data.cc	/^Linkage::rsq(void) const$/;"	f	class:Linkage
+sam2idx	commands/sam2idx.cc	/^int sam2idx(int argc, char *argv[])$/;"	f
+sam_header_read	bam/bam-header.h	/^file_index & sam_header_read(istream *in){$/;"	f
+sample	data_types/locus.h	/^	std::vector <quartet_t> sample;			\/\/!< The five bases A\/C\/G\/T\/N;$/;"	m	class:Locus
+sample_names	data_types/sample_name.h	/^	std::vector <std::string> sample_names;$/;"	m	class:Sample_name
+sample_names_	data_types/locus.h	/^	std::vector <std::string> sample_names_;		\/\/!< names of the samples sequenced.$/;"	m	class:Locus
+sample_names_	data_types/phenotype.h	/^	std::vector <std::string> sample_names_;	\/\/!< a vector of sample names.$/;"	m	class:Phenotype
+sample_names_	data_types/population.h	/^	std::vector <std::string> sample_names_;	\/\/!< a vector of sample names.$/;"	m	class:Population
+sanitize	stream_tools/stream_tools.h	/^inline std::string sanitize (const std::string &s){$/;"	f
+sanitize	stream_tools/stream_tools.h	/^inline std::string sanitize (std::string &s){$/;"	f
+scan	data_types/locus.cc	/^void scan(const Locus & site, const std::string &str, quartet_t &q)$/;"	f
+scf_name	raw/region.h	/^	std::string scf_name;$/;"	m	class:Region
+seekg	io/map_file.cc	/^void Base_file::seekg(const std::streampos &pos)$/;"	f	class:Base_file
+seekp	io/map_file.cc	/^void Base_file::seekp(const std::streampos &pos)$/;"	f	class:Base_file
+set	commands/interface.h	/^	bool set;	\/\/!< flag toggles whether option has been set$/;"	m	class:Command
+set	commands/interface.h	/^	bool set;	\/\/!< flag toggles whether option has been set.$/;"	m	class:Flag
+set	commands/interface.h	/^	bool set;   \/\/!< flag toggles whether option has been set.$/;"	m	class:Argument
+set	data_types/state.cc	/^void set(const uint32_t &x, const uint32_t &v) $/;"	f
+set	math_functions/lnmultinomial.cc	/^lnmultinomial::set(float_t *s)$/;"	f	class:lnmultinomial
+set	math_functions/lnmultinomial.cc	/^lnmultinomial::set(float_t a, float_t b, float_t c, float_t d)$/;"	f	class:lnmultinomial
+set	math_functions/lnmultinomial.cc	/^lnmultinomial::set(void (*fn)(Allele const &, float_t *), Allele const &s)$/;"	f	class:lnmultinomial
+set	raw/region.cc	/^Region::set(const File_index &index)$/;"	f	class:Region
+set_D	data_types/linkage_data.cc	/^void Linkage::set_D(const float_t &D)$/;"	f	class:Linkage
+set_Ni	data_types/linkage_data.cc	/^void Linkage::set_Ni(const float_t &Ni)$/;"	f	class:Linkage
+set_X_name	data_types/pedigree.cc	/^Relatedness::set_X_name(const id0_t &X)$/;"	f	class:Relatedness
+set_X_name	data_types/pedigree.cc	/^Relatedness::set_X_name(const std::string &X)$/;"	f	class:Relatedness
+set_X_name	data_types/relatedness_data.cc	/^Relatedness::set_X_name(const id0_t &X)$/;"	f	class:Relatedness
+set_X_name	data_types/relatedness_data.cc	/^Relatedness::set_X_name(const std::string &X)$/;"	f	class:Relatedness
+set_Y_name	data_types/pedigree.cc	/^Relatedness::set_Y_name(const id0_t &Y)$/;"	f	class:Relatedness
+set_Y_name	data_types/pedigree.cc	/^Relatedness::set_Y_name(const std::string &Y)$/;"	f	class:Relatedness
+set_Y_name	data_types/relatedness_data.cc	/^Relatedness::set_Y_name(const id0_t &Y)$/;"	f	class:Relatedness
+set_Y_name	data_types/relatedness_data.cc	/^Relatedness::set_Y_name(const std::string &Y)$/;"	f	class:Relatedness
+set_abs_pos	data_types/data.cc	/^void Indexed_data::set_abs_pos (const id1_t &new_pos)$/;"	f	class:Indexed_data
+set_abs_pos_y	data_types/linkage_data.h	/^	void set_abs_pos_y(const id1_t &pos) {id1_y_=pos;};$/;"	f	class:Linkage
+set_author	commands/interface.h	/^	void set_author(const char *c){$/;"	f	class:Environment
+set_c0	newton-method-ld.h	/^inline void set_c0 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c0	newton-method-rel.h	/^inline void set_c0 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c1	newton-method-ld.h	/^inline void set_c1 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c1	newton-method-rel.h	/^inline void set_c1 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c10	newton-method-ld.h	/^inline void set_c10 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c10	newton-method-rel.h	/^inline void set_c10 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c11	newton-method-ld.h	/^inline void set_c11 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c11	newton-method-rel.h	/^inline void set_c11 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c12	newton-method-ld.h	/^inline void set_c12 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c12	newton-method-rel.h	/^inline void set_c12 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c13	newton-method-ld.h	/^inline void set_c13 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c13	newton-method-rel.h	/^inline void set_c13 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c14	newton-method-ld.h	/^inline void set_c14 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c14	newton-method-rel.h	/^inline void set_c14 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c15	newton-method-ld.h	/^inline void set_c15 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c15	newton-method-rel.h	/^inline void set_c15 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c16	newton-method-ld.h	/^inline void set_c16 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c16	newton-method-rel.h	/^inline void set_c16 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c17	newton-method-ld.h	/^inline void set_c17 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c17	newton-method-rel.h	/^inline void set_c17 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c18	newton-method-ld.h	/^inline void set_c18 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c18	newton-method-rel.h	/^inline void set_c18 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c19	newton-method-ld.h	/^inline void set_c19 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c19	newton-method-rel.h	/^inline void set_c19 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c2	newton-method-ld.h	/^inline void set_c2 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c2	newton-method-rel.h	/^inline void set_c2 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c20	newton-method-ld.h	/^inline void set_c20 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c20	newton-method-rel.h	/^inline void set_c20 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c21	newton-method-ld.h	/^inline void set_c21 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c21	newton-method-rel.h	/^inline void set_c21 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c22	newton-method-ld.h	/^inline void set_c22 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c22	newton-method-rel.h	/^inline void set_c22 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c23	newton-method-ld.h	/^inline void set_c23 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c23	newton-method-rel.h	/^inline void set_c23 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c24	newton-method-ld.h	/^inline void set_c24 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c24	newton-method-rel.h	/^inline void set_c24 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c25	newton-method-ld.h	/^inline void set_c25 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c25	newton-method-rel.h	/^inline void set_c25 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c26	newton-method-ld.h	/^inline void set_c26 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c26	newton-method-rel.h	/^inline void set_c26 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c27	newton-method-ld.h	/^inline void set_c27 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c27	newton-method-rel.h	/^inline void set_c27 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c28	newton-method-ld.h	/^inline void set_c28 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c28	newton-method-rel.h	/^inline void set_c28 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c29	newton-method-ld.h	/^inline void set_c29 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c29	newton-method-rel.h	/^inline void set_c29 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c3	newton-method-ld.h	/^inline void set_c3 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c3	newton-method-rel.h	/^inline void set_c3 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c30	newton-method-ld.h	/^inline void set_c30 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c30	newton-method-rel.h	/^inline void set_c30 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c31	newton-method-ld.h	/^inline void set_c31 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c31	newton-method-rel.h	/^inline void set_c31 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c32	newton-method-ld.h	/^inline void set_c32 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c32	newton-method-rel.h	/^inline void set_c32 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c33	newton-method-ld.h	/^inline void set_c33 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c33	newton-method-rel.h	/^inline void set_c33 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c34	newton-method-rel.h	/^inline void set_c34 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c35	newton-method-rel.h	/^inline void set_c35 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c36	newton-method-rel.h	/^inline void set_c36 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c37	newton-method-rel.h	/^inline void set_c37 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c38	newton-method-rel.h	/^inline void set_c38 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c39	newton-method-rel.h	/^inline void set_c39 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c4	newton-method-ld.h	/^inline void set_c4 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c4	newton-method-rel.h	/^inline void set_c4 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c40	newton-method-rel.h	/^inline void set_c40 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c41	newton-method-rel.h	/^inline void set_c41 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c42	newton-method-rel.h	/^inline void set_c42 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c43	newton-method-rel.h	/^inline void set_c43 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c44	newton-method-rel.h	/^inline void set_c44 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c45	newton-method-rel.h	/^inline void set_c45 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c46	newton-method-rel.h	/^inline void set_c46 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c47	newton-method-rel.h	/^inline void set_c47 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c48	newton-method-rel.h	/^inline void set_c48 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c49	newton-method-rel.h	/^inline void set_c49 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c5	newton-method-ld.h	/^inline void set_c5 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c5	newton-method-rel.h	/^inline void set_c5 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c50	newton-method-rel.h	/^inline void set_c50 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c51	newton-method-rel.h	/^inline void set_c51 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c52	newton-method-rel.h	/^inline void set_c52 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c53	newton-method-rel.h	/^inline void set_c53 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c54	newton-method-rel.h	/^inline void set_c54 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c55	newton-method-rel.h	/^inline void set_c55 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c56	newton-method-rel.h	/^inline void set_c56 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c57	newton-method-rel.h	/^inline void set_c57 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c6	newton-method-ld.h	/^inline void set_c6 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c6	newton-method-rel.h	/^inline void set_c6 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c7	newton-method-ld.h	/^inline void set_c7 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c7	newton-method-rel.h	/^inline void set_c7 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c8	newton-method-ld.h	/^inline void set_c8 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c8	newton-method-rel.h	/^inline void set_c8 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_c9	newton-method-ld.h	/^inline void set_c9 (Constants<float, std::tuple<const Population &, const Population &, const float_t &> > &con, const std::tuple<const Population &, const Population &, const float_t &> &d) {$/;"	f
+set_c9	newton-method-rel.h	/^inline void set_c9 (Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &con, const std::pair <const Genotype_pair &, const Relatedness &> &d ) {$/;"	f
+set_description	commands/interface.h	/^	void set_description(const char *c){$/;"	f	class:Environment
+set_e	commands/relatedness.cc	/^set_e(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)$/;"	f
+set_fit	data_types/linkage_data.cc	/^void Linkage::set_fit(const float_t &fit)$/;"	f	class:Linkage
+set_footer	commands/interface.cc	/^Environment::set_footer(const char *str)$/;"	f	class:Environment
+set_header	data_conversion/vcf-file.cc	/^Vcf_data::set_header(const File_index &index, const std::vector <std::string> &sample_names)$/;"	f	class:Vcf_data
+set_index	io/map_file.h	/^void Indexed_file<T>::set_index(const File_index &index)$/;"	f	class:Indexed_file
+set_mpileup	data_conversion/bcf2pro-file.cc	/^Bcf2pro_file::set_mpileup(const int &offset, const int &columns)$/;"	f	class:Bcf2pro_file
+set_name	commands/interface.h	/^	void set_name(const char *c)$/;"	f	class:Environment
+set_null	data_types/linkage_data.cc	/^void Linkage::set_null(const float_t &null)$/;"	f	class:Linkage
+set_p	data_types/linkage_data.cc	/^void Linkage::set_p(const float_t &p)$/;"	f	class:Linkage
+set_q	data_types/linkage_data.cc	/^void Linkage::set_q(const float_t &q)$/;"	f	class:Linkage
+set_quartet	data_types/locus.cc	/^Locus::set_quartet(const quartet_t &q, const count_t &c)$/;"	f	class:Locus
+set_sample_names	data_types/locus.h	/^	set_sample_names(const std::vector <std::string>& sample_names) $/;"	f	class:Locus
+set_sample_names	data_types/phenotype.h	/^	inline void set_sample_names(const std::vector <std::string>& sample_names) {$/;"	f	class:Phenotype
+set_sample_names	data_types/pooled_data.cc	/^Pooled_data::set_sample_names (const std::vector <std::string> &columns)$/;"	f	class:Pooled_data
+set_sample_names	data_types/population.h	/^	inline void set_sample_names(const std::vector <std::string>& sample_names) {$/;"	f	class:Population
+set_version	commands/interface.h	/^	void set_version(const char *c)$/;"	f	class:Environment
+sex	raw/pedigree_record.h	/^	uint8_t sex;$/;"	m	class:Pedigree_record
+sites	data_types/relatedness_data.h	/^	id1_t sites;	\/\/!< the number of sites analyzed.$/;"	m	class:Relatedness
+size	data_types/allele.cc	/^size_t Allele::size() const{$/;"	f	class:Allele
+size	data_types/data.h	/^        virtual size_t size(void) const {return 0;};$/;"	f	class:Data
+size	data_types/file_index.cc	/^File_index::size(void) const$/;"	f	class:File_index
+size	data_types/key.cc	/^size_t Key::size(void) const $/;"	f	class:Key
+size	data_types/linkage_data.cc	/^Linkage::size(void) const $/;"	f	class:Linkage
+size	data_types/locus.cc	/^Locus::size(void) const$/;"	f	class:Locus
+size	data_types/log.cc	/^Log::size(void) const $/;"	f	class:Log
+size	data_types/pedigree.cc	/^Relatedness::size(void) const {$/;"	f	class:Relatedness
+size	data_types/phenotype.cc	/^Population::size() const$/;"	f	class:Population
+size	data_types/pooled_data.cc	/^Pooled_data::size(void) const $/;"	f	class:Pooled_data
+size	data_types/population.cc	/^Population::size() const$/;"	f	class:Population
+size	data_types/relatedness_data.cc	/^Relatedness::size(void) const {$/;"	f	class:Relatedness
+size	data_types/sample_gof.cc	/^Sample_gof::size(void) const $/;"	f	class:Sample_gof
+size	data_types/sample_name.cc	/^size_t Sample_name::size(void) const $/;"	f	class:Sample_name
+size	data_types/state.cc	/^State::size() const$/;"	f	class:State
+size_	data_types/file_index.h	/^	std::vector <id1_t> size_;				$/;"	m	class:File_index
+size_	data_types/state.h	/^	size_t size_;$/;"	m	class:State
+size_	math_functions/lnmultinomial.h	/^	count_t size_;					\/\/!< The number of categories in the multinomial.$/;"	m	class:lnmultinomial
+skip	commands/relatedness.cc	/^	size_t skip;$/;"	m	class:small_rel	file:
+small_rel	commands/relatedness.cc	/^	small_rel(size_t skip_) {$/;"	f	class:small_rel
+small_rel	commands/relatedness.cc	/^class small_rel{$/;"	c	file:
+sort	data_types/locus.cc	/^Locus::sort(count_t s)$/;"	f	class:Locus
+sort	data_types/locus.cc	/^Locus::sort(void)$/;"	f	class:Locus
+sort	math_functions/lnmultinomial.cc	/^std::vector <std::pair <count_t, count_t> > sort (const count_t *a, const count_t &n)$/;"	f
+sort	math_functions/lnmultinomial.cc	/^std::vector <std::pair <count_t, float_t> > sort (const float_t *a, const count_t &n)$/;"	f
+sort_second	math_functions/lnmultinomial.cc	/^struct sort_second {$/;"	s	file:
+sorted_	data_types/locus.h	/^	gt_t sorted_[5];				\/\/!< an array to allow sorted access to quartets.$/;"	m	class:Locus
+sources	python_api/setup.py	/^		sources = ['mappy.cc'],$/;"	v
+split	stream_tools/stream_tools.h	/^inline std::vector<std::string> split(const std::string &s, const char &delim)$/;"	f
+split	stream_tools/stream_tools.h	/^inline std::vector<std::string> split(std::istream &in, const char &delim)$/;"	f
+split_first	stream_tools/stream_tools.h	/^inline std::vector<std::string> split_first(const std::string &s, const char &delim)$/;"	f
+split_first	stream_tools/stream_tools.h	/^inline std::vector<std::string> split_first(std::istream &in, const char &delim)$/;"	f
+split_last	stream_tools/stream_tools.h	/^inline std::vector<std::string> split_last(const std::string &s, const char &delim)$/;"	f
+split_last	stream_tools/stream_tools.h	/^inline std::vector<std::string> split_last(std::istream &in, const char &delim)$/;"	f
+sql_column_names	data_types/allele.cc	/^const std::string Allele::sql_column_names(void) const {$/;"	f	class:Allele
+sql_column_names	data_types/data.h	/^        virtual const std::string sql_column_names(void) const {return "";};$/;"	f	class:Data
+sql_column_names	data_types/file_index.cc	/^File_index::sql_column_names(void) const {$/;"	f	class:File_index
+sql_column_names	data_types/key.cc	/^const std::string Key::sql_column_names(void) const {$/;"	f	class:Key
+sql_column_names	data_types/linkage_data.cc	/^Linkage::sql_column_names(void) const $/;"	f	class:Linkage
+sql_column_names	data_types/locus.cc	/^Locus::sql_column_names(void) const {$/;"	f	class:Locus
+sql_column_names	data_types/log.cc	/^Log::sql_column_names(void) const {$/;"	f	class:Log
+sql_column_names	data_types/sample_name.cc	/^const std::string Sample_name::sql_column_names(void) const {$/;"	f	class:Sample_name
+sql_header	data_types/allele.cc	/^const std::string Allele::sql_header(void) const {$/;"	f	class:Allele
+sql_header	data_types/data.h	/^        virtual const std::string sql_header(void) const {return "";};$/;"	f	class:Data
+sql_header	data_types/file_index.cc	/^File_index::sql_header(void) const {$/;"	f	class:File_index
+sql_header	data_types/key.cc	/^const std::string Key::sql_header(void) const {$/;"	f	class:Key
+sql_header	data_types/linkage_data.cc	/^Linkage::sql_header(void) const $/;"	f	class:Linkage
+sql_header	data_types/locus.cc	/^Locus::sql_header(void) const {$/;"	f	class:Locus
+sql_header	data_types/log.cc	/^Log::sql_header(void) const {$/;"	f	class:Log
+sql_header	data_types/sample_name.cc	/^const std::string Sample_name::sql_header(void) const {$/;"	f	class:Sample_name
+sql_read	data_types/data.cc	/^Data::sql_read(std::istream &in)$/;"	f	class:Data
+sql_read	data_types/file_index.cc	/^File_index::sql_read (std::istream &in) $/;"	f	class:File_index
+sql_read	data_types/locus.cc	/^Locus::sql_read(std::istream &in)$/;"	f	class:Locus
+sql_values	data_types/allele.cc	/^const std::string Allele::sql_values(void) const {$/;"	f	class:Allele
+sql_values	data_types/data.h	/^	virtual const std::string sql_values(void) const {return "";};$/;"	f	class:Data
+sql_values	data_types/file_index.cc	/^File_index::sql_values(void) const {$/;"	f	class:File_index
+sql_values	data_types/key.cc	/^const std::string Key::sql_values(void) const {$/;"	f	class:Key
+sql_values	data_types/linkage_data.cc	/^Linkage::sql_values(void) const $/;"	f	class:Linkage
+sql_values	data_types/locus.cc	/^Locus::sql_values(void) const {$/;"	f	class:Locus
+sql_values	data_types/log.cc	/^Log::sql_values(void) const {$/;"	f	class:Log
+sql_values	data_types/sample_name.cc	/^const std::string Sample_name::sql_values(void) const {$/;"	f	class:Sample_name
+start	raw/region.h	/^	id1_t abs_start, start, abs_stop, stop;$/;"	m	class:Region
+stop	raw/region.h	/^	id1_t abs_start, start, abs_stop, stop;$/;"	m	class:Region
+swap	data_types/locus.cc	/^Locus::swap(count_t x, count_t y)$/;"	f	class:Locus
+swap	testing/circular_list.h	/^	swap(C_it& other)$/;"	f	class:C_it
+sync	gzstream/gzstream.C	/^int gzstreambuf::sync() {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+table_is_open	io/map_file.cc	/^bool Base_file::table_is_open(void) const$/;"	f	class:Base_file
+table_name	data_types/allele.cc	/^const std::string Allele::table_name="GENOME";\/\/!< The destination table in the Db.$/;"	m	class:Allele	file:
+table_name	data_types/allele.h	/^	static const std::string table_name;	\/\/!< The destination table in the database.$/;"	m	class:Allele
+table_name	data_types/data.cc	/^const std::string Data::table_name="NONE";\/\/!< The destination table in the Db.$/;"	m	class:Data	file:
+table_name	data_types/data.h	/^	static const std::string table_name;$/;"	m	class:Data
+table_name	data_types/file_index.cc	/^const std::string File_index::table_name="SCAFFOLDS";$/;"	m	class:File_index	file:
+table_name	data_types/file_index.h	/^	static const std::string table_name;$/;"	m	class:File_index
+table_name	data_types/key.cc	/^const std::string Key::table_name="KEYS";$/;"	m	class:Key	file:
+table_name	data_types/key.h	/^	static const std::string table_name;				\/\/!< Destination table in Db.$/;"	m	class:Key
+table_name	data_types/linkage_data.cc	/^const std::string Linkage::table_name="LINKAGE";$/;"	m	class:Linkage	file:
+table_name	data_types/linkage_data.h	/^	static const std::string table_name;				\/\/!< Destination table in Db.$/;"	m	class:Linkage
+table_name	data_types/locus.cc	/^const std::string Locus::table_name="QUARTETS";$/;"	m	class:Locus	file:
+table_name	data_types/locus.h	/^	static const std::string table_name;$/;"	m	class:Locus
+table_name	data_types/log.cc	/^const std::string Log::table_name="LOGS";$/;"	m	class:Log	file:
+table_name	data_types/log.h	/^	static const std::string table_name;				\/\/!< Destination table in Db.$/;"	m	class:Log
+table_name	data_types/pedigree.cc	/^const std::string Relatedness::table_name="RELATEDNESS";$/;"	m	class:Relatedness	file:
+table_name	data_types/pedigree.h	/^	static const std::string table_name;	\/\/!< Destination table in Db.$/;"	m	class:Pedigree
+table_name	data_types/phenotype.cc	/^const std::string Population::table_name="GENOTYPES";$/;"	m	class:Population	file:
+table_name	data_types/phenotype.h	/^	static const std::string table_name;			\/\/!< destination table in Db.$/;"	m	class:Phenotype
+table_name	data_types/pooled_data.cc	/^const std::string Pooled_data::table_name="SAMPLE";$/;"	m	class:Pooled_data	file:
+table_name	data_types/pooled_data.h	/^	static const std::string table_name;	\/\/!< Destination table in Db.$/;"	m	class:Pooled_data
+table_name	data_types/population.cc	/^const std::string Population::table_name="GENOTYPES";$/;"	m	class:Population	file:
+table_name	data_types/population.h	/^	static const std::string table_name;			\/\/!< destination table in Db.$/;"	m	class:Population
+table_name	data_types/relatedness_data.cc	/^const std::string Relatedness::table_name="RELATEDNESS";$/;"	m	class:Relatedness	file:
+table_name	data_types/relatedness_data.h	/^	static const std::string table_name;	\/\/!< Destination table in Db.$/;"	m	class:Relatedness
+table_name	data_types/sample_gof.cc	/^const std::string Sample_gof::table_name="SAMPLE";$/;"	m	class:Sample_gof	file:
+table_name	data_types/sample_gof.h	/^	static const std::string table_name;					\/\/!< Destination table in Db.$/;"	m	class:Sample_gof
+table_name	data_types/sample_name.cc	/^const std::string Sample_name::table_name="FILES";$/;"	m	class:Sample_name	file:
+table_name	data_types/sample_name.h	/^	static const std::string table_name;				\/\/!< Destination table in Db.$/;"	m	class:Sample_name
+table_name	data_types/state.cc	/^const std::string State::table_name="STATES";$/;"	m	class:State	file:
+table_name	data_types/state.h	/^	static const std::string table_name;			\/\/!< destination table in Db.$/;"	m	class:State
+table_open_	io/map_file.h	/^	bool table_open_;	$/;"	m	class:Base_file
+tellg	io/map_file.cc	/^std::streampos Base_file::tellg(void)$/;"	f	class:Base_file
+tellp	io/map_file.cc	/^std::streampos Base_file::tellp(void)$/;"	f	class:Base_file
+testRel	commands/relatedness_test.cc	/^int testRel(int argc, char *argv[])$/;"	f
+testRel	commands/relatedness_test.cc	/^testRel(int argc, char *argv[])$/;"	f
+test_keys	commands/test_keys.cc	/^int test_keys(int argc, char *argv[])$/;"	f
+theta_XY_	data_types/relatedness_data.h	/^	float_t theta_XY_, theta_XY_ll;$/;"	m	class:Relatedness
+theta_XY_ll	data_types/relatedness_data.h	/^	float_t theta_XY_, theta_XY_ll;$/;"	m	class:Relatedness
+time	data_types/log.h	/^	time_t time;$/;"	m	class:Log
+to_allele	data_types/pooled_data.cc	/^Pooled_data::to_allele(const size_t & x)$/;"	f	class:Pooled_data
+to_tuple	raw/genotype_pair.cc	/^Genotype_pair::to_tuple(const Genotype_pair &pair)$/;"	f	class:Genotype_pair
+try_binary_	io/map_file.h	/^	bool try_binary_;	\/\/!< Attempt to set binary mode flag. $/;"	m	class:Base_file
+type	data_types/key.h	/^	std::string description, type;$/;"	m	class:Key
+umsg	commands/interface.h	/^	char *umsg;		\/\/!< A short description of this option to be displayed in the usage message.$/;"	m	class:Flag
+umsg	commands/interface.h	/^	char *umsg;	\/\/!< A short description of this command to be displayed in the usage and help message$/;"	m	class:Command
+umsg	commands/interface.h	/^	char *umsg; \/\/!< A short description of this option to be displayed in the usage message.$/;"	m	class:Argument
+underflow	gzstream/gzstream.C	/^int gzstreambuf::underflow() { \/\/ used for input buffer only$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+underflow	stream_tools/tmp_buffer.cc	/^Tmp_streambuf::underflow() $/;"	f	class:Tmp_streambuf
+unmask	data_types/locus.cc	/^Locus::unmask(const std::vector <size_t> &s)$/;"	f	class:Locus
+unmask	raw/quartet.cc	/^void unmask(quartet_t &q){$/;"	f
+unmaskall	data_types/locus.cc	/^Locus::unmaskall(void)$/;"	f	class:Locus
+url	python_api/setup.py	/^	url='https:\/\/www.github.com\/LynchLab\/mapgd\/',$/;"	v
+value	testing/circular_list.h	/^		T value;$/;"	m	struct:C_it::Node
+version	commands/interface.h	/^	const char *version;		\/\/!< the version$/;"	m	class:Environment
+version	python_api/setup.py	/^	version = "0.4."+minor,$/;"	v
+write	commands/estimate_individual.cc	/^void write(std::ostream& out, uint32_t readed, profile& pro, profile& pro_out, Allele* buffer_mle, Locus* buffer_site, float MINGOF, float_t A)$/;"	f
+write	data_conversion/vcf-file.cc	/^Vcf_file::write(const Vcf_data &vcf)$/;"	f	class:Vcf_file
+write	data_types/allele.cc	/^void Allele::write (std::ostream& out) const $/;"	f	class:Allele
+write	data_types/file_index.cc	/^File_index::write(std::ostream& out) const$/;"	f	class:File_index
+write	data_types/key.cc	/^void Key::write(std::ostream& out) const$/;"	f	class:Key
+write	data_types/linkage_data.cc	/^Linkage::write(std::ostream& out) const$/;"	f	class:Linkage
+write	data_types/locus.cc	/^Locus::write (std::ostream& out) const$/;"	f	class:Locus
+write	data_types/log.cc	/^Log::write(std::ostream& out) const$/;"	f	class:Log
+write	data_types/pedigree.cc	/^Relatedness::write (std::ostream& out) const $/;"	f	class:Relatedness
+write	data_types/phenotype.cc	/^Population::write (std::ostream& out) const$/;"	f	class:Population
+write	data_types/pooled_data.cc	/^Pooled_data::write (std::ostream& out) const$/;"	f	class:Pooled_data
+write	data_types/population.cc	/^Population::write (std::ostream& out) const$/;"	f	class:Population
+write	data_types/relatedness_data.cc	/^Relatedness::write (std::ostream& out) const $/;"	f	class:Relatedness
+write	data_types/sample_gof.cc	/^Sample_gof::write (std::ostream& out) const$/;"	f	class:Sample_gof
+write	data_types/sample_name.cc	/^void Sample_name::write(std::ostream& out) const$/;"	f	class:Sample_name
+write	data_types/state.cc	/^State::write (std::ostream& out) const$/;"	f	class:State
+write	io/map_file.h	/^Data_file<T>& Data_file<T>::write(const T &data)$/;"	f	class:Data_file
+write	io/map_file.h	/^Indexed_file<T>& Indexed_file<T>::write(const T &data)$/;"	f	class:Indexed_file
+write_	io/map_file.h	/^	bool write_;		\/\/!< File is open for writing.$/;"	m	class:Base_file
+write_binary	data_types/data.h	/^	void write_binary(std::ostream& str) const {};$/;"	f	class:Data
+write_binary	data_types/locus.cc	/^Locus::write_binary (std::ostream& out) const$/;"	f	class:Locus
+write_binary	data_types/population.cc	/^Population::write_binary (std::ostream& out) const$/;"	f	class:Population
+write_binary	data_types/state.cc	/^State::write_binary (std::ostream& out) const$/;"	f	class:State
+write_binary	io/map_file.h	/^void Data_file<T>::write_binary(const T &data)$/;"	f	class:Data_file
+write_binary	io/map_file.h	/^void Indexed_file<T>::write_binary(const T &data)$/;"	f	class:Indexed_file
+write_header	data_conversion/vcf-file.cc	/^Vcf_file::write_header(const Vcf_data &vcf)$/;"	f	class:Vcf_file
+write_header	io/map_file.h	/^void Flat_file<T>::write_header(const T &data)$/;"	f	class:Flat_file
+write_header	io/map_file.h	/^void Indexed_file<T>::write_header(const T &data)$/;"	f	class:Indexed_file
+write_index	data_types/file_index.cc	/^File_index::write_index(std::ostream &out)$/;"	f	class:File_index
+write_pos	data_types/data.h	/^	void write_pos(std::ostream& str) const$/;"	f	class:Indexed_data
+write_text	data_conversion/external-file.h	/^	virtual void write_text(const External_data&){};\/\/!< Write file in text mode.$/;"	f	class:External_file
+write_text	io/map_file.h	/^	virtual void write_text(const Data&){};$/;"	f	class:Data_file
+write_text	io/map_file.h	/^void Flat_file<T>::write_text(const T &data)$/;"	f	class:Flat_file
+write_text	io/map_file.h	/^void Indexed_file<T>::write_text(const T &data)$/;"	f	class:Indexed_file
+writesql	sql/writesql.cc	/^int writesql(int argc, char *argv[])$/;"	f
+z	data_types/phenotype.h	/^	std::vector <real_t> z;	\/\/!< centered phenotypes$/;"	m	class:Phenotype
+z_prime	data_types/phenotype.h	/^	std::vector <real_t> z_prime;	\/\/!< centered w\/ inbreeding removed$/;"	m	class:Phenotype
+z_raw	data_types/phenotype.h	/^	std::vector <real_t> z_raw;	\/\/!< uncentered phenotypes$/;"	m	class:Phenotype
+zero	data_types/pedigree.cc	/^Relatedness::zero(void)$/;"	f	class:Relatedness
+zero	data_types/relatedness_data.cc	/^Relatedness::zero(void)$/;"	f	class:Relatedness
+~Constants	raw/constants.h	/^	~Constants(void)$/;"	f	class:Constants
+~Indexed_file	io/map_file.h	/^	~Indexed_file(){};$/;"	f	class:Indexed_file
+~Population	data_types/phenotype.cc	/^Population::~Population(){}$/;"	f	class:Population
+~Population	data_types/population.cc	/^Population::~Population(){}$/;"	f	class:Population
+~Registration	data_types/data.cc	/^Registration::~Registration ()$/;"	f	class:Registration
+~Registry_initalizer	data_types/data.cc	/^Registry_initalizer::~Registry_initalizer()$/;"	f	class:Registry_initalizer
+~State	data_types/state.cc	/^State::~State()$/;"	f	class:State
+~Tmp_buffer	stream_tools/tmp_buffer.h	/^	~Tmp_buffer (void){};$/;"	f	class:Tmp_buffer
+~Tmp_streambuf	stream_tools/tmp_buffer.cc	/^Tmp_streambuf::~Tmp_streambuf()$/;"	f	class:Tmp_streambuf
+~binomial	math_functions/binomial.h	/^	~binomial (void){ fact_vector.clear(); }$/;"	f	class:binomial
+~gzstreambase	gzstream/gzstream.C	/^gzstreambase::~gzstreambase() {$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambase
+~gzstreambuf	gzstream/gzstream.h	/^    ~gzstreambuf() { close(); }$/;"	f	class:GZSTREAM_NAMESPACE::gzstreambuf
+~lnmultinomial	math_functions/lnmultinomial.cc	/^lnmultinomial::~lnmultinomial (void)$/;"	f	class:lnmultinomial
+~models	math_functions/models.cc	/^models::~models(void)$/;"	f	class:models

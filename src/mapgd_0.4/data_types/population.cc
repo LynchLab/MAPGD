@@ -2,15 +2,18 @@
 
 const std::string Population::file_name=".gcf";
 const std::string Population::table_name="GENOTYPES";
-const bool Population::binary=false;
+const bool Population::binary=true;
 
 const Registration Population::registered=Registration(Population::table_name, Population::create);
 /** @breif constuctor w/ initial values. **/
 
 Population::Population(const std::vector <std::string> &column_names)
 {
-	sample_names_=std::vector <std::string> (column_names.cbegin()+4, column_names.cend() );
-	likelihoods.resize(sample_names_.size() );
+	if (column_names.size()>4)
+	{
+		sample_names_=std::vector <std::string> (column_names.cbegin()+4, column_names.cend() );
+		likelihoods.resize(sample_names_.size() );
+	}
 }
 
 Population::Population()
@@ -41,6 +44,7 @@ Population::operator= (const Population& rhs)
 	major=rhs.major;			//!< identity of the major allele
 	minor=rhs.minor;			//!< identity of the minor allele
 	m=rhs.m;				//!< minor allele frequency
+	f=rhs.f;				//!< minor allele frequency
 	abs_pos_=rhs.abs_pos_;			//!< scaffold number
 	return *this;
 }
@@ -84,6 +88,24 @@ Population::read (std::istream& in)
 		s_it++;
 	}	
 }
+
+
+void
+Population::write_binary (std::ostream& out) const
+{
+        out.write((char *)&m, sizeof(float_t) );
+        out.write((char *)&f, sizeof(float_t) );
+        out.write((char *)&likelihoods[0], (size_t)(likelihoods.size()*sizeof(Genotype) ) );
+}
+
+void
+Population::read_binary (std::istream& in)
+{
+        in.read((char *)&m, sizeof(float_t) );
+        in.read((char *)&f, sizeof(float_t) );
+        in.read((char *)&likelihoods[0], (size_t)(likelihoods.size()*sizeof(Genotype) ) );
+}
+
 
 const bool
 Population::get_binary(void) const

@@ -11,9 +11,9 @@
 #include "typedef.h"
 #include "datatypes.h"
 #include "raw.h"
-#include "stream-tools.h"
+#include "stream_tools.h"
 
-#include "map-file.h"
+#include "map_file.h"
 #include "locus.h"
 #include "bcf2pro.h"
 

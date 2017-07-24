@@ -13,9 +13,9 @@
 
 #include "typedef.h"
 #include "data.h"
-#include "stream-tools.h"
+#include "stream_tools.h"
 
-///	A class to store a log of commands that have been run.
+/// A class to store a log of commands that have been run.
 /** Commands should set logs whenever they are run.
  */
 class Log : public virtual Data { 

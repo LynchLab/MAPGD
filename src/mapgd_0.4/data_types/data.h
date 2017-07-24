@@ -31,10 +31,6 @@
  */
 class Data {
 private:
-	//! The read function must be defined in the child class.
-	static const std::string file_name;
-	//! The read function must be defined in the child class.
-	static const std::string table_name;
 	/*! A flag to indicate whether reading/writing in binary mode is 
 	 * supported for the data_type.
  	 */
@@ -66,6 +62,13 @@ protected:
 	}*/
 
 public:
+	//! The read function must be defined in the child class.
+	static const std::string file_name;
+	//! The read function must be defined in the child class.
+	static const std::string table_name;
+
+	virtual std::string header(void) const = 0;
+
 	void read_binary(std::istream& str) {};
 	void write_binary(std::ostream& str) const {};
 
@@ -122,6 +125,10 @@ public:
 
 	//! Constructs an instance of the class Registered w/ string.
 	static Data * new_from_str (const std::string &, const std::vector<std::string> &);
+
+	//! Toys
+	virtual const enum tags(void) const {return "";};
+
 };
 
 //! Data which has an absolute position.
@@ -174,5 +181,5 @@ public:
 private:
 	std::string name_;
 };
-
+std::vector <std::string> registry_list(void);
 #endif

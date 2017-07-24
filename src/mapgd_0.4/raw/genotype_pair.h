@@ -29,6 +29,7 @@ public:
 	float_t m;
 	static Genotype_pair_tuple to_tuple(const Genotype_pair &);
 	static Genotype_pair from_tuple(const Genotype_pair_tuple &);
+	bool operator<(const Genotype_pair&) const;
 };
 
 

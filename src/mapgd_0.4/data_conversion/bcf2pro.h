@@ -11,9 +11,9 @@
 #include "typedef.h"
 #include "datatypes.h"
 #include "raw.h"
-#include "stream-tools.h"
+#include "stream_tools.h"
 
-#include "map-file.h"
+#include "map_file.h"
 
 /// Because of the god awful mess that are vcf header lines.
 /** This is likely to become some form of container to handle moving data into and out of rows of map file.

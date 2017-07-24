@@ -6,10 +6,10 @@
 #include <iostream>
 #include <typeinfo>
 
-#include "stream-tools.h"
+#include "stream_tools.h"
 #include "typedef.h"
-#include "stream-tools.h"
-#include "map-file.h"
+#include "stream_tools.h"
+#include "map_file.h"
 
 /* These should all be included from the objects using this code, but I'm not 
  * linking things correctly right now.

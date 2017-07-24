@@ -4,16 +4,17 @@ Genotype_pair_tuple
 convert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &precision)
 {
 	float_t T=pow(10, precision);
-	return Genotype_pair_tuple ( roundf(x.lMM * T) / T, roundf(x.lMm*T)/T, roundf(x.lmm*T)/T, roundf(y.lMM*T)/T, roundf(y.lMm*T)/T, round(y.lmm*T)/T, round(m*T)/T);
+//	std::cerr << x.MM+x.Mm*0.5 << ", " << y.MM+y.Mm*0.5 << ", " << round(m*T)/T << std::endl;
+	return Genotype_pair_tuple ( roundf((x.MM) * T) / T, roundf((x.Mm)*T)/T, roundf((x.mm)*T)/T, roundf((y.MM)*T)/T, roundf((y.Mm)*T)/T, round((y.mm)*T)/T, round(m*T)/T);
 }
 
 Genotype_pair_tuple 
 downvert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &precision)
 {
 	float_t T=pow(10, precision);
-	float MIN=10;
-//	std::cerr << x.lMM << std::endl;
-	return Genotype_pair_tuple ( roundf( std::min(x.lMM, MIN)* T) / T, roundf( std::min(x.lMm, MIN)*T)/T, roundf( std::min(x.lmm, MIN)*T)/T, roundf( std::min(y.lMM, MIN)*T)/T, roundf( std::min(y.lMm, MIN)*T)/T, round( std::min(y.lmm, MIN) *T)/T, round(m*T)/T);
+	float_t MIN=1.2/T;
+//	return Genotype_pair_tuple ( roundf( std::min((x.MM), MIN)* T) / T, roundf( std::min((x.mm), MIN)*T)/T, roundf( std::min((x.mm), MIN)*T)/T, roundf( std::min((y.MM), MIN)*T)/T, roundf( std::min((y.mm), MIN)*T)/T, round( std::min((y.mm), MIN) *T)/T, round(m*T)/T);
+	return Genotype_pair_tuple ( roundf( std::max( (x.MM), MIN)* T) / T, roundf( std::max((x.Mm), MIN)*T)/T, roundf( std::max((x.mm), MIN)*T)/T, roundf( std::max((y.MM), MIN)*T)/T, roundf( std::max((y.Mm), MIN)*T)/T, round( std::max((y.mm), MIN) *T)/T, round(m*T)/T);
 }
 
 
@@ -27,6 +28,18 @@ Genotype_pair::Genotype_pair(const float_t &X_MM_, const float_t &X_Mm_, const f
 	Y_mm=Y_mm_;
 	m=m_;
 
+}
+
+bool Genotype_pair::operator<(const Genotype_pair& rhs) const
+{
+	if (m!=rhs.m) return m<rhs.m;
+	if (X_mm!=rhs.X_mm) return X_mm<rhs.X_mm;
+	if (X_Mm!=rhs.X_Mm) return X_Mm<rhs.X_Mm;
+	if (X_MM!=rhs.X_MM) return X_MM<rhs.X_MM;
+	if (Y_mm!=rhs.Y_mm) return Y_mm<rhs.Y_mm;
+	if (Y_Mm!=rhs.Y_Mm) return Y_Mm<rhs.Y_Mm;
+	if (Y_MM!=rhs.Y_MM) return Y_MM<rhs.Y_MM;
+	return false;
 }
 
 Genotype_pair_tuple 

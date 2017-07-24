@@ -4,7 +4,7 @@
 #include "interface.h"
 #include "db_api.h"
 #include "datatypes.h"
-#include "map-file.h"
+#include "map_file.h"
 
 //! Reads Data classes from an SQL database
 /*! @ingroup Command 

@@ -40,9 +40,9 @@ void Sample_name::write(std::ostream& out) const
 	}
 }
 
-const std::string Sample_name::header(void) const 
+std::string Sample_name::header(void) const 
 {
-	return "@FILNAME\tSMPNAME\t...\n";
+	return std::string("@FILNAME\tSMPNAME\t...\n");
 }
 
 const std::string Sample_name::sql_header(void) const {
