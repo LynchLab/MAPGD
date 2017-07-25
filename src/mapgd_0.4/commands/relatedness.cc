@@ -80,7 +80,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 	//#pragma omp taskwait
 	}
 	if (gsl_blas_dnrm2(R)< 10) break;
-	if (isnan(gsl_blas_dnrm2(R))) break;
+	if (std::isnan(gsl_blas_dnrm2(R))) break;
 	if (gsl_matrix_isnull(J)) break;
 	if (iter>20){
 		break;
