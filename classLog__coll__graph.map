@@ -1,0 +1,4 @@
+<map id="Log" name="Log">
+<area shape="rect" id="node2" href="$classData.html" title="A class which can be written as flat text file or into an SQL database. " alt="" coords="5,5,56,32"/>
+<area shape="rect" id="node3" href="$classRegistration.html" title="A class which registers a child of Data in Data::new_data_. " alt="" coords="81,5,172,32"/>
+</map>

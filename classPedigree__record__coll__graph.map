@@ -1,0 +1,5 @@
+<map id="Pedigree_record" name="Pedigree_record">
+<area shape="rect" id="node2" href="$classPedigree.html" title="Pedigree data. " alt="" coords="119,109,192,136"/>
+<area shape="rect" id="node3" href="$classData.html" title="A class which can be written as flat text file or into an SQL database. " alt="" coords="172,5,223,32"/>
+<area shape="rect" id="node4" href="$classRegistration.html" title="A class which registers a child of Data in Data::new_data_. " alt="" coords="247,5,339,32"/>
+</map>

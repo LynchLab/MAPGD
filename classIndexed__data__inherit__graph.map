@@ -1,0 +1,8 @@
+<map id="Indexed_data" name="Indexed_data">
+<area shape="rect" id="node3" href="$classAllele.html" title="Summary statistics from the allele command. " alt="" coords="5,155,59,181"/>
+<area shape="rect" id="node4" href="$classLocus.html" title="Locus" alt="" coords="83,155,140,181"/>
+<area shape="rect" id="node6" href="$classPooled__data.html" title="Information genereated from pooled data. " alt="" coords="165,155,259,181"/>
+<area shape="rect" id="node7" href="$classPopulation.html" title="Population genotypes. " alt="" coords="284,155,365,181"/>
+<area shape="rect" id="node2" href="$classData.html" title="A class which can be written as flat text file or into an SQL database. " alt="" coords="136,5,187,32"/>
+<area shape="rect" id="node5" href="$classBcf2pro.html" title="Because of the god awful mess that are vcf header lines. " alt="" coords="79,229,145,256"/>
+</map>

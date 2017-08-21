@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quartet',['quartet',['../structquartet.html',1,'']]]
+  ['ogzstream',['ogzstream',['../classogzstream.html',1,'']]]
 ];

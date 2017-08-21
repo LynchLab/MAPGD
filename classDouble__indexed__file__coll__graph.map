@@ -1,0 +1,14 @@
+<map id="Double_indexed_file&lt; T &gt;" name="Double_indexed_file&lt; T &gt;">
+<area shape="rect" id="node2" href="$classIndexed__file.html" title="Indexed_file\&lt; T \&gt;" alt="" coords="291,536,415,563"/>
+<area shape="rect" id="node3" href="$classData__file.html" title="Data_file\&lt; T \&gt;" alt="" coords="232,445,339,472"/>
+<area shape="rect" id="node4" href="$classBase__file.html" title="A templet which stores data associated with specific locations in a genome. " alt="" coords="247,355,323,381"/>
+<area shape="rect" id="node5" href="$classTmp__buffer.html" title="Tmp_buffer" alt="" coords="107,264,195,291"/>
+<area shape="rect" id="node7" href="$classTmp__streambuf.html" title="Tmp_streambuf" alt="" coords="94,173,207,200"/>
+<area shape="rect" id="node9" href="$classogzstream.html" title="ogzstream" alt="" coords="357,264,439,291"/>
+<area shape="rect" id="node10" href="$classgzstreambase.html" title="gzstreambase" alt="" coords="347,173,451,200"/>
+<area shape="rect" id="node15" href="$classigzstream.html" title="igzstream" alt="" coords="246,264,324,291"/>
+<area shape="rect" id="node12" href="$classgzstreambuf.html" title="gzstreambuf" alt="" coords="418,83,512,109"/>
+<area shape="rect" id="node17" href="$classFile__index.html" title="An interface that transforms pairs of name and position keys into record numbers. ..." alt="" coords="363,445,444,472"/>
+<area shape="rect" id="node18" href="$classData.html" title="A class which can be written as flat text file or into an SQL database. " alt="" coords="363,355,413,381"/>
+<area shape="rect" id="node19" href="$classRegistration.html" title="A class which registers a child of Data in Data::new_data_. " alt="" coords="438,355,529,381"/>
+</map>
