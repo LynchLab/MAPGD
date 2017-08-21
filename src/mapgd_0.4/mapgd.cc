@@ -7,8 +7,8 @@
 
 using namespace std;
 
-/*! \brief Our main function. Parses commandline arguments etc.
- *	returns 0 iff seccessful
+/*! \brief Our main function. Parses command line arguments etc.
+ *	returns 0 iff successful
  */
 int main (int argc, char* argv[])
 {
