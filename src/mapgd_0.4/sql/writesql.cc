@@ -40,32 +40,67 @@ int writesql(int argc, char *argv[])
 	file.open(std::ios::in);
 	Data *line=file.read_header();
 
-	while(file.is_open() ){
+	if (file.indexed() && !file.concatenated()){
+		std::cerr << "index?..." << std::endl;
+		if (db_check_schema(db, &index)) 
+		{
+			std::stringstream stream;
+			db_open_table(db, &index, &stream);
+			while (db_get(&stream, &index) );
+		}
+		else 
+		{
+			fprintf(stderr, gettext("mapgd:%s:%d: Cannot write data because there is no SCAFFOLD table in %s. Try writing an .idx file first.\n"), __FILE__, __LINE__, db_name.c_str());
+			sqlite3_close(db);
+			return 0;	
+		}
+	}
+
+	while(file.is_open())
+	{
+		std::cerr << "file is open..." << std::endl;
 		db_begin(db);
-		db_make_table(db, line);
-		if (line->get_table_name()==File_index::table_name) {
-			file.read(&index);
-			while (file.table_is_open() ){
-				db_insert(db, &index);
+		if (line->get_table_name()==File_index::table_name) 
+		{
+			std::cerr << "line?..." << std::endl;
+			if (!db_check_schema(db, &index)) 
+			{
+				db_make_table(db, line);
+				std::cerr << "schema..." << std::endl;
 				file.read(&index);
-			}
+				while (file.table_is_open() )
+				{
+					std::cerr << line << std::endl;
+					db_insert(db, &index);
+					file.read(&index);
+				}
+			} else {
+				std::cerr << "not schema..." << std::endl;
+				file.read(&index);
+				while (file.table_is_open() ) file.read(&index);
+			} 
 		} else {
+			db_make_table(db, line);
+			std::cerr << "table name..." << std::endl;
 			if (file.indexed() ){
 				Indexed_data *indexed_line=dynamic_cast <Indexed_data *> (line);
 				file.read(index, indexed_line);
 				while (file.table_is_open() ){
+					std::cerr << line << std::endl;
 					db_insert(db, line);
 					file.read(index, indexed_line);
 				}
 			} else {
 				file.read(line);
 				while (file.table_is_open() ){
+					std::cerr << line << std::endl;
 					db_insert(db, line);
 					file.read(line);
 				}
 			}
 		}
 		db_end(db);
+		delete line;
 		line=file.read_header();
 	}
 	sqlite3_close(db);

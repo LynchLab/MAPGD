@@ -7,6 +7,13 @@ const bool Population::binary=true;
 const Registration Population::registered=Registration(Population::table_name, Population::create);
 /** @breif constuctor w/ initial values. **/
 
+
+Population::Population(const Sample_name &names)
+{
+	sample_names_=names.sample_names;
+	likelihoods.resize(sample_names_.size() );
+}
+
 Population::Population(const std::vector <std::string> &column_names)
 {
 	if (column_names.size()>4)

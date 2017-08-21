@@ -11,10 +11,10 @@ WARNINGS=-Wno-write-strings
 #WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ~/src/lz4/lib
 
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) -MMD
-LDLIBS += -lgzstream -lz -L ./gzstream/
+LDLIBS += -lgzstream -lz -L ./gzstream/ -L ~/src/lz4/lib -llz4
 
 DEBUG=-pg -D DEBUG -ggdb
 NOOMP=-D NOOMP
@@ -79,7 +79,7 @@ endif
 
 DOCDIR=../../docs
 
-SUBDIR=raw sql data_types commands data_conversion stream_tools 
+SUBDIR=raw sql data_types commands data_conversion stream_tools io math_functions
 
 ifeq ($(UNSTABLE), yes)
 	SUBDIR += testing
@@ -112,11 +112,13 @@ COMMAND_OBJ=commands/estimate_individual.o \
 	commands/fastview.o \
 	commands/relatedness.o \
 	commands/test_keys.o \
+	commands/simulate.o \
 	commands/relatedness_test.o
 
 #Depend on htslib
 HTS_OBJ=data_conversion/vcf-file.o \
 	commands/read_vcf.o \
+	commands/make-vcf2.o \
 	commands/make-vcf.o
 
 #Depend on db_api
@@ -137,8 +139,8 @@ BASE_OBJ=math_functions/binomial.o \
 	stream_tools/stream_tools.o 
 
 #These all depend on data.h
-DATA_OBJ=data_types/allele.o \
-	data_types/data.o \
+DATA_OBJ=data_types/data.o \
+	data_types/allele.o \
 	data_types/file_index.o \
 	data_types/linkage_data.o \
 	data_types/pooled_data.o \
@@ -148,6 +150,7 @@ DATA_OBJ=data_types/allele.o \
 	data_conversion/bcf2pro-file.o \
 	data_types/locus.o \
 	data_types/key.o \
+	data_types/state.o \
 	data_types/sample_name.o 
 #??
 RAW_OBJ=raw/genotype.o \
@@ -193,6 +196,7 @@ gzstream :
 
 $(TARGET) : $(OBJ)
 	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o $(TARGET) $(LDLIBS) $(MPI_LDLIBS)
+	xgettext --keyword=_ --language=C --add-comments --sort-output -o po/mapgd.pot --copyright-holder="Matthew Ackerman" --package-name="mapgd" --package-version=$(MINOR) --msgid-bugs-address="matthew.s.ackerman@gmail.com"  $(addsuffix /*.cc, $(SUBDIR)) *.cc
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
 $(MPI_OBJ) : $(MPI_OBJ:.o=.cc)

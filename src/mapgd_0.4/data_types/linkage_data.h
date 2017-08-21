@@ -22,7 +22,7 @@
   * skillz. It's totally a fact.
   * I'll start fixing allele stat now.  
  */
-class Linkage : public virtual Indexed_data { 
+class Linkage : public virtual Double_indexed_data { 
 private:
 	void read(std::istream& str);
 	///! the write function must be ? by the child class.
@@ -35,8 +35,6 @@ private:
 	id0_t id0;	//!< The scaffold of site X
 	id1_t id1;	//!< The pos of site X
 
-	id1_t id1_y_;	//!< the pos of site Y
-
 	float_t p_;		//!< freq_major site numero uno
 	float_t q_;		//!< freq_major site numero dos
 
@@ -45,9 +43,12 @@ private:
 	float_t fit_;		//!< fit statistic (thar be ld here!)
 	float_t null_;		//!< null statistic (i.e. no ld)
 public:
-	using Indexed_data::get_abs_pos;		//!< Get the absolute position of the Locus.
-	using Indexed_data::set_abs_pos;		//!< Set the absolute position of the Locus.
-	void set_abs_pos_y(const id1_t &pos) {id1_y_=pos;};
+	using Double_indexed_data::get_abs_pos1;		//!< Get the absolute position of the Locus.
+	using Double_indexed_data::get_abs_pos2;		//!< Get the absolute position of the Locus.
+
+	using Double_indexed_data::set_abs_pos1;		//!< Set the absolute position of the Locus.
+	using Double_indexed_data::set_abs_pos2;		//!< Set the absolute position of the Locus.
+
 	char delim;		//!< the delimiter used when reading/writing the class in text mode.	
 
 	Linkage();	
@@ -111,10 +112,11 @@ public:
 	//TODO SHIT!
 	Linkage & operator=(const Linkage &lhs){
 //		(Indexed_data)(this)->abs_pos_=(Indexed_data)(&lhs)->abs_pos_;
-		this->abs_pos_=lhs.abs_pos_;
-	        this->id0=lhs.id0;      //!< The scaffold of site X
+		this->abs_pos1_=lhs.abs_pos1_;
+		this->abs_pos2_=lhs.abs_pos2_;
+	   
+		this->id0=lhs.id0;      //!< The scaffold of site X
 	        this->id1=lhs.id1;      //!< The pos of site X
-	        this->id1_y_=lhs.id1_y_;   //!< the pos of site Y
 
 	        this->p_=lhs.p_;             //!< freq_major site numero uno
 	        this->q_=lhs.q_;             //!< freq_major site numero dos

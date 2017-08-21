@@ -170,17 +170,17 @@ rm -f map
 rm -f pro
 testa
 
-#a="linkage"
-#msg="linkage"
-#size=15
-#echo -n "cat linkage | $mapgd $a > $a.out 											"
-#$mapgd proview -H $header -n $unicode > temp_pro
-#$mapgd allele -i temp_pro -c 1 > temp_map
-#$mapgd filter -i temp_map -p 5 > temp_filtered_map
-#$mapgd genotype -p temp_pro -m temp_filtered_map > temp_genotype
-#$mapgd linkage -i temp_genotype > linkage.out
-#testa
-#rm -f temp*
+a="linkage"
+msg="linkage"
+size=13
+echo -n "cat linkage | $mapgd $a > $a.out 											"
+$mapgd proview -H $header -n $unicode > temp_pro
+$mapgd allele -i temp_pro -c 1 > temp_map
+$mapgd filter -i temp_map -p 5 > temp_filtered_map
+$mapgd genotype -p temp_pro -m temp_filtered_map > temp_genotype
+$mapgd linkage -i temp_genotype -M 4 > linkage.out
+testa
+rm -f temp*
 
 rm -f map
 rm -f pro
@@ -228,15 +228,13 @@ $mapgd relatedness -i temp_genotype.out > $a.out
 testa
 rm -f temp*
 
-exit 0
-
 a="write"
 msg="write/read"
+size=6
 rm -f test.db
-echo "cat spitze.idx | $mapgd write -d test.db 									"
-cat spitze.idx | $mapgd write -d test.db
-echo -n "$mapgd read -d test.db -t INDEX										"
-$mapgd read -d test.db -t INDEX
-#rm -f test.db
+echo "$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db 									"
+$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db
+echo -n "$mapgd read -d test.db -t REGIONS										"
+$mapgd read -d test.db -t REGIONS > $a.out
+rm -f test.db
 testa
-

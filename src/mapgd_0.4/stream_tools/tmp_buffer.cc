@@ -9,10 +9,8 @@ Tmp_streambuf::Tmp_streambuf()
 Tmp_streambuf *
 Tmp_streambuf::open(std::istream **dest, std::istream *src)
 {
-//	std::cerr << "Opening!\n";
 	if ( (*dest)->good() && src->good() )
 	{
-//		std::cerr << "Good!\n";
 		_mode = READ;
 		_opened = true;
 		_src=src;
@@ -28,12 +26,10 @@ Tmp_streambuf::open(std::istream **dest, std::istream *src)
 int 
 Tmp_streambuf::underflow() 
 {
-//	std::cerr << "Underflow!\n";
 	if (_opened) {
 		if(!reread){
 			c=_src->rdbuf()->sbumpc();
 			if (buffered) _buffer << c;
-//			std::cerr << buffered\n";
 		} else {
 			_buffer.get(c);
 			if (!_buffer.good() ){
@@ -41,7 +37,6 @@ Tmp_streambuf::underflow()
 				*_dest=_src;
 			}
 		}
-		//std::cerr << c << std::endl;
 		setg(&c, &c, &c+1);
 		return c;
 	}
@@ -51,13 +46,11 @@ Tmp_streambuf::underflow()
 void 
 Tmp_streambuf::clear_read(void)
 {
-	//std::cerr << "Clear!\n";
 	_buffer.str(std::string());
-	//std::cerr << "Good? " << _buffer.good() << std::endl;
-	//_
 }
 
-void Tmp_buffer::clear_read(void)
+void 
+Tmp_buffer::clear_read(void)
 {
 	_spool.clear_read();
 }
@@ -71,14 +64,11 @@ Tmp_streambuf::is_open(void)
 Tmp_streambuf *
 Tmp_streambuf::close(void)
 {
-//	std::cerr << "Close!\n";
-//	_opened=false;
 	return (Tmp_streambuf*)0;
 }
 
 Tmp_streambuf::~Tmp_streambuf()
 {
-//	std::cerr << "Something is happening!\n";
 	close(); 
 }
 

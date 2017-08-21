@@ -76,12 +76,12 @@ size_t Sample_name::size(void) const
 
 const std::string Sample_name::get_file_name(void) const
 {
-	return file_name;
+	return Sample_name::file_name;
 }
 
 const std::string Sample_name::get_table_name(void) const
 {
-	return table_name;
+	return Sample_name::table_name;
 }
 
 const bool Sample_name::get_binary(void) const

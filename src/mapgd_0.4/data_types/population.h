@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include "data.h"
+#include "sample_name.h"
 #include "typedef.h"
 #include "genotype.h"
 
@@ -27,9 +28,10 @@ public:
 	float_t f;					//!< departure from HWE
 //end Data block
 	Population();					//!< simple constructor.
-	Population(const std::vector <std::string> &);//!< constructor needed by map_file. String should be coloumn names. 
-	Population(const Population &); 	//!< constructor using a Population_Genotype
-	~Population();				//!< destructor.
+	Population(const Sample_name &);		//!< constructor using sample names. 
+	Population(const std::vector <std::string> &);	//!< constructor needed by map_file. String should be coloumn names. 
+	Population(const Population &); 		//!< constructor using a Population_Genotype
+	~Population();					//!< destructor.
 	size_t size() const;					//!< Returns the number of samples.
 	void add(const Genotype &likelihood);			//!< append a sample to the likelihood.
 	void add(const float_t &lMM, const float_t &lMm, const float_t &lmm, const count_t &N); //!< append a sample to the likelihood.
@@ -51,6 +53,9 @@ public:
 
 	void write (std::ostream&) const;
 	void read (std::istream&);
+
+	const std::string get_file_name() const {return Population::file_name;};
+        const std::string get_table_name() const {return Population::table_name;};
 
 	void write_binary (std::ostream&) const;
 	void read_binary (std::istream&);

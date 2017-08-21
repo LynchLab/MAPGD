@@ -1,5 +1,7 @@
 #include "map_file.h"
 
+//std::map <std::string, Map_file*(*)(void) > m_data_ctor;
+
 Base_file::Base_file(void)
 {
 	open_=false;
@@ -16,7 +18,7 @@ Base_file::Base_file(void)
 }
 
 bool 
-Base_file::indexed(void)
+Base_file::indexed(void) const
 {
 	return indexed_;
 }
@@ -133,6 +135,10 @@ void Base_file::open(const std::ios_base::openmode &mode)
 {
 	if ( mode & std::ios::in ) open(&std::cin, mode);
 	else if ( mode & std::ios::out ) open(&std::cout, mode);
+	else 
+	{
+		fprintf(stderr, gettext("mapgd:%s:%d: Unrecognized std::ios_base::openmode mode; cannot open file.\n"), __FILE__, __LINE__ );
+	}
 }
 
 
@@ -225,7 +231,10 @@ const std::ios::openmode& Base_file::openmode(void)
 	return openmode_;
 }
 
-const bool& Base_file::concatenated(void)
+//         bool indexed(void) const;
+//    bool concatenated(void) const;
+bool 
+Base_file::concatenated(void) 
 {
 	return concatenated_;
 }
@@ -369,8 +378,15 @@ bool Base_file::table_is_open(void) const
 
 
 //read_header needs to be split into two stages.
-Data *Base_file::read_header(void)
+Data *
+Base_file::read_header(void)
 {
+	if (!read_ || !open_) 
+	{
+		fprintf(stderr, gettext("mapgd:%s:%d: Attempt to read from unopened file. Exiting.\n"), __FILE__, __LINE__ );
+		exit(NOTOPEN);
+	}
+
 	std::string line;
 	std::vector <std::string> columns, pair;
 	std::getline(*in_, line);
@@ -379,8 +395,8 @@ Data *Base_file::read_header(void)
 		pair=split(columns[0], ':');
 		if (pair.size()==2) {
 			if (pair[0]!="@NAME"){
-				std::cerr << __FILE__ << ":" << __LINE__ << ": First field is not \"@NAME\". File cannot open properly. Exiting.\n"; 
-				exit(0);
+				fprintf(stderr, gettext("mapgd:%s:%d: The first fields is not \"@NAME\". File cannot open properly. Exiting.\n"), __FILE__, __LINE__ );
+				exit(BADHDR);
 			}
 			binary_=std::find(columns.begin(), columns.end(), "FORMAT:BINARY")!=columns.end();
 #if (DEBUG)
@@ -393,24 +409,26 @@ Data *Base_file::read_header(void)
 			Data *data=Data::new_from_str(pair[1], columns);
 			table_open_=true;
 #if (DEBUG)
-			std::cerr << "Succesful, returning " << data->table_name << std::endl;
+			std::cerr << "Successful, returning " << data->table_name << std::endl;
 #endif
 			return data;
 		} else {
-			std::cerr << __FILE__ << ":" << __LINE__ << ": First field is not a \"@A:B\" pair. File cannot open properly. Exiting.\n"; 
-			exit(0);
+			fprintf(stderr, gettext("mapgd:%s:%d: The first fields is not a \"@A:B\" pair. File cannot open properly. Exiting.\n"), __FILE__, __LINE__ );
+			exit(BADHDR);
 		}
 	}
 	close();
 	//This seems dangerous to me. The std::in doesn't seem to be reporting that it is eof when it is eof, thus, I am infering that it is 
 	//eof from its failure to return a line. I really may need to go over to poll/status  
 	if (line=="") return NULL;
+	fprintf(stderr, gettext("mapgd:%s:%d: The following line was encountered:\n"), __FILE__, __LINE__ );
 	std::cerr << line << std::endl;
-	std::cerr << __FILE__ << ":" << __LINE__ << ": Header not terminated. File cannot open properly. Exiting.\n"; 
-	exit(0);
+	fprintf(stderr, gettext("mapgd:%s:%d: Header not terminated. File cannot open properly. Exiting.\n"), __FILE__, __LINE__ );
+	exit(BADHDR);
 }
 
-bool Base_file::eof(void)
+bool 
+Base_file::eof(void)
 {
 	if (open_){
 		if (read_) return in_->eof();
@@ -420,7 +438,126 @@ bool Base_file::eof(void)
 	else return true;
 }
 
-bool Base_file::binary(void) const
+bool 
+Base_file::binary(void) const
 {
 	return binary_;
+}
+
+void 
+Base_file::write_text(File_index &file_index, const Indexed_data *data)
+{
+	*out_ << file_index.get_string(file_index.get_id0(data->get_abs_pos()) ) << '\t' << file_index.get_id1(data->get_abs_pos() ) << '\t' << *data << std::endl;
+}
+
+void 
+Base_file::write_text(const Data *data)
+{
+	*out_ << '\t' << *data << std::endl;
+}
+
+void 
+Base_file::write_binary(const Data *data)
+{
+	data->write_binary(*out_);
+}
+
+void 
+Base_file::write_binary(const Indexed_data *data)
+{
+	data->write_pos(*out_);
+	data->write_binary(*out_);
+}
+
+Base_file & 
+Base_file::write(File_index &file_index, const Indexed_data *data)
+{
+	if (open_ && write_)
+	{
+		if (binary_) write_binary(data);
+		else write_text(file_index, data);
+	} else {
+		fprintf(stderr, gettext("mapgd:%s:%d: Attempt to write to unopened file. Exiting.\n"), __FILE__, __LINE__ );
+		exit(NOTOPEN);
+	}
+	return *this;
+}
+
+Base_file & 
+Base_file::write(const Data *data)
+{
+	if (open_ && write_)
+	{
+		if (binary_) write_binary(data);
+		else write_text(data);
+	} else {
+		fprintf(stderr, gettext("mapgd:%s:%d: Attempt to write to unopened file. Exiting.\n"), __FILE__, __LINE__ );
+		exit(NOTOPEN);
+	}
+	return *this;
+}
+
+void
+Base_file::write_header(const Data *data)
+{
+	if (open_ && write_)
+	{
+		*out_ << "@NAME:" << data->get_table_name() << "\tVERSION:" << VERSION;
+		if (try_binary_ && data->get_binary() )
+		{
+			*out_ << "\tFORMAT:BINARY";
+			binary_=true;
+		} else {
+			*out_ << "\tFORMAT:TEXT";
+			binary_=false;
+		}
+		if (concatenated_) *out_ << "\tCONCATENATED";
+			*out_ << std::endl;
+		*out_ << data->header();
+		table_open_=true;
+	} else {
+		fprintf(stderr, gettext("mapgd:%s:%d: Attempt to write to unopened file. Exiting.\n"), __FILE__, __LINE__ );
+		exit(NOTOPEN);
+	}
+}
+
+void
+Base_file::write_header(const File_index &file_index, const Data *data)
+{
+	if (!write_ || !open_) 
+	{
+		fprintf(stderr, gettext("mapgd:%s:%d: Attempt to write to unopened file. Exiting.\n"), __FILE__, __LINE__ );
+		exit(NOTOPEN);
+	}
+
+	Flat_file <File_index> index;
+
+#ifdef DEBUG
+	std::cerr << "Writing header of " << filename_ << std::endl;
+	std::cerr << "aka: " << this->filename() << std::endl;
+#endif
+	index.open_from(*this);
+
+	if (!index.is_open() ) 
+	{
+		fprintf(stderr, gettext("mapgd:%s:%d: Could not write to file. Exiting.\n"), __FILE__, __LINE__ );
+		exit(NOTOPEN);
+	}
+	std::cerr << "writing header\n";
+	index.write_header(file_index);
+	std::cerr << "writing file\n";
+	index.write(file_index);
+	index.close_table();
+	*out_ << "@NAME:" << data->get_table_name() << "\tVERSION:" << VERSION;
+	if (try_binary_ && data->get_binary() ){
+		*out_ << "\tFORMAT:BINARY";
+		binary_=true;
+	} else {
+		*out_ << "\tFORMAT:TEXT";
+		binary_=false;
+	}
+	if (concatenated_) *out_ << "\tCONCATENATED";
+	*out_ << "\tINDEXED\n";
+	*out_ << data->header();
+	table_open_=true;
 }

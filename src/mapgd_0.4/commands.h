@@ -27,10 +27,12 @@
 #include "linkage_disequilibrium.h"
 #include "sam2idx.h"
 #include "make-vcf.h"
+#include "make-vcf2.h"
 #include "read_vcf.h"
 #include "mapgd_help.h"
 #include "relatedness_test.h"
 #include "test_keys.h"
+#include "simulate.h"
 //#include "make-vcf.h"
 
 #ifndef NOSQL

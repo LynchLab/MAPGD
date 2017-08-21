@@ -32,8 +32,12 @@ public:
 	std::string header(void) const;
 	size_t size(void) const;
 
-	static const std::string file_name;					//!< The dafualt extention for files.
-	static const std::string table_name;					//!< Destination table in Db.
+	static const std::string file_name;				//!< The dafualt extention for files.
+	static const std::string table_name;				//!< Destination table in Db.
+
+	const std::string get_file_name(void) const;			//!< The dafualt extention for files.
+	const std::string get_table_name(void) const;			//!< Destination table in Db.
+
 	static const bool binary;					//!< Destination table in Db.
 
 	const bool get_binary () const;					//!< Destination table in Db.

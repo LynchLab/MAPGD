@@ -39,6 +39,11 @@ Locus::Locus(const std::vector<std::string> &column_names)
 		sample_names_=std::vector<std::string> (&column_names[3], &column_names.back()+1 );
 		sample.assign(sample_names_.size(), quartet() );
 	}
+	else 
+	{
+		sample.clear();
+		sample_names_.clear();
+	}
 	abs_pos_=0;
 	ref.base=4;
 }
@@ -406,24 +411,18 @@ Locus::sql_column_names(void) const {
 void
 Locus::sql_read(std::istream &in)
 {
-	std::string line;
-	//remove characters from the in stream until a new line.
-	std::getline(in, line);
-	std::stringstream line_stream(line);
-	line_stream >> abs_pos_;
-	id1_t this_pos=abs_pos_;
+	//id1 last_pos=-1;
 	count_t smpnum;
-	uint8_t A,C,G,T;
-	do{
-		line_stream >> smpnum;
-		line_stream >> A;
-		line_stream >> C;
-		line_stream >> G;
-		line_stream >> T;
-		sample[smpnum]=quartet(A,C,G,T,0);
-		line_stream >> abs_pos_;
-	} while (abs_pos_==this_pos);
-	//We do not save mask states, so all data read in is unmasked
+	size_t size=sample.size();
+	for (size_t x=0; x<size; ++x)
+	{
+		in >> abs_pos_;
+		in >> smpnum;
+		in >> sample[x].base[0];
+		in >> sample[x].base[1];
+		in >> sample[x].base[2];
+		in >> sample[x].base[3];
+	} 
 	unmaskall();				
 } 
 

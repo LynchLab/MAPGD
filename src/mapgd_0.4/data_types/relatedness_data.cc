@@ -152,3 +152,13 @@ Relatedness::get_binary(void) const
 {
 	return binary;
 }
+
+const std::string Relatedness::get_file_name(void) const
+{
+	return file_name;
+}
+
+const std::string Relatedness::get_table_name(void) const
+{
+	return table_name;
+}

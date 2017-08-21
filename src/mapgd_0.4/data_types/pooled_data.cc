@@ -1,7 +1,7 @@
 #include "pooled_data.h"
 
 const std::string Pooled_data::file_name=".pol";
-const std::string Pooled_data::table_name="SAMPLE";
+const std::string Pooled_data::table_name="POOL";
 const bool Pooled_data::binary=false;
 
 const Registration Pooled_data::registered=Registration(Pooled_data::table_name, Pooled_data::create);
@@ -33,8 +33,12 @@ Pooled_data::set_sample_names (const std::vector <std::string> &columns)
 
 Pooled_data::Pooled_data (const std::vector <std::string> &columns)
 {
-	size_t size=(columns.size()-6);
-	names_=std::vector <std::string> (columns.cbegin()+6, columns.cend() );
+	size_t size=0;
+	if (columns.size()>6)
+	{
+		size=(columns.size()-6);
+		names_=std::vector <std::string> (columns.cbegin()+6, columns.cend() );
+	}
 //	names_.assign(size,"none");//=std::vector <std::string> (columns.cbegin()+6, columns.cend() );
 
         p.assign(size, 0);

@@ -22,6 +22,8 @@ baysian_genotype(const int &major, const int &minor, const float_t &freq, const 
 	float_t ln_heterozygous_correct=log( (1.-error)/2.+error/6.);
 	float_t not_correct=log(error/3.);
 
+//	std::cerr << error << ":" << ln_homozygous_correct << ", " << ln_heterozygous_correct << "\n ";
+
 	lMM=M*ln_homozygous_correct+not_correct*(m+E);
 	lMm=(M+m)*ln_heterozygous_correct+not_correct*E;//#-log(1.001);
 	lmm=m*ln_homozygous_correct+not_correct*(M+E);

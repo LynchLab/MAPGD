@@ -1,7 +1,7 @@
 #include "file_index.h"
 
 const std::string File_index::file_name=".idx";
-const std::string File_index::table_name="SCAFFOLDS";
+const std::string File_index::table_name="REGIONS";
 const bool File_index::binary=false;
 
 const Registration File_index::registered=Registration(File_index::table_name, File_index::create);
@@ -17,13 +17,11 @@ File_index::File_index()
 
 File_index::File_index(std::vector<std::string> fields)
 {
-//	File_index();
 	cumulative_size_.push_back(0);
 	last_id0_=-1;						
 	std::string last_id0_str_="";
 	open_=false;
 	byte_size_=2;
-//	byte_size_=atoi(fields.back().c_str());
 }
 
 File_index & 
@@ -254,7 +252,7 @@ File_index::size(void) const
 
 const std::string 
 File_index::sql_header(void) const {
-	return "(SCFNAME varchar(255), START int, STOP int)";
+	return "(SCFNAME varchar(255), START int, STOP int, PRIMARY KEY (SCFNAME) )";
 }
 
 const std::string 

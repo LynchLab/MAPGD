@@ -333,7 +333,7 @@ SQL_LINE_SIZE	typedef.h	28;"	d
 SQL_OBJ	Makefile	/^SQL_OBJ=sql\/writesql.o \\$/;"	m
 SQRT2	commands/fastview.h	20;"	d
 SQRT2	commands/proview.h	21;"	d
-SUBDIR	Makefile	/^SUBDIR=raw sql data_types commands data_conversion stream_tools $/;"	m
+SUBDIR	Makefile	/^SUBDIR=raw sql data_types commands data_conversion stream_tools io math_functions gzstream$/;"	m
 Sample_gof	data_types/sample_gof.cc	/^Sample_gof::Sample_gof ()$/;"	f	class:Sample_gof
 Sample_gof	data_types/sample_gof.cc	/^Sample_gof::Sample_gof (const std::string &name, const float_t &number)$/;"	f	class:Sample_gof
 Sample_gof	data_types/sample_gof.h	/^	Sample_gof(std::vector <std::string>) : Sample_gof(){};	$/;"	f	class:Sample_gof
@@ -573,7 +573,7 @@ commands	commands/interface.h	/^	std::list <Command> commands;			\/\/!< A list o
 comparePooled	commands/compare-individual.cc	/^int comparePooled(int argc, char *argv[])$/;"	f
 comparePooled	commands/compare-pooled.cc	/^comparePooled(int argc, char *argv[])$/;"	f
 compressed_	io/map_file.h	/^	bool compressed_;	$/;"	m	class:Base_file
-concatenated	io/map_file.cc	/^const bool& Base_file::concatenated(void)$/;"	f	class:Base_file
+concatenated	io/map_file.cc	/^Base_file::concatenated(void) const$/;"	f	class:Base_file
 concatenated_	io/map_file.h	/^	bool concatenated_;	$/;"	m	class:Base_file
 const_iterator	testing/circular_list.h	/^	typedef const C_it<T> const_iterator;$/;"	t	class:Circular_list
 convert	depricated/convert.cc	/^int convert(int argc, char *argv[])$/;"	f
@@ -608,12 +608,13 @@ d_hat	data_types/phenotype.h	/^	std::vector <real_t> d_hat;	\/\/!< dominance dev
 data	data_types/state.h	/^	uint32_t *data;$/;"	m	class:State
 data	python_api/mappy.cc	/^	Data *data;$/;"	m	struct:file_s	file:
 db_begin	sql/db_api.cc	/^void db_begin(sqlite3 *db)$/;"	f
+db_check_schema	sql/db_api.cc	/^db_check_schema(sqlite3 *db, Data *these_data)$/;"	f
 db_close_table	sql/db_api.cc	/^db_close_table(sqlite3_stmt *query)$/;"	f
 db_end	sql/db_api.cc	/^void db_end(sqlite3 *db)$/;"	f
-db_get	sql/db_api.cc	/^int db_get(std::stringstream *stream, Data *these_data)$/;"	f
+db_get	sql/db_api.cc	/^db_get(std::stringstream *stream_ptr, Data *these_data)$/;"	f
 db_insert	sql/db_api.cc	/^void db_insert(sqlite3 *db, const Data *these_data)$/;"	f
 db_make_table	sql/db_api.cc	/^void db_make_table(sqlite3 *db, const Data *these_data)$/;"	f
-db_open_table	sql/db_api.cc	/^void db_open_table(sqlite3 *db, Data *these_data, std::stringstream *stream)$/;"	f
+db_open_table	sql/db_api.cc	/^void db_open_table(sqlite3 *db, Data *these_data, std::stringstream *stream_ptr)$/;"	f
 default_order	data_types/locus.cc	/^const gt_t Locus::default_order[5] = {0,1,2,3,4};$/;"	m	class:Locus	file:
 default_order	data_types/locus.h	/^	static const gt_t default_order[5];$/;"	m	class:Locus
 delim	data_types/allele.h	/^	char delim;		\/\/!< the delimiter used when reading\/writing the class in text mode.	$/;"	m	class:Allele
@@ -752,7 +753,7 @@ gamma_YX_ll	data_types/relatedness_data.h	/^	float_t gamma_YX_, gamma_YX_ll;$/;"
 genotypelikelihood	math_functions/models.cc	/^float_t models::genotypelikelihood(quartet_t const &quartet, const Allele &population)$/;"	f	class:models
 gestimate	commands/relatedness.cc	/^gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &counts)$/;"	f
 get	data_conversion/vcf-file.cc	/^Vcf_data::get(Data *data, ...) const$/;"	f	class:Vcf_data
-get	data_conversion/vcf-file.cc	/^Vcf_data::get(File_index &index, Allele &allele, Population &pop) const$/;"	f	class:Vcf_data
+get	data_conversion/vcf-file.cc	/^Vcf_data::get(const File_index &index, Population &pop) const$/;"	f	class:Vcf_data
 get	data_types/state.cc	/^uint32_t get(const uint32_t &x) const$/;"	f
 get	testing/exact_lsq_estimators.cc	/^inline int get(const uint32_t *place, const uint32_t &x, const uint32_t &bit)$/;"	f
 get_abs_pos	data_types/data.cc	/^id1_t Indexed_data::get_abs_pos (void) const$/;"	f	class:Indexed_data
@@ -794,6 +795,7 @@ get_index	io/map_file.h	/^File_index Indexed_file<T>::get_index(void) const$/;"	
 get_ll	commands/relatedness.cc	/^get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count) $/;"	f
 get_llr	commands/relatedness.cc	/^get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes)$/;"	f
 get_names	data_types/file_index.cc	/^File_index::get_names (void) const$/;"	f	class:File_index
+get_names_size	data_types/file_index.cc	/^File_index::get_names_size (void) const$/;"	f	class:File_index
 get_next	data_types/state.cc	/^uint32_t get_next()$/;"	f
 get_out	io/map_file.cc	/^std::ostream * Base_file::get_out(void)$/;"	f	class:Base_file
 get_pos	io/map_file.h	/^id1_t Indexed_file<T>::get_pos(const T &data) const $/;"	f	class:Indexed_file
@@ -873,7 +875,7 @@ inc_f	commands/relatedness.cc	/^inc_f(Relatedness &rel, const Genotype_pair &pai
 inc_gamma	commands/relatedness.cc	/^inc_gamma(Relatedness &rel, const Genotype_pair &pair, const size_t &count)$/;"	f
 inc_theta	commands/relatedness.cc	/^inc_theta(Relatedness &rel, const Genotype_pair &pair, const size_t &count)$/;"	f
 include_dirs	python_api/setup.py	/^		include_dirs=['..\/', '..\/data_types\/', '..\/commands\/', '..\/raw\/', '..\/data_conversion\/', '..\/gzstream\/', '..\/stream_tools\/'],$/;"	v
-indexed	io/map_file.cc	/^Base_file::indexed(void)$/;"	f	class:Base_file
+indexed	io/map_file.cc	/^Base_file::indexed(void) const$/;"	f	class:Base_file
 indexed_	io/map_file.h	/^	bool indexed_;		\/\/!< Indexed mode flag.$/;"	m	class:Base_file
 info	data_conversion/vcf-file.h	/^	std::vector <std::string> info;$/;"	m	class:Vcf_data
 init_params	individual_likelihood.cc	/^count_t init_params(Locus &site, Allele &a, const float_t &minerr)$/;"	f
@@ -1209,12 +1211,12 @@ result	python_api/setup.py	/^result = subprocess.check_output(batcmd, shell=True
 roots	data_types/pedigree.h	/^	Pedigree_record *roots;$/;"	m	class:Pedigree
 rsq	data_types/linkage_data.cc	/^Linkage::rsq(void) const$/;"	f	class:Linkage
 sam2idx	commands/sam2idx.cc	/^int sam2idx(int argc, char *argv[])$/;"	f
-sam_header_read	bam/bam-header.h	/^file_index & sam_header_read(istream *in){$/;"	f
 sample	data_types/locus.h	/^	std::vector <quartet_t> sample;			\/\/!< The five bases A\/C\/G\/T\/N;$/;"	m	class:Locus
 sample_names	data_types/sample_name.h	/^	std::vector <std::string> sample_names;$/;"	m	class:Sample_name
 sample_names_	data_types/locus.h	/^	std::vector <std::string> sample_names_;		\/\/!< names of the samples sequenced.$/;"	m	class:Locus
 sample_names_	data_types/phenotype.h	/^	std::vector <std::string> sample_names_;	\/\/!< a vector of sample names.$/;"	m	class:Phenotype
 sample_names_	data_types/population.h	/^	std::vector <std::string> sample_names_;	\/\/!< a vector of sample names.$/;"	m	class:Population
+sample_size_	data_conversion/vcf-file.h	/^	size_t sample_size_;$/;"	m	class:Vcf_data
 sanitize	stream_tools/stream_tools.h	/^inline std::string sanitize (const std::string &s){$/;"	f
 sanitize	stream_tools/stream_tools.h	/^inline std::string sanitize (std::string &s){$/;"	f
 scan	data_types/locus.cc	/^void scan(const Locus & site, const std::string &str, quartet_t &q)$/;"	f

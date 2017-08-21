@@ -105,8 +105,8 @@ Linkage estimate_D (const Population &P1, const Population &P2, const float_t &c
         est.set_p(P1.m);
         est.set_q(P2.m);
 
-        est.set_abs_pos(P1.get_abs_pos() );
-        est.set_abs_pos_y(P2.get_abs_pos() );
+        est.set_abs_pos1(P1.get_abs_pos() );
+        est.set_abs_pos2(P2.get_abs_pos() );
         est.set_D(D);
         est.set_fit(lnL_NR(P1, P2, D) );
         est.set_null(lnL_NR(P1, P2, 0 ) );
@@ -152,7 +152,7 @@ int linkage_disequilibrium(int argc, char *argv[])
 	if (gcf_name.size()>0 ) gcf_in.open(gcf_name.c_str() ,std::ios::in);	// Try to open the input file
 	else gcf_in.open(std::ios::in);	
 
-	Indexed_file <Linkage> ld_out;	
+	Double_indexed_file <Linkage> ld_out;	
 	ld_out.open(std::ios::out);
 
 	Population allele1=gcf_in.read_header();

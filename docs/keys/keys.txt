@@ -14,6 +14,8 @@ CHROM	id0_t	chromosome
 ROW	size_t	row
 DP	count_t	read depth
 NS	size_t	number of samples with data
+GS	size_t	number of sites in the genome
+BYTES	size_t	size of the file (bytes).
 SOMATIC	bool	a flag to indicate that the record is a somatic mutation
 VALID	bool	a flag to indicate that a record has been validated?
 SB	float_t	strand bias at this position

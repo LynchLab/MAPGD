@@ -56,6 +56,8 @@ int filter(int argc, char *argv[])
 
 	s=map_in.read_header();
 
+	std::cerr << "DEL:" << s.delim << ".\n";
+
 	map_out.set_index(map_in.get_index() );
 	map_out.write_header(s);
 

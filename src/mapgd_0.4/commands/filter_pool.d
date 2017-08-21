@@ -1,9 +1,10 @@
 commands/filter_pool.o: commands/filter_pool.cc commands/filter_pool.h \
  io/map_file.h stream_tools/stream_tools.h typedef.h \
- data_types/file_index.h data_types/data.h data_types/allele.h raw/base.h \
- data_types/linkage_data.h data_types/locus.h raw/quartet.h raw/base.h \
- data_types/file_index.h raw/genotype.h data_types/sample_gof.h \
- data_types/relatedness_data.h data_types/population.h \
+ data_types/file_index.h data_types/data.h error_codes.h \
+ data_types/allele.h raw/base.h data_types/linkage_data.h \
+ data_types/locus.h raw/quartet.h raw/base.h data_types/file_index.h \
+ raw/genotype.h data_types/sample_gof.h data_types/relatedness_data.h \
+ data_types/population.h data_types/sample_name.h \
  data_types/pooled_data.h data_types/allele.h data_types/sample_name.h \
  data_conversion/bcf2pro.h datatypes.h data_types/data.h raw/quartet.h \
  raw/genotype.h data_types/locus.h data_types/allele.h \

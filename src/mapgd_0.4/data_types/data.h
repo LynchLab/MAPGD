@@ -4,9 +4,11 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <libintl.h>
 #include <iostream>
 
 #include "typedef.h"
+#include "error_codes.h"
 
 //! A class which can be written as flat text file or into an SQL database.
 /*! Data can be written in a plain text representation (the overloaded 
@@ -41,8 +43,9 @@ protected:
 	virtual void read(std::istream& str) = 0;
 
 	//! The write function must be defined in the child class.
-	virtual void write(std::ostream& str) const = 0;
+	 virtual void write(std::ostream& str) const = 0;
 
+//	Data
 /*	//! T can be constructed form this, but this can not be constructed from T.
 	template <class T, typename... Args> 
 	void 
@@ -77,6 +80,9 @@ public:
 
 	virtual const std::string get_file_name() const {return this->file_name;};
         virtual const std::string get_table_name() const {return this->table_name;};
+
+	virtual const bool indexed() const {return false;};
+
         virtual const bool get_binary() const {return this->binary;};
 
 	/**
@@ -125,6 +131,7 @@ public:
 
 	//! Constructs an instance of the class Registered w/ string.
 	static Data * new_from_str (const std::string &, const std::vector<std::string> &);
+//	static Data * new_empty (const std::string &);
 
 	//! Toys
 //	virtual const enum tags(void) const {return "";};
@@ -155,11 +162,52 @@ public:
 	id1_t get_abs_pos (void) const;	  //!< Indexed data needs to associate each datum with a position in the genome.
 
 	void set_abs_pos (const id1_t &); //!< Indexed data needs to associate each datum with a position in the genome. 
+	const bool indexed() const {return true;};
+};
+
+
+//! Data which has an absolute position.
+/* Indexed_data can be stored in indexed files.
+ */
+
+#define get_abs_pos1	get_abs_pos
+#define set_abs_pos1	set_abs_pos
+
+class Double_indexed_data : public virtual Data 
+{
+protected:
+	id1_t abs_pos1_, abs_pos2_;
+public:
+	using Data::write_binary;
+	using Data::read_binary;
+
+	void write_pos(std::ostream& str) const
+	{
+		str.write((char *)(&abs_pos1_), sizeof(id1_t) );
+		str.write((char *)(&abs_pos2_), sizeof(id1_t) );
+	}
+
+	void read_pos(std::istream& str)
+	{
+		str.read((char *)(&abs_pos1_), sizeof(id1_t) );
+		str.read((char *)(&abs_pos2_), sizeof(id1_t) );
+	}
+
+	Double_indexed_data(){};
+	Double_indexed_data(std::vector <std::string> &){};
+
+	id1_t get_abs_pos (void) const;	  //!< Indexed data needs to associate each datum with a position in the genome.
+	id1_t get_abs_pos2 (void) const;	  //!< Indexed data needs to associate each datum with a position in the genome.
+
+	void set_abs_pos (const id1_t &); //!< Indexed data needs to associate each datum with a position in the genome. 
+	void set_abs_pos2 (const id1_t &); //!< Indexed data needs to associate each datum with a position in the genome. 
+
+	const bool indexed() const {return true;};
 };
 
 //! A static initializer for every translation unit.
-/*  This initializes the m_data_ctor map which should not be visible
- *  outside of ...
+/*  This initializes m_data_ctor map which should not be visible
+ *  outside of data.cc
  */
 static struct Registry_initalizer {
 	Registry_initalizer ();
@@ -181,5 +229,7 @@ public:
 private:
 	std::string name_;
 };
+
 std::vector <std::string> registry_list(void);
+
 #endif

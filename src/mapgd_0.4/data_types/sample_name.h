@@ -31,15 +31,17 @@ public:
 	Sample_name(const std::vector <std::string> &) : Sample_name(){};	
 	Sample_name(const std::string &, const float_t &);	
 
+
 	static const std::string file_name;				//!< The dafualt extention for files.
 	static const std::string table_name;				//!< Destination table in Db.
 	static const bool binary;				//!< Destination table in Db.
 
+	const std::string get_file_name() const;
+        const std::string get_table_name() const;
+
 	std::string header(void) const;
 	size_t size(void) const;
 
-	const std::string get_file_name(void) const;				//!< The dafualt extention for files.
-	const std::string get_table_name(void) const;				//!< The dafualt extention for files.
 	const bool get_binary(void) const;					//!< The dafualt extention for files.
 
 	const std::string sql_header(void) const;				//!< Destination table in Db.

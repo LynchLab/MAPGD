@@ -67,7 +67,12 @@ public:
 
 
 	/// Instance of constructor required by Data, but Allele doesn't actually need the vector to initialize.   
-	Allele(std::vector<std::string>) : Allele(){};
+	Allele(std::vector<std::string>) : Allele() {};
+
+	/*(0){}
+	{
+		std::cerr << "done!\n";
+	};*/
 	std::string header(void) const;	//!< returns first two lines of a file.
 	static const std::string table_name;	//!< The destination table in the database.
 	static const std::string file_name;	//!< Default file extension.

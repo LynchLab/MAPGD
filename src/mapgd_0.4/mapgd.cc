@@ -5,7 +5,6 @@
 #include "interface.h"
 #include "commands.h"
 
-
 using namespace std;
 
 /*! \brief Our main function. Parses commandline arguments etc.
@@ -39,9 +38,11 @@ int main (int argc, char* argv[])
 	env.command(	' ',"reltest", &testRel,	 		"an error occurred while calling relatedness", "Test for sig dif between relatedness estiamtes");	//DONE
 	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occurred while calling sam2idx", "Reformats a sam header file to a idx file"); 		//DONE
 	env.command(	' ',"keyinfo",	&test_keys,	 		"an error occurred while calling sam2idx", "Displays information regarding keys (i.e. column names)"); 		//DONE
+	env.command(	' ',"simulate",	&simulate,	 		"an error occurred while calling sam2idx", "Test, do not use"); 		//DONE
 
 #ifndef NOHTS
 	env.command(	' ',"writevcf",	&make_vcf,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
+	env.command(	' ',"writevcf2",&make_vcf2,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
 	env.command(	' ',"readvcf",	&read_vcf,	 		"an error occurred while calling vcf", "Reads a vcf file"); 		//DONE
 #endif
 	env.command(	' ',"help", 	&mapgd_help, 			"an error occurred while calling help", "Prints helpful information");					//DONE

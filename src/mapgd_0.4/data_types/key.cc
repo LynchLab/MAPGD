@@ -9,7 +9,6 @@ const Registration Key::registered=Registration(Key::table_name, Key::create);
 Key::Key ()
 {
 	memset(name, 0, sizeof(char)*8);
-//	strncpy(name, "NONE    ", 7);
 	type="NONE";
 	description="";
 	delim='\t';
@@ -18,7 +17,6 @@ Key::Key ()
 Key::Key (const std::string &this_name, const float_t &number)
 {
 	memset(name, 0, sizeof(char)*8);
-//	strncpy(name, "NONE    ", 7);
 	type="NONE";
 	description="";
 	delim='\t';

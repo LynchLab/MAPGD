@@ -56,6 +56,15 @@ typedef struct quartet {
 		memset (base, x, 5*sizeof(count_t) );
 		return *this;
 	}
+
+	quartet& operator=(const quartet& rhs) 
+	{
+		//memset (base, 0, 5*sizeof(count_t) );
+		memcpy(base, rhs.base, 5*sizeof(count_t) );
+		masked=rhs.masked;
+		delim=rhs.delim;
+		return *this;
+	}
 /*	count_t operator[](const int &x) const {
 		return base[x]; 
 	}*/

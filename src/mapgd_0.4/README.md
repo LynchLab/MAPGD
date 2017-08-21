@@ -19,7 +19,7 @@ MAPGD is a series of related programs that estimate allele frequency, heterozygo
 
 # Basic Design
 * The user interface
-  The user interacts with MAPGD through a [command line interface](https://en.wikipedia.org/wiki/Command-line_interface). One of the advantages of a CLI is that it allows users to easily document and automate their analysis, however a CLI often provides less contextual help to users and users may be generally unfamiliar with CLI. We hope to address this by enforcing rich feature documentation through the use of MAPGD's [interface](https://lynchlab.github.io/MAPGD/interface_8h_source.html), which requires us to prove short verbal descriptions of all options and formats contextual help. MAPGD also provides documentation through man pages. 
+  The user interacts with MAPGD through a [command line interface](https://en.wikipedia.org/wiki/Command-line_interface). One of the advantages of a CLI is that it allows users to easily document and automate their analysis. Unfortunately a CLI often provides less contextual help to users and additionally many users may be unfamiliar with CLIs. We hope to address this by enforcing rich feature documentation through the use of MAPGD's [interface](https://lynchlab.github.io/MAPGD/interface_8h_source.html), which requires us to prove short verbal descriptions of all options and provides a contextual help command. MAPGD also provides documentation through man pages.  
 
 * Data
   MAPGD can most generally be described as a program which transforms data from one representation into a different representation. The features of the data which the user is interested in may not be obvious in the most basic representation of the sequencing data, and the user may wish to transform the data into a representation where these features are more obvious. We attempt to organize data into minimal classes that associate one particular representation . . .  This choice 
@@ -43,15 +43,16 @@ MAPGD is a series of related programs that estimate allele frequency, heterozygo
 MAPGD is written to conform to the GNU style guidelines, at least to the extent that I have had time to read and implement the guidelines.
 
 * Class names should be whole English words starting with an initial capital (to distinguish them from the core classes and types of c++): e.g My\_class\_name.
-* Variables should generally follow the same rules, but begin with a lower case letter: e.g. my\_variable\_name. etc. Variables should never be named something like aa, ab, ac, etc.
+* Variables should generally follow the same rules, but begin with a lower case letter: e.g. my\_variable\_name. etc. Variable names should be as descriptive as possible, even if typing the variable name is somewhat onerous: e.g. a variable which stores the sum of the function f might be f\_sum. Variables should  never be named something like aa, ab, ac, etc.
 * Common abbreviations are acceptable for variable names (but not for class or function names). For instance, tmp would be preferred over temporary, etc. Use your own judgment on whether the use of a variable is obvious enough from context that a long descriptive name is unnecessary (loop counters, temporary storage, etc.). When in  doubt, error on the side of excess description. 
 * Do not to use [CamelCase](https://en.wikipedia.org/wiki/Camel_case), where several words are joined together and each word begins with a capital letter. Instead join words with the underscore, since non-native English speakers allegedly find this easier to read.
 * Private or protected members of classes should be postfixed with an underscore (e.g. var\_). 
 * Types should be postfixed with an \_t (e.g. My\_type\_t).
 * Avoid type prefixes.
-  Prefixes which encode type information (e.g. ui\_count, to show that count is an unsigned int) should generally not be used. In most IDEs it is quite easy to display  types, and at any rate, if the code is reasonably well organized it shouldn't be too difficult to find the declaration. 
+  Prefixes which encode type information (e.g. ui\_count, to show that count is an unsigned int) should generally not be used. In most IDEs it is quite easy to display types, and at any rate, if the code is reasonably well organized it shouldn't be too difficult to find the declaration. 
 * Error messages should always list the name of the file generating the error and the line number from which the error message was printed. These can be set with the compiler Macros \_\_NAME\_\_ and \_\_LINE\_\_ so that they remain accurate as your source code changes.
-* The GNU style guidelines recommend the use of gettext to make it easy to translate programs into different languages. We need to implement these standards in the future, however, we have not done so yet. 
+* The GNU style guidelines recommend the use of gettext to make it easy to translate programs into different languages. Many people like to use the macro "#define \_(String) gettext (String)" to make use of gettext more convenient. I would prefer we avoid this convention, since it obfuscates the code for those who are unfamiliar with it.  
+* To facilitate the use of get text, error messages need to be whole . . .  
 * Function definitions should have aligned braces:
 
    Right:

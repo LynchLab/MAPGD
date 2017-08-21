@@ -44,6 +44,9 @@ public:
 	std::string header(void) const;
 	size_t size(void) const;
 
+	const std::string get_file_name() const {return Pooled_data::file_name;};
+        const std::string get_table_name() const {return Pooled_data::table_name;};
+
 	//! used to write Allele. Inherits << from Data
 	void write (std::ostream&) const;	
 	//! used to read Allele. Inherits >> from Data

@@ -72,6 +72,10 @@ public:
 
 	static const std::string file_name;	//!< The dafualt extention for files.
 	static const std::string table_name;	//!< Destination table in Db.
+
+	const std::string get_file_name(void) const;
+	const std::string get_table_name(void) const;
+
 	static const bool binary;
 
 	const bool get_binary() const;

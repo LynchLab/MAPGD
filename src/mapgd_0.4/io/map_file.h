@@ -5,12 +5,13 @@
 #include <string>
 #include <iostream>
 #include <typeinfo>
+#include <libintl.h>
 
 #include "stream_tools.h"
 #include "typedef.h"
 #include "stream_tools.h"
 #include "file_index.h"
-
+#include "error_codes.h"
 
 /* These should all be included from the objects using this code, but I'm not 
  * linking things correctly right now.
@@ -48,6 +49,11 @@
 
 class Base_file {
 private:
+	void write_binary(const Data *);	     //!< Write in binary mode.
+	void write_binary(const Indexed_data *);     //!< Write in binary mode.
+	void write_text(const Data *);
+	void write_text(File_index &, const Indexed_data *);
+
 protected:
 
 	//! indicates whether the iostream opened succesfully
@@ -79,7 +85,7 @@ protected:
 	std::istream *in_;	//!< All data is read from in.
 	std::ostream *out_;	//!< All data is written is written to out.
 
-	Tmp_buffer buffer_;	//!< an buffer which can be rewound.
+	Tmp_buffer buffer_;	//!< a buffer which can be rewound.
 
 	std::fstream file_;	//!< The file to read data from.
 
@@ -95,7 +101,6 @@ public:
 	//! returns the filename.
 	const std::string& filename();		
 	//! returns the concatenated flag.
-	const bool & concatenated();		
 
 	Base_file();		//!< default constructor
 
@@ -132,6 +137,9 @@ public:
 	//! Returns a pointer to a new instance of the derived data class.
 	Data *read_header(void);	
 
+	void write_header(const Data *);	
+	void write_header(const File_index &, const Data *);	
+
 	//! Reads from the istream.
 	/*   
 	 *
@@ -140,8 +148,8 @@ public:
 	Base_file& read(File_index &, Indexed_data *);	
 
 	//! Writes to the ostream.	
-	Base_file& write(Data *);	
-	Base_file& write(File_index &, Data *);	
+	Base_file& write(const Data *);	
+	Base_file& write(File_index &, const Indexed_data *);	
 
 	//! sets in and out (for reading and writing) to position pos.	
 	void seek(const std::streampos &pos);		
@@ -177,9 +185,11 @@ public:
 	 */
 	size_t size(void) const; 
 	bool eof(void);
-	bool indexed(void);
+	bool indexed(void) const;
+	bool concatenated(void);
 	bool check_concatenated(void);
 	bool check_compressed(void);
+
 };
 
 template <class Data>
@@ -246,6 +256,8 @@ public:
 	/*! Returns the class.
 	 */
 	Data_file& read(Data &);				
+
+	using Base_file::concatenated;
 };
 
 template <class T>
@@ -265,6 +277,7 @@ private:
 public:
 	using Data_file<T>::open;
 	using Base_file::get_delim;		
+	using Base_file::concatenated;
 //	~Flat_file(){};
 	void write_header(const T&);		//!< Writes a file header.
 	T read_header(void);			//!< Reads a file header.
@@ -295,6 +308,7 @@ protected:
 
 public:
 	using Data_file<T>::open;
+	using Base_file::concatenated;
 
 	void set_index(const File_index&);	//!< Sets the File_index.		
 	~Indexed_file(){};
@@ -312,6 +326,50 @@ public:
 	void write_header(const T&);		//!< Writes a file header.
 	T read_header(void);			//!< Reads a file header.
 };
+
+template <class T>
+class Double_indexed_file: public Indexed_file <T> {
+	void read_text(T&);		//!< Read file in text mode.	DONE
+	void write_text(const T&);	//!< Write in text mode.	DONE
+
+	void read_binary(T &);
+	void write_binary(const T &);
+
+	using Indexed_file<T>::file_index_;	//(const std::ios_base::openmode &);
+	using Data_file<T>::out_;	//(const std::ios_base::openmode &);
+	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
+	using Base_file::write_;	//(const std::ios_base::openmode &);
+	using Base_file::binary_;	//(const std::ios_base::openmode &);
+	using Base_file::try_binary_;	//(const std::ios_base::openmode &);
+	using Base_file::table_open_;
+	using Base_file::read_;
+	using Base_file::concatenated_;	//(const std::ios_base::openmode &);
+	using Base_file::filename_;
+
+public:
+	using Data_file<T>::open;
+	using Base_file::concatenated;
+	Double_indexed_file& write(const T&);		//(const Indexed_data &);
+	Double_indexed_file& read(T&);			//(const Indexed_data &);
+};
+
+/*
+static struct Map_file_registry_initalizer {
+	Map_file_registry_initalizer ();
+	~Map_file_registry_initalizer ();
+} Map_file_registry_initalizer;
+
+class Map_file_registration
+{
+public:
+	//!< The constructor of Registration, which stores a constructor for a Map_file
+	Map_file_registration (const std::string &str, *(*fn)() );
+	~Map_file_registration (void);
+private:
+	std::string name_;
+};
+std::vector <std::string> map_registry_list(void);
+*/
 
 //This seriously needs to be cleaned up.
 
@@ -355,7 +413,7 @@ void Data_file<T>::open_extention(const char* filename, const std::ios_base::ope
 	if (filename_.size()==0) filename_=std::string(filename);
 	std::string temp_filename=std::string(filename)+T::file_name;
 #ifdef DEBUG
-	std::cerr << __LINE__ << "opening w extention "<< temp_filename <<"\n";
+	std::cerr << __LINE__ << "opening w extension "<< temp_filename <<"\n";
 #endif 
 	open_no_extention(temp_filename.c_str(), mode);
 }
@@ -415,10 +473,25 @@ Indexed_file<T>& Indexed_file<T>::read(T &data)
 }
 
 template <class T>
+Double_indexed_file<T>& Double_indexed_file<T>::read(T &data)
+{
+	if (!table_open_ ){
+		return *this;
+	}
+	if (read_){
+		if (binary_) read_binary(data);
+		else read_text(data);
+	} else {
+		std::cerr << __FILE__<< ":" <<__LINE__ << ": file not open for reading. The methods Flat_file<type>::open() and Flat_file<type>::read_header(<type>) should be called.";
+	}
+	return *this;
+}
+
+template <class T>
 void Flat_file<T>::read_text(T &data)
 {
 	if (!in_->good() ) {
-		std::cerr << "an error has occured durring reading.\n";
+		std::cerr << "an error has occurred during reading.\n";
 		exit(0);
 	}
 	if (in_->peek()=='@') {
@@ -445,7 +518,7 @@ void Indexed_file<T>::read_text(T &data)
 	id1_t pos;
 	std::string scaffold;
 	if (!in_->good() ) {
-		std::cerr << "an error has occured durring reading.\n";
+		std::cerr << "an error has occurred during reading.\n";
 		exit(0);
 	}
 	if (in_->peek()=='@') {
@@ -473,11 +546,48 @@ void Indexed_file<T>::read_text(T &data)
 }
 
 template <class T>
+void Double_indexed_file<T>::read_text(T &data)
+{
+	//TODO Check for table_open instead?
+	id1_t pos1, pos2;
+	std::string scaffold1, scaffold2;
+	if (!in_->good() ) {
+		std::cerr << "an error has occurred during reading.\n";
+		exit(0);
+	}
+	if (in_->peek()=='@') {
+		std::string line;
+		*in_ >> line;
+		if (line!="@END_TABLE") {
+			std::cerr << line << std::endl;
+			std::cerr << __FILE__ << ":" << __LINE__ << ": file not closed correctly, exiting.\n";
+			exit(0);
+		} 
+		if (!concatenated_) {
+			this->close();
+		} else {
+			this->close_table();
+		}
+	} else {
+#ifdef DEBUG
+		std::cerr << (char)(in_->peek()) << std::endl;
+#endif
+		*in_ >> scaffold1;
+		*in_ >> pos1;
+		*in_ >> scaffold2;
+		*in_ >> pos2;
+		*in_ >> data;
+		data.set_abs_pos1(file_index_.get_abs_pos(scaffold1, pos1) );
+		data.set_abs_pos2(file_index_.get_abs_pos(scaffold2, pos2) );
+	}
+}
+
+template <class T>
 void Data_file<T>::read_binary(T &data)
 {
-	char a='a';
+//	char a='a';
 	if (in_->peek()!='@'){
-		in_->read(&a, sizeof(char) );
+//		in_->read(&a, sizeof(char) );
 		data.read_binary(*in_);
 	} else {
 		if (!concatenated_) {
@@ -491,7 +601,7 @@ void Data_file<T>::read_binary(T &data)
 template <class T>
 void Indexed_file<T>::read_binary(T &data)
 {
-	char a='a';
+//	char a='a';
 	if (in_->peek()=='@')
 	{
 		if (!concatenated_) {
@@ -500,7 +610,28 @@ void Indexed_file<T>::read_binary(T &data)
 			this->close_table();
 		}
 	} else {
-		in_->read(&a, sizeof(char) );
+		//WTF?!?!
+//		in_->read(&a, sizeof(char) );
+		data.read_pos(*in_);
+		data.read_binary(*in_);
+	}
+	
+}
+
+template <class T>
+void Double_indexed_file<T>::read_binary(T &data)
+{
+//	char a='a';
+	if (in_->peek()=='@')
+	{
+		if (!concatenated_) {
+			this->close();
+		} else {
+			this->close_table();
+		}
+	} else {
+		//WTF?!?!
+//		in_->read(&a, sizeof(char) );
 		data.read_pos(*in_);
 		data.read_binary(*in_);
 	}
@@ -519,20 +650,35 @@ void Indexed_file<T>::write_text(const T &data)
 	*out_ << file_index_.get_string(file_index_.get_id0(data.get_abs_pos()) ) << '\t' << file_index_.get_id1(data.get_abs_pos() ) << '\t' << data << std::endl;
 }
 
+template <class T>
+void Double_indexed_file<T>::write_text(const T &data)
+{
+	*out_ << file_index_.get_string(file_index_.get_id0(data.get_abs_pos()) ) << '\t' << file_index_.get_id1(data.get_abs_pos() ) << '\t' << file_index_.get_string(file_index_.get_id0(data.get_abs_pos2()) ) << '\t' << file_index_.get_id1(data.get_abs_pos2() ) << '\t' << data << std::endl;
+}
+
 
 template <class T>
 void Data_file<T>::write_binary(const T &data)
 {
-	char a='a';
-	out_->write(&a, sizeof(char) );
+//	char a='a';	//WTF?!?!
+//	out_->write(&a, sizeof(char) );
 	data.write_binary(*out_);
 }
 
 template <class T>
 void Indexed_file<T>::write_binary(const T &data)
 {
-	char a='a';
-	out_->write(&a, sizeof(char) );
+//	char a='a';	//WTF?!?!
+//	out_->write(&a, sizeof(char) );
+	data.write_pos(*out_);
+	data.write_binary(*out_);
+}
+
+template <class T>
+void Double_indexed_file<T>::write_binary(const T &data)
+{
+//	char a='a';	//WTF?!?!
+//	out_->write(&a, sizeof(char) );
 	data.write_pos(*out_);
 	data.write_binary(*out_);
 }
@@ -548,6 +694,15 @@ Data_file<T>& Data_file<T>::write(const T &data)
 
 template <class T>
 Indexed_file<T>& Indexed_file<T>::write(const T &data)
+{
+	if (binary_) write_binary(data);
+	else write_text(data);
+//	if (!out_->good() ) { std::cerr << __FILE__ << ":" << __LINE__ << ": unexpected error writing file. Exiting.\n"; exit(0);};
+	return *this;
+}
+
+template <class T>
+Double_indexed_file<T>& Double_indexed_file<T>::write(const T &data)
 {
 	if (binary_) write_binary(data);
 	else write_text(data);

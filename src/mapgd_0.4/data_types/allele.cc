@@ -181,8 +181,6 @@ Allele & Allele::operator=(const Allele & x) {
 		ll=x.ll;
 		gof=x.gof;
 		efc=x.efc;
-		excluded=x.excluded;
-		delim=x.delim;
 	}
 	return *this;
 }
@@ -195,13 +193,12 @@ size_t Allele::size() const{
 	return sizeof(float_t)*15+sizeof(count_t)*6+sizeof(id0_t)+sizeof(char)+sizeof(bool)+sizeof(id1_t); 
 }
 
-//We can just squeak Paris Japonica in with 38 bits.
 const std::string Allele::sql_header(void) const {
-        return "(POS int NOT NULL PRIMARY KEY, REF INTEGER, MAJOR INTEGER, MINOR INTEGER, COVERAG INTEGER, MM_FREQ REAL, Mm_FREQ REAL, POLY_LR REAL, HWE_LR REAL, GOF REAL, EF_CHRM REAL, IND_INC INTEGER, IND_CUT INTEGER, BEST_LL REAL)";
+        return "(ABS_POS int, REF int, MAJOR int, MINOR int, COVERAG int, HOM_FREQ REAL, HET_FREQ REAL, POLY_LR REAL, HWE_LR REAL, GOF REAL, EF_CHRM REAL, IND_INC int, IND_CUT int, BEST_LL REAL, PRIMARY KEY (ABS_POS) )";
 }
 
 const std::string Allele::sql_column_names(void) const {
-        return "(POS, REF, MAJOR, MINOR, COVERAG, MM_FREQ, Mm_FREQ, POLY_LR, HWE_LR, GOF, EF_CHRM, IND_INC, IND_CUT, BEST_LL)";
+        return "(ABS_POS, REF, MAJOR, MINOR, COVERAG, HOM_FREQ, HET_FREQ, POLY_LR, HWE_LR, GOF, EF_CHRM, IND_INC, IND_CUT, BEST_LL)";
 }
 
 const std::string Allele::sql_values(void) const {
@@ -223,7 +220,7 @@ const std::string Allele::sql_values(void) const {
 	excluded,
 	ll);
 #elif FLT_EVAL_METHOD == 1
-	snprint(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %f, %f, %f, %f, %f, %f, %d, %d, %f)",
+	snprintf(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %f, %f, %f, %f, %f, %f, %d, %d, %f)",
 	abs_pos_,
 	ref,
 	major,
@@ -239,6 +236,21 @@ const std::string Allele::sql_values(void) const {
 	excluded,
 	ll);
 #elif FLT_EVAL_METHOD == 0
+	snprintf(return_buffer, SQL_LINE_SIZE, "(%d, %d, %d, %d, %d, %f, %f, %f, %f, %f, %f, %d, %d, %f)",
+	abs_pos_,
+	ref,
+	major,
+	minor,
+	coverage,
+	MM,
+	Mm,
+	(ll-monoll)*2,
+	(ll-hwell)*2,
+	gof,
+	efc,
+	N,
+	excluded,
+	ll);
 #endif
         return std::string(return_buffer);
 }

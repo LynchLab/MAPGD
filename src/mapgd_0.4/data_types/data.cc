@@ -11,16 +11,22 @@ std::map <std::string, Data*(*)(const std::vector <std::string> &) > m_data_ctor
   m_data_ctor_buf; // memory for the stream object
 std::map <std::string, Data*(*)(const std::vector <std::string> Stream) >& stream = reinterpret_cast<std::map <std::string, Data*(*)(const std::vector <std::string>) >& > (m_data_ctor_buf);*/
 
-std::vector <std::string> registry_list(void)
+/*std::vector <std::string> registry_list(void)
 {
 	std::vector<std::string> ret;
 	for( std::map <std::string, Data*(*)(const std::vector <std::string> &)>::iterator it = m_data_ctor.begin(); it != m_data_ctor.end(); ++it) ret.push_back(it->first);
 	return ret;
-}
+}*/
 
 Registry_initalizer::Registry_initalizer()
 {
-	if (nifty_counter++ == 0) new (&m_data_ctor) std::map <std::string, Data*(*)(const std::vector <std::string> &)>; 
+	if (nifty_counter++ == 0) 
+	{
+#ifdef DEBUG
+		std::cerr << "creating m_data_ctor\n";
+#endif
+		new (&m_data_ctor) std::map <std::string, Data*(*)(const std::vector <std::string> &)>; 
+	}
 }
 
 Registry_initalizer::~Registry_initalizer()
@@ -30,9 +36,19 @@ Registry_initalizer::~Registry_initalizer()
 
 Data* Data::new_from_str(const std::string &Name, const std::vector<std::string> &columns)
 {
-	return m_data_ctor[Name](columns);
+	if ( m_data_ctor.find(Name) == m_data_ctor.end() ) {
+		fprintf(stderr, gettext("mapgd:%s:%d: Cannot find class with name %s. Class names are:\n"), __FILE__, __LINE__, Name.c_str());
+		for(std::map<std::string, Data*(*)(const std::vector <std::string> &) >::iterator it = m_data_ctor.begin(); it != m_data_ctor.end(); ++it) 
+		{
+  			std::cerr << '\t' << it->first << "\n";
+		}	
+		fprintf(stderr, gettext("mapgd:%s:%d: Exiting.\n"), __FILE__, __LINE__);
+		exit(NOCLASS);
+	} else 	{
+		return m_data_ctor[Name](columns);
+	}
 }
-	
+
 void 
 Data::sql_read(std::istream &in)
 {
@@ -57,9 +73,29 @@ Registration::Registration (const std::string &str, Data*(*fn)(const std::vector
 {
 #ifdef DEBUG
 	std::cerr << "Registering " << str << std::endl;
+	for(std::map<std::string, Data*(*)(const std::vector <std::string> &) >::iterator it = m_data_ctor.begin(); it != m_data_ctor.end(); ++it) 
+	{
+  		std::cerr << '\t' << it->first << "\n";
+	}	
 #endif
 	m_data_ctor[str]=fn;
-	name_=str;
+
+	std::vector <std::string> test;
+	Data *test_data=m_data_ctor[str](test);
+#ifdef DEBUG
+	std::cerr << &m_data_ctor << ", " << test_data->get_table_name() << std::endl;
+	for(std::map<std::string, Data*(*)(const std::vector <std::string> &) >::iterator it = m_data_ctor.begin(); it != m_data_ctor.end(); ++it) 
+	{
+  		std::cerr << '\t' << it->first << "\n";
+	}	
+#endif
+	if (test_data->get_table_name()!=str)
+	{
+		fprintf(stderr, gettext("mapgd:%s:%d: Class %s does not return the correct type. Exiting.\n"), __FILE__, __LINE__, str.c_str() );
+	//	exit(NOCLASS);
+	}
+	delete test_data;
+	name_="FOOL!";//str;
 }
 
 
@@ -77,7 +113,27 @@ id1_t Indexed_data::get_abs_pos (void) const
 	return abs_pos_;
 }
 
+id1_t Double_indexed_data::get_abs_pos (void) const
+{
+	return abs_pos1_;
+}
+
+id1_t Double_indexed_data::get_abs_pos2 (void) const
+{
+	return abs_pos2_;
+}
+
 void Indexed_data::set_abs_pos (const id1_t &new_pos)
 {
 	abs_pos_=new_pos;
+}
+
+void Double_indexed_data::set_abs_pos (const id1_t &new_pos)
+{
+	abs_pos1_=new_pos;
+}
+
+void Double_indexed_data::set_abs_pos2 (const id1_t &new_pos)
+{
+	abs_pos2_=new_pos;
 }

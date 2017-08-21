@@ -22,8 +22,7 @@ Linkage::read (std::istream& in)
 void 
 Linkage::write(std::ostream& out) const
 {
-	out << id1_y_ << delim;
-	out << id1_y_-this->get_abs_pos() << delim;
+	out << this->get_abs_pos2()-this->get_abs_pos1() << delim;
 	out << D_ << delim;
 	out << Dprime() << delim;
 	out << Dsq() << delim;

@@ -49,3 +49,13 @@ const bool Sample_gof::get_binary(void) const
 {
 	return binary;
 }
+
+const std::string Sample_gof::get_file_name(void) const
+{
+	return file_name;
+}
+
+const std::string Sample_gof::get_table_name(void) const
+{
+	return table_name;
+}
