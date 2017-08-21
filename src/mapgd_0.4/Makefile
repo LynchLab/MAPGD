@@ -9,12 +9,14 @@ DESTDIR=/usr/local/bin
 DOCPATH=\"$(shell pwd)/../../docs/man/\"
 WARNINGS=-Wno-write-strings
 #WARNINGS=-Wall -Werror=return-type -Wno-write-strings
-MINOR=`cat VERSION`
+MINOR=`cat VERSION | cut -d - -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ~/src/lz4/lib
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ 
+#-I ~/src/lz4/lib
 
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) -MMD
-LDLIBS += -lgzstream -lz -L ./gzstream/ -L ~/src/lz4/lib -llz4
+LDLIBS += -lgzstream -lz -L ./gzstream/ 
+#-L ~/src/lz4/lib -llz4
 
 DEBUG=-pg -D DEBUG -ggdb
 NOOMP=-D NOOMP
@@ -112,14 +114,16 @@ COMMAND_OBJ=commands/estimate_individual.o \
 	commands/fastview.o \
 	commands/relatedness.o \
 	commands/test_keys.o \
-	commands/simulate.o \
 	commands/relatedness_test.o
+
+#	commands/simulate.o \
 
 #Depend on htslib
 HTS_OBJ=data_conversion/vcf-file.o \
 	commands/read_vcf.o \
-	commands/make-vcf2.o \
 	commands/make-vcf.o
+
+#	commands/make-vcf2.o \
 
 #Depend on db_api
 SQL_OBJ=sql/writesql.o \
@@ -150,8 +154,9 @@ DATA_OBJ=data_types/data.o \
 	data_conversion/bcf2pro-file.o \
 	data_types/locus.o \
 	data_types/key.o \
-	data_types/state.o \
 	data_types/sample_name.o 
+
+#	data_types/state.o \
 #??
 RAW_OBJ=raw/genotype.o \
 	raw/quartet.o \
