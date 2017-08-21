@@ -42,7 +42,7 @@ int main (int argc, char* argv[])
 
 #ifndef NOHTS
 	env.command(	' ',"writevcf",	&make_vcf,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
-//	env.command(	' ',"writevcf2",&make_vcf2,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
+	env.command(	' ',"writevcf2",&make_vcf2,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
 	env.command(	' ',"readvcf",	&read_vcf,	 		"an error occurred while calling vcf", "Reads a vcf file"); 		//DONE
 #endif
 	env.command(	' ',"help", 	&mapgd_help, 			"an error occurred while calling help", "Prints helpful information");					//DONE

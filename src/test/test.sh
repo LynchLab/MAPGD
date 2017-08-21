@@ -21,6 +21,7 @@ else
 	echo `$wc $a.out -l `
 	echo "expected $size"
 	echo "[$a] $msg FAIL"
+	cat $a.out
 	exit 1
 fi
 }
@@ -228,13 +229,13 @@ $mapgd relatedness -i temp_genotype.out > $a.out
 testa
 rm -f temp*
 
-a="write"
-msg="write/read"
-size=6
-rm -f test.db
-echo "$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db 									"
-$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db
-echo -n "$mapgd read -d test.db -t REGIONS										"
-$mapgd read -d test.db -t REGIONS > $a.out
-rm -f test.db
-testa
+#a="write"
+#msg="write/read"
+#size=6
+#rm -f test.db
+#echo "$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db 									"
+#$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db
+#echo -n "$mapgd read -d test.db -t REGIONS										"
+#$mapgd read -d test.db -t REGIONS > $a.out
+#rm -f test.db
+#testa

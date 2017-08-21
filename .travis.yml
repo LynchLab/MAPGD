@@ -19,6 +19,7 @@ before_install:
         brew update; 
         brew install gsl; 
         brew install gcc48;
+        brew install glibc;
         brew install gettext; 
     fi
 
