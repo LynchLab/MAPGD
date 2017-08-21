@@ -11,6 +11,5 @@ commands/simulate.o: commands/simulate.cc commands/simulate.h \
  data_types/pooled_data.h data_types/sample_name.h \
  data_types/linkage_data.h data_types/key.h raw/raw.h raw/genotype.h \
  raw/genotype_pair.h raw/quartet.h gzstream/gzstream.h \
- stream_tools/tmp_buffer.h data_types/state.h \
- /nfs/users/nfs_m/ma18/src/lz4/lib/lz4.h commands/interface.h \
+ stream_tools/tmp_buffer.h data_types/state.h commands/interface.h \
  raw/region.h

@@ -116,7 +116,10 @@ State::uncompress (uint32_t *a, uint32_t *b)
 	{
 		int ret;
 		//std::cerr << (long int)(lz4_end_-lz4_ptr_) << ", " << (long int)(lz4_ptr_-lz4_start_) << ", " << (long int)(lz4_last_-lz4_ptr_) << ", " << (long int)(lz4_end_) << std::endl;
+#ifndef NOLZ4
 		ret=LZ4_decompress_fast (lz4_ptr_, (char *)a, block_size_);
+#else
+#endif
 		if (ret > 0)
 		{
 			lz4_ptr_+=ret;
@@ -124,7 +127,10 @@ State::uncompress (uint32_t *a, uint32_t *b)
 			fprintf(stderr, gettext("mapgd:%s:%d: Malformed LZ4 block. Exiting.\n"), __FILE__, __LINE__);
 			exit(LZ4);
 		}
+#ifndef NOLZ4
 		ret=LZ4_decompress_fast (lz4_ptr_, (char *)b, block_size_);	
+#else
+#endif
 		if (ret > 0)
 		{
 			lz4_ptr_+=ret;
@@ -150,7 +156,10 @@ State::uncompress (uint32_t *a, uint32_t *b, State_stream &stream) const
 	{
 		int ret;
 		//std::cerr << (long int)(lz4_end_-lz4_ptr_) << ", " << (long int)(lz4_ptr_-lz4_start_) << ", " << (long int)(lz4_last_-lz4_ptr_) << ", " << (long int)(lz4_end_) << std::endl;
+#ifndef NOLZ4
 		ret=LZ4_decompress_fast (stream.lz4_ptr, (char *)a, block_size_);
+#else
+#endif
 		if (ret > 0)
 		{
 			stream.lz4_ptr+=ret;
@@ -158,7 +167,10 @@ State::uncompress (uint32_t *a, uint32_t *b, State_stream &stream) const
 			fprintf(stderr, gettext("mapgd:%s:%d: Malformed LZ4 block. Exiting.\n"), __FILE__, __LINE__);
 			exit(LZ4);
 		}
+#ifndef NOLZ4
 		ret=LZ4_decompress_fast (stream.lz4_ptr, (char *)b, block_size_);	
+#else
+#endif
 		if (ret > 0)
 		{
 			stream.lz4_ptr+=ret;
@@ -177,8 +189,11 @@ State::uncompress (uint32_t *a, uint32_t *b, const uint32_t &k)
 {
 	while (cached_sites_-sites_-- < k) 
 	{
+#ifndef NOLZ4
 		lz4_ptr_+=LZ4_decompress_fast (lz4_ptr_, (char *)a, block_size_);
 		lz4_ptr_+=LZ4_decompress_fast (lz4_ptr_, (char *)b, block_size_);
+#else
+#endif
 	} 
 	if (sites_==0) {
 		fprintf(stderr, gettext("mapgd:%s:%d: Attempt to read from empty stream. Exiting.\n"), __FILE__, __LINE__);
@@ -230,15 +245,20 @@ State::compress (const uint32_t *a, const uint32_t *b)
 {
 	int size;
 	if (lz4_end_-lz4_ptr_ < 2*block_size_ ) increase_buffer_();
-
+#ifndef NOLZ4
 	size=LZ4_compress_default( (const char*) a, lz4_ptr_, block_size_,  size_t (lz4_end_-lz4_ptr_) > INT_MAX ? INT_MAX : size_t (lz4_end_-lz4_ptr_) );
+#else
+#endif
 	if (size==0) 
 	{
 		fprintf(stderr, gettext("mapgd:%s:%d:FLAGRANT SYSTEM ERROR. Computer over. lz4buffer = Full. (Write me an e-mail!)\n"), __FILE__, __LINE__);
 		exit(LZ4);
 	}
 	lz4_ptr_+=size;
+#ifndef NOLZ4
 	size=LZ4_compress_default( (const char*) b, lz4_ptr_, block_size_,  size_t (lz4_end_-lz4_ptr_) > INT_MAX ? INT_MAX : size_t (lz4_end_-lz4_ptr_) );
+#else
+#endif
 	if (size==0) 
 	{
 		fprintf(stderr, gettext("mapgd:%s:%d:FLAGRANT SYSTEM ERROR. Computer over. lz4buffer = Full. (Write me an e-mail!)\n"), __FILE__, __LINE__);

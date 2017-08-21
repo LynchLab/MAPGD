@@ -12,6 +12,9 @@ AC_CHECK_LIB([m],[cos])
 AC_CHECK_LIB([gslcblas],[cblas_dgemm])
 AC_CHECK_LIB([gsl],[gsl_blas_dgemm])
 
+
+AC_CHECK_LIB([lzo],[lzo1x_1_15_compress],[LZO_LIBS="-llzo"],[HAVE_LZO="no"])
+
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_OPENMP
@@ -57,6 +60,8 @@ else
   Hsource='#'
   Hinstall=
 fi
+
+#if test "$ax_cv_htslib" == yes
 
 AC_SUBST([Hsource])
 AC_SUBST([Hinstall])

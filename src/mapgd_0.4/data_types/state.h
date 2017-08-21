@@ -7,7 +7,9 @@
 #include <climits>
 #include <libintl.h>
 
+#ifndef NOLZ4
 #include "lz4.h"		//Fast compression/decompression.
+#endif
 
 #include "data.h"
 #include "typedef.h"
