@@ -12,7 +12,7 @@ AC_CHECK_LIB([m],[cos])
 AC_CHECK_LIB([gslcblas],[cblas_dgemm])
 AC_CHECK_LIB([gsl],[gsl_blas_dgemm])
 
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
 
 AC_CHECK_LIB([lzo],[lzo1x_1_15_compress],[LZO_LIBS="-llzo"],[HAVE_LZO="no"])
 
@@ -54,6 +54,10 @@ else
 	AC_MSG_WARN([Htslib not detected, will be unable to create vcf files.])
 fi
 
+if test "$" == yes
+then
+fi
+
 if test "$ax_cv_htslib_which" = source; then
   Hsource=
   Hinstall='#'
@@ -64,6 +68,7 @@ fi
 
 #if test "$ax_cv_htslib" == yes
 
+AC_SUBST(LZ4_DIR, )
 AC_SUBST([Hsource])
 AC_SUBST([Hinstall])
 AC_OUTPUT(Makefile)
