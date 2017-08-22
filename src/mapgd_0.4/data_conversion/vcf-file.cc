@@ -2,6 +2,8 @@
 
 #ifndef NOHTS
 
+#define MIN_GL	1.798486e-111
+
 void call_minor(const  Genotype &gtl, int32_t *calls)
 {
 	if (gtl.MM>gtl.Mm)
@@ -94,9 +96,13 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 
 		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
        		{
-			*(vit+0)=(float)log(it->MM);
-			*(vit+1)=(float)log(it->Mm);
-			*(vit+2)=(float)log(it->mm);
+			if (it->mm>MIN_GL) *(vit+2)=(float)log(it->mm);
+			else *(vit+2)=255;
+			if (it->Mm>MIN_GL) *(vit+1)=(float)log(it->Mm);
+			else *(vit+1)=255;
+			if (it->MM>MIN_GL) *(vit+0)=(float)log(it->MM);
+			else *(vit+0)=255;
+
 			*dp_it=(int32_t)(it->N);
 			call_major(*it, gt_it);
 			vit+=3;
@@ -112,9 +118,13 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 
 		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
 		{
-			*(vit+0)=(float)log(it->mm);
-			*(vit+1)=(float)log(it->Mm);
-			*(vit+2)=(float)log(it->MM);
+			if (it->mm>MIN_GL) *(vit+0)=(float)log(it->mm);
+			else *(vit+0)=255;
+			if (it->Mm>MIN_GL) *(vit+1)=(float)log(it->Mm);
+			else *(vit+1)=255;
+			if (it->MM>MIN_GL) *(vit+2)=(float)log(it->MM);
+			else *(vit+2)=255;
+
 			*dp_it=(int32_t)(it->N);
 			call_minor(*it, gt_it);
 			vit+=3;

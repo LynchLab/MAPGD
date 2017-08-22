@@ -101,7 +101,7 @@ int make_vcf2(int argc, char *argv[])
 		0x01000000,     0x02000000,     0x04000000,     0x08000000,
 		0x10000000,     0x20000000,     0x40000000,     0x80000000};
 
-
+	state.rewind();
 	for (size_t x=0; x<sites; ++x)
 	{
 		state.uncompress(P1, P2);
@@ -130,7 +130,9 @@ int make_vcf2(int argc, char *argv[])
 				}
 			}
 			allele.set_abs_pos(x);
+			pop.set_abs_pos(x);
 			vcf.put(index, allele, pop);
+			std::cerr << "Boop\n";
 			vcf_out.write(vcf);
 		}
 	}

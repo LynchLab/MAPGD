@@ -114,7 +114,7 @@ State::uncompress (uint32_t *a, uint32_t *b)
 	}
 	if (sites_-- ) 
 	{
-		int ret;
+		int ret=0;
 		//std::cerr << (long int)(lz4_end_-lz4_ptr_) << ", " << (long int)(lz4_ptr_-lz4_start_) << ", " << (long int)(lz4_last_-lz4_ptr_) << ", " << (long int)(lz4_end_) << std::endl;
 #ifndef NOLZ4
 		ret=LZ4_decompress_fast (lz4_ptr_, (char *)a, block_size_);
@@ -158,6 +158,7 @@ State::uncompress (uint32_t *a, uint32_t *b, State_stream &stream) const
 		//std::cerr << (long int)(lz4_end_-lz4_ptr_) << ", " << (long int)(lz4_ptr_-lz4_start_) << ", " << (long int)(lz4_last_-lz4_ptr_) << ", " << (long int)(lz4_end_) << std::endl;
 #ifndef NOLZ4
 		ret=LZ4_decompress_fast (stream.lz4_ptr, (char *)a, block_size_);
+		std::cerr << ret << std::endl;
 #else
 #endif
 		if (ret > 0)
