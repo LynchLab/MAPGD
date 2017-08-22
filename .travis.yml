@@ -20,7 +20,7 @@ before_install:
         brew install gsl; 
         brew install gcc48;
         brew install gettext;
-        brew link --force gettext
+        brew link --force gettext;
     fi
 
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
