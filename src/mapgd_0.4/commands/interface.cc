@@ -78,6 +78,7 @@ arg_set_vector_str(int argc, char **argv, void *parm)
 	exit(1);
 }
 
+
 int 
 arg_set_region(int argc, char **argv, void *parm)
 {
@@ -532,10 +533,18 @@ print_help(Environment env)
 	printf("Options:\n");
 	while (arg!=end){
 		//TODO Better length formating.
+		if (arg->opt!=0)
+		{
 		if (strlen(arg->lopt)>7)
 			printf("  -%c, --%s\t%s\n", arg->opt, arg->lopt, format_usage(arg->umsg, 24) );
 		else
 			printf("  -%c, --%s\t\t%s\n", arg->opt, arg->lopt, format_usage(arg->umsg, 24) );
+		} else {
+		if (strlen(arg->lopt)>7)
+			printf("       --%s\t%s\n", arg->lopt, format_usage(arg->umsg, 24) );
+		else
+			printf("       --%s\t\t%s\n", arg->lopt, format_usage(arg->umsg, 24) );
+		}
 		++arg;
 	}
 	std::list <Flag>::iterator flag=env.flags.begin();

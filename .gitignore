@@ -4,3 +4,4 @@ extras/pedigree/
 src/test/fastq/
 src/test/output/
 Makefile
+src/mapgd_0.4/objs/

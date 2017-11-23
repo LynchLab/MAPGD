@@ -34,8 +34,17 @@ fi
 if test "$ac_cv_prog_cxx_openmp" == "unsupported"
 then
 	AC_MSG_WARN([No openmp support detected, will not be multi-threaded.])
+	Hsource='# Commented because no HTS detected'
+	Hinstall='# Commented because no HTS detected'
 else
 	AC_SUBST(HAVE_OMP, yes)
+	if test "$ax_cv_htslib_which" = source; then
+		Hsource=
+		Hinstall='#'
+	else
+		Hsource='#'
+		Hinstall=
+	fi
 fi
 
 if test "$ac_cv_func_MPI_Init" == "yes"
@@ -54,17 +63,19 @@ else
 	AC_MSG_WARN([Htslib not detected, will be unable to create vcf files.])
 fi
 
-if test "$" == yes
+if test "$USE_NLS" == yes
 then
+	AC_SUBST(USE_NLS, yes)
+else
+	AC_MSG_ERROR([No gettext support detected, please install gettext. 
+
+For linux users: 
+	sudo apt-get install gettext 
+For OSX users: 
+        sudo brew install gettext;
+        sudo brew link --force gettext;])
 fi
 
-if test "$ax_cv_htslib_which" = source; then
-  Hsource=
-  Hinstall='#'
-else
-  Hsource='#'
-  Hinstall=
-fi
 
 #if test "$ax_cv_htslib" == yes
 

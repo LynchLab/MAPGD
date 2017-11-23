@@ -1,14 +1,24 @@
 SUBDIRS=src
 
+prefix      = @prefix@
+exec_prefix = @exec_prefix@
+bindir      = @bindir@
+includedir  = @includedir@
+libdir      = @libdir@
+libexecdir  = @libexecdir@
+datarootdir = @datarootdir@
+mandir      = @mandir@
+man1dir     = @mandir@/man1
+man5dir     = @mandir@/man5
+
 HAVE_GSL=@HAVE_GSL@
 HAVE_OMP=@HAVE_OMP@
 HAVE_MPI=@HAVE_MPI@
 HAVE_SQL=@HAVE_SQL@
 HAVE_HTS=@HAVE_HTS@
 HAVE_MAN=@HAVE_MAN@
-HAVE_GETTEXT=@HAVE_GETTEXT@
+USE_NLS=@USE_NLS@
 HAVE_LZ4=@HAVE_LZ4@
-
 
 MPICXX=@MPICXX@ -std=c++11
 CXX=@CXX@
@@ -16,15 +26,15 @@ OPENMP_CXXFLAGS=@OPENMP_CXXFLAGS@
 CXXFLAGS=@CXXFLAGS@
 
 LDLIBS += @INTLLIBS@
+
 #SAMTOOLS FLAGS
 
 @Hsource@HTSDIR = @HTSDIR@
-#@Hsource@include $(HTSDIR)/htslib.mk
 @Hsource@HTSLIB = $(HTSDIR)/libhts.a
 @Hsource@HTSLIB_LIB = $(HTSLIB)
 @Hsource@BGZIP = $(HTSDIR)/bgzip
-HTSLIB_CPPFLAGS = -I ../../@HTSDIR@
-HTSLIB_LDFLAGS = -L ../../@HTSDIR@
+@Hsource@HTSLIB_CPPFLAGS = -I ../../@HTSDIR@
+@Hsource@HTSLIB_LDFLAGS = -L ../../@HTSDIR@
 @Hinstall@HTSLIB_LIB = -lhts
 
 #LZ4 FLAGS
@@ -33,10 +43,12 @@ LZ4_LIB = -L @LZ4_DIR@ -l llz4
 LZ4_INCLUDE = -I @LZ4_DIR@
 
 
+DESTDIR = $(exec_prefix)
+DOCPATH = @docdir@
 	
 export
 
-all: echo 
+all:  
 all: $(SUBDIRS)
 
 $(SUBDIRS):

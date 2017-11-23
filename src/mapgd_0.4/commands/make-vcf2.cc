@@ -11,6 +11,7 @@ int make_vcf2(int argc, char *argv[])
 {
 
 #ifndef NOHTS
+#ifndef NOLZ4
 	/* All the variables that can be set from the command line */
 
 	std::string statefile="";
@@ -62,26 +63,27 @@ int make_vcf2(int argc, char *argv[])
 	state_in.open(statefile.c_str(), READ);
 	name_in.open(namefile.c_str(), READ);
 
-	std::cerr << __LINE__ << std::endl;
 	State state;
 	state=state_in.read_header();
-	std::cerr << __LINE__ << std::endl;
 	names=name_in.read_header();
-	std::cerr << __LINE__ << std::endl;
 	state_in.read(state);
-	std::cerr << __LINE__ << std::endl;
+	state_in.close();
+
+	std::cerr << state.sample_size() << ", " << state.genome_size() << std::endl;
+
 	name_in.read(names);
-	std::cerr << __LINE__ << std::endl;
 
 	size_t N = state.sample_size();
 	size_t sites = state.genome_size();
-	uint32_t P1[sites], P2[sites];
+	uint32_t *P1=new uint32_t [N];
+	uint32_t *P2=new uint32_t [N];
+
 	std::cerr << __LINE__ << std::endl;
 
 	Vcf_data vcf;
 
 	File_index index;
-	index.add_id("scaffold_1", sites+1);
+	index.add_id("1", 32*sites+1);
 
 	vcf.set_header(index, names.sample_names);
 
@@ -102,11 +104,17 @@ int make_vcf2(int argc, char *argv[])
 		0x10000000,     0x20000000,     0x40000000,     0x80000000};
 
 	state.rewind();
+
+	allele.ref=0;
+	allele.major=1;
+	allele.minor=2;
+
 	for (size_t x=0; x<sites; ++x)
 	{
 		state.uncompress(P1, P2);
 		for (size_t k=0; k<32; ++k)
 		{
+			uint32_t count=0;
 			for (size_t y=0; y < N; ++y) 
 			{
 				char g=( (P1[y] & mask[k]) !=0)+( (P2[y] & mask[k]) !=0);
@@ -121,24 +129,32 @@ int make_vcf2(int argc, char *argv[])
 						pop.likelihoods[y].mm=0;
 						pop.likelihoods[y].Mm=1;
 						pop.likelihoods[y].MM=0;
+						count+=1;
 					break;
 					case 2:
 						pop.likelihoods[y].mm=0;
 						pop.likelihoods[y].Mm=0;
 						pop.likelihoods[y].MM=1;
+						count+=2;
 					break;
 				}
+				pop.likelihoods[y].N=100;
 			}
-			allele.set_abs_pos(x);
-			pop.set_abs_pos(x);
+			allele.freq=1.-float(count)/float(2*N);
+			allele.set_abs_pos(x*32+k+1);
+			pop.set_abs_pos(32*x+k+1);
+			
 			vcf.put(index, allele, pop);
-			std::cerr << "Boop\n";
 			vcf_out.write(vcf);
 		}
 	}
 
 	vcf_out.close();
 	return 0;					//Since everything worked, return 0!.
+#else 
+	std::cerr << "You must have lz4 to use this command. If you are using linux you can obtain lz4 by typing apt-get install liblz4-dev\n";	
+	return 0;
+#endif
 #else 
 	std::cerr << "You must have htslib to use this command. If you are using linux you can obtain htslib by typing apt-get install htslib-dev\n";	
 	return 0;

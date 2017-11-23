@@ -3,10 +3,13 @@
 
 #include "allele.h"
 #include "locus.h"
-#include "state.h"
 #include "map_file.h"
 #include "interface.h"
 #include "vcf-file.h"
+
+#ifndef NOLZ4
+#include "state.h"
+#endif
 
 #ifdef MPI
 #include <ciso646>

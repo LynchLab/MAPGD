@@ -56,14 +56,13 @@ Vcf_file::read (Vcf_data &vcf)
 {
 	if (open_) 
 	{
-		std::cerr << __FILE__ << ":" << __LINE__ <<  "trying to read.\n";
 		if (bcf_read(file_, vcf.header_, vcf.record_)!=0) 
 		{
-			std::cerr << __FILE__ << ":" << __LINE__ <<  "attempt to read from file failed.\n";
-			exit(0);
+			fprintf(stderr, gettext("mapgd:%s:%d: attempt to read from file failed.\n"), __FILE__, __LINE__ );
+			close_table();
 		}
 	} else {
-		std::cerr << __FILE__ << ":" << __LINE__ <<  "attempt to read from unopened file.\n";
+		fprintf(stderr, gettext("mapgd:%s:%d: attempt to read from unopened file.\n"), __FILE__, __LINE__ );
 		exit(0);
 	}
 }
@@ -74,10 +73,11 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 	if(allele.get_abs_pos()!=pop.get_abs_pos() )
 	{
 		std::cerr << __FILE__ << ":" << __LINE__ <<  "allele and locus have different positions (private abs_pos_).\n";
+		fprintf(stderr, gettext("mapgd:%s:%d: allele and locus have different positions (private abs_pos).\n"), __FILE__, __LINE__ );
 	}
 
 	char alleles[4]={0};
-	size_t size=record_->n_sample;
+	int size=int(record_->n_sample);
 	id1_t abs_pos=pop.get_abs_pos();
 	float *gp=new float[size*3], freq=allele.freq;
 	float *vit=gp;
@@ -87,6 +87,12 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 	int32_t *gt_it=gt;
 	record_->rid = index.get_id0(abs_pos);
 	record_->pos = index.get_id1(abs_pos)-1;
+	record_->qual = 255;
+
+	std::string id=std::to_string(abs_pos);
+
+	bcf_update_id(header_, record_, id.c_str() );
+
 	if (allele.major==allele.ref)
 	{
 		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.minor) );
@@ -96,12 +102,12 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 
 		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
        		{
-			if (it->mm>MIN_GL) *(vit+2)=(float)log(it->mm);
-			else *(vit+2)=255;
-			if (it->Mm>MIN_GL) *(vit+1)=(float)log(it->Mm);
-			else *(vit+1)=255;
-			if (it->MM>MIN_GL) *(vit+0)=(float)log(it->MM);
-			else *(vit+0)=255;
+			if (it->mm>MIN_GL) *(vit+2)=(float)(it->mm);
+			else *(vit+2)=0;
+			if (it->Mm>MIN_GL) *(vit+1)=(float)(it->Mm);
+			else *(vit+1)=0;
+			if (it->MM>MIN_GL) *(vit+0)=(float)(it->MM);
+			else *(vit+0)=0;
 
 			*dp_it=(int32_t)(it->N);
 			call_major(*it, gt_it);
@@ -118,12 +124,12 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 
 		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
 		{
-			if (it->mm>MIN_GL) *(vit+0)=(float)log(it->mm);
-			else *(vit+0)=255;
-			if (it->Mm>MIN_GL) *(vit+1)=(float)log(it->Mm);
-			else *(vit+1)=255;
-			if (it->MM>MIN_GL) *(vit+2)=(float)log(it->MM);
-			else *(vit+2)=255;
+			if (it->mm>MIN_GL) *(vit+0)=(float)(it->mm);
+			else *(vit+0)=0;
+			if (it->Mm>MIN_GL) *(vit+1)=(float)(it->Mm);
+			else *(vit+1)=0;
+			if (it->MM>MIN_GL) *(vit+2)=(float)(it->MM);
+			else *(vit+2)=0;
 
 			*dp_it=(int32_t)(it->N);
 			call_minor(*it, gt_it);
@@ -136,9 +142,9 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
         bcf_update_format_float(header_, record_, "GP", gp, size*3);
 	bcf_update_genotypes(header_, record_, gt, size*2);
         bcf_update_format_int32(header_, record_, "DP", dp, size);
-	free(gp);
-	free(gt);
-	free(dp);
+	delete [] gp;
+	delete [] gt;
+	delete [] dp;
 }
 
 void
@@ -152,6 +158,70 @@ Vcf_data::put(const Data *data, ...)
 //	put(*idx, *pop);
 }
 
+#ifndef NOLZ4
+id1_t
+Vcf_data::get(State &state) const
+{
+	char alleles[4];
+	int size=0;//int(record_->n_sample)*2;
+
+	uint8_t *gt=NULL;//new uint32_t[size];
+
+	bcf_get_genotypes(header_, record_, &gt, &size);
+	uint8_t *end=gt+size*4;
+
+	int N=state.sample_size();
+
+	uint32_t *s1=new uint32_t [N];
+	uint32_t *s2=new uint32_t [N];
+
+	int k=state.get_k();
+
+	if (k!=32 && k!=0) 
+	{
+		std::cerr << "k is " << k << " read from file ... " << std::endl;
+		state.uncompress_inplace(s1, s2);
+	} else {
+		std::cerr << "k is " << k << std::endl;
+		state.advance();
+		memset(s1, 0, sizeof(int32_t)*N);
+		memset(s2, 0, sizeof(int32_t)*N);
+		k=0;
+	}
+
+	size_t x=0;
+	for (; gt<end; gt+=8)
+	{
+//		std::cerr << int(gt[0]) << "/" << int(gt[1]) << "/" << int(gt[2]) << "/" << int(gt[3]) << "||" << int(gt[4]) << "/" << int(gt[5]) << "/" << int(gt[6]) << "/" << int(gt[7]) << " :: " << (unsigned int)(gt[0] >> 2) << ", " << (unsigned int)(gt[4] >> 2) << std::endl;
+
+		//Check to make sure gt[0] is always the reference?
+		std::cerr << x << ", " << k << std::endl;
+		switch (uint8_t(gt[0]>>2)  + uint8_t(gt[4]>>2) )
+		{
+			case(0):
+			break;
+			case(1):
+				s1[x] |= 1 << k;
+			break;
+			case(2):
+				s1[x] |= 1 << k;
+				s2[x] |= 1 << k;
+			break;
+			default:
+				fprintf(stderr, gettext("mapgd:%s:%d: unrecognized genotype in vcf file.\n"), __FILE__, __LINE__ );
+				exit(0);
+			break;
+		}
+		x++;
+	}
+
+	state.compress_inplace(s1, s2);
+	k++;
+	state.set_k(k);
+
+	return 0;
+}
+#endif
 id1_t
 Vcf_data::get(const File_index &index, Population &pop) const
 {
@@ -234,7 +304,7 @@ Vcf_file::open(const std::ios_base::openmode &mode)
 //	if (mode & READ) open(std::cin, mode); 
 //	else if (mode & WRITE) open(std::cout, mode);
 //	else {
-		std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open file in std::ios_base::openmode &mode=" << mode << std::endl; 
+		fprintf(stderr, gettext("mapgd:%s:%d: cannot open file in std::ios_base::openmode &mode=%d.\n"), __FILE__, __LINE__, mode );
 //	}
 }
 

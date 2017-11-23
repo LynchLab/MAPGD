@@ -8,6 +8,10 @@
 #include "file_index.h"
 #include "vcf-file.h"
 
+#ifndef NOLZ4
+#include "state.h"
+#endif 
+
 #ifdef MPI
 #include <ciso646>
 #include <mpi.h>

@@ -7,9 +7,7 @@
 #include <climits>
 #include <libintl.h>
 
-#ifndef NOLZ4
 #include "lz4.h"		//Fast compression/decompression.
-#endif
 
 #include "data.h"
 #include "typedef.h"
@@ -32,6 +30,7 @@ class State : public virtual Data
 {
 private:
 	size_t size_, sites_, cached_sites_, block_size_, lz4_buffer_size_;
+	uint8_t k_;
 
 	static const Registration registered;
 	static Data * create(const std::vector <std::string> & Columns){
@@ -41,23 +40,24 @@ private:
 	bool cached_, transposed_;
 	void increase_buffer_(void);
 	
-	char *lz4_ptr_, *lz4_start_, *lz4_end_, *lz4_last_;  
+	char *lz4_ptr_, *lz4_start_, *lz4_end_, *lz4_last_, *temp_lz4_ptr_;  
 public:
 	State();		//!< constructor needed by map_file. String should be column names. 
 	State(const std::vector <std::string> &);	
 
 	State(const State &rhs)
 	{
-		//std::cerr << "Copy constructor called, lz4_buffer_size: " <<  lz4_buffer_size_ << std::endl;
+		std::cerr << "Copy constructor called from:" << size_t(&rhs) << " to " << size_t (this) << " lz4_buffer_size: " <<  lz4_buffer_size_ << std::endl;
 		lz4_buffer_size_=rhs.lz4_buffer_size_;
 
  		lz4_start_ = new char [lz4_buffer_size_];
-		//std::cerr << "Allocating " << size_t(lz4_start_) << ", " << lz4_buffer_size_ << std::endl;
+		std::cerr << "Allocating " << size_t(lz4_start_) << ", " << lz4_buffer_size_ << std::endl;
 		lz4_end_ = lz4_start_ + lz4_buffer_size_;
  		lz4_last_ = lz4_start_+(rhs.lz4_last_-rhs.lz4_start_);
-		memcpy(lz4_start_, rhs.lz4_last_, rhs.lz4_last_-rhs.lz4_start_);
+		memcpy(lz4_start_, rhs.lz4_start_, rhs.lz4_end_-rhs.lz4_start_);
 
 		cached_=rhs.cached_;
+		transposed_=rhs.transposed_;
 		block_size_=rhs.block_size_;
 		size_=rhs.size_;
 		sites_=rhs.sites_;
@@ -67,7 +67,7 @@ public:
 
 	State(State&& rhs)
 	{
-		//std::cerr << "Move constructor called " << std::endl;
+		std::cerr << "Move constructor called " << std::endl;
 		if (this != &rhs)
 		{
 			lz4_buffer_size_=rhs.lz4_buffer_size_;
@@ -78,6 +78,7 @@ public:
 			block_size_=rhs.block_size_;
 			size_=rhs.size_;
 			sites_=rhs.sites_;
+			transposed_=rhs.transposed_;
 			cached_sites_=rhs.cached_sites_;
 			rhs.lz4_start_ = nullptr;
 		}
@@ -85,24 +86,25 @@ public:
 
 	State& operator=(const State& rhs )
 	{ 
-		//std::cerr << "Assignment constructor called " << std::endl;
-		if (lz4_start_) delete [] lz4_start_;
+		std::cerr << "Assignment constructor called " << std::endl;
 		if (this != &rhs)
 		{
-		//std::cerr << "Copy constructor called, lz4_buffer_size: " <<  rhs.lz4_buffer_size_ << std::endl;
-		lz4_buffer_size_=rhs.lz4_buffer_size_;
+			if (lz4_start_) delete [] lz4_start_;
+			std::cerr << "Assign from:" << size_t(&rhs) << " to " << size_t (this) << " lz4_buffer_size: " <<  lz4_buffer_size_ << std::endl;
+			lz4_buffer_size_=rhs.lz4_buffer_size_;
+	
+	 		lz4_start_ = new char [lz4_buffer_size_];
+			std::cerr << "Allocating " << size_t(lz4_start_) << ", " << lz4_buffer_size_ << ", " << size_t(rhs.lz4_last_-rhs.lz4_start_) << ", " << size_t(rhs.lz4_end_-rhs.lz4_start_) << std::endl;
+			lz4_end_ = lz4_start_ + lz4_buffer_size_;
+ 			lz4_last_ = lz4_start_+(rhs.lz4_last_-rhs.lz4_start_);
+			memcpy(lz4_start_, rhs.lz4_start_, rhs.lz4_end_-rhs.lz4_start_);
 
- 		lz4_start_ = new char [lz4_buffer_size_];
-		std::cerr << "Allocating " << size_t(lz4_start_) << ", " << lz4_buffer_size_ << std::endl;
-		lz4_end_ = lz4_start_ + lz4_buffer_size_;
- 		lz4_last_ = lz4_start_+(rhs.lz4_last_-rhs.lz4_start_);
-		memcpy(lz4_start_, rhs.lz4_last_, rhs.lz4_last_-rhs.lz4_start_);
-
-		cached_=rhs.cached_;
-		block_size_=rhs.block_size_;
-		size_=rhs.size_;
-		sites_=rhs.sites_;
-		cached_sites_=rhs.cached_sites_;
+			cached_=rhs.cached_;
+			transposed_=rhs.transposed_;
+			block_size_=rhs.block_size_;
+			size_=rhs.size_;
+			sites_=rhs.sites_;
+			cached_sites_=rhs.cached_sites_;
 		}
 		return *this;
 	}
@@ -111,16 +113,23 @@ public:
 	State(const uint32_t &, const uint32_t &, const uint32_t &);
 	~State();
 
+	void set_k(const uint8_t &);
+	uint8_t get_k (void) const;
+
 	void uncompress (uint32_t *a, uint32_t *b);
+	void uncompress_inplace (uint32_t *a, uint32_t *b);
 	void uncompress (uint32_t *a, uint32_t *b, const uint32_t &k);
 	void uncompress (uint32_t *a, uint32_t *b, State_stream &) const;
 
 	void cache (void);
 	void rewind (void);
+	void advance (void);
+	void finalize (void);
 
 	void transpose (void);
-
+	
 	void compress (const uint32_t *a, const uint32_t *b);
+	void compress_inplace (const uint32_t *a, const uint32_t *b);
 
 	void clear(void);
 
@@ -162,7 +171,11 @@ public:
 		std::swap(lz4_end_, rhs.lz4_end_); 
 		std::swap(lz4_last_, rhs.lz4_last_);
 	}
+
+	bool empty(void);
 };
+	
+State sub_sample(const State &, const size_t &, const uint32_t *mask);
 
 /*
 inline void 

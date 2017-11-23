@@ -12,6 +12,9 @@
 #include <htslib/hts.h>
 #include <htslib/vcf.h>
 
+#ifndef NOLZ4
+#include "state.h"
+#endif
 
 #include "external-file.h"
 #include "external-data.h"
@@ -73,6 +76,9 @@ public:
 	void put (const File_index &, const Allele &, const Population &);
 	id1_t get (const File_index &, Population &) const;
 
+#ifndef NOLZ4
+	id1_t get (State &) const;
+#endif 
 	std::vector<std::string> get_sample_names (void) const;
 	File_index get_index (void) const;
 

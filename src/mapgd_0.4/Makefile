@@ -5,8 +5,6 @@
 #MODE=-O3
 #STD=-std=c++11
 
-DESTDIR=/usr/local/bin
-DOCPATH=\"$(shell pwd)/../../docs/man/\"
 WARNINGS=-Wno-write-strings
 #WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d - -f 1`
@@ -27,6 +25,10 @@ NOLZ4=-D NOLZ4
 #HTS_LIB_PATH=/usr/include/htslib/
 
 OBJDIR=objs
+
+SUBDIR=raw sql data_types commands data_conversion stream_tools io math_functions
+
+VPATH = $(SUBDIR)
 
 ifeq ($(CXX), i686-w64-mingw32-g++)
 	TARGET=../../bin/mapgd-win32.exe
@@ -68,7 +70,7 @@ else
 endif
 
 ifeq ($(HAVE_MAN), yes)
-	CXXFLAGS += -D USE_MAN -D PATH=$(DOCPATH)
+	CXXFLAGS += -D USE_MAN -D PATH=\"$(DOCPATH)\"
 endif
 
 ifeq ($(HAVE_HTS), yes)
@@ -90,7 +92,6 @@ endif
 
 DOCDIR=../../docs
 
-SUBDIR=raw sql data_types commands data_conversion stream_tools io math_functions
 
 ifeq ($(UNSTABLE), yes)
 	SUBDIR += testing
@@ -109,76 +110,78 @@ MAPGD=mapgd.o
 
 #Headers with templates or inline code
 
-COMMAND_OBJ=commands/estimate_individual.o \
-	commands/estimate_pooled.o \
-	commands/mapgd_help.o \
-	commands/sam2idx.o \
-	commands/proview.o \
-	commands/interface.o \
-	commands/map2genotype.o \
-	commands/linkage_disequilibrium.o \
-	commands/filter.o \
-	commands/filter_genotype.o \
-	commands/filter_pool.o \
-	commands/fastview.o \
-	commands/relatedness.o \
-	commands/test_keys.o \
-	commands/simulate.o \
-	commands/relatedness_test.o
+COMMAND_OBJ=$(OBJDIR)/estimate_individual.o \
+	$(OBJDIR)/estimate_pooled.o \
+	$(OBJDIR)/mapgd_help.o \
+	$(OBJDIR)/sam2idx.o \
+	$(OBJDIR)/proview.o \
+	$(OBJDIR)/interface.o \
+	$(OBJDIR)/map2genotype.o \
+	$(OBJDIR)/linkage_disequilibrium.o \
+	$(OBJDIR)/filter.o \
+	$(OBJDIR)/filter_genotype.o \
+	$(OBJDIR)/filter_pool.o \
+	$(OBJDIR)/fastview.o \
+	$(OBJDIR)/relatedness.o \
+	$(OBJDIR)/test_keys.o \
+	$(OBJDIR)/reml.o \
+	$(OBJDIR)/relatedness_test.o
 
 
-#Depend on htslib
-HTS_OBJ=data_conversion/vcf-file.o \
-	commands/read_vcf.o \
-	commands/make-vcf2.o \
-	commands/make-vcf.o
+#Depend on htslib 
+HTS_OBJ=$(OBJDIR)/vcf-file.o \
+	$(OBJDIR)/read_vcf.o \
+	$(OBJDIR)/make-vcf2.o \
+	$(OBJDIR)/make-vcf.o
 
+#Depend on lz4
+LZ4_OBJ=$(OBJDIR)/state.o \
+	$(OBJDIR)/simulate.o 
 
 #Depend on db_api
-SQL_OBJ=sql/writesql.o \
-	sql/readsql.o \
-	sql/db_api.o 
+SQL_OBJ=$(OBJDIR)/writesql.o \
+	$(OBJDIR)/readsql.o \
+	$(OBJDIR)/db_api.o 
 
 #many objects depend on these
-BASE_OBJ=math_functions/binomial.o \
-	individual_likelihood.o \
-	math_functions/lnmultinomial.o \
-	newton-method-theta.o \
-	newton-method-ld.o \
-	io/map_file.o \
-	math_functions/models.o \
-	pooled_likelihood.o \
-	stream_tools/tmp_buffer.o \
-	stream_tools/stream_tools.o 
+BASE_OBJ=$(OBJDIR)/binomial.o \
+	$(OBJDIR)/individual_likelihood.o \
+	$(OBJDIR)/lnmultinomial.o \
+	$(OBJDIR)/newton-method-theta.o \
+	$(OBJDIR)/newton-method-ld.o \
+	$(OBJDIR)/map_file.o \
+	$(OBJDIR)/models.o \
+	$(OBJDIR)/pooled_likelihood.o \
+	$(OBJDIR)/tmp_buffer.o \
+	$(OBJDIR)/stream_tools.o 
 
 #These all depend on data.h
-DATA_OBJ=data_types/data.o \
-	data_types/allele.o \
-	data_types/file_index.o \
-	data_types/linkage_data.o \
-	data_types/pooled_data.o \
-	data_types/population.o \
-	data_types/sample_gof.o \
-	data_types/relatedness_data.o \
-	data_conversion/bcf2pro-file.o \
-	data_types/locus.o \
-	data_types/key.o \
-	data_types/state.o \
-	data_types/sample_name.o 
+DATA_OBJ=$(OBJDIR)/data.o \
+	$(OBJDIR)/allele.o \
+	$(OBJDIR)/file_index.o \
+	$(OBJDIR)/linkage_data.o \
+	$(OBJDIR)/pooled_data.o \
+	$(OBJDIR)/population.o \
+	$(OBJDIR)/sample_gof.o \
+	$(OBJDIR)/relatedness_data.o \
+	$(OBJDIR)/bcf2pro-file.o \
+	$(OBJDIR)/locus.o \
+	$(OBJDIR)/key.o \
+	$(OBJDIR)/sample_name.o 
 
 #??
-RAW_OBJ=raw/genotype.o \
-	raw/quartet.o \
-	raw/genotype_pair.o \
-	raw/region.o \
-	raw/constants.o \
-	raw/base.o
+RAW_OBJ=$(OBJDIR)/genotype.o \
+	$(OBJDIR)/quartet.o \
+	$(OBJDIR)/genotype_pair.o \
+	$(OBJDIR)/region.o \
+	$(OBJDIR)/constants.o \
+	$(OBJDIR)/base.o
 
 
 OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) 
 
 ifeq ($(HAVE_MPI), yes)
-	MPI_OBJ=mpi/mpi_relatedness.o
+	MPI_OBJ=$(OBJDIR)/mpi_relatedness.o
 	OBJ := $(OBJ) $(MPI_OBJ)
 	MPI_LDLIBS += -lmpi -pthread
 	FINAL_CXX=$(MPICXX)
@@ -197,10 +200,17 @@ ifeq ($(HAVE_HTS), yes)
 	OBJ := $(OBJ) $(HTS_OBJ)
 endif
 
+ifeq ($(HAVE_LZ4), yes)
+	OBJ := $(OBJ) $(LZ4_OBJ)
+endif
+
 all : gzstream $(TARGET)
 #	cd python_api
 #	python setup.py clean
 #	python setup.py install
+
+$(OBJDIR)/%.o: %.cc
+	$(FINAL_CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
 
 #$(TARGET) 
 
@@ -226,7 +236,6 @@ interface.h : interface.cc
 	@echo "updating commands"
 	touch $(COMMAND_SOURCE)
 
-
 debug : CXXFLAGS:=$(CXXFLAGS) $(DEBUG)
 debug : all
 
@@ -244,6 +253,7 @@ install: all
 docs:
 	$(eval COMMAND=`$(TARGET) -a`) 
 	echo -n $(COMMAND)
+	rm -f $(DOCDIR)/man/man1/*.gz
 	for COM in $(COMMAND); do \
 		if [ ! -f $(DOCDIR)/man/man1/mapgd-$$COM.1.gz ]; then \
 			echo $(TARGET) $$COM \$$1 > mapgd-$$COM;  \
@@ -268,10 +278,6 @@ docs:
 #	help2man
 
 clean:
-	rm -f *.o
-	for DIR in $(SUBDIR); do \
-		cd $$DIR; \
-		rm -f *.o; \
-		cd ..; \
-	done
+	rm -f objs/*.o
+	rm -f objs/*.d
 .PHONY: clean
