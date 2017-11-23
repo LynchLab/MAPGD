@@ -11,7 +11,7 @@ MINOR=`cat VERSION | cut -d - -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ 
 
-CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) -MMD
+CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) #-MMD
 LDLIBS += -lgzstream -lz -L ./gzstream/ 
 
 DEBUG=-pg -D DEBUG -ggdb
@@ -31,22 +31,22 @@ SUBDIR=raw sql data_types commands data_conversion stream_tools io math_function
 VPATH = $(SUBDIR)
 
 ifeq ($(CXX), i686-w64-mingw32-g++)
-	TARGET=../../bin/mapgd-win32.exe
+	TARGET=mapgd-win32.exe
 	CXXFLAGS+= -static
 	HAVE_SQL=false	
 	HAVE_OMP=false
 	HAVE_GSL=false
 else ifeq ($(CXX), x86_64-w64-mingw32-g++)
-	TARGET=../../bin/mapgd-win64.exe
+	TARGET=mapgd-win64.exe
 	CXXFLAGS+= -static
 	HAVE_SQL=false
 	HAVE_OMP=false
 	HAVE_GSL=false
 else ifeq ($(CXX), clang)
-	TARGET=../../bin/mapgd
+	TARGET=mapgd
 	HAVE_OMP=false
 else
-	TARGET=../../bin/mapgd
+	TARGET=mapgd
 endif
 
 
@@ -212,14 +212,12 @@ all : gzstream $(TARGET)
 $(OBJDIR)/%.o: %.cc
 	$(FINAL_CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
 
-#$(TARGET) 
-
 gzstream :
 	$(MAKE) -C gzstream 
 .PHONY: gzstream
 
 $(TARGET) : $(OBJ)
-	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o $(TARGET) $(LDLIBS) $(MPI_LDLIBS)
+	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o ../../bin/$(TARGET) $(LDLIBS) $(MPI_LDLIBS)
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o po/mapgd.pot --copyright-holder="Matthew Ackerman" --package-name="mapgd" --package-version=$(MINOR) --msgid-bugs-address="matthew.s.ackerman@gmail.com"  $(addsuffix /*.cc, $(SUBDIR)) *.cc
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
@@ -246,7 +244,7 @@ increment:
 .PHONY: increment
 
 install: all
-	install -m 0755 $(TARGET) $(DESTDIR)
+	install -m 0755 ../../bin/$(TARGET) $(DESTDIR)$(bindir)/$(TARGET)
 .PHONY: install
 
 

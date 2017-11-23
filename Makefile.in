@@ -10,6 +10,7 @@ datarootdir = @datarootdir@
 mandir      = @mandir@
 man1dir     = @mandir@/man1
 man5dir     = @mandir@/man5
+DOCPATH     = @docdir@
 
 HAVE_GSL=@HAVE_GSL@
 HAVE_OMP=@HAVE_OMP@
@@ -46,9 +47,6 @@ HTSLIB_LDFLAGS = -L $(realpath $(HTSDIR))
 LZ4_LIB = -L @LZ4_DIR@ -l llz4
 LZ4_INCLUDE = -I @LZ4_DIR@
 
-
-DESTDIR = $(exec_prefix)
-DOCPATH = @docdir@
 	
 export
 
