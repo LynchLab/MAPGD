@@ -29,12 +29,16 @@ LDLIBS += @INTLLIBS@
 
 #SAMTOOLS FLAGS
 
-@Hsource@HTSDIR = @HTSDIR@
-@Hsource@HTSLIB = $(HTSDIR)/libhts.a
-@Hsource@HTSLIB_LIB = $(HTSLIB)
-@Hsource@BGZIP = $(HTSDIR)/bgzip
-@Hsource@HTSLIB_CPPFLAGS = -I ../../@HTSDIR@
-@Hsource@HTSLIB_LDFLAGS = -L ../../@HTSDIR@
+#@Hsource@HTSDIR = @HTSDIR@
+#@Hsource@HTSLIB = $(HTSDIR)/libhts.a
+#@Hsource@HTSLIB_LIB = $(HTSLIB)
+#@Hsource@BGZIP = $(HTSDIR)/bgzip
+
+
+HTSDIR=@HTSDIR@
+
+HTSLIB_CPPFLAGS = -I $(realpath $(HTSDIR))
+HTSLIB_LDFLAGS = -L $(realpath $(HTSDIR))
 @Hinstall@HTSLIB_LIB = -lhts
 
 #LZ4 FLAGS
