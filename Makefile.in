@@ -41,9 +41,8 @@ LDLIBS += @INTLLIBS@
 #@Hsource@HTSLIB_LIB = $(HTSLIB)
 #@Hsource@BGZIP = $(HTSDIR)/bgzip
 
-
-HTSDIR := $(realpath @HTSDIR@)
-
+# HTSDIR is not always defined in ax_with_htslib
+#HTSDIR := $(realpath @HTSDIR@)
 HTSLIB_CPPFLAGS = @HTSLIB_CPPFLAGS@
 HTSLIB_LDFLAGS =  @HTSLIB_LDFLAGS@
 @Hinstall@HTSLIB_LIB = -lhts
