@@ -86,8 +86,8 @@ int read_vcf(int argc, char *argv[])
 		while(vcf_in.table_is_open() )
 		{
 			vcf_in.read(vcf);
-//			vcf.get(index, pop);
-//			gcf_out.write(pop);
+			vcf.get(index, pop);
+			gcf_out.write(pop);
 		}
 
 		vcf_in.close();
@@ -104,7 +104,6 @@ int read_vcf(int argc, char *argv[])
 		{
 			vcf_in.read(vcf);
 			if (vcf_in.table_is_open() ) vcf.get(states);
-	//		state_out.write(states);
 		}
 		states.finalize();
 		states.cache();

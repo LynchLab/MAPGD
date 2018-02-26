@@ -15,7 +15,7 @@
  * linking things correctly right now.
  */
 
-//#include "vcf-file.h"
+//#include "vcf_file.h"
 
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 

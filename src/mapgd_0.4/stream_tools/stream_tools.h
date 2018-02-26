@@ -97,6 +97,7 @@ inline std::vector<std::string> split_last(const std::string &s, const char &del
 
 ///Removes special characters from a user generated string.
 inline std::string sanitize (std::string &s){
+	std::replace( s.begin(), s.end(), '\t', ' ' );
 	std::replace( s.begin(), s.end(), '\'', '"' );
 	std::replace( s.begin(), s.end(), '>', ' ' );
 	std::replace( s.begin(), s.end(), '<', ' ' );
@@ -106,10 +107,7 @@ inline std::string sanitize (std::string &s){
 ///Removes special characters from a user generated string.
 inline std::string sanitize (const std::string &s){
 	std::string r=s;
-	std::replace( r.begin(), r.end(), '\'', '"' );
-	std::replace( r.begin(), r.end(), '>', ' ' );
-	std::replace( r.begin(), r.end(), '<', ' ' );
-	return r;
+	return sanitize(r);
 }
 
 #ifdef POSIX

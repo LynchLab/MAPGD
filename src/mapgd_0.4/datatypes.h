@@ -17,5 +17,6 @@
 #include "data_types/sample_name.h"	//FORMALLY Allele.
 #include "data_types/linkage_data.h"
 #include "data_types/key.h"
+#include "data_types/phenotype.h"
 
 #endif 

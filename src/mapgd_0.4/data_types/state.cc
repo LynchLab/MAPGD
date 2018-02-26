@@ -512,11 +512,15 @@ void
 State::compress_inplace (const uint32_t *a, const uint32_t *b)
 {
 	int size;
-	if (lz4_end_-lz4_ptr_ < 2*block_size_ ) increase_buffer_();
+	if (lz4_end_-lz4_ptr_ < 2*block_size_ )
+	{
+		fprintf(stderr, gettext("mapgd:%s:%d:Increasing buffer size from %f Mb.\n"), __FILE__, __LINE__, float(lz4_end_-lz4_start_)/1000000.);
+		increase_buffer_();
+	}
 
-	std::cerr << "compressing in place\n";
 
 	temp_lz4_ptr_=lz4_ptr_;
+
 
 	size=LZ4_compress_default( (const char*) a, temp_lz4_ptr_, block_size_,  size_t (lz4_end_-temp_lz4_ptr_) > INT_MAX ? INT_MAX : size_t (lz4_end_-temp_lz4_ptr_) );
 	if (size==0) 

@@ -6,7 +6,7 @@
 #include "map_file.h"
 #include "interface.h"
 #include "file_index.h"
-#include "vcf-file.h"
+#include "vcf_file.h"
 
 #ifndef NOLZ4
 #include "state.h"

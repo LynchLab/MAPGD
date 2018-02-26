@@ -1,97 +1,159 @@
-#include "population.h"
+#include "phenotype.h"
 
-const std::string Population::file_name=".gcf";
-const std::string Population::table_name="GENOTYPES";
-const bool Population::binary=false;
+const std::string Phenotype::file_name=".phe";
+const std::string Phenotype::table_name="PHENOTYPE";
+const bool Phenotype::binary=false;
 
-const Registration Population::registered=Registration(Population::table_name, Population::create);
-/** @breif constuctor w/ initial values. **/
+const Registration Phenotype::registered=Registration(Phenotype::table_name, Phenotype::create);
 
-Population::Population(const Sample_name &names)
+Phenotype::Phenotype ()
 {
-	sample_names_=names;
-	likelihoods.resize(sample_names_.size() );
+	delim='\t';
+	n_traits_=0;
+	n_samples_=0;
 }
 
-Population::Population(const std::vector <std::string> &column_names)
+Phenotype::Phenotype (const std::vector<std::string> &fields)
 {
-	if (column_names>3) sample_names_=std::vector <std::string> (column_names.cbegin()+3, column_names.cend() );
-	likelihoods.resize(sample_names_.size() );
+	delim='\t';
+	n_traits_=fields.size();
+	n_samples_=0;
+	if (n_traits_ > 1)
+	{
+		n_traits_--;
+		trait=std::vector <std::string> (fields.begin()+1, fields.end() );
+#ifdef EIGEN
+//	value=Eigen::MatrixXf::Zero(0,n_traits_);
+#else
+	value=std::vector<std::vector <real_t> > (n_traits_);
+#endif 
+	}
 }
 
-Population::Population()
+Phenotype::Phenotype (const size_t &N)
 {
+	delim='\t';
+	n_traits_=N;
+	n_samples_=0;
+#ifdef EIGEN
+//	value=Eigen::MatrixXf::Zero(0,n_traits_);
+#else
+	value=std::vector<std::vector <real_t> > (n_traits_);
+#endif 
+	for (size_t x=0; x<N; x++)
+	{
+		trait.push_back(std::to_string(x) );
+	}
 }
 
-Population::Population(const Population &rhs)
+void
+Phenotype::read (std::istream& in) 
 {
-	*this=rhs;
+	std::string line;
+	std::getline(in, line);
+	std::vector <std::string> fields=split(line, delim);
+
+	sample_name.push_back(fields[0]);
+#ifdef EIGEN
+	//value.conservativeResize(n_samples_++, n_traits_);
+#endif 
+
+	for (size_t y=0; y<n_traits_; y++)
+	{
+#ifdef EIGEN
+		//value(n_samples_-1,y)=atof(fields[1+y].c_str());
+#else
+		value[y].push_back(atof(fields[1+y].c_str()));
+#endif 
+	}
 }
 
-Population::~Population(){}
-
-/**@breif return size of Population if Population is set, 0 otherwise**/
-size_t 
-Population::size() const
+void
+Phenotype::write (std::ostream& out) const 
 {
-	return likelihoods.size();
+	for (size_t x=0; x<n_samples_; x++)
+	{
+		std::cout << sample_name[x] << delim;
+		for (size_t y=0; y<n_traits_; y++)
+		{
+#ifdef EIGEN
+	//		std::cout << value(x,y) << delim;
+#else
+			std::cout << value[y][x] << delim;
+#endif
+		}
+		if (x!=n_samples_-1) std::cout << std::endl;
+	}
 }
 
-Population & 
-Population::operator= (const Population& rhs)
+void
+Phenotype::add_sample(const uint32_t &id, const real_t *new_value)
 {
-	sample_names_=rhs.sample_names_;	//!< a vector of sample names.
-	likelihoods=rhs.likelihoods;		//!< genotypic likelihood
-	igl_=likelihoods.begin();		//!< an iterator to allow us to iterate over the likelihoods.
-
-	major=rhs.major;			//!< identity of the major allele
-	minor=rhs.minor;			//!< identity of the minor allele
-	m=rhs.m;				//!< minor allele frequency
-	abs_pos_=rhs.abs_pos_;			//!< scaffold number
-	return *this;
+	sample_name.push_back( std::to_string(id) );
+	for (size_t y=0; y<n_traits_; y++)
+	{
+#ifdef EIGEN
+//	std::cout << value(x,y) << delim;
+#else
+	value[y].push_back(new_value[y]);
+#endif
+	}
+	n_samples_++;
 }
 
 std::string 
-Population::header(void) const
+Phenotype::header(void) const 
 {
-	std::string line="@SCFNAME\tPOS\tMN_FREQ";
-	std::vector <std::string>::const_iterator s_it=sample_names_.cbegin(), end=sample_names_.cend();
-	while(s_it!=end){
-		line+='\t';	
-		line+=*s_it;
-		s_it++;	
+	std::stringstream ret; 
+	ret << "@SMPNAME:" << n_samples_;
+	for (size_t x=0; x<n_traits_; x++)
+	{
+		 ret << delim << trait[x];
 	}
-	line+='\n';
-	return line;
+	ret << std::endl;
+	return ret.str();
 }
 
-void
-Population::write (std::ostream& out) const
+
+size_t 
+Phenotype::size(void) const 
 {
-	std::vector <Genotype>::const_iterator s_it=likelihoods.cbegin(), end=likelihoods.cend();
-	out << m;
-	while(s_it!=end){
-		out << '\t' << *s_it;
-		s_it++;	
-	}
+	//TODO IMPLEMENT
+	return 0;
 }
 
-void
-Population::read (std::istream& in)
+/*
+void 
+Phenotype::clear(void)
 {
-        std::string line;
-        std::getline(in, line);
-        std::stringstream line_stream(line);
-	line_stream >> m;
-	std::vector <Genotype>::iterator s_it=likelihoods.begin(), end=likelihoods.end();
-	while(s_it!=end){
-		line_stream >> *s_it;
-		s_it++;
-	}	
+	zero();
 }
 
-const bool
-Population::get_binary(void) const
+void 
+Phenotype::zero(void)
+{
+	//TODO IMPLEMENT
+}*/
+
+/*
+const size_t
+Phenotype::sample_size(void) const
+{
+	return n_samples_;
+}*/;
+
+const bool 
+Phenotype::get_binary(void) const
 {
 	return binary;
+}
+
+const std::string Phenotype::get_file_name(void) const
+{
+	return file_name;
+}
+
+const std::string Phenotype::get_table_name(void) const
+{
+	return table_name;
 }

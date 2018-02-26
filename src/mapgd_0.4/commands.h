@@ -26,12 +26,13 @@
 #include "map2genotype.h"
 #include "linkage_disequilibrium.h"
 #include "sam2idx.h"
-#include "make-vcf.h"
-#include "make-vcf2.h"
+#include "make_vcf.h"
+#include "make_vcf2.h"
 #include "read_vcf.h"
 #include "mapgd_help.h"
 #include "relatedness_test.h"
 #include "test_keys.h"
+#include "read_pheno.h"
 //#include "simulate.h"
 
 #ifndef NOSQL

@@ -32,6 +32,8 @@ int test_keys(int argc, char *argv[])
 
 	Flat_file <Key> keys;  	
 	Key key;
+
+#ifdef USE_MAN
 	std::string filename(std::string(PATH)+"../keys/keys.txt");
 	keys.open(filename.c_str(), READ);
 	std::map <std::string, Key *> keymap;
@@ -67,6 +69,8 @@ int test_keys(int argc, char *argv[])
 		//	else std::cerr << trimmed << " found\n";
 		}
 	}*/
-
+#else
+		std::cerr << "test_keys is currently unavailable without the command 'man'.\n";
+#endif
 	return 0;					//Since everything worked, return 0!.
 }

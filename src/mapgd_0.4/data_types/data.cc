@@ -79,9 +79,21 @@ Registration::Registration (const std::string &str, Data*(*fn)(const std::vector
 	}	
 #endif
 	m_data_ctor[str]=fn;
-
 	std::vector <std::string> test;
+#ifdef DEBUG
+//	try 
+//	{
+		Data *test_data=m_data_ctor[str](test);
+/*	}
+	catch (const std::exception& e)
+	{
+		fprintf(stderr, gettext("mapgd:%s:%d: Class %s constructor throws exception %s. Exiting.\n"), __FILE__, __LINE__, str.c_str(), e.what().c_str() );
+		exit(NOCLASS);
+	}*/
+#else
 	Data *test_data=m_data_ctor[str](test);
+#endif 
+
 #ifdef DEBUG
 	std::cerr << &m_data_ctor << ", " << test_data->get_table_name() << std::endl;
 	for(std::map<std::string, Data*(*)(const std::vector <std::string> &) >::iterator it = m_data_ctor.begin(); it != m_data_ctor.end(); ++it) 
@@ -92,7 +104,7 @@ Registration::Registration (const std::string &str, Data*(*fn)(const std::vector
 	if (test_data->get_table_name()!=str)
 	{
 		fprintf(stderr, gettext("mapgd:%s:%d: Class %s does not return the correct type. Exiting.\n"), __FILE__, __LINE__, str.c_str() );
-	//	exit(NOCLASS);
+		exit(NOCLASS);
 	}
 	delete test_data;
 	name_="FOOL!";//str;

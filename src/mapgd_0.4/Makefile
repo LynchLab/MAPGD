@@ -11,6 +11,8 @@ MINOR=`cat VERSION | cut -d - -f 1`
 VERSION=-D VERSION=\"0.4.$(MINOR)\"
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ 
 
+
+#remove fno-exceptions when in debug mode
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) #-MMD
 LDLIBS += -lgzstream -lz -L ./gzstream/ 
 
@@ -73,6 +75,8 @@ ifeq ($(HAVE_MAN), yes)
 	CXXFLAGS += -D USE_MAN -D PATH=\"$(DOCPATH)\"
 endif
 
+HAVE_HTS=yes
+
 ifeq ($(HAVE_HTS), yes)
 	INCLUDE += $(HTSLIB_CPPFLAGS)/
 	INCLUDE += $(HTSLIB_LDFLAGS)
@@ -90,12 +94,17 @@ else
 	CXXFLAGS += $(NOLZ4)
 endif
 
-DOCDIR=../../docs
+#ifeq ($(HAVE_EIGEN), yes)
+#else
+#	CXXFLAGS += $(NOEIGEN)
+#endif
 
+DOCDIR=../../docs
 
 ifeq ($(UNSTABLE), yes)
 	SUBDIR += testing
 endif
+
 #>! Just a list of flags to try at some later date.
 # -oFast -ffloat-store -fexcess-precision=style -ffast-math -fno-rounding-math -fno-signaling-nans
 # -fcx-limited-range -fno-math-errno -funsafe-math-optimizations -fassociative-math -freciprocal-math
@@ -121,6 +130,7 @@ COMMAND_OBJ=$(OBJDIR)/estimate_individual.o \
 	$(OBJDIR)/filter.o \
 	$(OBJDIR)/filter_genotype.o \
 	$(OBJDIR)/filter_pool.o \
+	$(OBJDIR)/read_pheno.o \
 	$(OBJDIR)/fastview.o \
 	$(OBJDIR)/relatedness.o \
 	$(OBJDIR)/test_keys.o \
@@ -129,10 +139,10 @@ COMMAND_OBJ=$(OBJDIR)/estimate_individual.o \
 
 
 #Depend on htslib 
-HTS_OBJ=$(OBJDIR)/vcf-file.o \
+HTS_OBJ=$(OBJDIR)/vcf_file.o \
 	$(OBJDIR)/read_vcf.o \
-	$(OBJDIR)/make-vcf2.o \
-	$(OBJDIR)/make-vcf.o
+	$(OBJDIR)/make_vcf2.o \
+	$(OBJDIR)/make_vcf.o
 
 #Depend on lz4
 LZ4_OBJ=$(OBJDIR)/state.o \
@@ -163,8 +173,10 @@ DATA_OBJ=$(OBJDIR)/data.o \
 	$(OBJDIR)/pooled_data.o \
 	$(OBJDIR)/population.o \
 	$(OBJDIR)/sample_gof.o \
+	$(OBJDIR)/phenotype.o \
+	$(OBJDIR)/plink_pheno.o \
 	$(OBJDIR)/relatedness_data.o \
-	$(OBJDIR)/bcf2pro-file.o \
+	$(OBJDIR)/bcf2pro_file.o \
 	$(OBJDIR)/locus.o \
 	$(OBJDIR)/key.o \
 	$(OBJDIR)/sample_name.o 
@@ -276,6 +288,8 @@ docs:
 #	help2man
 
 clean:
+	rm -f *.o
+	rm -f *.d
 	rm -f objs/*.o
 	rm -f objs/*.d
 .PHONY: clean

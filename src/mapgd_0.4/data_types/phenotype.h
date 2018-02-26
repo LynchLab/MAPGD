@@ -1,50 +1,72 @@
 #ifndef _PHENOTYPE_H_
 #define _PHENOTYPE_H_
 
-#include <string.h>
-#include <iostream>
-#include <sstream>
-#include "data.h"
-#include "typedef.h"
+#include <cstring>
 
-/// Population phenotypes.
-class Phenotype : public Data {
+#include <iostream>
+#include <cfloat>
+#include <iomanip>
+#include <vector>
+#include <sstream>
+
+#ifdef EIGEN
+//#include "Eigen/Core"
+#endif
+
+#include "typedef.h"
+#include "data.h"
+#include "stream_tools.h"
+
+/// Phenotype data.
+class Phenotype : public Data{ 
 private:
-	std::vector <std::string> sample_names_;	//!< a vector of sample names.
+	void write (std::ostream&) const;	//!< use to write Allele. Inherits <<
+	void read (std::istream&);		//!< use to read Allele. Inherits >>
 	static const Registration registered;
 	static Data * create(const std::vector <std::string> & Columns){
-		return new Population(Columns);
+		return new Phenotype(Columns);
 	}
+	size_t n_samples_, n_traits_;
 public:
-	std::vector <real_t> z_raw;	//!< uncentered phenotypes
-	std::vector <real_t> z;	//!< centered phenotypes
-	std::vector <real_t> z_prime;	//!< centered w/ inbreeding removed
-	std::vector <real_t> a_hat;	//!< additive genetic value
-	std::vector <real_t> d_hat;	//!< dominance deviation
-	std::vector <real_t> e_hat;	//!< environmental deviation
+	char delim;	//!< the delimiter used when reading/writing the class in text mode.	
 
-	Phenotype();					//!< simple constructor.
-	Phenotype(const std::vector <std::string> &);	//!< constructor needed by map_file. String should be coloumn names. 
-	Phenotype(const Phenotype &); 		//!< constructor using a Phenotypes
-	~Population();					//!< destructor.
-	size_t size() const;					//!< Returns the number of samples.
-	std::string header(void) const;				//!< print header.
+	std::vector <std::string> sample_name;
+	std::vector <std::string> trait;
 
-	static const std::string table_name;			//!< destination table in Db.
-	static const std::string file_name;			//!< defualt file extention.
+#ifdef EIGEN
+	//Eigen::MatrixXf value;
+#else
+	std::vector <std::vector <real_t > > value;
+#endif
+
+	Phenotype();	
+	Phenotype(const std::vector <std::string> &); 
+	Phenotype(const size_t &); 
+
+	//! The header line of plain text files. 
+	std::string header(void) const;
+	//! Size in bytes for binary read/write. 
+	size_t size(void) const;
+
+
+	void add_sample(const uint32_t &, const real_t *);
+	//! zeros values and sets names to empty.
+//	void clear(void); 
+	//! zeros values, but doesn't set names to empty.
+//	void zero(void);  
+
+	static const std::string file_name;	//!< The dafualt extention for files.
+	static const std::string table_name;	//!< Destination table in Db.
+
+	const std::string get_file_name(void) const;
+	const std::string get_table_name(void) const;
+
 	static const bool binary;
 
 	const bool get_binary() const;
 
-	inline std::vector <std::string> get_sample_names(void) const {return sample_names_;};		//!< names of the samples sequenced.
-	inline void set_sample_names(const std::vector <std::string>& sample_names) {
-		sample_names_=sample_names;
-		likelihoods.resize(sample_names.size() );
-	};		
+//	const size_t sample_size(void) const;
 
-	Phenotype & operator= (const Phenotype&);
-	void write (std::ostream&) const;
-	void read (std::istream&);
 };
 
 #endif
