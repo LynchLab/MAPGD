@@ -1,0 +1,171 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Matthew Ackerman
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: mapgd 33\n"
+"Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
+"POT-Creation-Date: 2018-02-26 16:36+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data_types/state.cc:145 data_types/state.cc:179 data_types/state.cc:414
+#: data_types/state.cc:428
+#, c-format
+msgid "mapgd:%s:%d: Attempt to read from empty stream. Exiting.\n"
+msgstr ""
+
+#: data_types/state.cc:156 data_types/state.cc:390
+#, c-format
+msgid "mapgd:%s:%d: Attempt to read from uncached stream. Exiting.\n"
+msgstr ""
+
+#: io/map_file.cc:386
+#, c-format
+msgid "mapgd:%s:%d: Attempt to read from unopened file. Exiting.\n"
+msgstr ""
+
+#: data_types/state.cc:476
+#, c-format
+msgid "mapgd:%s:%d: Attempt to rewind uncached stream. Exiting.\n"
+msgstr ""
+
+#: io/map_file.cc:480 io/map_file.cc:494 io/map_file.cc:519 io/map_file.cc:529
+#, c-format
+msgid "mapgd:%s:%d: Attempt to write to unopened file. Exiting.\n"
+msgstr ""
+
+#: data_types/data.cc:40
+#, c-format
+msgid "mapgd:%s:%d: Cannot find class with name %s. Class names are:\n"
+msgstr ""
+
+#: sql/writesql.cc:53
+#, c-format
+msgid ""
+"mapgd:%s:%d: Cannot write data because there is no SCAFFOLD table in %s. Try "
+"writing an .idx file first.\n"
+msgstr ""
+
+#: data_types/data.cc:106
+#, c-format
+msgid "mapgd:%s:%d: Class %s does not return the correct type. Exiting.\n"
+msgstr ""
+
+#: data_conversion/vcf_file.cc:378
+#, c-format
+msgid "mapgd:%s:%d: Could not open file \"%s\" for reading.\n"
+msgstr ""
+
+#: io/map_file.cc:543
+#, c-format
+msgid "mapgd:%s:%d: Could not write to file. Exiting.\n"
+msgstr ""
+
+#: data_types/data.cc:45
+#, c-format
+msgid "mapgd:%s:%d: Exiting.\n"
+msgstr ""
+
+#: io/map_file.cc:426
+#, c-format
+msgid ""
+"mapgd:%s:%d: Header not terminated. File cannot open properly. Exiting.\n"
+msgstr ""
+
+#: data_types/state.cc:133 data_types/state.cc:141 data_types/state.cc:167
+#: data_types/state.cc:175 data_types/state.cc:402 data_types/state.cc:410
+#: data_types/state.cc:437 data_types/state.cc:446
+#, c-format
+msgid "mapgd:%s:%d: Malformed LZ4 block. Exiting.\n"
+msgstr ""
+
+#: data_conversion/plink_pheno.cc:144
+#, c-format
+msgid "mapgd:%s:%d: Retrieving sample names currently unsupported.\n"
+msgstr ""
+
+#: io/map_file.cc:398
+#, c-format
+msgid ""
+"mapgd:%s:%d: The first fields is not \"@NAME\". File cannot open properly. "
+"Exiting.\n"
+msgstr ""
+
+#: io/map_file.cc:416
+#, c-format
+msgid ""
+"mapgd:%s:%d: The first fields is not a \"@A:B\" pair. File cannot open "
+"properly. Exiting.\n"
+msgstr ""
+
+#: io/map_file.cc:424
+#, c-format
+msgid "mapgd:%s:%d: The following line was encountered:\n"
+msgstr ""
+
+#: data_conversion/vcf_file.cc:393
+#, c-format
+msgid "mapgd:%s:%d: Unexpected error opening file \"%s\".\n"
+msgstr ""
+
+#: io/map_file.cc:140
+#, c-format
+msgid ""
+"mapgd:%s:%d: Unrecognized std::ios_base::openmode mode; cannot open file.\n"
+msgstr ""
+
+#: data_conversion/vcf_file.cc:75
+#, c-format
+msgid ""
+"mapgd:%s:%d: allele and locus have different positions (private abs_pos).\n"
+msgstr ""
+
+#: data_conversion/vcf_file.cc:61
+#, c-format
+msgid "mapgd:%s:%d: attempt to read from file failed.\n"
+msgstr ""
+
+#: data_conversion/plink_pheno.cc:27 data_conversion/plink_pheno.cc:30
+#, c-format
+msgid ""
+"mapgd:%s:%d: attempt to read from file failed. Expected %d columns, got %d.\n"
+msgstr ""
+
+#: data_conversion/plink_pheno.cc:33 data_conversion/vcf_file.cc:65
+#, c-format
+msgid "mapgd:%s:%d: attempt to read from unopened file.\n"
+msgstr ""
+
+#. else if (mode & WRITE) open(std::cout, mode);
+#. else {
+#: data_conversion/plink_pheno.cc:96 data_conversion/vcf_file.cc:311
+#, c-format
+msgid "mapgd:%s:%d: cannot open file in std::ios_base::openmode &mode=%d.\n"
+msgstr ""
+
+#: data_conversion/vcf_file.cc:212
+#, c-format
+msgid "mapgd:%s:%d: unrecognized genotype in vcf file.\n"
+msgstr ""
+
+#: data_types/state.cc:528 data_types/state.cc:535 data_types/state.cc:541
+#: data_types/state.cc:554 data_types/state.cc:561 data_types/state.cc:569
+#, c-format
+msgid ""
+"mapgd:%s:%d:FLAGRANT SYSTEM ERROR. Computer over. lz4buffer = Full. (Write "
+"me an e-mail!)\n"
+msgstr ""
+
+#: data_types/state.cc:517
+#, c-format
+msgid "mapgd:%s:%d:Increasing buffer size from %f Mb.\n"
+msgstr ""
