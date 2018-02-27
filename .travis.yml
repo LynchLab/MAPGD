@@ -13,7 +13,7 @@ os:
 language: cpp
 compiler:
   - gcc
-#  - clang # Don't compile in clang unti openmp errors are resolved.
+  - clang # Don't compile in clang until openmp errors are resolved.
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         brew update; 
@@ -28,8 +28,8 @@ before_install:
         sudo apt-get install -y libgsl0-dev; 
         sudo apt-get install -y gettext; 
     fi
-install:
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+#install:
+#  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 addons:
   apt:
     sources:
