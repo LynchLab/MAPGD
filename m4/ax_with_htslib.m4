@@ -102,10 +102,12 @@ esac
 case $ax_cv_htslib_which in
 source)
   ax_cv_htslib=yes
-  HTSLIB_CPPFLAGS="-I$HTSDIR"
-  HTSLIB_LDFLAGS="-L$HTSDIR"
   # We can't use a literal, because $HTSDIR is user-provided and variable
   AC_CONFIG_SUBDIRS($HTSDIR)
+  # translate to absolute, anchor with './'
+  HTSDIR=`cd ./$HTSDIR; pwd`
+  HTSLIB_CPPFLAGS="-I$HTSDIR"
+  HTSLIB_LDFLAGS="-L$HTSDIR"
   ;;
 system)
   AC_CHECK_HEADER([htslib/sam.h],
