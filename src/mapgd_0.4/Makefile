@@ -75,8 +75,6 @@ ifeq ($(HAVE_MAN), yes)
 	CXXFLAGS += -D USE_MAN -D PATH=\"$(DOCPATH)\"
 endif
 
-HAVE_HTS=yes
-
 ifeq ($(HAVE_HTS), yes)
 	INCLUDE += $(HTSLIB_CPPFLAGS)/
 	INCLUDE += $(HTSLIB_LDFLAGS)
