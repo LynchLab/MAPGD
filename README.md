@@ -61,6 +61,7 @@ Then type:
 
 	unzip MAPGD.zip
 	cd MAPGD-master/
+	./configure
 	make
 
 The program can be installed for all users of a computer by typing:
