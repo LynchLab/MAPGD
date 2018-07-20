@@ -55,7 +55,7 @@ int make_vcf2(int argc, char *argv[])
 
 	Flat_file <State> state_in;
 	Flat_file <Sample_name> name_in;
-	std::cerr << __LINE__ << std::endl;
+	//std::cerr << __LINE__ << std::endl;
 
 	Vcf_file vcf_out;
 	Sample_name names;
@@ -69,16 +69,21 @@ int make_vcf2(int argc, char *argv[])
 	state_in.read(state);
 	state_in.close();
 
-	std::cerr << state.sample_size() << ", " << state.genome_size() << std::endl;
+	//std::cerr << state.sample_size() << ", " << state.genome_size() << std::endl;
 
 	name_in.read(names);
 
 	size_t N = state.sample_size();
 	size_t sites = state.genome_size();
+
 	uint32_t *P1=new uint32_t [N];
 	uint32_t *P2=new uint32_t [N];
 
-	std::cerr << __LINE__ << std::endl;
+	uint32_t *M1=new uint32_t [N];
+	uint32_t *M2=new uint32_t [N];
+
+
+	//std::cerr << __LINE__ << std::endl;
 
 	Vcf_data vcf;
 
@@ -93,7 +98,7 @@ int make_vcf2(int argc, char *argv[])
 	Allele allele;
 	Population pop(names);
 
-	std::cerr << __LINE__ << std::endl;
+	//std::cerr << __LINE__ << std::endl;
 	static uint32_t mask[32]={0x00000001,   0x00000002,     0x00000004,     0x00000008,
 		0x00000010,     0x00000020,     0x00000040,     0x00000080,
 		0x00000100,     0x00000200,     0x00000400,     0x00000800,
@@ -109,15 +114,22 @@ int make_vcf2(int argc, char *argv[])
 	allele.major=1;
 	allele.minor=2;
 
+
 	for (size_t x=0; x<sites; ++x)
 	{
-		state.uncompress(P1, P2);
+		//std::cerr << "fist ...\n";
+		state.uncompress(P1, P2, M1, M2);
+		//std::cerr << "second ...\n";
 		for (size_t k=0; k<32; ++k)
 		{
 			uint32_t count=0;
+			int skip=0;
 			for (size_t y=0; y < N; ++y) 
 			{
 				char g=( (P1[y] & mask[k]) !=0)+( (P2[y] & mask[k]) !=0);
+				char m=4*( ( (M1[y] & mask[k]) ==0) || ( (M2[y] & mask[k])==0 ) );
+				m > g ? g=4 : 0;
+				//std::cerr << int(g) << "\n";
 				switch (g) 
 				{
 					case 0:
@@ -137,15 +149,26 @@ int make_vcf2(int argc, char *argv[])
 						pop.likelihoods[y].MM=1;
 						count+=2;
 					break;
+					case 4:
+						pop.likelihoods[y].mm=0;
+						pop.likelihoods[y].Mm=0;
+						pop.likelihoods[y].MM=0;
+						skip+=1;
+					default:
+						std::cerr << "SHIT!\n";
+					break;
 				}
 				pop.likelihoods[y].N=100;
 			}
-			allele.freq=1.-float(count)/float(2*N);
+		//	std::cerr << "almost done ...\n";
+			allele.freq=1.-float(count)/float(2*(N-skip) );
 			allele.set_abs_pos(x*32+k+1);
 			pop.set_abs_pos(32*x+k+1);
-			
+		//	std::cerr << "put ...\n";
 			vcf.put(index, allele, pop);
+		//	std::cerr << "put 2...\n";
 			vcf_out.write(vcf);
+		//	std::cerr << "done ...\n";
 		}
 	}
 

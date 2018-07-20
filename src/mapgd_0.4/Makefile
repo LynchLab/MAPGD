@@ -8,27 +8,27 @@
 WARNINGS=-Wno-write-strings
 #WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d - -f 1`
-VERSION=-D VERSION=\"0.4.$(MINOR)\"
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ 
+VERSION=-DVERSION=\"0.4.$(MINOR)\"
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/
 
 
 #remove fno-exceptions when in debug mode
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) #-MMD
 LDLIBS += -lgzstream -lz -L ./gzstream/ 
 
-DEBUG=-pg -D DEBUG -ggdb
-NOOMP=-D NOOMP
-NOSQL=-D NOSQL
-NOGSL=-D NOGSL
-NOHTS=-D NOHTS
-NOMPI=-D NOMPI
-NOLZ4=-D NOLZ4
+DEBUG=-pg -DDEBUG -ggdb
+NOOMP=-DNOOMP
+NOSQL=-DNOSQL
+NOGSL=-DNOGSL
+NOHTS=-DNOHTS
+NOMPI=-DNOMPI
+NOLZ4=-DNOLZ4
 
 #HTS_LIB_PATH=/usr/include/htslib/
 
 OBJDIR=objs
 
-SUBDIR=raw sql data_types commands data_conversion stream_tools io math_functions
+SUBDIR=raw sql data_types commands data_conversion stream_tools io math_functions system
 
 VPATH = $(SUBDIR)
 
@@ -72,7 +72,7 @@ else
 endif
 
 ifeq ($(HAVE_MAN), yes)
-	CXXFLAGS += -D USE_MAN -D PATH=\"$(DOCPATH)\"
+	CXXFLAGS += -DUSE_MAN -DPATH=\"$(DOCPATH)\"
 endif
 
 ifeq ($(HAVE_HTS), yes)
@@ -133,8 +133,11 @@ COMMAND_OBJ=$(OBJDIR)/estimate_individual.o \
 	$(OBJDIR)/relatedness.o \
 	$(OBJDIR)/test_keys.o \
 	$(OBJDIR)/reml.o \
+	$(OBJDIR)/read_bed.o \
 	$(OBJDIR)/relatedness_test.o
 
+#Depends on OS
+SYS_OBJ=$(OBJDIR)/system.o
 
 #Depend on htslib 
 HTS_OBJ=$(OBJDIR)/vcf_file.o \
@@ -175,6 +178,7 @@ DATA_OBJ=$(OBJDIR)/data.o \
 	$(OBJDIR)/plink_pheno.o \
 	$(OBJDIR)/relatedness_data.o \
 	$(OBJDIR)/bcf2pro_file.o \
+	$(OBJDIR)/bed_file.o \
 	$(OBJDIR)/locus.o \
 	$(OBJDIR)/key.o \
 	$(OBJDIR)/sample_name.o 
@@ -188,7 +192,7 @@ RAW_OBJ=$(OBJDIR)/genotype.o \
 	$(OBJDIR)/base.o
 
 
-OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) 
+OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) $(SYS_OBJ)
 
 ifeq ($(HAVE_MPI), yes)
 	MPI_OBJ=$(OBJDIR)/mpi_relatedness.o

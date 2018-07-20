@@ -78,7 +78,7 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 	char alleles[4]={0};
 	int size=int(record_->n_sample);
 	id1_t abs_pos=pop.get_abs_pos();
-	float *gp=new float[size*3], freq=allele.freq;
+	float *gp=new float[size*3], freq=allele.freq;//, f=allele.;
 	float *vit=gp;
 	int32_t *dp=new int32_t[size];
 	int32_t *dp_it=dp;
@@ -90,6 +90,7 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 
 	std::string id=std::to_string(abs_pos);
 
+	//std::cerr << __LINE__ << std::endl;
 	bcf_update_id(header_, record_, id.c_str() );
 
 	if (allele.major==allele.ref)
@@ -97,7 +98,7 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.minor) );
 
         	bcf_update_info_float(header_, record_, "AF", &freq, 1);
-       // 	bcf_update_info_float(header_, record_, "", &f, 1);
+        //	bcf_update_info_float(header_, record_, "", &f, 1);
 
 		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
        		{
@@ -114,12 +115,13 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 			++dp_it;
 			gt_it+=2;
 		}
+		//std::cerr << __LINE__ << std::endl;
 	} else {
+		//std::cerr << __LINE__ << std::endl;
 		freq=1.-freq;
 		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.major) );
 
         	bcf_update_info_float(header_, record_, "AF", &freq, 1);
-     //   	bcf_update_info_float(header_, record_, "", &f, 1);
 
 		for (std::vector<Genotype>::const_iterator it=pop.likelihoods.cbegin(); it<pop.likelihoods.cend(); ++it)
 		{
@@ -137,10 +139,15 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 			gt_it+=2;
 		}
 	}
+	//std::cerr << __LINE__ << std::endl;
 	bcf_update_alleles_str(header_, record_, alleles);
-        bcf_update_format_float(header_, record_, "GP", gp, size*3);
+	//std::cerr << __LINE__ << std::endl;
+	bcf_update_format_float(header_, record_, "GP", gp, size*3);
+	//std::cerr << __LINE__ << " " << size << std::endl;
 	bcf_update_genotypes(header_, record_, gt, size*2);
+	//std::cerr << __LINE__ << std::endl;
         bcf_update_format_int32(header_, record_, "DP", dp, size);
+	//std::cerr << "done ..." << __LINE__ << std::endl;
 	delete [] gp;
 	delete [] gt;
 	delete [] dp;
@@ -167,7 +174,6 @@ Vcf_data::get(State &state) const
 	uint8_t *gt=NULL;//new uint32_t[size];
 
 	bcf_get_genotypes(header_, record_, &gt, &size);
-
 
 	uint8_t *end=gt+size*4;
 

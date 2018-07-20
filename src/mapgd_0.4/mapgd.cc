@@ -45,7 +45,8 @@ int main (int argc, char* argv[])
 	env.command(	' ',"writevcf2",&make_vcf2,	 		"an error occurred while calling vcf", "Prints as a vcf file"); 		//DONE
 	env.command(	' ',"readvcf",	&read_vcf,	 		"an error occurred while calling vcf", "Reads a vcf file"); 		//DONE
 #endif
-	env.command(	' ',"readphen",	&read_pheno,	 		"an error occurred while calling vcf", "Reads a vcf file"); 		//DONE
+	env.command(	' ',"readbed",	&read_bed,	 		"an error occurred while calling vcf", "Reads a bed file"); 		//DONE
+	env.command(	' ',"readphen",	&read_pheno,	 		"an error occurred while calling vcf", "Reads plink's pheno file"); 		//DONE
 	env.command(	' ',"help", 	&mapgd_help, 			"an error occurred while calling help", "Prints helpful information");					//DONE
 
 #ifndef NOSQL

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mapgd 33\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2018-02-26 16:36+0000\n"
+"POT-Creation-Date: 2018-07-20 12:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,13 +17,21 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data_types/state.cc:145 data_types/state.cc:179 data_types/state.cc:414
-#: data_types/state.cc:428
+#: data_types/state.cc:158 data_types/state.cc:179 data_types/state.cc:198
+#: data_types/state.cc:223 data_types/state.cc:472 data_types/state.cc:495
+#: data_types/state.cc:508 data_types/state.cc:524
+#: data_conversion/state.cc:136 data_conversion/state.cc:155
+#: data_conversion/state.cc:180 data_conversion/state.cc:426
+#: data_conversion/state.cc:449 data_conversion/state.cc:462
+#: data_conversion/state.cc:478
 #, c-format
 msgid "mapgd:%s:%d: Attempt to read from empty stream. Exiting.\n"
 msgstr ""
 
-#: data_types/state.cc:156 data_types/state.cc:390
+#: data_types/state.cc:190 data_types/state.cc:208 data_types/state.cc:464
+#: data_types/state.cc:483 data_conversion/state.cc:147
+#: data_conversion/state.cc:165 data_conversion/state.cc:418
+#: data_conversion/state.cc:437
 #, c-format
 msgid "mapgd:%s:%d: Attempt to read from uncached stream. Exiting.\n"
 msgstr ""
@@ -33,7 +41,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Attempt to read from unopened file. Exiting.\n"
 msgstr ""
 
-#: data_types/state.cc:476
+#: data_types/state.cc:559 data_conversion/state.cc:513
 #, c-format
 msgid "mapgd:%s:%d: Attempt to rewind uncached stream. Exiting.\n"
 msgstr ""
@@ -60,7 +68,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Class %s does not return the correct type. Exiting.\n"
 msgstr ""
 
-#: data_conversion/vcf_file.cc:378
+#: data_conversion/bed_file.cc:161 data_conversion/vcf_file.cc:384
 #, c-format
 msgid "mapgd:%s:%d: Could not open file \"%s\" for reading.\n"
 msgstr ""
@@ -75,15 +83,24 @@ msgstr ""
 msgid "mapgd:%s:%d: Exiting.\n"
 msgstr ""
 
+#: data_types/state.cc:571 data_conversion/state.cc:525
+#, c-format
+msgid "mapgd:%s:%d: Failed to allocate memory. Mother fucker. Exiting.\n"
+msgstr ""
+
 #: io/map_file.cc:426
 #, c-format
 msgid ""
 "mapgd:%s:%d: Header not terminated. File cannot open properly. Exiting.\n"
 msgstr ""
 
-#: data_types/state.cc:133 data_types/state.cc:141 data_types/state.cc:167
-#: data_types/state.cc:175 data_types/state.cc:402 data_types/state.cc:410
+#: data_conversion/bed_file.cc:157
+#, c-format
+msgid "mapgd:%s:%d: Magick bits not set.\n"
+msgstr ""
+
 #: data_types/state.cc:437 data_types/state.cc:446
+#: data_conversion/state.cc:392 data_conversion/state.cc:400
 #, c-format
 msgid "mapgd:%s:%d: Malformed LZ4 block. Exiting.\n"
 msgstr ""
@@ -112,7 +129,7 @@ msgstr ""
 msgid "mapgd:%s:%d: The following line was encountered:\n"
 msgstr ""
 
-#: data_conversion/vcf_file.cc:393
+#: data_conversion/bed_file.cc:175 data_conversion/vcf_file.cc:399
 #, c-format
 msgid "mapgd:%s:%d: Unexpected error opening file \"%s\".\n"
 msgstr ""
@@ -140,32 +157,40 @@ msgid ""
 "mapgd:%s:%d: attempt to read from file failed. Expected %d columns, got %d.\n"
 msgstr ""
 
-#: data_conversion/plink_pheno.cc:33 data_conversion/vcf_file.cc:65
+#: data_conversion/bed_file.cc:25
+#, c-format
+msgid "mapgd:%s:%d: attempt to read from file failed: eof.\n"
+msgstr ""
+
+#: data_conversion/bed_file.cc:30 data_conversion/plink_pheno.cc:33
+#: data_conversion/vcf_file.cc:65
 #, c-format
 msgid "mapgd:%s:%d: attempt to read from unopened file.\n"
 msgstr ""
 
 #. else if (mode & WRITE) open(std::cout, mode);
 #. else {
-#: data_conversion/plink_pheno.cc:96 data_conversion/vcf_file.cc:311
+#: data_conversion/bed_file.cc:133 data_conversion/plink_pheno.cc:96
+#: data_conversion/vcf_file.cc:317
 #, c-format
 msgid "mapgd:%s:%d: cannot open file in std::ios_base::openmode &mode=%d.\n"
 msgstr ""
 
-#: data_conversion/vcf_file.cc:212
+#: data_conversion/bed_file.cc:88
+#, c-format
+msgid "mapgd:%s:%d: impossible error.\n"
+msgstr ""
+
+#: data_conversion/vcf_file.cc:218
 #, c-format
 msgid "mapgd:%s:%d: unrecognized genotype in vcf file.\n"
 msgstr ""
 
-#: data_types/state.cc:528 data_types/state.cc:535 data_types/state.cc:541
-#: data_types/state.cc:554 data_types/state.cc:561 data_types/state.cc:569
+#: data_types/state.cc:611 data_types/state.cc:618 data_types/state.cc:624
+#: data_conversion/state.cc:565 data_conversion/state.cc:572
+#: data_conversion/state.cc:578
 #, c-format
 msgid ""
 "mapgd:%s:%d:FLAGRANT SYSTEM ERROR. Computer over. lz4buffer = Full. (Write "
 "me an e-mail!)\n"
-msgstr ""
-
-#: data_types/state.cc:517
-#, c-format
-msgid "mapgd:%s:%d:Increasing buffer size from %f Mb.\n"
 msgstr ""

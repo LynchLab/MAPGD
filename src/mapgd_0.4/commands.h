@@ -33,6 +33,7 @@
 #include "relatedness_test.h"
 #include "test_keys.h"
 #include "read_pheno.h"
+#include "read_bed.h"
 //#include "simulate.h"
 
 #ifndef NOSQL

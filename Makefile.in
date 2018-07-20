@@ -104,6 +104,8 @@ increment:
 	$(MAKE) -C $(SUBDIRS) increment 
 .PHONY: clean
 
+
+#test needs to prompt and remove untracked files.
 push: 
 	$(MAKE) -C $(SUBDIRS) all 
 	$(MAKE) -C $(SUBDIRS) test
