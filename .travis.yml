@@ -13,7 +13,7 @@ os:
 language: cpp
 compiler:
   - gcc
-  - clang # Don't compile in clang until openmp errors are resolved.
+#  - clang # Don't compile in clang until openmp errors are resolved.
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         brew update; 
