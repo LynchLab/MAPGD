@@ -101,7 +101,7 @@ int estimateRel(int argc, char *argv[])
 		}
 		gcf_mem.close();
 		rel_out.write_header(relatedness);
-		name=genotypes.get_sample_names();
+		name=genotype.get_sample_names();
 		sample_size=genotype.get_sample_names().size();
 		file_buffer_size=file_buffer.str().size();
 		char_buff=new char [file_buffer_size];

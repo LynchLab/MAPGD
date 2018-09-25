@@ -193,7 +193,7 @@ RAW_OBJ=$(OBJDIR)/genotype.o \
 OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) $(SYS_OBJ)
 
 ifeq ($(HAVE_MPI), yes)
-#	MPI_OBJ=$(OBJDIR)/mpi_relatedness.o
+	MPI_OBJ=$(OBJDIR)/mpi_relatedness.o
 	OBJ := $(OBJ) $(MPI_OBJ)
 	MPI_LDLIBS += -lmpi -pthread
 	FINAL_CXX=$(MPICXX)
