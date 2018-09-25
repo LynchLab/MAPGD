@@ -9,9 +9,7 @@ WARNINGS=-Wno-write-strings
 #WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d - -f 1`
 VERSION=-DVERSION=\"0.4.$(MINOR)\"
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/
-
-
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/ -I ./mpi
 #remove fno-exceptions when in debug mode
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) #-MMD
 LDLIBS += -lgzstream -lz -L ./gzstream/ 
@@ -28,7 +26,7 @@ NOLZ4=-DNOLZ4
 
 OBJDIR=objs
 
-SUBDIR=raw sql data_types commands data_conversion stream_tools io math_functions system
+SUBDIR=raw sql data_types commands data_conversion stream_tools io math_functions system mpi
 
 VPATH = $(SUBDIR)
 
@@ -195,7 +193,7 @@ RAW_OBJ=$(OBJDIR)/genotype.o \
 OBJ=$(MAPGD) $(COMMAND_OBJ) $(BASE_OBJ) $(RAW_OBJ) $(DATA_OBJ) $(CONVERSION_OBJ) $(SYS_OBJ)
 
 ifeq ($(HAVE_MPI), yes)
-	MPI_OBJ=$(OBJDIR)/mpi_relatedness.o
+#	MPI_OBJ=$(OBJDIR)/mpi_relatedness.o
 	OBJ := $(OBJ) $(MPI_OBJ)
 	MPI_LDLIBS += -lmpi -pthread
 	FINAL_CXX=$(MPICXX)
@@ -235,8 +233,8 @@ $(TARGET) : $(OBJ)
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o po/mapgd.pot --copyright-holder="Matthew Ackerman" --package-name="mapgd" --package-version=$(MINOR) --msgid-bugs-address="matthew.s.ackerman@gmail.com"  $(addsuffix /*.cc, $(SUBDIR)) *.cc
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
-$(MPI_OBJ) : $(MPI_OBJ:.o=.cc)
-	$(MPICXX) $(CXXFLAGS) -c $(@:.o=.cc) -o $@
+#$(MPI_OBJ) : $(MPI_OBJ:.o=.cc)
+#	$(MPICXX) $(CXXFLAGS) -c $(@:.o=.cc) -o $@
 
 DATA_SOURCE=data_types/*.cc
 

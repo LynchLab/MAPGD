@@ -43,18 +43,18 @@ void Allele::read(std::istream& in) {
 	line_stream >> c; minor=Base::ctob(c);
 	line_stream >> coverage;
 	//if (coverage>0){
-		line_stream >> freq >> temp >> error >> null_error >> null_error2 >> f;
-		line_stream >> MM >> Mm >> mm;
-		line_stream >> temp;
-		line_stream >> monoll;
-		line_stream >> hwell;
-		line_stream >> gof;
-		line_stream >> efc;
-		line_stream >> N;
-		line_stream >> excluded;
-		line_stream >> ll;
-		monoll=ll-monoll/2.;
-		hwell=ll-hwell/2.;
+	line_stream >> freq >> temp >> error >> null_error >> null_error2 >> f;
+	line_stream >> MM >> Mm >> mm;
+	line_stream >> temp;
+	line_stream >> monoll;
+	line_stream >> hwell;
+	line_stream >> gof;
+	line_stream >> efc;
+	line_stream >> N;
+	line_stream >> excluded;
+	line_stream >> ll;
+	monoll=ll-monoll/2.;
+	hwell=ll-hwell/2.;
 //		f-=1./(2.*N-1.);
 	//}
 }
@@ -129,8 +129,8 @@ void Allele::write (std::ostream& out) const
 		out << ll;
 	} else {
 		out << Base::btoc(ref) <<  delim;
-		out << Base::btoc(major) <<  delim;
-		out << Base::btoc(minor) <<  delim;
+		out << Base::btoc(ref) <<  delim;
+		out << 'N' <<  delim;
 		out << std::fixed << std::setprecision(0);
 		out << std::fixed << std::setprecision(0);
 		out << coverage << delim;
@@ -144,6 +144,8 @@ void Allele::write (std::ostream& out) const
 		out << '.' << delim;
 		out << '.' << delim;
 		out << std::fixed << std::setprecision(4);
+		out << 0. << delim;
+		out << std::fixed << std::setprecision(2);
 		out << 0. << delim;
 		out << 0. << delim;
 		out << 0. << delim;

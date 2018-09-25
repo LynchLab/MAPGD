@@ -76,7 +76,7 @@ int estimateRel(int argc, char *argv[])
 	size_t file_buffer_size=0;
 	char *char_buff;
 	size_t sample_size;
-	sample_names
+	std::vector <std::string> name;
 
 	if(taskid==MASTER){
 		if (gcf_name.size()!=0)
@@ -101,7 +101,7 @@ int estimateRel(int argc, char *argv[])
 		}
 		gcf_mem.close();
 		rel_out.write_header(relatedness);
-		sample_names=
+		name=genotypes.get_sample_names();
 		sample_size=genotype.get_sample_names().size();
 		file_buffer_size=file_buffer.str().size();
 		char_buff=new char [file_buffer_size];
@@ -165,8 +165,8 @@ int estimateRel(int argc, char *argv[])
 			} 
 			if ( chunk*taskid <= z && z < chunk*(taskid+1) )
 			{
-				hashed_genotypes=hash_genotypes(file_buffer, x, y);
-				down_genotypes=downsample_genotypes(file_buffer, x, y);
+				hashed_genotypes=hash_genotypes(file_buffer, x, y, false);
+				down_genotypes=downsample_genotypes(file_buffer, x, y, false);
 				relatedness.zero();
 				set_e(relatedness, hashed_genotypes);
 //				gestimate(relatedness, hashed_genotypes);
