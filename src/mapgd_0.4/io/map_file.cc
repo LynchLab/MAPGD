@@ -63,15 +63,15 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 	std::cerr << __LINE__ << "opening no extension "<< filename <<"\n";
 #endif 
 	if ( open_ ){
-		std::cerr << __FILE__ << ":" << __LINE__ << ": " << typeid(this).name() << " is already open." << std::endl;
+		fprintf(stderr, gettext("mapgd:%s:%d: %s is already open.\n"), __FILE__, __LINE__, typeid(this).name() );
 		exit(0);
 	}
 	if ( mode & std::ios::in ){
 		file_.open( filename, std::ios::in);
 		if ( !file_.is_open() )
 		{
-			std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
-			std::cerr << "Error: " << strerror(errno) << std::endl;
+			fprintf(stderr, gettext("mapgd:%s:%d: cannot open %s for reading.\n"), __FILE__, __LINE__, filename);
+			fprintf(stderr, gettext("Error: %s.\n"), strerror(errno) );
 			exit(0);
 		}
 		buffer_.open(&in_, &file_);
@@ -86,8 +86,8 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 			file_.close();
 			gzin_.open(filename, READ);
 			if ( !gzin_.good() ){
-				std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for reading." << std::endl;
-				std::cerr << "Error: " << strerror(errno) << std::endl;
+				fprintf(stderr, gettext("mapgd:%s:%d: cannot open %s for reading.\n"), __FILE__, __LINE__, filename);
+				fprintf(stderr, gettext("Error: %s.\n"), strerror(errno) );
 				exit(0);
 			};
 			buffer_.open(&in_, &gzin_);
@@ -107,16 +107,16 @@ void Base_file::open_no_extention(const char* filename, const std::ios_base::ope
 		{
 			gzout_.open( filename, std::ios::out);
 			if (!gzout_.good() ){
-				std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for writing." << std::endl;
-				std::cerr << "Error: " << strerror(errno) << std::endl;
+				fprintf(stderr, gettext("mapgd:%s:%d: cannot open %s for writing.\n"), __FILE__, __LINE__, filename);
+				fprintf(stderr, gettext("Error: %s.\n"), strerror(errno) );
 				exit(0);
 			};
 			out_=&gzout_;
 		} else {
 			file_.open( filename, std::ios::out);
 			if (!file_.is_open() ){
-				std::cerr << __FILE__ << ":" << __LINE__ << ": cannot open " << filename << " for writing." << std::endl;
-				std::cerr << "Error: " << strerror(errno) << std::endl;
+				fprintf(stderr, gettext("mapgd:%s:%d: cannot open %s for writing.\n"), __FILE__, __LINE__, filename);
+				fprintf(stderr, gettext("Error: %s.\n"), strerror(errno) );
 				exit(0);
 			};
 			out_=&file_;

@@ -67,7 +67,10 @@ int make_vcf(int argc, char *argv[])
 
 	vcf.set_header(gcf_in.get_index(), pop.get_sample_names() );
 
-	vcf_out.open(outfile.c_str(), WRITE);
+	if (outfile.size()!=0)
+		vcf_out.open(outfile.c_str(), WRITE);
+	else 
+		vcf_out.open(WRITE);
 	vcf_out.write_header(vcf);
 
 	while(map_in.table_is_open() )

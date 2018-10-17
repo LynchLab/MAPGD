@@ -45,6 +45,7 @@ gcf_header=3		#Size of gcf header
 gof_header=3		#Size of gcf header
 pro_size=30		#number of lines in the pro file
 good_size=9		#number of lines post filtering
+good_pool=4		#number of lines post filtering
 idx_size=3		#number of lines in the idx file
 gof_size=8		#number of lines in the idx file
 
@@ -103,6 +104,14 @@ rm -f $a.out
 size=$(($pro_size+$pro_header+$idx_size+$idx_header))
 echo -n "$mapgd proview -n $name -H $header | $mapgd $a > $a.out						"
 $timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a > $a.out"
+testa
+
+a="filterpool"
+msg="filterpool"
+rm -f $a.out
+size=$(($good_pool+$pro_header+$idx_size+$idx_header))
+echo -n "$mapgd proview -n $name -H $header | $mapgd pool | $mapgd $a > $a.out	"
+$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd pool | $mapgd $a > $a.out"
 testa
 
 a="filter"
@@ -193,7 +202,7 @@ mkfifo pro
 size=$(($pop*($pop-1)/2+3))
 $mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -c 1 | $mapgd filter > map &
 $mapgd genotype -p pro -m map > genotype
-cat genotype | $mapgd relatedness > $a.out
+cat genotype | $mapgd relatedness > $a.out 2> /dev/null
 testa
 rm -f genotype
 rm -f map
@@ -209,7 +218,7 @@ mkfifo pro
 size=$(($pop*($pop-1)/2+3))
 $mapgd proview -H $header -i $mpileup | tee pro | $mapgd allele -c 1 | $mapgd filter > map &
 $mapgd genotype -p pro -m map -o genotype 
-$mapgd relatedness -i genotype.gcf -o $a.out
+$mapgd relatedness -i genotype.gcf -o $a.out 2> /dev/null
 mv $a.out.rel $a.out
 testa
 rm -f $a.idx
@@ -225,17 +234,88 @@ echo -n "cat genotype.out | $mapgd $a > $a.out 										"
 $mapgd proview -H $header -n $unicode > temp_pro.out
 $mapgd allele -i temp_pro.out -c 1 > temp_allele.out
 $mapgd genotype -p temp_pro.out -m temp_allele.out > temp_genotype.out
-$mapgd relatedness -i temp_genotype.out > $a.out
+$mapgd relatedness -i temp_genotype.out > $a.out 2> /dev/null
 testa
 rm -f temp*
 
-#a="write"
-#msg="write/read"
-#size=6
-#rm -f test.db
-#echo "$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db 									"
-#$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db
-#echo -n "$mapgd read -d test.db -t REGIONS										"
-#$mapgd read -d test.db -t REGIONS > $a.out
-#rm -f test.db
+a="readphen"
+msg="readphen"
+size=$(($pop+3))
+echo -n "$mapgd $a -i plink.pheno > $a.out 											"
+$mapgd $a -i plink.pheno > $a.out
+testa
+rm -f temp*
+
+exit 0
+
+a="keyinfo"
+msg="keyinfo"
+size=$((2))
+echo -n "$mapgd $a KEY > $a.out 												"
+$mapgd $a KEY > $a.out
+testa
+rm -f temp*
+
+a="help"
+msg="help"
+size=$((76))
+echo -n "$mapgd $a allele > $a.out 													"
+$mapgd $a allele > $a.out
+testa
+rm -f temp*
+
+a="writevcf"
+msg="writevcf"
+size=$((76))
+echo -n "$mapgd $a -g -m > $a.out 													"
+$mapgd proview -H $header -n $name > temp.pro
+$mapgd allele -i temp.pro -c 1 > temp.map
+$mapgd genotype -p temp.pro -m temp.map > temp.gcf
+$mapgd $a -g temp.gcf -m temp.map > $a.out
+testa
+rm -f temp*
+
+#a="reltest"
+#msg="reltest"
+#size=$(($pop*($pop-1)/2+3))
+#echo -n "$mapgd temp_genotype.out temp_relatedness.out relatedness_test.rel > $a.out 								"
+#$mapgd proview -H $header -n $unicode > temp_pro.out
+#$mapgd allele -i temp_pro.out -c 1 > temp_allele.out
+#$mapgd genotype -p temp_pro.out -m temp_allele.out > temp_genotype.out
+#$mapgd relatedness -i temp_genotype.out > temp_relatedness.out
+#$mapgd $a temp_genotype.out temp_relatedness.out relatedness_test.rel > $a.out
 #testa
+#rm -f temp*
+
+#  fastview	[ ]	Quickly displays contents of a file
+#  filter	[x]	Filter sites in '.map' files
+#  filterpool	[x]	Filter sites in '.pol' files
+#  filtergcf	[ ]	Filter sites in '.gcf' files
+#  genotype	[x]	Calculate genotype probabilities for individuals
+#  linkage	[x]	Estimates linkage disequilibrium between loci
+#  pool		[x]	Estimates allele frequencies using pooled data
+#  proview	[x]	Prints data in the '.pro' file quartet format
+#  relatedness	[x]	Estimates the pairwise relatedness of individuals
+#  reltest	[ ]	Test for sig dif between relatedness estiamtes
+#  sam2idx	[x]	Reformats a sam header file to a idx file
+#  keyinfo	[x]	Displays information regarding keys (i.e. column names)
+#  writevcf	[o]	Prints as a vcf file
+#  writevcf2	[ ]	Prints as a vcf file
+#  readvcf	[ ]	Reads a vcf file
+#  readbed	[ ]	Reads a bed file
+#  readphen	[x]	Reads plink's pheno file
+#  help		[x]	Prints helpful information
+#  read		[ ]	Reads data from the SQL database
+#  write	[ ]		Writes data to the SQL database
+
+
+a="write"
+msg="write/read"
+size=6
+rm -f test.db
+echo "$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db 									"
+$mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db
+echo -n "$mapgd read -d test.db -t REGIONS										"
+$mapgd read -d test.db -t REGIONS > $a.out
+rm -f test.db
+testa

@@ -473,9 +473,11 @@ parsargs(int argc, char *argv[], Environment &env)
 				++com;
 			};
 			if (com==com_end) {
+				//std::cerr << "it's not a command...\n";
 				if (pos!=pos_end){
+					//std::cerr << "peeling off a position\n";
 					optind+=(*pos)->func(argc-optind, argv+optind, (*pos)->parm);
-					optind++;
+					//optind++;
 					(*pos)->set=true;
 					pos++;
 				} else {

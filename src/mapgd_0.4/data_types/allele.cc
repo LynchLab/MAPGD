@@ -26,6 +26,11 @@ Allele::Allele (void){
 	ll=0;
 	gof=0;
 	efc=0;
+
+	bias=0;
+	pbias=0;
+	print_bias=false;
+
 	excluded=0;
 	delim='\t';
 	coverage=0;
@@ -53,6 +58,12 @@ void Allele::read(std::istream& in) {
 	line_stream >> N;
 	line_stream >> excluded;
 	line_stream >> ll;
+
+	if (print_bias) {
+		line_stream >> bias;
+		line_stream >> pbias;
+	}
+
 	monoll=ll-monoll/2.;
 	hwell=ll-hwell/2.;
 //		f-=1./(2.*N-1.);
@@ -92,7 +103,9 @@ write_binary (std::ostream& out) const
 
 void Allele::write (std::ostream& out) const 
 {
+//	std::cerr << "Writing ... \n";
 	if (coverage>0){
+	//	std::cerr << "cov > 0 ... \n";
 		out << Base::btoc(ref) <<  delim;
 		out << Base::btoc(major) <<  delim;
 		out << Base::btoc(minor) <<  delim;
@@ -126,8 +139,14 @@ void Allele::write (std::ostream& out) const
 		out << int(N) << delim;
 		out << int(excluded) << delim;
 		out << std::fixed << std::setprecision(4);
+	
+		if (print_bias) {
+			out << bias << delim;
+			out << pbias << delim;
+		}
 		out << ll;
 	} else {
+	//	std::cerr << "cov == 0 ... \n";
 		out << Base::btoc(ref) <<  delim;
 		out << Base::btoc(ref) <<  delim;
 		out << 'N' <<  delim;
@@ -154,6 +173,10 @@ void Allele::write (std::ostream& out) const
 		out << 0 << delim;
 		out << 0 << delim;
 		out << std::fixed << std::setprecision(4);
+		if (print_bias) {
+		out << 0. << delim;
+		out << 0. << delim;
+		}
 		out << 0.;
 	};
 }
@@ -183,6 +206,10 @@ Allele & Allele::operator=(const Allele & x) {
 		ll=x.ll;
 		gof=x.gof;
 		efc=x.efc;
+
+		bias=x.bias;
+		pbias=x.pbias;
+		print_bias=x.print_bias;
 	}
 	return *this;
 }

@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: mapgd 33\n"
+"Project-Id-Version: mapgd 34\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2018-07-20 12:32+0100\n"
+"POT-Creation-Date: 2018-10-17 14:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,16 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: io/map_file.cc:74 io/map_file.cc:90 io/map_file.cc:111 io/map_file.cc:119
+#, c-format
+msgid "Error: %s.\n"
+msgstr ""
+
+#: io/map_file.cc:66
+#, c-format
+msgid "mapgd:%s:%d: %s is already open.\n"
+msgstr ""
 
 #: data_types/state.cc:158 data_types/state.cc:179 data_types/state.cc:198
 #: data_types/state.cc:223 data_types/state.cc:472 data_types/state.cc:495
@@ -68,7 +78,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Class %s does not return the correct type. Exiting.\n"
 msgstr ""
 
-#: data_conversion/bed_file.cc:161 data_conversion/vcf_file.cc:384
+#: data_conversion/bed_file.cc:161 data_conversion/vcf_file.cc:415
 #, c-format
 msgid "mapgd:%s:%d: Could not open file \"%s\" for reading.\n"
 msgstr ""
@@ -129,7 +139,7 @@ msgstr ""
 msgid "mapgd:%s:%d: The following line was encountered:\n"
 msgstr ""
 
-#: data_conversion/bed_file.cc:175 data_conversion/vcf_file.cc:399
+#: data_conversion/bed_file.cc:175 data_conversion/vcf_file.cc:430
 #, c-format
 msgid "mapgd:%s:%d: Unexpected error opening file \"%s\".\n"
 msgstr ""
@@ -140,7 +150,12 @@ msgid ""
 "mapgd:%s:%d: Unrecognized std::ios_base::openmode mode; cannot open file.\n"
 msgstr ""
 
-#: data_conversion/vcf_file.cc:75
+#: commands/test_keys.cc:50
+#, c-format
+msgid "mapgd:%s:%d: Warning, using copy of keys.txt at %s.\n"
+msgstr ""
+
+#: data_conversion/vcf_file.cc:76
 #, c-format
 msgid ""
 "mapgd:%s:%d: allele and locus have different positions (private abs_pos).\n"
@@ -163,15 +178,30 @@ msgid "mapgd:%s:%d: attempt to read from file failed: eof.\n"
 msgstr ""
 
 #: data_conversion/bed_file.cc:30 data_conversion/plink_pheno.cc:33
-#: data_conversion/vcf_file.cc:65
+#: data_conversion/vcf_file.cc:66
 #, c-format
 msgid "mapgd:%s:%d: attempt to read from unopened file.\n"
+msgstr ""
+
+#: commands/test_keys.cc:47
+#, c-format
+msgid "mapgd:%s:%d: cannot find keys.txt.\n"
+msgstr ""
+
+#: io/map_file.cc:73 io/map_file.cc:89
+#, c-format
+msgid "mapgd:%s:%d: cannot open %s for reading.\n"
+msgstr ""
+
+#: io/map_file.cc:110 io/map_file.cc:118
+#, c-format
+msgid "mapgd:%s:%d: cannot open %s for writing.\n"
 msgstr ""
 
 #. else if (mode & WRITE) open(std::cout, mode);
 #. else {
 #: data_conversion/bed_file.cc:133 data_conversion/plink_pheno.cc:96
-#: data_conversion/vcf_file.cc:317
+#: data_conversion/vcf_file.cc:348
 #, c-format
 msgid "mapgd:%s:%d: cannot open file in std::ios_base::openmode &mode=%d.\n"
 msgstr ""
@@ -181,7 +211,7 @@ msgstr ""
 msgid "mapgd:%s:%d: impossible error.\n"
 msgstr ""
 
-#: data_conversion/vcf_file.cc:218
+#: data_conversion/vcf_file.cc:212
 #, c-format
 msgid "mapgd:%s:%d: unrecognized genotype in vcf file.\n"
 msgstr ""

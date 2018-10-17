@@ -7,21 +7,40 @@ const bool Relatedness::binary=false;
 const Registration Relatedness::registered=Registration(Relatedness::table_name, Relatedness::create);
 
 Relatedness::Relatedness (){
-//	X_="";
-//	Y_="";
+	X_=0;
+	Y_=0;
+	X_str_="";
+	Y_str_="";
+	likelihoods_=true;
 	delim='\t';
 }
 
+Relatedness::Relatedness(const std::vector <std::string> &columns){
+	X_=0;
+	Y_=0;
+	X_str_="";
+	Y_str_="";
+	delim='\t';
+	if(columns.size()==18) {
+		likelihoods_=true;
+	} else {
+		likelihoods_=false;
+	};
+}
+
 Relatedness::Relatedness (const std::string &X, const std::string &Y){
-//	X_=X;
-//	Y_=Y;
+	X_=0;
+	Y_=0;
+	X_str_="";
+	Y_str_="";
+	likelihoods_=true;
 	delim='\t';
 }
 
 void 
 Relatedness::set_X_name(const std::string &X)
 {
-//	X_=X;
+	X_str_=X;
 }
 
 void
@@ -39,7 +58,7 @@ Relatedness::set_Y_name(const id0_t &Y)
 void 
 Relatedness::set_Y_name(const std::string &Y)
 {
-//	Y_=Y;
+	Y_str_=Y;
 }
 
 void
@@ -48,24 +67,33 @@ Relatedness::read (std::istream& in)
 	std::string line;
 	std::getline(in, line);
 	std::stringstream stream_line(line);	
-	stream_line >> X_ ;
-	stream_line >> Y_ ;
+	stream_line >> X_str_ ;
+	stream_line >> Y_str_ ;
 	stream_line >> f_X_ ;
-	stream_line >> f_X_ll ;
+	if (likelihoods_)
+		stream_line >> f_X_ll ;
 	stream_line >> f_Y_ ;
-	stream_line >> f_Y_ll ;
+	if (likelihoods_)
+		stream_line >> f_Y_ll ;
 	stream_line >> theta_XY_ ;
-	stream_line >> theta_XY_ll ;
+	if (likelihoods_)
+		stream_line >> theta_XY_ll ;
 	stream_line >> gamma_XY_ ;
-	stream_line >> gamma_XY_ll ;
+	if (likelihoods_)
+		stream_line >> gamma_XY_ll ;
 	stream_line >> gamma_YX_ ;
-	stream_line >> gamma_YX_ll ;
+	if (likelihoods_)
+		stream_line >> gamma_YX_ll ;
 	stream_line >> delta_XY_ ;
-	stream_line >> delta_XY_ll ;
+	if (likelihoods_)
+		stream_line >> delta_XY_ll ;
 	stream_line >> Delta_XY_ ;
-	stream_line >> Delta_XY_ll ;
-	stream_line >> null_ll_ ;
-	stream_line >> max_ll_ ;
+	if (likelihoods_)
+		stream_line >> Delta_XY_ll ;
+	if (likelihoods_)
+		stream_line >> null_ll_ ;
+	if (likelihoods_)
+		stream_line >> max_ll_ ;
 }
 
 void
@@ -74,21 +102,30 @@ Relatedness::write (std::ostream& out) const
 	out << X_ << delim;
 	out << Y_ << delim;
 	out << f_X_ << delim;
-	out << f_X_ll << delim;
+	if (likelihoods_)
+		out << f_X_ll << delim;
 	out << f_Y_ << delim;
-	out << f_Y_ll << delim;
+	if (likelihoods_)
+		out << f_Y_ll << delim;
 	out << theta_XY_ << delim;
-	out << theta_XY_ll << delim;
+	if (likelihoods_)
+		out << theta_XY_ll << delim;
 	out << gamma_XY_ << delim;
-	out << gamma_XY_ll << delim;
+	if (likelihoods_)
+		out << gamma_XY_ll << delim;
 	out << gamma_YX_ << delim;
-	out << gamma_YX_ll << delim;
+	if (likelihoods_)
+		out << gamma_YX_ll << delim;
 	out << delta_XY_ << delim;
-	out << delta_XY_ll << delim;
+	if (likelihoods_)
+		out << delta_XY_ll << delim;
 	out << Delta_XY_ << delim;
-	out << Delta_XY_ll << delim;
-	out << null_ll_ << delim;
-	out << max_ll_ << delim;
+	if (likelihoods_)
+		out << Delta_XY_ll << delim;
+	if (likelihoods_)
+		out << null_ll_ << delim;
+	if (likelihoods_)
+		out << max_ll_ << delim;
 }
 
 std::string 
@@ -134,16 +171,28 @@ Relatedness::operator=(const Relatedness &rhs)
 	sites=rhs.sites;
 	//memcpy(e_X_, rhs.e_X_, E_LIM*sizeof(float_t) );
 	//memcpy(e_Y_, rhs.e_Y_, E_LIM*sizeof(float_t) );
-	e_X_ll=rhs.e_X_ll;
-	e_Y_ll=rhs.e_Y_ll;
-	f_X_=rhs.f_X_, f_X_ll=rhs.f_X_ll;
-	f_Y_=rhs.f_Y_, f_Y_ll=rhs.f_Y_ll;
-	theta_XY_=rhs.theta_XY_, theta_XY_ll=rhs.theta_XY_ll;
-	gamma_XY_=rhs.gamma_XY_, gamma_XY_ll=rhs.gamma_XY_ll;
-	gamma_YX_=rhs.gamma_YX_, gamma_YX_ll=rhs.gamma_YX_ll;
-	delta_XY_=rhs.delta_XY_, delta_XY_ll=rhs.delta_XY_ll;
-	Delta_XY_=rhs.Delta_XY_, Delta_XY_ll=rhs.Delta_XY_ll;
-	null_ll_=rhs.null_ll_, max_ll_=rhs.max_ll_;
+	likelihoods_=rhs.likelihoods_;
+	if (likelihoods_)
+	{
+		e_X_ll=rhs.e_X_ll;
+		e_Y_ll=rhs.e_Y_ll;
+		f_X_ll=rhs.f_X_ll;
+ 		f_Y_ll=rhs.f_Y_ll;
+		theta_XY_ll=rhs.theta_XY_ll;
+		gamma_XY_ll=rhs.gamma_XY_ll;
+		gamma_YX_ll=rhs.gamma_YX_ll;
+		delta_XY_ll=rhs.delta_XY_ll;
+		Delta_XY_ll=rhs.Delta_XY_ll;
+		null_ll_=rhs.null_ll_;
+		max_ll_=rhs.max_ll_;
+	}
+	f_X_=rhs.f_X_;
+	f_Y_=rhs.f_Y_;
+	theta_XY_=rhs.theta_XY_;
+	gamma_XY_=rhs.gamma_XY_; 
+	gamma_YX_=rhs.gamma_YX_; 
+	delta_XY_=rhs.delta_XY_; 
+	Delta_XY_=rhs.Delta_XY_; 
 	return *this;
 }
 

@@ -35,7 +35,7 @@ int main (int argc, char* argv[])
 	env.command(	' ',"pool",	&estimatePooled, 		"an error occurred while calling pool", "Estimates allele frequencies using pooled data");		//DONE
 	env.command(	' ',"proview", 	&proview, 			"an error occurred while calling proview", "Prints data in the '.pro' file quartet format");		//DONE
 	env.command(	' ',"relatedness",&estimateRel,	 		"an error occurred while calling relatedness", "Estimates the pairwise relatedness of individuals");	//DONE
-	env.command(	' ',"reltest", &testRel,	 		"an error occurred while calling relatedness", "Test for sig dif between relatedness estiamtes");	//DONE
+	env.command(	' ',"reltest", &testRel,	 		"an error occurred while calling relatedness", "Test for sig dif between relatedness estimates");	//DONE
 	env.command(	' ',"sam2idx",	&sam2idx,	 		"an error occurred while calling sam2idx", "Reformats a sam header file to a idx file"); 		//DONE
 	env.command(	' ',"keyinfo",	&test_keys,	 		"an error occurred while calling sam2idx", "Displays information regarding keys (i.e. column names)"); 		//DONE
 //	env.command(	' ',"simulate",	&simulate,	 		"an error occurred while calling sam2idx", "Test, do not use"); 		//DONE

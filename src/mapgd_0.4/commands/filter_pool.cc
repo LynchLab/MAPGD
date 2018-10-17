@@ -19,7 +19,7 @@ int filter_pool(int argc, char *argv[])
 	int max_coverage=CNT_MAX, min_coverage=4;
 
 	Environment env;
-	env.set_name("polgd filter");
+	env.set_name("mapgd filterpool");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("Filter sites in '.pol' files based on criteria.");
@@ -55,10 +55,13 @@ int filter_pool(int argc, char *argv[])
 	s=pol_in.read_header();
 
 	pol_out.set_index(pol_in.get_index() );
-	std::cerr << s.header();
+//	std::cerr << s.header();
+//	std::cerr << "read in header \n";
 	pol_out.write_header(s);
+//	std::cerr << "wrote header \n";
 
 	pol_in.read(s);
+//	std::cerr << "read in s\n";
 
 	while( pol_in.table_is_open() ){
 		if (s.coverage==0){

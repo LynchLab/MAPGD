@@ -12,7 +12,7 @@ int mapgd_help(int argc, char *argv[])
 	} else {
 #ifdef USE_MAN
 		char call[255];
-		snprintf(call, 200, "man -M %s mapgd-%s", PATH, argv[1]);
+		snprintf(call, 200, "man -M %s mapgd-%s", MANPATH, argv[1]);
 		return system(call);
 #else
 		std::cerr << "mapgd_help is currently unavailable without the command 'man'.\n";

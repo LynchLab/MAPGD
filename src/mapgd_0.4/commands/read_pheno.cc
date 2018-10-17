@@ -15,7 +15,7 @@ int read_pheno(int argc, char *argv[])
 	env.set_name("mapgd readpheno");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
-	env.set_description("Convert a pheno file into a phe file.");
+	env.set_description("Convert plink's '.pheno' file into mapgd's '.phe' file.");
 	env.optional_arg('o',"output", 	out_file,"an error occurred while setting the name of the output file.", "the output file for the program (default stdout)");
 	env.positional_arg('i',"input", in_file,	"an error occurred while setting the name of the input file.", "the input file for the program (default stdin)");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");

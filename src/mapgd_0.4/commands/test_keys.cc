@@ -34,8 +34,23 @@ int test_keys(int argc, char *argv[])
 	Key key;
 
 #ifdef USE_MAN
-	std::string filename(std::string(PATH)+"../keys/keys.txt");
+	std::string filename(std::string(PATH)+"/keys.txt");
 	keys.open(filename.c_str(), READ);
+
+	if ( !keys.is_open() )
+	{
+		std::string filename(std::string(PWD)+"/keys.txt");
+		keys.open(filename.c_str(), READ);
+
+		if ( !keys.is_open() ) 
+		{
+			fprintf(stderr, gettext("mapgd:%s:%d: cannot find keys.txt.\n"), __FILE__, __LINE__ );
+			return 0;
+		} else {
+			fprintf(stderr, gettext("mapgd:%s:%d: Warning, using copy of keys.txt at %s.\n"), __FILE__, __LINE__, PWD );
+		}
+	}
+
 	std::map <std::string, Key *> keymap;
 	std::vector <std::string> empty, column_names;
 	std::stringstream ss;

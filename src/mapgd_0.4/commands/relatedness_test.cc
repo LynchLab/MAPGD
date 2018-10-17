@@ -10,19 +10,20 @@ int testRel(int argc, char *argv[])
 {
 	/* All the variables that can be set from the command line */
 
-	bool l2o=false;
+	bool l2o=false, test=false;
 	std::string gcf_name="", rel_name1="", rel_name2="";
 
 	Environment env;
-	env.set_name("mapgd trelatedness");
+	env.set_name("mapgd relatedness");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("Test for significant differences between relatedness estimates.");
 
-	env.positional_arg('i', "input",gcf_name, "an error occurred while displaying the help message.", "input filename (default stdin)");
-	env.positional_arg('1', "rel1", rel_name1, "an error occurred while displaying the help message.", "input filename (default stdin)");
-	env.positional_arg('2', "rel2", rel_name2, "an error occurred while displaying the help message.", "input filename (default stdin)");
-	env.flag(	'l', "l2o", 	&l2o, 		&flag_set, 	"an error occurred while displaying the help message.", "attempt to use leave two out (not working");
+	env.positional_arg('i', "input",gcf_name, "an error occurred while displaying the help message.", "genotype filename (a .gcf file)");
+	env.positional_arg('1', "rel1", rel_name1, "an error occurred while displaying the help message.", "relationship 1 filename (a .rel file)");
+	env.positional_arg('2', "rel2", rel_name2, "an error occurred while displaying the help message.", "relationship 2 filename (a .rel file)");
+	env.flag(	'l', "l2o", 	&l2o, 		&flag_set, 	"an error occurred while displaying the help message.", "attempt to use leave two out (not working)");
+	env.flag(	't', "test", 	&test, 		&flag_set, 	"an error occurred while displaying the help message.", "test each row of 1 with each relationship in 2");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the help message.", "prints the program version");
 
@@ -32,8 +33,8 @@ int testRel(int argc, char *argv[])
 	Indexed_file <Population> gcf_mem; 	// the in memory gcf_file.
 	std::stringstream file_buffer;
 
-	Flat_file <Relatedness> rel_in1; 		// Open a file for input.
-	Flat_file <Relatedness> rel_in2; 		// Open a file for input.
+	Flat_file <Relatedness> rel_in1; 	// Open a file for input.
+	Flat_file <Relatedness> rel_in2; 	// Open a file for input.
 
 	Relatedness rel2;			//The class to read to
 	Relatedness rel1;			//The class to read to
@@ -65,22 +66,28 @@ int testRel(int argc, char *argv[])
 		gcf_mem.write(genotype);
 	}
 	gcf_mem.close();
-
+		
 	std::map <Genotype_pair_tuple, size_t> hashed_genotypes;
 	
 	size_t sample_size=genotype.get_sample_names().size();
+	std::vector <std::string> sample_names=genotype.get_sample_names();
 
 	float_t r1, r2;
 
 	rel1=rel_in1.read_header();			//This gives us the sample names.
 	rel2=rel_in2.read_header();			//This gives us the sample names.
 
+	/*if (test) {
+		rel2[y];
+	}*/
+
 	while(rel_in1.table_is_open() ){
+
 		rel_in1.read(rel1);
-		rel_in2.read(rel2);
+		if (!test) rel_in2.read(rel2);
 
 		if (rel1.X_!=rel2.X_ || rel1.Y_!=rel2.Y_){
-			std::cerr << __FILE__ << ":" << __LINE__ << "relatedness in files do not compare the same individual. exiting.\n";
+			std::cerr << __FILE__ << ":" << __LINE__ << "relatedness in files do not compare the same individual. Exiting.\n";
 			break;
 		}
 
@@ -101,17 +108,38 @@ int testRel(int argc, char *argv[])
 
 		r1=rel_ll(x, &hashed_genotypes_vector);	
 
-		gsl_vector_set(x, 0, rel2.f_X_);
-		gsl_vector_set(x, 1, rel2.f_Y_);
-		gsl_vector_set(x, 2, rel2.theta_XY_);
-		gsl_vector_set(x, 3, rel2.gamma_XY_);
-		gsl_vector_set(x, 4, rel2.gamma_YX_);
-		gsl_vector_set(x, 5, rel2.Delta_XY_);
-		gsl_vector_set(x, 6, rel2.delta_XY_);
+		if (test) {
+			gsl_vector_set(x, 0, rel2.f_X_);
+			gsl_vector_set(x, 1, rel2.f_Y_);
+			gsl_vector_set(x, 2, rel2.theta_XY_);
+			gsl_vector_set(x, 3, rel2.gamma_XY_);
+			gsl_vector_set(x, 4, rel2.gamma_YX_);
+			gsl_vector_set(x, 5, rel2.Delta_XY_);
+			gsl_vector_set(x, 6, rel2.delta_XY_);
 
-		r2=rel_ll(x, &hashed_genotypes_vector);
-		if (r1>r2) std::cout << "r1 < r2 : " << r1-r2 << ", " << -r2 << std::endl;
-		else std::cout << "r2 < r1 : " << r2-r1 << ", " << -r1 << std::endl;
+			r2=rel_ll(x, &hashed_genotypes_vector);
+		} else {
+			/*for (int y=0; y<rel_size; y++) {
+				gsl_vector_set(x, 0, rel2[y].f_X_);
+				gsl_vector_set(x, 1, rel2[y].f_Y_);
+				gsl_vector_set(x, 2, rel2[y].theta_XY_);
+				gsl_vector_set(x, 3, rel2[y].gamma_XY_);
+				gsl_vector_set(x, 4, rel2[y].gamma_YX_);
+				gsl_vector_set(x, 5, rel2[y].Delta_XY_);
+
+				r2[y]=rel_ll(x, &hashed_genotypes_vector);
+			}*/
+		}
+		
+		if (!test) {
+			std::cout << sample_names[rel1.X_] << ", " << sample_names[rel1.Y_] << ", " << r1-r2 << std::endl;
+		} else {
+			std::cout << sample_names[rel1.X_] << ", " << sample_names[rel1.Y_];
+			/*for (int y=0; y<rel_size; y++) {
+				std::cout << ", " << r1-r2[y];
+			}*/
+			std::cout << std::endl;
+		}
 	}
 	return 0;					//Since everything worked, return 0!.
 }

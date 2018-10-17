@@ -21,11 +21,12 @@ int read_bed(int argc, char *argv[])
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("Convert a bed file into a stt file.");
-	env.required_arg('n',"number",  n,	"an error occurred while setting the name of the input file.", "the number of individuals encoded in the bed file (default 0)");
-	env.optional_arg('o',"output",  sttfile,	"an error occurred while setting the name of the input file.", "the out file for the program (default stdout)");
-	env.positional_arg('i',"input", bedfile,	"an error occurred while setting the name of the input file.", "the input file for the program (default stdin)");
+	env.required_arg('n',"number",  n,	"an error occurred setting the number of individuals encoded.", "the number of individuals encoded in the bed file (default 0)");
+	env.optional_arg('o',"output",  sttfile,	"an error occurred while setting the name of the output file.", "the out file for the program (default stdout)");
+	//env.positional_arg('i',"input", bedfile,	"an error occurred while setting the name of the input file.", "the input file for the program (default stdin)");
+	env.optional_arg('i',"input", bedfile,	"an error occurred while setting the name of the input file.", "the input file for the program (default stdin)");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
-	env.flag(	'b', "binary", 	&binary,	&flag_set, 	"an error occurred while displaying the help message.", "output in binary format");
+	env.flag(	'b', "binary", 	&binary,	&flag_set, 	"an error occurred while setting binary flag.", "output in binary format");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.

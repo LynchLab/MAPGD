@@ -111,7 +111,7 @@ Pooled_data::write (std::ostream& out) const
 			out << fixedll[s];
 //			out << majorll[s];
 		} else {
-			out << "\t.../.../.../..";
+			out << "\t.../.../.../...";
 		}
 	}
 }

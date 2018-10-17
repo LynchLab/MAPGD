@@ -70,7 +70,7 @@ else
 endif
 
 ifeq ($(HAVE_MAN), yes)
-	CXXFLAGS += -DUSE_MAN -DPATH=\"$(DOCPATH)\"
+	CXXFLAGS += -DUSE_MAN -DDOCPATH=\"$(DESTDIR)$(DOCPATH)\" -DMANPATH=\"$(DESTDIR)$(DOCPATH)/man\" -DPATH=\"$(DESTDIR)$(datarootdir)/mapgd\" -DPWD=\"`pwd`\" 
 endif
 
 ifeq ($(HAVE_HTS), yes)
@@ -95,7 +95,7 @@ endif
 #	CXXFLAGS += $(NOEIGEN)
 #endif
 
-DOCDIR=../../docs
+#DOCDIR=../../docs
 
 ifeq ($(UNSTABLE), yes)
 	SUBDIR += testing
@@ -221,20 +221,25 @@ all : gzstream $(TARGET)
 #	python setup.py clean
 #	python setup.py install
 
+
+#lib/%.o: lib/%.c
+#        $(CC) -fPIC -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+
 $(OBJDIR)/%.o: %.cc
-	$(FINAL_CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
+
+$(MPI_OBJ): mpi/mpi_relatedness.cc  
+	$(MPICXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
 
 gzstream :
 	$(MAKE) -C gzstream 
 .PHONY: gzstream
 
-$(TARGET) : $(OBJ)
+$(TARGET) : $(OBJ) $(MPI_OBJ)
 	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o ../../bin/$(TARGET) $(LDLIBS) $(MPI_LDLIBS)
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o po/mapgd.pot --copyright-holder="Matthew Ackerman" --package-name="mapgd" --package-version=$(MINOR) --msgid-bugs-address="matthew.s.ackerman@gmail.com"  $(addsuffix /*.cc, $(SUBDIR)) *.cc
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
-#$(MPI_OBJ) : $(MPI_OBJ:.o=.cc)
-#	$(MPICXX) $(CXXFLAGS) -c $(@:.o=.cc) -o $@
 
 DATA_SOURCE=data_types/*.cc
 
@@ -255,32 +260,37 @@ increment:
 	date +%F >> VERSION
 .PHONY: increment
 
-install: all
-	install -m 0755 ../../bin/$(TARGET) $(DESTDIR)$(bindir)/$(TARGET)
+install: docs all
+	install -d $(DESTDIR)$(bindir)
+	install -m 0755 -D ../../bin/$(TARGET) $(DESTDIR)$(bindir)
+	
 .PHONY: install
 
 
 docs:
+	install -d $(DESTDIR)$(datarootdir)/mapgd
+	install -d $(DESTDIR)$(DOCPATH)/man/man1
+	cp keys.txt $(DESTDIR)$(datarootdir)/mapgd
 	$(eval COMMAND=`$(TARGET) -a`) 
 	echo -n $(COMMAND)
-	rm -f $(DOCDIR)/man/man1/*.gz
+	rm -f $(DESTDIR)$(DOCPATH)/man/man1/*.gz
 	for COM in $(COMMAND); do \
-		if [ ! -f $(DOCDIR)/man/man1/mapgd-$$COM.1.gz ]; then \
+		if [ ! -f $(DESTDIR)$(DOCPATH)/man/man1/mapgd-$$COM.1.gz ]; then \
 			echo $(TARGET) $$COM \$$1 > mapgd-$$COM;  \
 			chmod 777 mapgd-$$COM;  \
-			help2man ./mapgd-$$COM > $(DOCDIR)/man/man1/mapgd-$$COM.1; \
-			gzip $(DOCDIR)/man/man1/mapgd-$$COM.1; \
+			help2man ./mapgd-$$COM > $(DESTDIR)$(DOCPATH)/man/man1/mapgd-$$COM.1; \
+			gzip $(DESTDIR)$(DOCPATH)/man/man1/mapgd-$$COM.1; \
 			rm mapgd-$$COM; \
 		fi \
 	done
 	$(eval KEYS=`$(TARGET) keyinfo -a`) 
 	echo -n $(KEYS)
 	for KEY in $(KEYS); do \
-		if [ ! -f $(DOCDIR)/man/man1/mapgd-$$TYPE.1.gz ]; then \
+		if [ ! -f $(DESTDIR)$(DOCPATH)/man/man1/mapgd-$$TYPE.1.gz ]; then \
 			echo $(TARGET) keyinfo $$KEY \$$1 > mapgd-$$KEY;  \
 			chmod 777 mapgd-$$KEY;  \
-			help2man ./mapgd-$$KEY > $(DOCDIR)/man/man1/mapgd-$$KEY.1; \
-			gzip $(DOCDIR)/man/man1/mapgd-$$KEY.1; \
+			help2man ./mapgd-$$KEY > $(DESTDIR)$(DOCPATH)/man/man1/mapgd-$$KEY.1; \
+			gzip $(DESTDIR)$(DOCPATH)/man/man1/mapgd-$$KEY.1; \
 			rm mapgd-$$KEY; \
 		fi \
 	done

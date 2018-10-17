@@ -53,7 +53,11 @@ int read_vcf(int argc, char *argv[])
 	Vcf_data vcf;
 	File_index index;
 
-	vcf_in.open(vcffile.c_str(), READ);
+	if (vcffile!="")
+		vcf_in.open(vcffile.c_str(), READ);
+	else
+		vcf_in.open(READ);
+
 	vcf=vcf_in.read_header();
 	
 	if (indexfile=="") {
@@ -63,7 +67,6 @@ int read_vcf(int argc, char *argv[])
 	}
 
 	std::vector<std::string> names=vcf.get_sample_names();
-
 
 	if (!state){	
 		Indexed_file <Population> gcf_out;
@@ -80,13 +83,18 @@ int read_vcf(int argc, char *argv[])
 
 		Allele allele(header_line);
 
+		std::cerr << "Where is the segfault?\n";
+
 //		map_out.open(mapfile.c_str(), WRITE);
 //		map_out.write_header(allele);
 
 		while(vcf_in.table_is_open() )
 		{
+			std::cerr << "reading?\n";
 			vcf_in.read(vcf);
+			std::cerr << "got?\n";
 			vcf.get(index, pop);
+			std::cerr << "write?\n";
 			gcf_out.write(pop);
 		}
 

@@ -153,10 +153,8 @@ Plink_data::trait_size(void) const
 Plink_data
 Plink_file::read_header(void)
 {
-	std::cerr << "Ignoring header\n";
 	int n=1;
 	Plink_data plink(n);
 	table_open_=true;
-	std::cerr << "returning plink\n";
 	return plink;
 }

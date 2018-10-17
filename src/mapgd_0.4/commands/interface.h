@@ -299,6 +299,7 @@ public:
 		args.push_back(Argument(opt_, lopt_, parm_, emsg_, umsg_) );
 		positional_args.push_back(&args.back() );
 	}
+
 	template <class Type>
 	void positional_arg (Type &parm_, char *emsg_, char*umsg_)
 	{

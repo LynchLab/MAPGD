@@ -61,6 +61,7 @@ Vcf_file::read (Vcf_data &vcf)
 			fprintf(stderr, gettext("mapgd:%s:%d: attempt to read from file failed.\n"), __FILE__, __LINE__ );
 			close_table();
 		}
+		bcf_unpack(vcf.record_, BCF_UN_ALL);
 	} else {
 		fprintf(stderr, gettext("mapgd:%s:%d: attempt to read from unopened file.\n"), __FILE__, __LINE__ );
 		exit(0);
@@ -90,7 +91,6 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 
 	std::string id=std::to_string(abs_pos);
 
-	//std::cerr << __LINE__ << std::endl;
 	bcf_update_id(header_, record_, id.c_str() );
 
 	if (allele.major==allele.ref)
@@ -115,9 +115,7 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 			++dp_it;
 			gt_it+=2;
 		}
-		//std::cerr << __LINE__ << std::endl;
 	} else {
-		//std::cerr << __LINE__ << std::endl;
 		freq=1.-freq;
 		sprintf(alleles,"%c,%c", Base::btoc(allele.ref), Base::btoc(allele.major) );
 
@@ -139,15 +137,10 @@ Vcf_data::put(const File_index &index, const Allele &allele, const Population &p
 			gt_it+=2;
 		}
 	}
-	//std::cerr << __LINE__ << std::endl;
 	bcf_update_alleles_str(header_, record_, alleles);
-	//std::cerr << __LINE__ << std::endl;
 	bcf_update_format_float(header_, record_, "GP", gp, size*3);
-	//std::cerr << __LINE__ << " " << size << std::endl;
 	bcf_update_genotypes(header_, record_, gt, size*2);
-	//std::cerr << __LINE__ << std::endl;
         bcf_update_format_int32(header_, record_, "DP", dp, size);
-	//std::cerr << "done ..." << __LINE__ << std::endl;
 	delete [] gp;
 	delete [] gt;
 	delete [] dp;
@@ -168,6 +161,7 @@ Vcf_data::put(const Data *data, ...)
 id1_t
 Vcf_data::get(State &state) const
 {
+	std::cerr << "Hmmm...\n";
 	char alleles[4];
 	int size=0;//int(record_->n_sample)*2;
 
@@ -233,37 +227,71 @@ Vcf_data::get(State &state) const
 	return 0;
 }
 #endif
+
 id1_t
 Vcf_data::get(const File_index &index, Population &pop) const
 {
 	char alleles[4];
 	size_t size=record_->n_sample;
 
+	uint32_t *genotype_qualities=new uint32_t[sample_size_*3];
+	uint32_t *gq_it=genotype_qualities;
 
-	float *genotype_qualities=new float[sample_size_*3];
-	float *vit=genotype_qualities;
+	float *genotype_probabilities=new float[sample_size_*3];
+	float *gp_it=genotype_probabilities;
+
 	int *sequence_depth=new int[sample_size_];
 	int *dit=sequence_depth;	
 
 	int genotype_qualities_size=sample_size_*3;
 	int sequence_depth_size=sample_size_;
 
-	bcf_get_format_float(header_, record_, "GQ", &genotype_qualities, &genotype_qualities_size);
 	bcf_get_format_int32(header_, record_, "DP", &sequence_depth, &sequence_depth_size);
 
 	std::vector<Genotype>::iterator end=pop.likelihoods.end();
-	for (std::vector<Genotype>::iterator it=pop.likelihoods.begin(); it<end; ++it)
-	{
-			it->mm=(float)(exp(vit[0]) );
-			it->Mm=(float)(exp(vit[1]) );
-			it->MM=(float)(exp(vit[2]) );
+	 
+	if (bcf_get_fmt(header_, record_, "GQ")!=0) {
+
+		bcf_get_format_int32(header_, record_, "GQ", &genotype_qualities, &genotype_qualities_size);
+
+		for (std::vector<Genotype>::iterator it=pop.likelihoods.begin(); it<end; ++it)
+		{
+			it->mm=pow(10., -gq_it[0]/10. );
+			it->Mm=pow(10., -gq_it[1]/10. );
+			it->MM=pow(10., -gq_it[2]/10. );
 			it->N=*(++dit);
-			vit+=3;
+			std::cerr << *dit << std::endl;
+			gq_it+=3;
+		}
+	} else if (bcf_get_fmt(header_, record_, "GP")!=0) {
+
+		bcf_get_format_float(header_, record_, "GP", &genotype_probabilities, &genotype_qualities_size);
+
+		for (std::vector<Genotype>::iterator it=pop.likelihoods.begin(); it<end; ++it)
+		{
+			it->mm=pow(10., -gp_it[0]/10.);
+			it->Mm=pow(10., -gp_it[1]/10.);
+			it->MM=pow(10., -gp_it[2]/10.);
+			it->N=*(++dit);
+			std::cerr << *dit << std::endl;
+			gp_it+=3;
+		}
 	}
 
+
 	int allele_count=1;
-	bcf_get_info_float(header_, record_, "AF", &pop.m, &allele_count);
-	//bcf_get_info_float(header_, record_, "", &pop.f, 1);
+
+	if (bcf_get_fmt(header_, record_, "AF")!=0)
+	{
+		bcf_get_info_float(header_, record_, "AF", &pop.m, &allele_count);
+		std::cerr << "Got AF!" << std::endl;
+	}
+	else 
+	{
+		pop.m = 0; 
+	}
+
+	std::cerr << "Good: " << record_->unpacked << ": " << std::endl;
 
 	if (pop.m>0.5)
 	{
@@ -280,6 +308,9 @@ Vcf_data::get(const File_index &index, Population &pop) const
 		pop.major=Base::ctob(record_->d.allele[0][0]);
 		pop.minor=Base::ctob(record_->d.allele[1][0]);
 	}
+
+	std::cerr << "All done.!\n";
+
 	pop.set_abs_pos(index.get_abs_pos(record_->rid, record_->pos+1) );
 	return 0;
 }

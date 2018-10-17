@@ -61,6 +61,10 @@ public:
 	float_t f;		//!< HW statistic.
 	float_t h;		//!< heterozygosity.
 
+	float_t bias;		//!< reference bias.
+	float_t pbias;		//!< probability of reference bias.
+	bool print_bias;	//!< probability of reference bias.
+
 	float_t gof; 		//!< gof statistic.
 
 	Allele & operator=(const Allele &);				//!< use the = operator to assign Allele.

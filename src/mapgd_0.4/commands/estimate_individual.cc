@@ -34,7 +34,7 @@ float_t compare (Allele mle1, Allele mle2, Locus &site1, Locus &site2,  models &
 /// Estimates a number of summary statistics from short read sequences.
 /**
  */
-Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton){
+Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton, bool bias){
 
 #ifdef MPI
 	std::cerr << "HOW THE HELL IS THIS HAPPENING!\n";
@@ -133,6 +133,12 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	temp.Mm=2.*mle.freq*(1.-mle.freq); 			//Hardy-Weinberg equilibrium.
 	temp.mm=pow(1.-mle.freq, 2);				//?
 	mle.hwell=model.loglikelihood(site, temp);		//?
+	
+	if (bias){
+		get_bias(site, mle);
+		mle.print_bias=true;
+	}
+
 	/*if (site.getcount(0)==site.getcount(1) ){
 		mle.major=4;
 		mle.minor=4;
@@ -212,6 +218,7 @@ int estimateInd(int argc, char *argv[])
 	bool quite=false;
 	bool noheader=false;
 	bool newton=false;
+	bool bias=false;
 
 	int rnseed=3;
 
@@ -246,6 +253,7 @@ int estimateInd(int argc, char *argv[])
 
 	env.positional_arg('i',"input",	infile,	"No input file specified", "the input file for the program (default stdout).");
 
+	env.flag(	'b',"bias",  &bias,	&flag_set, 	"takes no argument", "print major allele bias.");
 	env.flag(	'N',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a header-line.");
 	env.flag(	'n',"newton", 	&newton,	&flag_set, 	"takes no argument", "use Newton-Raphson likelihood maximization (not working).");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
@@ -348,8 +356,8 @@ int estimateInd(int argc, char *argv[])
 					std::vector <float_t> gofs(ind.size() );
 		//			buffer_locus[c].unmaskall();
 					buffer_locus[c].unmask(ind);
+					buffer_mle[c]=estimate(buffer_locus[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton, bias);
 
-					buffer_mle[c]=estimate (buffer_locus[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton);
 					#ifndef NOOMP
 					#pragma omp critical
 					#endif

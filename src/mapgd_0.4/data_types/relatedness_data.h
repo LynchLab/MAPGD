@@ -23,13 +23,14 @@ private:
 	static Data * create(const std::vector <std::string> & Columns){
 		return new Relatedness(Columns);
 	}
+	bool likelihoods_;			//!< indicate whether likelihoods are recorded.
 public:
 	char delim;	//!< the delimiter used when reading/writing the class in text mode.	
 
-//	std::string X_;	//!< the name of the first (X) sample in the compairison.
-//	std::string Y_;	//!< the name of the second (Y) sample in the compairison.
+	std::string X_str_;	//!< the name of the first (X) sample in the compairison.
+	std::string Y_str_;	//!< the name of the second (Y) sample in the compairison.
 
-	id0_t X_, Y_;
+	id0_t X_, Y_; 	//!< the 
 
 	id1_t sites;	//!< the number of sites analyzed.
 
@@ -48,8 +49,8 @@ public:
 	float_t null_ll_, max_ll_;
 
 	Relatedness();	
-	//! delegating a neccisary constructor.	
-	Relatedness(const std::vector <std::string> &) : Relatedness(){}; 
+	//! delegating a necessary constructor.	
+	Relatedness(const std::vector <std::string> &);
 	//! construct with names. 
 	Relatedness(const std::string &, const std::string &);		  
 

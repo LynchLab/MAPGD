@@ -31,24 +31,19 @@ class Plink_record
 
 	Plink_record()
 	{
-		std::cerr << "allocating 0.\n";
 		n_values=0;
 		values=NULL;
-		std::cerr << "done.\n";
 	}
 
 	Plink_record(size_t n)
 	{
-		std::cerr << "allocating " << n << std::endl;
 		n_values=n;
 		values=new T[n_values];
-		std::cerr << "done.\n";
 	}
 
 	void
 	resize(size_t n)
 	{
-		std::cerr << "resizing from " << n_values << " to " << n << std::endl;
 		if(n_values!=n)
 		{
 			if (values!=NULL)
@@ -59,25 +54,21 @@ class Plink_record
 			n_values=n;
 			values=new T[n_values];
 		}
-		std::cerr << "done.\n";
 	}
 
 	~Plink_record()
 	{
-		std::cerr << "deleting " << n_values << std::endl;
 		if (values!=NULL)
 		{
 			delete values;
 			values=NULL;
 		}
-		std::cerr << "done.\n";
 	}
 
 	Plink_record& operator =(const Plink_record& rhs)
 	{
 		if (&rhs != this) 
 		{
-			std::cerr << "copying " << rhs.n_values << " to " << n_values << std::endl;
 			family_id=rhs.family_id;
 			individual_id=rhs.individual_id;
 			maternal_id=rhs.maternal_id;
@@ -85,18 +76,14 @@ class Plink_record
 			sex=rhs.sex;
 			if (n_values!=rhs.n_values) 
 			{
-				std::cerr << values << std::endl;
 				if (values!=NULL)
 				{
-					std::cerr << "BYE!" << std::endl;
 					delete values;
 				}
 				values=new T[n_values];
 				n_values=rhs.n_values;
 			}
-			std::cerr << "memcpy " << n_values << std::endl;
 			memcpy(values, rhs.values, n_values*sizeof(T) );
-			std::cerr << "done " << std::endl;
 		}
 		return *this;
 	}

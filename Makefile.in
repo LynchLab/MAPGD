@@ -1,5 +1,7 @@
 SUBDIRS=src
 
+PACKAGE_TARNAME = mapgd
+
 prefix      = @prefix@
 exec_prefix = @exec_prefix@
 bindir      = @bindir@
