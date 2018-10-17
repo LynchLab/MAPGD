@@ -75,6 +75,11 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	else
 		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);//trim bad clones and re-fit the model.
 	} else {
+		if (bias){
+			get_bias(site, mle);
+			mle.print_bias=true;
+		}
+
 		return mle;
 	}
 
