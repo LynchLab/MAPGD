@@ -215,7 +215,10 @@ Allele & Allele::operator=(const Allele & x) {
 }
 	
 std::string Allele::header(void) const {
-	return "@SCFNAME    \tPOS\tREF\tMAJOR\tMINOR\tCOVERAG\tMJ_FREQ\tVR_FREQ\tERROR\tNULL_ER\tNULL_E2\tF_STAT\tMM_FREQ\tMm_FREQ\tmm_FREQ\tHETERO\tPOLY_LR\tHWE_LR\tGOF\tEF_CHRM\tIND_INC\tIND_CUT\tBEST_LL\n"; 
+	if (print_bias)
+		return "@SCFNAME    \tPOS\tREF\tMAJOR\tMINOR\tCOVERAG\tMJ_FREQ\tVR_FREQ\tERROR\tNULL_ER\tNULL_E2\tF_STAT\tMM_FREQ\tMm_FREQ\tmm_FREQ\tHETERO\tPOLY_LR\tHWE_LR\tGOF\tEF_CHRM\tIND_INC\tIND_CUT\tREF_BIAS\tP_REF_BS\tBEST_LL\n"; 
+	else
+		return "@SCFNAME    \tPOS\tREF\tMAJOR\tMINOR\tCOVERAG\tMJ_FREQ\tVR_FREQ\tERROR\tNULL_ER\tNULL_E2\tF_STAT\tMM_FREQ\tMm_FREQ\tmm_FREQ\tHETERO\tPOLY_LR\tHWE_LR\tGOF\tEF_CHRM\tIND_INC\tIND_CUT\tBEST_LL\n"; 
 }
 
 size_t Allele::size() const{

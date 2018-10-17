@@ -326,6 +326,7 @@ int estimateInd(int argc, char *argv[])
 	std::fill_n(buffer_locus, BUFFER_SIZE, locus_in);
 
 	map_out.set_index(pro_in.get_index() );
+	if(bias) buffer_mle[0].print_bias=true;
 	map_out.write_header(buffer_mle[0]);
 
 	uint32_t all_read=0;
