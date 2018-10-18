@@ -15,6 +15,8 @@ Locus::Locus(void)
 	sample_names_.clear();
 	abs_pos_=0;
 	ref.base=4;
+	all_unredacted_=true;
+	redacted_samples_.clear();
 }
 
 /*! \brief Locus is initialized to abs_pos_=0, id1=0, and set to contain 0 samples.
@@ -28,6 +30,11 @@ Locus::Locus(const count_t &size)
 		snprintf(buffer, 20, "Sample_%d", x+1);
 		sample_names_.push_back(std::string(buffer) );
 	}
+
+	all_unredacted_=true;
+	redacted_samples_.resize(size);
+	std::fill(redacted_samples_.begin(), redacted_samples_.end(),false);
+	
 	abs_pos_=0;
 	ref.base=4;
 }
@@ -46,6 +53,10 @@ Locus::Locus(const std::vector<std::string> &column_names)
 	}
 	abs_pos_=0;
 	ref.base=4;
+
+	all_unredacted_=true;
+	redacted_samples_.resize(sample_names_.size() );
+	std::fill(redacted_samples_.begin(), redacted_samples_.end(),false);
 }
 
 Locus & 
@@ -56,6 +67,9 @@ Locus::operator =(const Locus& rhs)
         sample=rhs.sample; 
 	sample_names_.clear();
 	sample_names_=rhs.sample_names_;
+	redacted_samples_.clear();
+	redacted_samples_=rhs.redacted_samples_;
+	all_unredacted_=rhs.all_unredacted_;
         abs_pos_=rhs.abs_pos_;
 	return *this;
 }
@@ -66,6 +80,10 @@ Locus::operator+=(const Locus &rhs)
 	if (rhs.abs_pos_==this->abs_pos_ ){
 		sample.reserve( sample.size() + rhs.sample.size() ); // preallocate memory
 		sample.insert( sample.end(), rhs.sample.begin(), rhs.sample.end() );
+		sample_names_.reserve(sample_names_.size() + rhs.sample_names_.size() );
+		sample_names_.insert( sample_names_.end(), rhs.sample_names_.begin(), rhs.sample_names_.end() );
+		redacted_samples_.reserve(redacted_samples_.size()+rhs.redacted_samples_.size() );
+		redacted_samples_.insert(redacted_samples_.end(), rhs.redacted_samples_.begin(), rhs.redacted_samples_.end() );
 		return *this;
 	}
 	std::cerr << __FILE__ << ":" << __LINE__ << "operator undefined for different loci.\n";
@@ -267,6 +285,8 @@ void
 Locus::resize(const size_t &c)
 {
 	sample.resize(c);
+	sample_names_.resize(c);
+	redacted_samples_.resize(c);
 }
 
 void
@@ -279,9 +299,11 @@ Locus::mask_low_cov( const count_t &dp )
 void
 Locus::write (std::ostream& out) const
 {
+	std::vector <bool>::const_iterator r=redacted_samples_.cbegin();
 	out << ref;
 	for (std::vector <quartet_t>::const_iterator s=sample.cbegin(); s<sample.cend(); s++) {
-		out << '\t' << *s;
+		if (!*(r++) ) 
+			out << '\t' << *s;
 	}
 }
 
@@ -289,7 +311,12 @@ void
 Locus::write_binary (std::ostream& out) const
 {
 	out.write((char *)&ref.base, sizeof(gt_t) );
-	out.write((char *)&sample[0], (size_t)(sample.size()*sizeof(quartet_t) ) );
+	if (all_unredacted_)
+		out.write((char *)&sample[0], (size_t)(sample.size()*sizeof(quartet_t) ) );
+	else {
+		for (std::vector <quartet_t>::const_iterator s=sample.cbegin(); s<sample.cend(); s++) 
+			out.write( (char *)&(*s), (size_t)(sizeof(quartet_t) ) );
+	}
 }
 
 void
@@ -350,9 +377,11 @@ mpileup (std::istream& in, Locus& x, const int &offset, const int &ncolumns)
 std::string 
 Locus::header(void) const
 {
+
 	std::string line="@ID0       \tID1\tREF";
 	for (size_t s=0; s<sample_names_.size(); ++s) {
-		line+=('\t'+sample_names_[s]);
+		if (!redacted_samples_[s] ) 
+			line+=('\t'+sample_names_[s]);
 	}
 	line+='\n';
 	return line;
@@ -468,4 +497,43 @@ const bool
 Locus::get_binary(void) const
 {
 	return binary;
+}
+
+void 
+Locus::unredact_all(void)
+{
+	all_unredacted_=true;
+	for (int x=0;x<redacted_samples_.size();++x) {
+		redacted_samples_[x]=false;
+	}
+}
+
+void 
+Locus::redact_all(void)
+{
+	all_unredacted_=false;
+	for (int x=0;x<redacted_samples_.size();++x) {
+		redacted_samples_[x]=true;
+	}
+}
+
+void 
+Locus::unredact(const size_t &x)
+{
+	//if ( ) {
+		redacted_samples_[x]=false;
+//		all_unredacted_=all_unredacted();
+	/*}
+	else {
+	}*/
+}
+
+void 
+Locus::redact(const size_t &x)
+{
+	all_unredacted_=false;
+	//if ( )
+		redacted_samples_[x]=true;
+	//else {
+	//}	
 }

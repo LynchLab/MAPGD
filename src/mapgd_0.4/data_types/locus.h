@@ -15,7 +15,9 @@ class Locus : virtual public Indexed_data{
 private:
 	//NOT READ READ/WRITE!!
 	std::vector <std::string> sample_names_;		//!< names of the samples sequenced.
-
+	std::vector <bool> redacted_samples_;			//!< flag (initialized to false) indicating that the sample is present in the 
+								// input, but should be treated as absent after reading.
+	bool all_unredacted_;
 	//READ READ/WRITE!!
 	using Indexed_data::abs_pos_;
 
@@ -28,10 +30,10 @@ private:
 public:
 	void write_binary (std::ostream& out) const;
 	void read_binary (std::istream& in);
+	std::vector <quartet_t> sample;			//!< The five bases A/C/G/T/N;
 	/* BEGIN DATA BLOCK */
 	/* these need to be changed to private */
 	gt_t sorted_[5];				//!< an array to allow sorted access to quartets.
-	std::vector <quartet_t> sample;			//!< The five bases A/C/G/T/N;
 	Base ref;
 	/* END DATA BLOCK */
 
@@ -137,7 +139,11 @@ public:
 	set_sample_names(const std::vector <std::string>& sample_names) 
 	{
 		sample_names_=sample_names;
-		if (sample_names_.size()!=sample.size() ) sample.assign(sample_names_.size(), quartet() );
+		if (sample_names_.size()!=sample.size() ) {
+			sample.assign(sample_names_.size(), quartet() );
+			redacted_samples_.assign(sample_names_.size(), false );
+		}
+		
 	};		
 
 	/* \defgroup LOCUS_DATA Inherited members
@@ -158,6 +164,12 @@ public:
 	const std::string sql_header(void) const;				
 	const std::string sql_column_names(void) const;				
 	const std::string sql_values(void) const;				
+
+	void unredact_all();
+	void redact_all();
+
+	void redact(const size_t &);
+	void unredact(const size_t &);
 
 	void sql_read(std::istream &) override;
 	/** @}*/

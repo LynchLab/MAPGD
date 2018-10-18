@@ -360,7 +360,7 @@ int estimateInd(int argc, char *argv[])
 				}
 				if(estimate_me) {
 					std::vector <float_t> gofs(ind.size() );
-		//			buffer_locus[c].unmaskall();
+					buffer_locus[c].maskall();
 					buffer_locus[c].unmask(ind);
 					buffer_mle[c]=estimate(buffer_locus[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton, bias);
 

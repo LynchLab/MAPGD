@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mapgd 35\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2018-10-17 15:44+0100\n"
+"POT-Creation-Date: 2018-10-18 14:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -161,6 +161,16 @@ msgid ""
 "mapgd:%s:%d: allele and locus have different positions (private abs_pos).\n"
 msgstr ""
 
+#: commands/interface.cc:97
+#, c-format
+msgid "mapgd:%s:%d: arg_set_region: unexpected error parsing %s\n"
+msgstr ""
+
+#: commands/interface.cc:82
+#, c-format
+msgid "mapgd:%s:%d: arg_set_vector_str: unexpected error parsing %s\n"
+msgstr ""
+
 #: data_conversion/vcf_file.cc:61
 #, c-format
 msgid "mapgd:%s:%d: attempt to read from file failed.\n"
@@ -188,6 +198,13 @@ msgstr ""
 msgid "mapgd:%s:%d: cannot find keys.txt.\n"
 msgstr ""
 
+#: commands/interface.cc:118 commands/interface.cc:165
+#, c-format
+msgid ""
+"mapgd:%s:%d: cannot format %s into a string. Please specify A:B:step, where "
+"A, B and step are all integers.\n"
+msgstr ""
+
 #: io/map_file.cc:73 io/map_file.cc:89
 #, c-format
 msgid "mapgd:%s:%d: cannot open %s for reading.\n"
@@ -204,6 +221,14 @@ msgstr ""
 #: data_conversion/vcf_file.cc:348
 #, c-format
 msgid "mapgd:%s:%d: cannot open file in std::ios_base::openmode &mode=%d.\n"
+msgstr ""
+
+#: commands/interface.cc:129 commands/interface.cc:139
+#: commands/interface.cc:176 commands/interface.cc:186
+#, c-format
+msgid ""
+"mapgd:%s:%d: cannot parse string %s into exactly two integers. Please "
+"specify min:max, where min and max are both integers.\n"
 msgstr ""
 
 #: data_conversion/bed_file.cc:88

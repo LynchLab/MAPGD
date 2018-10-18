@@ -79,7 +79,7 @@ arg_set_vector_str(int argc, char **argv, void *parm)
 		if (n+1==argc) return n+1;
 		++n;
 	} 
-	std::cerr << __FILE__ << ":" << __LINE__ << ": error parsing " << argv[1] << std::endl;
+	fprintf(stderr, gettext("mapgd:%s:%d: arg_set_vector_str: unexpected error parsing %s\n"), __FILE__, __LINE__, argv[1] );
 	exit(1);
 }
 
@@ -94,7 +94,7 @@ arg_set_region(int argc, char **argv, void *parm)
 		}
 		return ARG_ERROR; 
 	} 
-	std::cerr << __FILE__ << ":" << __LINE__ << " arg_set_region:error parsing " << argv[1] << std::endl;
+	fprintf(stderr, gettext("mapgd:%s:%d: arg_set_region: unexpected error parsing %s\n"), __FILE__, __LINE__, argv[1] );
 	exit(1);
 }
 
@@ -109,16 +109,24 @@ arg_set_vector_ui(int argc, char **argv, void *parm)
 		for (size_t x=0; x<elems.size(); ++x){
 			if ( isint(elems[x].c_str() ) ) v->push_back(atoi(elems[x].c_str() )-1) ;
 			else {
-				std::vector<std::string> intpair=split(elems[x], '-');
-				if (intpair.size()==2){
+				std::vector<std::string> intpair=split(elems[x], ':');
+				int step=1;
+				if (intpair.size()==3){
+					if ( isint(intpair[2].c_str() ) ){
+						step=atoi(intpair[2].c_str());
+					} else {
+						fprintf(stderr, gettext("mapgd:%s:%d: cannot format %s into a string. Please specify A:B:step, where A, B and step are all integers.\n"), __FILE__, __LINE__, intpair[2].c_str() );
+					};
+				}
+				if (intpair.size()==2 || intpair.size() == 3){
 					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
-						for (unsigned int y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); ++y){
+						for (unsigned int y=atoi(intpair[0].c_str() ); y<=atoi(intpair[1].c_str() ); y+=step){
 							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
 								v->push_back(y-1);
 							}
 						};
 					} else {
-						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+						fprintf(stderr, gettext("mapgd:%s:%d: cannot parse string %s into exactly two integers. Please specify min:max, where min and max are both integers.\n"), __FILE__, __LINE__, elems[x].c_str() );
 					};
 				} else {
 					std::vector<std::string> intpair=split(elems[x], '*');
@@ -128,7 +136,7 @@ arg_set_vector_ui(int argc, char **argv, void *parm)
 						}
 						
 					} else {
-						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+						fprintf(stderr, gettext("mapgd:%s:%d: cannot parse string %s into exactly two integers. Please specify min:max, where min and max are both integers.\n"), __FILE__, __LINE__, elems[x].c_str() );
 					}	
 				};
 			}
@@ -146,57 +154,26 @@ arg_set_vector_uli(int argc, char **argv, void *parm)
 	if (argc>0){
 		std::vector<std::string> elems=split(argv[0], ',');
 		for (size_t x=0; x<elems.size(); ++x){
-			if ( isint(elems[x].c_str() ) ) v->push_back(atol(elems[x].c_str() )-1);
+			if ( isint(elems[x].c_str() ) ) v->push_back(atoi(elems[x].c_str() )-1) ;
 			else {
-				std::vector<std::string> intpair=split(elems[x], '-');
-				if (intpair.size()==2){
-					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
-						for (unsigned long int y=atol(intpair[0].c_str() ); y<=atol(intpair[1].c_str() ); ++y){
-							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
-								v->push_back(y-1);
-							}
-						};
+				std::vector<std::string> intpair=split(elems[x], ':');
+				int step=1;
+				if (intpair.size()==3){
+					if ( isint(intpair[2].c_str() ) ){
+						step=atoi(intpair[2].c_str());
 					} else {
-						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+						fprintf(stderr, gettext("mapgd:%s:%d: cannot format %s into a string. Please specify A:B:step, where A, B and step are all integers.\n"), __FILE__, __LINE__, intpair[2].c_str() );
 					};
-				} else {
-					std::vector<std::string> intpair=split(elems[x], '*');
-					if (intpair.size()==2){
-						for (unsigned int y=0; y<atoi(intpair[1].c_str() ); ++y){
-							v->push_back(atoi(intpair[0].c_str() ) );
-						}
-						
-					} else {
-						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
-					}	
 				}
-			}
-		}
-		return 1;
-	} 
-	std::cerr << __FILE__ << ":" << __LINE__ << " arg_set_vector_uint64_t: error parsing " << argv[1] << std::endl;
-	exit(1);
-}
-
-int
-arg_set_vector_ulli(int argc, char **argv, void *parm)
-{
-	std::vector <unsigned long long int> *v=(std::vector <unsigned long long int> *)(parm);
-	if (argc>0){
-		std::vector<std::string> elems=split(argv[0], ',');
-		for (size_t x=0; x<elems.size(); ++x){
-			if ( isint(elems[x].c_str() ) ) v->push_back(atol(elems[x].c_str() )-1);
-			else {
-				std::vector<std::string> intpair=split(elems[x], '-');
-				if (intpair.size()==2){
+				if (intpair.size()==2 || intpair.size() == 3){
 					if (isint(intpair[0].c_str() ) && isint(intpair[1].c_str() ) ){
-						for (unsigned long long int y=atol(intpair[0].c_str() ); y<=atol(intpair[1].c_str() ); ++y){
+						for (unsigned long int y=atol(intpair[0].c_str() ); y<=atol(intpair[1].c_str() ); y+=step){
 							if (std::find(v->begin(), v->end(), y-1)==v->end() ){
 								v->push_back(y-1);
 							}
 						};
 					} else {
-						std::cerr << __FILE__ << ":" << __LINE__ << " cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+						fprintf(stderr, gettext("mapgd:%s:%d: cannot parse string %s into exactly two integers. Please specify min:max, where min and max are both integers.\n"), __FILE__, __LINE__, elems[x].c_str() );
 					};
 				} else {
 					std::vector<std::string> intpair=split(elems[x], '*');
@@ -206,16 +183,19 @@ arg_set_vector_ulli(int argc, char **argv, void *parm)
 						}
 						
 					} else {
-						std::cerr << "cannot parse string " << elems[x] << " into exactly two integers. Please use x-y formating." << std::endl;
+						fprintf(stderr, gettext("mapgd:%s:%d: cannot parse string %s into exactly two integers. Please specify min:max, where min and max are both integers.\n"), __FILE__, __LINE__, elems[x].c_str() );
 					}	
 				};
 			}
 		}
-		return 1;
+		return 2;
 	} 
-	std::cerr << __FILE__ << ":" << __LINE__ << " arg_set_vector_uint64_t: error parsing " << argv[1] << std::endl;
+	std::cerr << "arg_set_vector_uint32: error parsing " << argv[0] << std::endl;
 	exit(1);
 }
+
+//int
+//arg_set_vector_ulli(int argc, char **argv, void *parm)
 
 // A functor to set integer parameters
 int

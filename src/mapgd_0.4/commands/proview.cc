@@ -43,12 +43,14 @@ int proview(int argc, char *argv[])
 	std::string headerfile="";
 
 	Region region(0,ID1_MAX);
+	std::vector <size_t> ind;
 
 	Environment env;
 	env.set_name("mapgd proview");
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman and Bernhard Haubold");
 	env.set_description("prints data in the '.pro' file quartet format");
+	env.optional_arg('I',"individuals", ind, 	"please provide a list of integers", "the individuals to be present in the output profile. A comma separated list containing no spaces, the python slice notation (i.e. 1:4,7 for 1,2,3,4,7 or 1:5:2,7 for 1,3,5,7 ... can be used to specify this list (default ALL).");
 	env.optional_arg('H',"header",	headerfile,	"You must specify an index file (-H)", "sets the index file (required to use mpileup)");
 	env.optional_arg('m',"minimum",	args.min, 	"please provide a integer number", "prints a line iff at least one line has coverage greater than the minimum coverage (defauld 4)");
 	env.optional_arg('R',"region",	region, 	"please provide a valid region (name:start-stop)", "a string which specifies the region to be viewed");
@@ -165,6 +167,15 @@ int proview(int argc, char *argv[])
 	index=in_files.back()->get_index();
 
 	out_file.set_index(index);
+
+	out_locus.redact_all();
+
+	if (ind.size()==0)
+		for (int x=0; x<sample_names.size(); ++x)
+			ind.push_back(x);
+	for (int x=0; x<ind.size(); ++x){
+		out_locus.unredact(ind[x]);
+	}
 
 	if(!noheader) {
 		out_file.write_header(out_locus);
