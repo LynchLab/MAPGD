@@ -740,7 +740,7 @@ T Flat_file<T>::read_header(void)
 	std::getline(*in_, line);
 	columns=split(line, '\t');
 	if (columns.size()>2){
-		if (columns[0]=="@NAME:"+T::table_name ){
+		if (columns[0]=="@NAME:"+T::table_name || (T::table_names_old.size() > 0 ? columns[0]=="@NAME:"+T::table_names_old[0] : false) ){
 			binary_=std::find(columns.begin(), columns.end(), "FORMAT:BINARY")!=columns.end();
 			concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
 			std::getline(*in_, line);
@@ -782,7 +782,7 @@ T Indexed_file<T>::read_header(void)
 	
 	columns=split(line, '\t');
 	if (columns.size()>2){
-		if (columns[0]=="@NAME:"+T::table_name){
+		if (columns[0]=="@NAME:"+T::table_name || (T::table_names_old.size() > 0 ? columns[0]=="@NAME:"+T::table_names_old[0] : false) ){
 			binary_=std::find(columns.begin(), columns.end(), "FORMAT:BINARY")!=columns.end();
 			concatenated_=std::find(columns.begin(), columns.end(), "CONCATENATED")!=columns.end();
 			std::getline(*in_, line);

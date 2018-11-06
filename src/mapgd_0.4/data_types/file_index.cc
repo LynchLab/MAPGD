@@ -2,6 +2,9 @@
 
 const std::string File_index::file_name=".idx";
 const std::string File_index::table_name="REGIONS";
+const std::vector <std::string> File_index::table_names_old={"SCAFFOLDS"};
+
+
 const bool File_index::binary=false;
 
 const Registration File_index::registered=Registration(File_index::table_name, File_index::create);

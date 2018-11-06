@@ -65,10 +65,13 @@ protected:
 	}*/
 
 public:
-	//! The read function must be defined in the child class.
+	//! The default file extension to use.
 	static const std::string file_name;
-	//! The read function must be defined in the child class.
+	//! The name of the table in SQL databases.
 	static const std::string table_name;
+
+	//! The list of any deprecated table names.
+	static const std::vector <std::string> table_names_old;
 
 	virtual std::string header(void) const = 0;
 

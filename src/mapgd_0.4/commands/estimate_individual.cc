@@ -230,6 +230,9 @@ int estimateInd(int argc, char *argv[])
 	double EMLMIN=0.0001;
 	int MIN=4;
 	double MINGOF=2.00;
+
+	double pbias=FLT_MAX;
+
 	int MAXPITCH=96;
 
 	std::vector <size_t> ind;
@@ -254,6 +257,9 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('H',"header", indexname, 	"please provide an str.", "the name of a .idx file storing scaffold information");
 	env.optional_arg('c',"min-coverage", MIN, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (default 4).");
 	env.optional_arg('g',"good-fit", MINGOF,	"please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
+
+	env.optional_arg('X',"pbias", pbias,	"please provide a float.", "cut-off value for major allele bias (default none).");
+
 	env.optional_arg('B',"max-bad",  MAXPITCH,	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
 
 	env.positional_arg('i',"input",	infile,	"No input file specified", "the input file for the program (default stdout).");
@@ -379,7 +385,7 @@ int estimateInd(int argc, char *argv[])
 		}
                 for (uint32_t x=0; x<readed; ++x){
 			map_out.write(buffer_mle[x]);
-			if (buffer_mle[x].gof<-MINGOF) buffer_locus[x].maskall(); 
+			if (buffer_mle[x].gof<-MINGOF || buffer_mle[x].pbias>=pbias) buffer_locus[x].maskall(); 
 			if (pro_out.is_open() ){
 				pro_out.write(buffer_locus[x]);
 			}

@@ -140,8 +140,11 @@ public:
 	bool is_open(void) const;
 
 	std::string header(void) const;
+
 	static const std::string file_name;
 	static const std::string table_name;
+	static const std::vector <std::string> table_names_old;
+
 	static const bool binary;	//!< Returns the destination table name.
 	size_t size(void) const;
 

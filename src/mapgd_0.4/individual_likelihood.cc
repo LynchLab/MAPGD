@@ -597,31 +597,29 @@ count_t maximize_grid (Locus &site, Allele &a, models &model, std::vector <float
 	return 	excluded;
 }
 
-/* Uses a grid method to maximize the likelihood equations.*/
+/* Calculates the ratio of Major to minor allele, and reports chi-squared p-value of deviation from E=0.5.*/
 void
 get_bias (const Locus &site, Allele &a)
 {
 	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
 
-	float_t ec=0;
-	count_t M, m, tM=0, tm=0;
+	count_t tM=0, tm=0; 	//Total number of [M]ajor and [m]inor reads observed
 
 	while (it!=end){
 		if (!it->masked){
-			M=(*it)[a.major];
-			m=(*it)[a.minor];
-			if (M != 0 && m != 0 ) {tM+=M; tm+=m;}
+			if ( (*it)[a.major] != 0 && (*it)[a.minor] != 0) {tM+=(*it)[a.major]; tm+=(*it)[a.minor];}
 		}
 		++it;
 	}
 
 	a.bias=float_t(tM)/float_t(tM+tm);
-	float_t half=float(tM+tm)/2.;
+	float_t half=float_t(tM+tm)/2.;
 	float_t chi=powf(tM-half, 2)/half+powf(tm-half,2)/half;
-	a.pbias=gsl_cdf_chisq_P(chi, 1);
+	a.pbias=1.-gsl_cdf_chisq_P(chi, 1);
 }
 
+/* Uses a grid method to maximize the likelihood equations.*/
 count_t maximize_analytical (Locus &site, Allele &a, models &model, std::vector <float_t> &gofs, const float_t &maxgof, const size_t &maxpitch)
 {
 	a.MM=1.0;

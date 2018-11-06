@@ -15,7 +15,7 @@ int filter(int argc, char *argv[])
 
 	bool binary=false;
 
-	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_hwell=FLT_MAX, min_hwell=-1, min_freq=0, max_freq=0.5, min_gof=2.;
+	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_hwell=FLT_MAX, min_hwell=-1, min_freq=0, max_freq=0.5, min_gof=2., pbias=FLT_MAX;
 	int max_coverage=CNT_MAX, min_coverage=4, max_pitch=1;
 
 	Environment env;
@@ -34,6 +34,7 @@ int filter(int argc, char *argv[])
 	env.optional_arg('P',"max-poly", max_polyll,"please provide a real number.", "maximum log likelihood of polymorphism (default none).");
 	env.optional_arg('f',"min-hwe", min_hwell, "please provide a real number.", "minimum log likelihood of Hardy-Weinberg disequilibrium (default 0.0).");
 	env.optional_arg('F',"max-hwe", max_hwell, "please provide a real number.", "maximum log likelihood of Hardy-Weinberg disequilibrium (default none).");
+	env.optional_arg('X',"pbias",   pbias, "please provide a real number.", "maximum likelihood of reference bias (default none).");
 	env.optional_arg('q',"min-maf", min_freq, "please provide a real number.", "minimum frequency of minor allele (default 0.0).");
 	env.optional_arg('Q',"max-maf", max_freq, "please provide a real number.", "maximum frequency of minor allele (default 0.5).");
 	env.optional_arg('g',"min-fit", min_gof, "please provide a real number.", "maximum -log (p-value) that a site is bad---not corrected for multiple test (defaults 2.0).");
@@ -77,7 +78,9 @@ int filter(int argc, char *argv[])
 			if (s.gof >= -min_gof){
 			if (s.efc >= min_efc){
 			if (s.coverage >= min_coverage && s.coverage <= max_coverage){
-			if (s.excluded <= max_pitch) map_out.write(s);
+			if (s.excluded <= max_pitch) 
+			if (s.pbias <= pbias) 
+				map_out.write(s);
 		}}}}}}}}}
 		map_in.read(s);
 	}
