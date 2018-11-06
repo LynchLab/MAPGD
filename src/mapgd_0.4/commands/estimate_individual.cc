@@ -231,7 +231,7 @@ int estimateInd(int argc, char *argv[])
 	int MIN=4;
 	double MINGOF=2.00;
 
-	double pbias=FLT_MAX;
+	double pbias=0.0;
 
 	int MAXPITCH=96;
 
@@ -385,7 +385,7 @@ int estimateInd(int argc, char *argv[])
 		}
                 for (uint32_t x=0; x<readed; ++x){
 			map_out.write(buffer_mle[x]);
-			if (buffer_mle[x].gof<-MINGOF || buffer_mle[x].pbias>=pbias) buffer_locus[x].maskall(); 
+			if (buffer_mle[x].gof<-MINGOF || buffer_mle[x].pbias<pbias) buffer_locus[x].maskall(); 
 			if (pro_out.is_open() ){
 				pro_out.write(buffer_locus[x]);
 			}

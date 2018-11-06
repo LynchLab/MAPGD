@@ -601,22 +601,25 @@ count_t maximize_grid (Locus &site, Allele &a, models &model, std::vector <float
 void
 get_bias (const Locus &site, Allele &a)
 {
-	std::vector <quartet_t>::const_iterator it=site.sample.begin(); 
-	std::vector <quartet_t>::const_iterator end=site.sample.end(); 
+	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//The iterator over the quartets, initialized to the beginning of the vector of quartets. 
+	std::vector <quartet_t>::const_iterator end=site.sample.end();  //The end of the vector of quartets. 
 
-	count_t tM=0, tm=0; 	//Total number of [M]ajor and [m]inor reads observed
+	count_t tM=0, tm=0; 	//A running total number of the number of [M]ajor and [m]inor reads observed. Initialized to 0.
 
-	while (it!=end){
-		if (!it->masked){
-			if ( (*it)[a.major] != 0 && (*it)[a.minor] != 0) {tM+=(*it)[a.major]; tm+=(*it)[a.minor];}
+	while (it!=end){	
+		if (!it->masked){	//As long as a site is not masked for some reason (bad GOF, low coverage, etc.
+			if ( (*it)[a.major] != 0 && (*it)[a.minor] != 0) { //Check to see that at least one major and one minor read exist.
+				tM+=(*it)[a.major]; 			// If so, increment the major and minor read totals.
+				tm+=(*it)[a.minor];
+			}
 		}
 		++it;
 	}
 
-	a.bias=float_t(tM)/float_t(tM+tm);
-	float_t half=float_t(tM+tm)/2.;
-	float_t chi=powf(tM-half, 2)/half+powf(tm-half,2)/half;
-	a.pbias=1.-gsl_cdf_chisq_P(chi, 1);
+	a.bias=float_t(tM)/float_t(tM+tm);			//Record the ratio of major to minor reads.
+	float_t half=float_t(tM+tm)/2.;				//Calculate the expectation for the chi^2 test.
+	float_t chi=powf(tM-half, 2)/half+powf(tm-half,2)/half;	//Calculate the statistics
+	a.pbias=1.-gsl_cdf_chisq_P(chi, 1);			//Record 1-cdf.:
 }
 
 /* Uses a grid method to maximize the likelihood equations.*/
