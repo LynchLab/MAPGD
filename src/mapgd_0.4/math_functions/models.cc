@@ -40,7 +40,7 @@ models::~models(void)
 }
 
 
-/*! \breif The probabilities used for calculating goodness of fit.
+/*! \brief The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
 void MMmodelP(const Allele &a, float_t *l)
@@ -57,7 +57,7 @@ void MMmodelP(const Allele &a, float_t *l)
 	}					 	
 }
 
-/*! \breif The probabilities used for calculating goodness of fit.
+/*! \brief The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
 void mmmodelP(const Allele &a, float_t *l)		//Dito, assuming [m]ajor [m]inor.
@@ -74,7 +74,7 @@ void mmmodelP(const Allele &a, float_t *l)		//Dito, assuming [m]ajor [m]inor.
 	}					 	
 }
 
-/*! \breif The probabilities used for calculating goodness of fit.
+/*! \brief The probabilities used for calculating goodness of fit.
  *	(Major Major)
  */ 	
 void MmmodelP(const Allele &a, float_t *l) 	//[M]ajor [m]inor.
@@ -91,7 +91,7 @@ void MmmodelP(const Allele &a, float_t *l) 	//[M]ajor [m]inor.
 	}					 	
 }
 
-/*! \breif The probabilities used for fitting in the maximum likelihood grid search.
+/*! \brief The probabilities used for fitting in the maximum likelihood grid search.
  *	(Major Major)
  */ 	
 void MMmodel(const Allele &a, float_t *prob)
@@ -110,7 +110,7 @@ void MMmodel(const Allele &a, float_t *prob)
 //	std::cout << "ln(1-e)" << prob[a.major] << std::endl;
 }
 
-/*! \breif The probabilities used for fitting in the maximum likelihood grid search.
+/*! \brief The probabilities used for fitting in the maximum likelihood grid search.
  *	(minor minor)
  */
 void mmmodel(const Allele &a, float_t *l)
@@ -122,7 +122,7 @@ void mmmodel(const Allele &a, float_t *l)
 	if (a.error==1.) l[a.minor]=-FLT_MAX;
 }
 
-/*! \breif The probabilities used for fitting in the maximum likelihood grid search.
+/*! \brief The probabilities used for fitting in the maximum likelihood grid search.
  *	(Major minor)
  */
 void Mmmodel(const Allele &a, float_t *l)		//Dito.
@@ -156,7 +156,7 @@ float_t models::loglikelihood(const Locus &site, const Allele &p)
 	float_t logMm=logl(p.Mm);					// Dito Mm.
 	float_t logmm=logl(p.mm);					// Diot mm.
 
-	float_t E0, E1, E2;						//These are some variables to breifly store a portion of our likelihood calculation
+	float_t E0, E1, E2;						//These are some variables to briefly store a portion of our likelihood calculation
 
 	while(it!=end){
 		if (!it->masked){

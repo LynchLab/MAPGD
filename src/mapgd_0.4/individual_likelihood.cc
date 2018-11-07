@@ -599,7 +599,7 @@ count_t maximize_grid (Locus &site, Allele &a, models &model, std::vector <float
 
 /* Calculates the ratio of Major to minor allele, and reports chi-squared p-value of deviation from E=0.5.*/
 void
-get_bias (const Locus &site, Allele &a)
+get_bias (const Locus &site, Allele &a, const count_t &h_min)
 {
 	std::vector <quartet_t>::const_iterator it=site.sample.begin();	//The iterator over the quartets, initialized to the beginning of the vector of quartets. 
 	std::vector <quartet_t>::const_iterator end=site.sample.end();  //The end of the vector of quartets. 
@@ -608,7 +608,7 @@ get_bias (const Locus &site, Allele &a)
 
 	while (it!=end){	
 		if (!it->masked){	//As long as a site is not masked for some reason (bad GOF, low coverage, etc.
-			if ( (*it)[a.major] != 0 && (*it)[a.minor] != 0) { //Check to see that at least one major and one minor read exist.
+			if ( (*it)[a.major] >= h_min && (*it)[a.minor] >= h_min) { //Check to see that at least one major and one minor read exist.
 				tM+=(*it)[a.major]; 			// If so, increment the major and minor read totals.
 				tm+=(*it)[a.minor];
 			}

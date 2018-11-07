@@ -15,7 +15,7 @@ int filter(int argc, char *argv[])
 
 	bool binary=false;
 
-	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_hwell=FLT_MAX, min_hwell=-1, min_freq=0, max_freq=0.5, min_gof=2., pbias=FLT_MAX;
+	float_t f_min=-2., f_max=2., min_efc=0.0, error_max=0.1, max_polyll=FLT_MAX, min_polyll=-1, max_hwell=FLT_MAX, min_hwell=-1, min_freq=0, max_freq=0.5, min_gof=2., pbias=0.0;
 	int max_coverage=CNT_MAX, min_coverage=4, max_pitch=1;
 
 	Environment env;

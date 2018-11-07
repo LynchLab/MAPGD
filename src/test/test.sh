@@ -44,7 +44,7 @@ vcf_header=3		#Size of vcf header
 gcf_header=3		#Size of gcf header
 gof_header=3		#Size of gcf header
 pro_size=30		#number of lines in the pro file
-good_size=9		#number of lines post filtering
+good_size=10		#number of lines post filtering
 good_pool=4		#number of lines post filtering
 idx_size=3		#number of lines in the idx file
 gof_size=8		#number of lines in the idx file
@@ -182,7 +182,7 @@ testa
 
 a="linkage"
 msg="linkage"
-size=13
+size=17
 echo -n "cat linkage | $mapgd $a > $a.out 											"
 $mapgd proview -H $header -n $unicode > temp_pro
 $mapgd allele -i temp_pro -c 1 > temp_map

@@ -34,7 +34,7 @@ float_t compare (Allele mle1, Allele mle2, Locus &site1, Locus &site2,  models &
 /// Estimates a number of summary statistics from short read sequences.
 /**
  */
-Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton, bool bias){
+Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const count_t &MAXPITCH, bool newton, bool bias, const count_t & h_min){
 
 #ifdef MPI
 	std::cerr << "HOW THE HELL IS THIS HAPPENING!\n";
@@ -76,10 +76,9 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 		rexc=maximize_analytical(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);//trim bad clones and re-fit the model.
 	} else {
 		if (bias){
-			get_bias(site, mle);
+			get_bias(site, mle, h_min);
 			mle.print_bias=true;
 		}
-
 		return mle;
 	}
 
@@ -89,6 +88,7 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 
 	mle.ll=model.loglikelihood(site, mle);			//Sets the site.ll to the log likelihood of the best fit (ll). 
 
+	//std::cerr << "Excluded at " << mle.get_abs_pos() << " : " << mle.excluded << " total ll " << mle.ll << std::endl; 
 
 	if (mle.freq<0.5){					//Check to see if the major and minor alleles are reversed.
 		std::swap(mle.major, mle.minor);
@@ -140,7 +140,7 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	mle.hwell=model.loglikelihood(site, temp);		//?
 	
 	if (bias){
-		get_bias(site, mle);
+		get_bias(site, mle, h_min);
 		mle.print_bias=true;
 	}
 
@@ -198,7 +198,7 @@ do_estimate(Allele* buffer_mle, Locus& buffer_site, models& model,
 {
 	std::vector <float_t> gofs(ind.size());
 	buffer_site.unmaskall();
-	*buffer_mle = estimate(buffer_site, model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH);
+	*buffer_mle = estimate(buffer_site, model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, H_MIN);
 	if (2 * (buffer_mle->ll - buffer_mle->monoll) >= 22) {
 		for (size_t i = 0; i < sum_gofs.size(); i++) {
 			sum_gofs[i] += gofs[i];
@@ -230,10 +230,11 @@ int estimateInd(int argc, char *argv[])
 	double EMLMIN=0.0001;
 	int MIN=4;
 	double MINGOF=2.00;
+	int h_min=1;
 
 	double pbias=0.0;
 
-	int MAXPITCH=96;
+	int MAXPITCH=3;
 
 	std::vector <size_t> ind;
 
@@ -259,8 +260,9 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('g',"good-fit", MINGOF,	"please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
 
 	env.optional_arg('X',"pbias", pbias,	"please provide a float.", "cut-off value for major allele bias (default none).");
+	env.optional_arg('x',"min-het", h_min,	"please provide a float.", "minimum number of reads needed from both alleles to go into bias calculations (default 1).");
 
-	env.optional_arg('B',"max-bad",  MAXPITCH,	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 96).");
+	env.optional_arg('B',"max-bad",  MAXPITCH,	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 3).");
 
 	env.positional_arg('i',"input",	infile,	"No input file specified", "the input file for the program (default stdout).");
 
@@ -368,7 +370,7 @@ int estimateInd(int argc, char *argv[])
 					std::vector <float_t> gofs(ind.size() );
 					buffer_locus[c].maskall();
 					buffer_locus[c].unmask(ind);
-					buffer_mle[c]=estimate(buffer_locus[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton, bias);
+					buffer_mle[c]=estimate(buffer_locus[c], model, gofs, MIN, EMLMIN, MINGOF, MAXPITCH, newton, bias, h_min);
 
 					#ifndef NOOMP
 					#pragma omp critical
