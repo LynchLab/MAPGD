@@ -6,6 +6,41 @@ const bool Allele::binary=false;
 
 const Registration Allele::registered=Registration(Allele::table_name, Allele::create);
 
+Allele::Allele ( std::vector<std::string> fields)
+{
+	abs_pos_=0;
+	ref=4;
+	major=4;
+	minor=4;
+	null_error=-FLT_MAX;
+	null_error2=-FLT_MAX;
+	error=-FLT_MAX;
+	f=0;
+	MM=1;
+	Mm=0;
+	mm=0;
+	h=0;
+	N=0;
+	monoll=0;
+	hwell=0;
+	freq=0;
+	ll=0;
+	gof=0;
+	efc=0;
+
+	bias=0;
+	pbias=0;
+
+	if (fields.size()==25)
+		print_bias=true;
+	else
+		print_bias=false;
+
+	excluded=0;
+	delim='\t';
+	coverage=0;
+}
+
 Allele::Allele (void){
 	abs_pos_=0;
 	ref=4;
@@ -57,12 +92,12 @@ void Allele::read(std::istream& in) {
 	line_stream >> efc;
 	line_stream >> N;
 	line_stream >> excluded;
-	line_stream >> ll;
 
 	if (print_bias) {
 		line_stream >> bias;
 		line_stream >> pbias;
 	}
+	line_stream >> ll;
 
 	monoll=ll-monoll/2.;
 	hwell=ll-hwell/2.;

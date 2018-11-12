@@ -1,0 +1,54 @@
+@NAME:KEYS	VERSION:TYPED	FORMAT:TEXT
+@KEY	TYPE	DESC
+KEY	char[7]	a unique label for data stored in columns
+TYPE	char[7]	the type of data stored in KEY columns
+DESC	string	a verbal description of data stored by the key
+GP	float_t	genotypic probability
+GT	gt_t	genotype
+AF	float_t	allele frequency
+ER	float_t	error rate
+LR	float_t	log likelihood ratio
+SN	size_t	sample number
+POS	id1_t	position
+CHROM	id0_t	chromosome
+ROW	size_t	row
+DP	count_t	read depth
+NS	size_t	number of samples with data
+GS	size_t	number of sites in the genome
+BYTES	size_t	size of the file (bytes).
+SOMATIC	bool	a flag to indicate that the record is a somatic mutation
+VALID	bool	a flag to indicate that a record has been validated?
+SB	float_t	strand bias at this position
+MQ0	count_t	number of MAPQ==0 reads covering this position
+H2	bool	membership in hapmap2
+END	size_t	ending row of a variant described by this record
+AA	gt_t	ancestral allele
+NCUT	size_t	the number of samples excluded because of filters
+GOF	float_t	goodness of fit value
+DEFAULT	bool	a flag to indicate that a record represents a default value
+NULL_ER	float_t	error rate assuming a site is monomorphic
+NULL_E2	float_t	error rate assuming a site is monomorphic
+POS_X	id1_t	position of the X allele
+POS_Y	id1_t	position of the Y allele
+DIST	float_t	distance between allele X and Y
+BEST_D	float_t	best estimate of the D statistic, a measure of ld
+BEST_D'	float_t	best estimate of the D' statistic, a measure of ld
+BEST_D2	float_t best estimate of D squared, yet another measure . . .
+BEST_R2	float_t best estimate of R squared
+ADJ_D	float_t	adjusted for something
+ADJ_D'	float_t	Peter Visscher
+ADJ_D2	float_t	adjusted for something
+ADJ_r2	float_t	adjusted for something
+FILNAME	string	the name of a file
+SMPNAME	string	the name of a sample
+LOGLIKE	float_t	a log likelihood
+Ni	size_t	number of samples contributing to ld calculation
+...	none	indicates the previous column is repeated a number of times.
+SCFNAME	string	a string identifying a sequence of nucleotides, typically a scaffold or chromosome
+MN_FREQ	float_t	minor allele frequency
+F_STAT	float_t	a statistic describing departure form Hardy-Weinberg
+F_X	float_t	a statistic describing departure form Hardy-Weinberg
+F_Y	float_t	a statistic describing departure form Hardy-Weinberg
+F_STAT	float_t	a statistic describing departure form Hardy-Weinberg
+F_STAT	float_t	a statistic describing departure form Hardy-Weinberg
+@END_TABLE

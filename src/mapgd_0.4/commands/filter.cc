@@ -78,8 +78,8 @@ int filter(int argc, char *argv[])
 			if (s.gof >= -min_gof){
 			if (s.efc >= min_efc){
 			if (s.coverage >= min_coverage && s.coverage <= max_coverage){
-			if (s.excluded <= max_pitch) 
-			if (s.pbias >= pbias) 
+			if (s.excluded <= max_pitch)
+			if (s.pbias >= pbias)
 				map_out.write(s);
 		}}}}}}}}}
 		map_in.read(s);

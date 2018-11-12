@@ -259,14 +259,14 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('c',"min-coverage", MIN, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (default 4).");
 	env.optional_arg('g',"good-fit", MINGOF,	"please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
 
-	env.optional_arg('X',"pbias", pbias,	"please provide a float.", "cut-off value for major allele bias (default none).");
+	env.optional_arg('X',"min-pbs", pbias,	"please provide a float.", "minimum acceptable p-value for major allele bias (default none).");
 	env.optional_arg('x',"min-het", h_min,	"please provide a float.", "minimum number of reads needed from both alleles to go into bias calculations (default 1).");
 
 	env.optional_arg('B',"max-bad",  MAXPITCH,	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 3).");
 
 	env.positional_arg('i',"input",	infile,	"No input file specified", "the input file for the program (default stdout).");
 
-	env.flag(	'b',"bias",  &bias,	&flag_set, 	"takes no argument", "print major allele bias.");
+	env.flag(	'b',"bias",  &bias,	&flag_set, 	"takes no argument", "print major allele bias (i.e. MJ_BIAS and P_MJ_BS columns).");
 	env.flag(	'N',"noheader", &noheader,	&flag_set, 	"takes no argument", "disables printing a header-line.");
 	env.flag(	'n',"newton", 	&newton,	&flag_set, 	"takes no argument", "use Newton-Raphson likelihood maximization (not working).");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");

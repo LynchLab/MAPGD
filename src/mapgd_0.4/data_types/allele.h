@@ -70,8 +70,8 @@ public:
 	Allele & operator=(const Allele &);				//!< use the = operator to assign Allele.
 
 
-	/// Instance of constructor required by Data, but Allele doesn't actually need the vector to initialize.   
-	Allele(std::vector<std::string>) : Allele() {};
+	/// Allele needs to know whether to read the optional heterozygosity bias columns
+	Allele(std::vector<std::string>);
 
 	/*(0){}
 	{
