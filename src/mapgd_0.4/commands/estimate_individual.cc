@@ -259,7 +259,7 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('c',"min-coverage", MIN, 	"please provide an int.", "minimum coverage for an individual at a site for an individual to be used (default 4).");
 	env.optional_arg('g',"good-fit", MINGOF,	"please provide a float.", "cut-off value for the goodness of fit statistic (defaults 2.0).");
 
-	env.optional_arg('X',"min-pbs", pbias,	"please provide a float.", "minimum acceptable p-value for major allele bias (default none).");
+	env.optional_arg('X',"min-pbs", pbias,	"please provide a float.", "minimum acceptable p-value for major allele bias (default 0.0).");
 	env.optional_arg('x',"min-het", h_min,	"please provide a float.", "minimum number of reads needed from both alleles to go into bias calculations (default 1).");
 
 	env.optional_arg('B',"max-bad",  MAXPITCH,	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 3).");

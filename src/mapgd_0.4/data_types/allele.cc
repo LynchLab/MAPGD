@@ -176,8 +176,13 @@ void Allele::write (std::ostream& out) const
 		out << std::fixed << std::setprecision(4);
 	
 		if (print_bias) {
-			out << bias << delim;
-			out << pbias << delim;
+			if (!isnan(pbias) ){
+				out << bias << delim;
+				out << pbias << delim;
+			} else {
+				out << MISSING << delim;
+				out << MISSING << delim;
+			}
 		}
 		out << ll;
 	} else {
@@ -188,15 +193,15 @@ void Allele::write (std::ostream& out) const
 		out << std::fixed << std::setprecision(0);
 		out << std::fixed << std::setprecision(0);
 		out << coverage << delim;
-		out << '.' <<  delim;
-		out << '.' <<  delim;
-		out << '.' << delim;
-		out << '.' << delim;
-		out << '.' <<  delim;
-		out << '.' << delim;
-		out << '.' << delim;
-		out << '.' << delim;
-		out << '.' << delim;
+		out << MISSING <<  delim;
+		out << MISSING <<  delim;
+		out << MISSING << delim;
+		out << MISSING << delim;
+		out << MISSING <<  delim;
+		out << MISSING << delim;
+		out << MISSING << delim;
+		out << MISSING << delim;
+		out << MISSING << delim;
 		out << std::fixed << std::setprecision(4);
 		out << 0. << delim;
 		out << std::fixed << std::setprecision(2);
@@ -209,8 +214,8 @@ void Allele::write (std::ostream& out) const
 		out << 0 << delim;
 		out << std::fixed << std::setprecision(4);
 		if (print_bias) {
-		out << 0. << delim;
-		out << 0. << delim;
+			out << MISSING << delim;
+			out << MISSING << delim;
 		}
 		out << 0.;
 	};

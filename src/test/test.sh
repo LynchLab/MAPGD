@@ -122,6 +122,15 @@ echo -n "$mapgd proview -n $name -H $header | $mapgd allele -c 1 | $mapgd $a > $
 $timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd allele -c 1 | $mapgd $a > $a.out			"
 testa
 
+a="filter"
+msg="filter"
+rm -f $a.out
+size=$(($good_size+$pro_header+$idx_size+$idx_header-1))
+echo    "$mapgd proview -n $name -H $header | \ "
+echo -n "$mapgd allele -c 1 -b | $mapgd $a -X 0.05 > $a.out								"
+$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd allele -c 1 -b | $mapgd $a -X 0.05 > $a.out			"
+testa
+
 a="sam2idx"
 msg="sam2idx"
 rm -f $a.out

@@ -92,7 +92,11 @@ int make_vcf2(int argc, char *argv[])
 
 	vcf.set_header(index, names.sample_names);
 
-	vcf_out.open(outfile.c_str(), WRITE);
+	if (outfile.size()!=0)
+		vcf_out.open(outfile.c_str(), WRITE);
+	else 
+		vcf_out.open(WRITE);
+
 	vcf_out.write_header(vcf);
 
 	Allele allele;

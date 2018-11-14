@@ -29,7 +29,10 @@ Sample_gof::read (std::istream& in)
 void
 Sample_gof::write (std::ostream& out) const
 {
-	out << name_ << delim << number_;
+	if (!isnan(number_) )
+		out << name_ << delim << number_;
+	else 
+		out << name_ << delim << MISSING;
 }
 
 std::string 

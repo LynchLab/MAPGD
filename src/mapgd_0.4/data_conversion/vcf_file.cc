@@ -343,10 +343,21 @@ Vcf_file::write_header(const Vcf_data &vcf)
 void
 Vcf_file::open(const std::ios_base::openmode &mode)
 {
-//	else if (mode & WRITE) open(std::cout, mode);
-//	else {
-		fprintf(stderr, gettext("mapgd:%s:%d: cannot open file in std::ios_base::openmode &mode=%d.\n"), __FILE__, __LINE__, mode );
-//	}
+	if (mode & READ)
+	{
+		file_=bcf_open("-", "r");
+		if ( file_) open_=true;
+		else {
+			fprintf(stderr, gettext("mapgd:%s:%d: Could not open file \"%s\" for reading.\n"), __FILE__, __LINE__, "stdin" );
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (mode & WRITE)
+	{
+		file_=vcf_open("-", "w");
+		if ( file_) open_=true;
+	}
+
 }
 
 
@@ -431,6 +442,7 @@ Vcf_file::open(const char *file_name, const std::ios_base::openmode &mode)
 	}
 		
 }
+
 void 
 Vcf_file::close(void)
 {
