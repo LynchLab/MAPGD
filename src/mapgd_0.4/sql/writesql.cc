@@ -41,7 +41,7 @@ int writesql(int argc, char *argv[])
 	Data *line=file.read_header();
 
 	if (file.indexed() && !file.concatenated()){
-		std::cerr << "index?..." << std::endl;
+		//std::cerr << "index?..." << std::endl;
 		if (db_check_schema(db, &index)) 
 		{
 			std::stringstream stream;
@@ -58,44 +58,44 @@ int writesql(int argc, char *argv[])
 
 	while(file.is_open())
 	{
-		std::cerr << "file is open..." << std::endl;
+		//std::cerr << "file is open..." << std::endl;
 		db_begin(db);
 		if (line->get_table_name()==File_index::table_name) 
 		{
-			std::cerr << "line?..." << std::endl;
+			//std::cerr << "line?..." << std::endl;
 			if (!db_check_schema(db, &index)) 
 			{
+				//std::cerr << "Making table " << line->get_table_name() << std::endl;
 				db_make_table(db, line);
-				std::cerr << "schema..." << std::endl;
 				file.read(&index);
 				while (file.table_is_open() )
 				{
-					std::cerr << line << std::endl;
+					//std::cerr << *line << std::endl;
 					db_insert(db, &index);
 					file.read(&index);
 				}
 			} else {
-				std::cerr << "not schema..." << std::endl;
+				//std::cerr << "not schema..." << std::endl;
 				file.read(&index);
 				while (file.table_is_open() ) file.read(&index);
 			} 
 		} else {
+			std::cerr << "Making table " << line->get_table_name() << line->header() << std::endl;
 			db_make_table(db, line);
-			std::cerr << "table name..." << std::endl;
 			if (file.indexed() ){
 				Indexed_data *indexed_line=dynamic_cast <Indexed_data *> (line);
 				file.read(index, indexed_line);
 				while (file.table_is_open() ){
-					std::cerr << line << std::endl;
+					//std::cerr << "Indexed table is open " << *line << std::endl;
 					db_insert(db, line);
-					file.read(index, indexed_line);
+					file.read(index, indexed_line); //Reading indexed
 				}
 			} else {
 				file.read(line);
 				while (file.table_is_open() ){
-					std::cerr << line << std::endl;
+					//std::cerr << "Non indexed table is open " << *line << std::endl;
 					db_insert(db, line);
-					file.read(line);
+					file.read(line); //Reading non indexed
 				}
 			}
 		}

@@ -81,7 +81,6 @@ int proview(int argc, char *argv[])
 
 	std::vector <Bcf2pro_file *> in_files;	//the input profile(s)
 
-
 	std::vector <Locus> in_locus;
 	Locus out_locus;
 
@@ -173,7 +172,8 @@ int proview(int argc, char *argv[])
 	if (ind.size()==0)
 		for (int x=0; x<sample_names.size(); ++x)
 			ind.push_back(x);
-	for (int x=0; x<ind.size(); ++x){
+
+	for (int x=0; x<ind.size(); ++x) {
 		out_locus.unredact(ind[x]);
 	}
 
@@ -236,12 +236,25 @@ int proview(int argc, char *argv[])
 		else go=false;
 	
 	};
-	if(!noheader) out_file.close();
+
+	if(!noheader) {
+		out_file.close_table();
+		Flat_file <Sample_gof> smp_file;
+		smp_file.open_from(out_file);
+		smp_file.write_header( Sample_gof() );
+		for (size_t x=0; x<sample_names.size(); ++x) {
+			smp_file.write(Sample_gof(x+1, sample_names[ind[x]], 0 ) );
+		}
+		smp_file.close();
+		out_file.close();
+	}
+
 	for (size_t x=0; x<in_files.size(); ++x) {
 		in_files[x]->close(); 
 		delete in_files[x];
 	}
 	env.close();
+
 	return 0;
 }
 

@@ -41,7 +41,9 @@ void db_insert(sqlite3 *db, const Data *these_data)
 {
 	char *error_message = 0;
 	char add_data[SQL_LINE_SIZE]={0};
-	snprintf (add_data, SQL_LINE_SIZE, "INSERT INTO %s %s VALUES %s;\n", these_data->get_table_name().c_str(), these_data->sql_column_names().c_str(), these_data->sql_values().c_str() );
+	//snprintf (add_data, SQL_LINE_SIZE, "INSERT INTO %s %s VALUES %s; \n", these_data->get_table_name().c_str(), these_data->sql_column_names().c_str(), these_data->sql_values().c_str() );
+	snprintf (add_data, SQL_LINE_SIZE, "REPLACE INTO %s %s VALUES %s; \n", these_data->get_table_name().c_str(), these_data->sql_column_names().c_str(), these_data->sql_values().c_str() );
+//	std::cerr << add_data << std::endl;
 	sqlite3_exec(db, add_data, call_back, 0, &error_message);
 }
 
@@ -51,11 +53,24 @@ void db_open_table(sqlite3 *db, Data *these_data, std::stringstream *stream_ptr)
 	char *error_message = 0;
 	char get_data[SQL_LINE_SIZE]={0};
 	sqlite3_stmt *query;
-	//snprintf (get_data, SQL_LINE_SIZE, "%s;\n", these_data->sql_constructor().c_str(); );
-	//sqlite3_exec(db, get_data, call_back, stream, &error_message);
-	//these_data->set(stream);
 	snprintf (get_data, SQL_LINE_SIZE, "SELECT * from %s;\n", these_data->get_table_name().c_str() );
 	sqlite3_exec(db, get_data, call_back, stream_ptr, &error_message);
+}
+
+void db_open_table_w_query(sqlite3 *db, Data *these_data, std::stringstream *stream_ptr, const std::string &query_end)
+{
+	char *error_message = 0;
+	char get_data[SQL_LINE_SIZE]={0};
+	sqlite3_stmt *query;
+	snprintf (get_data, SQL_LINE_SIZE, "SELECT * from %s WHERE %s;\n", these_data->get_table_name().c_str(), query_end.c_str() );
+	std::cerr << get_data << std::endl;
+	sqlite3_exec(db, get_data, call_back, stream_ptr, &error_message);
+	if (error_message)
+	{
+		fprintf(stderr, gettext("mapgd:%s:%d: db_open_table_w_query: Error executing the SQL query %s"), __FILE__, __LINE__, get_data );
+		fprintf(stderr, gettext("SQL says: %s\n"), error_message );
+		exit(SQLERR);
+	}
 }
 
 void 
@@ -77,13 +92,15 @@ db_get_constructor(sqlite3 *db, Data *these_data)
 	char *error_message = 0;
 	std::stringstream stream;
 	char columns[SQL_LINE_SIZE]={0};
-	snprintf (columns, SQL_LINE_SIZE, "SELECT DISTINCT SMPNUM FROM %s;", these_data->get_table_name().c_str() );
+	//snprintf (columns, SQL_LINE_SIZE, "SELECT DISTINCT SMPNUM FROM %s;", these_data->get_table_name().c_str() );
+	snprintf (columns, SQL_LINE_SIZE, "%s;", these_data->sql_get_constructor().c_str() );
 	sqlite3_exec(db, columns, call_back, &stream, &error_message);
 	std::vector <std::string> str={"@ID0","ID1","REF"};
 	std::string line;
 	while (std::getline(stream, line) )
 	{
-		str.push_back(line);
+		std::cerr << "'" << line << "'" << std::endl;	
+		str.push_back(sanitize(line));
 	}
 	return str;
 }

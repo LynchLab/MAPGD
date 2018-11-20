@@ -400,7 +400,7 @@ int estimateInd(int argc, char *argv[])
 		Flat_file <Sample_gof> gof_file;
 		gof_file.open_from(map_out);
 		gof_file.write_header(Sample_gof() );
-		for (size_t x=0; x<ind.size(); ++x) gof_file.write(Sample_gof(locus_in.get_sample_names()[ind[x]], sum_gofs[x]/(float_t(gofs_read[x]) ) ) );
+		for (size_t x=0; x<ind.size(); ++x) gof_file.write(Sample_gof(x+1, locus_in.get_sample_names()[ind[x]], sum_gofs[x]/(float_t(gofs_read[x]) ) ) );
 		gof_file.close();
 	}
 	pro_in.close();

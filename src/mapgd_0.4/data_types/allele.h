@@ -23,9 +23,10 @@ private:
 	void write(std::ostream& str) const;
 	static const Registration registered;
 	static Data * create(const std::vector <std::string> & Columns){
-		return new Allele();
+		return new Allele(Columns);
 	};
 public:
+	void sql_read(std::istream& str);
 //	void write_binary (std::ostream& out) const;
 //	void read_binary (std::istream& in);
 
@@ -90,6 +91,7 @@ public:
 	const std::string sql_header(void) const;	//!< Returns a string to create an SQL table.
 	const std::string sql_column_names(void) const; //!< Returns the column names in the SQL table.
 	const std::string sql_values(void) const;	//!< Returns a string to insert values in an SQL table.
+	const std::string sql_get_constructor(void) const;	//!< Returns a string to insert values in an SQL table.
 };
 
 #endif

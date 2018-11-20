@@ -47,9 +47,11 @@ int readsql(int argc, char *argv[])
 	if (table!="")
 	{
 		fprintf(stderr, "Trying to open data of type %s\n", table.c_str());
-		Data *data=Data::new_from_str(table,columns);
+		Data *data=Data::new_from_str(table, columns);
 		fprintf(stderr, "done.\n");
 		fprintf(stderr, "New data of type %s\n", data->get_table_name().c_str() );
+		fprintf(stderr, "New data of type %s\n", data->table_name.c_str() );
+		fprintf(stderr, "Print once? %d\n", data->get_print_once() );
 		columns=db_get_constructor(db, data);
 		delete data;
 		data=Data::new_from_str(table,columns);
@@ -61,19 +63,30 @@ int readsql(int argc, char *argv[])
 			stream.clear();
 
 			Indexed_data *indexed_data=dynamic_cast <Indexed_data *> (data);
-			db_open_table(db, indexed_data, &stream);
+
+			if (query!="")
+				db_open_table_w_query(db, indexed_data, &stream, query);
+			else
+				db_open_table(db, indexed_data, &stream);
 
 			file.write_header(index, indexed_data);
 			while (db_get(&stream, indexed_data) ) 
-				file.write(index, indexed_data);
+				if (!indexed_data->get_print_once() )
+					file.write(index, indexed_data);
+			file.write(index, indexed_data);
 			file.close();
 		}
 		else 
 		{
-			db_open_table(db, data, &stream);
+			if (query!="")
+				db_open_table_w_query(db, data, &stream, query);
+			else
+				db_open_table(db, data, &stream);
 			file.write_header(data);
 			while (db_get(&stream, data) ) 
-				file.write(data);
+				if (!data->get_print_once() )
+					file.write(data);
+			file.write(data);
 			file.close();
 		}
 	}

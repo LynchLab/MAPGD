@@ -54,7 +54,9 @@ private:
 public:
 	File_index();						
 	File_index(std::vector<std::string>);
+	
         bool bianary(void) const {return false;};
+        const bool get_print_once(void) const {return File_index::print_once;};
 
 	//! returns the number of rows until a row with id0, id1.
 	id1_off_t get_offset (const std::string &, const id1_t &) const;	
@@ -146,6 +148,7 @@ public:
 	static const std::vector <std::string> table_names_old;
 
 	static const bool binary;	//!< Returns the destination table name.
+	static const bool print_once;	//!< Returns the destination table name.
 	size_t size(void) const;
 
 	//! use the << operator to write File_index.

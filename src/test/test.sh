@@ -48,6 +48,7 @@ good_size=10		#number of lines post filtering
 good_pool=4		#number of lines post filtering
 idx_size=3		#number of lines in the idx file
 gof_size=8		#number of lines in the idx file
+smp_size=11		#number of lines in the smp file
 
 mapgd="../../bin/mapgd"
 
@@ -63,7 +64,7 @@ commands=("proview pool allele filter genotype sam2idx relatedness linkage")
 a="proview"
 msg="proview"
 rm -f $a.out
-size=$(($pro_size+$pro_header+$idx_size+$idx_header))
+size=$(($pro_size+$pro_header+$idx_size+$idx_header+$smp_size))
 echo -n "cat $mpileup | $mapgd $a -H $header > $a.out							"
 $timeout 5s bash -c "cat $mpileup | $mapgd $a -H $header > $a.out"
 testa
@@ -71,7 +72,7 @@ testa
 a="proview"
 msg="proview"
 rm -f $a.out
-size=$(($pro_size+$pro_header+$idx_size+$idx_header))
+size=$(($pro_size+$pro_header+$idx_size+$idx_header+$smp_size))
 echo -n "$mapgd $a -n $name -H $header > $a.out								"
 $timeout 5s bash -c "$mapgd $a -n $name -H $header > $a.out"
 testa
@@ -255,27 +256,25 @@ $mapgd $a -i plink.pheno > $a.out
 testa
 rm -f temp*
 
-exit 0
+#a="keyinfo"
+#msg="keyinfo"
+#size=$((2))
+#echo -n "$mapgd $a KEY > $a.out 												"
+#$mapgd $a KEY > $a.out
+#testa
+#rm -f temp*
 
-a="keyinfo"
-msg="keyinfo"
-size=$((2))
-echo -n "$mapgd $a KEY > $a.out 												"
-$mapgd $a KEY > $a.out
-testa
-rm -f temp*
-
-a="help"
-msg="help"
-size=$((76))
-echo -n "$mapgd $a allele > $a.out 													"
-$mapgd $a allele > $a.out
-testa
-rm -f temp*
+#a="help"
+#msg="help"
+#size=$((76))
+#echo -n "$mapgd $a allele > $a.out 													"
+#$mapgd $a allele > $a.out
+#testa
+#rm -f temp*
 
 a="writevcf"
 msg="writevcf"
-size=$((76))
+size=$((42))
 echo -n "$mapgd $a -g -m > $a.out 													"
 $mapgd proview -H $header -n $name > temp.pro
 $mapgd allele -i temp.pro -c 1 > temp.map

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mapgd 37\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2018-11-14 09:23+0000\n"
+"POT-Creation-Date: 2018-11-20 10:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,11 @@ msgstr ""
 #: io/map_file.cc:74 io/map_file.cc:90 io/map_file.cc:111 io/map_file.cc:119
 #, c-format
 msgid "Error: %s.\n"
+msgstr ""
+
+#: sql/db_api.cc:71
+#, c-format
+msgid "SQL says: %s\n"
 msgstr ""
 
 #: io/map_file.cc:66
@@ -46,7 +51,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Attempt to read from uncached stream. Exiting.\n"
 msgstr ""
 
-#: io/map_file.cc:386
+#: io/map_file.cc:388
 #, c-format
 msgid "mapgd:%s:%d: Attempt to read from unopened file. Exiting.\n"
 msgstr ""
@@ -56,7 +61,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Attempt to rewind uncached stream. Exiting.\n"
 msgstr ""
 
-#: io/map_file.cc:480 io/map_file.cc:494 io/map_file.cc:519 io/map_file.cc:529
+#: io/map_file.cc:482 io/map_file.cc:496 io/map_file.cc:521 io/map_file.cc:531
 #, c-format
 msgid "mapgd:%s:%d: Attempt to write to unopened file. Exiting.\n"
 msgstr ""
@@ -84,7 +89,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Could not open file \"%s\" for reading.\n"
 msgstr ""
 
-#: io/map_file.cc:543
+#: io/map_file.cc:545
 #, c-format
 msgid "mapgd:%s:%d: Could not write to file. Exiting.\n"
 msgstr ""
@@ -99,7 +104,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Failed to allocate memory. Mother fucker. Exiting.\n"
 msgstr ""
 
-#: io/map_file.cc:426
+#: io/map_file.cc:428
 #, c-format
 msgid ""
 "mapgd:%s:%d: Header not terminated. File cannot open properly. Exiting.\n"
@@ -121,21 +126,26 @@ msgstr ""
 msgid "mapgd:%s:%d: Retrieving sample names currently unsupported.\n"
 msgstr ""
 
-#: io/map_file.cc:398
+#: data_types/sample_gof.cc:51
+#, c-format
+msgid "mapgd:%s:%d: Sample_gof::read: error parsing input\n"
+msgstr ""
+
+#: io/map_file.cc:400
 #, c-format
 msgid ""
 "mapgd:%s:%d: The first fields is not \"@NAME\". File cannot open properly. "
 "Exiting.\n"
 msgstr ""
 
-#: io/map_file.cc:416
+#: io/map_file.cc:418
 #, c-format
 msgid ""
 "mapgd:%s:%d: The first fields is not a \"@A:B\" pair. File cannot open "
 "properly. Exiting.\n"
 msgstr ""
 
-#: io/map_file.cc:424
+#: io/map_file.cc:426
 #, c-format
 msgid "mapgd:%s:%d: The following line was encountered:\n"
 msgstr ""
@@ -229,6 +239,11 @@ msgstr ""
 msgid ""
 "mapgd:%s:%d: cannot parse string %s into exactly two integers. Please "
 "specify min:max, where min and max are both integers.\n"
+msgstr ""
+
+#: sql/db_api.cc:70
+#, c-format
+msgid "mapgd:%s:%d: db_open_table_w_query: Error executing the SQL query %s"
 msgstr ""
 
 #: data_conversion/bed_file.cc:88

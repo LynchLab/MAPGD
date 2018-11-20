@@ -37,6 +37,7 @@ private:
 	 * supported for the data_type.
  	 */
         static const bool binary;
+	static const bool print_once;
 protected:
 
 	//! The read function must be defined in the child class.
@@ -65,6 +66,8 @@ protected:
 	}*/
 
 public:
+	//! when write() is called do all rows in the table print? 
+
 	//! The default file extension to use.
 	static const std::string file_name;
 	//! The name of the table in SQL databases.
@@ -85,6 +88,7 @@ public:
         virtual const std::string get_table_name() const {return this->table_name;};
 
 	virtual const bool indexed() const {return false;};
+	virtual const bool get_print_once() const {return this->print_once;};
 
         virtual const bool get_binary() const {return this->binary;};
 
@@ -101,14 +105,22 @@ public:
 	/* E.g. Column_name_1, Column_name_2, ...
  	 */ 
         virtual const std::string sql_column_names(void) const {return "";};
-	//! Return the values to be placed in columns
-	/* E.g. 1, 0, ...
+
+	//! Return the values to be placed in columns of the SQL Table.
+	/* These should be in the order defined by SQL header.
  	 */ 
 	virtual const std::string sql_values(void) const {return "";};
-	//! Reads the values...
-	/* E.g. 1, 0, ...
+
+	//! Read the data into Data from the results of an SQL query.
+	/* This is chiefly called by mapgd's read command.
  	 */ 
 	virtual void sql_read(std::istream &);
+
+	//! Returns an SQL query which returns the information need to init.  
+	/* E.g. sample names may be need for construction, in which case 
+	 * you can return the string "SELECT SMPNAME from SAMPLES".
+ 	 */ 
+	virtual const std::string sql_get_constructor(void) const {return "";};
 
 	/*
 	 *@}

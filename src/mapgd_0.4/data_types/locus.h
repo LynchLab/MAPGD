@@ -164,6 +164,7 @@ public:
 	const std::string sql_header(void) const;				
 	const std::string sql_column_names(void) const;				
 	const std::string sql_values(void) const;				
+	const std::string sql_get_constructor(void) const;				
 
 	void unredact_all();
 	void redact_all();

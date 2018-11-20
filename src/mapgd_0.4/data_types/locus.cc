@@ -43,6 +43,7 @@ Locus::Locus(const std::vector<std::string> &column_names)
 {
 	if (column_names.size()>4)
 	{
+		//
 		sample_names_=std::vector<std::string> (&column_names[3], &column_names.back()+1 );
 		sample.assign(sample_names_.size(), quartet() );
 	}
@@ -435,6 +436,11 @@ Locus::sql_header(void) const {
 const std::string 
 Locus::sql_column_names(void) const {
 	return "(ABS_POS, SMPNUM, A, C, G, T)";
+}
+
+const std::string 
+Locus::sql_get_constructor(void) const {
+	return "SELECT SMPNAME FROM SAMPLE";
 }
 
 void

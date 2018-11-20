@@ -490,6 +490,7 @@ Double_indexed_file<T>& Double_indexed_file<T>::read(T &data)
 template <class T>
 void Flat_file<T>::read_text(T &data)
 {
+//	std::cerr << "Flat_file <" << data.table_name << "> " << char(in_->peek()) << std::endl;
 	if (!in_->good() ) {
 		std::cerr << "an error has occurred during reading.\n";
 		exit(0);
@@ -514,6 +515,7 @@ void Flat_file<T>::read_text(T &data)
 template <class T>
 void Indexed_file<T>::read_text(T &data)
 {
+//	std::cerr << "Indexed_file <" << data.table_name << ">" << char(in_->peek()) << std::endl;
 	//TODO Check for table_open instead?
 	id1_t pos;
 	std::string scaffold;
@@ -548,6 +550,7 @@ void Indexed_file<T>::read_text(T &data)
 template <class T>
 void Double_indexed_file<T>::read_text(T &data)
 {
+//	std::cerr << "Double_indexed <" << data.table_name << ">" << char(in_->peek()) << std::endl;
 	//TODO Check for table_open instead?
 	id1_t pos1, pos2;
 	std::string scaffold1, scaffold2;
@@ -585,6 +588,7 @@ void Double_indexed_file<T>::read_text(T &data)
 template <class T>
 void Data_file<T>::read_binary(T &data)
 {
+//	std::cerr << "Data_file (binary) <" << data.table_name << ">" << char(in_->peek()) << std::endl;
 //	char a='a';
 	if (in_->peek()!='@'){
 //		in_->read(&a, sizeof(char) );
@@ -601,6 +605,7 @@ void Data_file<T>::read_binary(T &data)
 template <class T>
 void Indexed_file<T>::read_binary(T &data)
 {
+//	std::cerr << "Indexed_file (binary) <" << data.table_name << ">" << char(in_->peek()) << std::endl;
 //	char a='a';
 	if (in_->peek()=='@')
 	{
@@ -621,6 +626,7 @@ void Indexed_file<T>::read_binary(T &data)
 template <class T>
 void Double_indexed_file<T>::read_binary(T &data)
 {
+//	std::cerr << "Double_indexed_file (binary) <" << data.table_name << ">" << char(in_->peek()) << std::endl;
 //	char a='a';
 	if (in_->peek()=='@')
 	{

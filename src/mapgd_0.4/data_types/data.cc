@@ -4,7 +4,7 @@ const std::string Data::file_name=".txt";//!< The destination table in the Db.
 const std::string Data::table_name="NONE";//!< The destination table in the Db.
 const std::vector<std::string> Data::table_names_old={};//!< The destination table in the Db.
 
-
+const bool Data::print_once=false;//!< By default we don't expect the whole table to print 
 const bool Data::binary=false; //!< A flag to indicate that binary reading/writing is not supported by default.
 
 static int nifty_counter=0; 
