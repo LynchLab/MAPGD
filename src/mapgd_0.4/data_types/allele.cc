@@ -31,7 +31,7 @@ Allele::Allele ( std::vector<std::string> fields)
 	bias=0;
 	pbias=0;
 
-	std::cerr << " init from strings " << fields.size() << std::endl;
+	//std::cerr << " init from strings " << fields.size() << std::endl;
 
 	if (fields.size()==25 or fields.size()==19)
 		print_bias=true;
@@ -119,10 +119,8 @@ void
 Allele::sql_read(std::istream& in){
 	std::string line, temp;
 	std::getline(in, line);
-	std::cerr << "read the line:" << line << std::endl;
+	//std::cerr << "read the line:" << line << std::endl;
 	std::stringstream line_stream(line);
-
-	return;
 
 	line_stream >> abs_pos_;
 
@@ -316,7 +314,7 @@ size_t Allele::size() const{
 }
 
 const std::string Allele::sql_header(void) const {
-	std::cerr << "called sql_header..\n";
+	//std::cerr << "called sql_header..\n";
 	if (!print_bias)
 		return "(ABS_POS int, REF int, MAJOR int, MINOR int, COVERAG int, HOM_FREQ REAL, HET_FREQ REAL, POLY_LR REAL, HWE_LR REAL, GOF REAL, EF_CHRM REAL, IND_INC int, IND_CUT int, BEST_LL REAL, PRIMARY KEY (ABS_POS) )";
 	else 

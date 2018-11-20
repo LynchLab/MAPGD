@@ -24,7 +24,7 @@ Sample_gof::Sample_gof (const std::string &name, const float_t &number)
 
 Sample_gof::Sample_gof (const count_t &id, const std::string &name, const float_t &number)
 {
-	std::cerr << id << ", " << sanitize(name) << std::endl;
+	//std::cerr << id << ", " << sanitize(name) << std::endl;
 	name_=name;
 	number_=number;
 	smp_num_=id;
@@ -37,7 +37,7 @@ Sample_gof::read (std::istream& in)
 	std::string line, temp;
 	std::getline(in, line);
 	std::stringstream line_stream(line);
-	std::cerr << "read line:" << line << std::endl;
+	//std::cerr << "read line:" << line << std::endl;
 	line_stream >> smp_num_ >> name_ >> number_;
 	if (!line_stream.eof() )
 	{
@@ -47,11 +47,11 @@ Sample_gof::read (std::istream& in)
 
 		if(temp!="." )//std::string(MISSING))
 		{
-			std::cerr << temp << " - " << bool(temp==".") << std::endl;
+			//std::cerr << temp << " - " << bool(temp==".") << std::endl;
 			fprintf(stderr, gettext("mapgd:%s:%d: Sample_gof::read: error parsing input\n"), __FILE__, __LINE__ );
 			exit(BADIN);
 		} else {
-			std::cerr << temp << " - " << bool(temp==".") << std::endl;
+			//std::cerr << temp << " - " << bool(temp==".") << std::endl;
 		}
 	}
 	/*
