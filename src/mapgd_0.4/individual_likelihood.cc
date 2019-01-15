@@ -24,7 +24,7 @@ float_t efc (const Locus &site)
 //Intilaizes the parameters of the ... returns 0 on succesful excecution, returns 1 if there is am...
 count_t init_params(Locus &site, Allele &a, const float_t &minerr)
 {
-	a.coverage=site.getcoverage();
+	a.coverage=site.getcoverage_nomask();
 
 	std::vector <quartet_t>::iterator it=site.sample.begin(); 
 	std::vector <quartet_t>::iterator end=site.sample.end(); 
@@ -252,7 +252,7 @@ count_t maximize_restricted_newton (Locus &site, Allele &a, models &model, std::
 	a.freq=a.MM+a.Mm/2.;
 	a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
 
-	a.coverage=site.getcoverage();
+	a.coverage=site.getcoverage_nomask();
 
 	count_t excluded=0;
 
@@ -454,7 +454,7 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 	a.freq=a.MM+a.Mm/2.;
 	a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
 
-	a.coverage=site.getcoverage();
+	a.coverage=site.getcoverage_nomask();
 
 	count_t excluded=0;
 
@@ -568,7 +568,7 @@ count_t maximize_grid (Locus &site, Allele &a, models &model, std::vector <float
 		else { P_+=iP; Q_+=iQ; H_+=iH;}
 	}
 
-	a.coverage=site.getcoverage();
+	a.coverage=site.getcoverage_nomask();
 
 	a.MM=float_t(P_)/float_t(N_);
 	a.Mm=float_t(H_)/float_t(N_);

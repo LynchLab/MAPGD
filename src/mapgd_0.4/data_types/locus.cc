@@ -41,7 +41,7 @@ Locus::Locus(const count_t &size)
 
 Locus::Locus(const std::vector<std::string> &column_names)
 {
-	if (column_names.size()>4)
+	if (column_names.size()>=4)
 	{
 		//
 		sample_names_=std::vector<std::string> (&column_names[3], &column_names.back()+1 );
@@ -252,6 +252,19 @@ Locus::getcoverage() const
 	count_t total=0;
 	for (size_t s=0; s<sample.size();++s){
 		if (sample[s].masked) continue;
+		total+=sample[s].base[0]+
+			sample[s].base[1]+
+			sample[s].base[2]+
+			sample[s].base[3];
+	};
+	return total;
+}
+
+count_t 
+Locus::getcoverage_nomask() const
+{
+	count_t total=0;
+	for (size_t s=0; s<sample.size();++s){
 		total+=sample[s].base[0]+
 			sample[s].base[1]+
 			sample[s].base[2]+

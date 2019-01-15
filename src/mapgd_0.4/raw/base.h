@@ -38,6 +38,13 @@ public:
 
 	static char btoc(const gt_t &);
 	static gt_t ctob(const char &);
+
+	//Logical comparisons are 'could be' 'must be' 'can't be'
+	bool operator==(const Base& rhs) const
+	{
+	    return base == rhs.base;
+	}
+
 };
 
 #endif

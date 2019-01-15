@@ -215,6 +215,11 @@ float_t models::genotypelikelihood(quartet_t const &quartet, const Allele &popul
 }
 
 //THE goodness of fit calcualtion.
+/*float_t models::goodness_of_fit_KS (Locus &site, const Allele &allele, std::vector <float_t> &gofs, const float_t &MINGOF)
+{
+    CDF ?
+}*/
+
 float_t models::goodness_of_fit (Locus &site, const Allele &allele, std::vector <float_t> &gofs, const float_t &MINGOF)
 {
 	float_t Num=0., Den=0., E, V, O, thisgof, clone_mingof=FLT_MAX;

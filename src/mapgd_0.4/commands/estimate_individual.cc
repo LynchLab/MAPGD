@@ -144,6 +144,12 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 		mle.print_bias=true;
 	}
 
+/*
+	if (possion){
+		get_poisson(site, mle, av_cov);
+		mle.print_poisson=true;
+	}
+*/
 	/*if (site.getcount(0)==site.getcount(1) ){
 		mle.major=4;
 		mle.minor=4;

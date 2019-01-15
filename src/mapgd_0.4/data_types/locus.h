@@ -54,6 +54,7 @@ public:
 
 	count_t getcoverage(count_t) const;		//!< Returns coverage of population/individual N.
 	count_t getcoverage(void) const;		//!< Returns total coverage.
+	count_t getcoverage_nomask(void) const;		//!< Returns total coverage.
 
 	count_t getcount(count_t) const;		//!< Returns the count of allele in all individuals in the population.
 	count_t getcount(count_t, count_t) const;	//!< Returns the count of individual a's b'th allele.

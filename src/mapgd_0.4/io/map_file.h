@@ -653,7 +653,10 @@ void Flat_file<T>::write_text(const T &data)
 template <class T>
 void Indexed_file<T>::write_text(const T &data)
 {
-	*out_ << file_index_.get_string(file_index_.get_id0(data.get_abs_pos()) ) << '\t' << file_index_.get_id1(data.get_abs_pos() ) << '\t' << data << std::endl;
+	//*out_.width(?) << file_index_.get_string(file_index_.get_id0(data.get_abs_pos()) ) << '\t' << file_index_.get_id1(data.get_abs_pos() ) << '\t' << data << std::endl;
+	out_->width(14);
+    *out_ << std::left << file_index_.get_string(file_index_.get_id0(data.get_abs_pos()) );
+    *out_ <<   '\t' << file_index_.get_id1(data.get_abs_pos() ) << '\t' << data << std::endl;
 }
 
 template <class T>

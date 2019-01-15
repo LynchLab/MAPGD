@@ -98,6 +98,23 @@ arg_set_region(int argc, char **argv, void *parm)
 	exit(1);
 }
 
+/*@Breif : sets a vector of ints from a string. */
+int
+arg_set_vector_d(int argc, char **argv, void *parm)
+{
+	std::vector <double> *v=(std::vector <double> *)(parm);
+	if (argc>0){
+		std::vector<std::string> elems=split(argv[0], ',');
+		for (size_t x=0; x<elems.size(); ++x){
+			if ( isfloat(elems[x].c_str() ) ) v->push_back(atof(elems[x].c_str() ) ) ;
+		}
+		//std::cerr << v;
+		//exit(0);
+		return 2;
+	} 
+	std::cerr << "arg_set_vector_d: error parsing " << argv[0] << std::endl;
+	exit(1);
+}
 
 /*@Breif : sets a vector of ints from a string. */
 int

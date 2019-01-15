@@ -23,6 +23,7 @@
 #include "fastview.h"
 #include "filter_pool.h"
 #include "filter_genotype.h"
+#include "filter_pro.h"
 #include "map2genotype.h"
 #include "linkage_disequilibrium.h"
 #include "sam2idx.h"
@@ -34,6 +35,7 @@
 #include "test_keys.h"
 #include "read_pheno.h"
 #include "read_bed.h"
+
 //#include "simulate.h"
 
 #ifndef NOSQL

@@ -45,6 +45,11 @@ inline int arg_set(int a, char **b, std::vector<unsigned long long int> &c){retu
 int arg_set_vector_ui(int, char **, void *);	
 inline int arg_set(int a, char **b, std::vector<unsigned int> &c){return arg_set_vector_ui(a,b, &c); }
 
+//! Takes a reference to a vector<double> and calls atof() on a comma delimited list (no white space) of doubles. 
+//
+int arg_set_vector_d(int, char **, void *);	
+inline int arg_set(int a, char **b, std::vector<double> &c){return arg_set_vector_d(a,b, &c); }
+
 //! Takes a reference to an int and calls atoi on the field immediately following the option. 
 //! Raises errors if the field is not numeric. Returns 2 on success (representing the number of fields processed) and -1 on failure. 
 int arg_set_int(int, char **, void *);		

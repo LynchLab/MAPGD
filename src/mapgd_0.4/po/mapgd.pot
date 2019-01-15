@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mapgd 37\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2018-11-20 10:56+0000\n"
+"POT-Creation-Date: 2019-01-15 13:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -210,7 +210,7 @@ msgstr ""
 msgid "mapgd:%s:%d: cannot find keys.txt.\n"
 msgstr ""
 
-#: commands/interface.cc:118 commands/interface.cc:165
+#: commands/interface.cc:135 commands/interface.cc:182
 #, c-format
 msgid ""
 "mapgd:%s:%d: cannot format %s into a string. Please specify A:B:step, where "
@@ -234,8 +234,8 @@ msgstr ""
 msgid "mapgd:%s:%d: cannot open file in std::ios_base::openmode &mode=%d.\n"
 msgstr ""
 
-#: commands/interface.cc:129 commands/interface.cc:139
-#: commands/interface.cc:176 commands/interface.cc:186
+#: commands/interface.cc:146 commands/interface.cc:156
+#: commands/interface.cc:193 commands/interface.cc:203
 #, c-format
 msgid ""
 "mapgd:%s:%d: cannot parse string %s into exactly two integers. Please "
