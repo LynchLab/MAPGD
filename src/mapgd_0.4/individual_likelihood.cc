@@ -1,6 +1,8 @@
 #include "individual_likelihood.h"
 #include <list>
 
+#define get_gofs    false
+
 /* Written by Matthew Ackerman.*/
 
 /*calculates the 'effective number of chromosomes' in a sample. This number isn't used for anything right now.*/
@@ -256,14 +258,20 @@ count_t maximize_restricted_newton (Locus &site, Allele &a, models &model, std::
 
 	count_t excluded=0;
 
-        excluded=site.maskedcount();
+    excluded=site.maskedcount();
 	std::vector <float_t> temp_gofs(site.sample.size());
-	a.gof=model.goodness_of_fit(site, a, temp_gofs, maxgof);
-        a.efc=efc(site);
+    if (get_gofs)
+    {
+	    a.gof=model.goodness_of_fit(site, a, temp_gofs, maxgof);
+    } else {
+        a.gof=0;
+    }
+    a.efc=efc(site);
 
 	if (iter==200) {
 		std::cerr << "Failure to maximize " << iter << " " << a << "\n";
 	}
+   
 	if ( a.gof<maxgof) {
 		if (excluded==maxpitch){
 			for (size_t i=0; i<gofs.size(); i++) gofs[i]+=temp_gofs[i];
@@ -458,10 +466,16 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 
 	count_t excluded=0;
 
-        excluded=site.maskedcount();
-	std::vector <float_t> temp_gofs(site.sample.size());
-	a.gof=model.goodness_of_fit(site, a, temp_gofs, maxgof);
-        a.efc=efc(site);
+    excluded=site.maskedcount();
+    
+    std::vector <float_t> temp_gofs(site.sample.size());
+    if(get_gofs)
+    {
+    	a.gof=model.goodness_of_fit(site, a, temp_gofs, maxgof);
+    } else {
+        a.gof=0;
+    }
+    a.efc=efc(site);
 
 	if (iter==200) {
 		std::cerr << "Failure to maximize " << iter << " " << a << "\n";

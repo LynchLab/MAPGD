@@ -291,7 +291,6 @@ Base_file::read(Data *data)
 		return *this;
 	}
 	if (read_){
-//		std::cerr << "Base_file read  <" << data->table_name << ">" << char(in_->peek()) << std::endl;
 		if (binary_){
 			in_->read( (char *) data, data->size() );
 		}
@@ -336,7 +335,6 @@ Base_file::read(File_index &index, Indexed_data *data)
 			in_->read( (char *) data, data->size() );
 		}
 		else {
-//			std::cerr << "Base_file read (file_index) <" << data->table_name << ">" << char(in_->peek()) << std::endl;
 			if (in_->peek()=='@') {
 				std::string line;
 				std::getline(*in_, line);

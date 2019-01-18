@@ -38,6 +38,7 @@ int proview(int argc, char *argv[])
 	args.pvalue=0.001;
 
 	std::vector <std::string> infiles;
+	std::vector <std::string> name_list;
 	std::string namefile="";
 	std::string outfile="";
 	std::string headerfile="";
@@ -57,6 +58,7 @@ int proview(int argc, char *argv[])
 	env.optional_arg('f',"offset",	offset, 	"please provide a valid integer", "offset untill the first sample column in mpileup");
 	env.optional_arg('c',"columns",	columns, 	"please provide a valid integer", "number of columns per sample");
 	env.optional_arg('n',"names",	namefile, 	"No name file specified", "a tab delimited file with sample name 'tab' file name pairs");
+	env.optional_arg('l',"name_list",	name_list, 	"please provide a comma separated list", "a comma delimited list used as names for the samples.");
 	env.optional_arg('o',"output",	outfile,	"No output file specified", "sets the output file (default stdout)");
 	env.positional_arg('i',"input",	infiles,	"No input file specified", "the mpileup files to be used");
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "prints this message");
@@ -74,7 +76,7 @@ int proview(int argc, char *argv[])
 	}
 	if( headerfile=="" and !in_pro)
 	{
-		std::cerr << "You must either specify an index file (-H) or read a pro file (-p)\n";
+	    fprintf(stderr, gettext("mapgd:%s:%d: You must either specify an index file (-H) or read in a profile (-p).\n"), __FILE__, __LINE__);
 	}
 	
 	Indexed_file <Locus> out_file;		//the output profile
@@ -94,7 +96,7 @@ int proview(int argc, char *argv[])
         }
 
 	if (!in_pro && index.get_sizes().size()==0) {
-		std::cerr << __FILE__ << ":" << __LINE__ << ". Error: no scaffolds in index file. Exiting.\n";
+	    fprintf(stderr, gettext("mapgd:%s:%d: no scaffolds in index file.\n"), __FILE__, __LINE__);
 		exit(0);
 	}
 
@@ -103,17 +105,25 @@ int proview(int argc, char *argv[])
 	size_t sample_numbers=0;
 
 	if (namefile.size()!=0) {
+        if (name_list.size()!=0) {
+	        fprintf(stderr, gettext("mapgd:%s:%d: Warning: a name list (-l) and a name file (-n) have both been specified. Ignoring name list.\n"), __FILE__, __LINE__);
+        }
 		Flat_file <Sample_name> in_names;
 		Sample_name name_file;
 		in_names.open(namefile.c_str(), ios::in);
 		name_file=in_names.read_header();
 		while (in_names.read(name_file).table_is_open() ){
 			in_files.push_back(new Bcf2pro_file(in_pro) );
-			in_files.back()->open_no_extention(name_file.mpileup_name.c_str(), ios::in);
-			in_files.back()->set_mpileup(offset, columns);
+            if (name_file.mpileup_name.c_str()[0]=='-')
+            {
+    			in_files.back()->open(ios::in);
+            } else {
+    			in_files.back()->open_no_extention(name_file.mpileup_name.c_str(), ios::in);
+            }
+            in_files.back()->set_mpileup(offset, columns);
 			in_locus.push_back( in_files.back()->read_header() );
 			if (name_file.sample_names.size()!=in_locus.back().get_sample_names().size() ){
-				std::cerr << __FILE__ << ":" << __LINE__ << ". Error: name file does not name the correct number of samples. Exiting.\n";
+	            fprintf(stderr, gettext("mapgd:%s:%d: name file %s does not name the correct number of samples.\n"), __FILE__, __LINE__, name_file.mpileup_name.c_str() );
 				exit(0);
 			}
 			for (size_t y=0; y<name_file.sample_names.size(); ++y){
@@ -124,34 +134,39 @@ int proview(int argc, char *argv[])
 			if (in_files.back()->read(in_locus.back()).eof() ) in_files.back()->close();
 		}
 		in_names.close();
-	} else if (infiles.size()!=0){	
-		for (size_t x=0; x<infiles.size(); ++x) {
-			in_files.push_back(new Bcf2pro_file(in_pro) );
-			if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), ios::in);
-			else in_files.back()->open(ios::in);
-			in_files.back()->set_mpileup(offset, columns);
-			in_locus.push_back( in_files.back()->read_header() );
-			for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
-				std::stringstream s;
-				s << split_last(infiles[x], '/').back() << ":" << y+1;
-				sample_names.push_back( s.str().c_str() );
-			}
-			sample_numbers+=in_locus.back().get_sample_names().size();
-              	 	if (!in_pro) in_files[x]->set_index(index);
-			if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
-		}
-	} else 	{
-		in_files.push_back(new Bcf2pro_file(in_pro) );
-		in_files.back()->open(ios::in);
-		in_files.back()->set_mpileup(offset, columns);
-		in_locus.push_back( in_files.back()->read_header() );
-		for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
-			sample_names.push_back(in_locus.back().get_sample_names()[y]);
-		}
-                if (!in_pro) in_files[0]->set_index(index);
-		sample_numbers+=in_locus.back().get_sample_names().size();
-		if (in_files[0]->read(in_locus[0]).eof() ) in_files[0]->close();
-	}
+	} else {
+        if (name_list.size()!=0) {
+            sample_names=name_list;
+        }
+        if (infiles.size()!=0){	
+            for (size_t x=0; x<infiles.size(); ++x) {
+                in_files.push_back(new Bcf2pro_file(in_pro) );
+                if (infiles[x].size()!=0) in_files.back()->open_no_extention(infiles[x].c_str(), ios::in);
+                else in_files.back()->open(ios::in);
+                in_files.back()->set_mpileup(offset, columns);
+                in_locus.push_back( in_files.back()->read_header() );
+                for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
+                    std::stringstream s;
+                    s << split_last(infiles[x], '/').back() << ":" << y+1;
+                    sample_names.push_back( s.str().c_str() );
+                }
+                sample_numbers+=in_locus.back().get_sample_names().size();
+                        if (!in_pro) in_files[x]->set_index(index);
+                if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
+            }
+        } else 	{
+            in_files.push_back(new Bcf2pro_file(in_pro) );
+            in_files.back()->open(ios::in);
+            in_files.back()->set_mpileup(offset, columns);
+            in_locus.push_back( in_files.back()->read_header() );
+            for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
+                sample_names.push_back(in_locus.back().get_sample_names()[y]);
+            }
+                    if (!in_pro) in_files[0]->set_index(index);
+            sample_numbers+=in_locus.back().get_sample_names().size();
+            if (in_files[0]->read(in_locus[0]).eof() ) in_files[0]->close();
+        }
+    }
 
 	if (sample_numbers==0) {
 		std::cerr << __FILE__ << ":" << __LINE__ << ". Error: no mpileup files opened. Exiting.\n";
@@ -205,7 +220,8 @@ int proview(int argc, char *argv[])
 			//out_locus.ref.base=4;
 			out_file.get_pos(out_locus);
 			in_files[0]->get_pos(in_locus[0]);
-			if ( in_files[x]->is_open()  && in_files[x]->get_pos(in_locus[x])==out_file.get_pos(out_locus) ){
+
+            if ( in_files[x]->is_open()  && in_files[x]->get_pos(in_locus[x])==out_file.get_pos(out_locus) ){
 				read_site=true;
 				if(in_locus[x].ref.base!=4) out_locus.ref=in_locus[x].ref.base;
 				while (it_in!=end_in){
@@ -213,7 +229,7 @@ int proview(int argc, char *argv[])
 					it++;
 					it_in++;
 				}
-				if (in_files[x]->read(in_locus[x]).eof() ){
+				if ( in_files[x]->read(in_locus[x]).eof() ){
 					 in_files[x]->close();
 				}
 			} else {
@@ -222,7 +238,11 @@ int proview(int argc, char *argv[])
 					it++;
 					it_in++;
 				}
-			}
+            }
+            if (in_files[x]->get_pos(in_locus[x])<out_file.get_pos(out_locus) ){
+                fprintf(stderr, gettext("mapgd:%s:%d: Error syncing input and output file.\n"), __FILE__, __LINE__);
+                exit(0);
+            }
 		}
 		out_abs_pos=out_locus.get_abs_pos();
 		if ( read_site || print_all ){

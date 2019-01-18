@@ -36,7 +36,11 @@
 #define OPEN	1
 // PLEASE LIMIT LINE LENGTH TO 79 CHARACTERS----------------------------------/
 
-//! A templet which stores data associated with specific locations in a genome.
+
+//! An enum which controls how streaming binary data is read.
+enum control : char { c_read_row='R', c_close_table='C', c_open_table='O'};
+
+//! A template which stores data associated with specific locations in a genome.
 /*! An indexed file is a table with columns specified by the data types stored
  * in the table, which must store a pair of IDs retrieved by the get_id0() and 
  * get_id1() member functions. Additionally, data types must return a name for 
@@ -46,17 +50,18 @@
  * and out of a database. Finally...
  *
  */
-
 class Base_file {
 private:
-	void write_binary(const Data *);	     //!< Write in binary mode.
+
+    void write_binary(const Data *);	     //!< Write in binary mode.
 	void write_binary(const Indexed_data *);     //!< Write in binary mode.
 	void write_text(const Data *);
 	void write_text(File_index &, const Indexed_data *);
 
 protected:
+    control control_;
 
-	//! indicates whether the iostream opened succesfully
+	//! indicates whether the iostream opened successfully
 	bool open_;		
 
 	//! indicates whether the header has been read successfully
@@ -95,6 +100,7 @@ protected:
 	//! stores information about the mode in which the file was opened.
 	std::ios::openmode openmode_;
 	std::string filename_;	//!< The name of the file if opened.
+
 public:
 	//! returns the open mode.
 	const std::fstream::openmode& openmode();
@@ -190,6 +196,12 @@ public:
 	bool check_concatenated(void);
 	bool check_compressed(void);
 
+    inline std::ios::fmtflags in_flags(void) const 
+    {
+        if(open_ && read_) {
+            return in_->flags();
+        }
+    }
 };
 
 template <class Data>
@@ -202,7 +214,9 @@ protected :
 	virtual void read_text(Data &){};
 	virtual void write_text(const Data&){};
 
-	using Base_file::out_;
+	using Base_file::control_;
+
+    using Base_file::out_;
 	using Base_file::in_;
 
 	using Base_file::open_;
@@ -288,6 +302,7 @@ class Indexed_file: public Data_file <T> {
 private:
 	id1_t reference_size_;
 protected:
+	using Data_file<T>::control_;
 	File_index file_index_;	//!< A file_index which turns (id0, id1)->pos.
 
 	void read_text(T&);		//!< Read file in text mode.	DONE
@@ -335,6 +350,7 @@ class Double_indexed_file: public Indexed_file <T> {
 	void read_binary(T &);
 	void write_binary(const T &);
 
+	using Indexed_file<T>::control_;	
 	using Indexed_file<T>::file_index_;	//(const std::ios_base::openmode &);
 	using Data_file<T>::out_;	//(const std::ios_base::openmode &);
 	using Data_file<T>::in_;	//(const std::ios_base::openmode &);
@@ -585,42 +601,42 @@ void Double_indexed_file<T>::read_text(T &data)
 	}
 }
 
+
+
 template <class T>
 void Data_file<T>::read_binary(T &data)
 {
-//	std::cerr << "Data_file (binary) <" << data.table_name << ">" << char(in_->peek()) << std::endl;
-//	char a='a';
-	if (in_->peek()!='@'){
-//		in_->read(&a, sizeof(char) );
-		data.read_binary(*in_);
-	} else {
-		if (!concatenated_) {
-			this->close();
-		} else {
-			this->close_table();
-		}
+    in_->read( (char *)&control_, sizeof(control) );
+    switch(control_)
+    {
+        case c_read_row : data.read_binary(*in_); break;
+        case c_close_table : 
+    		if (!concatenated_) {
+    			this->close();
+    		} else {
+    			this->close_table();
+    		} break;
 	}
 }
 
 template <class T>
 void Indexed_file<T>::read_binary(T &data)
 {
-//	std::cerr << "Indexed_file (binary) <" << data.table_name << ">" << char(in_->peek()) << std::endl;
-//	char a='a';
-	if (in_->peek()=='@')
+    in_->read( (char *)&control_, sizeof(control) );
+    switch(control_)
 	{
-		if (!concatenated_) {
-			this->close();
-		} else {
-			this->close_table();
-		}
-	} else {
-		//WTF?!?!
-//		in_->read(&a, sizeof(char) );
-		data.read_pos(*in_);
-		data.read_binary(*in_);
-	}
-	
+        case c_read_row : 
+		    data.read_pos(*in_);
+        	data.read_binary(*in_);
+        break;
+        case c_close_table :
+		    if (!concatenated_) {
+    			this->close();
+    		} else {
+	    		this->close_table();
+	    	}
+       break;
+   }
 }
 
 template <class T>
@@ -669,16 +685,14 @@ void Double_indexed_file<T>::write_text(const T &data)
 template <class T>
 void Data_file<T>::write_binary(const T &data)
 {
-//	char a='a';	//WTF?!?!
-//	out_->write(&a, sizeof(char) );
+	out_->put(c_read_row);
 	data.write_binary(*out_);
 }
 
 template <class T>
 void Indexed_file<T>::write_binary(const T &data)
 {
-//	char a='a';	//WTF?!?!
-//	out_->write(&a, sizeof(char) );
+	out_->put(c_read_row);
 	data.write_pos(*out_);
 	data.write_binary(*out_);
 }
@@ -686,8 +700,7 @@ void Indexed_file<T>::write_binary(const T &data)
 template <class T>
 void Double_indexed_file<T>::write_binary(const T &data)
 {
-//	char a='a';	//WTF?!?!
-//	out_->write(&a, sizeof(char) );
+	out_->put(c_read_row);
 	data.write_pos(*out_);
 	data.write_binary(*out_);
 }
@@ -697,7 +710,6 @@ Data_file<T>& Data_file<T>::write(const T &data)
 {
 	if (binary_) write_binary(data);
 	else write_text(data);
-//	if (!out_->good() ) { std::cerr << __FILE__ << ":" << __LINE__ << ": unexpected error writing file. Exiting.\n"; exit(0);};
 	return *this;
 }
 
@@ -706,7 +718,6 @@ Indexed_file<T>& Indexed_file<T>::write(const T &data)
 {
 	if (binary_) write_binary(data);
 	else write_text(data);
-//	if (!out_->good() ) { std::cerr << __FILE__ << ":" << __LINE__ << ": unexpected error writing file. Exiting.\n"; exit(0);};
 	return *this;
 }
 
