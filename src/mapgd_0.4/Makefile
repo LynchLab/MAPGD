@@ -9,7 +9,7 @@ WARNINGS=-Wno-write-strings
 #WARNINGS=-Wall -Werror=return-type -Wno-write-strings
 MINOR=`cat VERSION | cut -d - -f 1`
 VERSION=-DVERSION=\"0.4.$(MINOR)\"
-INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/ -I ./mpi
+INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/ -I ./mpi -I /software/gcc-6.2.0/lib64/libstdc++.so.6
 #remove fno-exceptions when in debug mode
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) #-MMD
 LDLIBS += -lgzstream -lz -L ./gzstream/ 
@@ -237,7 +237,7 @@ gzstream :
 .PHONY: gzstream
 
 $(TARGET) : $(OBJ) $(MPI_OBJ)
-	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o ../../bin/$(TARGET) $(LDLIBS) $(MPI_LDLIBS)
+	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o ../../bin/$(TARGET) $(LDLIBS) $(MPI_LDLIBS) -L /software/gcc-6.2.0/lib64 
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o po/mapgd.pot --copyright-holder="Matthew Ackerman" --package-name="mapgd" --package-version=$(MINOR) --msgid-bugs-address="matthew.s.ackerman@gmail.com"  $(addsuffix /*.cc, $(SUBDIR)) *.cc
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
