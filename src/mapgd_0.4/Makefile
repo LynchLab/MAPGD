@@ -126,7 +126,6 @@ COMMAND_OBJ=$(OBJDIR)/estimate_individual.o \
 	$(OBJDIR)/filter.o \
 	$(OBJDIR)/filter_genotype.o \
 	$(OBJDIR)/filter_pool.o \
-	$(OBJDIR)/filter_pro.o \
 	$(OBJDIR)/read_pheno.o \
 	$(OBJDIR)/fastview.o \
 	$(OBJDIR)/relatedness.o \

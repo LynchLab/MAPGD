@@ -265,7 +265,7 @@ File_index::sql_column_names(void) const {
 
 const std::string 
 File_index::sql_values(void) const {
-    std::cerr << "reading from sql values called\n";    
+    std::cerr << "sql_values called\n";    
         char return_buffer[SQL_LINE_SIZE]={0};
 	char *write_ptr=return_buffer;
 	std::vector<std::string>::const_iterator id0_it=id0_.cbegin(), end=id0_.cend();
@@ -275,12 +275,16 @@ File_index::sql_values(void) const {
        		(id0_it++)->c_str(),
 		*(++size_it),
 		*size_it );
-	while (id0_it!=end) {
+	while (id0_it!=end) 
+    {
 		write_ptr+=snprintf(write_ptr, SQL_LINE_SIZE, ", ('%s','%d', '%d')", 
        		(id0_it++)->c_str(),
 		*(++size_it),
 		*size_it);
-        }
+    }
+
+    std::cerr << std::string(return_buffer);
+
 	return std::string(return_buffer);
 }
 

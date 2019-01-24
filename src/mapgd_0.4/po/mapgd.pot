@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mapgd 37\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2019-01-24 12:17+0000\n"
+"POT-Creation-Date: 2019-01-24 12:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Error: %s.\n"
 msgstr ""
 
-#: sql/db_api.cc:71
+#: sql/db_api.cc:70
 #, c-format
 msgid "SQL says: %s\n"
 msgstr ""
@@ -266,7 +266,7 @@ msgid ""
 "specify min:max, where min and max are both integers.\n"
 msgstr ""
 
-#: sql/db_api.cc:70
+#: sql/db_api.cc:69
 #, c-format
 msgid "mapgd:%s:%d: db_open_table_w_query: Error executing the SQL query %s"
 msgstr ""

@@ -65,12 +65,12 @@ int writesql(int argc, char *argv[])
 			//std::cerr << "line?..." << std::endl;
 			if (!db_check_schema(db, &index)) 
 			{
-				//std::cerr << "Making table " << line->get_table_name() << std::endl;
+				//std::cerr << "Making table on 68 " << line->get_table_name() << std::endl;
 				db_make_table(db, line);
 				file.read(&index);
 				while (file.table_is_open() )
 				{
-					//std::cerr << *line << std::endl;
+					//std::cerr << "inserting..." << std::endl;
 					db_insert(db, &index);
 					file.read(&index);
 				}
@@ -80,7 +80,7 @@ int writesql(int argc, char *argv[])
 				while (file.table_is_open() ) file.read(&index);
 			} 
 		} else {
-			std::cerr << "Making table " << line->get_table_name() << line->header() << std::endl;
+			//std::cerr << "Making table on 83 " << line->get_table_name() << line->header() << std::endl;
 			db_make_table(db, line);
 			if (file.indexed() ){
 				Indexed_data *indexed_line=dynamic_cast <Indexed_data *> (line);
@@ -93,7 +93,7 @@ int writesql(int argc, char *argv[])
 			} else {
 				file.read(line);
 				while (file.table_is_open() ){
-					//std::cerr << "Non indexed table is open " << *line << std::endl;
+					//std::cerr << "Non indexed table is open inserting ... " << *line << std::endl;
 					db_insert(db, line);
 					file.read(line); //Reading non indexed
 				}

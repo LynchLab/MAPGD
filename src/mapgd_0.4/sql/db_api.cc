@@ -43,7 +43,6 @@ void db_insert(sqlite3 *db, const Data *these_data)
 	char add_data[SQL_LINE_SIZE]={0};
 	//snprintf (add_data, SQL_LINE_SIZE, "INSERT INTO %s %s VALUES %s; \n", these_data->get_table_name().c_str(), these_data->sql_column_names().c_str(), these_data->sql_values().c_str() );
 	snprintf (add_data, SQL_LINE_SIZE, "REPLACE INTO %s %s VALUES %s; \n", these_data->get_table_name().c_str(), these_data->sql_column_names().c_str(), these_data->sql_values().c_str() );
-//	std::cerr << add_data << std::endl;
 	sqlite3_exec(db, add_data, call_back, 0, &error_message);
 }
 
