@@ -45,14 +45,14 @@ modifided_cdf_negative_binomial_P(const int &k, const double &p, const double &r
 }
 
 double
-get_coverage_z_score_neg_bin(const Locus &locus, const std::vector < std::array < double, 2 > > &par)
+get_coverage_z_score_neg_bin(const Locus &locus, std::vector < std::array < double, 2 > > &par)
 {
 	double sum=0, norm=0;
 
 	std::vector <quartet_t>::const_iterator q_it=locus.sample.cbegin();
 	std::vector <quartet_t>::const_iterator q_end=locus.sample.cend();
 
-	std::vector < std::array<double, 2> >::const_iterator p_it=par.cbegin();
+	std::vector < std::array<double, 2> >::iterator p_it=par.begin();
 
 	while (q_it!=q_end)
 	{

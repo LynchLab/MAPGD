@@ -120,7 +120,7 @@ class Flag {
 		umsg="umsg unset";
 	};
 
-	Flag (char opt_, char* lopt_, void *parm_, int (*func_)(void *), char *emsg_, char *umsg_){
+	Flag (char opt_, const char* lopt_, void *parm_, int (*func_)(void *), const char *emsg_, const char *umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		func=func_;
@@ -131,11 +131,11 @@ class Flag {
 
 	bool set;	//!< flag toggles whether option has been set.
 	char opt;	//!< the option name.
-	char *lopt;	//!< the long option name.
+	const char *lopt;	//!< the long option name.
 	void *parm;		//!< pointer to the parameter to be set.
 	int (*func)(void *); 	//!< the function to set the parameters.
-	char *emsg;		//!< A short error message to display when the proper parameters aren't passed to this option.
-	char *umsg;		//!< A short description of this option to be displayed in the usage message.
+	const char *emsg;		//!< A short error message to display when the proper parameters aren't passed to this option.
+	const char *umsg;		//!< A short description of this option to be displayed in the usage message.
 };
 
 //! A command line argument. See the interface tutorial for a demonstration of usage. 
@@ -163,11 +163,11 @@ class Argument {
 	 *  which causes no end of problems. 
 	 */
 	Argument(const char opt_, 
-		char *lopt_, 
+		const char *lopt_, 
 		void *parm_, 
 		int (*func_)(int, char **, void *), 
-		char *emsg_, 
-		char *umsg_){
+		const char *emsg_, 
+		const char *umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		parm=parm_;
@@ -180,11 +180,12 @@ class Argument {
 	}
 	
 	template <class Type>
-	Argument(const char opt_, 
-		char *lopt_, 
+
+    Argument(const char opt_, 
+		const char *lopt_, 
 		Type &parm_, 
-		char *emsg_, 
-		char *umsg_){
+		const char *emsg_, 
+		const char *umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		parm=(void *)(&parm_);
@@ -199,13 +200,13 @@ class Argument {
 	bool set;   //!< flag toggles whether option has been set.
 	bool required; //!< flag toggles whether option is required.
 	char opt;   //!< the option name.
-	char *lopt; //!< the long option name.
+	const char *lopt; //!< the long option name.
 	void *parm; //!< pointer to the parameter to be set.
 	int (*func)(int, char **, void *);	//!< the function to set the parameters.
-	char *emsg; //!< A short error message to display when the proper parameters aren't passed to this option.
-	char *umsg; //!< A short description of this option to be displayed in the usage message.
+	const char *emsg; //!< A short error message to display when the proper parameters aren't passed to this option.
+	const char *umsg; //!< A short description of this option to be displayed in the usage message.
 	//! A short description of this option to be displayed in the usage message.
-	char *operand_type; 
+	const char *operand_type; 
 };
 
 //! A sub-command of mapgd.
@@ -223,7 +224,7 @@ class Command {
 		umsg="umsg unset";
 		set=false;
 	};
-	Command(char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_){
+	Command(char opt_, const char* lopt_, int (*func_)(int, char **), const char *emsg_, const char *umsg_){
 		opt=opt_;
 		lopt=lopt_;
 		func=func_;
@@ -233,10 +234,10 @@ class Command {
 	};
 	bool set;	//!< flag toggles whether option has been set
 	char opt;	//!< the option name
-	char *lopt;	//!< the long option name
+	const char *lopt;	//!< the long option name
 	int (*func)(int, char **);	//!< the function to set the parameters
-	char *emsg;	//!< A short error message to display when the proper parameters aren't passed to this option
-	char *umsg;	//!< A short description of this command to be displayed in the usage and help message
+	const char *emsg;	//!< A short error message to display when the proper parameters aren't passed to this option
+	const char *umsg;	//!< A short description of this command to be displayed in the usage and help message
 };
 
 //! A class for handling options and automatically formating --help, -h, -u and -v.
@@ -287,19 +288,19 @@ public:
 	}
 	
 	/*!	\brief adds an optional argument to the list of arguments accepted by the program.*/
-	void optional_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
+	void optional_arg (char opt_, const char* lopt_, void * parm_, int (*func_)(int, char **, void *), const char *emsg_, const char *umsg_)
 	{
 		args.push_back(Argument(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 	}
 
 	template <class Type>
-	inline void optional_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)
+	inline void optional_arg (char opt_, const char* lopt_, Type &parm_, const char *emsg_, const char *umsg_)
 	{
 		args.push_back(Argument(opt_, lopt_, parm_, emsg_, umsg_) );
 	}
 
 	template <class Type>
-	void positional_arg (char opt_, char* lopt_, Type &parm_, char *emsg_, char*umsg_)
+	void positional_arg (char opt_, const char* lopt_, Type &parm_, const char *emsg_, const char *umsg_)
 	{
 		args.push_back(Argument(opt_, lopt_, parm_, emsg_, umsg_) );
 		positional_args.push_back(&args.back() );
@@ -317,7 +318,7 @@ public:
 	 *
 	 *	-1 is returned by parsargs when required arguments are not provided.
 	 */
-	void required_arg (char opt_, char* lopt_, void * parm_, int (*func_)(int, char **, void *), char *emsg_, char*umsg_)
+	void required_arg (const char &opt_, const char* lopt_, void * parm_, int (*func_)(int, char **, void *), const char *emsg_, const char *umsg_)
 	{
 		args.push_back(Argument(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 		args.back().required=true;
@@ -341,7 +342,7 @@ public:
 	 *	further processing of the argc and argv variables can be done 
 	 *	by the environment in which a command is called.
 	 */
-	void command (char opt_, char* lopt_, int (*func_)(int, char **), char *emsg_, char*umsg_)
+	void command (char opt_, const char * lopt_, int (*func_)(int, char **), const char *emsg_, const char *umsg_)
 	{
 		commands.push_back(Command(opt_, lopt_, func_, emsg_, umsg_) );
 	}
@@ -350,7 +351,7 @@ public:
 	 *
 	 *	Flags can be passed either separately, or in a concatenated list if their short form is used.
 	 */
-	void flag (char opt_, char* lopt_, void * parm_, int (*func_)(void *), char *emsg_, char*umsg_)
+	void flag (char opt_, const char* lopt_, void * parm_, int (*func_)(void *), const char *emsg_, const char *umsg_)
 	{
 		flags.push_back(Flag(opt_, lopt_, parm_, func_, emsg_, umsg_) );
 	}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mapgd 37\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2019-01-24 09:13+0000\n"
+"POT-Creation-Date: 2019-01-24 12:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,11 +83,6 @@ msgstr ""
 msgid "mapgd:%s:%d: Class %s does not return the correct type. Exiting.\n"
 msgstr ""
 
-#: commands/proview.cc:314
-#, c-format
-msgid "mapgd:%s:%d: Clean exit. goodbye!\n"
-msgstr ""
-
 #: data_conversion/bed_file.cc:161 data_conversion/vcf_file.cc:351
 #: data_conversion/vcf_file.cc:426
 #, c-format
@@ -131,7 +126,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Malformed LZ4 block. Exiting.\n"
 msgstr ""
 
-#: data_conversion/plink_pheno.cc:144
+#: data_conversion/plink_pheno.cc:145
 #, c-format
 msgid "mapgd:%s:%d: Retrieving sample names currently unsupported.\n"
 msgstr ""

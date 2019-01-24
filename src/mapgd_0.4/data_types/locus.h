@@ -162,7 +162,7 @@ public:
 	const std::string get_table_name(void) const;
 	const bool get_binary(void) const;
 
-	const std::string sql_header(void) const;				
+	const std::string sql_header(void) const override;				
 	const std::string sql_column_names(void) const;				
 	const std::string sql_values(void) const;				
 	const std::string sql_get_constructor(void) const;				

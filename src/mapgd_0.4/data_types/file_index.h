@@ -166,7 +166,7 @@ public:
 	//! returns the column values (SQL).
 	const std::string sql_values(void) const;
 	//! binds data to sqlite3_stmt.
-	void sql_read(std::istream &) override;
+	void sql_read(std::istream &) const;
 };
 
 #endif 

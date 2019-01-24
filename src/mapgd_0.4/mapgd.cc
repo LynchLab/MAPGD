@@ -54,7 +54,7 @@ int main (int argc, char* argv[])
 	env.command(	' ',"read", 	&readsql, 			"an error occurred while calling read", "Reads data from the SQL database");				//TODO
 	env.command(	' ',"write", 	&writesql, 			"an error occurred while calling write", "Writes data to the SQL database");				//DONE
 #endif
-	env.set_footer(" '\x1B[1mmapgd help\x1B[0m \x1B[4mCOMMAND\x1B[0m' will print the manual page for that command, e.g. \x1B[1mmapdg help genotype\x1B[0m will show general information for the genotype command. \x1B[1mmapgd help\x1B[0m \x1B[4mCOLUMN NAME\x1B[0m will \
+	env.set_footer(" '\x1b[1mmapgd help\x1b[0m \x1b[4mCOMMAND\x1b[0m' will print the manual page for that command, e.g. \x1b[1mmapdg help genotype\x1b[0m will show general information for the genotype command. \x1b[1mmapgd help\x1b[0m \x1b[4mCOLUMN NAME\x1b[0m will \
 give information about the column names that appear in the first two lines of files.");
 //	env.command(	' ',"mlrho", 	&mlrho, 			"an error occured while calling proview", "Runs mlrho");						//TODO
 //	env.command(	' ',"calc", 	&calcInd,	 		"an error occured while calling calc", "print log likelihood of ...");

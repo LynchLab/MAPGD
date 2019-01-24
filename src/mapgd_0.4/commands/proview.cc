@@ -311,7 +311,7 @@ int proview(int argc, char *argv[])
 	}
 	env.close();
 
-    fprintf(stderr, gettext("mapgd:%s:%d: Clean exit. goodbye!\n"), __FILE__, __LINE__);
+//    fprintf(stderr, gettext("mapgd:%s:%d: Clean exit. goodbye!\n"), __FILE__, __LINE__);
 
 	return 0;
 }
