@@ -12,3 +12,4 @@
 #define HAVE_GETTEXT 1
 #define HAVE_DCGETTEXT 1
 #define HAVE_CXX11 1
+#define HAVE_MPI 1

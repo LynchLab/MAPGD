@@ -55,6 +55,7 @@ public:
 	using Indexed_file<Locus>::open;
 	using Indexed_file<Locus>::set_index;	//!< Sets the File_index.		
 	using Indexed_file<Locus>::get_index;	//!< Returns the File_index.
+	using Base_file::table_is_open;
 
 	/*! \brief Returns the position in the file.
 	 *

@@ -29,9 +29,11 @@ int proview(int argc, char *argv[])
 	bool bernhard=false;
 	bool noheader=false;
 	bool dontprint=false;
+	bool out_cov=false;
 	
 	int offset=2;
 	int columns=3;
+    count_t GC=0, N=0, K=0;
 
 	args.pro=false;
 	args.min=4;
@@ -68,6 +70,7 @@ int proview(int argc, char *argv[])
 	env.flag(	'r',"mlrho",	&bernhard, 	&flag_set, 	"an error occurred", "output in mlrho format");
 	env.flag(	'N',"noheader",	&noheader,	&flag_set, 	"an error occurred", "don't print those silly '@' lines. Overrides the b option.");
 	env.flag(	'p',"pro",	&in_pro, 	&flag_set, 	"an error occurred", "input is in pro format");
+	env.flag(	'd',"depth",	&out_cov, 	&flag_set, 	"an error occurred", "output coverage instead of profile.");
 
 	if (parsargs(argc, argv, env)!=0)
 	{
@@ -88,12 +91,12 @@ int proview(int argc, char *argv[])
 
 	File_index index;
 
-        if (headerfile.size()!=0) {
-                std::fstream header;
-                header.open(headerfile.c_str(),  ios::in);
-                index.from_sam_header( header );
-                out_file.set_index(index);
-        }
+    if (headerfile.size()!=0) {
+        std::fstream header;
+        header.open(headerfile.c_str(),  ios::in);
+        index.from_sam_header( header );
+        out_file.set_index(index);
+    }
 
 	if (!in_pro && index.get_sizes().size()==0) {
 	    fprintf(stderr, gettext("mapgd:%s:%d: no scaffolds in index file.\n"), __FILE__, __LINE__);
@@ -145,13 +148,20 @@ int proview(int argc, char *argv[])
                 else in_files.back()->open(ios::in);
                 in_files.back()->set_mpileup(offset, columns);
                 in_locus.push_back( in_files.back()->read_header() );
-                for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
-                    std::stringstream s;
-                    s << split_last(infiles[x], '/').back() << ":" << y+1;
-                    sample_names.push_back( s.str().c_str() );
+               
+                if (!in_pro) {
+                    for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
+                        std::stringstream s;
+                        s << split_last(infiles[x], '/').back() << ":" << y+1;
+                        sample_names.push_back( s.str().c_str() );
+                    }
+                } else {
+                    for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
+                        sample_names.push_back(in_locus.back().get_sample_names()[y]);
+                    }
                 }
                 sample_numbers+=in_locus.back().get_sample_names().size();
-                        if (!in_pro) in_files[x]->set_index(index);
+                if (!in_pro) in_files[x]->set_index(index);
                 if (in_files[x]->read(in_locus[x]).eof() ) in_files[x]->close();
             }
         } else 	{
@@ -162,7 +172,7 @@ int proview(int argc, char *argv[])
             for (size_t y=0; y<in_locus.back().get_sample_names().size(); ++y){
                 sample_names.push_back(in_locus.back().get_sample_names()[y]);
             }
-                    if (!in_pro) in_files[0]->set_index(index);
+            if (!in_pro) in_files[0]->set_index(index);
             sample_numbers+=in_locus.back().get_sample_names().size();
             if (in_files[0]->read(in_locus[0]).eof() ) in_files[0]->close();
         }
@@ -199,7 +209,7 @@ int proview(int argc, char *argv[])
 	}
 
 	out_locus.set_abs_pos(1);
-	bool print_all=!dontprint, go=true, read_site=false;
+	bool print_all=!dontprint, go=true, all_closed=true, read_site=false;
 
 	region.set(index);
 	id1_t out_abs_pos;
@@ -211,6 +221,7 @@ int proview(int argc, char *argv[])
 		std::vector <quartet_t>::iterator end=out_locus.end();
 
 		read_site=false;
+        all_closed=true;
 		
 		for (size_t x=0; x<in_files.size(); x++){
 
@@ -239,41 +250,68 @@ int proview(int argc, char *argv[])
 					it_in++;
 				}
             }
-            if (in_files[x]->get_pos(in_locus[x])<out_file.get_pos(out_locus) ){
-                fprintf(stderr, gettext("mapgd:%s:%d: Error syncing input and output file.\n"), __FILE__, __LINE__);
-                exit(0);
-            }
+            if ( in_files[x]->table_is_open() ) {
+                all_closed=false;
+                if (in_files[x]->get_pos(in_locus[x])<out_file.get_pos(out_locus) ){
+                    if (in_files[x]->get_pos(in_locus[x])<out_file.get_pos(out_locus) ){
+                        if (!all_closed) {
+                            fprintf(stderr, gettext("mapgd:%s:%d: Error syncing input and output file.\n"), __FILE__, __LINE__);
+                            exit(0);
+                        }
+                    }
+               }
+           }
 		}
 		out_abs_pos=out_locus.get_abs_pos();
 		if ( read_site || print_all ){
 			if ( out_abs_pos > region.abs_start && out_abs_pos < region.abs_stop ){
 				out_locus.unmaskall();
-				out_file.write(out_locus);
+                if (!out_cov)
+                    out_file.write(out_locus);
+                else {
+                    {
+                        std::cout.width(14);
+                        std::cout << std::left << index.get_string(index.get_id0(out_locus.get_abs_pos()) );
+                        std::cout << '\t';
+                        std::cout << index.get_id1(out_locus.get_abs_pos());
+                        std::cout << '\t';
+                        std::cout << out_locus.getcoverage();
+                        std::cout << '\t';
+                        std::cout << int(out_locus.ref=='G' or out_locus.ref=='C');
+                        std::cout << '\t';
+                        std::cout << int(not(out_locus.ref=='N')) << std::endl;
+                    }
+                }
 			}
 		}
 		out_locus.set_abs_pos(out_abs_pos+1);
-		if (out_abs_pos<=region.abs_stop ) go=true;
+		if (out_abs_pos <= region.abs_stop ) go=true;
 		else go=false;
-	
+        if (!print_all && all_closed) go=false;
 	};
 
+    //Print mean coverages summary statistics?
 	if(!noheader) {
 		out_file.close_table();
-		Flat_file <Sample_gof> smp_file;
+
+        /*Flat_file <Sample_cov> smp_file;
 		smp_file.open_from(out_file);
 		smp_file.write_header( Sample_gof() );
 		for (size_t x=0; x<sample_names.size(); ++x) {
 			smp_file.write(Sample_gof(x+1, sample_names[ind[x]], 0 ) );
 		}
-		smp_file.close();
+		smp_file.close();*/
 		out_file.close();
 	}
+
 
 	for (size_t x=0; x<in_files.size(); ++x) {
 		in_files[x]->close(); 
 		delete in_files[x];
 	}
 	env.close();
+
+    fprintf(stderr, gettext("mapgd:%s:%d: Clean exit. goodbye!\n"), __FILE__, __LINE__);
 
 	return 0;
 }

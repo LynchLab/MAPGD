@@ -141,7 +141,10 @@ Plink_file::close(void)
 std::vector<std::string> 
 Plink_data::get_sample_names (void) const 
 {
+    std::vector <std::string> names;
 	fprintf(stderr, gettext("mapgd:%s:%d: Retrieving sample names currently unsupported.\n"), __FILE__, __LINE__ );
+    exit(0);
+    return names;
 }
 
 size_t 

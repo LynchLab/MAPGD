@@ -501,7 +501,7 @@ Usage(Environment env, FILE *out){
 	std::string required_args="";
 	std::string optional_args="";
 	size_t x=0;
-	if (env.commands.size()!=0) fprintf(out, "usage: \e[1m%s\e[0m \e[4mCOMMAND\e[0m [\e[4mOPTIONS\e[0m]\n", env.name);
+	if (env.commands.size()!=0) fprintf(out, "usage: \x1B[1m%s\x1B[0m \x1B[4mCOMMAND\x1B[0m [\x1B[4mOPTIONS\x1B[0m]\n", env.name);
 	else {
 		std::list <Flag>::iterator flag=env.flags.begin();
 		std::list <Flag>::iterator f_end=env.flags.end();

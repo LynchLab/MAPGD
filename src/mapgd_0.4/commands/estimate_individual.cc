@@ -47,7 +47,7 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 #endif
 
 
-	Allele mle, temp;					//Allele is a basic structure that containes all the summary statistics for
+	Allele mle, temp;			//Allele is a basic structure that containes all the summary statistics for
 								//an allele. It gets passed around a lot, and a may turn it into a class that has
 								//some basic read and write methods.
 
@@ -61,12 +61,12 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 	mle.major=4;
 	mle.minor=4;
 
-	site.mask_low_cov(MIN-1);
+    if (MIN!=0) site.mask_low_cov(MIN-1);
 	count_t texc=site.maskedcount(), rexc;
 	rexc=texc;
 
 	if (init_params(site, mle, EMLMIN) ){		//If >90% of reads agree, then assume a homozygote,
-							//otherwise, assume heterozygote.
+                    							//otherwise, assume heterozygote.
 	if (mle.null_error!=0){
 		rexc=maximize_grid(site, mle, model, gofs, -MINGOF, MAXPITCH+texc);	//trim bad clones and re-fit the model.
 		if (newton) 
@@ -79,6 +79,11 @@ Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const c
 			get_bias(site, mle, h_min);
 			mle.print_bias=true;
 		}
+        site.sort();
+        mle.major=site.getindex(0);
+        mle.minor=site.getindex(1);
+        if (site.getcount(0)==0) mle.major=4;
+	    if (site.getcount(1)==site.getcount(2) ) mle.minor=4;
 		return mle;
 	}
 
@@ -325,7 +330,7 @@ int estimateInd(int argc, char *argv[])
 	/* this is the basic header of our outfile, should probably be moved over to a method in Allele.*/
 	locus_in.maskall();						//Turn off the ability to read data from all clones by default. 
 
-	if ( ind.size()==0 ) { 						//Iff the vector ind (which should list the clones to 
+	if ( ind.size()==0 ) { 					//Iff the vector ind (which should list the clones to 
 		ind.clear();						//be read from the .pro file) is empty, then 
 		for (count_t x=0; x<locus_in.get_sample_names().size(); ++x) ind.push_back(x);  //put every clone in the vector ind.
 	};

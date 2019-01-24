@@ -203,9 +203,18 @@ void Allele::write (std::ostream& out) const
 		} else {
 			out << 0 <<  delim;
 		}
-		out << error << delim;
-		out << null_error << delim;
-		out << null_error2 << delim;
+        if (error==-FLT_MAX)
+		    out << MISSING <<  delim;
+        else
+    		out << error << delim;
+        if (null_error==-FLT_MAX)
+		    out << MISSING <<  delim;
+        else
+            out << null_error << delim;
+        if (null_error2==-FLT_MAX)
+		    out << MISSING <<  delim;
+        else
+            out << null_error2 << delim;
 		out << f << delim;//+1./(2.*N-1.) <<  delim;
 		out << MM << delim;
 		out << Mm << delim;

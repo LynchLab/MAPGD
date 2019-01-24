@@ -264,11 +264,29 @@ const std::string& Base_file::filename(void)
 	return filename_;
 }
 
-void Base_file::close_table(void){
+void Base_file::close_table(void)
+{
 #ifdef DEBUG
-	std::cerr << "Closing table " << filename_ << std::endl;
+	std::cerr << "Closing table " << std::endl;
 #endif
-	if (write_ && open_) *out_ << "@END_TABLE\n";
+	if (write_ && open_) 
+    {
+        if (binary_) 
+        {
+            //std::cerr << int(out_->rdstate() && std::ostream::goodbit != 0);
+            //std::cerr << int(out_->rdstate() && std::ostream::eofbit != 0);
+            //std::cerr << int(out_->rdstate() && std::ostream::failbit != 0);
+            //std::cerr << int(out_->rdstate() && std::ostream::badbit != 0);
+	        out_->put(c_close_table);
+            //std::cerr << int(out_->rdstate() && std::ostream::goodbit != 0);
+            //std::cerr << int(out_->rdstate() && std::ostream::eofbit != 0);
+            //std::cerr << int(out_->rdstate() && std::ostream::failbit != 0);
+            //std::cerr << int(out_->rdstate() && std::ostream::badbit != 0);
+            *out_ << "@END_TABLE\n";
+        }
+        else 
+            *out_ << "@END_TABLE\n";
+    }
 	table_open_=false;
 }
 
@@ -459,12 +477,14 @@ Base_file::write_text(const Data *data)
 void 
 Base_file::write_binary(const Data *data)
 {
+	out_->put(c_read_row);
 	data->write_binary(*out_);
 }
 
 void 
 Base_file::write_binary(const Indexed_data *data)
 {
+	out_->put(c_read_row);
 	data->write_pos(*out_);
 	data->write_binary(*out_);
 }

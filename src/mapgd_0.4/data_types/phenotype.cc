@@ -140,7 +140,7 @@ const size_t
 Phenotype::sample_size(void) const
 {
 	return n_samples_;
-}*/;
+}*/
 
 const bool 
 Phenotype::get_binary(void) const
