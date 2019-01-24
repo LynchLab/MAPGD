@@ -48,7 +48,7 @@ good_size=10		#number of lines post filtering
 good_pool=4		#number of lines post filtering
 idx_size=3		#number of lines in the idx file
 gof_size=8		#number of lines in the idx file
-smp_size=11		#number of lines in the smp file
+smp_size=0		#number of lines in the smp file
 
 mapgd="../../bin/mapgd"
 
