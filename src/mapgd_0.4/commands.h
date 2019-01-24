@@ -23,7 +23,7 @@
 #include "fastview.h"
 #include "filter_pool.h"
 #include "filter_genotype.h"
-#include "filter_pro.h"
+//#include "filter_pro.h"
 #include "map2genotype.h"
 #include "linkage_disequilibrium.h"
 #include "sam2idx.h"

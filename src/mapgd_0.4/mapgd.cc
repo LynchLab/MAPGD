@@ -29,7 +29,7 @@ int main (int argc, char* argv[])
 	env.command(	' ',"fastview",	&fastview,	 		"an error occurred while calling filter", "Quickly displays contents of a file");			 	//DONE
 	env.command(	' ',"filter",	&filter,	 		"an error occurred while calling filter", "Filter sites in '.map' files");			 	//DONE
 	env.command(	' ',"filterpool",&filter_pool,	 		"an error occurred while calling filter", "Filter sites in '.pol' files");			 	//DONE
-	env.command(	' ',"filterpro", &filter_pro,	 		"an error occurred while calling filter", "Filter sites in '.pro' files");			 	//DONE
+//	env.command(	' ',"filterpro", &filter_pro,	 		"an error occurred while calling filter", "Filter sites in '.pro' files");			 	//DONE
 	env.command(	' ',"filtergcf",&filter_genotype,	 	"an error occurred while calling filter", "Filter sites in '.gcf' files");			 	//DONE
 	env.command(	' ',"genotype",	&map2genotype,	 		"an error occurred while calling genotype", "Calculate genotype probabilities for individuals"); 	//DONE
 	env.command(	' ',"linkage", 	&linkage_disequilibrium,	 			"an error occurred while calling linkage", "Estimates linkage disequilibrium between loci");		//DONE
