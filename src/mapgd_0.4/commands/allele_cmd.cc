@@ -19,7 +19,7 @@ Output File: two columns of site identifiers; reference allele; major allele; mi
 	Default name is "dataout.txt".
 */
 
-#include "estimate_individual.h"
+#include "allele_cmd.h"
 
 #define BUFFER_SIZE 500
 
@@ -220,7 +220,7 @@ do_estimate(Allele* buffer_mle, Locus& buffer_site, models& model,
 }
 #endif
 
-int estimateInd(int argc, char *argv[])
+int allele_cmd(int argc, char *argv[])
 {
 
 	/* All the variables that can be set from the command line */
@@ -237,6 +237,7 @@ int estimateInd(int argc, char *argv[])
 	bool bias=false;
 
 	int rnseed=3;
+    int threads=0;
 
 	double EMLMIN=0.0001;
 	int MIN=4;
@@ -273,6 +274,10 @@ int estimateInd(int argc, char *argv[])
 	env.optional_arg('X',"min-pbs", pbias,	"please provide a float.", "minimum acceptable p-value for major allele bias (default 0.0).");
 	env.optional_arg('x',"min-het", h_min,	"please provide a float.", "minimum number of reads needed from both alleles to go into bias calculations (default 1).");
 
+    #ifndef NOOMP
+	env.optional_arg('t',"threads", threads,	"please provide a float.", "number of threads to use (default $OMP_THREADS)");
+    #endif 
+
 	env.optional_arg('B',"max-bad",  MAXPITCH,	"please provide an int.", "cut-off value for number of bad individuals needed before a site is removed entirely (default 3).");
 
 	env.positional_arg('i',"input",	infile,	"No input file specified", "the input file for the program (default stdout).");
@@ -287,6 +292,11 @@ int estimateInd(int argc, char *argv[])
 
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
+
+    #ifndef NOOMP
+    if (threads!=0)
+        omp_set_num_threads(threads);
+    #endif
 
 	Indexed_file <Allele> map_out;
 	Indexed_file <Locus> pro_in, pro_out;

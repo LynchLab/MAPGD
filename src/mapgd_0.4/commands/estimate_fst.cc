@@ -1,7 +1,7 @@
 /* 
 */
 
-#include "estimate_individual.h"
+#include "allele.h"
 
 int estimate_fst(int argc, char *argv[])
 {

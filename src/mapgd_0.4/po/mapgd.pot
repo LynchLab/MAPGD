@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mapgd 37\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2019-01-24 12:52+0000\n"
+"POT-Creation-Date: 2019-01-28 13:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,12 +197,12 @@ msgid ""
 "mapgd:%s:%d: allele and locus have different positions (private abs_pos).\n"
 msgstr ""
 
-#: commands/interface.cc:97
+#: commands/interface.cc:104
 #, c-format
 msgid "mapgd:%s:%d: arg_set_region: unexpected error parsing %s\n"
 msgstr ""
 
-#: commands/interface.cc:82
+#: commands/interface.cc:89
 #, c-format
 msgid "mapgd:%s:%d: arg_set_vector_str: unexpected error parsing %s\n"
 msgstr ""
@@ -234,7 +234,7 @@ msgstr ""
 msgid "mapgd:%s:%d: cannot find keys.txt.\n"
 msgstr ""
 
-#: commands/interface.cc:135 commands/interface.cc:182
+#: commands/interface.cc:142 commands/interface.cc:189
 #, c-format
 msgid ""
 "mapgd:%s:%d: cannot format %s into a string. Please specify A:B:step, where "
@@ -258,8 +258,8 @@ msgstr ""
 msgid "mapgd:%s:%d: cannot open file in std::ios_base::openmode &mode=%d.\n"
 msgstr ""
 
-#: commands/interface.cc:146 commands/interface.cc:156
-#: commands/interface.cc:193 commands/interface.cc:203
+#: commands/interface.cc:153 commands/interface.cc:163
+#: commands/interface.cc:200 commands/interface.cc:210
 #, c-format
 msgid ""
 "mapgd:%s:%d: cannot parse string %s into exactly two integers. Please "

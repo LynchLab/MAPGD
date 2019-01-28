@@ -48,12 +48,15 @@ isint(const char *c)
 	return (*c==0 && c!=s);
 }
 
+std::list <const char *> formated_messages; // An array of formated messages.
+
 //! Makes sure that the usage message isn't longer than 79 char.
 const char *
 format_usage(const char *message, const size_t &padding)
 {
 	std::string unformated_line(message);
-	std::string formated_lines;
+//	std::string unformated_line("The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy cow. The quick brown fox jumpled over the lazy cat.");
+	std::string formated_lines="";
 	std::string::iterator word;
 	while(unformated_line.size()>(79-padding) ){
 		word=unformated_line.begin()+(79-padding);
@@ -64,7 +67,11 @@ format_usage(const char *message, const size_t &padding)
 		unformated_line.erase(unformated_line.begin(), word+1);
 	}
 	formated_lines.insert(formated_lines.end(), unformated_line.begin(), unformated_line.end() );
-	return formated_lines.c_str();
+    char *formated_message=new char [formated_lines.size() + 1];
+    std::copy(formated_lines.begin(), formated_lines.end(), formated_message);
+    formated_message[formated_lines.size()]= '\0';
+    formated_messages.push_back(formated_message );
+    return formated_message;//formated_lines.c_str();
 }
 
 /*@Brief : sets a vector of strings from a string*/

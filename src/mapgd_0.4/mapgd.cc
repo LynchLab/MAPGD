@@ -25,7 +25,7 @@ int main (int argc, char* argv[])
 	env.flag(	'O',"opts", 	&env, 		&flag_options, "an error occurred while displaying the help message", "Prints a list of available options");		//DONE
 	env.flag(	'h',"help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message", "Prints this message");				//DONE
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "Prints the program version");		//DONE
-	env.command(	' ',"allele", 	&estimateInd,	 		"an error occurred while calling allele", "Estimates allele frequencies using individual data");	//DONE
+	env.command(	' ',"allele", 	&allele_cmd,	 		"an error occurred while calling allele", "Estimates allele frequencies using individual data");	//DONE
 	env.command(	' ',"fastview",	&fastview,	 		"an error occurred while calling filter", "Quickly displays contents of a file");			 	//DONE
 	env.command(	' ',"filter",	&filter,	 		"an error occurred while calling filter", "Filter sites in '.map' files");			 	//DONE
 	env.command(	' ',"filterpool",&filter_pool,	 		"an error occurred while calling filter", "Filter sites in '.pol' files");			 	//DONE

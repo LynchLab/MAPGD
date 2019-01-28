@@ -115,7 +115,7 @@ MAPGD=mapgd.o
 
 #Headers with templates or inline code
 
-COMMAND_OBJ=$(OBJDIR)/estimate_individual.o \
+COMMAND_OBJ=$(OBJDIR)/allele_cmd.o \
 	$(OBJDIR)/estimate_pooled.o \
 	$(OBJDIR)/mapgd_help.o \
 	$(OBJDIR)/sam2idx.o \

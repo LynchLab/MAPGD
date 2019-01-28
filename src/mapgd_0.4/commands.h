@@ -14,8 +14,9 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
+#include "allele_cmd.h"
 #include "estimate_pooled.h"
-#include "estimate_individual.h"
+#include "allele.h"
 #include "estimate_fst.h"
 #include "relatedness.h"
 #include "proview.h"

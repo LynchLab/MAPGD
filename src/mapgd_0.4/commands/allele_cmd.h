@@ -1,5 +1,5 @@
-#ifndef _ESTIMATE_INDIVIDUAL_H_
-#define _ESTIMATE_INDIVIDUAL_H_	
+#ifndef _ALLELE_CMD_H_
+#define _ALLELE_CMD_H_	
 
 #include <stdio.h>
 #include <math.h>
@@ -30,7 +30,7 @@
 #include <mpi.h>
 #endif
 
-int estimateInd(int, char **);
+int allele_cmd(int, char **);
 Allele estimate (Locus &site, models &model, std::vector<float_t> &gofs, const count_t &MIN, const float_t &EMLMIN, const float_t &MINGOF, const size_t &MAXPITCH);
 
 #endif 
