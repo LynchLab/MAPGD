@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: mapgd 37\n"
+"Project-Id-Version: mapgd \n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2019-01-28 13:44+0000\n"
+"POT-Creation-Date: 2019-01-29 15:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Error: %s.\n"
 msgstr ""
 
-#: sql/db_api.cc:70
+#: sql/db_api.cc:53 sql/db_api.cc:69 sql/db_api.cc:98
 #, c-format
 msgid "SQL says: %s\n"
 msgstr ""
@@ -266,7 +266,12 @@ msgid ""
 "specify min:max, where min and max are both integers.\n"
 msgstr ""
 
-#: sql/db_api.cc:69
+#: sql/db_api.cc:52 sql/db_api.cc:68
+#, c-format
+msgid "mapgd:%s:%d: db_insert: Error executing the SQL query %s"
+msgstr ""
+
+#: sql/db_api.cc:97
 #, c-format
 msgid "mapgd:%s:%d: db_open_table_w_query: Error executing the SQL query %s"
 msgstr ""

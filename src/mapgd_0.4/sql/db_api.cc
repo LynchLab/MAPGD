@@ -2,6 +2,8 @@
 #include <iostream>
 #include <sstream>
 
+#define ERRCHECK {if (error_message!=NULL) {printf("%s\n",error_message); sqlite3_free(error_message);  exit(SQLERR);}}
+
 int call_back(void *stream, int argc, char **argv, char **azColName){
 	std::stringstream *this_stream=(std::stringstream *)stream;
 	for(int i=0; i<argc; i++){
@@ -42,8 +44,33 @@ void db_insert(sqlite3 *db, const Data *these_data)
 	char *error_message = 0;
 	char add_data[SQL_LINE_SIZE]={0};
 	//snprintf (add_data, SQL_LINE_SIZE, "INSERT INTO %s %s VALUES %s; \n", these_data->get_table_name().c_str(), these_data->sql_column_names().c_str(), these_data->sql_values().c_str() );
+#ifdef SQLITE_MULTI_INSERT
 	snprintf (add_data, SQL_LINE_SIZE, "REPLACE INTO %s %s VALUES %s; \n", these_data->get_table_name().c_str(), these_data->sql_column_names().c_str(), these_data->sql_values().c_str() );
 	sqlite3_exec(db, add_data, call_back, 0, &error_message);
+	if (error_message)
+    {
+		fprintf(stderr, gettext("mapgd:%s:%d: db_insert: Error executing the SQL query %s"), __FILE__, __LINE__, add_data );
+		fprintf(stderr, gettext("SQL says: %s\n"), error_message );
+		exit(SQLERR);
+    }
+#else
+    std::vector <std::string> value=split_inner(these_data->sql_values(), '(', ')');
+    for (int x=0; x<value.size(); x++)
+    {
+        std::cerr << x << ", " << value[x] << std::endl;
+    }
+    for (int x=0; x<value.size(); x++)
+    {
+    	snprintf (add_data, SQL_LINE_SIZE, "REPLACE INTO %s %s VALUES %s; \n", these_data->get_table_name().c_str(), these_data->sql_column_names().c_str(), value[x].c_str() );
+    	sqlite3_exec(db, add_data, call_back, 0, &error_message);
+    	if (error_message)
+        {
+	    	fprintf(stderr, gettext("mapgd:%s:%d: db_insert: Error executing the SQL query %s"), __FILE__, __LINE__, add_data );
+	    	fprintf(stderr, gettext("SQL says: %s\n"), error_message );
+	    	exit(SQLERR);
+        }
+    }
+#endif
 }
 
 
@@ -54,6 +81,7 @@ void db_open_table(sqlite3 *db, Data *these_data, std::stringstream *stream_ptr)
 	sqlite3_stmt *query;
 	snprintf (get_data, SQL_LINE_SIZE, "SELECT * from %s;\n", these_data->get_table_name().c_str() );
 	sqlite3_exec(db, get_data, call_back, stream_ptr, &error_message);
+    ERRCHECK
 }
 
 void db_open_table_w_query(sqlite3 *db, Data *these_data, std::stringstream *stream_ptr, const std::string &query_end)

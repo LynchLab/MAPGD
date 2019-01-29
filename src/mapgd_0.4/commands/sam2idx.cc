@@ -18,7 +18,7 @@ int sam2idx(int argc, char *argv[])
 	env.set_version(VERSION);
 	env.set_author("Matthew Ackerman");
 	env.set_description("Converts a sam header file into an idx file.");
-	env.optional_arg('H',"header",	headerfile, 	"an error occurred", "sets the index file (required to use mpileup)");
+    env.positional_arg('H',"header",	headerfile, 	"an error occurred", "sets the index file (required to use mpileup)");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the version message.", "prints the program version");
 	env.flag(	'h', "help", &env, 		&flag_help, 	"an error occurred while displaying the version message.", "prints the program version");
 

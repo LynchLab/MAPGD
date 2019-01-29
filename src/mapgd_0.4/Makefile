@@ -7,11 +7,10 @@
 
 WARNINGS=-Wno-write-strings
 #WARNINGS=-Wall -Werror=return-type -Wno-write-strings
-MINOR=`cat VERSION | cut -d - -f 1`
-VERSION=-DVERSION=\"0.4.$(MINOR)\"
+VERSION=-DVERSION=\"$(PROGRAM_VERSION)\"
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/ -I ./mpi 
 #remove fno-exceptions when in debug mode
-CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE) #-MMD
+CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE)#-MMD
 LDLIBS += -lgzstream -lz -L ./gzstream/ 
 
 DEBUG=-pg -DDEBUG -ggdb
@@ -217,6 +216,7 @@ ifeq ($(HAVE_LZ4), yes)
 endif
 
 all : gzstream $(TARGET)
+
 #	cd python_api
 #	python setup.py clean
 #	python setup.py install
@@ -225,18 +225,20 @@ all : gzstream $(TARGET)
 #lib/%.o: lib/%.c
 #        $(CC) -fPIC -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
+#INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/ -I ./mpi 
+
 $(OBJDIR)/%.o: %.cc
-	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c -o $@ $< 
 
 $(MPI_OBJ): mpi/mpi_relatedness.cc  
-	$(MPICXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
+	$(MPICXX) $(CXXFLAGS) $(INCLUDE) -c -o $@ $< 
 
 gzstream :
 	$(MAKE) -C gzstream 
 .PHONY: gzstream
 
 $(TARGET) : $(OBJ) $(MPI_OBJ)
-	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o ../../bin/$(TARGET) $(DLO) $(LDLIBS) $(MPI_LDLIBS) 
+	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o ../../bin/$(TARGET) $(DLO) $(LDLIBS) $(MPI_LDLIBS) $(INCLUDE)
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o po/mapgd.pot --copyright-holder="Matthew Ackerman" --package-name="mapgd" --package-version=$(MINOR) --msgid-bugs-address="matthew.s.ackerman@gmail.com"  $(addsuffix /*.cc, $(SUBDIR)) *.cc
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 

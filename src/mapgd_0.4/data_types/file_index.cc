@@ -265,8 +265,7 @@ File_index::sql_column_names(void) const {
 
 const std::string 
 File_index::sql_values(void) const {
-    std::cerr << "sql_values called\n";    
-        char return_buffer[SQL_LINE_SIZE]={0};
+    char return_buffer[SQL_LINE_SIZE]={0};
 	char *write_ptr=return_buffer;
 	std::vector<std::string>::const_iterator id0_it=id0_.cbegin(), end=id0_.cend();
 	std::vector<id1_t>::const_iterator size_it=cumulative_size_.cbegin();
@@ -291,7 +290,6 @@ File_index::sql_values(void) const {
 void
 File_index::sql_read (std::istream &in) 
 {
-    std::cerr << "reading from sql output\n";    
 	std::string scaffold_name;
 	id1_t start, stop, length;
 	in >> scaffold_name;

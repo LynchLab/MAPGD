@@ -16,15 +16,29 @@ if [ $? -ne 0 ]; then
 fi
 if [ `$wc $a.out -l | cut -d  ' ' -f 1` -eq $size ]; then
 	echo " PASS"
-	rm -f $a.out
+    if [[ ${commands[$a]} == "UNTESTED" ]]
+    then
+        commands[$a]="PASS"
+    fi
+    rm -f $a.out
 else
 	echo `$wc $a.out -l `
 	echo "expected $size"
 	echo "[$a] $msg FAIL"
-	cat $a.out
-	exit 1
+    commands[$a]="FAIL"
+    if [[ "$HALT" == true ]]
+    then
+        echo "If you would like to continue testing after this error call './test.sh HALT=false"
+        cat $a.out
+        exit 1
+    else
+        echo "If you would like to halt at this error call './test.sh HALT=true"
+        rm -f $a.out
+    fi
 fi
 }
+
+HALT="${HALT:-true}"
 
 header="spitze-header.txt"
 mpileup="spitze-mpileup.txt"
@@ -38,13 +52,13 @@ unicode="name-file-unicode.txt"
 formats=($mpileup)
 
 pop=8			#number of individuals in population
-idx_header=3		#Size of pro header
-pro_header=3		#Size of pro header
-vcf_header=3		#Size of vcf header
-gcf_header=3		#Size of gcf header
-gof_header=3		#Size of gcf header
+idx_header=3	#Size of pro header
+pro_header=3	#Size of pro header
+vcf_header=3	#Size of vcf header
+gcf_header=3	#Size of gcf header
+gof_header=3	#Size of gcf header
 pro_size=30		#number of lines in the pro file
-good_size=10		#number of lines post filtering
+good_size=10	#number of lines post filtering
 good_pool=4		#number of lines post filtering
 idx_size=3		#number of lines in the idx file
 gof_size=8		#number of lines in the idx file
@@ -59,7 +73,12 @@ fi
 
 msg="    "
 
-commands=("proview pool allele filter genotype sam2idx relatedness linkage")  
+declare -A commands
+
+for com in `$mapgd -a`
+do
+    commands[$com]="UNTESTED"
+done
 
 a="proview"
 msg="proview"
@@ -314,7 +333,7 @@ rm -f temp*
 #  readphen	[x]	Reads plink's pheno file
 #  help		[x]	Prints helpful information
 #  read		[ ]	Reads data from the SQL database
-#  write	[ ]		Writes data to the SQL database
+#  write	[ ]	Writes data to the SQL database
 
 
 a="write"
@@ -327,3 +346,8 @@ echo -n "$mapgd read -d test.db -t REGIONS										"
 $mapgd read -d test.db -t REGIONS > $a.out
 rm -f test.db
 testa
+
+for com in `$mapgd -a`
+do
+    printf '%-16s\t\t%s\n' $com ${commands[$com]}
+done

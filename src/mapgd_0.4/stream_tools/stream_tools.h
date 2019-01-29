@@ -12,6 +12,32 @@
 #include <sys/poll.h>
 #endif 
 
+//TODO: all of these need to respect arbitrary user strings.
+
+
+inline std::vector<std::string> split_inner(std::istream &in, const char &start, const char &stop)
+{
+	std::vector<std::string> elements;
+	std::string line;
+	size_t last_stop=0, this_start=0, this_stop=0;
+	getline(in, line);
+	do { 
+		this_start=line.find(start, last_stop);
+		this_stop =line.find( stop, last_stop);
+        if (this_start!=this_stop)
+        		elements.push_back( line.substr(this_start, this_stop-this_start+1) );
+        last_stop=this_stop+1;
+	} while ( this_stop!=std::string::npos );
+	return elements;
+}
+
+inline std::vector<std::string> split_inner(const std::string &s, const char &start, const char &stop)
+{
+	std::stringstream ss;
+	ss << s;
+	return split_inner(ss, start, stop);
+}
+
 /// Takes a stream/string and returns a vector with one element for each field.
 /* 
  * For example, if the string "A,B,C , D" is given, then {"A", "B", "C "," D"} is returned.

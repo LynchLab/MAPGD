@@ -1,4 +1,9 @@
-AC_INIT([mapgd], [0.4.6], [matthew.s.ackerman@gmail.com], [mapgd.tgz], [https://github.com/LynchLab/MAPGD/])
+
+define(VERSION2, esyscmd(sh -c "cat ./src/mapgd_0.4/VERSION | tr -d '\n'" ) )  
+#define(VERSION2, [0.5] )  
+#dnl
+
+AC_INIT([mapgd], VERSION2, [matthew.s.ackerman@gmail.com], [mapgd.tgz], [https://github.com/LynchLab/MAPGD/])
 AC_PROG_CXX
 AC_LANG(C++)
 
@@ -6,6 +11,7 @@ AC_SUBST(HAVE_GSL, [no])
 AC_SUBST(HAVE_OMP, [no])
 
 AC_CHECK_LIB(sqlite3,sqlite3_open,AC_SUBST(HAVE_SQL, [yes]), AC_SUBST(HAVE_SQL, [no]) )
+AC_SUBST(SQLITE3_VERSION)
 AC_CHECK_PROG(HAVE_MAN, [man], [yes], [no])
 
 #AC_PACKAGE_TARNAME(
