@@ -1636,37 +1636,6 @@ fi
 
 } # ac_fn_cxx_try_run
 
-# ac_fn_cxx_check_header_compile LINENO HEADER VAR INCLUDES
-# ---------------------------------------------------------
-# Tests whether HEADER exists and can be compiled using the include files in
-# INCLUDES, setting the cache variable VAR accordingly.
-ac_fn_cxx_check_header_compile ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $2" >&5
-$as_echo_n "checking for $2... " >&6; }
-if eval \${$3+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-$4
-#include <$2>
-_ACEOF
-if ac_fn_cxx_try_compile "$LINENO"; then :
-  eval "$3=yes"
-else
-  eval "$3=no"
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-fi
-eval ac_res=\$$3
-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
-$as_echo "$ac_res" >&6; }
-  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
-
-} # ac_fn_cxx_check_header_compile
-
 # ac_fn_cxx_check_func LINENO FUNC VAR
 # ------------------------------------
 # Tests whether FUNC exists, setting the cache variable VAR accordingly
@@ -6864,7 +6833,6 @@ esac
 
 case $ax_cv_htslib_which in
 source)
-  ax_cv_htslib=yes
   # We can't use a literal, because $HTSDIR is user-provided and variable
   subdirs="$subdirs $HTSDIR"
 
@@ -6872,18 +6840,13 @@ source)
   HTSDIR=`cd ./$HTSDIR; pwd`
   HTSLIB_CPPFLAGS="-I$HTSDIR"
   HTSLIB_LDFLAGS="-L$HTSDIR"
-  ;;
-system)
-  ac_fn_cxx_check_header_compile "$LINENO" "htslib/sam.h" "ac_cv_header_htslib_sam_h" ";
-"
-if test "x$ac_cv_header_htslib_sam_h" = xyes; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for hts_version in -lhts" >&5
-$as_echo_n "checking for hts_version in -lhts... " >&6; }
-if ${ac_cv_lib_hts_hts_version+:} false; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for lgamma in -lm" >&5
+$as_echo_n "checking for lgamma in -lm... " >&6; }
+if ${ac_cv_lib_m_lgamma+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lhts  $LIBS"
+LIBS="-lm  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -6893,36 +6856,120 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #ifdef __cplusplus
 extern "C"
 #endif
-char hts_version ();
+char lgamma ();
 int
 main ()
 {
-return hts_version ();
+return lgamma ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_cxx_try_link "$LINENO"; then :
-  ac_cv_lib_hts_hts_version=yes
+  ac_cv_lib_m_lgamma=yes
 else
-  ac_cv_lib_hts_hts_version=no
+  ac_cv_lib_m_lgamma=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_hts_hts_version" >&5
-$as_echo "$ac_cv_lib_hts_hts_version" >&6; }
-if test "x$ac_cv_lib_hts_hts_version" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_m_lgamma" >&5
+$as_echo "$ac_cv_lib_m_lgamma" >&6; }
+if test "x$ac_cv_lib_m_lgamma" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBM 1
+_ACEOF
+
+  LIBS="-lm $LIBS"
+
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for hts_itr_query in -lhts" >&5
+$as_echo_n "checking for hts_itr_query in -lhts... " >&6; }
+if ${ac_cv_lib_hts_hts_itr_query+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lhts -lm -lpthread $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char hts_itr_query ();
+int
+main ()
+{
+return hts_itr_query ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_hts_hts_itr_query=yes
+else
+  ac_cv_lib_hts_hts_itr_query=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_hts_hts_itr_query" >&5
+$as_echo "$ac_cv_lib_hts_hts_itr_query" >&6; }
+if test "x$ac_cv_lib_hts_hts_itr_query" = xyes; then :
   ax_cv_htslib=yes
 else
   ax_cv_htslib=no
 fi
 
+  ;;
+system)
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for hts_itr_query in -lhts" >&5
+$as_echo_n "checking for hts_itr_query in -lhts... " >&6; }
+if ${ac_cv_lib_hts_hts_itr_query+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lhts -lm -lpthread $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char hts_itr_query ();
+int
+main ()
+{
+return hts_itr_query ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_hts_hts_itr_query=yes
+else
+  ac_cv_lib_hts_hts_itr_query=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_hts_hts_itr_query" >&5
+$as_echo "$ac_cv_lib_hts_hts_itr_query" >&6; }
+if test "x$ac_cv_lib_hts_hts_itr_query" = xyes; then :
+  ax_cv_htslib=yes
 else
   ax_cv_htslib=no
 fi
-
 
   ax_cv_htslib_which=install
   HTSDIR=
@@ -6935,17 +6982,13 @@ install)
   HTSLIB_CPPFLAGS="-I$HTSDIR/include"
   HTSLIB_LDFLAGS="-L$HTSDIR/lib"
   CPPFLAGS="$CPPFLAGS $HTSLIB_CPPFLAGS"
-  LDFLAGS="$LDFLAGS $HTSLIB_LDFLAGS"
-  ac_fn_cxx_check_header_compile "$LINENO" "htslib/sam.h" "ac_cv_header_htslib_sam_h" ";
-"
-if test "x$ac_cv_header_htslib_sam_h" = xyes; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for hts_version in -lhts" >&5
-$as_echo_n "checking for hts_version in -lhts... " >&6; }
-if ${ac_cv_lib_hts_hts_version+:} false; then :
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for hts_itr_query in -lhts" >&5
+$as_echo_n "checking for hts_itr_query in -lhts... " >&6; }
+if ${ac_cv_lib_hts_hts_itr_query+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lhts  $LIBS"
+LIBS="-lhts -lm -lpthread $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -6955,36 +6998,31 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #ifdef __cplusplus
 extern "C"
 #endif
-char hts_version ();
+char hts_itr_query ();
 int
 main ()
 {
-return hts_version ();
+return hts_itr_query ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_cxx_try_link "$LINENO"; then :
-  ac_cv_lib_hts_hts_version=yes
+  ac_cv_lib_hts_hts_itr_query=yes
 else
-  ac_cv_lib_hts_hts_version=no
+  ac_cv_lib_hts_hts_itr_query=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_hts_hts_version" >&5
-$as_echo "$ac_cv_lib_hts_hts_version" >&6; }
-if test "x$ac_cv_lib_hts_hts_version" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_hts_hts_itr_query" >&5
+$as_echo "$ac_cv_lib_hts_hts_itr_query" >&6; }
+if test "x$ac_cv_lib_hts_hts_itr_query" = xyes; then :
   ax_cv_htslib=yes
 else
   ax_cv_htslib=no
 fi
-
-else
-  ax_cv_htslib=no
-fi
-
 
   HTSDIR=
   CPPFLAGS=$ax_saved_CPPFLAGS
@@ -7223,9 +7261,53 @@ else
 $as_echo "$as_me: WARNING: No mpi support detected, cannot run on multiple nodes." >&2;}
 fi
 
-if test "$ax_cv_htslib_which" != "none"
+if test "$ax_cv_htslib" == "yes"
 then
-	HAVE_HTS=yes
+	HAVE_HTS=no
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for bcf_hdr_sync in -lhts" >&5
+$as_echo_n "checking for bcf_hdr_sync in -lhts... " >&6; }
+if ${ac_cv_lib_hts_bcf_hdr_sync+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lhts -lm -lpthread  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char bcf_hdr_sync ();
+int
+main ()
+{
+return bcf_hdr_sync ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_hts_bcf_hdr_sync=yes
+else
+  ac_cv_lib_hts_bcf_hdr_sync=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_hts_bcf_hdr_sync" >&5
+$as_echo "$ac_cv_lib_hts_bcf_hdr_sync" >&6; }
+if test "x$ac_cv_lib_hts_bcf_hdr_sync" = xyes; then :
+  HAVE_HTS=yes
+
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Htslib version 1.9 or greater needed. " >&5
+$as_echo "$as_me: WARNING: Htslib version 1.9 or greater needed. " >&2;}
+fi
 
 else
 	HAVE_HTS=no

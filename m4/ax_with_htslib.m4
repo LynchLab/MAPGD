@@ -1,6 +1,8 @@
 # ===========================================================================
-#      http://www.gnu.org/software/autoconf-archive/ax_with_htslib.html
+# WARNING! This verision of AX_WITH_HTSLIB is not identical to the version 
+# availible else where.
 # ===========================================================================
+#
 #
 # SYNOPSIS
 #
@@ -101,18 +103,17 @@ esac
 
 case $ax_cv_htslib_which in
 source)
-  ax_cv_htslib=yes
   # We can't use a literal, because $HTSDIR is user-provided and variable
   AC_CONFIG_SUBDIRS($HTSDIR)
   # translate to absolute, anchor with './'
   HTSDIR=`cd ./$HTSDIR; pwd`
   HTSLIB_CPPFLAGS="-I$HTSDIR"
   HTSLIB_LDFLAGS="-L$HTSDIR"
+  AC_CHECK_LIB(m, lgamma)
+  AC_CHECK_LIB(hts, hts_itr_query, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
   ;;
 system)
-  AC_CHECK_HEADER([htslib/sam.h],
-    [AC_CHECK_LIB(hts, hts_version, [ax_cv_htslib=yes], [ax_cv_htslib=no])],
-    [ax_cv_htslib=no], [;])
+  AC_CHECK_LIB(hts, hts_itr_query, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
   ax_cv_htslib_which=install
   HTSDIR=
   HTSLIB_CPPFLAGS=
@@ -124,10 +125,7 @@ install)
   HTSLIB_CPPFLAGS="-I$HTSDIR/include"
   HTSLIB_LDFLAGS="-L$HTSDIR/lib"
   CPPFLAGS="$CPPFLAGS $HTSLIB_CPPFLAGS"
-  LDFLAGS="$LDFLAGS $HTSLIB_LDFLAGS"
-  AC_CHECK_HEADER([htslib/sam.h],
-    [AC_CHECK_LIB(hts, hts_version, [ax_cv_htslib=yes], [ax_cv_htslib=no])],
-    [ax_cv_htslib=no], [;])
+  AC_CHECK_LIB(hts, hts_itr_query, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
   HTSDIR=
   CPPFLAGS=$ax_saved_CPPFLAGS
   LDFLAGS=$ax_saved_LDFLAGS
