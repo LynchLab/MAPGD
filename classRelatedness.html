@@ -91,6 +91,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#pri-static-attribs">Static Private Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">Relatedness Class Reference</div>  </div>
@@ -120,7 +121,7 @@ Collaboration diagram for Relatedness:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2103a6f1072f5662b6e163fe466c1c05"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2103a6f1072f5662b6e163fe466c1c05"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRelatedness.html#a2103a6f1072f5662b6e163fe466c1c05">Relatedness</a> (const std::vector&lt; std::string &gt; &amp;)</td></tr>
-<tr class="memdesc:a2103a6f1072f5662b6e163fe466c1c05"><td class="mdescLeft">&#160;</td><td class="mdescRight">delegating a neccisary constructor. <br/></td></tr>
+<tr class="memdesc:a2103a6f1072f5662b6e163fe466c1c05"><td class="mdescLeft">&#160;</td><td class="mdescRight">delegating a necessary constructor. <br/></td></tr>
 <tr class="separator:a2103a6f1072f5662b6e163fe466c1c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7f282315b32cd335b30e0487cc08376"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af7f282315b32cd335b30e0487cc08376"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRelatedness.html#af7f282315b32cd335b30e0487cc08376">Relatedness</a> (const std::string &amp;, const std::string &amp;)</td></tr>
@@ -203,11 +204,20 @@ Data Fields</h2></td></tr>
 char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRelatedness.html#a834395682469c5ea224d9296e8fe0b5d">delim</a></td></tr>
 <tr class="memdesc:a834395682469c5ea224d9296e8fe0b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the delimiter used when reading/writing the class in text mode. <br/></td></tr>
 <tr class="separator:a834395682469c5ea224d9296e8fe0b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88302e55d11c3a81e189747210e53968"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a88302e55d11c3a81e189747210e53968"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRelatedness.html#a88302e55d11c3a81e189747210e53968">X_str_</a></td></tr>
+<tr class="memdesc:a88302e55d11c3a81e189747210e53968"><td class="mdescLeft">&#160;</td><td class="mdescRight">the name of the first (X) sample in the compairison. <br/></td></tr>
+<tr class="separator:a88302e55d11c3a81e189747210e53968"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ffb45af1c8334c0e7c856c2565df02b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ffb45af1c8334c0e7c856c2565df02b"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRelatedness.html#a5ffb45af1c8334c0e7c856c2565df02b">Y_str_</a></td></tr>
+<tr class="memdesc:a5ffb45af1c8334c0e7c856c2565df02b"><td class="mdescLeft">&#160;</td><td class="mdescRight">the name of the second (Y) sample in the compairison. <br/></td></tr>
+<tr class="separator:a5ffb45af1c8334c0e7c856c2565df02b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a317691abd0aa47db527629dd4ef1b9a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a317691abd0aa47db527629dd4ef1b9a7"></a>
 id0_t&#160;</td><td class="memItemRight" valign="bottom"><b>X_</b></td></tr>
 <tr class="separator:a317691abd0aa47db527629dd4ef1b9a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3adeef455a8b9a01efed6e191e1b6430"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3adeef455a8b9a01efed6e191e1b6430"></a>
-id0_t&#160;</td><td class="memItemRight" valign="bottom"><b>Y_</b></td></tr>
+id0_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRelatedness.html#a3adeef455a8b9a01efed6e191e1b6430">Y_</a></td></tr>
+<tr class="memdesc:a3adeef455a8b9a01efed6e191e1b6430"><td class="mdescLeft">&#160;</td><td class="mdescRight">the <br/></td></tr>
 <tr class="separator:a3adeef455a8b9a01efed6e191e1b6430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af01cf9ba5b0298c95daccd5f047cd421"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af01cf9ba5b0298c95daccd5f047cd421"></a>
 id1_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRelatedness.html#af01cf9ba5b0298c95daccd5f047cd421">sites</a></td></tr>
@@ -312,6 +322,13 @@ Static Private Member Functions</h2></td></tr>
 static <a class="el" href="classData.html">Data</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>create</b> (const std::vector&lt; std::string &gt; &amp;Columns)</td></tr>
 <tr class="separator:a7643d786b74b7b61dfc1a645ae658ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a2d06622144d6b01e076f4456fa21ddd8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2d06622144d6b01e076f4456fa21ddd8"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classRelatedness.html#a2d06622144d6b01e076f4456fa21ddd8">likelihoods_</a></td></tr>
+<tr class="memdesc:a2d06622144d6b01e076f4456fa21ddd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">indicate whether likelihoods are recorded. <br/></td></tr>
+<tr class="separator:a2d06622144d6b01e076f4456fa21ddd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
 <tr class="memitem:a0b4def53c5c90ef0c2e9fdb60ad7d24a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0b4def53c5c90ef0c2e9fdb60ad7d24a"></a>
@@ -356,7 +373,7 @@ static <a class="el" href="classData.html">Data</a> *&#160;</td><td class="memIt
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Aug 21 2017 13:36:10 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 1 2018 13:55:21 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

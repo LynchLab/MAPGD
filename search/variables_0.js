@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['a_5fhat',['a_hat',['../classPhenotype.html#a7af230b210c8f13f1ac35849edc21200',1,'Phenotype']]],
   ['aa',['AA',['../classVcf__data.html#a531ada925a90009dbd03e9befd48784a',1,'Vcf_data']]],
   ['ac',['AC',['../classVcf__data.html#ac39ac0ad6154a89d047293d9d12e57bd',1,'Vcf_data']]],
   ['af',['AF',['../classVcf__data.html#ae9037a7256d93b5fc23ec38a68dcafc8',1,'Vcf_data']]],

@@ -1,0 +1,10 @@
+<map id="Plink_file" name="Plink_file">
+<area shape="rect" id="node2" href="$classExternal__file.html" title="External_file\&lt; Plink\l_data \&gt;" alt="" coords="218,433,352,474"/>
+<area shape="rect" id="node3" href="$classBase__file.html" title="A templet which stores data associated with specific locations in a genome. " alt="" coords="247,355,323,381"/>
+<area shape="rect" id="node4" href="$classTmp__buffer.html" title="Tmp_buffer" alt="" coords="107,264,195,291"/>
+<area shape="rect" id="node6" href="$classTmp__streambuf.html" title="Tmp_streambuf" alt="" coords="94,173,207,200"/>
+<area shape="rect" id="node8" href="$classogzstream.html" title="ogzstream" alt="" coords="357,264,439,291"/>
+<area shape="rect" id="node9" href="$classgzstreambase.html" title="gzstreambase" alt="" coords="347,173,451,200"/>
+<area shape="rect" id="node14" href="$classigzstream.html" title="igzstream" alt="" coords="246,264,324,291"/>
+<area shape="rect" id="node11" href="$classgzstreambuf.html" title="gzstreambuf" alt="" coords="418,83,512,109"/>
+</map>

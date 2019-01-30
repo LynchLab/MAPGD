@@ -104,180 +104,187 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;htslib/hts.h&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;htslib/vcf.h&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;external-file.h&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;external-data.h&quot;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;typedef.h&quot;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;datatypes.h&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;raw.h&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;stream_tools.h&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="classInfo.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="classInfo.html">Info</a> {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">enum</span> <a class="code" href="classKey.html">Key</a> {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        AA,</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        BQ,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        CIGAR,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        DB,</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        DP,</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        END,</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        H2,</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        H3,</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        MQ,</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        MQ0,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        NS,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        SB,</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        SOMATIC,</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        VALIDATED,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        G</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    };</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;};</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classVcf__data.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="classVcf__data.html">Vcf_data</a> : <span class="keyword">public</span> <a class="code" href="classExternal__data.html">External_data</a> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifndef NOLZ4</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &quot;state.h&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;external-file.h&quot;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;external-data.h&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;typedef.h&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;datatypes.h&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;raw.h&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;stream_tools.h&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classInfo.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="classInfo.html">Info</a> {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">enum</span> <a class="code" href="classKey.html">Key</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        AA,</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        BQ,</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        CIGAR,</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        DB,</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        DP,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        END,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        H2,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        H3,</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        MQ,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        MQ0,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        NS,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        SB,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        SOMATIC,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        VALIDATED,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        G</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    };</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;};</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">//  bcf_init</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">//  bcf_destroy</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">//  bcf_read(htsFile *fp, const bcf_hdr_t *h, bcf1_t *v)</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">//  bcf_write(htsFile *fp, const bcf_hdr_t *h, bcf1_t *v)</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="classVcf__data.html#a209cde196148852ee0bc84957331fadd">Vcf_data</a> ();</div>
+<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="classVcf__data.html">   53</a></span>&#160;<span class="keyword">class </span><a class="code" href="classVcf__data.html">Vcf_data</a> : <span class="keyword">public</span> <a class="code" href="classExternal__data.html">External_data</a> {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="comment">//  bcf_init</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//  bcf_destroy</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">//  bcf_read(htsFile *fp, const bcf_hdr_t *h, bcf1_t *v)</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">//  bcf_write(htsFile *fp, const bcf_hdr_t *h, bcf1_t *v)</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">//These should all be private, make vcf_file freind?</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    bcf1_t *record_;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    bcf_hdr_t *header_;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">size_t</span> sample_size_;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> set_header(<span class="keyword">const</span> <a class="code" href="classFile__index.html">File_index</a> &amp;, <span class="keyword">const</span> std::vector &lt;std::string&gt; &amp;);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classVcf__data.html#af14f35af2f2d8d2d438d4fedd8a3897d">put</a> (<span class="keyword">const</span> <a class="code" href="classData.html">Data</a> *, ...);</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> <span class="keyword">get</span> (<a class="code" href="classData.html">Data</a> *, ...) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="classVcf__data.html#a209cde196148852ee0bc84957331fadd">Vcf_data</a> ();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="comment">//These should all be private, make vcf_file freind?</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    bcf1_t *record_;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    bcf_hdr_t *header_;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">size_t</span> sample_size_;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordtype">void</span> set_header(<span class="keyword">const</span> <a class="code" href="classFile__index.html">File_index</a> &amp;, <span class="keyword">const</span> std::vector &lt;std::string&gt; &amp;);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classVcf__data.html#af14f35af2f2d8d2d438d4fedd8a3897d">put</a> (<span class="keyword">const</span> <a class="code" href="classFile__index.html">File_index</a> &amp;, <span class="keyword">const</span> <a class="code" href="classAllele.html">Allele</a> &amp;, <span class="keyword">const</span> <a class="code" href="classPopulation.html">Population</a> &amp;);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    id1_t <span class="keyword">get</span> (<span class="keyword">const</span> <a class="code" href="classFile__index.html">File_index</a> &amp;, <a class="code" href="classPopulation.html">Population</a> &amp;) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classVcf__data.html#af14f35af2f2d8d2d438d4fedd8a3897d">put</a> (<span class="keyword">const</span> <a class="code" href="classData.html">Data</a> *, ...);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span> <span class="keyword">get</span> (<a class="code" href="classData.html">Data</a> *, ...) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    std::vector&lt;std::string&gt; get_sample_names (<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <a class="code" href="classFile__index.html">File_index</a> get_index (<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classVcf__data.html#af14f35af2f2d8d2d438d4fedd8a3897d">put</a> (<span class="keyword">const</span> <a class="code" href="classFile__index.html">File_index</a> &amp;, <span class="keyword">const</span> <a class="code" href="classAllele.html">Allele</a> &amp;, <span class="keyword">const</span> <a class="code" href="classPopulation.html">Population</a> &amp;);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    id1_t <span class="keyword">get</span> (<span class="keyword">const</span> <a class="code" href="classFile__index.html">File_index</a> &amp;, <a class="code" href="classPopulation.html">Population</a> &amp;) <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="comment">//The mandatory fields.</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    std::string id;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="classBase.html">Base</a> ref;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    std::vector &lt;std::string&gt; alt;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    float_t qual;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">bool</span> filter;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    std::vector &lt;std::string&gt; info;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classVcf__data.html#a531ada925a90009dbd03e9befd48784a">   88</a></span>&#160;        <a class="code" href="classBase.html">Base</a> <a class="code" href="classVcf__data.html#a531ada925a90009dbd03e9befd48784a">AA</a>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classVcf__data.html#ac39ac0ad6154a89d047293d9d12e57bd">   91</a></span>&#160;    std::vector &lt;count_t&gt; <a class="code" href="classVcf__data.html#ac39ac0ad6154a89d047293d9d12e57bd">AC</a>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#ifndef NOLZ4</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor"></span>    id1_t <span class="keyword">get</span> (<a class="code" href="classState.html">State</a> &amp;) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif </span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor"></span>    std::vector&lt;std::string&gt; get_sample_names (<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="classFile__index.html">File_index</a> get_index (<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="comment">//The mandatory fields.</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    std::string id;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <a class="code" href="classBase.html">Base</a> ref;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    std::vector &lt;std::string&gt; alt;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    float_t qual;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">bool</span> filter;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    std::vector &lt;std::string&gt; info;</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">//  use this when estimated from primary data, not called genotypes</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="classVcf__data.html#ae9037a7256d93b5fc23ec38a68dcafc8">   95</a></span>&#160;    std::vector &lt;float_t&gt; <a class="code" href="classVcf__data.html#ae9037a7256d93b5fc23ec38a68dcafc8">AF</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="classVcf__data.html#af768c57fe62302f62297094ec72d2a67">   98</a></span>&#160;        count_t <a class="code" href="classVcf__data.html#af768c57fe62302f62297094ec72d2a67">AN</a>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classVcf__data.html#a3cadc709c1a46eee9c5c0395d354ba17">  101</a></span>&#160;        float_t <a class="code" href="classVcf__data.html#a3cadc709c1a46eee9c5c0395d354ba17">BQ</a>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classVcf__data.html#a531ada925a90009dbd03e9befd48784a">   94</a></span>&#160;        <a class="code" href="classBase.html">Base</a> <a class="code" href="classVcf__data.html#a531ada925a90009dbd03e9befd48784a">AA</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classVcf__data.html#ac39ac0ad6154a89d047293d9d12e57bd">   97</a></span>&#160;    std::vector &lt;count_t&gt; <a class="code" href="classVcf__data.html#ac39ac0ad6154a89d047293d9d12e57bd">AC</a>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="comment">//  use this when estimated from primary data, not called genotypes</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classVcf__data.html#ae9037a7256d93b5fc23ec38a68dcafc8">  101</a></span>&#160;    std::vector &lt;float_t&gt; <a class="code" href="classVcf__data.html#ae9037a7256d93b5fc23ec38a68dcafc8">AF</a>;</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="comment">//cigar CIGAR;</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="classVcf__data.html#af768c57fe62302f62297094ec72d2a67">  104</a></span>&#160;        count_t <a class="code" href="classVcf__data.html#af768c57fe62302f62297094ec72d2a67">AN</a>;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classVcf__data.html#ad1aaf620363cb0ff7997bad092d43204">  107</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classVcf__data.html#ad1aaf620363cb0ff7997bad092d43204">DB</a>;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classVcf__data.html#a3cadc709c1a46eee9c5c0395d354ba17">  107</a></span>&#160;        float_t <a class="code" href="classVcf__data.html#a3cadc709c1a46eee9c5c0395d354ba17">BQ</a>;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="classVcf__data.html#a443c10e692d1718e7f42a62ca1061785">  110</a></span>&#160;        count_t <a class="code" href="classVcf__data.html#a443c10e692d1718e7f42a62ca1061785">DP</a>;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="comment">//cigar CIGAR;</span></div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classVcf__data.html#a3a31269fed85a6fcc0e4d0c4f2bcec41">  113</a></span>&#160;    id1_t <a class="code" href="classVcf__data.html#a3a31269fed85a6fcc0e4d0c4f2bcec41">END</a>;</div>
+<div class="line"><a name="l00113"></a><span class="lineno"><a class="line" href="classVcf__data.html#ad1aaf620363cb0ff7997bad092d43204">  113</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classVcf__data.html#ad1aaf620363cb0ff7997bad092d43204">DB</a>;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classVcf__data.html#a32e4e4132f5077304e6fb722c056628c">  116</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classVcf__data.html#a32e4e4132f5077304e6fb722c056628c">H2</a>;</div>
+<div class="line"><a name="l00116"></a><span class="lineno"><a class="line" href="classVcf__data.html#a443c10e692d1718e7f42a62ca1061785">  116</a></span>&#160;        count_t <a class="code" href="classVcf__data.html#a443c10e692d1718e7f42a62ca1061785">DP</a>;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="classVcf__data.html#ae6be83a1e40bb6255cff715a4831a984">  119</a></span>&#160;    float_t <a class="code" href="classVcf__data.html#ae6be83a1e40bb6255cff715a4831a984">MQ</a>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="classVcf__data.html#a3a31269fed85a6fcc0e4d0c4f2bcec41">  119</a></span>&#160;    id1_t <a class="code" href="classVcf__data.html#a3a31269fed85a6fcc0e4d0c4f2bcec41">END</a>;</div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classVcf__data.html#a301c94c4d794bc636cae964f115f9712">  122</a></span>&#160;    count_t <a class="code" href="classVcf__data.html#a301c94c4d794bc636cae964f115f9712">MQ0</a>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="classVcf__data.html#a32e4e4132f5077304e6fb722c056628c">  122</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classVcf__data.html#a32e4e4132f5077304e6fb722c056628c">H2</a>;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classVcf__data.html#a363694f3e1905d63c08b88b844a4ecb4">  125</a></span>&#160;    count_t <a class="code" href="classVcf__data.html#a363694f3e1905d63c08b88b844a4ecb4">NS</a>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="classVcf__data.html#ae6be83a1e40bb6255cff715a4831a984">  125</a></span>&#160;    float_t <a class="code" href="classVcf__data.html#ae6be83a1e40bb6255cff715a4831a984">MQ</a>;</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classVcf__data.html#a7b3b3fbfacba6760e360f23c105d8adb">  128</a></span>&#160;    float_t <a class="code" href="classVcf__data.html#a7b3b3fbfacba6760e360f23c105d8adb">SB</a>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classVcf__data.html#a301c94c4d794bc636cae964f115f9712">  128</a></span>&#160;    count_t <a class="code" href="classVcf__data.html#a301c94c4d794bc636cae964f115f9712">MQ0</a>;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classVcf__data.html#af2f8847bb0cdcc2df41ed3d29a79251e">  131</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classVcf__data.html#af2f8847bb0cdcc2df41ed3d29a79251e">SOMATIC</a>;</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="classVcf__data.html#a363694f3e1905d63c08b88b844a4ecb4">  131</a></span>&#160;    count_t <a class="code" href="classVcf__data.html#a363694f3e1905d63c08b88b844a4ecb4">NS</a>;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classVcf__data.html#ad6337fcd4057a4b63be214f910dafb11">  134</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classVcf__data.html#ad6337fcd4057a4b63be214f910dafb11">VALIDATED</a>; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;};</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
-<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="classVcf__file.html">  138</a></span>&#160;<span class="keyword">class </span><a class="code" href="classVcf__file.html">Vcf_file</a> : <span class="keyword">public</span> <a class="code" href="classExternal__file.html">External_file</a> &lt;Vcf_data&gt; {</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">using</span> <a class="code" href="classBase__file.html#a97d907761846c1cdb77572a4fb8d8e92">Base_file::in_</a>;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">using</span> <a class="code" href="classBase__file.html#a781a9896fc773450bab266a4f3fc08f0">Base_file::out_</a>;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keyword">using</span> <a class="code" href="classBase__file.html#a7782150ce323f1cf18d67db63533027c">Base_file::open_</a>;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keyword">using</span> <a class="code" href="classBase__file.html#a20eeb4a62d0a033e5d3711b3cc79bfff">Base_file::open_no_extention</a>;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    htsFile *file_;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">void</span> open(<span class="keyword">const</span> std::ios_base::openmode &amp;);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordtype">void</span> open(<span class="keyword">const</span> <span class="keywordtype">char</span> *, <span class="keyword">const</span> std::ios_base::openmode &amp;);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordtype">void</span> close(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordtype">void</span> read (<a class="code" href="classVcf__data.html">Vcf_data</a> &amp;);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">void</span> write (<span class="keyword">const</span> <a class="code" href="classVcf__data.html">Vcf_data</a> &amp;);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordtype">void</span> write_header (<span class="keyword">const</span> <a class="code" href="classVcf__data.html">Vcf_data</a> &amp;);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <a class="code" href="classVcf__data.html">Vcf_data</a> read_header();</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;};</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">typedef struct {</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">    int32_t n[3];           // n:the size of the dictionary block in use, (allocated size, m, is below to preserve ABI) </span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">    bcf_idpair_t *id[3];</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">    void *dict[3];          // ID dictionary, contig dict and sample dict</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">    char **samples;     // Presumably sample names.</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">    bcf_hrec_t **hrec;      // Jesus fucking crist.</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">    int nhrec, dirty;       // </span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">    int ntransl, *transl[2];    // for bcf_translate()</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">    int nsamples_ori;           // for bcf_hdr_set_samples()</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">    uint8_t *keep_samples;</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    kstring_t mem;</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    int32_t m[3];          // m: allocated size of the dictionary block in use (see n above)</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">} bcf_hdr_t;</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">*/</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno"><a class="line" href="classVcf__data.html#a7b3b3fbfacba6760e360f23c105d8adb">  134</a></span>&#160;    float_t <a class="code" href="classVcf__data.html#a7b3b3fbfacba6760e360f23c105d8adb">SB</a>;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="classVcf__data.html#af2f8847bb0cdcc2df41ed3d29a79251e">  137</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classVcf__data.html#af2f8847bb0cdcc2df41ed3d29a79251e">SOMATIC</a>;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="classVcf__data.html#ad6337fcd4057a4b63be214f910dafb11">  140</a></span>&#160;        <span class="keywordtype">bool</span> <a class="code" href="classVcf__data.html#ad6337fcd4057a4b63be214f910dafb11">VALIDATED</a>; </div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;};</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
+<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="classVcf__file.html">  144</a></span>&#160;<span class="keyword">class </span><a class="code" href="classVcf__file.html">Vcf_file</a> : <span class="keyword">public</span> <a class="code" href="classExternal__file.html">External_file</a> &lt;Vcf_data&gt; {</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keyword">using</span> <a class="code" href="classBase__file.html#a97d907761846c1cdb77572a4fb8d8e92">Base_file::in_</a>;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">using</span> <a class="code" href="classBase__file.html#a781a9896fc773450bab266a4f3fc08f0">Base_file::out_</a>;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">using</span> <a class="code" href="classBase__file.html#a7782150ce323f1cf18d67db63533027c">Base_file::open_</a>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keyword">using</span> <a class="code" href="classBase__file.html#a20eeb4a62d0a033e5d3711b3cc79bfff">Base_file::open_no_extention</a>;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    htsFile *file_;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordtype">void</span> open(<span class="keyword">const</span> std::ios_base::openmode &amp;);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">void</span> open(<span class="keyword">const</span> <span class="keywordtype">char</span> *, <span class="keyword">const</span> std::ios_base::openmode &amp;);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordtype">void</span> close(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">void</span> read (<a class="code" href="classVcf__data.html">Vcf_data</a> &amp;);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordtype">void</span> write (<span class="keyword">const</span> <a class="code" href="classVcf__data.html">Vcf_data</a> &amp;);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordtype">void</span> write_header (<span class="keyword">const</span> <a class="code" href="classVcf__data.html">Vcf_data</a> &amp;);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="classVcf__data.html">Vcf_data</a> read_header();</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;};</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">typedef struct {</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">    int32_t n[3];           // n:the size of the dictionary block in use, (allocated size, m, is below to preserve ABI) </span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">    bcf_idpair_t *id[3];</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">    void *dict[3];          // ID dictionary, contig dict and sample dict</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">    char **samples;     // Presumably sample names.</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">    bcf_hrec_t **hrec;      // Jesus fucking crist.</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">    int nhrec, dirty;       // </span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">    int ntransl, *transl[2];    // for bcf_translate()</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">    int nsamples_ori;           // for bcf_hdr_set_samples()</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">    uint8_t *keep_samples;</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">    kstring_t mem;</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">    int32_t m[3];          // m: allocated size of the dictionary block in use (see n above)</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">} bcf_hdr_t;</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="classBase_html"><div class="ttname"><a href="classBase.html">Base</a></div><div class="ttdoc">A class converts human readable bases to bit flags. </div><div class="ttdef"><b>Definition:</b> base.h:16</div></div>
-<div class="ttc" id="classVcf__file_html"><div class="ttname"><a href="classVcf__file.html">Vcf_file</a></div><div class="ttdef"><b>Definition:</b> vcf-file.h:138</div></div>
-<div class="ttc" id="classVcf__data_html_ad6337fcd4057a4b63be214f910dafb11"><div class="ttname"><a href="classVcf__data.html#ad6337fcd4057a4b63be214f910dafb11">Vcf_data::VALIDATED</a></div><div class="ttdeci">bool VALIDATED</div><div class="ttdoc">Validated by follow-up experiment. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:134</div></div>
+<div class="ttc" id="classVcf__file_html"><div class="ttname"><a href="classVcf__file.html">Vcf_file</a></div><div class="ttdef"><b>Definition:</b> vcf-file.h:144</div></div>
+<div class="ttc" id="classVcf__data_html_ad6337fcd4057a4b63be214f910dafb11"><div class="ttname"><a href="classVcf__data.html#ad6337fcd4057a4b63be214f910dafb11">Vcf_data::VALIDATED</a></div><div class="ttdeci">bool VALIDATED</div><div class="ttdoc">Validated by follow-up experiment. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:140</div></div>
 <div class="ttc" id="classPopulation_html"><div class="ttname"><a href="classPopulation.html">Population</a></div><div class="ttdoc">Population genotypes. </div><div class="ttdef"><b>Definition:</b> population.h:13</div></div>
-<div class="ttc" id="classVcf__data_html_a209cde196148852ee0bc84957331fadd"><div class="ttname"><a href="classVcf__data.html#a209cde196148852ee0bc84957331fadd">Vcf_data::Vcf_data</a></div><div class="ttdeci">Vcf_data()</div><div class="ttdoc">number of individuals sapmled </div><div class="ttdef"><b>Definition:</b> vcf-file.cc:47</div></div>
-<div class="ttc" id="classVcf__data_html_a3cadc709c1a46eee9c5c0395d354ba17"><div class="ttname"><a href="classVcf__data.html#a3cadc709c1a46eee9c5c0395d354ba17">Vcf_data::BQ</a></div><div class="ttdeci">float_t BQ</div><div class="ttdoc">RMS base quality at this position. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:101</div></div>
-<div class="ttc" id="classVcf__data_html_af2f8847bb0cdcc2df41ed3d29a79251e"><div class="ttname"><a href="classVcf__data.html#af2f8847bb0cdcc2df41ed3d29a79251e">Vcf_data::SOMATIC</a></div><div class="ttdeci">bool SOMATIC</div><div class="ttdoc">Indicates that the record is a somatic mutation, for cancer genomics. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:131</div></div>
+<div class="ttc" id="classVcf__data_html_a209cde196148852ee0bc84957331fadd"><div class="ttname"><a href="classVcf__data.html#a209cde196148852ee0bc84957331fadd">Vcf_data::Vcf_data</a></div><div class="ttdeci">Vcf_data()</div><div class="ttdoc">number of individuals sapmled </div><div class="ttdef"><b>Definition:</b> vcf-file.cc:49</div></div>
+<div class="ttc" id="classVcf__data_html_a3cadc709c1a46eee9c5c0395d354ba17"><div class="ttname"><a href="classVcf__data.html#a3cadc709c1a46eee9c5c0395d354ba17">Vcf_data::BQ</a></div><div class="ttdeci">float_t BQ</div><div class="ttdoc">RMS base quality at this position. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:107</div></div>
+<div class="ttc" id="classVcf__data_html_af2f8847bb0cdcc2df41ed3d29a79251e"><div class="ttname"><a href="classVcf__data.html#af2f8847bb0cdcc2df41ed3d29a79251e">Vcf_data::SOMATIC</a></div><div class="ttdeci">bool SOMATIC</div><div class="ttdoc">Indicates that the record is a somatic mutation, for cancer genomics. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:137</div></div>
 <div class="ttc" id="classBase__file_html_a20eeb4a62d0a033e5d3711b3cc79bfff"><div class="ttname"><a href="classBase__file.html#a20eeb4a62d0a033e5d3711b3cc79bfff">Base_file::open_no_extention</a></div><div class="ttdeci">void open_no_extention(const char *, const std::ios::openmode &amp;)</div><div class="ttdoc">The function that opens a indexed_file (if file). </div><div class="ttdef"><b>Definition:</b> map_file.cc:59</div></div>
 <div class="ttc" id="classFile__index_html"><div class="ttname"><a href="classFile__index.html">File_index</a></div><div class="ttdoc">An interface that transforms pairs of name and position keys into record numbers. ...</div><div class="ttdef"><b>Definition:</b> file_index.h:23</div></div>
-<div class="ttc" id="classVcf__data_html_af768c57fe62302f62297094ec72d2a67"><div class="ttname"><a href="classVcf__data.html#af768c57fe62302f62297094ec72d2a67">Vcf_data::AN</a></div><div class="ttdeci">count_t AN</div><div class="ttdoc">Total number of alleles in called genotypes. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:98</div></div>
+<div class="ttc" id="classVcf__data_html_af768c57fe62302f62297094ec72d2a67"><div class="ttname"><a href="classVcf__data.html#af768c57fe62302f62297094ec72d2a67">Vcf_data::AN</a></div><div class="ttdeci">count_t AN</div><div class="ttdoc">Total number of alleles in called genotypes. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:104</div></div>
 <div class="ttc" id="classExternal__file_html"><div class="ttname"><a href="classExternal__file.html">External_file</a></div><div class="ttdoc">An interface for reading and writing data specified outside of mapgd. </div><div class="ttdef"><b>Definition:</b> external-file.h:36</div></div>
-<div class="ttc" id="classVcf__data_html_a363694f3e1905d63c08b88b844a4ecb4"><div class="ttname"><a href="classVcf__data.html#a363694f3e1905d63c08b88b844a4ecb4">Vcf_data::NS</a></div><div class="ttdeci">count_t NS</div><div class="ttdoc">Number of samples with data. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:125</div></div>
-<div class="ttc" id="classVcf__data_html_ae6be83a1e40bb6255cff715a4831a984"><div class="ttname"><a href="classVcf__data.html#ae6be83a1e40bb6255cff715a4831a984">Vcf_data::MQ</a></div><div class="ttdeci">float_t MQ</div><div class="ttdoc">RMS mapping quality, e.g. MQ=52. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:119</div></div>
+<div class="ttc" id="classVcf__data_html_a363694f3e1905d63c08b88b844a4ecb4"><div class="ttname"><a href="classVcf__data.html#a363694f3e1905d63c08b88b844a4ecb4">Vcf_data::NS</a></div><div class="ttdeci">count_t NS</div><div class="ttdoc">Number of samples with data. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:131</div></div>
+<div class="ttc" id="classVcf__data_html_ae6be83a1e40bb6255cff715a4831a984"><div class="ttname"><a href="classVcf__data.html#ae6be83a1e40bb6255cff715a4831a984">Vcf_data::MQ</a></div><div class="ttdeci">float_t MQ</div><div class="ttdoc">RMS mapping quality, e.g. MQ=52. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:125</div></div>
 <div class="ttc" id="classBase__file_html_a97d907761846c1cdb77572a4fb8d8e92"><div class="ttname"><a href="classBase__file.html#a97d907761846c1cdb77572a4fb8d8e92">Base_file::in_</a></div><div class="ttdeci">std::istream * in_</div><div class="ttdoc">All data is read from in. </div><div class="ttdef"><b>Definition:</b> map_file.h:85</div></div>
-<div class="ttc" id="classVcf__data_html_a301c94c4d794bc636cae964f115f9712"><div class="ttname"><a href="classVcf__data.html#a301c94c4d794bc636cae964f115f9712">Vcf_data::MQ0</a></div><div class="ttdeci">count_t MQ0</div><div class="ttdoc">Number of MAPQ == 0 reads covering this record. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:122</div></div>
+<div class="ttc" id="classVcf__data_html_a301c94c4d794bc636cae964f115f9712"><div class="ttname"><a href="classVcf__data.html#a301c94c4d794bc636cae964f115f9712">Vcf_data::MQ0</a></div><div class="ttdeci">count_t MQ0</div><div class="ttdoc">Number of MAPQ == 0 reads covering this record. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:128</div></div>
+<div class="ttc" id="classState_html"><div class="ttname"><a href="classState.html">State</a></div><div class="ttdef"><b>Definition:</b> state.h:29</div></div>
 <div class="ttc" id="classExternal__data_html"><div class="ttname"><a href="classExternal__data.html">External_data</a></div><div class="ttdoc">An interface used to read/write data from outside of mapgd. </div><div class="ttdef"><b>Definition:</b> external-data.h:17</div></div>
-<div class="ttc" id="classVcf__data_html_ae9037a7256d93b5fc23ec38a68dcafc8"><div class="ttname"><a href="classVcf__data.html#ae9037a7256d93b5fc23ec38a68dcafc8">Vcf_data::AF</a></div><div class="ttdeci">std::vector&lt; float_t &gt; AF</div><div class="ttdoc">Allele frequency for each ALT allele in the same order as listed: </div><div class="ttdef"><b>Definition:</b> vcf-file.h:95</div></div>
+<div class="ttc" id="classVcf__data_html_ae9037a7256d93b5fc23ec38a68dcafc8"><div class="ttname"><a href="classVcf__data.html#ae9037a7256d93b5fc23ec38a68dcafc8">Vcf_data::AF</a></div><div class="ttdeci">std::vector&lt; float_t &gt; AF</div><div class="ttdoc">Allele frequency for each ALT allele in the same order as listed: </div><div class="ttdef"><b>Definition:</b> vcf-file.h:101</div></div>
 <div class="ttc" id="classBase__file_html_a781a9896fc773450bab266a4f3fc08f0"><div class="ttname"><a href="classBase__file.html#a781a9896fc773450bab266a4f3fc08f0">Base_file::out_</a></div><div class="ttdeci">std::ostream * out_</div><div class="ttdoc">All data is written is written to out. </div><div class="ttdef"><b>Definition:</b> map_file.h:86</div></div>
-<div class="ttc" id="classVcf__data_html_a3a31269fed85a6fcc0e4d0c4f2bcec41"><div class="ttname"><a href="classVcf__data.html#a3a31269fed85a6fcc0e4d0c4f2bcec41">Vcf_data::END</a></div><div class="ttdeci">id1_t END</div><div class="ttdoc">End position of the variant described in this record (esp. for CNVs) </div><div class="ttdef"><b>Definition:</b> vcf-file.h:113</div></div>
-<div class="ttc" id="classVcf__data_html_a443c10e692d1718e7f42a62ca1061785"><div class="ttname"><a href="classVcf__data.html#a443c10e692d1718e7f42a62ca1061785">Vcf_data::DP</a></div><div class="ttdeci">count_t DP</div><div class="ttdoc">Combined depth across samples, e.g. DP=154. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:110</div></div>
-<div class="ttc" id="classVcf__data_html_ac39ac0ad6154a89d047293d9d12e57bd"><div class="ttname"><a href="classVcf__data.html#ac39ac0ad6154a89d047293d9d12e57bd">Vcf_data::AC</a></div><div class="ttdeci">std::vector&lt; count_t &gt; AC</div><div class="ttdoc">Allele count in genotypes, for each ALT allele, in the same order as listed. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:91</div></div>
-<div class="ttc" id="classVcf__data_html_ad1aaf620363cb0ff7997bad092d43204"><div class="ttname"><a href="classVcf__data.html#ad1aaf620363cb0ff7997bad092d43204">Vcf_data::DB</a></div><div class="ttdeci">bool DB</div><div class="ttdoc">Cigar string describing how to align an alternate allele to the reference allele. ...</div><div class="ttdef"><b>Definition:</b> vcf-file.h:107</div></div>
-<div class="ttc" id="classVcf__data_html_a32e4e4132f5077304e6fb722c056628c"><div class="ttname"><a href="classVcf__data.html#a32e4e4132f5077304e6fb722c056628c">Vcf_data::H2</a></div><div class="ttdeci">bool H2</div><div class="ttdoc">Membership in hapmap2. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:116</div></div>
+<div class="ttc" id="classVcf__data_html_a3a31269fed85a6fcc0e4d0c4f2bcec41"><div class="ttname"><a href="classVcf__data.html#a3a31269fed85a6fcc0e4d0c4f2bcec41">Vcf_data::END</a></div><div class="ttdeci">id1_t END</div><div class="ttdoc">End position of the variant described in this record (esp. for CNVs) </div><div class="ttdef"><b>Definition:</b> vcf-file.h:119</div></div>
+<div class="ttc" id="classVcf__data_html_a443c10e692d1718e7f42a62ca1061785"><div class="ttname"><a href="classVcf__data.html#a443c10e692d1718e7f42a62ca1061785">Vcf_data::DP</a></div><div class="ttdeci">count_t DP</div><div class="ttdoc">Combined depth across samples, e.g. DP=154. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:116</div></div>
+<div class="ttc" id="classVcf__data_html_ac39ac0ad6154a89d047293d9d12e57bd"><div class="ttname"><a href="classVcf__data.html#ac39ac0ad6154a89d047293d9d12e57bd">Vcf_data::AC</a></div><div class="ttdeci">std::vector&lt; count_t &gt; AC</div><div class="ttdoc">Allele count in genotypes, for each ALT allele, in the same order as listed. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:97</div></div>
+<div class="ttc" id="classVcf__data_html_ad1aaf620363cb0ff7997bad092d43204"><div class="ttname"><a href="classVcf__data.html#ad1aaf620363cb0ff7997bad092d43204">Vcf_data::DB</a></div><div class="ttdeci">bool DB</div><div class="ttdoc">Cigar string describing how to align an alternate allele to the reference allele. ...</div><div class="ttdef"><b>Definition:</b> vcf-file.h:113</div></div>
+<div class="ttc" id="classVcf__data_html_a32e4e4132f5077304e6fb722c056628c"><div class="ttname"><a href="classVcf__data.html#a32e4e4132f5077304e6fb722c056628c">Vcf_data::H2</a></div><div class="ttdeci">bool H2</div><div class="ttdoc">Membership in hapmap2. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:122</div></div>
 <div class="ttc" id="classKey_html"><div class="ttname"><a href="classKey.html">Key</a></div><div class="ttdoc">A key is (i.e. what the user called it). </div><div class="ttdef"><b>Definition:</b> key.h:17</div></div>
-<div class="ttc" id="classVcf__data_html"><div class="ttname"><a href="classVcf__data.html">Vcf_data</a></div><div class="ttdef"><b>Definition:</b> vcf-file.h:50</div></div>
-<div class="ttc" id="classVcf__data_html_a7b3b3fbfacba6760e360f23c105d8adb"><div class="ttname"><a href="classVcf__data.html#a7b3b3fbfacba6760e360f23c105d8adb">Vcf_data::SB</a></div><div class="ttdeci">float_t SB</div><div class="ttdoc">Strand bias at this position. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:128</div></div>
+<div class="ttc" id="classVcf__data_html"><div class="ttname"><a href="classVcf__data.html">Vcf_data</a></div><div class="ttdef"><b>Definition:</b> vcf-file.h:53</div></div>
+<div class="ttc" id="classVcf__data_html_a7b3b3fbfacba6760e360f23c105d8adb"><div class="ttname"><a href="classVcf__data.html#a7b3b3fbfacba6760e360f23c105d8adb">Vcf_data::SB</a></div><div class="ttdeci">float_t SB</div><div class="ttdoc">Strand bias at this position. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:134</div></div>
 <div class="ttc" id="classBase__file_html_a7782150ce323f1cf18d67db63533027c"><div class="ttname"><a href="classBase__file.html#a7782150ce323f1cf18d67db63533027c">Base_file::open_</a></div><div class="ttdeci">bool open_</div><div class="ttdoc">indicates whether the iostream opened succesfully </div><div class="ttdef"><b>Definition:</b> map_file.h:60</div></div>
 <div class="ttc" id="classData_html"><div class="ttname"><a href="classData.html">Data</a></div><div class="ttdoc">A class which can be written as flat text file or into an SQL database. </div><div class="ttdef"><b>Definition:</b> data.h:34</div></div>
-<div class="ttc" id="classVcf__data_html_af14f35af2f2d8d2d438d4fedd8a3897d"><div class="ttname"><a href="classVcf__data.html#af14f35af2f2d8d2d438d4fedd8a3897d">Vcf_data::put</a></div><div class="ttdeci">void put(const Data *,...)</div><div class="ttdoc">The write function must be defined in the child class. </div><div class="ttdef"><b>Definition:</b> vcf-file.cc:135</div></div>
+<div class="ttc" id="classVcf__data_html_af14f35af2f2d8d2d438d4fedd8a3897d"><div class="ttname"><a href="classVcf__data.html#af14f35af2f2d8d2d438d4fedd8a3897d">Vcf_data::put</a></div><div class="ttdeci">void put(const Data *,...)</div><div class="ttdoc">The write function must be defined in the child class. </div><div class="ttdef"><b>Definition:</b> vcf-file.cc:151</div></div>
 <div class="ttc" id="classAllele_html"><div class="ttname"><a href="classAllele.html">Allele</a></div><div class="ttdoc">Summary statistics from the allele command. </div><div class="ttdef"><b>Definition:</b> allele.h:19</div></div>
-<div class="ttc" id="classVcf__data_html_a531ada925a90009dbd03e9befd48784a"><div class="ttname"><a href="classVcf__data.html#a531ada925a90009dbd03e9befd48784a">Vcf_data::AA</a></div><div class="ttdeci">Base AA</div><div class="ttdoc">Ancestral allele. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:88</div></div>
-<div class="ttc" id="classInfo_html"><div class="ttname"><a href="classInfo.html">Info</a></div><div class="ttdoc">Because of the god awful mess that are vcf header lines. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:28</div></div>
+<div class="ttc" id="classVcf__data_html_a531ada925a90009dbd03e9befd48784a"><div class="ttname"><a href="classVcf__data.html#a531ada925a90009dbd03e9befd48784a">Vcf_data::AA</a></div><div class="ttdeci">Base AA</div><div class="ttdoc">Ancestral allele. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:94</div></div>
+<div class="ttc" id="classInfo_html"><div class="ttname"><a href="classInfo.html">Info</a></div><div class="ttdoc">Because of the god awful mess that are vcf header lines. </div><div class="ttdef"><b>Definition:</b> vcf-file.h:31</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Aug 21 2017 13:36:09 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Nov 23 2017 13:33:08 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

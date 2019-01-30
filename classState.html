@@ -135,27 +135,63 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afcef9cc9e471c8a1fbcd86dcf99b79b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcef9cc9e471c8a1fbcd86dcf99b79b4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>State</b> (const uint32_t &amp;, const uint32_t &amp;, const uint32_t &amp;)</td></tr>
 <tr class="separator:afcef9cc9e471c8a1fbcd86dcf99b79b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69d17fc1683a9ab143288d6d568cd4c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a69d17fc1683a9ab143288d6d568cd4c0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_k</b> (const uint8_t &amp;)</td></tr>
+<tr class="separator:a69d17fc1683a9ab143288d6d568cd4c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75fe7a9672fd1cbba5276a074388e0cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75fe7a9672fd1cbba5276a074388e0cd"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_k</b> (void) const </td></tr>
+<tr class="separator:a75fe7a9672fd1cbba5276a074388e0cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e050e577b50642ddd565a36b1649cdf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e050e577b50642ddd565a36b1649cdf"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress</b> (uint32_t *a, uint32_t *b)</td></tr>
 <tr class="separator:a7e050e577b50642ddd565a36b1649cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc77daebc180c5c0b7ae9b2e1946e3e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc77daebc180c5c0b7ae9b2e1946e3e7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress_inplace</b> (uint32_t *a, uint32_t *b)</td></tr>
+<tr class="separator:acc77daebc180c5c0b7ae9b2e1946e3e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b6ba1b8c19874c921d5d5a9128e1e29"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7b6ba1b8c19874c921d5d5a9128e1e29"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress</b> (uint32_t *a, uint32_t *b, const uint32_t &amp;k)</td></tr>
 <tr class="separator:a7b6ba1b8c19874c921d5d5a9128e1e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30bd51e1c237c785f5b2b129291e6a42"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a30bd51e1c237c785f5b2b129291e6a42"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress</b> (uint32_t *a, uint32_t *b, <a class="el" href="classState__stream.html">State_stream</a> &amp;) const </td></tr>
 <tr class="separator:a30bd51e1c237c785f5b2b129291e6a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5a5eb7de3906ee65dffd767877485d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5a5eb7de3906ee65dffd767877485d4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>compress</b> (const uint32_t *a, const uint32_t *b)</td></tr>
+<tr class="separator:ae5a5eb7de3906ee65dffd767877485d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd74c50a752c04f53985a92c4626e86"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4dd74c50a752c04f53985a92c4626e86"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>compress_inplace</b> (const uint32_t *a, const uint32_t *b)</td></tr>
+<tr class="separator:a4dd74c50a752c04f53985a92c4626e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86d8e6150dcc2a76437ac5a38669e9ac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a86d8e6150dcc2a76437ac5a38669e9ac"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress</b> (uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d)</td></tr>
+<tr class="separator:a86d8e6150dcc2a76437ac5a38669e9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c11bb2fab0c0f19ac9658c3f1778519"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8c11bb2fab0c0f19ac9658c3f1778519"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress_inplace</b> (uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d)</td></tr>
+<tr class="separator:a8c11bb2fab0c0f19ac9658c3f1778519"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d1288ad36c4c6d44718e295a398097e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d1288ad36c4c6d44718e295a398097e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress</b> (uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d, const uint32_t &amp;k)</td></tr>
+<tr class="separator:a3d1288ad36c4c6d44718e295a398097e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2af2227b417d7a8c245c766fe72b8485"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2af2227b417d7a8c245c766fe72b8485"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress</b> (uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d, <a class="el" href="classState__stream.html">State_stream</a> &amp;) const </td></tr>
+<tr class="separator:a2af2227b417d7a8c245c766fe72b8485"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ddd95f4985c87c022b4c6ea32419362"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ddd95f4985c87c022b4c6ea32419362"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>compress</b> (const uint32_t *a, const uint32_t *b, const uint32_t *c, const uint32_t *d)</td></tr>
+<tr class="separator:a3ddd95f4985c87c022b4c6ea32419362"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d761635a711979f736e2e9eb4cefde1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d761635a711979f736e2e9eb4cefde1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>compress_inplace</b> (const uint32_t *a, const uint32_t *b, const uint32_t *c, const uint32_t *d)</td></tr>
+<tr class="separator:a7d761635a711979f736e2e9eb4cefde1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8963b4ad9a46f75496369a4b452f3b9d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8963b4ad9a46f75496369a4b452f3b9d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>transpose</b> (void)</td></tr>
+<tr class="separator:a8963b4ad9a46f75496369a4b452f3b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add0abd3f0258167e5e5e215dbd3e617d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add0abd3f0258167e5e5e215dbd3e617d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>cache</b> (void)</td></tr>
 <tr class="separator:add0abd3f0258167e5e5e215dbd3e617d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d51028976ac95759ca9089353e0d632"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1d51028976ac95759ca9089353e0d632"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>rewind</b> (void)</td></tr>
 <tr class="separator:a1d51028976ac95759ca9089353e0d632"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8963b4ad9a46f75496369a4b452f3b9d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8963b4ad9a46f75496369a4b452f3b9d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>transpose</b> (void)</td></tr>
-<tr class="separator:a8963b4ad9a46f75496369a4b452f3b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5a5eb7de3906ee65dffd767877485d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5a5eb7de3906ee65dffd767877485d4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>compress</b> (const uint32_t *a, const uint32_t *b)</td></tr>
-<tr class="separator:ae5a5eb7de3906ee65dffd767877485d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bc381f54029df646b922cae5cec6484"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6bc381f54029df646b922cae5cec6484"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>advance</b> (void)</td></tr>
+<tr class="separator:a6bc381f54029df646b922cae5cec6484"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ab582e86bd20a4928bac91f4d2effa1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ab582e86bd20a4928bac91f4d2effa1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>finalize</b> (void)</td></tr>
+<tr class="separator:a2ab582e86bd20a4928bac91f4d2effa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12a1792ddb0e9b84eafe520cceb5b116"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12a1792ddb0e9b84eafe520cceb5b116"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> (void)</td></tr>
 <tr class="separator:a12a1792ddb0e9b84eafe520cceb5b116"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,9 +207,9 @@ const size_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>sample_
 <tr class="memitem:a10ba4a2ce2d4be7f9d937c62699d23b8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a10ba4a2ce2d4be7f9d937c62699d23b8"></a>
 const size_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>genome_size</b> (void) const </td></tr>
 <tr class="separator:a10ba4a2ce2d4be7f9d937c62699d23b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a524ef51902756871f38044b1617eb1da"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a524ef51902756871f38044b1617eb1da"></a>
-const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>cached</b> (void) const </td></tr>
-<tr class="separator:a524ef51902756871f38044b1617eb1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1ea24ccef6202e0b877494e563acb34"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1ea24ccef6202e0b877494e563acb34"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_streaming</b> (const bool &amp;b)</td></tr>
+<tr class="separator:ac1ea24ccef6202e0b877494e563acb34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae07e927efd687226de98b1472fd5ef74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae07e927efd687226de98b1472fd5ef74"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classState.html#ae07e927efd687226de98b1472fd5ef74">read</a> (std::istream &amp;str)</td></tr>
 <tr class="memdesc:ae07e927efd687226de98b1472fd5ef74"><td class="mdescLeft">&#160;</td><td class="mdescRight">The read function must be defined in the child class. <br/></td></tr>
@@ -200,6 +236,15 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>get_free</b> (void)
 <tr class="memitem:a4d6c59719fce2a3d5105e60ec05fb371"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4d6c59719fce2a3d5105e60ec05fb371"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>compression_ratio</b> (void) const </td></tr>
 <tr class="separator:a4d6c59719fce2a3d5105e60ec05fb371"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bae1ca069f9cbde5520f4b0e882da93"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6bae1ca069f9cbde5520f4b0e882da93"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>buffer_size</b> (void) const </td></tr>
+<tr class="separator:a6bae1ca069f9cbde5520f4b0e882da93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7833112e917e815ca6d5644dbc87a299"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7833112e917e815ca6d5644dbc87a299"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> (void) const </td></tr>
+<tr class="separator:a7833112e917e815ca6d5644dbc87a299"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3587946404a938d4d01ffee8f94aa7d9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3587946404a938d4d01ffee8f94aa7d9"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>cached</b> (void) const </td></tr>
+<tr class="separator:a3587946404a938d4d01ffee8f94aa7d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedebab3da412614b8af649c177bea3cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aedebab3da412614b8af649c177bea3cb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="classState.html">State</a> &amp;rhs)</td></tr>
 <tr class="separator:aedebab3da412614b8af649c177bea3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -267,6 +312,21 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a9f49bfe9a691a48e3c7ec962de18c0a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9f49bfe9a691a48e3c7ec962de18c0a2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>increase_buffer_</b> (void)</td></tr>
 <tr class="separator:a9f49bfe9a691a48e3c7ec962de18c0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adabd305709dd4ff1f27e900216fbcb33"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adabd305709dd4ff1f27e900216fbcb33"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress_</b> (char *&amp;, uint32_t *&amp;, uint32_t *&amp;) const </td></tr>
+<tr class="separator:adabd305709dd4ff1f27e900216fbcb33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1c4fdf578723f95f5212df8db72ae24"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae1c4fdf578723f95f5212df8db72ae24"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>compress_</b> (char *&amp;, char *&amp;, const uint32_t *a, const uint32_t *b) const </td></tr>
+<tr class="separator:ae1c4fdf578723f95f5212df8db72ae24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa0641af5566c07ea08ec93b470bfffe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aaa0641af5566c07ea08ec93b470bfffe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>uncompress_</b> (char *&amp;) const </td></tr>
+<tr class="separator:aaa0641af5566c07ea08ec93b470bfffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0755c155ca8ad083bda27c176a99923a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0755c155ca8ad083bda27c176a99923a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>compress_</b> (char *&amp;, char *&amp;) const </td></tr>
+<tr class="separator:a0755c155ca8ad083bda27c176a99923a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a400faa6b8f04ffcd5a0f45655642703d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a400faa6b8f04ffcd5a0f45655642703d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_private_</b> (const <a class="el" href="classState.html">State</a> &amp;rhs)</td></tr>
+<tr class="separator:a400faa6b8f04ffcd5a0f45655642703d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
@@ -291,12 +351,21 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>block_size_</b></td
 <tr class="memitem:a6cbf94247813c881a313a1ef1d861291"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6cbf94247813c881a313a1ef1d861291"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>lz4_buffer_size_</b></td></tr>
 <tr class="separator:a6cbf94247813c881a313a1ef1d861291"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a517a0c091bbb8a4f95199b2536e52997"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a517a0c091bbb8a4f95199b2536e52997"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>streaming_</b></td></tr>
+<tr class="separator:a517a0c091bbb8a4f95199b2536e52997"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58825332c74bc3658a360894127f2099"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a58825332c74bc3658a360894127f2099"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>cached_</b></td></tr>
 <tr class="separator:a58825332c74bc3658a360894127f2099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d2d64fbe7ca67a67e20283d0fd08fc8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3d2d64fbe7ca67a67e20283d0fd08fc8"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>transposed_</b></td></tr>
 <tr class="separator:a3d2d64fbe7ca67a67e20283d0fd08fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aada7c89f108e226d40f0408efa21efb3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aada7c89f108e226d40f0408efa21efb3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>masked_</b></td></tr>
+<tr class="separator:aada7c89f108e226d40f0408efa21efb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04320381d84370b1de3d6bf7973daeb4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a04320381d84370b1de3d6bf7973daeb4"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>k_</b></td></tr>
+<tr class="separator:a04320381d84370b1de3d6bf7973daeb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadf3faa5103d23bc49b049c87cad2ec0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aadf3faa5103d23bc49b049c87cad2ec0"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>lz4_ptr_</b></td></tr>
 <tr class="separator:aadf3faa5103d23bc49b049c87cad2ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,6 +378,9 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>lz4_end_</b></td></
 <tr class="memitem:ae89b3287915b0c3ace0d1bf64f1706b9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae89b3287915b0c3ace0d1bf64f1706b9"></a>
 char *&#160;</td><td class="memItemRight" valign="bottom"><b>lz4_last_</b></td></tr>
 <tr class="separator:ae89b3287915b0c3ace0d1bf64f1706b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd733a12952b34e69cf5cd01be6d445a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acd733a12952b34e69cf5cd01be6d445a"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>temp_lz4_ptr_</b></td></tr>
+<tr class="separator:acd733a12952b34e69cf5cd01be6d445a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
@@ -326,12 +398,12 @@ static <a class="el" href="classData.html">Data</a> *&#160;</td><td class="memIt
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>mapgd_0.4/data_types/<a class="el" href="state_8h_source.html">state.h</a></li>
-<li>mapgd_0.4/data_types/state.cc</li>
+<li>mapgd_0.4/data_conversion/state.cc</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Aug 21 2017 13:36:10 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Oct 1 2018 13:55:21 for mapgd by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

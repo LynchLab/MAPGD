@@ -5,7 +5,7 @@
 <area shape="rect" id="node11" href="$classKey.html" title="A key is (i.e. what the user called it). " alt="" coords="155,157,200,184"/>
 <area shape="rect" id="node12" href="$classLog.html" title="A class to store a log of commands that have been run. " alt="" coords="156,208,199,235"/>
 <area shape="rect" id="node13" href="$classPedigree.html" title="Pedigree data. " alt="" coords="141,259,214,285"/>
-<area shape="rect" id="node14" href="$classPhenotype.html" title="Population phenotypes. " alt="" coords="135,309,219,336"/>
+<area shape="rect" id="node14" href="$classPhenotype.html" title="Phenotype data. " alt="" coords="135,309,219,336"/>
 <area shape="rect" id="node15" href="$classRelatedness.html" title="Relatedness data. " alt="" coords="130,360,225,387"/>
 <area shape="rect" id="node16" href="$classSample__gof.html" title="The sample specific goodness of fit. " alt="" coords="132,411,223,437"/>
 <area shape="rect" id="node17" href="$classSample__name.html" title="The name of a sample (i.e. what the user called it). " alt="" coords="125,461,230,488"/>

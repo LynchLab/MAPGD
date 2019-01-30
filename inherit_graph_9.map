@@ -1,4 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classExternal__data.html" title="An interface used to read/write data from outside of mapgd. " alt="" coords="6,5,109,32"/>
-<area shape="rect" id="node2" href="$classVcf__data.html" title="Vcf_data" alt="" coords="157,5,232,32"/>
+<area shape="rect" id="node1" href="$classExternal__data.html" title="An interface used to read/write data from outside of mapgd. " alt="" coords="6,56,109,83"/>
+<area shape="rect" id="node2" href="$classBed__data.html" title="Bed_data" alt="" coords="160,5,237,32"/>
+<area shape="rect" id="node3" href="$classPlink__data.html" title="Plink_data" alt="" coords="157,56,240,83"/>
+<area shape="rect" id="node4" href="$classVcf__data.html" title="Vcf_data" alt="" coords="161,107,236,133"/>
 </map>

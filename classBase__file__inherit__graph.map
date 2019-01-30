@@ -3,11 +3,15 @@
 <area shape="rect" id="node3" href="$classData__file.html" title="Data_file\&lt; Locus \&gt;" alt="" coords="141,56,275,83"/>
 <area shape="rect" id="node6" href="$classData__file.html" title="Data_file\&lt; T \&gt;" alt="" coords="155,107,261,133"/>
 <area shape="rect" id="node10" href="$classExternal__file.html" title="An interface for reading and writing data specified outside of mapgd. " alt="" coords="131,158,285,199"/>
-<area shape="rect" id="node11" href="$classExternal__file.html" title="External_file\&lt; Vcf\l_data \&gt;" alt="" coords="145,223,271,265"/>
+<area shape="rect" id="node11" href="$classExternal__file.html" title="External_file\&lt; Bed\l_data \&gt;" alt="" coords="143,223,273,265"/>
+<area shape="rect" id="node13" href="$classExternal__file.html" title="External_file\&lt; Plink\l_data \&gt;" alt="" coords="141,289,275,330"/>
+<area shape="rect" id="node15" href="$classExternal__file.html" title="External_file\&lt; Vcf\l_data \&gt;" alt="" coords="145,354,271,395"/>
 <area shape="rect" id="node4" href="$classIndexed__file.html" title="Indexed_file\&lt; Locus \&gt;" alt="" coords="334,56,485,83"/>
 <area shape="rect" id="node5" href="$classBcf2pro__file.html" title="Because of the god awful mess that are vcf header lines. " alt="" coords="573,56,664,83"/>
 <area shape="rect" id="node7" href="$classFlat__file.html" title="Flat_file\&lt; T \&gt;" alt="" coords="359,107,459,133"/>
 <area shape="rect" id="node8" href="$classIndexed__file.html" title="Indexed_file\&lt; T \&gt;" alt="" coords="347,157,471,184"/>
 <area shape="rect" id="node9" href="$classDouble__indexed__file.html" title="Double_indexed_file\&lt; T \&gt;" alt="" coords="533,157,704,184"/>
-<area shape="rect" id="node12" href="$classVcf__file.html" title="Vcf_file" alt="" coords="376,231,443,257"/>
+<area shape="rect" id="node12" href="$classBed__file.html" title="Bed_file" alt="" coords="375,231,444,257"/>
+<area shape="rect" id="node14" href="$classPlink__file.html" title="Plink_file" alt="" coords="372,296,447,323"/>
+<area shape="rect" id="node16" href="$classVcf__file.html" title="Vcf_file" alt="" coords="376,361,443,388"/>
 </map>

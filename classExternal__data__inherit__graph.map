@@ -1,3 +1,5 @@
 <map id="External_data" name="External_data">
-<area shape="rect" id="node2" href="$classVcf__data.html" title="Vcf_data" alt="" coords="19,80,92,107"/>
+<area shape="rect" id="node2" href="$classBed__data.html" title="Bed_data" alt="" coords="5,80,81,107"/>
+<area shape="rect" id="node3" href="$classPlink__data.html" title="Plink_data" alt="" coords="107,80,188,107"/>
+<area shape="rect" id="node4" href="$classVcf__data.html" title="Vcf_data" alt="" coords="213,80,287,107"/>
 </map>
