@@ -24,6 +24,10 @@
 #include "raw.h"
 #include "stream_tools.h"
 
+#ifndef bcf_get_format_int32
+#define bcf_get_format_int32(hdr,line,tag,dst,ndst)	bcf_get_format_values(hdr,line,tag,(void **)(dst),ndst,BCF_HT_INT)
+#endif
+
 /// Because of the god awful mess that are vcf header lines.
 /** This is likely to become some form of container to handle moving data into and out of rows of map file.
  */
