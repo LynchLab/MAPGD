@@ -1,7 +1,8 @@
 
-define(PACKAGE_VERSION, esyscmd(sh -c "cat ./src/mapgd_0.4/VERSION | cut -d '-' -f 1 | tr -d '\n'" ) )  
+define(VERSION, esyscmd(sh -c "cat ./src/mapgd_0.4/VERSION | cut -d '-' -f 1 | tr -d '\n'" ) )  
 
-AC_INIT([mapgd], PACKAGE_VERSION, [matthew.s.ackerman@gmail.com], [mapgd.tgz], [https://github.com/LynchLab/MAPGD/])
+
+AC_INIT([mapgd], VERSION, [matthew.s.ackerman@gmail.com], [mapgd.tgz], [https://github.com/LynchLab/MAPGD/])
 AC_PROG_CXX
 AC_LANG(C++)
 
@@ -61,7 +62,7 @@ else
 	AC_MSG_WARN([No mpi support detected, cannot run on multiple nodes.])
 fi
 
-if test "$ax_cv_htslib" == yes
+if test "$ax_cv_htslib_which" != "none"
 then
 	AC_SUBST(HAVE_HTS, yes)
 else
