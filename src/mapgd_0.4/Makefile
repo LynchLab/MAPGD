@@ -77,8 +77,8 @@ ifeq ($(HAVE_MAN), yes)
 endif
 
 ifeq ($(HAVE_HTS), yes)
-	INCLUDE += $(HTSLIB_CPPFLAGS)/
-	INCLUDE += $(HTSLIB_LDFLAGS)
+	INCLUDE += $(HTSLIB_CPPFLAGS)
+	LDLIBS += $(HTSLIB_LDFLAGS)
 	LDLIBS += -lhts
 else
 	CXXFLAGS += $(NOHTS)
