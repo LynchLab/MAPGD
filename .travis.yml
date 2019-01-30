@@ -16,8 +16,8 @@ compiler:
 #  - clang # Don't compile in clang until openmp errors are resolved.
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-        brew update; 
-        brew install gsl; 
+        brew update;
+        brew install gsl;
         brew install gcc48;
         brew install gettext;
         brew link --force gettext;
@@ -31,8 +31,9 @@ before_install:
         sudo apt-get install -y libhts-dev; 
         sudo apt-get install -y libhts0; 
     fi
-#install:
+install:
 #  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - autoreconf
 addons:
   apt:
     sources:

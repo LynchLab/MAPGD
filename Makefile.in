@@ -41,11 +41,10 @@ LDLIBS += @INTLLIBS@
 #@Hsource@HTSLIB_LIB = $(HTSLIB)
 #@Hsource@BGZIP = $(HTSDIR)/bgzip
 
-
-HTSDIR=@HTSDIR@
-
-HTSLIB_CPPFLAGS = -I $(realpath $(HTSDIR))
-HTSLIB_LDFLAGS = -L $(realpath $(HTSDIR))
+# HTSDIR is not always defined in ax_with_htslib
+#HTSDIR := $(realpath @HTSDIR@)
+HTSLIB_CPPFLAGS = @HTSLIB_CPPFLAGS@
+HTSLIB_LDFLAGS =  @HTSLIB_LDFLAGS@
 @Hinstall@HTSLIB_LIB = -lhts
 
 #LZ4 FLAGS
@@ -53,7 +52,6 @@ HTSLIB_LDFLAGS = -L $(realpath $(HTSDIR))
 LZ4_LIB = -L @LZ4_DIR@ -l llz4
 LZ4_INCLUDE = -I @LZ4_DIR@
 
-	
 export
 
 all:  
@@ -91,7 +89,7 @@ echo:
 debug: 
 	$(MAKE) -C $(SUBDIRS) debug
 .PHONY: dist
-	
+
 test: all
 	$(MAKE) -C $(SUBDIRS) test
 .PHONY: test
@@ -105,7 +103,7 @@ clean:
 	rm -f config.status
 	$(MAKE) -C $(SUBDIRS) clean
 .PHONY: clean
-	
+
 increment:
 	$(MAKE) -C $(SUBDIRS) increment 
 .PHONY: clean
