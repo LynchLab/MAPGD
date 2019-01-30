@@ -136,6 +136,9 @@ push:
 	git push 
 	git push origin $(PROGRAM_VERSION)
 	rm -rf autom4te.cache/
+	rm -rf aclocal.m4
+	rm -rf config.log
+	rm -rf config.status
 	git checkout gh-pages
 	./update.sh
 	git checkout master
