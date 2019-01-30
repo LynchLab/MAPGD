@@ -1,0 +1,63 @@
+#!/bin/bash
+LSB_TIME=$1
+LSB_MEM=$2
+LSB_THREAD=$3
+LSB_LSB_NODE=$4
+CMD=${@:5}
+LSB_LOG=$HOME/.logs
+JOB_NUMBER=$((`cat $LSB_LOG/LAST_JOB`+1))
+SCRIPT="job_$JOB_NUMBER.sh"
+USRIP=`echo $SSH_CLIENT | cut -d' ' -f 1`
+
+if ! [ -d $LSB_LOG ]
+then 
+    echo "You must create a directory, $LSB_LOG by default, to use this script."
+    echo "To change this directory type 'export LSB_LOG=directory'. This can be"
+    echo "added to your .bashrc file if you want to permanently change this"
+    echo "directory."
+    exit 0
+fi
+
+
+exec 6>&1 
+exec > $LSB_LOG/$SCRIPT
+
+echo '#!/bin/tcsh'
+echo '#'
+echo "#BSUB -G $LSB_DEFAULTGROUP"      	# project code
+echo "#BSUB -J job_$JOB_NUMBER"			# job name
+echo "#BSUB -W $LSB_TIME"					# wall-clock time (hrs:mins)
+echo '#BSUB -q normal'					# number of tasks in job
+echo "#BSUB -e $LSB_LOG/$JOB_NUMBER.err"		
+                                        # error file name in which $J is 
+                                        # replaced by the job ID
+echo "#BSUB -o $LSB_LOG/$JOB_NUMBER.out"		
+                                        # output file name in which $JOB
+                                        # is replaced by the job ID
+
+echo "#BSUB -R \"select[mem>$LSB_MEM]\""    # 
+echo "#BSUB -R \"rusage[mem=$LSB_MEM]\""    # 
+echo "#BSUB -M $LSB_MEM"
+
+echo "#BSUB -n $LSB_THREAD"					# number of tasks in job
+echo "#BSUB -R \"span[hosts=$LSB_NODE]\""	# run four MPI tasks per node
+echo "setenv OMP_NUM_LSB_THREADS $LSB_THREAD"	# 
+echo 'setenv MP_TASK_AFFINITY verbose,granularity=core' 
+                                        #
+
+echo cd `pwd`
+
+echo "/usr/bin/time -f \"%e,%U,%s\" $CMD"
+                                        # Report the time used when done.
+echo "echo \"Job_$JOB_NUMBER is done\" | nc $USRIP 3333 "
+                                        # Msg user when the job is done.
+                                        # This will only work if you start
+                                        # the script ? running in the bg.
+
+exec 1>&6 6>&-
+
+echo $JOB_NUMBER > $LSB_LOG/LAST_JOB
+
+echo "job_$JOB_NUMBER.sh created"
+echo ""
+cat $LSB_LOG/$SCRIPT

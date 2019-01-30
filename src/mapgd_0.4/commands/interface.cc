@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <list>
 #include <algorithm>
@@ -552,12 +553,15 @@ print_help(Environment env)
 {
 	Usage(env, stdout);
 
-	printf("%s version %s written by %s\n", env.name, env.version, env.author);
- 	printf("%s\n\n", format_usage(env.description, 0) );
+    char buffer[INTERFACE_BUFFER_SIZE];
+    snprintf(buffer, INTERFACE_BUFFER_SIZE, gettext("%s version %s written by %s\n"), env.name, env.version, env.author);
+    fprintf(stdout, "%s", format_usage(buffer, 0) );
+    snprintf(buffer, INTERFACE_BUFFER_SIZE, gettext("%s\n\n"), env.description);
+    fprintf(stdout, "%s", format_usage(buffer, 0) );
 
 	std::list <Command>::iterator com=env.commands.begin();
 	std::list <Command>::iterator com_end=env.commands.end();
-	if (env.commands.size()!=0) printf("Commands:\n");
+	if (env.commands.size()!=0) fprintf(stdout, gettext("Commands:\n") );
 	while (com!=com_end){
 		//TODO Better length formating.
 		if (strlen(com->lopt)>5)

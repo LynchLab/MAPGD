@@ -118,6 +118,18 @@ echo -n "$mapgd proview -n $name -H $header | $mapgd $a -c 1 > $a.out				"
 $timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a -c 1 > $a.out"
 testa
 
+a="allele"
+msg="allele"
+rm -f $a.out
+mkfifo out.pro
+size=$(($pro_size+$pro_header))
+echo -n "$mapgd proview -n $name -H $header | $mapgd $a -c 1 -p out > /dev/null				"
+$timeout 5s bash -c "$mapgd proview -n $name -H $header | $mapgd $a -c 1 -p out > /dev/null &"
+cat out.pro > $a.out
+rm -rf out.pro
+testa
+
+
 a="pool"
 msg="pool"
 rm -f $a.out

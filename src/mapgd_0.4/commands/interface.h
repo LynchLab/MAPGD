@@ -18,6 +18,8 @@
 
 #define ARG_ERROR	-1
 
+#define INTERFACE_BUFFER_SIZE 1000
+
 /* /defgroup arg_parser Argument parsers
  * @{
 */

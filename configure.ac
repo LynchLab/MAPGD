@@ -1,9 +1,7 @@
 
-define(VERSION2, esyscmd(sh -c "cat ./src/mapgd_0.4/VERSION | tr -d '\n'" ) )  
-#define(VERSION2, [0.5] )  
-#dnl
+define(PACKAGE_VERSION, esyscmd(sh -c "cat ./src/mapgd_0.4/VERSION | cut -d '-' -f 1 | tr -d '\n'" ) )  
 
-AC_INIT([mapgd], VERSION2, [matthew.s.ackerman@gmail.com], [mapgd.tgz], [https://github.com/LynchLab/MAPGD/])
+AC_INIT([mapgd], PACKAGE_VERSION, [matthew.s.ackerman@gmail.com], [mapgd.tgz], [https://github.com/LynchLab/MAPGD/])
 AC_PROG_CXX
 AC_LANG(C++)
 

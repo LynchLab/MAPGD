@@ -11,7 +11,11 @@ VERSION=-DVERSION=\"$(PROGRAM_VERSION)\"
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/ -I ./mpi 
 #remove fno-exceptions when in debug mode
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE)#-MMD
-LDLIBS += -lgzstream -lz -L ./gzstream/ 
+LDLIBS += -lgzstream -lz -L ./gzstream/
+
+MAJOR=$(shell echo $(PROGRAM_VERSION) | cut -d '.' -f 1)
+SUBMAJOR=$(shell echo $(PROGRAM_VERSION) | cut -d '.' -f 2)
+MINOR=$(shell echo $(PROGRAM_VERSION) | cut -d '.' -f 3)
 
 DEBUG=-pg -DDEBUG -ggdb
 NOOMP=-DNOOMP
@@ -257,7 +261,7 @@ debug : CXXFLAGS:=$(CXXFLAGS) $(DEBUG)
 debug : all
 
 increment:
-	echo -n $$(($(MINOR)+1)) > VERSION
+	echo -n $(MAJOR).$(SUBMAJOR).$$(($(MINOR)+1)) > VERSION
 	echo -n '-' >> VERSION
 	date +%F >> VERSION
 .PHONY: increment
