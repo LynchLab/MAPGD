@@ -103,16 +103,29 @@ esac
 
 case $ax_cv_htslib_which in
 source)
-  # We can't use a literal, because $HTSDIR is user-provided and variable
-  AC_CONFIG_SUBDIRS($HTSDIR)
-  # translate to absolute, anchor with './'
+  dnl We can't use a literal, because $HTSDIR is user-provided and variable
+  dnl AC_CONFIG_SUBDIRS($HTSDIR)
+  dnl translate to absolute, anchor with './'
+
+  HTSLIB_OLD_CPPFLAGS=$CPPFLAGS
+  HTSLIB_OLD_LDFLAGS=$LDFLAGS
+
   HTSDIR=`cd ./$HTSDIR; pwd`
   HTSLIB_CPPFLAGS="-I$HTSDIR"
   HTSLIB_LDFLAGS="-L$HTSDIR"
-  AC_CHECK_LIB(m, lgamma)
+  
+  LDFLAGS="$LDFLAGS $HTSLIB_LDFLAGS"
+  CPPFLAGS="$CPPFLAGS $HTSLIB_CPPFLAGS"
+
   AC_CHECK_LIB(hts, hts_itr_query, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
+
+  if test ax_cv_htslib = "no"; then
+    LDFLAGS="$HTSLIB_OLD_LDFLAGS"
+    CPPFLAGS="$HTSLIB_OLD_CPPFLAGS"
+  fi
   ;;
 system)
+
   AC_CHECK_LIB(hts, hts_itr_query, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
   ax_cv_htslib_which=install
   HTSDIR=
@@ -120,15 +133,19 @@ system)
   HTSLIB_LDFLAGS=
   ;;
 install)
-  ax_saved_CPPFLAGS=$CPPFLAGS
-  ax_saved_LDFLAGS=$LDFLAGS
+  HTSLIB_OLD_CPPFLAGS=$CPPFLAGS
+  HTSLIB_OLD_LDFLAGS=$LDFLAGS
+
+  HTSDIR=
   HTSLIB_CPPFLAGS="-I$HTSDIR/include"
   HTSLIB_LDFLAGS="-L$HTSDIR/lib"
+  LDFLAGS="$LDFLAGS $HTSLIB_LDFLAGS"
   CPPFLAGS="$CPPFLAGS $HTSLIB_CPPFLAGS"
   AC_CHECK_LIB(hts, hts_itr_query, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
-  HTSDIR=
-  CPPFLAGS=$ax_saved_CPPFLAGS
-  LDFLAGS=$ax_saved_LDFLAGS
+  if test ax_cv_htslib = "no"; then
+    LDFLAGS="$HTSLIB_OLD_LDFLAGS"
+    CPPFLAGS="$HTSLIB_OLD_CPPFLAGS"
+  fi
   ;;
 none)
   ax_cv_htslib=no
