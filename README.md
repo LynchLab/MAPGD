@@ -1,4 +1,6 @@
 ﻿![Travis Says](https://travis-ci.org/LynchLab/MAPGD.svg?branch=master)
+[![Github All Releases](https://img.shields.io/github/downloads/samtools/htslib/total.svg)](https://github.com/LynchLab/mapgd)
+
 
 # [Download MAPGD](https://github.com/LynchLab/MAPGD/archive/master.zip)
 
