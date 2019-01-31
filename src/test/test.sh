@@ -303,16 +303,16 @@ rm -f temp*
 #testa
 #rm -f temp*
 
-#a="writevcf"
-#msg="writevcf"
-#size=$((42))
-#echo -n "$mapgd $a -g -m > $a.out 												"
-#$mapgd proview -H $header -n $name > temp.pro
-#$mapgd allele -i temp.pro -c 1 > temp.map
-#$mapgd genotype -p temp.pro -m temp.map > temp.gcf
-#$mapgd $a -g temp.gcf -m temp.map > $a.out
-#testa
-#rm -f temp*
+a="writevcf"
+msg="writevcf"
+size=$((42))
+echo -n "$mapgd $a -g -m > $a.out 												"
+$mapgd proview -H $header -n $name > temp.pro
+$mapgd allele -i temp.pro -c 1 > temp.map
+$mapgd genotype -p temp.pro -m temp.map > temp.gcf
+$mapgd $a -g temp.gcf -m temp.map > $a.out
+testa
+rm -f temp*
 
 #a="readvcf"
 #msg="readvcf"
