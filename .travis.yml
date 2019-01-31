@@ -30,7 +30,7 @@ before_install:
         sudo apt-get install -y libmpich-dev;
         wget --no-check-certificate https://github.com/samtools/htslib/archive/master.tar.gz;
         tar -xzvf master.tar.gz;
-        pushd htslib-master && ./configure --prefix=/usr && make && sudo make install && popd;
+        pushd htslib-master && autoreconf && ./configure --prefix=/usr && make && sudo make install && popd;
     fi
 install:
 #  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
