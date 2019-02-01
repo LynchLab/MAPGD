@@ -261,6 +261,20 @@ Locus::getcoverage() const
 }
 
 count_t 
+Locus::get_max_coverage() const
+{
+	count_t max_dp=0;
+	for (size_t s=0; s<sample.size();++s){
+		if (sample[s].masked) continue;
+		max_dp = std::max(count_t(sample[s].base[0]+
+			sample[s].base[1]+
+			sample[s].base[2]+
+			sample[s].base[3]), max_dp);
+	};
+	return max_dp;
+}
+
+count_t 
 Locus::getcoverage_nomask() const
 {
 	count_t total=0;

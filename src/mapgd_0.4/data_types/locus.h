@@ -52,6 +52,7 @@ public:
 
 	const count_t getindex(count_t) const;		//!< Returns the index of the alleles in order a sorted order.
 
+	count_t get_max_coverage(void) const;		//!< Returns the maximum of the coverage of individuals.
 	count_t getcoverage(count_t) const;		//!< Returns coverage of population/individual N.
 	count_t getcoverage(void) const;		//!< Returns total coverage.
 	count_t getcoverage_nomask(void) const;		//!< Returns total coverage.
@@ -80,9 +81,9 @@ public:
 	count_t maskedcount(void) const;		//!< Returns the count of the number of individuals that are masked.
 	void maskall(void);				//!< Mask all lines
 	void unmaskall(void);				//!< Unmask all lines
-	void mask(const std::vector <size_t> &);	//!< Mask all lines
-	void unmask(const std::vector <size_t> &);	//!< Unmask all lines
-	void mask_low_cov(const count_t &dp);	//!< Mask site with coverage stricktly lt dp;
+	void mask(const std::vector <size_t> &);	//!< Mask lines in vector
+	void unmask(const std::vector <size_t> &);	//!< Unmask lines in vector
+	void mask_low_cov(const count_t &dp);		//!< Mask site with coverage stricktly lt dp;
 	/** @} */
 
 	/* \defgroup DEPRICATED depricated 
