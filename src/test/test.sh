@@ -76,7 +76,7 @@ fi
 
 testc()
 {
-testb
+testa
 }
 
 HALT="${HALT:-true}"
