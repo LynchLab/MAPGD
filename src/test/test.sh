@@ -34,11 +34,11 @@ else
     commands[$a]="FAIL"
     if [[ "$HALT" == true ]]
     then
-        echo "If you would like to continue testing after this error call './test.sh HALT=false"
+        echo "If you would like to continue testing after this error call 'export HALT=false'"
         cat $a.out
         exit 1
     else
-        echo "If you would like to halt at this error call './test.sh HALT=true"
+        echo "If you would like to halt at this error call 'export HALT=true"
         rm -f $a.out
     fi
 fi
@@ -64,11 +64,11 @@ else
     commands[$a]="FAIL"
     if [[ "$HALT" == true ]]
     then
-        echo "If you would like to continue testing after this error call './test.sh HALT=false"
+        echo "If you would like to continue testing after this error call 'export HALT=false'"
         cat $a.out
         exit 1
     else
-        echo "If you would like to halt at this error call './test.sh HALT=true"
+        echo "If you would like to halt at this error call 'export HALT=true'"
         rm -f $a.out
     fi
 fi
@@ -354,14 +354,26 @@ rm -f temp*
 #testa
 #rm -f temp*
 
-#a="writevcf"
-#msg="writevcf"
-#size=$((42))
+a="writevcf"
+msg="writevcf"
+size=$((42))
+echo -n "$mapgd $a -g -m > $a.out 												"
+$mapgd proview -H $header -n $name > temp.pro
+$mapgd allele -i temp.pro -c 1 > temp.map
+$mapgd genotype -p temp.pro -m temp.map > temp.gcf
+$mapgd $a -g temp.gcf -m temp.map > $a.out
+testa
+rm -f temp*
+
+#a="readvcf"
+#msg="readvcf"
+#size=$(($idx_size+$idx_header+$good_size+$gcf_header))
 #echo -n "$mapgd $a -g -m > $a.out 												"
 #$mapgd proview -H $header -n $name > temp.pro
 #$mapgd allele -i temp.pro -c 1 > temp.map
 #$mapgd genotype -p temp.pro -m temp.map > temp.gcf
-#$mapgd $a -g temp.gcf -m temp.map > $a.out
+#$mapgd writevcf -g temp.gcf -m temp.map > temp.vcf
+#$mapgd $a -i temp.vcf  > $a.out
 #testa
 #rm -f temp*
 
@@ -389,8 +401,8 @@ rm -f temp*
 #  reltest	[ ]	Test for sig dif between relatedness estiamtes
 #  sam2idx	[x]	Reformats a sam header file to a idx file
 #  keyinfo	[x]	Displays information regarding keys (i.e. column names)
-#  writevcf	[o]	Prints as a vcf file
-#  writevcf2	[ ]	Prints as a vcf file
+#  writevcf	[x]	Prints as a vcf file
+#  writevcf2[ ]	Prints as a vcf file
 #  readvcf	[ ]	Reads a vcf file
 #  readbed	[ ]	Reads a bed file
 #  readphen	[x]	Reads plink's pheno file
@@ -410,7 +422,16 @@ $mapgd read -d test.db -t REGIONS > $a.out
 rm -f test.db
 testc
 
+<<<<<<< HEAD
 #for com in `$mapgd -a`
 #do
 #    printf '%-16s\t\t%s\n' $com ${commands[$com]}
 #done
+=======
+for com in `$mapgd -a`
+do
+    printf '%-16s\t\t%s\n' $com ${commands[$com]}
+done
+
+echo -e "\nIf something is untested, it is probably because it isn't working...\n"
+>>>>>>> cad0416f540e2b60dbeaad0647ad2e456ec7dbc3

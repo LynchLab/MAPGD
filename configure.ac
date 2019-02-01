@@ -1,7 +1,7 @@
 
-define(PACKAGE_VERSION, esyscmd(sh -c "cat ./src/mapgd_0.4/VERSION | cut -d '-' -f 1 | tr -d '\n'" ) )  
+define(VERSION, esyscmd(sh -c "cat ./src/mapgd_0.4/VERSION | cut -d '-' -f 1 | tr -d '\n'" ) )  
 
-AC_INIT([mapgd], PACKAGE_VERSION, [matthew.s.ackerman@gmail.com], [mapgd.tgz], [https://github.com/LynchLab/MAPGD/])
+AC_INIT([mapgd], VERSION, [matthew.s.ackerman@gmail.com], [mapgd.tgz], [https://github.com/LynchLab/MAPGD/])
 AC_PROG_CXX
 AC_LANG(C++)
 
@@ -61,9 +61,12 @@ else
 	AC_MSG_WARN([No mpi support detected, cannot run on multiple nodes.])
 fi
 
-if test "$ax_cv_htslib" == yes
+if test "$ax_cv_htslib" == "yes"
 then
-	AC_SUBST(HAVE_HTS, yes)
+	AC_SUBST(HAVE_HTS, no) 
+	AC_CHECK_LIB(hts, bcf_hdr_sync, 
+		AC_SUBST(HAVE_HTS, yes),
+		AC_MSG_WARN([Htslib version 1.9 or greater needed.] ), [-lm -lpthread] ) 
 else
 	AC_SUBST(HAVE_HTS, no)
 	AC_MSG_WARN([Htslib not detected, will be unable to create vcf files.])

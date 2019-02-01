@@ -1,6 +1,8 @@
 # ===========================================================================
-#      http://www.gnu.org/software/autoconf-archive/ax_with_htslib.html
+# WARNING! This verision of AX_WITH_HTSLIB is not identical to the version 
+# availible else where.
 # ===========================================================================
+#
 #
 # SYNOPSIS
 #
@@ -101,36 +103,62 @@ esac
 
 case $ax_cv_htslib_which in
 source)
-  ax_cv_htslib=yes
-  # We can't use a literal, because $HTSDIR is user-provided and variable
-  AC_CONFIG_SUBDIRS($HTSDIR)
-  # translate to absolute, anchor with './'
-  HTSDIR=`cd ./$HTSDIR; pwd`
-  HTSLIB_CPPFLAGS="-I$HTSDIR"
-  HTSLIB_LDFLAGS="-L$HTSDIR"
+  dnl We can't use a literal, because $HTSDIR is user-provided and variable
+  dnl AC_CONFIG_SUBDIRS($HTSDIR)
+  dnl translate to absolute, anchor with './'
+
+  HTSLIB_OLD_CPPFLAGS=$CPPFLAGS
+  HTSLIB_OLD_LDFLAGS=$LDFLAGS
+
+  if test "index("$CPPFLAGS", "$HTSDIR")" = "-1"; then
+
+      HTSDIR=`cd ./$HTSDIR; pwd`
+      HTSLIB_CPPFLAGS="-I$HTSDIR"
+      HTSLIB_LDFLAGS="-L$HTSDIR"
+  
+      LDFLAGS="$LDFLAGS $HTSLIB_LDFLAGS"
+      CPPFLAGS="$CPPFLAGS $HTSLIB_CPPFLAGS"
+
+  fi
+
+  AC_CHECK_LIB(m, pow)
+  AC_CHECK_LIB(pthread, pthread_create)
+  AC_CHECK_LIB(hts, hts_version, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
+
+  if test ax_cv_htslib = "no"; then
+    LDFLAGS="$HTSLIB_OLD_LDFLAGS"
+    CPPFLAGS="$HTSLIB_OLD_CPPFLAGS"
+  fi
   ;;
 system)
-  AC_CHECK_HEADER([htslib/sam.h],
-    [AC_CHECK_LIB(hts, hts_version, [ax_cv_htslib=yes], [ax_cv_htslib=no])],
-    [ax_cv_htslib=no], [;])
+  AC_CHECK_LIB(m, pow)
+  AC_CHECK_LIB(pthread, pthread_create)
+  AC_CHECK_LIB(hts, hts_version, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
   ax_cv_htslib_which=install
   HTSDIR=
   HTSLIB_CPPFLAGS=
   HTSLIB_LDFLAGS=
   ;;
 install)
-  ax_saved_CPPFLAGS=$CPPFLAGS
-  ax_saved_LDFLAGS=$LDFLAGS
-  HTSLIB_CPPFLAGS="-I$HTSDIR/include"
-  HTSLIB_LDFLAGS="-L$HTSDIR/lib"
-  CPPFLAGS="$CPPFLAGS $HTSLIB_CPPFLAGS"
-  LDFLAGS="$LDFLAGS $HTSLIB_LDFLAGS"
-  AC_CHECK_HEADER([htslib/sam.h],
-    [AC_CHECK_LIB(hts, hts_version, [ax_cv_htslib=yes], [ax_cv_htslib=no])],
-    [ax_cv_htslib=no], [;])
-  HTSDIR=
-  CPPFLAGS=$ax_saved_CPPFLAGS
-  LDFLAGS=$ax_saved_LDFLAGS
+  HTSLIB_OLD_CPPFLAGS=$CPPFLAGS
+  HTSLIB_OLD_LDFLAGS=$LDFLAGS
+
+  if test "index("$CPPFLAGS", "$HTSDIR/lib")" = "-1"; then
+    HTSDIR=
+    HTSLIB_CPPFLAGS="-I$HTSDIR/include"
+    HTSLIB_LDFLAGS="-L$HTSDIR/lib"
+    LDFLAGS="$LDFLAGS $HTSLIB_LDFLAGS"
+    CPPFLAGS="$CPPFLAGS $HTSLIB_CPPFLAGS"
+  fi
+
+  AC_CHECK_LIB(m, pow)
+  AC_CHECK_LIB(pthread, pthread_create)
+  AC_CHECK_LIB(hts, hts_version, [ax_cv_htslib=yes], [ax_cv_htslib=no], [-lm -lpthread])
+
+  if test ax_cv_htslib = "no"; then
+    LDFLAGS="$HTSLIB_OLD_LDFLAGS"
+    CPPFLAGS="$HTSLIB_OLD_CPPFLAGS"
+  fi
   ;;
 none)
   ax_cv_htslib=no

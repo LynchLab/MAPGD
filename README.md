@@ -1,5 +1,6 @@
 ﻿![Travis Says](https://travis-ci.org/LynchLab/MAPGD.svg?branch=master)
 
+
 # [Download MAPGD](https://github.com/LynchLab/MAPGD/archive/master.zip)
 
 ## MAPGD version 0.5
@@ -61,6 +62,7 @@ Then type:
 
 	unzip MAPGD.zip
 	cd MAPGD-master/
+	./configure
 	make
 
 The program can be installed for all users of a computer by typing:
