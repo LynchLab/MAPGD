@@ -1,0 +1,6 @@
+@NAME:REGIONS	VERSION:0.4.38	FORMAT:TEXT
+@NAME          	LENGTH
+scaffold_1	10
+scaffold_2	10
+scaffold_3	10
+@END_TABLE

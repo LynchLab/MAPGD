@@ -76,7 +76,7 @@ fi
 
 testc()
 {
-testa
+testb
 }
 
 HALT="${HALT:-true}"
@@ -100,7 +100,8 @@ vcf_header=3	#Size of vcf header
 gcf_header=3	#Size of gcf header
 gof_header=3	#Size of gcf header
 pro_size=30		#number of lines in the pro file
-good_size=10	#number of lines post filtering
+good_pro_size=6 	#number of lines in the pro file
+good_size=10		#number of lines post filtering
 good_pool=4		#number of lines post filtering
 idx_size=3		#number of lines in the idx file
 gof_size=8		#number of lines in the idx file
@@ -133,9 +134,9 @@ testc
 a="proview"
 msg="proview_1s"
 rm -f $a.out
-size=$(($pro_size+$pro_header+$idx_size+$idx_header+$smp_size-2))
-echo -n "cat $mpileup | $mapgd $a -s -H $header > $a.out							"
-$timeout 5s bash -c "cat $mpileup | $mapgd $a -s -H $header > $a.out"
+size=$(($good_pro_size+$pro_header+$idx_size+$idx_header+$smp_size))
+echo -n "cat $mpileup | $mapgd $a -m 4 -H $header > $a.out							"
+$timeout 5s bash -c "cat $mpileup | $mapgd $a -m 4 -H $header > $a.out"
 testc
 
 a="proview"
@@ -420,18 +421,4 @@ $mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db
 echo -n "$mapgd read -d test.db -t REGIONS										"
 $mapgd read -d test.db -t REGIONS > $a.out
 rm -f test.db
-testc
-
-<<<<<<< HEAD
-#for com in `$mapgd -a`
-#do
-#    printf '%-16s\t\t%s\n' $com ${commands[$com]}
-#done
-=======
-for com in `$mapgd -a`
-do
-    printf '%-16s\t\t%s\n' $com ${commands[$com]}
-done
-
-echo -e "\nIf something is untested, it is probably because it isn't working...\n"
->>>>>>> cad0416f540e2b60dbeaad0647ad2e456ec7dbc3
+testb
