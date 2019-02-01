@@ -363,7 +363,7 @@ $mapgd proview -H $header -n $name > temp.pro
 $mapgd allele -i temp.pro -c 1 > temp.map
 $mapgd genotype -p temp.pro -m temp.map > temp.gcf
 $mapgd $a -g temp.gcf -m temp.map > $a.out
-testa
+testc
 rm -f temp*
 
 #a="readvcf"
@@ -421,4 +421,4 @@ $mapgd sam2idx -H spitze-header.txt | $mapgd write -d test.db
 echo -n "$mapgd read -d test.db -t REGIONS										"
 $mapgd read -d test.db -t REGIONS > $a.out
 rm -f test.db
-testb
+testc
