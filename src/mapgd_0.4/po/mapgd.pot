@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: mapgd 37\n"
+"Project-Id-Version: mapgd 38\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2019-01-30 12:15+0000\n"
+"POT-Creation-Date: 2019-03-06 09:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,7 +111,7 @@ msgstr ""
 msgid "mapgd:%s:%d: Could not write to file. Exiting.\n"
 msgstr ""
 
-#: commands/proview.cc:258
+#: commands/proview.cc:256
 #, c-format
 msgid "mapgd:%s:%d: Error syncing input and output file.\n"
 msgstr ""
@@ -194,14 +194,14 @@ msgstr ""
 msgid "mapgd:%s:%d: Warning, using copy of keys.txt at %s.\n"
 msgstr ""
 
-#: commands/proview.cc:112
+#: commands/proview.cc:110
 #, c-format
 msgid ""
 "mapgd:%s:%d: Warning: a name list (-l) and a name file (-n) have both been "
 "specified. Ignoring name list.\n"
 msgstr ""
 
-#: commands/proview.cc:82
+#: commands/proview.cc:80
 #, c-format
 msgid ""
 "mapgd:%s:%d: You must either specify an index file (-H) or read in a profile "
@@ -298,13 +298,13 @@ msgstr ""
 msgid "mapgd:%s:%d: impossible error.\n"
 msgstr ""
 
-#: commands/proview.cc:129
+#: commands/proview.cc:127
 #, c-format
 msgid ""
 "mapgd:%s:%d: name file %s does not name the correct number of samples.\n"
 msgstr ""
 
-#: commands/proview.cc:102
+#: commands/proview.cc:100
 #, c-format
 msgid "mapgd:%s:%d: no scaffolds in index file.\n"
 msgstr ""

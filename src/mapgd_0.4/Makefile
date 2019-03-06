@@ -125,6 +125,7 @@ COMMAND_OBJ=$(OBJDIR)/allele_cmd.o \
 	$(OBJDIR)/proview.o \
 	$(OBJDIR)/interface.o \
 	$(OBJDIR)/map2genotype.o \
+	$(OBJDIR)/meta_filter.o \
 	$(OBJDIR)/linkage_disequilibrium.o \
 	$(OBJDIR)/filter.o \
 	$(OBJDIR)/filter_genotype.o \

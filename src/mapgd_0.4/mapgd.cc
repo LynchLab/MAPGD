@@ -28,7 +28,8 @@ int main (int argc, char* argv[])
 	env.flag(	'v',"version", 	&env, 		&flag_version, 	"an error occurred while displaying the version message", "Prints the program version");		//DONE
 	env.command(	' ',"allele", 	&allele_cmd,	 		"an error occurred while calling allele", "Estimates allele frequencies using individual data");	//DONE
 	env.command(	' ',"fastview",	&fastview,	 		"an error occurred while calling filter", "Quickly displays contents of a file");			 	//DONE
-	env.command(	' ',"filter",	&filter,	 		"an error occurred while calling filter", "Filter sites in '.map' files");			 	//DONE
+//	env.command(	' ',"filter",	&meta_filter,	 		"an error occurred while calling filter", "Filter contents of a file ");			 	//DONE
+	env.command(	' ',"filter",	&filter,	 		"an error occurred while calling filter", "Filter sites in '.map' files");			     	//DONE
 	env.command(	' ',"filterpool",&filter_pool,	 		"an error occurred while calling filter", "Filter sites in '.pol' files");			 	//DONE
 //	env.command(	' ',"filterpro", &filter_pro,	 		"an error occurred while calling filter", "Filter sites in '.pro' files");			 	//DONE
 	env.command(	' ',"filtergcf",&filter_genotype,	 	"an error occurred while calling filter", "Filter sites in '.gcf' files");			 	//DONE
