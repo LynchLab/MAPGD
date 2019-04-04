@@ -148,7 +148,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 
     while(std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) )
     {
-        printf( "I:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
+        //printf( "I:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
 
         //std::cerr << iter << ", " << k << std::endl;
 	    a.f_X_-=gsl_vector_get(R, 0)*k[0];
