@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <iomanip>
+//#include <random>
 
 #include "interface.h" 
 #include "map_file.h"
@@ -79,6 +80,9 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p);
 /*Maximizes the relatedness*/
 void 
 maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes);
+
+int
+newton(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes);
 
 void
 get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes);

@@ -217,11 +217,11 @@ count_t maximize_restricted_newton (Locus &site, Allele &a, models &model, std::
 	        a.freq=a.MM+a.Mm/2.;
 	        a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
 
-#ifdef DEBUG
+//#ifdef DEBUG
 	       	std::cerr << "P:" << p << ", " << F << ", " << E << std::endl;
 	       	std::cerr << iter <<" Pi= " <<  a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << R[0]+R[1] << ": lnL=" << sumlnL << " : lnL="<< model.loglikelihood(site, a) << std::endl;
 		std::cerr << ( pow(p,4)+pow(F,4)+pow(E,4) )/160000.0 << std::endl;
-#endif
+//#endif
 		a.f=F;
 		a.freq=p;
 
@@ -269,7 +269,7 @@ count_t maximize_restricted_newton (Locus &site, Allele &a, models &model, std::
     a.efc=efc(site);
 
 	if (iter==200) {
-		std::cerr << "Failure to maximize " << iter << " " << a << "\n";
+		std::cerr << "Failure to maximize " << iter << " " << a.get_abs_pos() << " " << a << "\n";
 	}
    
 	if ( a.gof<maxgof) {
@@ -400,31 +400,32 @@ count_t maximize_newton (Locus &site, Allele &a, models &model, std::vector <flo
 		iJ[1][0]/=det; iJ[1][1]/=det; iJ[1][2]/=det;
 		iJ[2][0]/=det; iJ[2][1]/=det; iJ[2][2]/=det;
 
-                R[0]=(R[0]*iJ[0][0]+R[1]*iJ[0][1]+R[2]*iJ[0][2]);
-                R[1]=(R[0]*iJ[1][0]+R[1]*iJ[1][1]+R[2]*iJ[1][2]);
-                R[2]=(R[0]*iJ[2][0]+R[1]*iJ[2][1]+R[2]*iJ[2][2]);
+        R[0]=(R[0]*iJ[0][0]+R[1]*iJ[0][1]+R[2]*iJ[0][2]);
+        R[1]=(R[0]*iJ[1][0]+R[1]*iJ[1][1]+R[2]*iJ[1][2]);
+        R[2]=(R[0]*iJ[2][0]+R[1]*iJ[2][1]+R[2]*iJ[2][2]);
 
 		p=a.freq;
 		F=a.f;
 		E=a.error;
 
-	        a.error=0.75/(1.+exp(a.error) );
-	        a.freq=1./(1.+exp(a.freq) );
-	        a.f=1./(1.+exp(a.f) );
+        a.error=0.75/(1.+exp(a.error) );
+        a.freq=1./(1.+exp(a.freq) );
+        a.f=1./(1.+exp(a.f) );
 
-	        a.MM=(1.-a.freq)*a.f;
-	        a.Mm=a.freq;
-	        a.mm=(1.-a.freq)*(1.-a.f);
+        a.MM=(1.-a.freq)*a.f;
+        a.Mm=a.freq;
+        a.mm=(1.-a.freq)*(1.-a.f);
 
-	        a.freq=a.MM+a.Mm/2.;
-	        a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
+        a.freq=a.MM+a.Mm/2.;
+        a.f=1.-a.Mm/(2*a.freq*(1-a.freq) );
 
-#ifdef DEBUG
-	       	std::cerr << "P:" << p << ", " << F << ", " << E << std::endl;
-	       	std::cerr << iter <<" Pi= " <<  a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << R[0]+R[1]+R[2] << ": lnL=" << sumlnL << " : lnL="<< model.loglikelihood(site, a) << std::endl;
+//#ifdef DEBUG
+       	std::cerr << "P:" << p << ", " << F << ", " << E << std::endl;
+       	std::cerr << iter <<" Pi= " <<  a.freq << ", Epsilon=" << a.error  << ", F=" << a.f << ", R=" << R[0]+R[1]+R[2] << ": lnL=" << sumlnL << " : lnL="<< model.loglikelihood(site, a) << std::endl;
 		std::cerr << ( pow(p,4)+pow(F,4)+pow(E,4) )/160000.0 << std::endl;
-#endif
-		a.f=F;
+//#endif
+
+        a.f=F;
 		a.freq=p;
 		a.error=E;
 

@@ -193,6 +193,8 @@ Finally show me your changes by typing.
 
 <h2> Changes </h2>
 
+LD should be fixed, but relatedness now always uses the home-grown Newton-Raphson. It should be a little more stable than before, but please pay attention to the PASS/FAIL flags.
+
 <h3> Changes from 0.4 </h3>
 
 I'm breaking LD with this update. 

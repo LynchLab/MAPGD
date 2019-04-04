@@ -1,5 +1,6 @@
 #include "relatedness.h"
 
+
 #define BUFFER_SIZE 500
 
 #ifndef NOGSL
@@ -9,6 +10,26 @@ size_t
 freqtoi(float_t in)
 {
 	return size_t(in*E_LIM*2) < E_LIM ? size_t(in*E_LIM*2) : E_LIM-1;
+}
+
+#define ITER_MAX    150
+
+double
+rel_ll2 (const Relatedness &rel, std::vector < std::pair<Genotype_pair_tuple, size_t> > *hashed_genotypes_p)
+{
+    gsl_vector *v=gsl_vector_alloc(7);
+
+	gsl_vector_set(v, 0, rel.f_X_);
+	gsl_vector_set(v, 1, rel.f_Y_);
+	gsl_vector_set(v, 2, rel.theta_XY_);
+	gsl_vector_set(v, 3, rel.gamma_XY_);
+	gsl_vector_set(v, 4, rel.gamma_YX_);
+	gsl_vector_set(v, 5, rel.Delta_XY_);
+	gsl_vector_set(v, 6, rel.delta_XY_);
+	
+	double ret=rel_ll(v, (void *)(hashed_genotypes_p) );
+    gsl_vector_free(v);
+    return ret;
 }
 
 int 
@@ -32,27 +53,27 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 	std::map <Genotype_pair_tuple, size_t>::iterator it, end;
 	Genotype_pair v;
 	Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > consts(REL_CNTS, REL_ARRAY);
+    std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(counts.begin(), counts.end() );
+
+    /*
+    std::random_device rd;
+    std::mt19937 eng(rd());
+    std::uniform_real_distribution<double> unif(-0.5, 1.);
+    */
 
 	size_t c;
 
 	float_t last_m=0;
 	int iter=0;
 	int size=counts.size();
-	
+    int I[7]={0};	
 	while (true){
 		it=counts.begin();
 		end=counts.end();
 		gsl_matrix_set_zero(J);
 		gsl_vector_set_zero(R);
 
-	//#pragma omp parallel
-	//#pragma omp single
-	/*{
-	for(auto it = l.begin(); it != l.end(); ++it)
-		it->process();
-	}*/	
 	while (it!=end ){
-	//#pragma omp task firstprivate(it)
 		v=Genotype_pair::from_tuple(it->first);
 		c=it->second;
 		if (v.m>0.0)
@@ -74,57 +95,158 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 			gsl_vector_set(R, 4, gsl_vector_get(R, 4)-H4(v, consts)*c );
 			gsl_vector_set(R, 5, gsl_vector_get(R, 5)-H5(v, consts)*c );
 			gsl_vector_set(R, 6, gsl_vector_get(R, 6)-H6(v, consts)*c );
+
+           //std::cerr << 
 	
 		}
 		++it;
 	//#pragma omp taskwait
 	}
-	if (gsl_blas_dnrm2(R)< 10) break;
-	if (std::isnan(gsl_blas_dnrm2(R))) break;
-	if (gsl_matrix_isnull(J)) break;
-	if (iter>20){
-		break;
+	if (gsl_blas_dnrm2(R)< 1.) {
+    //    std::cerr << "success!!\n";
+        break;
+	}
+	if (std::isnan(gsl_blas_dnrm2(R))){
+     ///   std::cerr << "NAN!!\n";
+        break;
+	}
+	if (gsl_matrix_isnull(J)){
+     //   std::cerr << "NULL!!\n";
+        break;
+	}
+    //printf("iter? %d\n", iter);
+	if (iter>=ITER_MAX){
+     //   std::cerr << "Itermax reached\n";
+        break;
 	}
 	++iter;
 
-
 	int signum=0;
-	
-	gsl_linalg_LU_decomp (J, p, &signum);
-	gsl_linalg_LU_solve (J, p, R, new_R);
-	gsl_vector_memcpy (R, new_R);
+    
+    gsl_linalg_LU_decomp (J, p, &signum);
+    gsl_set_error_handler_off();
+    int status=gsl_linalg_LU_solve (J, p, R, new_R);
+    if (status!=0) {
+	    gsl_permutation_free (p);
+    	gsl_vector_free (R);
+    	gsl_vector_free (new_R);
+    	gsl_matrix_free (J);
+        return 1;
+    }
+    gsl_vector_memcpy (R, new_R);
 
-/*
-	if (fabs(R[0])>B)
-	{
-		if(R[0]>0) R(0)=B;
-			else R(0)=-B;
-	}*/
-	//params=[F_X, F_Y, T, g_XY, g_YX, d, D]
+    double k[7];
+    for(int i=0; i<7; i++) k[i]=1.-1./(1.+exp(float(++I[i])/2.-2.) );
 
-	a.f_X_+=gsl_vector_get(R, 0);
-	a.f_Y_+=gsl_vector_get(R,1);
-	a.theta_XY_+=gsl_vector_get(R,2);
-	a.gamma_XY_+=gsl_vector_get(R,3);
-	a.gamma_YX_+=gsl_vector_get(R,4);
-	a.delta_XY_+=gsl_vector_get(R,5);
-	a.Delta_XY_+=gsl_vector_get(R,6);
+	a.f_X_+=gsl_vector_get(R, 0)*k[0];
+	a.f_Y_+=gsl_vector_get(R,1)*k[1];
+	a.theta_XY_+=gsl_vector_get(R,2)*k[2];
+	a.gamma_XY_+=gsl_vector_get(R,3)*k[3];
+	a.gamma_YX_+=gsl_vector_get(R,4)*k[4];
+	a.delta_XY_+=gsl_vector_get(R,5)*k[5];
+	a.Delta_XY_+=gsl_vector_get(R,6)*k[6];
+
+    while(std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) )
+    {
+        printf( "I:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
+
+        //std::cerr << iter << ", " << k << std::endl;
+	    a.f_X_-=gsl_vector_get(R, 0)*k[0];
+        a.f_Y_-=gsl_vector_get(R,1)*k[1];
+        a.theta_XY_-=gsl_vector_get(R,2)*k[2];
+        a.gamma_XY_-=gsl_vector_get(R,3)*k[3];
+        a.gamma_YX_-=gsl_vector_get(R,4)*k[4];
+        a.delta_XY_-=gsl_vector_get(R,5)*k[5];
+        a.Delta_XY_-=gsl_vector_get(R,6)*k[6];
+    
+        for(int i=0; i<7; i++) k[i]=1.-1./(1.+exp(float(--I[i])/2.-2.) );
+    
+        int i=0;
+        a.f_X_+=gsl_vector_get(R, i)*k[i];
+        if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
+        a.f_X_-=gsl_vector_get(R, i)*k[i];
+        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );
+
+        i=1;
+        a.f_Y_+=gsl_vector_get(R, i)*k[i];
+        if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
+        a.f_Y_-=gsl_vector_get(R, i)*k[i];
+        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );
+
+        i=2;
+        a.theta_XY_+=gsl_vector_get(R, i)*k[i];
+        if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
+        a.theta_XY_-=gsl_vector_get(R, i)*k[i];
+        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );
+
+        i=3;
+        a.gamma_XY_+=gsl_vector_get(R, i)*k[i];
+        if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
+        a.gamma_XY_-=gsl_vector_get(R, i)*k[i];
+        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );
+
+        i=4;
+        a.gamma_YX_+=gsl_vector_get(R, i)*k[i];
+        if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
+        a.gamma_YX_-=gsl_vector_get(R, i)*k[i];
+        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );
+
+        i=5;
+        a.Delta_XY_+=gsl_vector_get(R, i)*k[i];
+        if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
+        a.Delta_XY_-=gsl_vector_get(R, i)*k[i];
+        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );
+
+        i=6;
+        a.delta_XY_+=gsl_vector_get(R, i)*k[i];
+        if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
+        a.delta_XY_-=gsl_vector_get(R, i)*k[i];
+        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );
+
+        for (int j=0; j<7; j++){
+           //printf("%d,", I[j]);
+           if (I[j]<-20) {iter=ITER_MAX;}
+        }
+        //printf("\n");
+
+	    a.f_X_+=gsl_vector_get(R, 0)*k[0];//+uinf(eng);
+        a.f_Y_+=gsl_vector_get(R, 1)*k[1];//+uinf(eng);
+        a.theta_XY_+=gsl_vector_get(R,2)*k[2];//+unif(eng);
+        a.gamma_XY_+=gsl_vector_get(R,3)*k[3];//+unif(eng);
+        a.gamma_YX_+=gsl_vector_get(R,4)*k[4];//+unif(eng);
+        a.delta_XY_+=gsl_vector_get(R,5)*k[5];//+unif(eng);
+        a.Delta_XY_+=gsl_vector_get(R,6)*k[6];//+unif(eng);
+
+/*        memset(&I, 0, sizeof(int)*7);
+	    a.f_X_=unif(eng);
+        a.f_Y_=unif(eng);
+        a.theta_XY_=unif(eng);
+        a.gamma_XY_=unif(eng);
+        a.gamma_YX_=unif(eng);
+        a.delta_XY_=unif(eng);
+        a.Delta_XY_=unif(eng);
+        //printf( "%.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
+ */   }
+    //printf("out!\n");
+
+
 	}
 	gsl_permutation_free (p);
 	gsl_vector_free (R);
 	gsl_vector_free (new_R);
 	gsl_matrix_free (J);
-	if (iter>20) return 1;
-	if ( fabs(a.f_X_)>1 or fabs(a.f_Y_)>1  or fabs(a.theta_XY_) or fabs(a.gamma_XY_)>1 or fabs(a.gamma_YX_)>1 or fabs(a.delta_XY_)>1 or fabs(a.Delta_XY_)>1 ) return 1;
-	return 0;
+
+    if ( iter>=ITER_MAX) return 1;
+	if ( fabs(a.f_X_)>1 or fabs(a.f_Y_)>1  or fabs(a.theta_XY_) >1 or fabs(a.gamma_XY_)>1 or fabs(a.gamma_YX_)>1 or fabs(a.delta_XY_)>1 or fabs(a.Delta_XY_)>1 ) return 1; 
+    return 0;
 }
 
 std::map <Genotype_pair_tuple, size_t> 
 hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y, const bool &l2o)
 {
 	std::stringstream fb_copy(file_buffer.str() );
-	
-	Indexed_file <Population> gcf_in; 	// Open the file with genotypic probabilities.
+
+    Indexed_file <Population> gcf_in; 	// Open the file with genotypic probabilities.
 	gcf_in.open(&fb_copy, std::ios::in );
 	Population genotypes=gcf_in.read_header();
 	float_t N=genotypes.likelihoods.size();
@@ -288,6 +410,16 @@ inc_Delta (Relatedness &rel, const Genotype_pair &pair, const size_t &count)
 
 //int eval;
 
+bool failbound(const double &x)
+{
+    return (x<-1. || x>1.);
+}
+
+bool passbound(const double &x)
+{
+    return (x>=0  && x<=1.);
+}
+
 float_t
 get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count) 
 {
@@ -302,12 +434,22 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 	become negative. These probabilities are forced to be zero, which may be a little arbitrary, but it seems to 
 	work.*/
 
+    if (failbound(rel.f_X_) || failbound(rel.f_Y_) || failbound(rel.theta_XY_) || failbound(rel.gamma_XY_) || failbound(rel.gamma_YX_) || failbound(rel.delta_XY_) || failbound(rel.Delta_XY_) )
+        return nan("");
+
+    if (!(passbound(pair.X_mm) && passbound(pair.Y_mm) && passbound(pair.X_Mm) && passbound(pair.Y_Mm) && passbound(pair.X_MM) && passbound(pair.Y_MM) ) ) {
+        std::cerr << "Bad genotype...\n";
+        return 0;//nan("");
+    }
 
 	float_t P, mm1mm2, Mm1mm2, MM1mm2, mm1Mm2, Mm1Mm2, MM1Mm2, mm1MM2, Mm1MM2, MM1MM2;
 
 	P=1-pair.m;
 
-	if (P==0) return 0;	
+	if (P==0 || P==1) {
+        std::cerr << "Bad error...\n";
+        return 0;
+    }
 	float_t e=0;//global_relatedness.e_Y_[freqtoi(pair.m)]-global_relatedness.e_X_[freqtoi(pair.m)];
 	//P+=(global_relatedness.e_Y_[freqtoi(pair.m)]+global_relatedness.e_X_[freqtoi(pair.m)]);
 
@@ -321,9 +463,12 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 	float_t Sa=sqrt(Va);	//standard deviation of haploid genomes A
 	float_t Sc=sqrt(Vc);	// and "	"	"	"	C.
 
+//`    std::cerr << Sa << ", " << Sc << std::endl;
+
 	float_t E_A2  =(rel.f_X_*Va+2.*pow(A,2.)+Va)/2.; //Expectation of A^2
 	float_t E_C2  =(rel.f_Y_*Vc+2.*pow(C,2.)+Vc)/2.; //
 	float_t E_AC  =rel.theta_XY_*Sa*Sc+A*C;
+//	if (Sa==0 || Sc==0) return 0;
 	float_t ga=(1.-2.*A)/Sa;
 	float_t gc=(1.-2.*C)/Sc;
 	float_t E_A2C =(rel.gamma_XY_*Va*Sc*ga+A*A*C+Va*(rel.theta_XY_*(1.+2.*A)+rel.f_X_*C+C/(1-C) ) )/2.;
@@ -344,7 +489,7 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 	Mm1MM2=0+0*P+0.0*e+0*E_A2+0*E_C2-2.0*E_AC+0*E_A2C+4*E_AC2-2*E_A2C2;
 	MM1MM2=0+0*P+0.0*e+0*E_A2+0*E_C2+0.0*E_AC+0*E_A2C+0*E_AC2+1*E_A2C2;
 
-
+/*
 	if (mm1mm2<0 or mm1mm2>1) mm1mm2=0.1;
 	if (Mm1mm2<0 or Mm1mm2>1) Mm1mm2=0.1; 
 	if (MM1mm2<0 or MM1mm2>1) MM1mm2=0.1; 
@@ -354,7 +499,6 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 	if (mm1MM2<0 or mm1MM2>1) mm1MM2=0.1;
 	if (Mm1MM2<0 or Mm1MM2>1) Mm1MM2=0.1;
 	if (MM1MM2<0 or MM1MM2>1) MM1MM2=0.1;
-
 	float_t S=pow(mm1mm2+Mm1mm2+MM1mm2+mm1Mm2+Mm1Mm2+MM1Mm2+mm1MM2+Mm1MM2+MM1MM2, 2);
 
 	if(S>1){
@@ -370,7 +514,8 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 	};
 	
 	float_t E[9];
-
+*/
+/*
         if (mm1mm2>0) E[0]=log(mm1mm2*pair.X_mm*pair.Y_mm);
      	else E[0]=-FLT_MAX;
 	if (Mm1Mm2>0) E[1]=log(Mm1Mm2*pair.X_Mm*pair.Y_Mm);
@@ -389,11 +534,24 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
      	else E[7]=-FLT_MAX;
         if (MM1mm2>0) E[8]=log(MM1mm2*pair.X_MM*pair.Y_mm);
      	else E[8]=-FLT_MAX;
+	    std::sort(E, E+9);
+*/
+    float K=mm1mm2*pair.X_mm*pair.Y_mm+Mm1Mm2*pair.X_Mm*pair.Y_Mm+MM1MM2*pair.X_MM*pair.Y_MM+mm1Mm2*pair.X_mm*pair.Y_Mm+MM1Mm2*pair.X_MM*pair.Y_Mm+Mm1mm2*pair.X_Mm*pair.Y_mm+Mm1MM2*pair.X_Mm*pair.Y_MM+mm1MM2*pair.X_mm*pair.Y_MM+MM1mm2*pair.X_MM*pair.Y_mm;
+    if (K<=0) {
+//        std::cerr << "bad bounds: " << K << " " << count << std::endl;
+        return nan("");
+    }
 
-	std::sort(E, E+9);
+/*    std::cerr << " - " << mm1mm2 << ", " << Mm1mm2 << ", " << MM1mm2 << "\n";
+    std::cerr << " - " << mm1Mm2 << ", " << Mm1Mm2 << ", " << MM1Mm2 << "\n";
+    std::cerr << " - " << mm1MM2 << ", " << Mm1MM2 << ", " << MM1MM2 << "\n";
+
+    std::cerr << "bounds: " << mm1mm2 << ", " << P << ", " << e << ", " << E_A2 << ", " << E_C2 << ", " << E_AC << ", " << E_A2C<< K << " " << count << std::endl;
+*/  return log(K)*count;
+
 
 	//std::cerr << E[7] << ":" << E[8] << ":" << S  << ", " << count << std::endl;
-	return (log(1+exp(E[0]-E[8])+exp(E[1]-E[8])+exp(E[2]-E[8])+exp(E[3]-E[8])+exp(E[4]-E[8])+exp(E[5]-E[8])+exp(E[6]-E[8])+exp(E[7]-E[8]) )+E[8] )*count;
+	//return (log(1+exp(E[0]-E[8])+exp(E[1]-E[8])+exp(E[2]-E[8])+exp(E[3]-E[8])+exp(E[4]-E[8])+exp(E[5]-E[8])+exp(E[6]-E[8])+exp(E[7]-E[8]) )+E[8] )*count;
 }
 
 
@@ -419,31 +577,92 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
 	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator it=hashed_genotypes_p->begin();
 
-//	#pragma omp parallel for private(first, count, pair) reduction(+:sum)
-//	for (size_t x=0; x<hashed_genotypes_p->size(); x++){
 	while(it!=end){
-//		pair=&(*hashed_genotypes_p)[x];
-//		pair=&it;
 		first=Genotype_pair::from_tuple(it->first);
 		count=it->second;
 		if (first.m>0) sum+=get_ll(rel, first, count);
 		it++;
 	}
-	if (std::isnan(sum) ) return FLT_MAX;
+	if (std::isnan(sum) ) return nan("");
 	return double(-sum);
 }
 
-/*Maximizes the relatedness*/
-void 
-maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes)
+
+#if 0==1
+
+void
+rel_dll (const gsl_vector *v, void *void_hashed_genotypes_p,
+               gsl_vector *df)
 {
-	const gsl_multimin_fminimizer_type *T=gsl_multimin_fminimizer_nmsimplex2rand;
-	std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(hashed_genotypes.begin(), hashed_genotypes.end() );
-	gsl_multimin_fminimizer *s=NULL;
-	gsl_vector *ss, *x;
-	gsl_multimin_function gsl_func;
-	
-	size_t iter = 0;
+    gsl_vector_set_all(df, 0);
+	std::vector < std::pair<Genotype_pair_tuple, size_t> > *hashed_genotypes_p=(std::vector <std::pair <Genotype_pair_tuple, size_t> > *) void_hashed_genotypes_p;
+	Genotype_pair first;
+	std::pair<Genotype_pair_tuple, size_t> *pair;
+	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator end=hashed_genotypes_p->end();
+	std::vector<std::pair<Genotype_pair_tuple, size_t> >::iterator it=hashed_genotypes_p->begin();
+	Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > consts(REL_CNTS, REL_ARRAY);
+    double last_m=0;
+	size_t count;
+    Relatedness rel;
+
+    rel.f_X_ = gsl_vector_get(v, 0);
+	rel.f_Y_ = gsl_vector_get(v, 1);
+	rel.theta_XY_ = gsl_vector_get(v, 2);
+	rel.gamma_XY_ = gsl_vector_get(v, 3);
+	rel.gamma_YX_ = gsl_vector_get(v, 4);
+	rel.Delta_XY_ = gsl_vector_get(v, 5);
+	rel.delta_XY_ = gsl_vector_get(v, 6);
+
+    while (it!=end ){
+		first=Genotype_pair::from_tuple(it->first);
+	    if (first.m!=last_m){
+		    consts.recalculate( std::pair <Genotype_pair, Relatedness> (first, rel) );
+			last_m=first.m;
+		}
+		count=it->second;
+        /*
+        if (failbound(rel.f_X_) || failbound(rel.f_Y_) || failbound(rel.theta_XY_) || failbound(rel.gamma_XY_) || failbound(rel.gamma_YX_) || failbound(rel.delta_XY_) || failbound(rel.Delta_XY_) ){
+			gsl_vector_set(df, 0, FLT_MAX );
+			gsl_vector_set(df, 1, FLT_MAX );
+			gsl_vector_set(df, 2, FLT_MAX );
+			gsl_vector_set(df, 3, FLT_MAX );
+			gsl_vector_set(df, 4, FLT_MAX );
+			gsl_vector_set(df, 5, FLT_MAX );
+			gsl_vector_set(df, 6, FLT_MAX );
+            return;
+        }*/
+		if (first.m>0 && first.m<1.) {
+			gsl_vector_set(df, 0, gsl_vector_get(df, 0)-H0(first, consts)*count );
+			gsl_vector_set(df, 1, gsl_vector_get(df, 1)-H1(first, consts)*count );
+			gsl_vector_set(df, 2, gsl_vector_get(df, 2)-H2(first, consts)*count );
+			gsl_vector_set(df, 3, gsl_vector_get(df, 3)-H3(first, consts)*count );
+			gsl_vector_set(df, 4, gsl_vector_get(df, 4)-H4(first, consts)*count );
+			gsl_vector_set(df, 5, gsl_vector_get(df, 5)-H5(first, consts)*count );
+			gsl_vector_set(df, 6, gsl_vector_get(df, 6)-H6(first, consts)*count );
+        }
+		++it;
+	}
+}
+
+void
+rel_fdf (const gsl_vector *x, void *params,
+                double *f, gsl_vector *df)
+{
+      *f = rel_ll(x, params);
+        rel_dll(x, params, df);
+}
+
+/*Maximizes the relatedness*/
+bool 
+maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes, const int MAXITER)
+{
+	const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_conjugate_fr;
+	//const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_conjugate_pr;
+	//const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_vector_bfgs2; 
+//	const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_vector_bfgs; 
+//    const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_steepest_descent;
+
+    size_t iter = 0;
 	int status;
 	double size;
 
@@ -452,7 +671,8 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	 * Nelder-Mead, but I'm being lazy today, or more accurately there are 
 	 * fundamental problems with setting the problem up to use the NR method.
 	 */
-	x=gsl_vector_alloc(7);
+	gsl_vector *x=gsl_vector_alloc(7);
+	gsl_vector *last_x=gsl_vector_alloc(7);
 
 	gsl_vector_set(x, 0, rel.f_X_);
 	gsl_vector_set(x, 1, rel.f_Y_);
@@ -462,33 +682,62 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	gsl_vector_set(x, 5, rel.Delta_XY_);
 	gsl_vector_set(x, 6, rel.delta_XY_);
 
-	ss=gsl_vector_alloc(7);
-	gsl_vector_set_all(ss,0.25);	
+	gsl_vector *ss=gsl_vector_alloc(7);
+	gsl_vector_set_all(ss,0.05);	
+	gsl_multimin_function_fdf gsl_func;
+
 
 	gsl_func.n=7;
+	gsl_func.f = &rel_ll;
+	gsl_func.df = &rel_dll;
+	gsl_func.fdf = &rel_fdf; 
+//
+	std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(hashed_genotypes.begin(), hashed_genotypes.end() );
+    gsl_func.params=&hashed_genotypes_vector;
 
-	gsl_func.f = rel_ll;
-	gsl_func.params=&hashed_genotypes_vector;
+    /*
+    struct multimin_params optim_par = {.1,1e-2,100,1e-3,1e-5,2,0};
+    double minimum;
+    double xmin[7] = {-1};
+    double xmax[7] = {1};
+    unsigned type[7]={3};
+    multimin(7, x, &minimum, type, xmin, xmax, &rel_ll, &rel_dll, &rel_fdf, (void *) hashed_genotypes_vector, optim_par);
+*/
 
-	s = gsl_multimin_fminimizer_alloc (T, 7);
-	gsl_multimin_fminimizer_set (s, &gsl_func, x, ss);
+    gsl_multimin_fdfminimizer *s = gsl_multimin_fdfminimizer_alloc (T, 7);
+    gsl_multimin_fdfminimizer *last_s = gsl_multimin_fdfminimizer_alloc (T, 7);
+	gsl_multimin_fdfminimizer_set (s, &gsl_func, x, 0.001, 1e-4);//ss);
 	
 //	eval=0;
-
+    
 	do {
-
 		iter++;
-		status = gsl_multimin_fminimizer_iterate(s);
-      
+        gsl_vector_memcpy(last_x, s->x);
+		status = gsl_multimin_fdfminimizer_iterate(s);
+        
+       for (int i = 0; i < 7; i++) printf ("%10.3f", gsl_vector_get (s->x, i));
+        printf (" (s) f() = %7.3f size = %.3f\n", s->f, 7);
+        for (int i = 0; i < 7; i++) printf ("%10.3f", gsl_vector_get (last_x, i));
+        printf (" (l)...\n", last_s->f, 7);
+        if(std::isnan(s->f) ){ //If this is nonsense go back and decrease step size...
+            gsl_vector_memcpy(s->x, last_x);
+   //         s->step_size=0.00001;
+            gsl_multimin_fdfminimizer_restart(s);
+        }
+
 		if (status) break;
 
-		size = gsl_multimin_fminimizer_size (s);
-		status = gsl_multimin_test_size (size, 1e-3);
+        for (int i = 0; i < 7; i++) printf ("%10.3f", gsl_vector_get (s->x, i));
+        printf ("(a) f() = %7.3f size = %.3f\n", s->f, 7);
+        //Test to see if step takes you to a good place, undo the step if it does not...
 
-	}  while (status == GSL_CONTINUE && iter < 800);
+		//size = gsl_multimin_fdfminimizer_size (s);
+		status = gsl_multimin_test_gradient (s->gradient, 1e-3);
+	}  while (status == GSL_CONTINUE && iter < MAXITER);
 
-//	std::cerr << " Solved in " << eval << " evaluations " << std::endl;
-
+    if (status == GSL_CONTINUE)
+        std::cerr << "Maximum iterations exceded . . . " << iter << std::endl;
+    rel.success_= (status != GSL_CONTINUE);
 	rel.f_X_ = gsl_vector_get(s->x, 0);
 	rel.f_Y_ = gsl_vector_get(s->x, 1);
 	rel.theta_XY_ = gsl_vector_get(s->x, 2);
@@ -498,7 +747,13 @@ maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genoty
 	rel.delta_XY_ = gsl_vector_get(s->x, 6);
 	
 	rel.max_ll_=rel_ll(x, &hashed_genotypes_vector);
+
+    gsl_vector_free(x);
+	gsl_vector_free(last_x);
+    return (status != GSL_CONTINUE);
 }
+
+#endif
 
 class small_rel{
 
@@ -526,9 +781,10 @@ class small_rel{
 void
 get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes)
 {
-	const gsl_multimin_fminimizer_type *T=gsl_multimin_fminimizer_nmsimplex2;
+	const gsl_multimin_fminimizer_type *T=gsl_multimin_fminimizer_nmsimplex;
 	gsl_multimin_fminimizer *s=NULL;
 	gsl_vector *ss, *x;
+//..	gsl_vector_set_all(ss,0.15);	
 	gsl_multimin_function gsl_func;
 	
 	size_t iter = 0;
@@ -550,6 +806,7 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 		
 //		ss=gsl_vector_alloc(7);
 		x=gsl_vector_alloc(7);
+	    gsl_vector_set_all(x,0.0);	
 
 		rel.null_ll_ = rel_ll(x, &hashed_genotypes_vector);
 
@@ -564,7 +821,6 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 		rel.max_ll_ = rel_ll(x, &hashed_genotypes_vector);
 
 
-//		gsl_vector_set_all(ss,0.15);	
 
 //TODO FIX ME!
 /*		gsl_func.n=6;
@@ -635,7 +891,8 @@ int estimateRel(int argc, char *argv[])
 
 	std::string gcf_name="", rel_name="";
 
-	bool l2o=false, called=false;
+	bool l2o=false, called=false, use_newton=false;
+    int startx=0, starty=1;
 
 	Environment env;
 	env.set_name("mapgd relatedness");
@@ -645,6 +902,9 @@ int estimateRel(int argc, char *argv[])
 
 	env.optional_arg('i', "input", 	gcf_name, "an error occurred while displaying the help message.", "input filename (default stdout)");
 	env.optional_arg('o', "output", rel_name, "an error occurred while displaying the help message.", "output filename (default stdin)");
+	env.optional_arg('x', "x", startx, "an error occurred while displaying the help message.", "fist individual x (default 0)");
+	env.optional_arg('y', "y", starty, "an error occurred while displaying the help message.", "fist individual y (default 1)");
+	env.flag(	'n', "newton", 	&use_newton, 		&flag_set, "an error occurred while displaying the help message.", "uses the NR optimization. Doesn't work.");
 	env.flag(	'l', "l2o", 	&l2o, 		&flag_set, "an error occurred while displaying the help message.", "uses the 'leave 2 out' procedure of calculating allele freq.");
 	env.flag(	'c', "called", 	&called,	&flag_set, "an error occurred while displaying the help message.", "ignore genotypic likelihoods and treat data as error free.");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
@@ -690,30 +950,38 @@ int estimateRel(int argc, char *argv[])
 	
 	size_t sample_size=genotype.get_sample_names().size();
 
-	for (size_t x=0; x<sample_size; ++x){
-	//	for (size_t y=x+2; y<sample_size; ++y){
+	for (size_t x=startx; x<sample_size; ++x){
+     //	for (size_t y=x+2; y<sample_size; ++y){
 		for (size_t y=x+1; y<sample_size; ++y){
+            if (x==startx and y < starty) y=starty;
 			relatedness.set_X_name(x);
 			relatedness.set_Y_name(y);
-//			hashed_genotypes=hash_genotypes(file_buffer, x, y);
+			hashed_genotypes=hash_genotypes(file_buffer, x, y, l2o);
 //			down_genotypes=downsample_genotypes(file_buffer, x, y);
-			down_genotypes=hash_genotypes(file_buffer, x, y, l2o);
+//			down_genotypes=hash_genotypes(file_buffer, x, y, l2o);
 			relatedness.zero();
 			//set_e(relatedness, hashed_genotypes);
 			gestimate(relatedness, hashed_genotypes);
 #ifdef EIGEN
 			newton(relatedness, down_genotypes);
 #else
-//			maximize(relatedness, down_genotypes);
-			if(newton(relatedness, down_genotypes) ){
+			if( !newton(relatedness, hashed_genotypes) ) relatedness.success_= true;
+            else relatedness.success_= false;
+//			relatedness.success_= true;
+//			maximize(relatedness, hashed_genotypes, 10000);
+/*			if(newton(relatedness, down_genotypes) ){
 				relatedness.zero();
 				maximize(relatedness, down_genotypes);
-			}
+			}*/
 #endif
-			get_llr(relatedness, down_genotypes);
+			get_llr(relatedness, hashed_genotypes);
 			rel_out.write(relatedness);
-//			return 0;
-		}
+/*            if (!relatedness.success_)
+            {
+                printf( "%.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", relatedness.f_X_, relatedness.f_Y_, relatedness.theta_XY_, relatedness.gamma_XY_, relatedness.gamma_YX_, relatedness.Delta_XY_, relatedness.delta_XY_);
+                return 0;
+            }
+*/        }
 	}
 	rel_out.close();
 	return 0;					//Since everything worked, return 0!.

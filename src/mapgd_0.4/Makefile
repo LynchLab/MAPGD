@@ -10,6 +10,7 @@ WARNINGS=-Wno-write-strings
 VERSION=-DVERSION=\"$(PROGRAM_VERSION)\"
 INCLUDE=-I ./ -I ./data_types/ -I ./commands/ -I ./raw/ -I ./data_conversion/ -I ./gzstream/ -I ./stream_tools/ -I ./io/ -I ./math_functions/ -I ./system/ -I ./mpi 
 #remove fno-exceptions when in debug mode
+#CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE)#-MMD
 CXXFLAGS += $(VERSION) $(MODE) $(WARNINGS) -fno-exceptions -pedantic $(INCLUDE)#-MMD
 LDLIBS += -lgzstream -lz -L ./gzstream/
 
@@ -136,7 +137,8 @@ COMMAND_OBJ=$(OBJDIR)/allele_cmd.o \
 	$(OBJDIR)/test_keys.o \
 	$(OBJDIR)/reml.o \
 	$(OBJDIR)/read_bed.o \
-	$(OBJDIR)/relatedness_test.o
+	$(OBJDIR)/relatedness_test.o \
+	$(OBJDIR)/surface.o 
 
 #Depends on OS
 SYS_OBJ=$(OBJDIR)/system.o

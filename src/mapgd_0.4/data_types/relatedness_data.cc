@@ -13,6 +13,7 @@ Relatedness::Relatedness (){
 	Y_str_="";
 	likelihoods_=true;
 	delim='\t';
+    success_=false;
 }
 
 Relatedness::Relatedness(const std::vector <std::string> &columns){
@@ -26,6 +27,7 @@ Relatedness::Relatedness(const std::vector <std::string> &columns){
 	} else {
 		likelihoods_=false;
 	};
+    success_=false;
 }
 
 Relatedness::Relatedness (const std::string &X, const std::string &Y){
@@ -69,6 +71,7 @@ Relatedness::read (std::istream& in)
 	std::stringstream stream_line(line);	
 	stream_line >> X_str_ ;
 	stream_line >> Y_str_ ;
+	stream_line >> success_ ;
 	stream_line >> f_X_ ;
 	if (likelihoods_)
 		stream_line >> f_X_ll ;
@@ -99,8 +102,12 @@ Relatedness::read (std::istream& in)
 void
 Relatedness::write (std::ostream& out) const 
 {
-	out << X_ << delim;
-	out << Y_ << delim;
+	out << X_str_ << delim;
+	out << Y_str_ << delim;
+    if (success_)
+        out << "PASS" << delim;
+    else 
+        out << "FAIL" << delim;
 	out << f_X_ << delim;
 	if (likelihoods_)
 		out << f_X_ll << delim;
@@ -130,7 +137,7 @@ Relatedness::write (std::ostream& out) const
 
 std::string 
 Relatedness::header(void) const {
-	return std::string("@SAMPLE_X\tSAMPLE_Y\tf_X\tf_X_ll\tf_Y\tf_Y_ll\tθ\tθ_ll\tγ_XY\tγ_XY_ll\tγ_YX\tγ_YX_ll\tδ\tδ_ll\tΔ\tΔ_ll\tnull_ll\tfit\n");
+	return std::string("@SAMPLE_X\tSAMPLE_Y\tSUCCESS\tf_X\tf_X_ll\tf_Y\tf_Y_ll\tθ\tθ_ll\tγ_XY\tγ_XY_ll\tγ_YX\tγ_YX_ll\tδ\tδ_ll\tΔ\tΔ_ll\tnull_ll\tfit\n");
 }
 
 size_t 
@@ -193,6 +200,7 @@ Relatedness::operator=(const Relatedness &rhs)
 	gamma_YX_=rhs.gamma_YX_; 
 	delta_XY_=rhs.delta_XY_; 
 	Delta_XY_=rhs.Delta_XY_; 
+	success_=rhs.success_;
 	return *this;
 }
 

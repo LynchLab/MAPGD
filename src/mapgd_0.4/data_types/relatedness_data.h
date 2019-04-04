@@ -26,6 +26,7 @@ private:
 	bool likelihoods_;			//!< indicate whether likelihoods are recorded.
 public:
 	char delim;	//!< the delimiter used when reading/writing the class in text mode.	
+    bool success_;
 
 	std::string X_str_;	//!< the name of the first (X) sample in the compairison.
 	std::string Y_str_;	//!< the name of the second (Y) sample in the compairison.

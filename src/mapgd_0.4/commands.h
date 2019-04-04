@@ -37,6 +37,7 @@
 #include "test_keys.h"
 #include "read_pheno.h"
 #include "read_bed.h"
+#include "surface.h"
 
 //#include "simulate.h"
 
