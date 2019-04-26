@@ -32,18 +32,75 @@ rel_ll2 (const Relatedness &rel, std::vector < std::pair<Genotype_pair_tuple, si
     return ret;
 }
 
+
+int
+get_invJ(gsl_matrix *invJ, const Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
+{
+	gsl_matrix *J=gsl_matrix_alloc(7,7);
+
+    float_t (*Jptr[7][7]) (const Genotype_pair &, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &);
+        
+    Jptr[0][0]=&J00; Jptr[0][1]=&J01; Jptr[0][2]=&J02; Jptr[0][3]=&J03; Jptr[0][4]=&J04; Jptr[0][5]=&J05; Jptr[0][6]=&J06;
+    Jptr[1][0]=&J10; Jptr[1][1]=&J11; Jptr[1][2]=&J12; Jptr[1][3]=&J13; Jptr[1][4]=&J14; Jptr[1][5]=&J15; Jptr[1][6]=&J16;
+    Jptr[2][0]=&J20; Jptr[2][1]=&J21; Jptr[2][2]=&J22; Jptr[2][3]=&J23; Jptr[2][4]=&J24; Jptr[2][5]=&J25; Jptr[2][6]=&J26;
+    Jptr[3][0]=&J30; Jptr[3][1]=&J31; Jptr[3][2]=&J32; Jptr[3][3]=&J33; Jptr[3][4]=&J34; Jptr[3][5]=&J35; Jptr[3][6]=&J36;
+    Jptr[4][0]=&J40; Jptr[4][1]=&J41; Jptr[4][2]=&J42; Jptr[4][3]=&J43; Jptr[4][4]=&J44; Jptr[4][5]=&J45; Jptr[4][6]=&J46;
+    Jptr[5][0]=&J50; Jptr[5][1]=&J51; Jptr[5][2]=&J52; Jptr[5][3]=&J53; Jptr[5][4]=&J54; Jptr[5][5]=&J55; Jptr[5][6]=&J56;
+    Jptr[6][0]=&J60; Jptr[6][1]=&J61; Jptr[6][2]=&J62; Jptr[6][3]=&J63; Jptr[6][4]=&J64; Jptr[6][5]=&J65; Jptr[6][6]=&J66;
+
+    std::map <Genotype_pair_tuple, size_t>::iterator it, end;
+	Genotype_pair v;
+	Constants <float_t, const std::pair<const Genotype_pair &, const Relatedness &> > consts(REL_CNTS, REL_ARRAY);
+    std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(counts.begin(), counts.end() );
+    
+	size_t c;
+
+	float_t last_m=0;
+
+	it=counts.begin();
+	end=counts.end();
+
+    gsl_matrix_set_zero(J);
+
+	while (it!=end ){
+		v=Genotype_pair::from_tuple(it->first);
+		c=it->second;
+		if (v.m>0.0)
+		{
+			if (v.m!=last_m){
+				consts.recalculate( std::pair <Genotype_pair, Relatedness> (v, a) );
+				last_m=v.m;
+			}
+			for (int x=0; x<7; x++) {
+				for (int y=0; y<7; y++) {
+					gsl_matrix_set(J, x, y, gsl_matrix_get(J,x,y)-(*Jptr[x][y])(v, consts)*c);
+				}
+			}
+        }
+        it++;
+    }
+    int signum=0;
+	gsl_permutation * p = gsl_permutation_alloc (7);
+    gsl_linalg_LU_decomp(J,p, &signum);
+    int ret=gsl_linalg_LU_invert(J, p, invJ);
+	gsl_permutation_free (p);
+    gsl_matrix_free (J);
+    return ret;
+}
+
 int 
 newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 {
-	float_t (*Jptr[7][7]) (const Genotype_pair &, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &);
 
-	Jptr[0][0]=&J00; Jptr[0][1]=&J01; Jptr[0][2]=&J02; Jptr[0][3]=&J03; Jptr[0][4]=&J04; Jptr[0][5]=&J05; Jptr[0][6]=&J06;
-	Jptr[1][0]=&J10; Jptr[1][1]=&J11; Jptr[1][2]=&J12; Jptr[1][3]=&J13; Jptr[1][4]=&J14; Jptr[1][5]=&J15; Jptr[1][6]=&J16;
-	Jptr[2][0]=&J20; Jptr[2][1]=&J21; Jptr[2][2]=&J22; Jptr[2][3]=&J23; Jptr[2][4]=&J24; Jptr[2][5]=&J25; Jptr[2][6]=&J26;
-	Jptr[3][0]=&J30; Jptr[3][1]=&J31; Jptr[3][2]=&J32; Jptr[3][3]=&J33; Jptr[3][4]=&J34; Jptr[3][5]=&J35; Jptr[3][6]=&J36;
-	Jptr[4][0]=&J40; Jptr[4][1]=&J41; Jptr[4][2]=&J42; Jptr[4][3]=&J43; Jptr[4][4]=&J44; Jptr[4][5]=&J45; Jptr[4][6]=&J46;
-	Jptr[5][0]=&J50; Jptr[5][1]=&J51; Jptr[5][2]=&J52; Jptr[5][3]=&J53; Jptr[5][4]=&J54; Jptr[5][5]=&J55; Jptr[5][6]=&J56;
-	Jptr[6][0]=&J60; Jptr[6][1]=&J61; Jptr[6][2]=&J62; Jptr[6][3]=&J63; Jptr[6][4]=&J64; Jptr[6][5]=&J65; Jptr[6][6]=&J66;
+    float_t (*Jptr[7][7]) (const Genotype_pair &, const Constants <float_t, const std::pair <const Genotype_pair &, const Relatedness &> > &);
+        
+    Jptr[0][0]=&J00; Jptr[0][1]=&J01; Jptr[0][2]=&J02; Jptr[0][3]=&J03; Jptr[0][4]=&J04; Jptr[0][5]=&J05; Jptr[0][6]=&J06;
+    Jptr[1][0]=&J10; Jptr[1][1]=&J11; Jptr[1][2]=&J12; Jptr[1][3]=&J13; Jptr[1][4]=&J14; Jptr[1][5]=&J15; Jptr[1][6]=&J16;
+    Jptr[2][0]=&J20; Jptr[2][1]=&J21; Jptr[2][2]=&J22; Jptr[2][3]=&J23; Jptr[2][4]=&J24; Jptr[2][5]=&J25; Jptr[2][6]=&J26;
+    Jptr[3][0]=&J30; Jptr[3][1]=&J31; Jptr[3][2]=&J32; Jptr[3][3]=&J33; Jptr[3][4]=&J34; Jptr[3][5]=&J35; Jptr[3][6]=&J36;
+    Jptr[4][0]=&J40; Jptr[4][1]=&J41; Jptr[4][2]=&J42; Jptr[4][3]=&J43; Jptr[4][4]=&J44; Jptr[4][5]=&J45; Jptr[4][6]=&J46;
+    Jptr[5][0]=&J50; Jptr[5][1]=&J51; Jptr[5][2]=&J52; Jptr[5][3]=&J53; Jptr[5][4]=&J54; Jptr[5][5]=&J55; Jptr[5][6]=&J56;
+    Jptr[6][0]=&J60; Jptr[6][1]=&J61; Jptr[6][2]=&J62; Jptr[6][3]=&J63; Jptr[6][4]=&J64; Jptr[6][5]=&J65; Jptr[6][6]=&J66;
 
 	gsl_matrix *J=gsl_matrix_alloc(7,7);
 	gsl_vector *R=gsl_vector_alloc(7);
@@ -61,6 +118,8 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
     std::uniform_real_distribution<double> unif(-0.5, 1.);
     */
 
+    std::cerr << "HI!\n";
+
 	size_t c;
 
 	float_t last_m=0;
@@ -68,6 +127,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 	int size=counts.size();
     int I[7]={0};	
 	while (true){
+    std::cerr << "HI!2\n";
 		it=counts.begin();
 		end=counts.end();
 		gsl_matrix_set_zero(J);
@@ -102,16 +162,16 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 		++it;
 	//#pragma omp taskwait
 	}
-	if (gsl_blas_dnrm2(R)< 1.) {
-    //    std::cerr << "success!!\n";
+	if (gsl_blas_dnrm2(R)< 0.0001) {
+        std::cerr << "success!!\n";
         break;
 	}
 	if (std::isnan(gsl_blas_dnrm2(R))){
-     ///   std::cerr << "NAN!!\n";
+        std::cerr << "NAN!!\n";
         break;
 	}
 	if (gsl_matrix_isnull(J)){
-     //   std::cerr << "NULL!!\n";
+        std::cerr << "NULL!!\n";
         break;
 	}
     //printf("iter? %d\n", iter);
@@ -125,12 +185,22 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
     
     gsl_linalg_LU_decomp (J, p, &signum);
     gsl_set_error_handler_off();
+    printf( "J:%d, %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", iter, gsl_matrix_get(J, 0, 0), gsl_matrix_get(J,1,0), gsl_matrix_get(J,2,0), gsl_matrix_get(J,3,0), gsl_matrix_get(J,4,0), gsl_matrix_get(J,5,0), gsl_matrix_get(J,6,0) );
+    printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 1), gsl_matrix_get(J,1,1), gsl_matrix_get(J,2,1), gsl_matrix_get(J,3,1), gsl_matrix_get(J,4,1), gsl_matrix_get(J,5,1), gsl_matrix_get(J,6,1) );
+    printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 2), gsl_matrix_get(J,1,2), gsl_matrix_get(J,2,2), gsl_matrix_get(J,3,2), gsl_matrix_get(J,4,2), gsl_matrix_get(J,5,2), gsl_matrix_get(J,6,2) );
+    printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 3), gsl_matrix_get(J,1,3), gsl_matrix_get(J,2,3), gsl_matrix_get(J,3,3), gsl_matrix_get(J,4,3), gsl_matrix_get(J,5,3), gsl_matrix_get(J,6,3) );
+    printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 4), gsl_matrix_get(J,1,4), gsl_matrix_get(J,2,4), gsl_matrix_get(J,3,4), gsl_matrix_get(J,4,4), gsl_matrix_get(J,5,4), gsl_matrix_get(J,6,4) );
+    printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 5), gsl_matrix_get(J,1,5), gsl_matrix_get(J,2,5), gsl_matrix_get(J,3,5), gsl_matrix_get(J,4,5), gsl_matrix_get(J,5,5), gsl_matrix_get(J,6,5) );
+    printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 6), gsl_matrix_get(J,1,6), gsl_matrix_get(J,2,6), gsl_matrix_get(J,3,6), gsl_matrix_get(J,4,6), gsl_matrix_get(J,5,6), gsl_matrix_get(J,6,6) );
+    printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 7), gsl_matrix_get(J,1,7), gsl_matrix_get(J,2,7), gsl_matrix_get(J,3,7), gsl_matrix_get(J,4,7), gsl_matrix_get(J,5,7), gsl_matrix_get(J,6,7) );
+    printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 8), gsl_matrix_get(J,1,8), gsl_matrix_get(J,2,8), gsl_matrix_get(J,3,8), gsl_matrix_get(J,4,8), gsl_matrix_get(J,5,8), gsl_matrix_get(J,6,8) );
     int status=gsl_linalg_LU_solve (J, p, R, new_R);
     if (status!=0) {
 	    gsl_permutation_free (p);
     	gsl_vector_free (R);
     	gsl_vector_free (new_R);
     	gsl_matrix_free (J);
+        std::cerr << "WTF?!?\n";
         return 1;
     }
     gsl_vector_memcpy (R, new_R);
@@ -138,7 +208,10 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
     double k[7];
     for(int i=0; i<7; i++) k[i]=1.-1./(1.+exp(float(++I[i])/2.-2.) );
 
-	a.f_X_+=gsl_vector_get(R, 0)*k[0];
+    printf( "T:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
+    printf( "R:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, gsl_vector_get(R, 0), gsl_vector_get(R,1), gsl_vector_get(R,2), gsl_vector_get(R,3), gsl_vector_get(R,4), gsl_vector_get(R,5), gsl_vector_get(R,6) );
+
+    a.f_X_+=gsl_vector_get(R, 0)*k[0];
 	a.f_Y_+=gsl_vector_get(R,1)*k[1];
 	a.theta_XY_+=gsl_vector_get(R,2)*k[2];
 	a.gamma_XY_+=gsl_vector_get(R,3)*k[3];
@@ -148,7 +221,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 
     while(std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) )
     {
-        //printf( "I:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
+        printf( "I:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
 
         //std::cerr << iter << ", " << k << std::endl;
 	    a.f_X_-=gsl_vector_get(R, 0)*k[0];
@@ -159,9 +232,9 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
         a.delta_XY_-=gsl_vector_get(R,5)*k[5];
         a.Delta_XY_-=gsl_vector_get(R,6)*k[6];
     
-        for(int i=0; i<7; i++) k[i]=1.-1./(1.+exp(float(--I[i])/2.-2.) );
+        for(int i=0; i<7; i++) k[i]=1.-1./(1.+exp(float(I[i]-=2)/2.-2.) );
     
-        int i=0;
+    /*    int i=0;
         a.f_X_+=gsl_vector_get(R, i)*k[i];
         if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
         a.f_X_-=gsl_vector_get(R, i)*k[i];
@@ -201,11 +274,14 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
         a.delta_XY_+=gsl_vector_get(R, i)*k[i];
         if( std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) ) I[i]-=3;
         a.delta_XY_-=gsl_vector_get(R, i)*k[i];
-        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );
+        k[i]=1.-1./(1.+exp(float(I[i])/2.-2.) );*/
 
         for (int j=0; j<7; j++){
-           //printf("%d,", I[j]);
-           if (I[j]<-20) {iter=ITER_MAX;}
+          // printf("%d,", I[j]);
+           if (I[j]<-30) {
+               iter=ITER_MAX;
+               return 1;
+           }
         }
         //printf("\n");
 
@@ -242,7 +318,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 }
 
 std::map <Genotype_pair_tuple, size_t> 
-hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y, const bool &l2o)
+hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y, const bool &l2o, const bool &called)
 {
 	std::stringstream fb_copy(file_buffer.str() );
 
@@ -255,9 +331,14 @@ hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const siz
 		gcf_in.read(genotypes);
 		float s=(genotypes.likelihoods[x].mm+genotypes.likelihoods[y].mm)*2.+(genotypes.likelihoods[x].Mm+genotypes.likelihoods[y].Mm);
 		if (genotypes.likelihoods[x].N>1 && genotypes.likelihoods[y].N>1 && genotypes.m>0 && genotypes.m<1  ){
-			if (l2o) counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], (2.*genotypes.m*N-s)/(2.*N-4.), 3)]+=1;
-			else counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 3)]+=1;
-		}
+            if (called) {
+                if (l2o) counts[convert_called(genotypes.likelihoods[x], genotypes.likelihoods[y], (2.*genotypes.m*N-s)/(2.*N-4.), 3)]+=1;
+    			else counts[convert_called(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 3)]+=1;
+            } else {
+                if (l2o) counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], (2.*genotypes.m*N-s)/(2.*N-4.), 3)]+=1;
+    			else counts[convert(genotypes.likelihoods[x], genotypes.likelihoods[y], genotypes.m, 3)]+=1;
+            }
+        }
 	}
 	return counts;
 }
@@ -265,7 +346,7 @@ hash_genotypes (const std::stringstream &file_buffer, const size_t &x, const siz
 
 //TODO This is a bottle neck, surly we can make if faster.
 std::map <Genotype_pair_tuple, size_t> 
-downsample_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y, const bool &l2o)
+downsample_genotypes (const std::stringstream &file_buffer, const size_t &x, const size_t &y, const bool &l2o, const bool &called)
 {
 	std::stringstream fb_copy(file_buffer.str() );
 	
@@ -330,7 +411,12 @@ void
 gestimate(Relatedness &relatedness, std::map <Genotype_pair_tuple, size_t> &counts)
 {
 	relatedness.zero();
-/*	std::map<Genotype_pair_tuple, size_t>::iterator start=counts.begin();
+    relatedness.f_X_=0.3333;
+    relatedness.f_Y_=0.3333;
+    relatedness.gamma_XY_=0.8333;
+    relatedness.gamma_YX_=0.8333;
+    relatedness.delta_XY_=0.1111;
+    /*	std::map<Genotype_pair_tuple, size_t>::iterator start=counts.begin();
 	std::map<Genotype_pair_tuple, size_t>::iterator end=counts.end();
 	std::map<Genotype_pair_tuple, size_t>::iterator it=start;
 	Genotype_pair pair;
@@ -434,7 +520,7 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
 	become negative. These probabilities are forced to be zero, which may be a little arbitrary, but it seems to 
 	work.*/
 
-    if (failbound(rel.f_X_) || failbound(rel.f_Y_) || failbound(rel.theta_XY_) || failbound(rel.gamma_XY_) || failbound(rel.gamma_YX_) || failbound(rel.delta_XY_) || failbound(rel.Delta_XY_) )
+    if (failbound(rel.f_X_) || failbound(rel.f_Y_) || failbound(rel.theta_XY_) ) //|| failbound(rel.gamma_XY_) || failbound(rel.gamma_YX_) || failbound(rel.delta_XY_) || failbound(rel.Delta_XY_) )
         return nan("");
 
     if (!(passbound(pair.X_mm) && passbound(pair.Y_mm) && passbound(pair.X_Mm) && passbound(pair.Y_Mm) && passbound(pair.X_MM) && passbound(pair.Y_MM) ) ) {
@@ -442,7 +528,7 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
         return 0;//nan("");
     }
 
-	float_t P, mm1mm2, Mm1mm2, MM1mm2, mm1Mm2, Mm1Mm2, MM1Mm2, mm1MM2, Mm1MM2, MM1MM2;
+	real_t P, mm1mm2, Mm1mm2, MM1mm2, mm1Mm2, Mm1Mm2, MM1Mm2, mm1MM2, Mm1MM2, MM1MM2;
 
 	P=1-pair.m;
 
@@ -450,56 +536,72 @@ get_ll (const Relatedness &rel, const Genotype_pair &pair, const float_t count)
         std::cerr << "Bad error...\n";
         return 0;
     }
-	float_t e=0;//global_relatedness.e_Y_[freqtoi(pair.m)]-global_relatedness.e_X_[freqtoi(pair.m)];
+	real_t e=0;//global_relatedness.e_Y_[freqtoi(pair.m)]-global_relatedness.e_X_[freqtoi(pair.m)];
 	//P+=(global_relatedness.e_Y_[freqtoi(pair.m)]+global_relatedness.e_X_[freqtoi(pair.m)]);
 
 	/*This comes from the inverse matrix of the one used to calculate the moments.*/
 	
-	float_t A=P+e;//+e(P)*P; 	//mean major allele frequency in A
-	float_t C=P-e;//-e(P)*P; 	//mean major allele frequency in C
+	real_t A=P+e;//+e(P)*P; 	//mean major allele frequency in A
+	real_t C=P-e;//-e(P)*P; 	//mean major allele frequency in C
 //	std::cerr << freqtoi(pair.m) << ", " << e << ", " << P << ", " << A << ", " << C << std::endl;	
-	float_t Va=A*(1.-A);	//variance of the two haploid genomes of A 
-	float_t Vc=C*(1.-C);	// "   "	"	" 	"     of B
-	float_t Sa=sqrt(Va);	//standard deviation of haploid genomes A
-	float_t Sc=sqrt(Vc);	// and "	"	"	"	C.
+	real_t Va=A*(1.-A);	//variance of the two haploid genomes of A 
+	real_t Vc=C*(1.-C);	// "   "	"	" 	"     of B
+	real_t Sa=sqrt(Va);	//standard deviation of haploid genomes A
+	real_t Sc=sqrt(Vc);	// and "	"	"	"	C.
 
 //`    std::cerr << Sa << ", " << Sc << std::endl;
 
-	float_t E_A2  =(rel.f_X_*Va+2.*pow(A,2.)+Va)/2.; //Expectation of A^2
-	float_t E_C2  =(rel.f_Y_*Vc+2.*pow(C,2.)+Vc)/2.; //
-	float_t E_AC  =rel.theta_XY_*Sa*Sc+A*C;
+	real_t E_A2  =(rel.f_X_*Va+2.*pow(A,2.)+Va)/2.; //Expectation of A^2
+	real_t E_C2  =(rel.f_Y_*Vc+2.*pow(C,2.)+Vc)/2.; //
+	real_t E_AC  =rel.theta_XY_*Sa*Sc+A*C;
 //	if (Sa==0 || Sc==0) return 0;
-	float_t ga=(1.-2.*A)/Sa;
-	float_t gc=(1.-2.*C)/Sc;
-	float_t E_A2C =(rel.gamma_XY_*Va*Sc*ga+A*A*C+Va*(rel.theta_XY_*(1.+2.*A)+rel.f_X_*C+C/(1-C) ) )/2.;
-	float_t E_AC2 =(rel.gamma_YX_*Vc*Sa*gc+C*C*A+Vc*(rel.theta_XY_*(1.+2.*C)+rel.f_Y_*A+A/(1-A) ) )/2.;
-	float_t ka=1./(1.-A)+1./A-3.;
-	float_t kc=1./(1.-C)+1./C-3.;
-	float_t E_A2C2=(rel.delta_XY_*sqrt(ka*kc)+rel.Delta_XY_)*Va*Vc+A*A*C*C+rel.f_X_*Va*C*C+rel.f_Y_*Vc*A*A+4.*rel.theta_XY_*Sa*Sc*A*A+C*2.*rel.gamma_XY_*Va*Sc*ga+2.*A*rel.gamma_YX_*Vc*Sa*gc;
+	real_t ga=(1.-2.*A)/Sa;
+	real_t gc=(1.-2.*C)/Sc;
+	real_t E_A2C =(rel.gamma_XY_*Va*Sc*ga+A*A*C+Va*(rel.theta_XY_*(1.+2.*A)+rel.f_X_*C+C/(1-C) ) )/2.;
+	real_t E_AC2 =(rel.gamma_YX_*Vc*Sa*gc+C*C*A+Vc*(rel.theta_XY_*(1.+2.*C)+rel.f_Y_*A+A/(1-A) ) )/2.;
+	real_t ka=1./(1.-A)+1./A-3.;
+	real_t kc=1./(1.-C)+1./C-3.;
+	real_t E_A2C2=(rel.delta_XY_*sqrt(ka*kc)+rel.Delta_XY_)*Va*Vc+A*A*C*C+rel.f_X_*Va*C*C+rel.f_Y_*Vc*A*A+4.*rel.theta_XY_*Sa*Sc*A*A+C*2.*rel.gamma_XY_*Va*Sc*ga+2.*A*rel.gamma_YX_*Vc*Sa*gc;
 
 	/*This comes from the inverse matrix of the one used to calculate the moments.*/
 
-	mm1mm2=1-6*P+0.0*e+2*E_A2+2*E_C2+8.0*E_AC-4*E_A2C-4*E_AC2+1*E_A2C2;
-	Mm1mm2=0+4*P+2.0*e-4*E_A2+0*E_C2-10.*E_AC+8*E_A2C+4*E_AC2-2*E_A2C2;
-	MM1mm2=0-1*P-0.5*e+2*E_A2+0*E_C2+2.0*E_AC-4*E_A2C-0*E_AC2+1*E_A2C2;
-	mm1Mm2=0+4*P-2.0*e+0*E_A2-4*E_C2-10.*E_AC+4*E_A2C+8*E_AC2-2*E_A2C2;
-	Mm1Mm2=0+0*P+0.0*e+0*E_A2+0*E_C2+12.*E_AC-8*E_A2C-8*E_AC2+4*E_A2C2;
-	MM1Mm2=0+0*P+0.0*e+0*E_A2+0*E_C2-2.0*E_AC+4*E_A2C+0*E_AC2-2*E_A2C2;
-	mm1MM2=0-1*P+0.5*e+0*E_A2+2*E_C2+2.0*E_AC+0*E_A2C-4*E_AC2+1*E_A2C2;
-	Mm1MM2=0+0*P+0.0*e+0*E_A2+0*E_C2-2.0*E_AC+0*E_A2C+4*E_AC2-2*E_A2C2;
-	MM1MM2=0+0*P+0.0*e+0*E_A2+0*E_C2+0.0*E_AC+0*E_A2C+0*E_AC2+1*E_A2C2;
+	mm1mm2=1.-6.*P+0.0*e+2*E_A2+2.*E_C2+8.0*E_AC-4.*E_A2C-4.*E_AC2+1.*E_A2C2;
+	Mm1mm2=0.+4.*P+2.0*e-4*E_A2+0.*E_C2-10.*E_AC+8.*E_A2C+4.*E_AC2-2.*E_A2C2;
+	MM1mm2=0.-1.*P-0.5*e+2*E_A2+0.*E_C2+2.0*E_AC-4.*E_A2C-0.*E_AC2+1.*E_A2C2;
+	mm1Mm2=0.+4.*P-2.0*e+0*E_A2-4.*E_C2-10.*E_AC+4.*E_A2C+8.*E_AC2-2.*E_A2C2;
+	Mm1Mm2=0.+0.*P+0.0*e+0*E_A2+0.*E_C2+12.*E_AC-8.*E_A2C-8.*E_AC2+4.*E_A2C2;
+	MM1Mm2=0.+0.*P+0.0*e+0*E_A2+0.*E_C2-2.0*E_AC+4.*E_A2C+0.*E_AC2-2.*E_A2C2;
+	mm1MM2=0.-1.*P+0.5*e+0*E_A2+2.*E_C2+2.0*E_AC+0.*E_A2C-4.*E_AC2+1.*E_A2C2;
+	Mm1MM2=0.+0.*P+0.0*e+0*E_A2+0.*E_C2-2.0*E_AC+0.*E_A2C+4.*E_AC2-2.*E_A2C2;
+	MM1MM2=0.+0.*P+0.0*e+0*E_A2+0.*E_C2+0.0*E_AC+0.*E_A2C+0.*E_AC2+1.*E_A2C2;
 
-/*
-	if (mm1mm2<0 or mm1mm2>1) mm1mm2=0.1;
-	if (Mm1mm2<0 or Mm1mm2>1) Mm1mm2=0.1; 
-	if (MM1mm2<0 or MM1mm2>1) MM1mm2=0.1; 
-	if (mm1Mm2<0 or mm1Mm2>1) mm1Mm2=0.1; 
-	if (Mm1Mm2<0 or Mm1Mm2>1) Mm1Mm2=0.1;
-	if (MM1Mm2<0 or MM1Mm2>1) MM1Mm2=0.1;
-	if (mm1MM2<0 or mm1MM2>1) mm1MM2=0.1;
-	if (Mm1MM2<0 or Mm1MM2>1) Mm1MM2=0.1;
-	if (MM1MM2<0 or MM1MM2>1) MM1MM2=0.1;
-	float_t S=pow(mm1mm2+Mm1mm2+MM1mm2+mm1Mm2+Mm1Mm2+MM1Mm2+mm1MM2+Mm1MM2+MM1MM2, 2);
+/*    if(P>0.98){
+
+    std::cerr << "Par:" << rel.f_X_ << ", " << rel.f_Y_ << ", " << rel.theta_XY_ << ", " << rel.gamma_XY_ << ", " << rel.gamma_YX_ << ", " << rel.delta_XY_ << ", " << rel.Delta_XY_ << "\n";
+
+    std::cerr << ga << ", " << ka << "\n";
+    std::cerr << E_A2 << ", " << E_C2 << ", " << E_AC << ", " << E_A2C <<", " << E_AC2 << ", " << E_A2C2 << "\n";
+
+    std::cerr << P << " : " << mm1mm2 << ", " << Mm1mm2 << ", " << MM1mm2 << "\n";
+    std::cerr << P << " : " << mm1Mm2 << ", " << Mm1Mm2 << ", " << MM1Mm2 << "\n";
+    std::cerr << P << " : " << mm1MM2 << ", " << Mm1MM2 << ", " << MM1MM2 << "\n";
+
+    }*/
+
+    /*
+#define MIN -1.0e-16
+
+    if (mm1mm2<MIN) return nan(""); 
+	if (Mm1mm2<MIN) return nan(""); 
+	if (MM1mm2<MIN) return nan(""); 
+	if (mm1Mm2<MIN) return nan(""); 
+	if (Mm1Mm2<MIN) return nan(""); 
+	if (MM1Mm2<MIN) return nan(""); 
+	if (mm1MM2<MIN) return nan(""); 
+	if (Mm1MM2<MIN) return nan(""); 
+	if (MM1MM2<MIN) return nan(""); 
+    */
+    /*	float_t S=pow(mm1mm2+Mm1mm2+MM1mm2+mm1Mm2+Mm1Mm2+MM1Mm2+mm1MM2+Mm1MM2+MM1MM2, 2);
 
 	if(S>1){
 		mm1mm2/=S;
@@ -882,6 +984,39 @@ get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotype
 	
 }
 
+void
+get_95CI(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes)
+{	
+    std::vector <float_t> values={rel.f_X_, rel.f_Y_, rel.theta_XY_,rel.gamma_XY_,rel.gamma_YX_, rel.Delta_XY_, rel.delta_XY_};
+	std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(hashed_genotypes.begin(), hashed_genotypes.end() );
+
+    gsl_matrix *invJ= gsl_matrix_alloc(7,7);
+    get_invJ(invJ, rel, hashed_genotypes);
+
+    rel.f_X_ll=1.96*sqrt(gsl_matrix_get(invJ,0,0) );	
+    rel.f_Y_ll=1.96*sqrt(gsl_matrix_get(invJ,1,1) );	
+    rel.theta_XY_ll=1.96*sqrt(gsl_matrix_get(invJ,2,2) );	
+    rel.gamma_XY_ll=1.96*sqrt(gsl_matrix_get(invJ,3,3) );	
+    rel.gamma_YX_ll=1.96*sqrt(gsl_matrix_get(invJ,4,4) );	
+    rel.Delta_XY_ll=1.96*sqrt(gsl_matrix_get(invJ,5,5) );	
+    rel.delta_XY_ll=1.96*sqrt(gsl_matrix_get(invJ,6,6) );	
+		
+    gsl_vector *x=gsl_vector_alloc(7);
+    gsl_vector_set_all(x,0.0);	
+
+	rel.null_ll_ = rel_ll(x, &hashed_genotypes_vector);
+
+    gsl_vector_set(x, 0, rel.f_X_);
+    gsl_vector_set(x, 1, rel.f_Y_);
+    gsl_vector_set(x, 2, rel.theta_XY_);
+    gsl_vector_set(x, 3, rel.gamma_XY_);
+    gsl_vector_set(x, 4, rel.gamma_YX_);
+    gsl_vector_set(x, 5, rel.Delta_XY_);
+    gsl_vector_set(x, 6, rel.delta_XY_);
+
+	rel.max_ll_ = rel_ll(x, &hashed_genotypes_vector);
+}
+
 #ifdef NOMPI
 int estimateRel(int argc, char *argv[])
 {
@@ -945,19 +1080,43 @@ int estimateRel(int argc, char *argv[])
 
 	rel_out.write_header(relatedness);
 
+    std::vector <std::string> name=genotype.get_sample_names();
+
 	std::map <Genotype_pair_tuple, size_t> hashed_genotypes;
 	std::map <Genotype_pair_tuple, size_t> down_genotypes;
 	
 	size_t sample_size=genotype.get_sample_names().size();
+	
 
 	for (size_t x=startx; x<sample_size; ++x){
-     //	for (size_t y=x+2; y<sample_size; ++y){
 		for (size_t y=x+1; y<sample_size; ++y){
             if (x==startx and y < starty) y=starty;
 			relatedness.set_X_name(x);
 			relatedness.set_Y_name(y);
-			hashed_genotypes=hash_genotypes(file_buffer, x, y, l2o);
-//			down_genotypes=downsample_genotypes(file_buffer, x, y);
+			hashed_genotypes=hash_genotypes(file_buffer, x, y, l2o, called);
+/*
+            gsl_vector *t=gsl_vector_alloc(7);
+
+	gsl_vector_set(t, 0, 
+            0.607);
+	gsl_vector_set(t, 1, 
+            0.607);
+	gsl_vector_set(t, 2, 
+            0.0); 
+	gsl_vector_set(t, 3, 
+            0.0);
+	gsl_vector_set(t, 4, 
+            0.0);
+	gsl_vector_set(t, 6, 
+            0.0);
+	gsl_vector_set(t, 5, 
+            0.369);
+            std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(hashed_genotypes.begin(), hashed_genotypes.end() );
+            std::cerr << rel_ll(t, &hashed_genotypes_vector);
+            return 0;
+*/
+
+            //			down_genotypes=downsample_genotypes(file_buffer, x, y);
 //			down_genotypes=hash_genotypes(file_buffer, x, y, l2o);
 			relatedness.zero();
 			//set_e(relatedness, hashed_genotypes);
@@ -967,21 +1126,12 @@ int estimateRel(int argc, char *argv[])
 #else
 			if( !newton(relatedness, hashed_genotypes) ) relatedness.success_= true;
             else relatedness.success_= false;
-//			relatedness.success_= true;
-//			maximize(relatedness, hashed_genotypes, 10000);
-/*			if(newton(relatedness, down_genotypes) ){
-				relatedness.zero();
-				maximize(relatedness, down_genotypes);
-			}*/
 #endif
-			get_llr(relatedness, hashed_genotypes);
+            if (relatedness.success_) get_95CI(relatedness, hashed_genotypes);
+			relatedness.set_X_name(name[x]);
+			relatedness.set_Y_name(name[y]);
 			rel_out.write(relatedness);
-/*            if (!relatedness.success_)
-            {
-                printf( "%.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", relatedness.f_X_, relatedness.f_Y_, relatedness.theta_XY_, relatedness.gamma_XY_, relatedness.gamma_YX_, relatedness.Delta_XY_, relatedness.delta_XY_);
-                return 0;
-            }
-*/        }
+        }
 	}
 	rel_out.close();
 	return 0;					//Since everything worked, return 0!.

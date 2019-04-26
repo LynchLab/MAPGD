@@ -7,6 +7,7 @@
 #include <cfloat>
 #include <iomanip>
 #include <vector>
+#include <cmath>
 #include <sstream>
 
 #include "typedef.h"

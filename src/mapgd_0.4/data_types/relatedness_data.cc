@@ -49,11 +49,13 @@ void
 Relatedness::set_X_name(const id0_t &X)
 {
 	X_=X;
+	X_str_=std::to_string(X);
 }
 
 void
 Relatedness::set_Y_name(const id0_t &Y)
 {
+	Y_str_=std::to_string(Y);
 	Y_=Y;
 }
 
@@ -137,7 +139,7 @@ Relatedness::write (std::ostream& out) const
 
 std::string 
 Relatedness::header(void) const {
-	return std::string("@SAMPLE_X\tSAMPLE_Y\tSUCCESS\tf_X\tf_X_ll\tf_Y\tf_Y_ll\tθ\tθ_ll\tγ_XY\tγ_XY_ll\tγ_YX\tγ_YX_ll\tδ\tδ_ll\tΔ\tΔ_ll\tnull_ll\tfit\n");
+	return std::string("@SAMPLE_X\tSAMPLE_Y\tSUCCESS\tf_X\tf_X95CI\tf_Y\tf_Y95CI\tθ\tθ95CI\tγ_XY\tγ_XY95\tγ_YX\tγ_YX95\tδ\tδ_95CI\tΔ\tΔ_95CI\tnull_ll\tfit\n");
 }
 
 size_t 

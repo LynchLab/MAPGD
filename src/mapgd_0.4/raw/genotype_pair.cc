@@ -9,6 +9,15 @@ convert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &p
 }
 
 Genotype_pair_tuple 
+convert_called(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &precision)
+{
+	float_t T=pow(10, precision);
+    float_t maxx=std::max({x.MM,x.Mm,x.mm});
+    float_t maxy=std::max({y.MM,y.Mm,y.mm});
+    return Genotype_pair_tuple ( x.MM==maxx, x.Mm==maxx, x.mm==maxx, y.MM==maxy, y.Mm==maxy, y.mm==maxy, round(m*T)/T);
+}
+
+Genotype_pair_tuple 
 downvert(const Genotype &x, const Genotype &y, const float_t &m, const uint8_t &precision)
 {
 	float_t T=pow(10, precision);

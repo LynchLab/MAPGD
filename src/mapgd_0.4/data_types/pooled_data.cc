@@ -103,7 +103,7 @@ Pooled_data::write (std::ostream& out) const
 	else out << '.';
 
 	for (size_t s=0; s<names_.size(); ++s) {
-		if (!isnan(p[s]) ){
+		if (!std::isnan(p[s]) ){
 	//		out << std::setprecision(1);
 			out << '\t' << p[s] << '/';
 			out << cov[s] << '/';

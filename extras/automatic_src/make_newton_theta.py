@@ -32,10 +32,10 @@ lnch=sympy.Symbol('lnch');
 #H01=2.*h*(1.-h)*(1.-F)*( ( ( (1.- e)/2.+( e/6.) )**(M+m) )*( ( e/3.)**(E) ) )#-0.00001
 #H11=( (1.-h)**2.+h*(1.-h)*F)*( ( (1.-e)**m )*( (e/3.)**(M+E) ) )#-0.00001 
 
-pe=0.75/(1+sympy.exp(e) )
+pe=(2*0.75)/(1+sympy.exp(e) )
 
-H=1./(1.+sympy.exp(h) )
-P=1./(1.+sympy.exp(F) )
+H=2./(1.+sympy.exp(h) )
+P=2./(1.+sympy.exp(F) )
 
 
 #pF=-h/(1-h)+(1+h/(1-h) )/(1+sympy.exp(F) )

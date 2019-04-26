@@ -70,7 +70,7 @@ Sample_gof::sql_read (std::istream& in)
 void
 Sample_gof::write (std::ostream& out) const
 {
-	if (!isnan(number_) )
+	if (!std::isnan(number_) )
 		out << smp_num_ << delim << name_ << delim << number_;
 	else 
 		out << smp_num_ << delim << name_ << delim << MISSING;

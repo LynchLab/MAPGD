@@ -173,9 +173,10 @@ int estimateRel(int argc, char *argv[])
 				relatedness.zero();
 				set_e(relatedness, hashed_genotypes);
 //				gestimate(relatedness, hashed_genotypes);
-			    if( !newton(relatedness, hashed_genotypes) ) relatedness.success_= true;
-                else relatedness.success_= false;
-				get_llr(relatedness, hashed_genotypes);
+			    if( !newton(relatedness, hashed_genotypes) ) {
+                    relatedness.success_= true;
+				    get_95CI(relatedness, hashed_genotypes);
+                } else relatedness.success_= false;
 				buffer_rel[z]=relatedness;
             }
 			z++;

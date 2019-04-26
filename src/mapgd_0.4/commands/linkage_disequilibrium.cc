@@ -77,7 +77,7 @@ Linkage estimate_D (const Population &P1, const Population &P2, const float_t &c
 	if (D < Dmin or D > Dmax or iter == 20) {
 		float min_lnL=lnL_NR(P1, P2, Dmin);
 		float max_lnL=lnL_NR(P1, P2, Dmax);
-		if ( not isnan(min_lnL) ){
+		if ( not std::isnan(min_lnL) ){
 			if (min_lnL < max_lnL) {
 				D=Dmax;
 			}

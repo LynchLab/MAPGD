@@ -65,7 +65,7 @@ int surface(int argc, char *argv[])
 
 	relatedness.set_X_name(startx);
 	relatedness.set_Y_name(starty);
-	hashed_genotypes=hash_genotypes(file_buffer, startx, starty, l2o);
+	hashed_genotypes=hash_genotypes(file_buffer, startx, starty, l2o, false);
 	gsl_vector *v=gsl_vector_alloc(7);
 
     std::random_device rd;

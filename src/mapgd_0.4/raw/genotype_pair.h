@@ -5,6 +5,8 @@
 #include <vector>
 #include <tuple>
 #include <sstream>
+#include <initializer_list>
+#include <algorithm>
 
 #include "typedef.h"
 #include "genotype.h"
@@ -34,5 +36,6 @@ public:
 
 
 Genotype_pair_tuple convert(const Genotype &, const Genotype &, const float_t &, const uint8_t &);
+Genotype_pair_tuple convert_called(const Genotype &, const Genotype &, const float_t &, const uint8_t &);
 Genotype_pair_tuple downvert(const Genotype &, const Genotype &, const float_t &, const uint8_t &);
 #endif  

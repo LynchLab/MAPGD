@@ -41,11 +41,11 @@ freqtoi(float_t in);
 
 //DONE Moved to in memory
 std::map <Genotype_pair_tuple, size_t> 
-hash_genotypes (const std::stringstream &, const size_t &, const size_t &, const bool &);
+hash_genotypes (const std::stringstream &, const size_t &, const size_t &, const bool &, const bool &);
 
 //DONE Moved to in memory
 std::map <Genotype_pair_tuple, size_t> 
-downsample_genotypes (const std::stringstream &, const size_t &, const size_t &, const bool &);
+downsample_genotypes (const std::stringstream &, const size_t &, const size_t &, const bool &, const bool&);
 
 /*Does a regression of allele frequency of the samples on the population allele frequency*/
 void 

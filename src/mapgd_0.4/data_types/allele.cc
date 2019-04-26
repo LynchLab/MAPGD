@@ -233,7 +233,7 @@ void Allele::write (std::ostream& out) const
 		out << std::fixed << std::setprecision(4);
 	
 		if (print_bias) {
-			if (!isnan(pbias) ){
+			if (!std::isnan(pbias) ){
 				out << bias << delim;
 				out << pbias << delim;
 			} else {

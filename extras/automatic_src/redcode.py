@@ -21,7 +21,6 @@ params=[]
 constants={}
 keys=[]
 
-
 class Node:
         def __init__(self, name):
                 self.to=[]

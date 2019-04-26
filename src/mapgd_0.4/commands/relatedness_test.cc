@@ -91,7 +91,7 @@ int testRel(int argc, char *argv[])
 			break;
 		}
 
-		hashed_genotypes=downsample_genotypes(file_buffer, rel1.X_, rel1.Y_, l2o);
+		hashed_genotypes=downsample_genotypes(file_buffer, rel1.X_, rel1.Y_, l2o, false);
 		std::vector <std::pair <Genotype_pair_tuple, size_t> > hashed_genotypes_vector(hashed_genotypes.begin(), hashed_genotypes.end() );
 
 		gsl_vector *x;
