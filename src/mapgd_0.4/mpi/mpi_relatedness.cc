@@ -168,7 +168,7 @@ int estimateRel(int argc, char *argv[])
 			} 
 			if ( chunk*taskid <= z && z < chunk*(taskid+1) )
 			{
-				hashed_genotypes=hash_genotypes(file_buffer, x, y, l2o);
+				hashed_genotypes=hash_genotypes(file_buffer, x, y, l2o, false);
 //				down_genotypes=downsample_genotypes(file_buffer, x, y, l2o);
 				relatedness.zero();
 				set_e(relatedness, hashed_genotypes);

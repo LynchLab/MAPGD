@@ -87,5 +87,8 @@ newton(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotype
 void
 get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes);
 
+void
+get_95CI(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes);
+
 #endif 
 
