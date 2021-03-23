@@ -78,8 +78,8 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p);
 #endif 
 
 /*Maximizes the relatedness*/
-void 
-maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes);
+bool
+maximize_gsl(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes, const int MAXITER);
 
 int
 newton(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes);

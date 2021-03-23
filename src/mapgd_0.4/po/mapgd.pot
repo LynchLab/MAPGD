@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Matthew Ackerman
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the mapgd package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mapgd 38\n"
 "Report-Msgid-Bugs-To: matthew.s.ackerman@gmail.com\n"
-"POT-Creation-Date: 2019-04-15 12:47+0100\n"
+"POT-Creation-Date: 2021-03-23 14:03-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,11 +51,10 @@ msgstr ""
 
 #: data_types/state.cc:158 data_types/state.cc:179 data_types/state.cc:198
 #: data_types/state.cc:223 data_types/state.cc:472 data_types/state.cc:495
-#: data_types/state.cc:508 data_types/state.cc:524
-#: data_conversion/state.cc:136 data_conversion/state.cc:155
-#: data_conversion/state.cc:180 data_conversion/state.cc:426
-#: data_conversion/state.cc:449 data_conversion/state.cc:462
-#: data_conversion/state.cc:478
+#: data_types/state.cc:508 data_types/state.cc:524 data_conversion/state.cc:136
+#: data_conversion/state.cc:155 data_conversion/state.cc:180
+#: data_conversion/state.cc:426 data_conversion/state.cc:449
+#: data_conversion/state.cc:462 data_conversion/state.cc:478
 #, c-format
 msgid "mapgd:%s:%d: Attempt to read from empty stream. Exiting.\n"
 msgstr ""
@@ -137,8 +136,8 @@ msgstr ""
 msgid "mapgd:%s:%d: Magick bits not set.\n"
 msgstr ""
 
-#: data_types/state.cc:437 data_types/state.cc:446
-#: data_conversion/state.cc:392 data_conversion/state.cc:400
+#: data_types/state.cc:437 data_types/state.cc:446 data_conversion/state.cc:392
+#: data_conversion/state.cc:400
 #, c-format
 msgid "mapgd:%s:%d: Malformed LZ4 block. Exiting.\n"
 msgstr ""
@@ -146,11 +145,6 @@ msgstr ""
 #: data_conversion/plink_pheno.cc:145
 #, c-format
 msgid "mapgd:%s:%d: Retrieving sample names currently unsupported.\n"
-msgstr ""
-
-#: data_types/sample_cov.cc:50
-#, c-format
-msgid "mapgd:%s:%d: Sample_cov::read: error parsing input\n"
 msgstr ""
 
 #. std::cerr << temp << " - " << bool(temp==".") << std::endl;

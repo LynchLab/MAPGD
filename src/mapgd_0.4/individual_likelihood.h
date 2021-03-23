@@ -11,6 +11,7 @@
 #include "newton-method-theta.h"
 #include "models.h"
 #include <gsl/gsl_cdf.h>
+#include <gsl/gsl_randist.h>
 
 count_t init_params(Locus&, Allele&, const float_t&);										//!< Uses a huristic method for guessing good priors.
 count_t maximize_analytical(Locus&, Allele&, models&, std::vector <float_t>&, const float_t&, const size_t&);	//!< Returns values assuming that all reads are identical.

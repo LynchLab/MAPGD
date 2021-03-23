@@ -137,8 +137,7 @@ COMMAND_OBJ=$(OBJDIR)/allele_cmd.o \
 	$(OBJDIR)/test_keys.o \
 	$(OBJDIR)/reml.o \
 	$(OBJDIR)/read_bed.o \
-	$(OBJDIR)/relatedness_test.o \
-	$(OBJDIR)/surface.o 
+	$(OBJDIR)/relatedness_test.o 
 
 #Depends on OS
 SYS_OBJ=$(OBJDIR)/system.o

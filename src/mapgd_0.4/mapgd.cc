@@ -50,7 +50,7 @@ int main (int argc, char* argv[])
 #endif
 	env.command(	' ',"readbed",	&read_bed,	 		"an error occurred while calling vcf", "Reads a bed file"); 		//DONE
 	env.command(	' ',"readphen",	&read_pheno,	 		"an error occurred while calling vcf", "Reads plink's pheno file"); 		//DONE
-	env.command(	' ',"surface",	&surface,	 		"an error occurred while calling vcf", "Prints a likelihood surface"); 		//DONE
+//	env.command(	' ',"surface",	&surface,	 		"an error occurred while calling vcf", "Prints a likelihood surface"); 		//DONE
 	env.command(	' ',"help", 	&mapgd_help, 			"an error occurred while calling help", "Prints helpful information");					//DONE
 
 #ifndef NOSQL

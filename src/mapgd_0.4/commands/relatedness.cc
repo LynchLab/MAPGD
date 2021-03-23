@@ -1,6 +1,5 @@
 #include "relatedness.h"
 
-
 #define BUFFER_SIZE 500
 
 #ifndef NOGSL
@@ -756,7 +755,7 @@ rel_fdf (const gsl_vector *x, void *params,
 
 /*Maximizes the relatedness*/
 bool 
-maximize(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes, const int MAXITER)
+maximize_gsl(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes, const int MAXITER)
 {
 	const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_conjugate_fr;
 	//const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_conjugate_pr;
@@ -1122,10 +1121,12 @@ int estimateRel(int argc, char *argv[])
 			//set_e(relatedness, hashed_genotypes);
 			gestimate(relatedness, hashed_genotypes);
 #ifdef EIGEN
-			newton(relatedness, down_genotypes);
+			//newton(relatedness, down_genotypes);
+			//maximize_gsl(relatedness, down_genotypes, ITER_MAX);
 #else
-			if( !newton(relatedness, hashed_genotypes) ) relatedness.success_= true;
-            else relatedness.success_= false;
+//			if( !newton(relatedness, hashed_genotypes) ) relatedness.success_= true;
+			//if( !maximize_gsl(relatedness, hashed_genotypes, ITER_MAX) ) relatedness.success_= true;
+            //else relatedness.success_= false;
 #endif
             if (relatedness.success_) get_95CI(relatedness, hashed_genotypes);
 			relatedness.set_X_name(name[x]);
