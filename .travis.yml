@@ -20,8 +20,9 @@ before_install:
         brew install gsl;
         brew install gcc48;
         brew install gettext;
+        brew install libhts-dev;
         brew link --force gettext;
-        wget --no-check-certificate https://github.com/samtools/htslib/archive/master.tar.gz;
+        #wget --no-check-certificate https://github.com/samtools/htslib/archive/master.tar.gz;
         tar -xzvf master.tar.gz;
         pushd htslib-master && autoreconf && ./configure && make && sudo make install && popd;
     fi
@@ -31,7 +32,8 @@ before_install:
         sudo apt-get install -y libgsl0-dev; 
         sudo apt-get install -y gettext; 
         sudo apt-get install -y libmpich-dev;
-        wget --no-check-certificate https://github.com/samtools/htslib/archive/master.tar.gz;
+        sudo apt-get install -y libhts-dev;
+        #        wget --no-check-certificate https://github.com/samtools/htslib/archive/master.tar.gz;
         tar -xzvf master.tar.gz;
         pushd htslib-master && autoreconf && ./configure  --prefix=/usr && make && sudo make install && popd;
     fi
