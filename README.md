@@ -9,7 +9,7 @@
 
 [<b>Visit the MAPGD development page</b>](https://lynchlab.github.io/MAPGD/)
 
-WARNING --- mapgd relatedness is temporarily disabled. Email me if you need this function.
+WARNING --- mapgd relatedness may show unexpected behavior. Use with care.
 
 <h2> Contents </h2> 
 
