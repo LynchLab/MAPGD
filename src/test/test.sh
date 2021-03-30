@@ -289,6 +289,7 @@ rm -f map
 rm -f pro
 a="relatedness"
 msg="relatedness_1"
+echo "HI!"
 echo -n "cat genotype.out | $mapgd $a > $a.out 									"
 mkfifo map
 mkfifo pro

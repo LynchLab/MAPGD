@@ -117,7 +117,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
     std::uniform_real_distribution<double> unif(-0.5, 1.);
     */
 
-    std::cerr << "HI!\n";
+  //  std::cerr << "HI!\n";
 
 	size_t c;
 
@@ -126,7 +126,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 	int size=counts.size();
     int I[7]={0};	
 	while (true){
-    std::cerr << "HI!2\n";
+//    std::cerr << "HI!2\n";
 		it=counts.begin();
 		end=counts.end();
 		gsl_matrix_set_zero(J);
@@ -162,15 +162,15 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 	//#pragma omp taskwait
 	}
 	if (gsl_blas_dnrm2(R)< 0.0001) {
-        std::cerr << "success!!\n";
+    //    std::cerr << "success!!\n";
         break;
 	}
 	if (std::isnan(gsl_blas_dnrm2(R))){
-        std::cerr << "NAN!!\n";
+    //    std::cerr << "NAN!!\n";
         break;
 	}
 	if (gsl_matrix_isnull(J)){
-        std::cerr << "NULL!!\n";
+    //    std::cerr << "NULL!!\n";
         break;
 	}
     //printf("iter? %d\n", iter);
@@ -184,7 +184,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
     
     gsl_linalg_LU_decomp (J, p, &signum);
     gsl_set_error_handler_off();
-    printf( "J:%d, %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", iter, gsl_matrix_get(J, 0, 0), gsl_matrix_get(J,1,0), gsl_matrix_get(J,2,0), gsl_matrix_get(J,3,0), gsl_matrix_get(J,4,0), gsl_matrix_get(J,5,0), gsl_matrix_get(J,6,0) );
+    /*printf( "J:%d, %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", iter, gsl_matrix_get(J, 0, 0), gsl_matrix_get(J,1,0), gsl_matrix_get(J,2,0), gsl_matrix_get(J,3,0), gsl_matrix_get(J,4,0), gsl_matrix_get(J,5,0), gsl_matrix_get(J,6,0) );
     printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 1), gsl_matrix_get(J,1,1), gsl_matrix_get(J,2,1), gsl_matrix_get(J,3,1), gsl_matrix_get(J,4,1), gsl_matrix_get(J,5,1), gsl_matrix_get(J,6,1) );
     printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 2), gsl_matrix_get(J,1,2), gsl_matrix_get(J,2,2), gsl_matrix_get(J,3,2), gsl_matrix_get(J,4,2), gsl_matrix_get(J,5,2), gsl_matrix_get(J,6,2) );
     printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 3), gsl_matrix_get(J,1,3), gsl_matrix_get(J,2,3), gsl_matrix_get(J,3,3), gsl_matrix_get(J,4,3), gsl_matrix_get(J,5,3), gsl_matrix_get(J,6,3) );
@@ -193,6 +193,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
     printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 6), gsl_matrix_get(J,1,6), gsl_matrix_get(J,2,6), gsl_matrix_get(J,3,6), gsl_matrix_get(J,4,6), gsl_matrix_get(J,5,6), gsl_matrix_get(J,6,6) );
     printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 7), gsl_matrix_get(J,1,7), gsl_matrix_get(J,2,7), gsl_matrix_get(J,3,7), gsl_matrix_get(J,4,7), gsl_matrix_get(J,5,7), gsl_matrix_get(J,6,7) );
     printf( "      %.5f,%.5f,%.5f,%.5f,%.5f,%.5f,%.5f\n", gsl_matrix_get(J, 0, 8), gsl_matrix_get(J,1,8), gsl_matrix_get(J,2,8), gsl_matrix_get(J,3,8), gsl_matrix_get(J,4,8), gsl_matrix_get(J,5,8), gsl_matrix_get(J,6,8) );
+	*/
     int status=gsl_linalg_LU_solve (J, p, R, new_R);
     if (status!=0) {
 	    gsl_permutation_free (p);
@@ -207,8 +208,8 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
     double k[7];
     for(int i=0; i<7; i++) k[i]=1.-1./(1.+exp(float(++I[i])/2.-2.) );
 
-    printf( "T:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
-    printf( "R:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, gsl_vector_get(R, 0), gsl_vector_get(R,1), gsl_vector_get(R,2), gsl_vector_get(R,3), gsl_vector_get(R,4), gsl_vector_get(R,5), gsl_vector_get(R,6) );
+    //printf( "T:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
+    //printf( "R:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, gsl_vector_get(R, 0), gsl_vector_get(R,1), gsl_vector_get(R,2), gsl_vector_get(R,3), gsl_vector_get(R,4), gsl_vector_get(R,5), gsl_vector_get(R,6) );
 
     a.f_X_+=gsl_vector_get(R, 0)*k[0];
 	a.f_Y_+=gsl_vector_get(R,1)*k[1];
@@ -220,7 +221,7 @@ newton (Relatedness &a, std::map <Genotype_pair_tuple, size_t> &counts)
 
     while(std::isnan(rel_ll2(a, &hashed_genotypes_vector) ) )
     {
-        printf( "I:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
+        //printf( "I:%d, %.12f,%.12f,%.12f,%.12f,%.12f,%.12f,%.12f\n", iter, a.f_X_, a.f_Y_, a.theta_XY_, a.gamma_XY_, a.gamma_YX_, a.Delta_XY_, a.delta_XY_);
 
         //std::cerr << iter << ", " << k << std::endl;
 	    a.f_X_-=gsl_vector_get(R, 0)*k[0];
@@ -688,9 +689,6 @@ rel_ll (const gsl_vector *v, void *void_hashed_genotypes_p)
 	return double(-sum);
 }
 
-
-#if 0==1
-
 void
 rel_dll (const gsl_vector *v, void *void_hashed_genotypes_p,
                gsl_vector *df)
@@ -757,13 +755,14 @@ rel_fdf (const gsl_vector *x, void *params,
 bool 
 maximize_gsl(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotypes, const int MAXITER)
 {
+
 	const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_conjugate_fr;
 	//const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_conjugate_pr;
 	//const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_vector_bfgs2; 
 //	const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_vector_bfgs; 
 //    const gsl_multimin_fdfminimizer_type *T=gsl_multimin_fdfminimizer_steepest_descent;
 
-    size_t iter = 0;
+	size_t iter = 0;
 	int status;
 	double size;
 
@@ -853,8 +852,6 @@ maximize_gsl(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_ge
 	gsl_vector_free(last_x);
     return (status != GSL_CONTINUE);
 }
-
-#endif
 
 class small_rel{
 
@@ -1122,11 +1119,11 @@ int estimateRel(int argc, char *argv[])
 			gestimate(relatedness, hashed_genotypes);
 #ifdef EIGEN
 			//newton(relatedness, down_genotypes);
-			//maximize_gsl(relatedness, down_genotypes, ITER_MAX);
+			maximize_gsl(relatedness, down_genotypes, ITER_MAX);
 #else
 //			if( !newton(relatedness, hashed_genotypes) ) relatedness.success_= true;
-			//if( !maximize_gsl(relatedness, hashed_genotypes, ITER_MAX) ) relatedness.success_= true;
-            //else relatedness.success_= false;
+		if( maximize_gsl(relatedness, hashed_genotypes, ITER_MAX) ) relatedness.success_= true;
+            	else relatedness.success_= false;
 #endif
             if (relatedness.success_) get_95CI(relatedness, hashed_genotypes);
 			relatedness.set_X_name(name[x]);
