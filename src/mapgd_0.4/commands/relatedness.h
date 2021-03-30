@@ -87,5 +87,11 @@ newton(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> &hashed_genotype
 void
 get_llr(Relatedness &rel, std::map <Genotype_pair_tuple, size_t> hashed_genotypes);
 
+int
+get_invJ(gsl_matrix *, const Relatedness &, std::map <Genotype_pair_tuple, size_t> &);
+
+void
+get_95CI(Relatedness &, std::map <Genotype_pair_tuple, size_t>);
+
 #endif 
 

@@ -30,6 +30,7 @@ size_t gety(const size_t &w, const size_t &size)
 	return 0;
 }
 
+
 int estimateRel(int argc, char *argv[])
 {
 	int taskid,	/* task ID - also used as seed number */
@@ -53,7 +54,7 @@ int estimateRel(int argc, char *argv[])
 
 	/* All the variables that can be set from the command line */
 
-    bool l2o=false;
+	bool l2o=false, called=false;
 
 	std::string gcf_name="", rel_name="";
 
@@ -67,6 +68,7 @@ int estimateRel(int argc, char *argv[])
 	env.optional_arg('o', "output", rel_name, "an error occurred while displaying the help message.", "output filename (default stdin)");
 	env.flag(	'l', "l2o", 	&l2o, 		&flag_set, 	"an error occurred while displaying the help message.", "leave 2 out");
 	env.flag(	'h', "help", 	&env, 		&flag_help, 	"an error occurred while displaying the help message.", "prints this message");
+	env.flag(	'c', "called", 	&called,	&flag_set, "an error occurred while displaying the help message.", "ignore genotypic likelihoods and treat data as error free.");
 	env.flag(	'v', "version", &env, 		&flag_version, 	"an error occurred while displaying the help message.", "prints the program version");
 
 	if ( parsargs(argc, argv, env) ) print_usage(env); //Gets all the command line options, and prints usage on failure.
@@ -168,7 +170,7 @@ int estimateRel(int argc, char *argv[])
 			} 
 			if ( chunk*taskid <= z && z < chunk*(taskid+1) )
 			{
-				hashed_genotypes=hash_genotypes(file_buffer, x, y, l2o);
+				hashed_genotypes=hash_genotypes(file_buffer, x, y, l2o, called);
 //				down_genotypes=downsample_genotypes(file_buffer, x, y, l2o);
 				relatedness.zero();
 				set_e(relatedness, hashed_genotypes);
