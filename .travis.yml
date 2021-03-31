@@ -9,7 +9,7 @@
 #    - compilter: clang
 os:
   - linux
-  - osx
+#  - osx
 language: cpp
 compiler:
   - gcc
