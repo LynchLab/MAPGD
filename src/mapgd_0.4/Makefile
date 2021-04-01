@@ -244,7 +244,7 @@ gzstream :
 .PHONY: gzstream
 
 $(TARGET) : $(OBJ) $(MPI_OBJ)
-	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o ../../bin/$(TARGET) $(DLO) $(LDLIBS) $(MPI_LDLIBS) $(INCLUDE)
+	$(FINAL_CXX) $(CXXFLAGS) $(OBJ) -o ../../bin/$(TARGET) $(DLO) $(LDLIBS) $(LDFLAGS) $(MPI_LDLIBS) $(INCLUDE)
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o po/mapgd.pot --copyright-holder="Matthew Ackerman" --package-name="mapgd" --package-version=$(MINOR) --msgid-bugs-address="matthew.s.ackerman@gmail.com"  $(addsuffix /*.cc, $(SUBDIR)) *.cc
 	@echo "\n\nConsider typing 'make install DESTDIR=~/bin/' to install a local copy\n"
 
